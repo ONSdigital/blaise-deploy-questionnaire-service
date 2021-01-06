@@ -29,6 +29,7 @@
     "lint-fix"
   ],
   "dependencies": {
+    "@google-cloud/storage": "^5.7.0",
     "@testing-library/dom": "^7.26.5",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.1.1",

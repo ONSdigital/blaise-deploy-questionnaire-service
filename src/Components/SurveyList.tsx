@@ -16,7 +16,7 @@ function SurveyList(props: Props): ReactElement {
     const {list, listError} = props;
 
     return <>
-        <h2>Surveys</h2>
+        <h2 className="u-mt-m">Table of questionnaires</h2>
         {
             list && list.length > 0
                 ?

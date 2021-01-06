@@ -8,13 +8,16 @@ import ONSErrorPanel from "./Components/ONSDesignSystem/ONSErrorPanel";
 import {isDevEnv} from "./Functions";
 import {
     Switch,
-    Route,
+    Route, Link,
 
 } from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
 import SurveyList from "./Components/SurveyList";
 import {Survey} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
+import UploadPage from "./Components/UploadPage";
+import DeploymentSummary from "./Components/DeploymentSummary";
+import {ONSPanel} from "./Components/ONSDesignSystem/ONSPanel";
 
 
 interface listError {
@@ -89,28 +92,34 @@ function App(): ReactElement {
             <div style={divStyle} className="page__container container">
                 <main id="main-content" className="page__main">
                     <DefaultErrorBoundary>
-                        <h1>Interviewing</h1>
-                        <p>
-                            This page provides information on active questionnaires with corresponding links that
-                            redirect to specific areas of CATI dashboard.
-                        </p>
-                        <p>
-                            Please note, the table containing information on active questionnaires may
-                            take a few seconds to load.
-                        </p>
-                        {listError.error && <ONSErrorPanel/>}
-                        <p className="u-mt-m">
-                            <ExternalLink text={"Link to CATI dashboard"}
-                                          link={externalCATIUrl}
-                                          id={"cati-dashboard"}/>
-                        </p>
+
                         <Switch>
+                            <Route path="/UploadSummary">
+                                <DeploymentSummary external_client_url=""/>
+                            </Route>
+                            <Route path="/upload">
+                                <UploadPage external_client_url=""/>
+                            </Route>
                             <Route path="/survey/:survey">
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
                                     <InstrumentList list={surveys} listError={listError}/>
                                 </ErrorBoundary>
                             </Route>
                             <Route path="/">
+
+                                {listError.error && <ONSErrorPanel/>}
+
+                                <Link to="/upload">
+                                    Deploy a questionnaire
+                                </Link>
+                                <ONSPanel>
+                                    <p>
+                                        Any <b>live</b> questionnaire within the table below <b>does not</b> have the option to delete and <b>cannot be deleted</b>.
+
+                                        If a <b>live</b> questionnaire requires deletion, raise a Service Desk ticket to complete this request.
+                                    </p>
+                                </ONSPanel>
+
                                 <ErrorBoundary errorMessageText={"Unable to load survey table correctly"}>
                                     <SurveyList list={surveys} listError={listError}/>
                                 </ErrorBoundary>
