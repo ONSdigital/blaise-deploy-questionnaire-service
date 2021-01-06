@@ -30,7 +30,7 @@ steps:
     args:
       - '-c'
       - |
-        versions=$(gcloud app versions list --service "tobi-ui" --sort-by '~version' --format 'value(VERSION.ID)' --project "${_PROJECT_ID}" | tail -n +11)
+        versions=$(gcloud app versions list --service "dqs-ui" --sort-by '~version' --format 'value(VERSION.ID)' --project "${_PROJECT_ID}" | tail -n +11)
 
         SAVEIFS=$IFS          # Save current IFS
         IFS=$'\n'             # Change IFS to new line
@@ -39,5 +39,5 @@ steps:
 
         for (( i=0; i<${#versions[@]}; i++ ))
         do
-          gcloud app versions delete ${versions[$i]} --service "tobi-ui" --project "${_PROJECT_ID}" --quiet
+          gcloud app versions delete ${versions[$i]} --service "dqs-ui" --project "${_PROJECT_ID}" --quiet
         done

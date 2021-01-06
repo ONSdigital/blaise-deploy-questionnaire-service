@@ -106,7 +106,7 @@ defineFeature(feature, test => {
 
         then("I am presented with a list of active questionnaires to be worked on that day for that survey, i.e. within the the survey period start and end dates", async () => {
             await waitFor(() => {
-                expect(screen.getByText(/Telephone Operations Blaise Interface/i)).toBeDefined();
+                expect(screen.getByText(/Deploy Questionnaire Service/i)).toBeDefined();
                 expect(screen.getByText(/OPN2004A/i)).toBeDefined();
                 expect(screen.getByText(/OPN2007T/i)).toBeDefined();
                 expect(screen.getByText(/OPN2101A/i)).toBeDefined();

@@ -98,7 +98,7 @@ describe("React homepage", () => {
         expect(queryByText(/Loading/i)).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(getByText(/Telephone Operations Blaise Interface/i)).toBeDefined();
+            expect(getByText(/Deploy Questionnaire Service/i)).toBeDefined();
             expect(getByText(/OPN/i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
@@ -110,7 +110,7 @@ describe("React homepage", () => {
         });
 
         await waitFor(() => {
-            expect(getByText(/Telephone Operations Blaise Interface/i)).toBeDefined();
+            expect(getByText(/Deploy Questionnaire Service/i)).toBeDefined();
             expect(getByText(/OPN2007T/i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });

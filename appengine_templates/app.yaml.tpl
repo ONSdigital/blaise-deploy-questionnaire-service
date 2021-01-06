@@ -1,4 +1,4 @@
-service: tobi-ui
+service: dqs-ui
 runtime: nodejs12
 
 vpc_access_connector:
