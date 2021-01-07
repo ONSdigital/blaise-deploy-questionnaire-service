@@ -5,7 +5,7 @@ import ejs from "ejs";
 import dotenv from "dotenv";
 import InstrumentRouter from "./Instuments";
 import {getEnvironmentVariables} from "./Config";
-
+import {loadingByChunks, initUploading} from "./storage/uploadByChunk";
 const server = express();
 
 axios.defaults.timeout = 10000;
