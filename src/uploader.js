@@ -156,7 +156,6 @@ export default function uploader() {
             xhr.open("post", "/upload");
 
             xhr.setRequestHeader("Content-Type", "application/octet-stream");
-            xhr.setRequestHeader("Content-Length", file.size);
             xhr.setRequestHeader("X-Content-Id", this.fileId);
             xhr.setRequestHeader("X-Chunk-Id", id);
 

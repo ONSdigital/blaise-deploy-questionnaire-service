@@ -1,7 +1,6 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import Header from "./Components/ONSDesignSystem/Header";
 import BetaBanner from "./Components/ONSDesignSystem/BetaBanner";
-import ExternalLink from "./Components/ONSDesignSystem/ExternalLink";
 import {DefaultErrorBoundary} from "./Components/ErrorHandling/DefaultErrorBoundary";
 import Footer from "./Components/ONSDesignSystem/Footer";
 import ONSErrorPanel from "./Components/ONSDesignSystem/ONSErrorPanel";
@@ -95,10 +94,10 @@ function App(): ReactElement {
 
                         <Switch>
                             <Route path="/UploadSummary">
-                                <DeploymentSummary external_client_url=""/>
+                                <DeploymentSummary/>
                             </Route>
                             <Route path="/upload">
-                                <UploadPage external_client_url=""/>
+                                <UploadPage/>
                             </Route>
                             <Route path="/survey/:survey">
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
@@ -114,9 +113,11 @@ function App(): ReactElement {
                                 </Link>
                                 <ONSPanel>
                                     <p>
-                                        Any <b>live</b> questionnaire within the table below <b>does not</b> have the option to delete and <b>cannot be deleted</b>.
+                                        Any <b>live</b> questionnaire within the table below <b>does not</b> have the
+                                        option to delete and <b>cannot be deleted</b>.
 
-                                        If a <b>live</b> questionnaire requires deletion, raise a Service Desk ticket to complete this request.
+                                        If a <b>live</b> questionnaire requires deletion, raise a Service Desk ticket to
+                                        complete this request.
                                     </p>
                                 </ONSPanel>
 

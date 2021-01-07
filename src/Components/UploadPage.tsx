@@ -11,24 +11,31 @@ interface Progress {
     total: number
 }
 
-interface Props {
-    external_client_url: string
+interface Panel {
+    status: string
+    hidden: boolean
+    text: string
 }
 
-
-function UploadPage(props: Props): ReactElement {
-    const [fileName, setFileName] = useState<string>("");
+function UploadPage(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
-
+    const [fileName, setFileName] = useState<string>("");
+    const [panel, setPanel] = useState<Panel>({status: "info", hidden: true, text: ""});
 
     async function UploadFile() {
+        if (file === undefined) {
+            setPanel({status: "error", hidden: false, text: "You must select a file "});
+            return;
+        }
+        if (file.length !== 1) {
+            return;
+        }
         setLoading(true);
-       if (file === undefined) {return;}
-       if (file.length !== 1) {return;}
         setFileName(file[0].name);
-        const chunksUploader = uploader()
+        setPanel({status: "info", hidden: true, text: ""});
+        uploader()
             .onProgress(({loaded, total}: Progress) => {
                 const percent = Math.round(loaded / total * 100 * 100) / 100;
                 console.log(percent);
@@ -44,9 +51,8 @@ function UploadPage(props: Props): ReactElement {
                     console.log("Error", error);
                     return;
                 }
-              setRedirect(true);
+                setRedirect(true);
             });
-        // ons-blaise-dev-matt56-survey-bucket-44
     }
 
     const handleFileChange = (selectorFiles: FileList | null) => {
@@ -59,7 +65,7 @@ function UploadPage(props: Props): ReactElement {
     return (
         <>
             {
-                redirect && <Redirect to={{pathname:"/UploadSummary", state:{questionnaireName: fileName}}}/>
+                redirect && <Redirect to={{pathname: "/UploadSummary", state: {questionnaireName: fileName}}}/>
             }
             <Link to="/">
                 Previous
@@ -67,6 +73,9 @@ function UploadPage(props: Props): ReactElement {
             <h1>
                 Deploy a questionnaire file
             </h1>
+
+            <ONSPanel hidden={panel.hidden} status={panel.status}>{panel.text}</ONSPanel>
+
             <ONSPanel>
                 <p>
                     When a questionnaire file is selected and you continue to deploy this questionnaire file, <b>this
@@ -78,9 +87,15 @@ function UploadPage(props: Props): ReactElement {
                 </p>
             </ONSPanel>
 
-            <ONSUpload label="Select survey package" description="File type accepted is .bpkg only" fileName="Package"
-                       fileID="ID" accept="bpkg" onChange={(e) => handleFileChange(e.target.files)}/>
-            <ONSButton label="Continue" primary={true} onClick={() => UploadFile()} loading={loading}/>
+            <ONSUpload label="Select survey package"
+                       description="File type accepted is .bpkg only"
+                       fileName="Package"
+                       fileID="ID" accept="bpkg"
+                       onChange={(e) => handleFileChange(e.target.files)}/>
+            <ONSButton label="Continue"
+                       primary={true}
+                       onClick={() => UploadFile()}
+                       loading={loading}/>
         </>
     );
 }

@@ -5,15 +5,11 @@ import {Link, Redirect, useLocation} from "react-router-dom";
 import {ONSUpload} from "./ONSDesignSystem/ONSUpload";
 import {ONSButton} from "./ONSDesignSystem/ONSButton";
 
-interface Props {
-    external_client_url: string
-}
-
 interface Location {
     state: any
 }
 
-function DeploymentSummary(props: Props): ReactElement {
+function DeploymentSummary(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
     const location = useLocation();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -37,7 +33,8 @@ function DeploymentSummary(props: Props): ReactElement {
             <br/>
             <br/>
 
-            <ONSButton label="Go to table of questionnaires" primary={true} onClick={() => setRedirect(true)}/>
+            <ONSButton label="Go to table of questionnaires"
+                       primary={true} onClick={() => setRedirect(true)}/>
         </>
     );
 }
