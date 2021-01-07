@@ -48,11 +48,6 @@ function initUploading(request, response) {
         return;
     }
 
-    if (!"x-content-length" in request.headers) {
-        sendBadRequest(response, "Can't initialize file uploading: request has no content length header");
-        return;
-    }
-
     if ((!"x-chunks-quantity") in request.headers) {
         sendBadRequest(response, "Can't initialize file uploading: request has no chunks quantity header");
         return;

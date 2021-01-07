@@ -4,9 +4,12 @@ import {ONSPanel} from "./ONSDesignSystem/ONSPanel";
 import {Link, Redirect} from "react-router-dom";
 import {ONSUpload} from "./ONSDesignSystem/ONSUpload";
 import {ONSButton} from "./ONSDesignSystem/ONSButton";
+import uploader from "../uploader";
 
-import FileUpload from "../Upload";
-import {Simulate} from "react-dom/test-utils";
+interface Progress {
+    loaded: number
+    total: number
+}
 
 interface Props {
     external_client_url: string
@@ -14,17 +17,35 @@ interface Props {
 
 
 function UploadPage(props: Props): ReactElement {
+    const [fileName, setFileName] = useState<string>("");
     const [redirect, setRedirect] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
 
 
     async function UploadFile() {
-
-        FileUpload(file)
-            .then(r => console.log(r))
-            .catch((error) => console.log(error));
-
-
+        setLoading(true);
+       if (file === undefined) {return;}
+       if (file.length !== 1) {return;}
+        setFileName(file[0].name);
+        const chunksUploader = uploader()
+            .onProgress(({loaded, total}: Progress) => {
+                const percent = Math.round(loaded / total * 100 * 100) / 100;
+                console.log(percent);
+            })
+            .options({
+                chunkSize: 2 * 1024 * 1024,
+                threadsQuantity: 2
+            })
+            .send(file[0])
+            .end((error: Error, data: string) => {
+                setLoading(false);
+                if (error) {
+                    console.log("Error", error);
+                    return;
+                }
+              setRedirect(true);
+            });
         // ons-blaise-dev-matt56-survey-bucket-44
     }
 
@@ -38,7 +59,7 @@ function UploadPage(props: Props): ReactElement {
     return (
         <>
             {
-                redirect && <Redirect to="/UploadSummary"/>
+                redirect && <Redirect to={{pathname:"/UploadSummary", state:{questionnaireName: fileName}}}/>
             }
             <Link to="/">
                 Previous
@@ -59,7 +80,7 @@ function UploadPage(props: Props): ReactElement {
 
             <ONSUpload label="Select survey package" description="File type accepted is .bpkg only" fileName="Package"
                        fileID="ID" accept="bpkg" onChange={(e) => handleFileChange(e.target.files)}/>
-            <ONSButton label="Continue" primary={true} onClick={() => UploadFile()}/>
+            <ONSButton label="Continue" primary={true} onClick={() => UploadFile()} loading={loading}/>
         </>
     );
 }

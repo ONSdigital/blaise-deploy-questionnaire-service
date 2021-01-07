@@ -1,4 +1,4 @@
-const uploader = function () {
+export default function uploader() {
     function Uploader() {
         this.chunkSize = 1024 * 1024;
         this.threadsQuantity = 2;
@@ -35,7 +35,6 @@ const uploader = function () {
 
         xhr.open("post", "/upload/init");
 
-        xhr.setRequestHeader("X-Content-Length", this.file.size);
         xhr.setRequestHeader("X-Content-Name", this.file.name);
         xhr.setRequestHeader("X-Chunks-Quantity", chunksQuantity);
 
@@ -104,6 +103,7 @@ const uploader = function () {
     };
 
     Uploader.prototype.sendChunk = function(chunk, id) {
+        // eslint-disable-next-line no-async-promise-executor
         return new Promise(async (resolve, reject) => {
             try {
                 const response = await this.upload(chunk, id);
@@ -183,6 +183,7 @@ const uploader = function () {
 
     Uploader.prototype.on = function(method, callback) {
         if (typeof callback !== "function") {
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             callback = () => {};
         }
 
@@ -228,4 +229,4 @@ const uploader = function () {
             multithreadedUploader.abort();
         }
     };
-};
+}
