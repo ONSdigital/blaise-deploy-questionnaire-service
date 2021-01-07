@@ -6,9 +6,7 @@ steps:
       - '-c'
       - |
         sed "s#_PROJECT_ID#${_PROJECT_ID}#g" appengine_templates/app.yaml.tpl | \
-        sed "s#_VM_INTERNAL_URL#${_VM_INTERNAL_URL}#g" | \
-        sed "s#_VM_EXTERNAL_WEB_URL#${_VM_EXTERNAL_WEB_URL}#g" | \
-        sed "s#_VM_EXTERNAL_CLIENT_URL#${_VM_EXTERNAL_CLIENT_URL}#g" | \
+        sed "s#_BUCKET_NAME#${_BUCKET_NAME}#g" | \
         sed "s#_BLAISE_API_URL#${_BLAISE_API_URL}#g" > app.yaml
 
   - name: 'gcr.io/cloud-builders/gcloud'
