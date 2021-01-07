@@ -4,7 +4,9 @@ import {ONSPanel} from "./ONSDesignSystem/ONSPanel";
 import {Link, Redirect} from "react-router-dom";
 import {ONSUpload} from "./ONSDesignSystem/ONSUpload";
 import {ONSButton} from "./ONSDesignSystem/ONSButton";
-import uploadImage from "../Upload";
+
+import FileUpload from "../Upload";
+import {Simulate} from "react-dom/test-utils";
 
 interface Props {
     external_client_url: string
@@ -15,8 +17,15 @@ function UploadPage(props: Props): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
 
-    function UploadFile() {
-        console.log("Yeah that didn't work");
+
+    async function UploadFile() {
+
+        FileUpload(file)
+            .then(r => console.log(r))
+            .catch((error) => console.log(error));
+
+
+        // ons-blaise-dev-matt56-survey-bucket-44
     }
 
     const handleFileChange = (selectorFiles: FileList | null) => {

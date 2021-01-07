@@ -31,6 +31,10 @@ server.use(
 // Load api Instruments routes from InstrumentRouter
 server.use("/api", InstrumentRouter(BLAISE_API_URL, VM_EXTERNAL_WEB_URL));
 
+server.post("/upload", loadingByChunks);
+
+server.post("/upload/init", initUploading);
+
 // Health Check endpoint
 server.get("/health_check", async function (req: Request, res: Response) {
     console.log("Heath Check endpoint called");
