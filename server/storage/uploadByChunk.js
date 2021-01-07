@@ -1,4 +1,3 @@
-const fs = require("fs");
 const crypto = require("crypto");
 const uploadImage = require("./helpers");
 
@@ -43,7 +42,7 @@ UploadedFile.prototype.getContent = function () {
 };
 
 function initUploading(request, response) {
-    if (!"x-content-name" in request.headers) {
+    if (!("x-content-name" in request.headers)) {
         sendBadRequest(response, "Can't initialize file uploading: request has no content name header");
         return;
     }
@@ -68,12 +67,12 @@ function initUploading(request, response) {
 }
 
 function loadingByChunks(request, response) {
-    if (!"x-content-id" in request.headers) {
+    if (!("x-content-id" in request.headers)) {
         sendBadRequest(response, "Request has no content id header");
         return;
     }
 
-    if (!"x-chunk-id" in request.headers) {
+    if (!("x-chunk-id" in request.headers)) {
         sendBadRequest(response, "Request has no chunk id header");
         return;
     }
@@ -102,33 +101,22 @@ function loadingByChunks(request, response) {
         const size = file.getChunkLength(chunkId);
 
         if (file.isCompleted()) {
-            console.log("File completed ? maybe ")
-            console.log(`file ${file.name}`)
-
-            const content = file.getContent()
-            console.log(content)
-
+            console.log(`File ${file.name} upload complete, Uploading to GCP Bucket`);
             try {
                 uploadImage(file)
-                    .then((r) => {
-                        console.log("Uploaded stuff")
-                        console.log(r)
+                    .then(() => {
+                        console.log(`File ${file.name} uploaded to GCP Bucket`);
                     }).catch((error) => {
-                        console.log("Error")
-                        console.log(error)
-                    })
-            } catch (error) {
-                console.log("Yeah that didn't work")
-                console.log(error)
-                sendBadRequest(response, "Upload to bucket failed");
-            }
+                    console.log(`Failed to upload file ${file.name} to GCP Bucket `);
+                    console.log(error);
+                    response.end();
+                    sendBadRequest(response, `Failed to upload file ${file.name} to GCP Bucket `);
+                });
 
-            // const fstream = fs.createWriteStream(__dirname + '/../files/' + file.name);
-            //
-            // fstream.write(file.getContent());
-            // fstream.end();
-            //
-            // delete fileStorage[fileId];
+            } catch (error) {
+                console.log(`Failed to upload file ${file.name} to GCP Bucket `);
+                sendBadRequest(response, `Failed to upload file ${file.name} to GCP Bucket `);
+            }
         }
 
         response.setHeader("Content-Type", "application/json");

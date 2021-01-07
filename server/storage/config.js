@@ -1,12 +1,13 @@
-const Cloud = require("@google-cloud/storage");
-const path = require("path");
+import {getEnvironmentVariables} from "../Config";
 
-const serviceKey = path.join(__dirname, "./keys.json");
+const Cloud = require("@google-cloud/storage");
 
 const { Storage } = Cloud;
 
+const {PROJECT_ID} = getEnvironmentVariables();
+
 const storage = new Storage({
-  projectId: "ons-blaise-v2-matt56",
+  projectId: PROJECT_ID,
 });
 
 module.exports = storage;

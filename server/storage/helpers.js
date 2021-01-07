@@ -1,8 +1,12 @@
+import {getEnvironmentVariables} from "../Config";
+
 const util = require("util");
 const gc = require("./config");
-const bucket = gc.bucket("ons-blaise-dev-matt56-survey-bucket-44");
 
-const { format } = util;
+const {BUCKET_NAME} = getEnvironmentVariables();
+const bucket = gc.bucket(BUCKET_NAME);
+
+const {format} = util;
 
 /**
  *
@@ -14,29 +18,25 @@ const { format } = util;
  */
 
 const uploadImage = (file) => new Promise((resolve, reject) => {
-  console.log(file);
-  const { name, buffer } = file;
+    const {name} = file;
 
-  const blob = bucket.file(name.replace(/ /g, "_"));
-  const blobStream = blob.createWriteStream({
-    resumable: false
-  });
+    const blob = bucket.file(name.replace(/ /g, "_"));
+    const blobStream = blob.createWriteStream({
+        resumable: false
+    });
 
-  console.log(`bucket ${bucket.name}`);
+    console.log(`Bucket ${bucket.name}`);
 
-  blobStream.on("finish", () => {
-    console.log("upload finished ");
-    const publicUrl = format(
-      `https://storage.googleapis.com/${bucket.name}/${blob.name}`
-    );
-    resolve(publicUrl);
-  })
-  .on("error", (error) => {
-    console.log("blobStream failed");
-    console.error(error);
-    reject("Unable to upload image, something went wrong");
-  })
-  .end(file.getContent());
+    blobStream.on("finish", () => {
+        console.log("upload finished ");
+        const publicUrl = format(
+            `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+        );
+        resolve(publicUrl);
+    }).on("error", (error) => {
+        console.log("blobStream failed");
+        reject("Unable to upload image, something went wrong");
+    }).end(file.getContent());
 
 });
 
