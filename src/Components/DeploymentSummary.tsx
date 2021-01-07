@@ -19,7 +19,6 @@ function DeploymentSummary(props: Props): ReactElement {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
     const {questionnaireName} = (location as Location).state || {questionnaireName: "/"};
-    console.log(location);
     return (
         <>
             {

@@ -34,8 +34,8 @@ function UploadPage(props: Props): ReactElement {
                 console.log(percent);
             })
             .options({
-                chunkSize: 2 * 1024 * 1024,
-                threadsQuantity: 2
+                chunkSize: 10 * 1024 * 1024,
+                threadsQuantity: 5
             })
             .send(file[0])
             .end((error: Error, data: string) => {
