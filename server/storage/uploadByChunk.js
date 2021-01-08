@@ -102,24 +102,24 @@ function loadingByChunks(request, response) {
         const size = file.getChunkLength(chunkId);
 
         if (file.isCompleted()) {
-            console.log("File completed ? maybe ")
-            console.log(`file ${file.name}`)
+            console.log("File completed ? maybe ");
+            console.log(`file ${file.name}`);
 
-            const content = file.getContent()
-            console.log(content)
+            const content = file.getContent();
+            console.log(content);
 
             try {
                 uploadImage(file)
                     .then((r) => {
-                        console.log("Uploaded stuff")
-                        console.log(r)
+                        console.log("Uploaded stuff");
+                        console.log(r);
                     }).catch((error) => {
-                        console.log("Error")
-                        console.log(error)
-                    })
+                        console.log("Error");
+                        console.log(error);
+                    });
             } catch (error) {
-                console.log("Yeah that didn't work")
-                console.log(error)
+                console.log("Yeah that didn't work");
+                console.log(error);
                 sendBadRequest(response, "Upload to bucket failed");
             }
 
