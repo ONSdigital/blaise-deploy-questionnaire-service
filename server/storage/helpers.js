@@ -40,4 +40,29 @@ const uploadImage = (file) => new Promise((resolve, reject) => {
 
 });
 
-module.exports = uploadImage;
+export const checkFile = (filename) => new Promise((resolve, reject) => {
+    async function getMetadata() {
+        // Gets the metadata for the file
+        const [metadata] = await bucket.file(filename).getMetadata();
+
+        const file = {
+            name: metadata.name,
+            updated: metadata.updated,
+            found: true
+        };
+        return file;
+    }
+
+    getMetadata()
+        .then((file) => {
+            resolve(file);
+        }).catch((error) => {
+        console.log(error.code);
+        if (error.code === 404) {
+            resolve({ found: false});
+        }
+        reject(`Failed ${error}`);
+    });
+});
+
+module.exports = {uploadImage, checkFile};

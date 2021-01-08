@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const uploadImage = require("./helpers");
+const {uploadImage} = require("./helpers");
 
 const fileStorage = {};
 
@@ -111,11 +111,13 @@ function loadingByChunks(request, response) {
                     console.log(error);
                     response.end();
                     sendBadRequest(response, `Failed to upload file ${file.name} to GCP Bucket `);
+                    return;
                 });
 
             } catch (error) {
                 console.log(`Failed to upload file ${file.name} to GCP Bucket `);
                 sendBadRequest(response, `Failed to upload file ${file.name} to GCP Bucket `);
+                return;
             }
         }
 

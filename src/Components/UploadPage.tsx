@@ -48,13 +48,41 @@ function UploadPage(): ReactElement {
             })
             .send(file[0])
             .end((error: Error, data: string) => {
-                setLoading(false);
                 if (error) {
                     console.log("Error", error);
+                    setLoading(false);
                     return;
                 }
-                setRedirect(true);
+                setTimeout(function () {
+                    checkFileInBucket(file[0].name.replace(/ /g, "_"));
+                }, 2000);
             });
+    }
+
+    function checkFileInBucket(filename: string) {
+        fetch(`/bucket?filename=${filename}`)
+            .then((r: Response) => {
+                if (r.status !== 200) {
+                    throw r.status + " - " + r.statusText;
+                }
+                r.json()
+                    .then((json) => {
+                        console.log(json);
+                        if (json.name === filename) {
+                            console.log(`File ${filename} successfully uploaded to bucket`);
+                            setRedirect(true);
+                            setLoading(false);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Failed to validate if file is in bucket, error: " + error);
+                    }).catch((error) => {
+                        console.error("Failed to validate if file is in bucket, error: " + error);
+                    }
+                );
+            }).catch((error) => {
+            console.error("Failed to validate if file is in bucket, error: " + error);
+        });
     }
 
     const handleFileChange = (selectorFiles: FileList | null) => {
@@ -84,7 +112,8 @@ function UploadPage(): ReactElement {
                     may take a few minutes</b>.
                     <br/>
                     <br/>
-                    Given this, <b>do not navigate away</b> from this page during this process. You will be re-directed
+                    Given this, <b>do not navigate away</b> from this page during this process. You will be
+                    re-directed
                     when there is an update regarding the deploy of the questionnaire.
                 </p>
             </ONSPanel>

@@ -13,12 +13,12 @@ export function getEnvironmentVariables(): EnvironmentVariables {
     }
 
     if (PROJECT_ID === undefined) {
-        console.error("VM_EXTERNAL_WEB_URL environment variable has not been set");
+        console.error("PROJECT_ID environment variable has not been set");
         PROJECT_ID = "ENV_VAR_NOT_SET";
     }
 
     if (BUCKET_NAME === undefined) {
-        console.error("VM_EXTERNAL_WEB_URL environment variable has not been set");
+        console.error("BUCKET_NAME environment variable has not been set");
         BUCKET_NAME = "ENV_VAR_NOT_SET";
     }
     return {BLAISE_API_URL, PROJECT_ID, BUCKET_NAME};

@@ -7,6 +7,7 @@ import InstrumentRouter from "./Instuments";
 import {getEnvironmentVariables} from "./Config";
 import {loadingByChunks, initUploading} from "./storage/uploadByChunk";
 const server = express();
+import {checkFile} from "./storage/helpers";
 
 axios.defaults.timeout = 10000;
 
@@ -34,6 +35,22 @@ server.use("/api", InstrumentRouter(BLAISE_API_URL, "VM_EXTERNAL_WEB_URL"));
 server.post("/upload", loadingByChunks);
 
 server.post("/upload/init", initUploading);
+
+server.get("/bucket", function (req: Request, res: Response) {
+    const {filename} = req.query;
+    checkFile(filename)
+        .then((file) => {
+            if (!file.found) {
+                res.status(404).json("Not found");
+            }
+            res.status(200).json(file);
+        }).catch((error) => {
+            console.log("Failed calling checkFile");
+            res.status(500).json(error);
+    });
+
+});
+
 
 // Health Check endpoint
 server.get("/health_check", async function (req: Request, res: Response) {
