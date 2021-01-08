@@ -113,5 +113,5 @@ Copyright (c) 2021 Crown Copyright (Government Digital Service)
 # blaise-deploy-questionnaire-service
 
 
-gcloud builds submit --substitutions=_PROJECT_ID=ons-blaise-v2-dev-matt56,_VM_INTERNAL_URL=test,_VM_EXTERNAL_WEB_URL=test,_VM_EXTERNAL_CLIENT_URL=test,_BLAISE_API_URL=/
+gcloud builds submit --substitutions=_PROJECT_ID=ons-blaise-v2-dev-matt56,_BLAISE_API_URL=/,_BUCKET_NAME=ons-blaise-dev-matt56-survey-bucket-44
 

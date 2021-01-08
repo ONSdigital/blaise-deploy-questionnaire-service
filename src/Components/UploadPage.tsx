@@ -23,6 +23,7 @@ function UploadPage(): ReactElement {
     const [file, setFile] = useState<FileList>();
     const [fileName, setFileName] = useState<string>("");
     const [panel, setPanel] = useState<Panel>({status: "info", hidden: true, text: ""});
+    const [uploadPercentage, setUploadPercentage] = useState<number>(0);
 
     async function UploadFile() {
         if (file === undefined) {
@@ -38,10 +39,11 @@ function UploadPage(): ReactElement {
         uploader()
             .onProgress(({loaded, total}: Progress) => {
                 const percent = Math.round(loaded / total * 100 * 100) / 100;
-                console.log(percent);
+                console.log(`File upload ${percent}%`);
+                setUploadPercentage(percent);
             })
             .options({
-                chunkSize: 10 * 1024 * 1024,
+                chunkSize: 5 * 1024 * 1024,
                 threadsQuantity: 5
             })
             .send(file[0])
@@ -96,6 +98,23 @@ function UploadPage(): ReactElement {
                        primary={true}
                        onClick={() => UploadFile()}
                        loading={loading}/>
+            {
+                loading &&
+                <>
+                    <p>Uploading: {uploadPercentage}%</p>
+                    <progress id="file"
+                              value={uploadPercentage}
+                              max="100"
+                              role="progressbar"
+                              aria-valuenow={uploadPercentage}
+                              aria-valuemin={0}
+                              aria-valuemax={100}>
+                        {uploadPercentage}%
+                    </progress>
+
+                </>
+            }
+
         </>
     );
 }
