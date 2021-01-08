@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const ONSPanel = (props: Props) => {
-    const className = "panel panel--" + (props.status === "success" ? "success" : props.status === "error" ? "error" : "info") + " panel--simple " + (props.spacious ? "panel--spacious" : "") + " u-mt-m";
+    const className = "panel panel--" + (props.status === "success" ? "success" : props.status === "error" ? "error" : "info") + " panel--no-title " + (props.spacious ? "panel--spacious" : "") + " u-mt-m";
     return (
         <div data-testid={props.testID} id={props.id} className={className} hidden={props.hidden}>
             {
