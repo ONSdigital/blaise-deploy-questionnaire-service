@@ -1,25 +1,25 @@
 # Deploy Questionnaire Service
 
-[![codecov](https://codecov.io/gh/ONSdigital/telephone-operations-blaise-interface/branch/main/graph/badge.svg)](https://codecov.io/gh/ONSdigital/telephone-operations-blaise-interface)
+[![codecov](https://codecov.io/gh/ONSdigital/blaise-deploy-questionnaire-service/branch/main/graph/badge.svg)](https://codecov.io/gh/ONSdigital/telephone-operations-blaise-interface)
 
+Service for uploading Instrument/Questionnaire files to Blaise. 
 
-Blaise Dashboard for accessing active surveys and CATI dashboard.
+This is done by uploading the Instrument/Questionnaire package to a GCP Bucket then sending a request to the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) to install it onto Blaise.  
 
-This project is a React application which when build is rendered by a Node.js express server.
+This project is a React application which when build is rendered by a Node.js express server. The Node.js handles the file being uploaded from the client and uploads the file a GCP bucket using the [@google-cloud/storage module](https://www.npmjs.com/package/@google-cloud/storage).
 
-![Diagram of Deploy Questionnaire Service sertup](.github/Diagram.png)
+![Diagram of Deploy Questionnaire Service setup](.github/Diagram.png)
 
 ### Setup
 
 #### Prerequisites
-To run Blaise Survey Manger Lite locally, you'll need to have [Node installed](https://nodejs.org/en/), as well as [yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable).
-To have the list of instruments load on the page, you'll need to have [Blaise Instrument Checker](https://github.com/ONSdigital/blaise-instrument-checker) running locally
- or you can [port forward from a Kubernetes pod](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/) running in a sandbox.  
+To run Blaise Deploy Questionnaire Service locally, you'll need to have [Node installed](https://nodejs.org/en/), as well as [yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable).
+To have the list of instruments load on the page, you'll need to have [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) running locally (On a Windows machine), or you can port forward from a Kubernetes pod from the VM running in a sandbox.  
 
 #### Setup locally steps
 Clone the Repo
 ```shell script
-git clone https://github.com/ONSdigital/blaise-survey-manager-lite.git
+git clone https://github.com/ONSdigital/blaise-deploy-questionnaire-service.git
 ```
 
 Create a new .env file and add the following variables.
@@ -27,39 +27,36 @@ Create a new .env file and add the following variables.
 | Variable                      | Description                                                                     | Var Example                  |
 |-------------------------------|---------------------------------------------------------------------------------|------------------------------|
 | PORT                          | Optional variable, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default React project locally runs on port 3000.                                              | 5009                         |
-| VM_EXTERNAL_WEB_URL           | External Url used for CATI dashboard and survey links.                          | tel-client-server.uk         |
-| VM_INTERNAL_URL               | Internal url of the Blaise VM which is sent to the Instrument checker service.  | tel-web-server.internal.uk   |
-| VM_EXTERNAL_CLIENT_URL        | External link to connect to Blaise remotely through Blaise Server Manager.      | tel-web-server.uk            |
-| BLAISE_INSTRUMENT_CHECKER_URL | Url that Blaise Instrument Checker is running on to send calls to.              | localhost:5003               |
+| BLAISE_INSTRUMENT_CHECKER_URL | Url that the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) is running on to send calls to. | localhost:90 |
+| PROJECT_ID                    | GCP Project ID                                                                  | ons-blaise-dev-matt55        |
+| BUCKET_NAME                   | GCP Bucket name for the insturment file to be put in                            | ons-blaise-dev-matt55-files  |
 
 
 The .env file should be setup as below
 ```.env
 PORT=5001
-VM_EXTERNAL_WEB_URL='tel-client-server.uk'
-VM_INTERNAL_URL='tel-web-server.internal.uk'
-VM_EXTERNAL_CLIENT_URL='tel-web-server.uk'
-BLAISE_INSTRUMENT_CHECKER_URL='localhost:5003'
+BLAISE_INSTRUMENT_CHECKER_URL='localhost:90'
+PROJECT_ID='ons-blaise-dev-matt55'             
+BUCKET_NAME='ons-blaise-dev-matt55-files'
 ```
 
 Install required modules
 ```shell script
-yarn install
+yarn
 ```
 
 ##### Run commands
 
 The following run commands are available, these are all setup in the `package.json` under `scripts`.
 
-| Command                        | Description                                                                                                                                               |
-|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `yarn start-server`            | Start the express server, Note: For the website to be rendered the React Project will need to be built.                                                   |
-| `yarn start-react`             | Starts react project in local development setup with quick reloading on making changes. Note: For instruments to be shown the server needs to be running. |
-| `yarn build-react`             | Compiles build project ready to be served by express. The build in outputted to the the `build` directory which express points to with the var `buildFolder` in `server/server.js`.                       |
-| `yarn test-react`              | Run tests for React Components.                                                                                                                           |
-| `yarn test-react-coverage`     | Run tests for React Components and outputs coverage statistics.                                                                                           |
-| `yarn test`                    | Runs all tests for server and React Components.                                                                                                           |
-| `yarn test-coverage`           | Runs all tests for server and React Components and outputs coverage statistics.                                                                           |
+| Command                | Description                                                                                                                                               |
+|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `yarn server`          | Starts the complied express server (Used by App Engine to start the server), Note: The server will need to be complied and the React Project will need to be built first.  |
+| `yarn start-server`    | Complies Typescript and starts the express server, Note: For the website to be rendered the React Project will need to be built.                          |
+| `yarn start-react`     | Starts react project in local development setup with quick reloading on making changes. Note: For instruments to be shown the server needs to be running. |
+| `yarn build-react`     | Compiles build project ready to be served by express. The build in outputted to the the `build` directory which express points to with the var `buildFolder` in `server/server.js`.                       |
+| `yarn test`            | Runs all tests for server and React Components and outputs coverage statistics.                                                                           |
+| `gcp-build`            | Used by CloudBuild to build the React app and compile the server for App Engine                                                                               |
 
 ##### Simple setup for local development
 
@@ -98,7 +95,7 @@ Deploying to app engine
 
 To deploy the locally edited service to app engine in your environment, you can run trigger the cloudbuild trigger with the following line, changing the environment variables as needed. 
 ```.shell
-gcloud builds submit --substitutions=_PROJECT_ID=ons-blaise-v2-dev-matt-54,_VM_INTERNAL_URL=test,_VM_EXTERNAL_WEB_URL=test,_VM_EXTERNAL_CLIENT_URL=test,_BLAISE_API_URL=/
+gcloud builds submit --substitutions=_PROJECT_ID=ons-blaise-v2-dev-matt56,_BLAISE_API_URL=/,_BUCKET_NAME=ons-blaise-dev-matt56-survey-bucket-44
 ```
 
 ### Dockerfile
@@ -110,8 +107,3 @@ You can run this service in a container, the Dockerfile is setup to:
 - Run Yarn Start on startup
 
 Copyright (c) 2021 Crown Copyright (Government Digital Service)
-# blaise-deploy-questionnaire-service
-
-
-gcloud builds submit --substitutions=_PROJECT_ID=ons-blaise-v2-dev-matt56,_BLAISE_API_URL=/,_BUCKET_NAME=ons-blaise-dev-matt56-survey-bucket-44
-
