@@ -1,5 +1,4 @@
 import React, {ReactElement, useState} from "react";
-import ONSErrorPanel from "./ONSDesignSystem/ONSErrorPanel";
 import {ONSPanel} from "./ONSDesignSystem/ONSPanel";
 import {Link, Redirect} from "react-router-dom";
 import {ONSUpload} from "./ONSDesignSystem/ONSUpload";
@@ -24,6 +23,7 @@ function UploadPage(): ReactElement {
     const [fileName, setFileName] = useState<string>("");
     const [panel, setPanel] = useState<Panel>({status: "info", hidden: true, text: ""});
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
+    const [uploadStatus, setUploadStatus] = useState<string>("");
 
     async function UploadFile() {
         if (file === undefined) {
@@ -71,41 +71,52 @@ function UploadPage(): ReactElement {
                         if (json.name === filename) {
                             console.log(`File ${filename} successfully uploaded to bucket`);
                             sendInstallRequest(filename);
+                        } else {
+                            throw "Filename returned does not match sent file";
                         }
                     })
                     .catch((error) => {
                         console.error("Failed to validate if file is in bucket, error: " + error);
-                    }).catch((error) => {
-                        console.error("Failed to validate if file is in bucket, error: " + error);
-                    }
-                );
-            }).catch((error) => {
-            console.error("Failed to validate if file is in bucket, error: " + error);
-        });
+                    })
+                    .catch((error) => {
+                            console.error("Failed to validate if file is in bucket, error: " + error);
+                        }
+                    );
+            })
+            .catch(async (error) => {
+                console.error("Failed to validate if file is in bucket, error: " + error);
+                await setUploadStatus("Failed to validate if file is in bucket");
+                setRedirect(true);
+            });
     }
 
-        function sendInstallRequest(filename: string) {
+    function sendInstallRequest(filename: string) {
         fetch(`/api/install?filename=${filename}`)
             .then((r: Response) => {
+                console.log(r);
                 if (r.status !== 200) {
                     throw r.status + " - " + r.statusText;
                 }
                 r.json()
                     .then((json) => {
                         console.log(json);
-                        console.log(`File ${filename} successfully uploaded to bucket`);
-                        setRedirect(true);
+                        console.log(`File ${filename} successfully installed`);
                         setLoading(false);
+                        setRedirect(true);
                     })
                     .catch((error) => {
-                        console.error("Failed to validate if file is in bucket, error: " + error);
+                        console.error("Failed to validate if questionnaire is installed, error: " + error);
+                        setLoading(false);
                     }).catch((error) => {
-                        console.error("Failed to validate if file is in bucket, error: " + error);
+                        console.error("Failed to validate if questionnaire is installed, error: " + error);
+                        setLoading(false);
                     }
                 );
-            }).catch((error) => {
-            console.error("Failed to validate if file is in bucket, error: " + error);
-        });
+            })
+            .catch((error) => {
+                setUploadStatus("Failed to validate if questionnaire is installed");
+                console.error("Failed to validate if questionnaire is installed, error: " + error);
+            }).finally(() => setRedirect(true));
     }
 
     const handleFileChange = (selectorFiles: FileList | null) => {
@@ -118,7 +129,8 @@ function UploadPage(): ReactElement {
     return (
         <>
             {
-                redirect && <Redirect to={{pathname: "/UploadSummary", state: {questionnaireName: fileName}}}/>
+                redirect && <Redirect
+                    to={{pathname: "/UploadSummary", state: {questionnaireName: fileName, status: uploadStatus}}}/>
             }
             <Link to="/">
                 Previous
