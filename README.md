@@ -1,6 +1,6 @@
 # Deploy Questionnaire Service
 
-[![codecov](https://codecov.io/gh/ONSdigital/blaise-deploy-questionnaire-service/branch/main/graph/badge.svg)](https://codecov.io/gh/ONSdigital/telephone-operations-blaise-interface)
+[![codecov](https://codecov.io/gh/ONSdigital/blaise-deploy-questionnaire-service/branch/main/graph/badge.svg)](https://codecov.io/gh/ONSdigital/blaise-deploy-questionnaire-service)
 
 Service for uploading Instrument/Questionnaire files to Blaise. 
 
