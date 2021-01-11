@@ -70,9 +70,32 @@ function UploadPage(): ReactElement {
                         console.log(json);
                         if (json.name === filename) {
                             console.log(`File ${filename} successfully uploaded to bucket`);
-                            setRedirect(true);
-                            setLoading(false);
+                            sendInstallRequest(filename);
                         }
+                    })
+                    .catch((error) => {
+                        console.error("Failed to validate if file is in bucket, error: " + error);
+                    }).catch((error) => {
+                        console.error("Failed to validate if file is in bucket, error: " + error);
+                    }
+                );
+            }).catch((error) => {
+            console.error("Failed to validate if file is in bucket, error: " + error);
+        });
+    }
+
+        function sendInstallRequest(filename: string) {
+        fetch(`/api/install?filename=${filename}`)
+            .then((r: Response) => {
+                if (r.status !== 200) {
+                    throw r.status + " - " + r.statusText;
+                }
+                r.json()
+                    .then((json) => {
+                        console.log(json);
+                        console.log(`File ${filename} successfully uploaded to bucket`);
+                        setRedirect(true);
+                        setLoading(false);
                     })
                     .catch((error) => {
                         console.error("Failed to validate if file is in bucket, error: " + error);
