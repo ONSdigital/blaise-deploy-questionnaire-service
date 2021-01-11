@@ -45,7 +45,7 @@ Install required modules
 yarn
 ```
 
-###### Local access to GCP Bucket
+##### Local access to GCP Bucket
 
 To get the service working locally with a remote GCP Bucket, you need to [obtain a JSON service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys), this will need to a service account with create and list permissions to the specified bucket. Save the service account key as  `keys.json` and place in the root of the project. Providing the NODE_ENV is not production, then the GCP storage config (Found at `server/storage/config.js`) will attempt to use this file.  **DO NOT COMMIT THIS FILE** 
 
