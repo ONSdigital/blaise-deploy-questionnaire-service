@@ -55,7 +55,7 @@ function UploadPage(): ReactElement {
                 }
                 setTimeout(function () {
                     checkFileInBucket(file[0].name.replace(/ /g, "_"));
-                }, 2000);
+                }, 3000);
             });
     }
 
