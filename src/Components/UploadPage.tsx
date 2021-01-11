@@ -39,7 +39,7 @@ function UploadPage(): ReactElement {
         uploader()
             .onProgress(({loaded, total}: Progress) => {
                 const percent = Math.round(loaded / total * 100 * 100) / 100;
-                console.log(`File upload ${percent}%`);
+                console.log(`File upload ${percent}% ${loaded} / ${total}`);
                 setUploadPercentage(percent);
             })
             .options({
