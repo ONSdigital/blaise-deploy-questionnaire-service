@@ -56,9 +56,10 @@ server.get("/bucket", function (req: Request, res: Response) {
 
 });
 
-interface query extends Request {query: {filename: string}};
+interface ResponseQuery extends Request {query: {filename: string}}
 
-server.get("/api/install", function (req: query, res: Response) {
+server.get("/api/install", function (req: ResponseQuery, res: Response) {
+    console.log("/api/install endpoint called");
     const {filename} = req.query;
     axios({
         url: "http://" + BLAISE_API_URL + "/api/v1/serverparks/LocalDevelopment/instruments",
@@ -69,13 +70,14 @@ server.get("/api/install", function (req: query, res: Response) {
             "bucketPath": BUCKET_NAME
         }
     }).then((response) => {
-        console.log(response);
+        console.log("Call to /api/v1/serverparks/LocalDevelopment/instruments successful");
+        res.status(response.status).json(response);
     }).catch((error) => {
-        console.log(error);
+        console.error("Call to /api/v1/serverparks/LocalDevelopment/instruments failed");
+        console.error(error);
+        res.status(500).json(error);
     });
-    res.status(200).json("!");
 });
-
 
 // Health Check endpoint
 server.get("/health_check", async function (req: Request, res: Response) {
