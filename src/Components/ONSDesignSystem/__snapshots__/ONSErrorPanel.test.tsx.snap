@@ -4,7 +4,7 @@ exports[`ONS Error Panel Test matches Snapshot 1`] = `
 initialize {
   "0": Object {
     "attribs": Object {
-      "class": "panel panel--error panel--simple",
+      "class": "panel panel--error panel--no-title",
     },
     "children": Array [
       Object {
