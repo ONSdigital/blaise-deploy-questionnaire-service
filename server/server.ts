@@ -5,6 +5,7 @@ import ejs from "ejs";
 import dotenv from "dotenv";
 import InstrumentRouter from "./Instuments";
 import {getEnvironmentVariables} from "./Config";
+import createLogger from "./pino";
 
 if (process.env.NODE_ENV !== "production") {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -15,8 +16,10 @@ if (process.env.NODE_ENV !== "production") {
 import {loadingByChunks, initUploading} from "./storage/uploadByChunk";
 
 const server = express();
+const logger = createLogger();
+server.use(logger);
+
 import {checkFile} from "./storage/helpers";
-import * as QueryString from "querystring";
 
 //axios.defaults.timeout = 10000;
 
@@ -42,39 +45,45 @@ server.post("/upload", loadingByChunks);
 server.post("/upload/init", initUploading);
 
 server.get("/bucket", function (req: Request, res: Response) {
+    logger(req, res);
     const {filename} = req.query;
+    req.log.info(`/bucket endpoint called with filename: ${filename}`);
     checkFile(filename)
         .then((file) => {
             if (!file.found) {
+                req.log.warn(`File ${filename} not found in Bucket ${BUCKET_NAME}`);
                 res.status(404).json("Not found");
             }
+            req.log.info(`File ${filename} found in Bucket ${BUCKET_NAME}`);
             res.status(200).json(file);
-        }).catch((error) => {
-        console.log("Failed calling checkFile");
-        res.status(500).json(error);
-    });
-
+        })
+        .catch((error) => {
+            req.log.error(error, "Failed calling checkFile");
+            res.status(500).json(error);
+        });
 });
 
-interface ResponseQuery extends Request {query: {filename: string}}
+interface ResponseQuery extends Request {
+    query: { filename: string }
+}
 
 server.get("/api/install", function (req: ResponseQuery, res: Response) {
-    console.log("/api/install endpoint called");
+    logger(req, res);
+    req.log.info("/api/install endpoint called");
     const {filename} = req.query;
     axios({
         url: "http://" + BLAISE_API_URL + "/api/v1/serverparks/LocalDevelopment/instruments",
         method: "POST",
         data: {
-            "instrumentName": filename.replace(/\.[a-zA-Z]*$/,""),
+            "instrumentName": filename.replace(/\.[a-zA-Z]*$/, ""),
             "instrumentFile": filename,
             "bucketPath": BUCKET_NAME
         }
     }).then((response) => {
-        console.log("Call to /api/v1/serverparks/LocalDevelopment/instruments successful");
+        req.log.info("Call to /api/v1/serverparks/LocalDevelopment/instruments successful");
         res.status(response.status).json(response);
     }).catch((error) => {
-        console.error("Call to /api/v1/serverparks/LocalDevelopment/instruments failed");
-        console.error(error);
+        req.log.error(error, "Call to /api/v1/serverparks/LocalDevelopment/instruments failed");
         res.status(500).json(error);
     });
 });
@@ -90,7 +99,8 @@ server.get("*", function (req: Request, res: Response) {
 });
 
 server.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
-    console.error(err.stack);
+    logger(req, res);
+    req.log.error(err, err.message);
     res.render("../views/500.html", {});
 });
 export default server;

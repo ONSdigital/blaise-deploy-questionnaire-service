@@ -1,12 +1,8 @@
-
-
 interface EnvironmentVariables {
     BLAISE_API_URL: string
     PROJECT_ID: string
     BUCKET_NAME: string
 }
-
-
 
 export function getEnvironmentVariables(): EnvironmentVariables {
     let {PROJECT_ID, BUCKET_NAME, BLAISE_API_URL} = process.env;
