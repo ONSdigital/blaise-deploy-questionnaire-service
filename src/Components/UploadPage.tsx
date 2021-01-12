@@ -51,6 +51,8 @@ function UploadPage(): ReactElement {
                 if (error) {
                     console.log("Error", error);
                     setLoading(false);
+                    setUploadStatus("Failed to upload file");
+                    setRedirect(true);
                     return;
                 }
                 setTimeout(function () {
