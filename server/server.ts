@@ -8,8 +8,6 @@ import {getEnvironmentVariables} from "./Config";
 import createLogger from "./pino";
 
 if (process.env.NODE_ENV !== "production") {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dotenv.config({path: __dirname + "/../../.env"});
 }
 
@@ -27,7 +25,7 @@ import {checkFile} from "./storage/helpers";
 const buildFolder = "../../build";
 
 // load the .env variables in the server
-const {BLAISE_API_URL, BUCKET_NAME} = getEnvironmentVariables();
+const {BLAISE_API_URL, BUCKET_NAME, PROJECT_ID, SEVER_PARK} = getEnvironmentVariables();
 
 // treat the index.html as a template and substitute the values at runtime
 server.set("views", path.join(__dirname, buildFolder));
@@ -73,7 +71,7 @@ server.get("/api/install", function (req: ResponseQuery, res: Response) {
     req.log.info("/api/install endpoint called");
     const {filename} = req.query;
     axios({
-        url: "http://" + BLAISE_API_URL + "/api/v1/serverparks/LocalDevelopment/instruments",
+        url: "http://" + BLAISE_API_URL + "/api/v1/serverparks/gusty/instruments",
         method: "POST",
         data: {
             "instrumentName": filename.replace(/\.[a-zA-Z]*$/, ""),
@@ -82,7 +80,7 @@ server.get("/api/install", function (req: ResponseQuery, res: Response) {
         }
     }).then((response) => {
         req.log.info("Call to /api/v1/serverparks/LocalDevelopment/instruments successful");
-        res.status(response.status).json(response);
+        res.status(response.status).json(response.data);
     }).catch((error) => {
         req.log.error(error, "Call to /api/v1/serverparks/LocalDevelopment/instruments failed");
         res.status(500).json(error);

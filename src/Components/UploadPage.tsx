@@ -96,7 +96,7 @@ function UploadPage(): ReactElement {
         fetch(`/api/install?filename=${filename}`)
             .then((r: Response) => {
                 console.log(r);
-                if (r.status !== 200) {
+                if (r.status !== 201) {
                     throw r.status + " - " + r.statusText;
                 }
                 r.json()

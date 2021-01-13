@@ -8,6 +8,7 @@ env_variables:
   BLAISE_API_URL: _BLAISE_API_URL
   PROJECT_ID: _PROJECT_ID
   BUCKET_NAME: _BUCKET_NAME
+  SERVER_PARK: _SERVER_PARK
 
 basic_scaling:
   idle_timeout: 60s
