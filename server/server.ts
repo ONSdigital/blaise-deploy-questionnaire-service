@@ -53,6 +53,7 @@ server.get("/bucket", function (req: Request, res: Response) {
             if (!file.found) {
                 req.log.warn(`File ${filename} not found in Bucket ${BUCKET_NAME}`);
                 res.status(404).json("Not found");
+                return;
             }
             req.log.info(`File ${filename} found in Bucket ${BUCKET_NAME}`);
             res.status(200).json(file);
