@@ -29,7 +29,8 @@ Create a new .env file and add the following variables.
 | PORT                          | Optional variable, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default React project locally runs on port 3000.                                              | 5009                         |
 | BLAISE_API_URL                | Url that the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) is running on to send calls to. | localhost:90 |
 | PROJECT_ID                    | GCP Project ID                                                                  | ons-blaise-dev-matt55        |
-| BUCKET_NAME                   | GCP Bucket name for the insturment file to be put in                            | ons-blaise-dev-matt55-files  |
+| BUCKET_NAME                   | GCP Bucket name for the instrument file to be put in                            | ons-blaise-dev-matt55-files  |
+| SERVER_PARK                   | Name of Blaise Server Park                                                      | gusty                        |
 
 
 The .env file should be setup as below
@@ -38,6 +39,7 @@ PORT=5001
 BLAISE_INSTRUMENT_CHECKER_URL='localhost:90'
 PROJECT_ID='ons-blaise-dev-matt55'             
 BUCKET_NAME='ons-blaise-dev-matt55-files'
+SERVER_PARK=gusty
 ```
 
 Install required modules
@@ -99,7 +101,7 @@ Deploying to app engine
 
 To deploy the locally edited service to app engine in your environment, you can run trigger the cloudbuild trigger with the following line, changing the environment variables as needed. 
 ```.shell
-gcloud builds submit --substitutions=_PROJECT_ID=ons-blaise-v2-dev-matt56,_BLAISE_API_URL=/,_BUCKET_NAME=ons-blaise-dev-matt56-survey-bucket-44
+gcloud builds submit --substitutions=_PROJECT_ID=ons-blaise-v2-dev-matt56,_BLAISE_API_URL=/,_BUCKET_NAME=ons-blaise-dev-matt56-survey-bucket-44,_SERVER_PARK=gusty
 ```
 
 ### Dockerfile
