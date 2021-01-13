@@ -71,7 +71,7 @@ server.get("/api/install", function (req: ResponseQuery, res: Response) {
     req.log.info("/api/install endpoint called");
     const {filename} = req.query;
     axios({
-        url: "http://" + BLAISE_API_URL + "/api/v1/serverparks/gusty/instruments",
+        url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SEVER_PARK}/instruments`,
         method: "POST",
         data: {
             "instrumentName": filename.replace(/\.[a-zA-Z]*$/, ""),
@@ -79,10 +79,10 @@ server.get("/api/install", function (req: ResponseQuery, res: Response) {
             "bucketPath": BUCKET_NAME
         }
     }).then((response) => {
-        req.log.info("Call to /api/v1/serverparks/LocalDevelopment/instruments successful");
+        req.log.info(`Call to /api/v1/serverparks/${SEVER_PARK}/instruments successful`);
         res.status(response.status).json(response.data);
     }).catch((error) => {
-        req.log.error(error, "Call to /api/v1/serverparks/LocalDevelopment/instruments failed");
+        req.log.error(error, `Call to /api/v1/serverparks/${SEVER_PARK}/instruments successful`);
         res.status(500).json(error);
     });
 });
