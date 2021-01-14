@@ -10,35 +10,29 @@ interface Progress {
     total: number
 }
 
-interface Panel {
-    status: string
-    hidden: boolean
-    text: string
-}
-
 function UploadPage(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
     const [fileName, setFileName] = useState<string>("");
-    const [panel, setPanel] = useState<Panel>({status: "info", hidden: true, text: ""});
+    const [panel, setPanel] = useState<string>("");
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [uploadStatus, setUploadStatus] = useState<string>("");
     const timeout = (process.env.NODE_ENV === "test" ? 0 : 3000);
 
 
     async function UploadFile() {
-        console.log("Start UploadFile()");
         if (file === undefined) {
-            setPanel({status: "error", hidden: false, text: "You must select a file "});
+            setPanel("You must select a file");
             return;
         }
         if (file.length !== 1) {
-            return;
+            setPanel("Invalid file");
         }
+        console.log("Start uploading the file");
         setLoading(true);
         setFileName(file[0].name);
-        setPanel({status: "info", hidden: true, text: ""});
+        setPanel("");
         uploader()
             .onProgress(({loaded, total}: Progress) => {
                 const percent = Math.round(loaded / total * 100 * 100) / 100;
@@ -50,15 +44,15 @@ function UploadPage(): ReactElement {
                 threadsQuantity: 5
             })
             .send(file[0])
-            .end((error: Error, data: string) => {
-                console.log("end");
+            .end((error: Error) => {
                 if (error) {
-                    console.log("Error", error);
+                    console.log("Failed to upload file, error: ", error);
                     setLoading(false);
                     setUploadStatus("Failed to upload file");
                     setRedirect(true);
                     return;
                 }
+                console.log("File upload complete");
                 setTimeout(function () {
                     checkFileInBucket(file[0].name.replace(/ /g, "_"));
                 }, timeout);
@@ -66,7 +60,7 @@ function UploadPage(): ReactElement {
     }
 
     function checkFileInBucket(filename: string) {
-        console.log("checkFileInBucket");
+        console.log("Validating file is in the Bucket");
         fetch(`/bucket?filename=${filename}`)
             .then((r: Response) => {
                 if (r.status !== 200) {
@@ -74,7 +68,6 @@ function UploadPage(): ReactElement {
                 }
                 r.json()
                     .then((json) => {
-                        console.log(json);
                         if (json.name === filename) {
                             console.log(`File ${filename} successfully uploaded to bucket`);
                             sendInstallRequest(filename);
@@ -92,12 +85,13 @@ function UploadPage(): ReactElement {
             })
             .catch(async (error) => {
                 console.error("Failed to validate if file is in bucket, error: " + error);
-                await setUploadStatus("Failed to validate if file is in bucket");
+                await setUploadStatus("Failed to validate if file has been uploaded");
                 setRedirect(true);
             });
     }
 
     function sendInstallRequest(filename: string) {
+        console.log("Sending request to start install");
         fetch(`/api/install?filename=${filename}`)
             .then((r: Response) => {
                 console.log(r);
@@ -107,22 +101,16 @@ function UploadPage(): ReactElement {
                 r.json()
                     .then((json) => {
                         console.log(json);
-                        console.log(`File ${filename} successfully installed`);
-                        setLoading(false);
-                        setRedirect(true);
+                        console.log(`Questionnaire ${filename} successfully installed`);
                     })
                     .catch((error) => {
                         console.error("Failed to validate if questionnaire is installed, error: " + error);
                         setLoading(false);
-                    }).catch((error) => {
-                        console.error("Failed to validate if questionnaire is installed, error: " + error);
-                        setLoading(false);
-                    }
-                );
+                    });
             })
             .catch((error) => {
-                setUploadStatus("Failed to validate if questionnaire is installed");
-                console.error("Failed to validate if questionnaire is installed, error: " + error);
+                setUploadStatus("Failed to install questionnaire");
+                console.error("Failed to install questionnaire, error: " + error);
             }).finally(() => setRedirect(true));
     }
 
@@ -149,7 +137,7 @@ function UploadPage(): ReactElement {
                 Deploy a questionnaire file
             </h1>
 
-            <ONSPanel hidden={panel.hidden} status={panel.status}>{panel.text}</ONSPanel>
+            {panel !== "" && <ONSPanel status="error">{panel}</ONSPanel>}
 
             <ONSPanel>
                 <p>
