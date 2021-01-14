@@ -87,6 +87,22 @@ server.get("/api/install", function (req: ResponseQuery, res: Response) {
     });
 });
 
+server.get("/api/instruments/:instrumentName/exists", function (req: ResponseQuery, res: Response) {
+    logger(req, res);
+    req.log.info("/api/install endpoint called");
+    const {instrumentName} = req.params;
+    axios({
+        url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`,
+        method: "GET"
+    }).then((response) => {
+        req.log.info(`Call to /api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`);
+        res.status(response.status).json(response.data);
+    }).catch((error) => {
+        req.log.error(error, `Call to /api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`);
+        res.status(500).json(error);
+    });
+});
+
 // Health Check endpoint
 server.get("/health_check", async function (req: Request, res: Response) {
     console.log("Heath Check endpoint called");
@@ -102,4 +118,6 @@ server.use(function (err: Error, req: Request, res: Response, next: NextFunction
     req.log.error(err, err.message);
     res.render("../views/500.html", {});
 });
+
+
 export default server;

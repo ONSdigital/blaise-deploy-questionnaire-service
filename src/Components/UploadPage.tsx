@@ -29,6 +29,7 @@ function UploadPage(): ReactElement {
         if (file.length !== 1) {
             setPanel("Invalid file");
         }
+        const alreadyExists = await checkSurveyAlreadyExists(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
         console.log("Start uploading the file");
         setLoading(true);
         setFileName(file[0].name);
@@ -58,6 +59,41 @@ function UploadPage(): ReactElement {
                 }, timeout);
             });
     }
+
+    function checkSurveyAlreadyExists(instrumentName: string) {
+        console.log("Validating file is in the Bucket");
+        return new Promise((resolve: any, reject: any) => {
+            fetch(`/api/instruments/${instrumentName}/exists`)
+                .then((r: Response) => {
+                    if (r.status !== 200) {
+                        throw r.status + " - " + r.statusText;
+                    }
+                    r.json()
+                        .then((json) => {
+                            if (json) {
+                                console.log(`${instrumentName} already installed`);
+                                resolve(json);
+                            } else {
+                                console.log(`${instrumentName} not found`);
+                                resolve(json);
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Failed to validate if file is in bucket, error: " + error);
+                        })
+                        .catch((error) => {
+                                console.error("Failed to validate if file is in bucket, error: " + error);
+                            }
+                        );
+                })
+                .catch(async (error) => {
+                    console.error("Failed to validate if file is in bucket, error: " + error);
+                    await setUploadStatus("Failed to validate if file has been uploaded");
+                    setRedirect(true);
+                });
+        });
+    }
+
 
     function checkFileInBucket(filename: string) {
         console.log("Validating file is in the Bucket");
