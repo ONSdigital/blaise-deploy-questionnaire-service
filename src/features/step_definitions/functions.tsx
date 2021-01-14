@@ -5,6 +5,10 @@ import App from "../../App";
 import flushPromises from "../../tests/utils";
 import React from "react";
 
+/*
+* Renders the App in a Mock Router, then navigates the the 'Deploy a questionnaire' page
+* and then selects a mock OPN2004A.bpkg in the File select Input field.
+*  */
 export default async function navigateToDeployPageAndSelectFile() {
     const history = createMemoryHistory();
     render(
@@ -31,4 +35,6 @@ export default async function navigateToDeployPageAndSelectFile() {
     fireEvent.change(inputEl);
 }
 
-//mock_server_request("OPN2004A.bpkg");
+export function mock_fetch_requests(mock_server_responses: any) {
+    global.fetch = jest.fn((url: string) => mock_server_responses(url));
+}

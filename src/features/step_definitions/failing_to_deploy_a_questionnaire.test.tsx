@@ -2,15 +2,11 @@
 import React from "react";
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
-import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
-import {createMemoryHistory} from "history";
-import App from "../../App";
-import {Router} from "react-router";
+import {cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import flushPromises from "../../tests/utils";
 import {survey_list} from "./API_Mock_Objects";
-import navigateToDeployPageAndSelectFile from "./functions";
+import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
 
 
 // Mock the Uploader.js module
@@ -23,27 +19,25 @@ const feature = loadFeature(
     {tagFilter: "not @server and not @integration"}
 );
 
-function mock_server_request(filename: string) {
-    global.fetch = jest.fn((url: string) => {
-        console.log(url);
-        if (url.includes("bucket")) {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve({name: filename}),
-            });
-        } else if (url.includes("/api/install")) {
-            return Promise.resolve({
-                status: 500,
-                json: () => Promise.resolve({}),
-            });
-        } else {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve(survey_list),
-            });
-        }
-    });
-}
+const mock_server_responses = (url: string) => {
+    console.log(url);
+    if (url.includes("bucket")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+        });
+    } else if (url.includes("/api/install")) {
+        return Promise.resolve({
+            status: 500,
+            json: () => Promise.resolve({}),
+        });
+    } else {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve(survey_list),
+        });
+    }
+};
 
 defineFeature(feature, test => {
     afterEach(() => {
@@ -58,7 +52,7 @@ defineFeature(feature, test => {
 
     test("Deployment of selected file failure", ({given, when, then}) => {
         given("I have selected the questionnaire package I wish to deploy", async () => {
-            mock_server_request("OPN2004A.bpkg");
+            mock_fetch_requests(mock_server_responses);
             await navigateToDeployPageAndSelectFile();
         });
 
@@ -75,7 +69,7 @@ defineFeature(feature, test => {
 
     test("Deploy selected file, retry following failure", ({given, when, then}) => {
         given("I have selected to deploy a questionnaire package", async () => {
-            mock_server_request("OPN2004A.bpkg");
+            mock_fetch_requests(mock_server_responses);
             await navigateToDeployPageAndSelectFile();
             fireEvent.click(screen.getByTestId("button"));
         });
