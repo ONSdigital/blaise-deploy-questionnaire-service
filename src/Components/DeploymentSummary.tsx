@@ -21,7 +21,7 @@ function DeploymentSummary(): ReactElement {
             }
             <h1>
                 Questionnaire
-                file <em> {questionnaireName.replace(/\.[a-zA-Z]*$/, "")} </em> {(status === "" ? "deployed" : "deploy failed")}
+                file <em> {questionnaireName} </em> {(status === "" ? "deployed" : "deploy failed")}
             </h1>
             {
                 (status === "" ?

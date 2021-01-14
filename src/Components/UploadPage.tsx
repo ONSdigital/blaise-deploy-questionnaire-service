@@ -137,7 +137,7 @@ function UploadPage(): ReactElement {
         <>
             {
                 redirect && <Redirect
-                    to={{pathname: "/UploadSummary", state: {questionnaireName: fileName, status: uploadStatus}}}/>
+                    to={{pathname: "/UploadSummary", state: {questionnaireName: fileName.replace(/\.[a-zA-Z]*$/, ""), status: uploadStatus}}}/>
             }
             <Link to="/">
                 Previous
