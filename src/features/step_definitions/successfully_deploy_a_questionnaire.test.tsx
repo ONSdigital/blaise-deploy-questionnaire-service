@@ -119,30 +119,7 @@ defineFeature(feature, test => {
     test("Deploy questionnaire functions disabled", ({given, when, then}) => {
         given("I have selected the questionnaire package I wish to deploy", async () => {
             mock_server_request("OPN2004A.bpkg");
-            const history = createMemoryHistory();
-            render(
-                <Router history={history}>
-                    <App/>
-                </Router>
-            );
-            await act(async () => {
-                await flushPromises();
-            });
-
-            await fireEvent.click(screen.getByText(/Deploy a questionnaire/i));
-
-            const inputEl = screen.getByLabelText(/Select survey package/i);
-
-            const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {
-                type: "bpkg"
-            });
-
-            Object.defineProperty(inputEl, "files", {
-                value: [file]
-            });
-
-            fireEvent.change(inputEl);
-
+            await navigateToDeployPageAndSelectFile();
         });
 
         when("I confirm my selection", async () => {
