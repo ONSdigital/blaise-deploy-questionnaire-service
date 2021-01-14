@@ -11,9 +11,8 @@ function DeploymentSummary(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
     const location = useLocation();
     const history = useHistory();
-
     const {questionnaireName, status} = (location as Location).state || {questionnaireName: "/", status: ""};
-    console.log(status);
+
     return (
         <>
             {

@@ -24,7 +24,7 @@ function UploadPage(): ReactElement {
     const [panel, setPanel] = useState<Panel>({status: "info", hidden: true, text: ""});
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [uploadStatus, setUploadStatus] = useState<string>("");
-    const timeout=(process.env.NODE_ENV === "test"?0:3000);
+    const timeout = (process.env.NODE_ENV === "test" ? 0 : 3000);
 
 
     async function UploadFile() {
@@ -137,7 +137,10 @@ function UploadPage(): ReactElement {
         <>
             {
                 redirect && <Redirect
-                    to={{pathname: "/UploadSummary", state: {questionnaireName: fileName.replace(/\.[a-zA-Z]*$/, ""), status: uploadStatus}}}/>
+                    to={{
+                        pathname: "/UploadSummary",
+                        state: {questionnaireName: fileName.replace(/\.[a-zA-Z]*$/, ""), status: uploadStatus}
+                    }}/>
             }
             <Link to="/">
                 Previous
