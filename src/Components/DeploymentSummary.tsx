@@ -1,6 +1,6 @@
 import React, {ReactElement, useState} from "react";
 import {ONSPanel} from "./ONSDesignSystem/ONSPanel";
-import {Redirect, useLocation} from "react-router-dom";
+import {Redirect, useHistory, useLocation} from "react-router-dom";
 import {ONSButton} from "./ONSDesignSystem/ONSButton";
 
 interface Location {
@@ -10,6 +10,7 @@ interface Location {
 function DeploymentSummary(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
     const location = useLocation();
+    const history = useHistory();
 
     const {questionnaireName, status} = (location as Location).state || {questionnaireName: "/", status: ""};
     console.log(status);
@@ -19,7 +20,8 @@ function DeploymentSummary(): ReactElement {
                 redirect && <Redirect to="/"/>
             }
             <h1>
-                Questionnaire file <em> {questionnaireName.replace(/\.[a-zA-Z]*$/, "")} </em> deployed
+                Questionnaire
+                file <em> {questionnaireName.replace(/\.[a-zA-Z]*$/, "")} </em> {(status === "" ? "deployed" : "deploy failed")}
             </h1>
             {
                 (status === "" ?
@@ -33,10 +35,15 @@ function DeploymentSummary(): ReactElement {
                     :
                     <ONSPanel status="error">
                         <p>
-                            The questionnaire file has failed to deploy. Reason:
+                            <b>File deploy failed</b>
+
+                            <br/>
+                            <br/>
+                            Questionnaire {questionnaireName} has failed to deploy. When reporting the issue to Service
+                            Desk provide the questionnaire name, time and date of failure.
                         </p>
                         <p>
-                            {status}
+                            Reason: {status}
                         </p>
                     </ONSPanel>)
             }
@@ -44,11 +51,14 @@ function DeploymentSummary(): ReactElement {
 
             <br/>
             <br/>
-
+            {(status !== "" && <ONSButton label="Return to select survey package page"
+                                          primary={true}
+                                          onClick={() => history.push("/upload")}/>)}
             <ONSButton label="Go to table of questionnaires"
-                       primary={true} onClick={() => setRedirect(true)}/>
-        </>
-    );
-}
+                       primary={(status === "")}
+                       onClick={() => setRedirect(true)}/>
+                </>
+                );
+                }
 
-export default DeploymentSummary;
+                export default DeploymentSummary;
