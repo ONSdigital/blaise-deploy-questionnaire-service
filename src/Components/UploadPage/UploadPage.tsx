@@ -1,9 +1,7 @@
 import React, {ReactElement, useState} from "react";
-import {ONSPanel} from "../ONSDesignSystem/ONSPanel";
-import {Link, Redirect, Route, Switch, useRouteMatch} from "react-router-dom";
-import {ONSUpload} from "../ONSDesignSystem/ONSUpload";
-import {ONSButton} from "../ONSDesignSystem/ONSButton";
+import {Link, Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
 import uploader from "../../uploader";
+import SelectFilePage from "./SelectFilePage";
 
 interface Progress {
     loaded: number
@@ -20,7 +18,8 @@ function UploadPage(): ReactElement {
     const [uploadStatus, setUploadStatus] = useState<string>("");
     const timeout = (process.env.NODE_ENV === "test" ? 0 : 3000);
 
-    const { path, url } = useRouteMatch();
+    const {path, url} = useRouteMatch();
+    const history = useHistory();
 
     async function BeginUploadProcess() {
         if (file === undefined) {
@@ -33,19 +32,15 @@ function UploadPage(): ReactElement {
         const alreadyExists = await checkSurveyAlreadyExists(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
 
         if (alreadyExists) {
-            console.log("Redirect to ask user page");
+            history.push(`${path}/survey-exists`);
         } else {
-            console.log("continue uplaod");
+            await UploadFile();
         }
     }
 
     async function UploadFile() {
         if (file === undefined) {
-            setPanel("You must select a file");
             return;
-        }
-        if (file.length !== 1) {
-            setPanel("Invalid file");
         }
         console.log("Start uploading the file");
         setLoading(true);
@@ -78,7 +73,7 @@ function UploadPage(): ReactElement {
     }
 
     function checkSurveyAlreadyExists(instrumentName: string) {
-        console.log("Validating file is in the Bucket");
+        console.log("Validating if survey already exists");
         return new Promise((resolve: any, reject: any) => {
             fetch(`/api/instruments/${instrumentName}/exists`)
                 .then((r: Response) => {
@@ -87,21 +82,18 @@ function UploadPage(): ReactElement {
                     }
                     r.json()
                         .then((json) => {
-                            if (json) {
+                            if (json === true) {
                                 console.log(`${instrumentName} already installed`);
-                                resolve(json);
+                                resolve(true);
                             } else {
-                                console.log(`${instrumentName} not found`);
-                                resolve(json);
+                                console.log(`${instrumentName} not found `);
+                                resolve(false);
                             }
                         })
                         .catch((error) => {
                             console.error("Failed to validate if questionnaire already exists, error: " + error);
-                        })
-                        .catch((error) => {
-                                console.error("Failed to validate if questionnaire already exists, error: " + error);
-                            }
-                        );
+                            throw error;
+                        });
                 })
                 .catch(async (error) => {
                     console.error("Failed to validate if questionnaire already exists, error: " + error);
@@ -167,13 +159,6 @@ function UploadPage(): ReactElement {
             }).finally(() => setRedirect(true));
     }
 
-    const handleFileChange = (selectorFiles: FileList | null) => {
-        console.log(selectorFiles);
-        if (selectorFiles !== null) {
-            setFile(selectorFiles);
-        }
-    };
-
     return (
         <>
             {
@@ -184,7 +169,6 @@ function UploadPage(): ReactElement {
                     }}/>
             }
 
-
             <Switch>
                 <Route exact path={path}>
                     <SelectFilePage BeginUploadProcess={BeginUploadProcess}
@@ -193,87 +177,14 @@ function UploadPage(): ReactElement {
                                     panel={panel}
                                     uploadPercentage={uploadPercentage}/>
                 </Route>
+                <Route path={`${path}/survey-exists`}>
+                    <h1>Questionnaire already exists so yeah </h1>
+                </Route>
                 <Route path={`${path}/:topicId`}>
                     <h1>Topic</h1>
                 </Route>
             </Switch>
 
-
-
-        </>
-    );
-}
-
-interface SelectFilePageProps {
-    BeginUploadProcess: any
-    setFile: any
-    loading: boolean
-    uploadPercentage: number
-    panel: string
-}
-
-function SelectFilePage(props: SelectFilePageProps) {
-    const {loading, uploadPercentage, panel, setFile} = props;
-
-    const handleFileChange = (selectorFiles: FileList | null) => {
-        console.log(selectorFiles);
-        if (selectorFiles !== null) {
-            setFile(selectorFiles);
-        }
-    };
-
-    return (
-        <>
-            <Link to="/">
-                Previous
-            </Link>
-            <h1>
-                Deploy a questionnaire file
-            </h1>
-
-            {panel !== "" && <ONSPanel status="error">{panel}</ONSPanel>}
-
-            <ONSPanel>
-                <p>
-                    When a questionnaire file is selected and you continue to deploy this questionnaire file, <b>this
-                    may take a few minutes</b>.
-                    <br/>
-                    <br/>
-                    Given this, <b>do not navigate away</b> from this page during this process. You will be
-                    re-directed
-                    when there is an update regarding the deploy of the questionnaire.
-                </p>
-            </ONSPanel>
-
-            <ONSUpload label="Select survey package"
-                       description="File type accepted is .bpkg only"
-                       fileName="Package"
-                       fileID="survey-selector"
-                       accept="bpkg"
-                       onChange={(e) => handleFileChange(e.target.files)}
-                       disabled={loading}/>
-
-            <ONSButton label="Continue"
-                       id="continue-deploy-button"
-                       primary={true}
-                       onClick={() => props.BeginUploadProcess()}
-                       loading={loading}/>
-            {
-                loading &&
-                <>
-                    <p>Uploading: {uploadPercentage}%</p>
-                    <progress id="file"
-                              value={uploadPercentage}
-                              max="100"
-                              role="progressbar"
-                              aria-valuenow={uploadPercentage}
-                              aria-valuemin={0}
-                              aria-valuemax={100}>
-                        {uploadPercentage}%
-                    </progress>
-
-                </>
-            }
         </>
     );
 }
