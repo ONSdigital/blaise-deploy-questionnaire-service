@@ -26,6 +26,7 @@ function UploadPage(): ReactElement {
     const [uploadStatus, setUploadStatus] = useState<string>("");
 
     async function UploadFile() {
+        console.log("Start UploadFile()");
         if (file === undefined) {
             setPanel({status: "error", hidden: false, text: "You must select a file "});
             return;
@@ -48,6 +49,7 @@ function UploadPage(): ReactElement {
             })
             .send(file[0])
             .end((error: Error, data: string) => {
+                console.log("end");
                 if (error) {
                     console.log("Error", error);
                     setLoading(false);
@@ -62,6 +64,7 @@ function UploadPage(): ReactElement {
     }
 
     function checkFileInBucket(filename: string) {
+        console.log("checkFileInBucket");
         fetch(`/bucket?filename=${filename}`)
             .then((r: Response) => {
                 if (r.status !== 200) {
@@ -158,9 +161,10 @@ function UploadPage(): ReactElement {
             <ONSUpload label="Select survey package"
                        description="File type accepted is .bpkg only"
                        fileName="Package"
-                       fileID="ID" accept="bpkg"
+                       fileID="survey-selector" accept="bpkg"
                        onChange={(e) => handleFileChange(e.target.files)}/>
             <ONSButton label="Continue"
+                       id="continue-deploy-button"
                        primary={true}
                        onClick={() => UploadFile()}
                        loading={loading}/>
