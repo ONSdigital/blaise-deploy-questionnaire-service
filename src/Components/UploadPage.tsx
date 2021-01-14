@@ -159,7 +159,8 @@ function UploadPage(): ReactElement {
                        description="File type accepted is .bpkg only"
                        fileName="Package"
                        fileID="ID" accept="bpkg"
-                       onChange={(e) => handleFileChange(e.target.files)}/>
+                       onChange={(e) => handleFileChange(e.target.files)}
+                       disabled={loading}/>
             <ONSButton label="Continue"
                        primary={true}
                        onClick={() => UploadFile()}
