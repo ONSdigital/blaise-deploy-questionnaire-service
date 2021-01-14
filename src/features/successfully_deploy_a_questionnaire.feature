@@ -1,4 +1,7 @@
 Feature: DQS - Successfully deploy a questionnaire
+  As a Survey Team Research Officer
+  I want to deploy a questionnaire to a Blaise server in the production environment
+  So that I can set up a new survey in Blaise 5 for Telephone Operations nudge/data collection
 
   # Scenario 1:
   Scenario: Successful log in to Questionnaire Deployment Service

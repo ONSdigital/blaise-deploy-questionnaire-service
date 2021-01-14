@@ -241,7 +241,7 @@ describe("Get list of instruments endpoint fails", () => {
 import {defineFeature, loadFeature} from "jest-cucumber";
 
 
-const feature = loadFeature("./src/features/TO_Interviewer_Happy_Path.feature", {tagFilter: "@server"});
+const feature = loadFeature("./src/features/successfully_deploy_a_questionnaire.feature", {tagFilter: "@server"});
 
 defineFeature(feature, test => {
 
