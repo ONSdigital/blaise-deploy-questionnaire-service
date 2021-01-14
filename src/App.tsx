@@ -108,7 +108,7 @@ function App(): ReactElement {
 
                                 {listError.error && <ONSErrorPanel/>}
 
-                                <Link to="/upload">
+                                <Link to="/upload" id="deploy-questionnaire-link">
                                     Deploy a questionnaire
                                 </Link>
                                 <ONSPanel>

@@ -25,7 +25,7 @@ import {checkFile} from "./storage/helpers";
 const buildFolder = "../../build";
 
 // load the .env variables in the server
-const {BLAISE_API_URL, BUCKET_NAME, PROJECT_ID, SEVER_PARK} = getEnvironmentVariables();
+const {BLAISE_API_URL, BUCKET_NAME, PROJECT_ID, SERVER_PARK} = getEnvironmentVariables();
 
 // treat the index.html as a template and substitute the values at runtime
 server.set("views", path.join(__dirname, buildFolder));
@@ -71,7 +71,7 @@ server.get("/api/install", function (req: ResponseQuery, res: Response) {
     req.log.info("/api/install endpoint called");
     const {filename} = req.query;
     axios({
-        url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SEVER_PARK}/instruments`,
+        url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SERVER_PARK}/instruments`,
         method: "POST",
         data: {
             "instrumentName": filename.replace(/\.[a-zA-Z]*$/, ""),
@@ -79,10 +79,10 @@ server.get("/api/install", function (req: ResponseQuery, res: Response) {
             "bucketPath": BUCKET_NAME
         }
     }).then((response) => {
-        req.log.info(`Call to /api/v1/serverparks/${SEVER_PARK}/instruments successful`);
+        req.log.info(`Call to /api/v1/serverparks/${SERVER_PARK}/instruments successful`);
         res.status(response.status).json(response.data);
     }).catch((error) => {
-        req.log.error(error, `Call to /api/v1/serverparks/${SEVER_PARK}/instruments successful`);
+        req.log.error(error, `Call to /api/v1/serverparks/${SERVER_PARK}/instruments failed`);
         res.status(500).json(error);
     });
 });
