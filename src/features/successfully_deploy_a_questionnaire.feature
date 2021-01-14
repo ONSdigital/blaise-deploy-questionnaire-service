@@ -18,7 +18,7 @@ Feature: DQS - Successfully deploy a questionnaire
     When I confirm my selection
     Then I am unable to select another file or continue again until the deployment has finished
 
-  # Scenario 3a
+  # Scenario 3a:
   Scenario: Deploy selected file
     Given I have selected the questionnaire package I wish to deploy
     When I confirm my selection

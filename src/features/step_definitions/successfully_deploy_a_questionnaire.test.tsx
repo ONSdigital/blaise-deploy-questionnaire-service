@@ -6,9 +6,12 @@ import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library
 import {createMemoryHistory} from "history";
 import App from "../../App";
 import {Router} from "react-router";
+import "@testing-library/jest-dom";
 // Mock elements
 import flushPromises from "../../tests/utils";
 import {survey_list} from "./API_Mock_Objects";
+
+
 // Mock the Uploader.js module
 jest.mock("../../uploader");
 
@@ -52,164 +55,149 @@ defineFeature(feature, test => {
         cleanup();
     });
 
-    defineFeature(feature, test => {
-        test("Successful log in to Questionnaire Deployment Service", ({given, when, then}) => {
-            given("I have launched the Questionnaire Deployment Service", () => {
-                mock_server_request("OPN2004A.bpkg");
-                const history = createMemoryHistory();
-                render(
-                    <Router history={history}>
-                        <App/>
-                    </Router>
-                );
-            });
+    test("Successful log in to Questionnaire Deployment Service", ({given, when, then}) => {
+        given("I have launched the Questionnaire Deployment Service", () => {
+            mock_server_request("OPN2004A.bpkg");
+            const history = createMemoryHistory();
+            render(
+                <Router history={history}>
+                    <App/>
+                </Router>
+            );
+        });
 
-            when("I view the landing page", async () => {
-                await act(async () => {
-                    await flushPromises();
-                });
-            });
-
-            then("I am presented with an option to deploy a new questionnaire", () => {
-                expect(screen.getByText(/Deploy a questionnaire/i)).toBeDefined();
+        when("I view the landing page", async () => {
+            await act(async () => {
+                await flushPromises();
             });
         });
 
-        test("Select to deploy a new questionnaire", ({given, when, then}) => {
-            given("I have selected to deploy a new questionnaire", async () => {
-                mock_server_request("OPN2004A.bpkg");
-                const history = createMemoryHistory();
-                render(
-                    <Router history={history}>
-                        <App/>
-                    </Router>
-                );
-                await act(async () => {
-                    await flushPromises();
-                });
+        then("I am presented with an option to deploy a new questionnaire", () => {
+            expect(screen.getByText(/Deploy a questionnaire/i)).toBeDefined();
+        });
+    });
 
-                await fireEvent.click(screen.getByText(/Deploy a questionnaire/i));
+    test("Select to deploy a new questionnaire", ({given, when, then}) => {
+        given("I have selected to deploy a new questionnaire", async () => {
+            mock_server_request("OPN2004A.bpkg");
+            const history = createMemoryHistory();
+            render(
+                <Router history={history}>
+                    <App/>
+                </Router>
+            );
+            await act(async () => {
+                await flushPromises();
             });
 
-            when("I am presented with an option to choose a file containing the questionnaire", async () => {
-                await waitFor(() => {
-                    expect(screen.getByText(/Deploy a questionnaire file/i)).toBeDefined();
-                });
-            });
+            await fireEvent.click(screen.getByText(/Deploy a questionnaire/i));
+        });
 
-            then("I am able to select a pre-prepared questionnaire package from a folder/file share", async () => {
-                const inputEl = screen.getByLabelText(/Select survey package/i);
-
-                const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {
-                    type: "bpkg"
-                });
-
-                Object.defineProperty(inputEl, "files", {
-                    value: [file]
-                });
-
-                fireEvent.change(inputEl);
-
-
-                expect(inputEl.textContent).toContain("hrllo");
-
-                // fireEvent.click(screen.getByTestId("button"));
-                //
-                // await act(async () => {
-                //     await flushPromises();
-                // });
-
-                // await waitFor(() => {
-                //     expect(screen.getByText(/OPN2004A.bpkg/i)).toBeDefined();
-                // });
-                //
-                // const input = screen.getByLabelText(/Select survey package/i);
-                // console.log(input);
+        when("I am presented with an option to choose a file containing the questionnaire", async () => {
+            await waitFor(() => {
+                expect(screen.getByText(/Deploy a questionnaire file/i)).toBeDefined();
             });
         });
 
+        then("I am able to select a pre-prepared questionnaire package from a folder/file share", async () => {
+            const inputEl = screen.getByLabelText(/Select survey package/i);
 
-        test("Deploy questionnaire functions disabled", ({given, when, then}) => {
-            given("I have selected the questionnaire package I wish to deploy", async () => {
-                mock_server_request("OPN2004A.bpkg");
-                const history = createMemoryHistory();
-                render(
-                    <Router history={history}>
-                        <App/>
-                    </Router>
-                );
-                await act(async () => {
-                    await flushPromises();
-                });
-
-                await fireEvent.click(screen.getByText(/Deploy a questionnaire/i));
-
-                const inputEl = screen.getByLabelText(/Select survey package/i);
-
-                const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {
-                    type: "bpkg"
-                });
-
-                Object.defineProperty(inputEl, "files", {
-                    value: [file]
-                });
-
-                fireEvent.change(inputEl);
+            const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {
+                type: "bpkg"
             });
 
-            when("I confirm my selection", async () => {
-
+            Object.defineProperty(inputEl, "files", {
+                value: [file]
             });
 
-            then("I am unable to select another file or continue again until the deployment has finished", () => {
-                return;
+            fireEvent.change(inputEl);
+        });
+    });
+
+
+    test("Deploy questionnaire functions disabled", ({given, when, then}) => {
+        given("I have selected the questionnaire package I wish to deploy", async () => {
+            mock_server_request("OPN2004A.bpkg");
+            const history = createMemoryHistory();
+            render(
+                <Router history={history}>
+                    <App/>
+                </Router>
+            );
+            await act(async () => {
+                await flushPromises();
+            });
+
+            await fireEvent.click(screen.getByText(/Deploy a questionnaire/i));
+
+            const inputEl = screen.getByLabelText(/Select survey package/i);
+
+            const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {
+                type: "bpkg"
+            });
+
+            Object.defineProperty(inputEl, "files", {
+                value: [file]
+            });
+
+            fireEvent.change(inputEl);
+
+        });
+
+        when("I confirm my selection", async () => {
+            await fireEvent.click(screen.getByTestId("button"));
+        });
+
+        then("I am unable to select another file or continue again until the deployment has finished", () => {
+            const inputEl = screen.getByLabelText(/Select survey package/i);
+            expect(inputEl.closest("input")).toBeDisabled();
+            expect(screen.getByTestId("button")).toBeDisabled();
+        });
+    });
+
+
+    test("Deploy selected file", ({given, when, then, and}) => {
+        given("I have selected the questionnaire package I wish to deploy", async () => {
+            mock_server_request("OPN2004A.bpkg");
+            const history = createMemoryHistory();
+            render(
+                <Router history={history}>
+                    <App/>
+                </Router>
+            );
+            await act(async () => {
+                await flushPromises();
+            });
+
+            await fireEvent.click(screen.getByText(/Deploy a questionnaire/i));
+
+            const inputEl = screen.getByLabelText(/Select survey package/i);
+
+            const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {
+                type: "bpkg"
+            });
+
+            Object.defineProperty(inputEl, "files", {
+                value: [file]
+            });
+
+            fireEvent.change(inputEl);
+
+        });
+
+        when("I confirm my selection", async () => {
+            fireEvent.click(screen.getByTestId("button"));
+        });
+
+        then("the questionnaire package is deployed and populates a SQL database on the Blaise Tel server", async () => {
+            await act(async () => {
+                await flushPromises();
             });
         });
 
-
-        test("Deploy selected file", ({given, when, then, and}) => {
-            given("I have selected the questionnaire package I wish to deploy", async () => {
-                mock_server_request("OPN2004A.bpkg");
-                const history = createMemoryHistory();
-                render(
-                    <Router history={history}>
-                        <App/>
-                    </Router>
-                );
-                await act(async () => {
-                    await flushPromises();
-                });
-
-                await fireEvent.click(screen.getByText(/Deploy a questionnaire/i));
-
-                const inputEl = screen.getByLabelText(/Select survey package/i);
-
-                const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {
-                    type: "bpkg"
-                });
-
-                Object.defineProperty(inputEl, "files", {
-                    value: [file]
-                });
-
-                fireEvent.change(inputEl);
-
-            });
-
-            when("I confirm my selection", async () => {
-                fireEvent.click(screen.getByTestId("button"));
-            });
-
-            then("the questionnaire package is deployed and populates a SQL database on the Blaise Tel server", async () => {
-                await act(async () => {
-                    await flushPromises();
-                });
-            });
-
-            and("I am presented with a successful deployment information banner", async () => {
-                await waitFor(() => {
-                    expect(screen.getByText(/The questionnaire file has been successfully deployed and will be displayed within the table of questionnaires./i)).toBeDefined();
-                });
+        and("I am presented with a successful deployment information banner", async () => {
+            await waitFor(() => {
+                expect(screen.getByText(/The questionnaire file has been successfully deployed and will be displayed within the table of questionnaires./i)).toBeDefined();
             });
         });
     });

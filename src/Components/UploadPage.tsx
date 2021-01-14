@@ -24,8 +24,11 @@ function UploadPage(): ReactElement {
     const [panel, setPanel] = useState<Panel>({status: "info", hidden: true, text: ""});
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [uploadStatus, setUploadStatus] = useState<string>("");
+    const timeout=(process.env.NODE_ENV === "test"?0:3000);
+
 
     async function UploadFile() {
+        console.log("Start UploadFile()");
         if (file === undefined) {
             setPanel({status: "error", hidden: false, text: "You must select a file "});
             return;
@@ -48,6 +51,7 @@ function UploadPage(): ReactElement {
             })
             .send(file[0])
             .end((error: Error, data: string) => {
+                console.log("end");
                 if (error) {
                     console.log("Error", error);
                     setLoading(false);
@@ -57,11 +61,12 @@ function UploadPage(): ReactElement {
                 }
                 setTimeout(function () {
                     checkFileInBucket(file[0].name.replace(/ /g, "_"));
-                }, 3000);
+                }, timeout);
             });
     }
 
     function checkFileInBucket(filename: string) {
+        console.log("checkFileInBucket");
         fetch(`/bucket?filename=${filename}`)
             .then((r: Response) => {
                 if (r.status !== 200) {
@@ -158,10 +163,13 @@ function UploadPage(): ReactElement {
             <ONSUpload label="Select survey package"
                        description="File type accepted is .bpkg only"
                        fileName="Package"
-                       fileID="ID" accept="bpkg"
+                       fileID="survey-selector"
+                       accept="bpkg"
                        onChange={(e) => handleFileChange(e.target.files)}
                        disabled={loading}/>
+
             <ONSButton label="Continue"
+                       id="continue-deploy-button"
                        primary={true}
                        onClick={() => UploadFile()}
                        loading={loading}/>
