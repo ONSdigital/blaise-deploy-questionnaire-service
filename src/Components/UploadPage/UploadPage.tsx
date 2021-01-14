@@ -1,9 +1,9 @@
 import React, {ReactElement, useState} from "react";
-import {ONSPanel} from "./ONSDesignSystem/ONSPanel";
-import {Link, Redirect} from "react-router-dom";
-import {ONSUpload} from "./ONSDesignSystem/ONSUpload";
-import {ONSButton} from "./ONSDesignSystem/ONSButton";
-import uploader from "../uploader";
+import {ONSPanel} from "../ONSDesignSystem/ONSPanel";
+import {Link, Redirect, Route, Switch, useRouteMatch} from "react-router-dom";
+import {ONSUpload} from "../ONSDesignSystem/ONSUpload";
+import {ONSButton} from "../ONSDesignSystem/ONSButton";
+import uploader from "../../uploader";
 
 interface Progress {
     loaded: number
@@ -20,6 +20,24 @@ function UploadPage(): ReactElement {
     const [uploadStatus, setUploadStatus] = useState<string>("");
     const timeout = (process.env.NODE_ENV === "test" ? 0 : 3000);
 
+    const { path, url } = useRouteMatch();
+
+    async function BeginUploadProcess() {
+        if (file === undefined) {
+            setPanel("You must select a file");
+            return;
+        }
+        if (file.length !== 1) {
+            setPanel("Invalid file");
+        }
+        const alreadyExists = await checkSurveyAlreadyExists(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
+
+        if (alreadyExists) {
+            console.log("Redirect to ask user page");
+        } else {
+            console.log("continue uplaod");
+        }
+    }
 
     async function UploadFile() {
         if (file === undefined) {
@@ -29,7 +47,6 @@ function UploadPage(): ReactElement {
         if (file.length !== 1) {
             setPanel("Invalid file");
         }
-        const alreadyExists = await checkSurveyAlreadyExists(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
         console.log("Start uploading the file");
         setLoading(true);
         setFileName(file[0].name);
@@ -79,16 +96,16 @@ function UploadPage(): ReactElement {
                             }
                         })
                         .catch((error) => {
-                            console.error("Failed to validate if file is in bucket, error: " + error);
+                            console.error("Failed to validate if questionnaire already exists, error: " + error);
                         })
                         .catch((error) => {
-                                console.error("Failed to validate if file is in bucket, error: " + error);
+                                console.error("Failed to validate if questionnaire already exists, error: " + error);
                             }
                         );
                 })
                 .catch(async (error) => {
-                    console.error("Failed to validate if file is in bucket, error: " + error);
-                    await setUploadStatus("Failed to validate if file has been uploaded");
+                    console.error("Failed to validate if questionnaire already exists, error: " + error);
+                    await setUploadStatus("Failed to validate if questionnaire already exists");
                     setRedirect(true);
                 });
         });
@@ -166,6 +183,47 @@ function UploadPage(): ReactElement {
                         state: {questionnaireName: fileName.replace(/\.[a-zA-Z]*$/, ""), status: uploadStatus}
                     }}/>
             }
+
+
+            <Switch>
+                <Route exact path={path}>
+                    <SelectFilePage BeginUploadProcess={BeginUploadProcess}
+                                    setFile={setFile}
+                                    loading={loading}
+                                    panel={panel}
+                                    uploadPercentage={uploadPercentage}/>
+                </Route>
+                <Route path={`${path}/:topicId`}>
+                    <h1>Topic</h1>
+                </Route>
+            </Switch>
+
+
+
+        </>
+    );
+}
+
+interface SelectFilePageProps {
+    BeginUploadProcess: any
+    setFile: any
+    loading: boolean
+    uploadPercentage: number
+    panel: string
+}
+
+function SelectFilePage(props: SelectFilePageProps) {
+    const {loading, uploadPercentage, panel, setFile} = props;
+
+    const handleFileChange = (selectorFiles: FileList | null) => {
+        console.log(selectorFiles);
+        if (selectorFiles !== null) {
+            setFile(selectorFiles);
+        }
+    };
+
+    return (
+        <>
             <Link to="/">
                 Previous
             </Link>
@@ -198,7 +256,7 @@ function UploadPage(): ReactElement {
             <ONSButton label="Continue"
                        id="continue-deploy-button"
                        primary={true}
-                       onClick={() => UploadFile()}
+                       onClick={() => props.BeginUploadProcess()}
                        loading={loading}/>
             {
                 loading &&
@@ -216,7 +274,6 @@ function UploadPage(): ReactElement {
 
                 </>
             }
-
         </>
     );
 }
