@@ -2,6 +2,7 @@ import React, {ReactElement, useState} from "react";
 import {Link, Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
 import uploader from "../../uploader";
 import SelectFilePage from "./SelectFilePage";
+import AlreadyExists from "./AlreadyExists";
 
 interface Progress {
     loaded: number
@@ -13,6 +14,7 @@ function UploadPage(): ReactElement {
     const [loading, setLoading] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
     const [fileName, setFileName] = useState<string>("");
+    const [instrumentName, setInstrumentName] = useState<string>("");
     const [panel, setPanel] = useState<string>("");
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [uploadStatus, setUploadStatus] = useState<string>("");
@@ -29,11 +31,14 @@ function UploadPage(): ReactElement {
         if (file.length !== 1) {
             setPanel("Invalid file");
         }
-        await setFileName(file[0].name);
+        setLoading(true);
+        setFileName(file[0].name);
+        setInstrumentName(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
 
-        const alreadyExists = await checkSurveyAlreadyExists(fileName.replace(/\.[a-zA-Z]*$/, ""));
+        const alreadyExists = await checkSurveyAlreadyExists(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
 
         if (alreadyExists) {
+            setLoading(false);
             history.push(`${path}/survey-exists`);
         } else {
             await UploadFile();
@@ -166,7 +171,7 @@ function UploadPage(): ReactElement {
                 redirect && <Redirect
                     to={{
                         pathname: "/UploadSummary",
-                        state: {questionnaireName: fileName.replace(/\.[a-zA-Z]*$/, ""), status: uploadStatus}
+                        state: {questionnaireName: instrumentName, status: uploadStatus}
                     }}/>
             }
 
@@ -179,10 +184,9 @@ function UploadPage(): ReactElement {
                                     uploadPercentage={uploadPercentage}/>
                 </Route>
                 <Route path={`${path}/survey-exists`}>
-                    <h1>Questionnaire already exists so yeah </h1>
-                </Route>
-                <Route path={`${path}/:topicId`}>
-                    <h1>Topic</h1>
+                    <AlreadyExists instrumentName={instrumentName}
+                                    UploadFile={UploadFile}
+                                    loading={loading}/>
                 </Route>
             </Switch>
 
