@@ -7,12 +7,16 @@ interface Location {
     state: any
 }
 
-function DeploymentSummary(): ReactElement {
+interface Props {
+    getList: () => void
+}
+
+function DeploymentSummary({getList}: Props): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
     const location = useLocation();
     const history = useHistory();
     const {questionnaireName, status} = (location as Location).state || {questionnaireName: "/", status: ""};
-
+    getList();
     return (
         <>
             {
@@ -20,7 +24,7 @@ function DeploymentSummary(): ReactElement {
             }
             <h1>
                 Questionnaire
-                file <em> {questionnaireName} </em> {(status === "" ? "deployed" : "deploy failed")}
+                file <em>{questionnaireName}</em> {(status === "" ? "deployed" : "deploy failed")}
             </h1>
             {
                 (status === "" ?
@@ -56,8 +60,8 @@ function DeploymentSummary(): ReactElement {
             <ONSButton label="Go to table of questionnaires"
                        primary={(status === "")}
                        onClick={() => setRedirect(true)}/>
-                </>
-                );
-                }
+        </>
+    );
+}
 
-                export default DeploymentSummary;
+export default DeploymentSummary;

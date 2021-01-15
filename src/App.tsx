@@ -5,49 +5,21 @@ import {DefaultErrorBoundary} from "./Components/ErrorHandling/DefaultErrorBound
 import Footer from "./Components/ONSDesignSystem/Footer";
 import ONSErrorPanel from "./Components/ONSDesignSystem/ONSErrorPanel";
 import {isDevEnv} from "./Functions";
-import {
-    Switch,
-    Route, Link,
-
-} from "react-router-dom";
+import {Switch, Route, Link} from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
-import SurveyList from "./Components/SurveyList";
-import {Instrument, Survey} from "../Interfaces";
+import {Instrument} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
 import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
 import {ONSPanel} from "./Components/ONSDesignSystem/ONSPanel";
-
-
-interface listError {
-    error: boolean,
-    message: string
-}
-
-interface window extends Window {
-    VM_EXTERNAL_CLIENT_URL: string
-    CATI_DASHBOARD_URL: string
-}
 
 const divStyle = {
     minHeight: "calc(67vh)"
 };
 
 function App(): ReactElement {
-
-    const [externalClientUrl, setExternalClientUrl] = useState<string>("External URL should be here");
-    const [externalCATIUrl, setExternalCATIUrl] = useState<string>("/Blaise");
-
-
-    useEffect(function retrieveVariables() {
-        setExternalClientUrl(isDevEnv() ?
-            process.env.REACT_APP_VM_EXTERNAL_CLIENT_URL || externalClientUrl : (window as unknown as window).VM_EXTERNAL_CLIENT_URL);
-        setExternalCATIUrl(isDevEnv() ?
-            process.env.REACT_APP_CATI_DASHBOARD_URL || externalCATIUrl : (window as unknown as window).CATI_DASHBOARD_URL);
-    }, [externalClientUrl, externalCATIUrl]);
-
     const [surveys, setSurveys] = useState<Instrument[]>([]);
-    const [listError, setListError] = useState<listError>({error: false, message: "Loading ..."});
+    const [listError, setListError] = useState<string>("Loading ...");
 
     useEffect(() => {
         getList();
@@ -67,18 +39,18 @@ function App(): ReactElement {
                         console.log("Retrieved instrument list, " + json.length + " items/s");
                         isDevEnv() && console.log(json);
                         setSurveys(json);
-                        setListError({error: false, message: ""});
+                        setListError("");
 
                         // If the list is empty then show this message in the list
-                        if (json.length === 0) setListError({error: false, message: "No active surveys found."});
+                        if (json.length === 0) setListError("No active surveys found.");
                     })
                     .catch((error) => {
                         isDevEnv() && console.error("Unable to read json from response, error: " + error);
-                        setListError({error: true, message: "Unable to load surveys"});
+                        setListError("Unable to load surveys");
                     });
             }).catch((error) => {
                 isDevEnv() && console.error("Failed to retrieve instrument list, error: " + error);
-                setListError({error: true, message: "Unable to load surveys"});
+                setListError("Unable to load surveys");
             }
         );
     }
@@ -94,23 +66,21 @@ function App(): ReactElement {
 
                         <Switch>
                             <Route path="/UploadSummary">
-                                <DeploymentSummary/>
+                                <DeploymentSummary getList={getList}/>
                             </Route>
                             <Route path="/upload">
                                 <UploadPage/>
                             </Route>
-                            <Route path="/survey/:survey">
-                                <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList list={surveys} listError={listError}/>
-                                </ErrorBoundary>
-                            </Route>
                             <Route path="/">
 
-                                {listError.error && <ONSErrorPanel/>}
+                                {listError.includes("Unable") && <ONSErrorPanel/>}
 
-                                <Link to="/upload" id="deploy-questionnaire-link">
-                                    Deploy a questionnaire
-                                </Link>
+                                <p className="u-mt-m">
+                                    <Link to="/upload" id="deploy-questionnaire-link">
+                                        Deploy a questionnaire
+                                    </Link>
+                                </p>
+
                                 <ONSPanel>
                                     <p>
                                         Any <b>live</b> questionnaire within the table below <b>does not</b> have the
@@ -120,8 +90,7 @@ function App(): ReactElement {
                                         complete this request.
                                     </p>
                                 </ONSPanel>
-
-                                <ErrorBoundary errorMessageText={"Unable to load survey table correctly"}>
+                                <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
                                     <InstrumentList list={surveys} listError={listError}/>
                                 </ErrorBoundary>
                             </Route>
@@ -129,7 +98,7 @@ function App(): ReactElement {
                     </DefaultErrorBoundary>
                 </main>
             </div>
-            <Footer external_client_url={externalClientUrl}/>
+            <Footer external_client_url={""}/>
         </>
     );
 }

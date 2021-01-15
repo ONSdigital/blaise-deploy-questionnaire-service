@@ -1,29 +1,20 @@
-import ExternalLink from "./ONSDesignSystem/ExternalLink";
 import React, {ReactElement} from "react";
-import {Link, useParams} from "react-router-dom";
-import {Instrument, Survey} from "../../Interfaces";
+import {Link} from "react-router-dom";
+import {Instrument} from "../../Interfaces";
 import dateFormatter from "dayjs";
-
-interface listError {
-    error: boolean,
-    message: string
-}
 
 interface Props {
     list: Instrument[],
-    listError: listError
+    listError: string
 }
 
-function InstrumentList(props: Props): ReactElement {
-    const {list, listError}: Props = props;
-    const surveyInstruments: Instrument[] = list;
-
-    surveyInstruments.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
+function InstrumentList({list, listError}: Props): ReactElement {
+    list.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
 
     return <>
         <h2 className="u-mt-m">Table of questionnaires</h2>
         {
-            surveyInstruments && surveyInstruments.length > 0
+            list && list.length > 0
                 ?
                 <table id="instrument-table" className="table ">
                     <thead className="table__head u-mt-m">
@@ -47,7 +38,7 @@ function InstrumentList(props: Props): ReactElement {
                     </thead>
                     <tbody className="table__body">
                     {
-                        surveyInstruments.map((item: Instrument) => {
+                        list.map((item: Instrument) => {
                             return (
                                 <tr className="table__row" key={item.name} data-testid={"instrument-table-row"}>
                                     <td className="table__cell ">
@@ -74,9 +65,9 @@ function InstrumentList(props: Props): ReactElement {
                     </tbody>
                 </table>
                 :
-                <div className="panel panel--info panel--simple u-mb-m">
+                <div className="panel panel--info panel--no-title u-mb-m">
                     <div className="panel__body">
-                        <p>{listError.message}</p>
+                        <p>{listError}</p>
                     </div>
                 </div>
         }
