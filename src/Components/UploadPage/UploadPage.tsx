@@ -29,7 +29,9 @@ function UploadPage(): ReactElement {
         if (file.length !== 1) {
             setPanel("Invalid file");
         }
-        const alreadyExists = await checkSurveyAlreadyExists(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
+        await setFileName(file[0].name);
+
+        const alreadyExists = await checkSurveyAlreadyExists(fileName.replace(/\.[a-zA-Z]*$/, ""));
 
         if (alreadyExists) {
             history.push(`${path}/survey-exists`);
@@ -44,7 +46,6 @@ function UploadPage(): ReactElement {
         }
         console.log("Start uploading the file");
         setLoading(true);
-        setFileName(file[0].name);
         setPanel("");
         uploader()
             .onProgress(({loaded, total}: Progress) => {
