@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
 import SurveyList from "./Components/SurveyList";
-import {Survey} from "../Interfaces";
+import {Instrument, Survey} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
 import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
@@ -46,7 +46,7 @@ function App(): ReactElement {
             process.env.REACT_APP_CATI_DASHBOARD_URL || externalCATIUrl : (window as unknown as window).CATI_DASHBOARD_URL);
     }, [externalClientUrl, externalCATIUrl]);
 
-    const [surveys, setSurveys] = useState<Survey[]>([]);
+    const [surveys, setSurveys] = useState<Instrument[]>([]);
     const [listError, setListError] = useState<listError>({error: false, message: "Loading ..."});
 
     useEffect(() => {
@@ -60,7 +60,7 @@ function App(): ReactElement {
                     throw r.status + " - " + r.statusText;
                 }
                 r.json()
-                    .then((json: Survey[]) => {
+                    .then((json: Instrument[]) => {
                         if (!Array.isArray(json)) {
                             throw "Json response is not a list";
                         }
@@ -122,7 +122,7 @@ function App(): ReactElement {
                                 </ONSPanel>
 
                                 <ErrorBoundary errorMessageText={"Unable to load survey table correctly"}>
-                                    <SurveyList list={surveys} listError={listError}/>
+                                    <InstrumentList list={surveys} listError={listError}/>
                                 </ErrorBoundary>
                             </Route>
                         </Switch>

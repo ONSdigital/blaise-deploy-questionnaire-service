@@ -8,6 +8,7 @@ interface Instrument {
     link: string
     fieldPeriod: string
     surveyTLA: string
+    dataRecordCount?: number
 }
 
 interface Survey {
