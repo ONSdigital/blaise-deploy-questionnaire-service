@@ -1,9 +1,8 @@
 import React, {ReactElement, useState} from "react";
-import {ONSPanel} from "./ONSDesignSystem/ONSPanel";
-import {Link, Redirect} from "react-router-dom";
-import {ONSUpload} from "./ONSDesignSystem/ONSUpload";
-import {ONSButton} from "./ONSDesignSystem/ONSButton";
-import uploader from "../uploader";
+import {Link, Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
+import uploader from "../../uploader";
+import SelectFilePage from "./SelectFilePage";
+import AlreadyExists from "./AlreadyExists";
 
 interface Progress {
     loaded: number
@@ -15,13 +14,16 @@ function UploadPage(): ReactElement {
     const [loading, setLoading] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
     const [fileName, setFileName] = useState<string>("");
+    const [instrumentName, setInstrumentName] = useState<string>("");
     const [panel, setPanel] = useState<string>("");
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [uploadStatus, setUploadStatus] = useState<string>("");
     const timeout = (process.env.NODE_ENV === "test" ? 0 : 3000);
 
+    const {path, url} = useRouteMatch();
+    const history = useHistory();
 
-    async function UploadFile() {
+    async function BeginUploadProcess() {
         if (file === undefined) {
             setPanel("You must select a file");
             return;
@@ -29,10 +31,26 @@ function UploadPage(): ReactElement {
         if (file.length !== 1) {
             setPanel("Invalid file");
         }
-        const alreadyExists = await checkSurveyAlreadyExists(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
-        console.log("Start uploading the file");
         setLoading(true);
         setFileName(file[0].name);
+        setInstrumentName(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
+
+        const alreadyExists = await checkSurveyAlreadyExists(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
+
+        if (alreadyExists) {
+            setLoading(false);
+            history.push(`${path}/survey-exists`);
+        } else {
+            await UploadFile();
+        }
+    }
+
+    async function UploadFile() {
+        if (file === undefined) {
+            return;
+        }
+        console.log("Start uploading the file");
+        setLoading(true);
         setPanel("");
         uploader()
             .onProgress(({loaded, total}: Progress) => {
@@ -61,7 +79,7 @@ function UploadPage(): ReactElement {
     }
 
     function checkSurveyAlreadyExists(instrumentName: string) {
-        console.log("Validating file is in the Bucket");
+        console.log("Validating if survey already exists");
         return new Promise((resolve: any, reject: any) => {
             fetch(`/api/instruments/${instrumentName}/exists`)
                 .then((r: Response) => {
@@ -70,25 +88,22 @@ function UploadPage(): ReactElement {
                     }
                     r.json()
                         .then((json) => {
-                            if (json) {
+                            if (json === true) {
                                 console.log(`${instrumentName} already installed`);
-                                resolve(json);
+                                resolve(true);
                             } else {
-                                console.log(`${instrumentName} not found`);
-                                resolve(json);
+                                console.log(`${instrumentName} not found `);
+                                resolve(false);
                             }
                         })
                         .catch((error) => {
-                            console.error("Failed to validate if file is in bucket, error: " + error);
-                        })
-                        .catch((error) => {
-                                console.error("Failed to validate if file is in bucket, error: " + error);
-                            }
-                        );
+                            console.error("Failed to validate if questionnaire already exists, error: " + error);
+                            throw error;
+                        });
                 })
                 .catch(async (error) => {
-                    console.error("Failed to validate if file is in bucket, error: " + error);
-                    await setUploadStatus("Failed to validate if file has been uploaded");
+                    console.error("Failed to validate if questionnaire already exists, error: " + error);
+                    await setUploadStatus("Failed to validate if questionnaire already exists");
                     setRedirect(true);
                 });
         });
@@ -150,72 +165,30 @@ function UploadPage(): ReactElement {
             }).finally(() => setRedirect(true));
     }
 
-    const handleFileChange = (selectorFiles: FileList | null) => {
-        console.log(selectorFiles);
-        if (selectorFiles !== null) {
-            setFile(selectorFiles);
-        }
-    };
-
     return (
         <>
             {
                 redirect && <Redirect
                     to={{
                         pathname: "/UploadSummary",
-                        state: {questionnaireName: fileName.replace(/\.[a-zA-Z]*$/, ""), status: uploadStatus}
+                        state: {questionnaireName: instrumentName, status: uploadStatus}
                     }}/>
             }
-            <Link to="/">
-                Previous
-            </Link>
-            <h1>
-                Deploy a questionnaire file
-            </h1>
 
-            {panel !== "" && <ONSPanel status="error">{panel}</ONSPanel>}
-
-            <ONSPanel>
-                <p>
-                    When a questionnaire file is selected and you continue to deploy this questionnaire file, <b>this
-                    may take a few minutes</b>.
-                    <br/>
-                    <br/>
-                    Given this, <b>do not navigate away</b> from this page during this process. You will be
-                    re-directed
-                    when there is an update regarding the deploy of the questionnaire.
-                </p>
-            </ONSPanel>
-
-            <ONSUpload label="Select survey package"
-                       description="File type accepted is .bpkg only"
-                       fileName="Package"
-                       fileID="survey-selector"
-                       accept="bpkg"
-                       onChange={(e) => handleFileChange(e.target.files)}
-                       disabled={loading}/>
-
-            <ONSButton label="Continue"
-                       id="continue-deploy-button"
-                       primary={true}
-                       onClick={() => UploadFile()}
-                       loading={loading}/>
-            {
-                loading &&
-                <>
-                    <p>Uploading: {uploadPercentage}%</p>
-                    <progress id="file"
-                              value={uploadPercentage}
-                              max="100"
-                              role="progressbar"
-                              aria-valuenow={uploadPercentage}
-                              aria-valuemin={0}
-                              aria-valuemax={100}>
-                        {uploadPercentage}%
-                    </progress>
-
-                </>
-            }
+            <Switch>
+                <Route exact path={path}>
+                    <SelectFilePage BeginUploadProcess={BeginUploadProcess}
+                                    setFile={setFile}
+                                    loading={loading}
+                                    panel={panel}
+                                    uploadPercentage={uploadPercentage}/>
+                </Route>
+                <Route path={`${path}/survey-exists`}>
+                    <AlreadyExists instrumentName={instrumentName}
+                                    UploadFile={UploadFile}
+                                    loading={loading}/>
+                </Route>
+            </Switch>
 
         </>
     );

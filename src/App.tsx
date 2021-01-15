@@ -14,7 +14,7 @@ import InstrumentList from "./Components/InstrumentList";
 import SurveyList from "./Components/SurveyList";
 import {Survey} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
-import UploadPage from "./Components/UploadPage";
+import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
 import {ONSPanel} from "./Components/ONSDesignSystem/ONSPanel";
 
