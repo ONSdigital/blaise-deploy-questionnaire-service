@@ -9,7 +9,7 @@ import {Router} from "react-router";
 import "@testing-library/jest-dom";
 // Mock elements
 import flushPromises from "../../tests/utils";
-import {survey_list} from "./API_Mock_Objects";
+import {instrumentList, survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
 
 
@@ -38,7 +38,7 @@ const mock_server_responses = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(survey_list),
+            json: () => Promise.resolve(instrumentList),
         });
     }
 };
@@ -55,21 +55,47 @@ defineFeature(feature, test => {
         mock_fetch_requests(mock_server_responses);
     });
 
-    test("List all questionnaires in Blaise", ({ given, when, then, and }) => {
+    test("List all questionnaires in Blaise", ({given, when, then, and}) => {
         given("I have launched the Questionnaire Deployment Service", () => {
+            const history = createMemoryHistory();
+            render(
+                <Router history={history}>
+                    <App/>
+                </Router>
+            );
 
         });
 
-        when("I view the landing page", () => {
-
+        when("I view the landing page", async () => {
+            await act(async () => {
+                await flushPromises();
+            });
         });
 
         then("I am presented with a list of the questionnaires already deployed to Blaise", () => {
-
+            expect(screen.getByText(/table of questionnaires/i)).toBeDefined();
+            expect(screen.getByText(/OPN2004A/i)).toBeDefined();
+            expect(screen.getByText(/OPN2101A/i)).toBeDefined();
+            expect(screen.getByText(/OPN2007T/i)).toBeDefined();
         });
 
         and("it is ordered with the most recently deployed at the top", () => {
-
+            const list = screen.queryAllByTestId(/instrument-table-row/i);
+            const listItemOne = list[0];
+            const firstRowData = listItemOne.firstChild;
+            if (firstRowData !== null) {
+                expect(firstRowData.textContent).toEqual("OPN2004A");
+            }
+            const listItemTwo = list[1];
+            const secondRowData = listItemTwo.firstChild;
+            if (secondRowData !== null) {
+                expect(secondRowData.textContent).toEqual("OPN2007T");
+            }
+            const listItemThree = list[2];
+            const thirdRowData = listItemThree.firstChild;
+            if (thirdRowData !== null) {
+                expect(thirdRowData.textContent).toEqual("OPN2101A");
+            }
         });
     });
 });

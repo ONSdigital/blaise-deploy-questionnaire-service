@@ -1,14 +1,16 @@
 interface Instrument {
     installDate: string
     name: string
-    expired: boolean
+    expired?: boolean
     serverParkName: string
-    activeToday: boolean
-    surveyDays: string[]
-    link: string
+    activeToday?: boolean
+    surveyDays?: string[]
+    link?: string
     fieldPeriod: string
-    surveyTLA: string
+    surveyTLA?: string
     dataRecordCount?: number
+    status?: string
+    hasData?: boolean
 }
 
 interface Survey {
