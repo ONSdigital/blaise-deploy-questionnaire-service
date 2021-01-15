@@ -46,10 +46,10 @@ function SelectFilePage(props: SelectFilePageProps): ReactElement {
             </ONSPanel>
 
             <ONSUpload label="Select survey package"
-                       description="File type accepted is .bpkg only"
+                       description="File type accepted are .bpkg and .zip only"
                        fileName="Package"
                        fileID="survey-selector"
-                       accept="bpkg"
+                       accept=".zip,.bpkg"
                        onChange={(e) => handleFileChange(e.target.files)}
                        disabled={loading}/>
 
