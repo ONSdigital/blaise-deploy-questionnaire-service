@@ -2,15 +2,12 @@
 import React from "react";
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
-import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
-import {createMemoryHistory} from "history";
-import App from "../../App";
-import {Router} from "react-router";
+import {cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import flushPromises from "../../tests/utils";
 import {survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
+
 
 
 // Mock the Uploader.js module
@@ -35,6 +32,11 @@ const mock_server_responses = (url: string) => {
             status: 201,
             json: () => Promise.resolve({}),
         });
+    } else if (url.includes("exists")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve(true),
+        });
     } else {
         return Promise.resolve({
             status: 200,
@@ -56,33 +58,40 @@ defineFeature(feature, test => {
     });
 
     test("Questionnaire package already in Blaise", ({given, when, then}) => {
-        given("I have selected the questionnaire package I wish to deploy", () => {
+        given("I have selected the questionnaire package I wish to deploy", async () => {
+            await navigateToDeployPageAndSelectFile();
 
         });
 
-        when("I confirm my selection and the name/ref of the questionnaire package is the same as one already deployed in Blaise", () => {
-
+        when("I confirm my selection and the name/ref of the questionnaire package is the same as one already deployed in Blaise", async () => {
+            await fireEvent.click(screen.getByTestId("button"));
         });
 
-        then("I am presented with the options to cancel or overwrite the questionnaire", () => {
-
+        then("I am presented with the options to cancel or overwrite the questionnaire", async () => {
+            await waitFor((() => {
+                expect(screen.getByText(/already exists in the system/i)).toBeDefined();
+                expect(screen.getByText("Overwrite the entire questionnaire")).toBeDefined();
+            }));
         });
     });
 
 
     test("Back-out of deploying a questionnaire", ({given, when, then}) => {
-        given("I have been presented with the options: Cancel or Overwrite", () => {
-
+        given("I have been presented with the options: Cancel or Overwrite", async () => {
+            await navigateToDeployPageAndSelectFile();
+            await fireEvent.click(screen.getByTestId("button"));
         });
 
-        when("I select to 'cancel'", () => {
-
+        when("I select to 'cancel'", async () => {
+            await fireEvent.click(screen.getByText("Cancel and keep original questionnaire"));
+            await fireEvent.click(screen.getByText("Save"));
         });
 
-        then("I am returned to the landing page", () => {
-
+        then("I am returned to the landing page", async () => {
+            await waitFor((() => {
+                expect(screen.getByText(/table of questionnaires/i)).toBeDefined();
+            }));
         });
     });
-
-
-});
+})
+;
