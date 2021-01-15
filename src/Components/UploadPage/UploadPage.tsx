@@ -36,7 +36,7 @@ function UploadPage(): ReactElement {
         const instrumentName = fileName.replace(/\.[a-zA-Z]*$/, "");
         const fileExtension = fileName.match(/\.[a-zA-Z]*$/) || [];
 
-        if (fileExtension[0] !== ".zip" || fileExtension[0] !== ".zip") {
+        if (fileExtension[0] !== ".zip" && fileExtension[0] !== ".bpkg") {
             setPanel("File must be a .zip or .bpkg");
         }
 
