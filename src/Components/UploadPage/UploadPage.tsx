@@ -31,11 +31,20 @@ function UploadPage(): ReactElement {
         if (file.length !== 1) {
             setPanel("Invalid file");
         }
-        setLoading(true);
-        setFileName(file[0].name);
-        setInstrumentName(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
 
-        const alreadyExists = await checkSurveyAlreadyExists(file[0].name.replace(/\.[a-zA-Z]*$/, ""));
+        const fileName = file[0].name;
+        const instrumentName = fileName.replace(/\.[a-zA-Z]*$/, "");
+        const fileExtension = fileName.match(/\.[a-zA-Z]*$/) || [];
+
+        if (fileExtension[0] !== ".zip" || fileExtension[0] !== ".zip") {
+            setPanel("File must be a .zip or .bpkg");
+        }
+
+        setLoading(true);
+        setFileName(fileName);
+        setInstrumentName(instrumentName);
+
+        const alreadyExists = await checkSurveyAlreadyExists(instrumentName);
 
         if (alreadyExists) {
             setLoading(false);
@@ -185,8 +194,8 @@ function UploadPage(): ReactElement {
                 </Route>
                 <Route path={`${path}/survey-exists`}>
                     <AlreadyExists instrumentName={instrumentName}
-                                    UploadFile={UploadFile}
-                                    loading={loading}/>
+                                   UploadFile={UploadFile}
+                                   loading={loading}/>
                 </Route>
             </Switch>
 
