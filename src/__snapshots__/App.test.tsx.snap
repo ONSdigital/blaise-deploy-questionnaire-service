@@ -228,7 +228,7 @@ Object {
                   class="table__cell "
                 >
                   <a
-                    href="/delete"
+                    href="/delete/OPN2004A"
                   >
                     Delete
                   </a>
@@ -262,7 +262,7 @@ Object {
                   class="table__cell "
                 >
                   <a
-                    href="/delete"
+                    href="/delete/OPN2007T"
                   >
                     Delete
                   </a>
@@ -296,7 +296,7 @@ Object {
                   class="table__cell "
                 >
                   <a
-                    href="/delete"
+                    href="/delete/OPN2101A"
                   >
                     Delete
                   </a>
@@ -586,7 +586,7 @@ Object {
                 class="table__cell "
               >
                 <a
-                  href="/delete"
+                  href="/delete/OPN2004A"
                 >
                   Delete
                 </a>
@@ -620,7 +620,7 @@ Object {
                 class="table__cell "
               >
                 <a
-                  href="/delete"
+                  href="/delete/OPN2007T"
                 >
                   Delete
                 </a>
@@ -654,7 +654,7 @@ Object {
                 class="table__cell "
               >
                 <a
-                  href="/delete"
+                  href="/delete/OPN2101A"
                 >
                   Delete
                 </a>
