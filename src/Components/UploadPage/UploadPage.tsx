@@ -64,6 +64,7 @@ function UploadPage(): ReactElement {
             setLoading(false);
             history.push(`${path}/survey-live`);
         } else {
+            setLoading(false);
             history.push(`${path}/survey-confirm`);
         }
         return;

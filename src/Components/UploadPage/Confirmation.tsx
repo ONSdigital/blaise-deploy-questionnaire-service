@@ -33,6 +33,13 @@ function Confirmation({instrumentName, UploadFile, loading}: Props) {
                 {message}
             </p>
 
+            <div className="panel panel--warn panel--no-title">
+                <span className="panel__icon" aria-hidden="true">!</span>
+                <div className="panel__body">
+                    All existing questionnaire information will be deleted
+                </div>
+            </div>
+
             <form onSubmit={() => confirmOption()}>
                 <fieldset className="fieldset">
                     <legend className="fieldset__legend">
