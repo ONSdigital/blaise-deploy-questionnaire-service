@@ -3,6 +3,7 @@ import {Link, Redirect, Route, Switch, useHistory, useRouteMatch} from "react-ro
 import uploader from "../../uploader";
 import SelectFilePage from "./SelectFilePage";
 import AlreadyExists from "./AlreadyExists";
+import LiveSurveyWarning from "./LiveSurveyWarning";
 
 interface Progress {
     loaded: number
@@ -55,6 +56,16 @@ function UploadPage(): ReactElement {
     }
 
     async function UploadFile() {
+
+        const hasData = await checkSurveyHasData(instrumentName);
+
+        if (hasData) {
+            setLoading(false);
+            history.push(`${path}/survey-live`);
+        } else {
+            //
+        }
+
         if (file === undefined) {
             return;
         }
@@ -113,6 +124,31 @@ function UploadPage(): ReactElement {
                 .catch(async (error) => {
                     console.error("Failed to validate if questionnaire already exists, error: " + error);
                     await setUploadStatus("Failed to validate if questionnaire already exists");
+                    setRedirect(true);
+                });
+        });
+    }
+
+        function checkSurveyHasData(instrumentName: string) {
+        console.log("Validating if survey has data");
+        return new Promise((resolve: any, reject: any) => {
+            fetch(`/api/instruments/${instrumentName}`)
+                .then((r: Response) => {
+                    if (r.status !== 200) {
+                        throw r.status + " - " + r.statusText;
+                    }
+                    r.json()
+                        .then((json) => {
+                            resolve(json);
+                        })
+                        .catch((error) => {
+                            console.error("Failed to validate if questionnaire has data, error: " + error);
+                            throw error;
+                        });
+                })
+                .catch(async (error) => {
+                    console.error("Failed to validate if questionnaire has data, error: " + error);
+                    await setUploadStatus("Failed to validate if questionnaire has data");
                     setRedirect(true);
                 });
         });
@@ -196,6 +232,9 @@ function UploadPage(): ReactElement {
                     <AlreadyExists instrumentName={instrumentName}
                                    UploadFile={UploadFile}
                                    loading={loading}/>
+                </Route>
+                <Route path={`${path}/survey-live`}>
+                    <LiveSurveyWarning instrumentName={instrumentName}/>
                 </Route>
             </Switch>
 
