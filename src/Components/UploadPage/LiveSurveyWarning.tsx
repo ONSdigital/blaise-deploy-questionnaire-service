@@ -25,6 +25,7 @@ function LiveSurveyWarning({instrumentName}: Props) {
             <br/>
             <ONSButton label="Accept and go to table of questionnaires"
                 primary={true}
+                       id="return-to-home"
                        onClick={() => history.push("/")}/>
 
         </>

@@ -86,11 +86,13 @@ function Confirmation({instrumentName, UploadFile, loading}: Props) {
                     label={"Continue"}
                     primary={true}
                     loading={loading}
+                    id="confirm-overwrite"
                     onClick={() => confirmOption()}/>
                 {!loading &&
                 <ONSButton
                     label={"Cancel"}
                     primary={false}
+                    id="cancel-overwrite"
                     onClick={() => confirmOption()}/>
                 }
             </form>
