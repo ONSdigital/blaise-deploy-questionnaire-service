@@ -58,12 +58,6 @@ describe("React homepage", () => {
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
 
-        await fireEvent.click(getByText(/View active questionnaires/i));
-
-        await act(async () => {
-            await flushPromises();
-        });
-
         await waitFor(() => {
             expect(getByText(/Deploy Questionnaire Service/i)).toBeDefined();
             expect(getByText(/OPN2007T/i)).toBeDefined();
@@ -129,7 +123,7 @@ describe("Given the API returns an empty list", () => {
 
 
         await waitFor(() => {
-            expect(getByText(/No active surveys found./i)).toBeDefined();
+            expect(getByText(/No installed questionnaires found./i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
 
