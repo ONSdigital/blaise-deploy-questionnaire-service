@@ -171,7 +171,7 @@ defineFeature(feature, test => {
             await fireEvent.click(screen.getByTestId("button"));
             await act(async () => {
                 await flushPromises();
-            })
+            });
             await fireEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
             await fireEvent.click(screen.getByText(/save/i));
         });
@@ -200,7 +200,7 @@ defineFeature(feature, test => {
             await fireEvent.click(screen.getByTestId("button"));
             await act(async () => {
                 await flushPromises();
-            })
+            });
             await fireEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
             await fireEvent.click(screen.getByText(/save/i));
         });
