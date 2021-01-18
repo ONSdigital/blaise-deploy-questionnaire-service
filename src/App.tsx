@@ -4,7 +4,6 @@ import BetaBanner from "./Components/ONSDesignSystem/BetaBanner";
 import {DefaultErrorBoundary} from "./Components/ErrorHandling/DefaultErrorBoundary";
 import Footer from "./Components/ONSDesignSystem/Footer";
 import ONSErrorPanel from "./Components/ONSDesignSystem/ONSErrorPanel";
-import {isDevEnv} from "./Functions";
 import {Switch, Route, Link} from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
 import {Instrument} from "../Interfaces";
@@ -18,14 +17,14 @@ const divStyle = {
 };
 
 function App(): ReactElement {
-    const [surveys, setSurveys] = useState<Instrument[]>([]);
+    const [instruments, setInstruments] = useState<Instrument[]>([]);
     const [listError, setListError] = useState<string>("Loading ...");
 
     useEffect(() => {
-        getList();
+        getInstrumentList();
     }, []);
 
-    function getList() {
+    function getInstrumentList() {
         fetch("/api/instruments")
             .then((r: Response) => {
                 if (r.status !== 200) {
@@ -37,20 +36,20 @@ function App(): ReactElement {
                             throw "Json response is not a list";
                         }
                         console.log("Retrieved instrument list, " + json.length + " items/s");
-                        isDevEnv() && console.log(json);
-                        setSurveys(json);
+                        console.log(json);
+                        setInstruments(json);
                         setListError("");
 
                         // If the list is empty then show this message in the list
-                        if (json.length === 0) setListError("No active surveys found.");
+                        if (json.length === 0) setListError("No installed questionnaires found.");
                     })
                     .catch((error) => {
-                        isDevEnv() && console.error("Unable to read json from response, error: " + error);
-                        setListError("Unable to load surveys");
+                        console.error("Unable to read json from response, error: " + error);
+                        setListError("Unable to load questionnaires");
                     });
             }).catch((error) => {
-                isDevEnv() && console.error("Failed to retrieve instrument list, error: " + error);
-                setListError("Unable to load surveys");
+                console.error("Failed to retrieve instrument list, error: " + error);
+                setListError("Unable to load questionnaires");
             }
         );
     }
@@ -66,7 +65,7 @@ function App(): ReactElement {
 
                         <Switch>
                             <Route path="/UploadSummary">
-                                <DeploymentSummary getList={getList}/>
+                                <DeploymentSummary getList={getInstrumentList}/>
                             </Route>
                             <Route path="/upload">
                                 <UploadPage/>
@@ -91,7 +90,7 @@ function App(): ReactElement {
                                     </p>
                                 </ONSPanel>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList list={surveys} listError={listError}/>
+                                    <InstrumentList list={instruments} listError={listError}/>
                                 </ErrorBoundary>
                             </Route>
                         </Switch>
