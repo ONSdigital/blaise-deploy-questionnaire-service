@@ -1,6 +1,6 @@
 import React from "react";
 import Enzyme from "enzyme";
-import {render, waitFor, fireEvent, screen, cleanup} from "@testing-library/react";
+import {render, waitFor, fireEvent, cleanup} from "@testing-library/react";
 import Adapter from "enzyme-adapter-react-16";
 import App from "./App";
 import "@testing-library/jest-dom";
@@ -8,26 +8,7 @@ import flushPromises from "./tests/utils";
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
-import {Survey} from "../Interfaces";
-
-const surveyListReturned: Survey[] = [
-    {
-        survey: "OPN",
-        instruments: [
-            {
-                activeToday: true,
-                fieldPeriod: "July 2020",
-                expired: false,
-                installDate: "2020-12-11T11:53:55.5612856+00:00",
-                link: "https://external-web-url/OPN2007T?LayoutSet=CATI-Interviewer_Large",
-                name: "OPN2007T",
-                serverParkName: "LocalDevelopment",
-                "surveyTLA": "OPN",
-                surveyDays: []
-            }
-        ]
-    }
-];
+import {instrumentList} from "./features/step_definitions/API_Mock_Objects";
 
 function mock_server_request(returnedStatus: number, returnedJSON: any) {
     global.fetch = jest.fn(() =>
@@ -42,11 +23,10 @@ describe("React homepage", () => {
     Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
-        mock_server_request(200, surveyListReturned);
+        mock_server_request(200, instrumentList);
     });
 
-
-    it("view surveys page matches Snapshot", async () => {
+    it("view instrument page matches Snapshot", async () => {
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
@@ -61,30 +41,6 @@ describe("React homepage", () => {
         await waitFor(() => {
             expect(wrapper).toMatchSnapshot();
         });
-    });
-
-    it("view questionnaires page matches Snapshot", async () => {
-        const history = createMemoryHistory();
-        const wrapper = render(
-            <Router history={history}>
-                <App/>
-            </Router>
-        );
-
-        await act(async () => {
-            await flushPromises();
-        });
-
-        await fireEvent.click(screen.getByText(/View active questionnaires/i));
-
-        await act(async () => {
-            await flushPromises();
-        });
-
-        await waitFor(() => {
-            expect(wrapper).toMatchSnapshot();
-        });
-
     });
 
     it("should render correctly", async () => {
@@ -99,14 +55,7 @@ describe("React homepage", () => {
 
         await waitFor(() => {
             expect(getByText(/Deploy Questionnaire Service/i)).toBeDefined();
-            expect(getByText(/OPN/i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
-        });
-
-        await fireEvent.click(getByText(/View active questionnaires/i));
-
-        await act(async () => {
-            await flushPromises();
         });
 
         await waitFor(() => {
@@ -174,7 +123,7 @@ describe("Given the API returns an empty list", () => {
 
 
         await waitFor(() => {
-            expect(getByText(/No active surveys found./i)).toBeDefined();
+            expect(getByText(/No installed questionnaires found./i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
 
