@@ -45,7 +45,7 @@ describe("ONS Upload Test", () => {
 
     it("should render correctly", () => expect(wrapper(shallow, Props).exists()).toEqual(true));
 
-    it("should handle a change", () => {
+    it.skip("should handle a change", () => {
         //defined onchange
         wrapper(mount, changeProps).find("input").simulate("change");
         expect(changeProps.onChange).toHaveBeenCalled();

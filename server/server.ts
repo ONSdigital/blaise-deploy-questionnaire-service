@@ -3,7 +3,6 @@ import axios from "axios";
 import path from "path";
 import ejs from "ejs";
 import dotenv from "dotenv";
-import InstrumentRouter from "./Instuments";
 import {getEnvironmentVariables} from "./Config";
 import createLogger from "./pino";
 
@@ -18,6 +17,8 @@ const logger = createLogger();
 server.use(logger);
 
 import {checkFile} from "./storage/helpers";
+import {Instrument} from "../Interfaces";
+import Functions from "./Functions";
 
 //axios.defaults.timeout = 10000;
 
@@ -34,9 +35,6 @@ server.use(
     "/static",
     express.static(path.join(__dirname, `${buildFolder}/static`)),
 );
-
-// Load api Instruments routes from InstrumentRouter
-server.use("/api", InstrumentRouter(BLAISE_API_URL, "VM_EXTERNAL_WEB_URL"));
 
 server.post("/upload", loadingByChunks);
 
@@ -119,6 +117,27 @@ server.get("/api/instruments/:instrumentName", function (req: ResponseQuery, res
     });
 });
 
+server.get("/api/instruments", function (req: ResponseQuery, res: Response) {
+    logger(req, res);
+    req.log.info("/api/instrument endpoint called");
+    axios({
+        url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SERVER_PARK}/instruments`,
+        method: "GET"
+    }).then((response) => {
+        console.log(response);
+        req.log.info(`Call to /api/v1/serverparks/${SERVER_PARK}/instruments`);
+        let instruments: Instrument[] = response.data;
+        instruments.forEach(function (element: Instrument) {
+            element.fieldPeriod = Functions.field_period_to_text(element.name);
+        });
+        res.status(response.status).json(response.data);
+    }).catch((error) => {
+        req.log.error(error, `Call to /api/v1/serverparks/${SERVER_PARK}/instruments`);
+        res.status(500).json(error);
+    });
+});
+
+//api/v1/serverparks/gusty/instruments
 // Health Check endpoint
 server.get("/health_check", async function (req: Request, res: Response) {
     console.log("Heath Check endpoint called");

@@ -1,50 +1,20 @@
-import ExternalLink from "./ONSDesignSystem/ExternalLink";
 import React, {ReactElement} from "react";
-import {Link, useParams} from "react-router-dom";
-import {Instrument, Survey} from "../../Interfaces";
-
-
-interface listError {
-    error: boolean,
-    message: string
-}
+import {Link} from "react-router-dom";
+import {Instrument} from "../../Interfaces";
+import dateFormatter from "dayjs";
 
 interface Props {
-    list: Survey[],
-    listError: listError
+    list: Instrument[],
+    listError: string
 }
 
-interface Params {
-    survey: string
-}
-
-function InstrumentList(props: Props): ReactElement {
-    const {list, listError}: Props = props;
-    const {survey}: Params = useParams();
-
-    const filteredSurvey: Survey[] = list.filter((obj: Survey) => {
-        return obj.survey === survey;
-    });
-
-    let surveyInstruments: Instrument[] = [];
-    if (filteredSurvey.length === 1) {
-        surveyInstruments = filteredSurvey[0].instruments;
-    } else if (filteredSurvey.length !== 1) {
-        listError.message = "No active questionnaires for survey " + survey;
-    } else {
-        listError.message = "Unable to load questionnaires for survey " + survey;
-    }
-
-    surveyInstruments.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
+function InstrumentList({list, listError}: Props): ReactElement {
+    list.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
 
     return <>
-        <p>
-            <Link to={"/"} id={"return-to-survey-list"}>Return to survey list</Link>
-        </p>
-
-        <h2>Active questionnaires</h2>
+        <h2 className="u-mt-m">Table of questionnaires</h2>
         {
-            surveyInstruments && surveyInstruments.length > 0
+            list && list.length > 0
                 ?
                 <table id="instrument-table" className="table ">
                     <thead className="table__head u-mt-m">
@@ -56,13 +26,19 @@ function InstrumentList(props: Props): ReactElement {
                             <span>Field period</span>
                         </th>
                         <th scope="col" className="table__header ">
-                            <span>Link to interview</span>
+                            <span>Install date</span>
+                        </th>
+                        <th scope="col" className="table__header ">
+                            <span>Cases</span>
+                        </th>
+                        <th scope="col" className="table__header ">
+                            <span>Delete questionnaire</span>
                         </th>
                     </tr>
                     </thead>
                     <tbody className="table__body">
                     {
-                        surveyInstruments.map((item: Instrument) => {
+                        list.map((item: Instrument) => {
                             return (
                                 <tr className="table__row" key={item.name} data-testid={"instrument-table-row"}>
                                     <td className="table__cell ">
@@ -72,9 +48,15 @@ function InstrumentList(props: Props): ReactElement {
                                         {item.fieldPeriod}
                                     </td>
                                     <td className="table__cell ">
-                                        <ExternalLink text={"Interview"}
-                                                      link={item.link}
-                                                      ariaLabel={"Launch interview for instrument " + item.name + " " + item.fieldPeriod}/>
+                                        {dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}
+                                    </td>
+                                    <td className="table__cell ">
+                                        {item.dataRecordCount}
+                                    </td>
+                                    <td className={"table__cell "}>
+                                        <Link to="/delete">
+                                            Delete
+                                        </Link>
                                     </td>
                                 </tr>
                             );
@@ -83,9 +65,9 @@ function InstrumentList(props: Props): ReactElement {
                     </tbody>
                 </table>
                 :
-                <div className="panel panel--info panel--simple u-mb-m">
+                <div className="panel panel--info panel--no-title u-mb-m">
                     <div className="panel__body">
-                        <p>{listError.message}</p>
+                        <p>{listError}</p>
                     </div>
                 </div>
         }
