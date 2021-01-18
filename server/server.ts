@@ -126,7 +126,7 @@ server.get("/api/instruments", function (req: ResponseQuery, res: Response) {
     }).then((response) => {
         console.log(response);
         req.log.info(`Call to /api/v1/serverparks/${SERVER_PARK}/instruments`);
-        let instruments: Instrument[] = response.data;
+        const instruments: Instrument[] = response.data;
         instruments.forEach(function (element: Instrument) {
             element.fieldPeriod = Functions.field_period_to_text(element.name);
         });
