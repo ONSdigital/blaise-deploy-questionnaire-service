@@ -87,7 +87,7 @@ server.get("/api/install", function (req: ResponseQuery, res: Response) {
 
 server.get("/api/instruments/:instrumentName/exists", function (req: ResponseQuery, res: Response) {
     logger(req, res);
-    req.log.info("/api/install endpoint called");
+    req.log.info("/api/instruments/:instrumentName/exists endpoint called");
     const {instrumentName} = req.params;
     axios({
         url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`,
@@ -101,6 +101,22 @@ server.get("/api/instruments/:instrumentName/exists", function (req: ResponseQue
     });
 });
 
+server.get("/api/instruments/:instrumentName", function (req: ResponseQuery, res: Response) {
+    logger(req, res);
+    req.log.info("/api/instruments/:instrumentName endpoint called");
+    const {instrumentName} = req.params;
+    axios({
+        url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}`,
+        method: "GET"
+    }).then((response) => {
+        req.log.info(`Call to /api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}`);
+        res.status(response.status).json(response.data);
+    }).catch((error) => {
+        req.log.error(error, `Call to /api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}`);
+        res.status(500).json(error);
+    });
+});
+
 server.get("/api/instruments", function (req: ResponseQuery, res: Response) {
     logger(req, res);
     req.log.info("/api/instrument endpoint called");
@@ -110,7 +126,7 @@ server.get("/api/instruments", function (req: ResponseQuery, res: Response) {
     }).then((response) => {
         console.log(response);
         req.log.info(`Call to /api/v1/serverparks/${SERVER_PARK}/instruments`);
-        let instruments: Instrument[] = response.data;
+        const instruments: Instrument[] = response.data;
         instruments.forEach(function (element: Instrument) {
             element.fieldPeriod = Functions.field_period_to_text(element.name);
         });
