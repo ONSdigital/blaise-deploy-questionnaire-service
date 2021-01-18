@@ -10,7 +10,7 @@ Feature: Overwrite an existing questionnaire file when survey is NOT live
     Then I am presented with the options to cancel or overwrite the questionnaire
 
   # Scenario 2:
-  Scenario 2: Select to overwrite existing questionnaire when it is live
+  Scenario: Select to overwrite existing questionnaire when it is live
     Given I have been presented with the options to cancel or overwrite the questionnaire
     When I select to 'overwrite' and the survey is live (within the specified survey days)
     Then I am presented with a warning banner that I cannot overwrite the survey
