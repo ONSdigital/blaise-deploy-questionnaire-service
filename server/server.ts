@@ -26,7 +26,7 @@ import Functions from "./Functions";
 const buildFolder = "../../build";
 
 // load the .env variables in the server
-const {BLAISE_API_URL, BUCKET_NAME, PROJECT_ID, SERVER_PARK} = getEnvironmentVariables();
+const {BLAISE_API_URL, BUCKET_NAME, SERVER_PARK} = getEnvironmentVariables();
 
 // treat the index.html as a template and substitute the values at runtime
 server.set("views", path.join(__dirname, buildFolder));
