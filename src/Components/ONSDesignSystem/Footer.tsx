@@ -1,15 +1,10 @@
 import React, {ReactElement} from "react";
 
-interface Props {
-    external_client_url: string
-}
-
-
-function Footer(props: Props): ReactElement {
+function Footer(): ReactElement {
     return (
         <>
             <footer className="footer">
-                <div className="footer--body" data-analytics="footer">
+                <div className="footer__body" data-analytics="footer">
                     <div className="container ">
                         <div className="grid grid--flex grid--between">
                             <div className="grid__col">

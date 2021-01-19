@@ -63,7 +63,6 @@ function App(): ReactElement {
         );
     }
 
-
     return (
         <>
             {
@@ -113,7 +112,7 @@ function App(): ReactElement {
                     </DefaultErrorBoundary>
                 </main>
             </div>
-            <Footer external_client_url={""}/>
+            <Footer/>
         </>
     );
 }
