@@ -77,6 +77,7 @@ function AlreadyExists({instrumentName, UploadFile, loading} : Props) {
                 <ONSButton
                     label={"Save"}
                     primary={true}
+                    id="confirm-save"
                     loading={loading}
                     onClick={() => confirmOption()}/>
             </form>
