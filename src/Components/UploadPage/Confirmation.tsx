@@ -86,7 +86,7 @@ function Confirmation({instrumentName, UploadFile, loading}: Props) {
                     label={"Continue"}
                     primary={true}
                     loading={loading}
-                    id="confirm-overwrite"
+                    id="confirm-continue"
                     onClick={() => confirmOption()}/>
                 {!loading &&
                 <ONSButton
