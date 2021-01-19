@@ -12,6 +12,7 @@ import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
 import {ONSPanel} from "./Components/ONSDesignSystem/ONSPanel";
 import DeleteConfirmation from "./Components/DeleteConfirmation";
+import NotProductionWarning from "./Components/ONSDesignSystem/NotProductionWarning";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -65,6 +66,9 @@ function App(): ReactElement {
 
     return (
         <>
+            {
+                (window.location.hostname.includes("dev")) && <NotProductionWarning/>
+            }
             <BetaBanner/>
             <Header title={"Deploy Questionnaire Service"}/>
             <div style={divStyle} className="page__container container">
