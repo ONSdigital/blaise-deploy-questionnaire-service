@@ -47,9 +47,9 @@ export const instrumentList: Instrument[] = [{
     serverParkName: "gusty",
     installDate: "2021-01-15T15:18:40.1503617+00:00",
     status: "Active",
-    dataRecordCount: 0,
-    hasData: false,
-    fieldPeriod: "July 2007"
+    dataRecordCount: 10,
+    hasData: true,
+    fieldPeriod: "July 2020"
 }, {
     name: "OPN2004A",
     serverParkName: "gusty",
@@ -57,6 +57,6 @@ export const instrumentList: Instrument[] = [{
     status: "Active",
     dataRecordCount: 0,
     hasData: false,
-    fieldPeriod: "April 2004"
+    fieldPeriod: "April 2020"
 }];
 

@@ -1,4 +1,4 @@
-interface EnvironmentVariables {
+export interface EnvironmentVariables {
     BLAISE_API_URL: string
     PROJECT_ID: string
     BUCKET_NAME: string

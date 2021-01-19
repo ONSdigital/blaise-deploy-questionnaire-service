@@ -1,5 +1,4 @@
 import express, {NextFunction, Request, Response} from "express";
-import axios from "axios";
 import path from "path";
 import ejs from "ejs";
 import dotenv from "dotenv";
@@ -17,8 +16,7 @@ const logger = createLogger();
 server.use(logger);
 
 import {checkFile} from "./storage/helpers";
-import {Instrument} from "../Interfaces";
-import Functions from "./Functions";
+import BlaiseAPIRouter from "./BlaiseAPI";
 
 //axios.defaults.timeout = 10000;
 
@@ -26,15 +24,13 @@ import Functions from "./Functions";
 const buildFolder = "../../build";
 
 // load the .env variables in the server
-const {BLAISE_API_URL, BUCKET_NAME, PROJECT_ID, SERVER_PARK} = getEnvironmentVariables();
+const environmentVariables = getEnvironmentVariables();
+const {BUCKET_NAME} = environmentVariables;
 
 // treat the index.html as a template and substitute the values at runtime
 server.set("views", path.join(__dirname, buildFolder));
 server.engine("html", ejs.renderFile);
-server.use(
-    "/static",
-    express.static(path.join(__dirname, `${buildFolder}/static`)),
-);
+server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static`)));
 
 server.post("/upload", loadingByChunks);
 
@@ -60,84 +56,9 @@ server.get("/bucket", function (req: Request, res: Response) {
         });
 });
 
-interface ResponseQuery extends Request {
-    query: { filename: string }
-}
+// All Endpoints calling the Blaise API
+server.use("/", BlaiseAPIRouter(environmentVariables, logger));
 
-server.get("/api/install", function (req: ResponseQuery, res: Response) {
-    logger(req, res);
-    req.log.info("/api/install endpoint called");
-    const {filename} = req.query;
-    axios({
-        url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SERVER_PARK}/instruments`,
-        method: "POST",
-        data: {
-            "instrumentName": filename.replace(/\.[a-zA-Z]*$/, ""),
-            "instrumentFile": filename,
-            "bucketPath": BUCKET_NAME
-        }
-    }).then((response) => {
-        req.log.info(`Call to /api/v1/serverparks/${SERVER_PARK}/instruments successful`);
-        res.status(response.status).json(response.data);
-    }).catch((error) => {
-        req.log.error(error, `Call to /api/v1/serverparks/${SERVER_PARK}/instruments failed`);
-        res.status(500).json(error);
-    });
-});
-
-server.get("/api/instruments/:instrumentName/exists", function (req: ResponseQuery, res: Response) {
-    logger(req, res);
-    req.log.info("/api/instruments/:instrumentName/exists endpoint called");
-    const {instrumentName} = req.params;
-    axios({
-        url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`,
-        method: "GET"
-    }).then((response) => {
-        req.log.info(`Call to /api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`);
-        res.status(response.status).json(response.data);
-    }).catch((error) => {
-        req.log.error(error, `Call to /api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`);
-        res.status(500).json(error);
-    });
-});
-
-server.get("/api/instruments/:instrumentName", function (req: ResponseQuery, res: Response) {
-    logger(req, res);
-    req.log.info("/api/instruments/:instrumentName endpoint called");
-    const {instrumentName} = req.params;
-    axios({
-        url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}`,
-        method: "GET"
-    }).then((response) => {
-        req.log.info(`Call to /api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}`);
-        res.status(response.status).json(response.data);
-    }).catch((error) => {
-        req.log.error(error, `Call to /api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}`);
-        res.status(500).json(error);
-    });
-});
-
-server.get("/api/instruments", function (req: ResponseQuery, res: Response) {
-    logger(req, res);
-    req.log.info("/api/instrument endpoint called");
-    axios({
-        url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SERVER_PARK}/instruments`,
-        method: "GET"
-    }).then((response) => {
-        console.log(response);
-        req.log.info(`Call to /api/v1/serverparks/${SERVER_PARK}/instruments`);
-        const instruments: Instrument[] = response.data;
-        instruments.forEach(function (element: Instrument) {
-            element.fieldPeriod = Functions.field_period_to_text(element.name);
-        });
-        res.status(response.status).json(response.data);
-    }).catch((error) => {
-        req.log.error(error, `Call to /api/v1/serverparks/${SERVER_PARK}/instruments`);
-        res.status(500).json(error);
-    });
-});
-
-//api/v1/serverparks/gusty/instruments
 // Health Check endpoint
 server.get("/health_check", async function (req: Request, res: Response) {
     console.log("Heath Check endpoint called");
@@ -153,6 +74,5 @@ server.use(function (err: Error, req: Request, res: Response, next: NextFunction
     req.log.error(err, err.message);
     res.render("../views/500.html", {});
 });
-
 
 export default server;

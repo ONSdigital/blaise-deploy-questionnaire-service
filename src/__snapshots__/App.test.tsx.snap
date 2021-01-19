@@ -212,7 +212,7 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  April 2004
+                  April 2020
                 </td>
                 <td
                   class="table__cell "
@@ -228,7 +228,8 @@ Object {
                   class="table__cell "
                 >
                   <a
-                    href="/delete"
+                    data-testid="delete-OPN2004A"
+                    href="/delete/OPN2004A"
                   >
                     Delete
                   </a>
@@ -246,7 +247,7 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  July 2007
+                  July 2020
                 </td>
                 <td
                   class="table__cell "
@@ -256,17 +257,11 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  0
+                  10
                 </td>
                 <td
                   class="table__cell "
-                >
-                  <a
-                    href="/delete"
-                  >
-                    Delete
-                  </a>
-                </td>
+                />
               </tr>
               <tr
                 class="table__row"
@@ -296,7 +291,8 @@ Object {
                   class="table__cell "
                 >
                   <a
-                    href="/delete"
+                    data-testid="delete-OPN2101A"
+                    href="/delete/OPN2101A"
                   >
                     Delete
                   </a>
@@ -570,7 +566,7 @@ Object {
               <td
                 class="table__cell "
               >
-                April 2004
+                April 2020
               </td>
               <td
                 class="table__cell "
@@ -586,7 +582,8 @@ Object {
                 class="table__cell "
               >
                 <a
-                  href="/delete"
+                  data-testid="delete-OPN2004A"
+                  href="/delete/OPN2004A"
                 >
                   Delete
                 </a>
@@ -604,7 +601,7 @@ Object {
               <td
                 class="table__cell "
               >
-                July 2007
+                July 2020
               </td>
               <td
                 class="table__cell "
@@ -614,17 +611,11 @@ Object {
               <td
                 class="table__cell "
               >
-                0
+                10
               </td>
               <td
                 class="table__cell "
-              >
-                <a
-                  href="/delete"
-                >
-                  Delete
-                </a>
-              </td>
+              />
             </tr>
             <tr
               class="table__row"
@@ -654,7 +645,8 @@ Object {
                 class="table__cell "
               >
                 <a
-                  href="/delete"
+                  data-testid="delete-OPN2101A"
+                  href="/delete/OPN2101A"
                 >
                   Delete
                 </a>

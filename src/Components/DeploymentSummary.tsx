@@ -1,4 +1,4 @@
-import React, {ReactElement, useState} from "react";
+import React, {ReactElement, useEffect, useState} from "react";
 import {ONSPanel} from "./ONSDesignSystem/ONSPanel";
 import {Redirect, useHistory, useLocation} from "react-router-dom";
 import {ONSButton} from "./ONSDesignSystem/ONSButton";
@@ -16,7 +16,11 @@ function DeploymentSummary({getList}: Props): ReactElement {
     const location = useLocation();
     const history = useHistory();
     const {questionnaireName, status} = (location as Location).state || {questionnaireName: "/", status: ""};
-    getList();
+
+    useEffect(() => {
+        getList();
+    }, []);
+
     return (
         <>
             {
