@@ -41,6 +41,7 @@ export const instrumentList: Instrument[] = [{
     status: "Active",
     dataRecordCount: 0,
     hasData: false,
+    active: false,
     fieldPeriod: "January 2021"
 }, {
     name: "OPN2007T",
@@ -49,6 +50,7 @@ export const instrumentList: Instrument[] = [{
     status: "Active",
     dataRecordCount: 10,
     hasData: true,
+    active: true,
     fieldPeriod: "July 2020"
 }, {
     name: "OPN2004A",
@@ -57,6 +59,7 @@ export const instrumentList: Instrument[] = [{
     status: "Active",
     dataRecordCount: 0,
     hasData: false,
+    active: false,
     fieldPeriod: "April 2020"
 }];
 
