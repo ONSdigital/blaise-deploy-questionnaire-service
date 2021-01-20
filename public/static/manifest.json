@@ -1,0 +1,42 @@
+{
+  "short_name": "DQS",
+  "name": "Deploy Questionnaire Service",
+  "description": "Deploy and manage installed questionnaires in Blaise",
+  "icons": [
+    {
+      "src": "/static/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/maskable_icon_x1.png",
+      "sizes": "853×853",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#033e58",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#3b7a9e",
+  "shortcuts": [
+    {
+      "name": "Deploy new questionnaire",
+      "short_name": "Deploy",
+      "description": "Deploy a new questionnaire to Blaise",
+      "url": "/upload?source=pwa",
+      "icons": [
+        {
+          "src": "/static/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
