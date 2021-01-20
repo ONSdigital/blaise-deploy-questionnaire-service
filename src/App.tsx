@@ -81,7 +81,7 @@ function App(): ReactElement {
                             <Route path="/upload">
                                 <UploadPage/>
                             </Route>
-                            <Route path="/delete/:instrumentName">
+                            <Route path="/delete">
                                 <DeleteConfirmation  getList={getInstrumentList}/>
                             </Route>
                             <Route path="/">

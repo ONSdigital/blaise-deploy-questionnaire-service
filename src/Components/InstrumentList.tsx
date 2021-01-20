@@ -58,7 +58,10 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                             item.active ?
                                                 "Questionnaire is live"
                                                 :
-                                                <Link data-testid={`delete-${item.name}`} to={`/delete/${item.name}`}>
+                                                <Link data-testid={`delete-${item.name}`} to={{
+                                                    pathname: "/delete",
+                                                    state: {instrumentName: item.name}
+                                                }}>
                                                     Delete
                                                 </Link>
                                         }
