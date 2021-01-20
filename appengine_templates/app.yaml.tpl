@@ -11,5 +11,5 @@ env_variables:
   SERVER_PARK: _SERVER_PARK
 
 basic_scaling:
-  idle_timeout: 60s
+  idle_timeout: 10m
   max_instances: 10
