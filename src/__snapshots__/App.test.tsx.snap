@@ -231,6 +231,7 @@ Object {
                   <a
                     data-testid="delete-OPN2004A"
                     href="/delete"
+                    id="delete-button-OPN2004A"
                   >
                     Delete
                   </a>
@@ -298,6 +299,7 @@ Object {
                   <a
                     data-testid="delete-OPN2101A"
                     href="/delete"
+                    id="delete-button-OPN2101A"
                   >
                     Delete
                   </a>
@@ -565,6 +567,7 @@ Object {
                 <a
                   data-testid="delete-OPN2004A"
                   href="/delete"
+                  id="delete-button-OPN2004A"
                 >
                   Delete
                 </a>
@@ -632,6 +635,7 @@ Object {
                 <a
                   data-testid="delete-OPN2101A"
                   href="/delete"
+                  id="delete-button-OPN2101A"
                 >
                   Delete
                 </a>
