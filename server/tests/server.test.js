@@ -18,7 +18,7 @@ const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
 describe("Given the API returns 2 instruments", () => {
     beforeAll(() => {
-        mock.onGet("http://" + process.env.BLAISE_API_URL + "/api/v1/serverparks/server-park/instruments").reply(200,
+        mock.onGet("http://" + process.env.BLAISE_API_URL + "/api/v1/cati/serverparks/server-park/instruments").reply(200,
             apiInstrumentList,
         );
     });
@@ -75,7 +75,7 @@ describe("Given the API returns 2 instruments", () => {
 
 describe("Get list of instruments endpoint fails", () => {
     beforeAll(() => {
-        mock.onGet("http://" + process.env.BLAISE_API_URL + "/api/v1/serverparks/server-park/instruments").networkError();
+        mock.onGet("http://" + process.env.BLAISE_API_URL + "/api/v1/cati/serverparks/server-park/instruments").networkError();
     });
 
     it("should return a 500 status and an error message", async done => {

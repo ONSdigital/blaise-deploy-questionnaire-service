@@ -226,10 +226,11 @@ Object {
                 </td>
                 <td
                   class="table__cell "
+                  id="delete-OPN2004A"
                 >
                   <a
                     data-testid="delete-OPN2004A"
-                    href="/delete/OPN2004A"
+                    href="/delete"
                   >
                     Delete
                   </a>
@@ -261,7 +262,10 @@ Object {
                 </td>
                 <td
                   class="table__cell "
-                />
+                  id="delete-OPN2007T"
+                >
+                  Questionnaire is live
+                </td>
               </tr>
               <tr
                 class="table__row"
@@ -289,10 +293,11 @@ Object {
                 </td>
                 <td
                   class="table__cell "
+                  id="delete-OPN2101A"
                 >
                   <a
                     data-testid="delete-OPN2101A"
-                    href="/delete/OPN2101A"
+                    href="/delete"
                   >
                     Delete
                   </a>
@@ -555,10 +560,11 @@ Object {
               </td>
               <td
                 class="table__cell "
+                id="delete-OPN2004A"
               >
                 <a
                   data-testid="delete-OPN2004A"
-                  href="/delete/OPN2004A"
+                  href="/delete"
                 >
                   Delete
                 </a>
@@ -590,7 +596,10 @@ Object {
               </td>
               <td
                 class="table__cell "
-              />
+                id="delete-OPN2007T"
+              >
+                Questionnaire is live
+              </td>
             </tr>
             <tr
               class="table__row"
@@ -618,10 +627,11 @@ Object {
               </td>
               <td
                 class="table__cell "
+                id="delete-OPN2101A"
               >
                 <a
                   data-testid="delete-OPN2101A"
-                  href="/delete/OPN2101A"
+                  href="/delete"
                 >
                   Delete
                 </a>

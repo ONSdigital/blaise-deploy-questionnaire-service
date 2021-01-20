@@ -11,6 +11,7 @@ interface Instrument {
     dataRecordCount?: number
     status?: string
     hasData?: boolean
+    active?: boolean
 }
 
 interface Survey {

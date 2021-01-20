@@ -70,7 +70,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         logger(req, res);
         req.log.info("/api/instrument endpoint called");
         axios({
-            url: `http://${BLAISE_API_URL}/api/v1/serverparks/${SERVER_PARK}/instruments`,
+            url: `http://${BLAISE_API_URL}/api/v1/cati/serverparks/${SERVER_PARK}/instruments`,
             method: "GET"
         }).then((response) => {
             req.log.info({responseData: response.data}, `Call to /api/v1/serverparks/${SERVER_PARK}/instruments`);

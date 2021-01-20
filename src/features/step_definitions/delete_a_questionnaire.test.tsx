@@ -84,7 +84,7 @@ defineFeature(feature, test => {
             const listItemTwo = list[1];
             const secondRowData = listItemTwo.lastChild;
             if (secondRowData !== null) {
-                expect(secondRowData.textContent).not.toEqual("Delete");
+                expect(secondRowData.textContent).toEqual("Questionnaire is live");
             }
         });
 

@@ -1,13 +1,13 @@
 import React, {ReactElement, useState} from "react";
-import {Link, Redirect, useHistory, useParams} from "react-router-dom";
+import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
 import {ONSButton} from "./ONSDesignSystem/ONSButton";
-
-interface Params {
-    instrumentName: string
-}
 
 interface Props {
     getList: () => void
+}
+
+interface Location {
+    state: any
 }
 
 function DeleteConfirmation({getList}: Props): ReactElement {
@@ -16,7 +16,8 @@ function DeleteConfirmation({getList}: Props): ReactElement {
     const [loading, setLoading] = useState<boolean>(false);
     const [redirect, setRedirect] = useState<boolean>(false);
     const history = useHistory();
-    const {instrumentName}: Params = useParams();
+    const location = useLocation();
+    const {instrumentName} = (location as Location).state || {instrumentName: ""};
 
     function confirmOption(): void{
         if (!confirm) {
