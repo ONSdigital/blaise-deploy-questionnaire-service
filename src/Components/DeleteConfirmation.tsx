@@ -1,6 +1,7 @@
 import React, {ReactElement, useState} from "react";
 import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
 import {ONSButton} from "./ONSDesignSystem/ONSButton";
+import {ONSPanel} from "./ONSDesignSystem/ONSPanel";
 
 interface Props {
     getList: () => void
@@ -10,16 +11,62 @@ interface Location {
     state: any
 }
 
+function confirmDeleteRadios(setConfirm: (value: (((prevState: (boolean | null)) => (boolean | null)) | boolean | null)) => void) {
+    return <fieldset className="fieldset" id="delete-radios">
+        <legend className="fieldset__legend"></legend>
+        <div className="radios__items">
+            <p className="radios__item">
+                <span className="radio">
+                    <input
+                        type="radio"
+                        id="confirm-radio-delete"
+                        className="radio__input js-radio "
+                        value="True"
+                        name="confirm-radio-delete"
+                        aria-label="Yes"
+                        onChange={() => setConfirm(true)}
+                    />
+                    <label className="radio__label " htmlFor="confirm-radio-delete">
+                        Yes, delete questionnaire
+                    </label>
+                </span>
+            </p>
+            <br/>
+            <p className="radios__item">
+                <span className="radio">
+                    <input
+                        type="radio"
+                        id="cancel-radio-delete"
+                        className="radio__input js-radio "
+                        value="False"
+                        name="confirm-radio-delete"
+                        aria-label="No"
+                        onChange={() => setConfirm(false)}
+                    />
+                    <label className="radio__label " htmlFor="cancel-radio-delete">
+                        No, do not delete questionnaire
+                    </label>
+                    </span>
+            </p>
+        </div>
+    </fieldset>;
+}
+
 function DeleteConfirmation({getList}: Props): ReactElement {
-    const [confirm, setConfirm] = useState<boolean>(false);
+    const [confirm, setConfirm] = useState<boolean | null>(null);
     const [message, setMessage] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [redirect, setRedirect] = useState<boolean>(false);
+    const [formError, setFormError] = useState<string>("");
     const history = useHistory();
     const location = useLocation();
     const {instrumentName} = (location as Location).state || {instrumentName: ""};
 
-    function confirmOption(): void{
+    function confirmOption(): void {
+        if (confirm === null) {
+            setFormError("Select an answer");
+            return;
+        }
         if (!confirm) {
             history.push("/");
             return;
@@ -80,45 +127,18 @@ function DeleteConfirmation({getList}: Props): ReactElement {
             </p>
 
             <form onSubmit={() => confirmOption()}>
-                <fieldset className="fieldset">
-                    <legend className="fieldset__legend">
-                    </legend>
-                    <div className="radios__items">
+                {
+                    formError === "" ?
+                        confirmDeleteRadios(setConfirm)
+                        :
+                        <ONSPanel status={"error"}>
+                            <p className="panel__error">
+                                <strong>{formError}</strong>
+                            </p>
+                            {confirmDeleteRadios(setConfirm)}
+                        </ONSPanel>
+                }
 
-                        <p className="radios__item">
-                        <span className="radio">
-                        <input
-                            type="radio"
-                            id="confirm-delete"
-                            className="radio__input js-radio "
-                            value="True"
-                            name="confirm-radio-delete"
-                            aria-label="Yes"
-                            onChange={() => setConfirm(true)}
-                        />
-                        <label className="radio__label " htmlFor="confirm-delete">
-                            Yes, delete questionnaire
-                        </label>
-                    </span></p>
-                        <br/>
-                        <p className="radios__item">
-                        <span className="radio">
-                        <input
-                            type="radio"
-                            id="cancel-delete"
-                            className="radio__input js-radio "
-                            value="False"
-                            name="confirm-radio-delete"
-                            aria-label="No"
-                            onChange={() => setConfirm(false)}
-                        />
-                        <label className="radio__label " htmlFor="cancel-delete">
-                            No, do not delete questionnaire
-                        </label>
-                    </span>
-                        </p>
-                    </div>
-                </fieldset>
 
                 <br/>
                 <ONSButton
