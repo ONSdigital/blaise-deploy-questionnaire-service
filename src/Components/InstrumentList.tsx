@@ -56,7 +56,7 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                     <td className={"table__cell "}>
                                         {
                                             !item.hasData &&
-                                            <Link data-testid={`delete-${item.name}`} to={`/delete/${item.name}`}>
+                                            <Link id={`delete-${item.name}`} data-testid={`delete-${item.name}`} to={`/delete/${item.name}`}>
                                                 Delete
                                             </Link>
                                         }
