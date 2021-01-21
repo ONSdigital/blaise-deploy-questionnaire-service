@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {ReactElement, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {ONSButton} from "../ONSDesignSystem/ONSButton";
 
@@ -8,7 +8,7 @@ interface Props {
     loading: boolean
 }
 
-function AlreadyExists({instrumentName, ConfirmInstrumentOverride, loading} : Props) {
+function AlreadyExists({instrumentName, ConfirmInstrumentOverride, loading} : Props): ReactElement {
     const [confirm, setConfirm] = useState<boolean>(false);
     const history = useHistory();
 
