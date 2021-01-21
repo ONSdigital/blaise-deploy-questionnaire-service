@@ -1,5 +1,5 @@
 import React, {ReactElement, useState} from "react";
-import {Link, Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
+import {Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
 import uploader from "../../uploader";
 import SelectFilePage from "./SelectFilePage";
 import AlreadyExists from "./AlreadyExists";

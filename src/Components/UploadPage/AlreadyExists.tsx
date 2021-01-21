@@ -10,7 +10,6 @@ interface Props {
 
 function AlreadyExists({instrumentName, ConfirmInstrumentOverride, loading} : Props) {
     const [confirm, setConfirm] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>("");
     const history = useHistory();
 
     function confirmOption() {
@@ -28,10 +27,6 @@ function AlreadyExists({instrumentName, ConfirmInstrumentOverride, loading} : Pr
             <br/>
             What action do you want to take?
             </h1>
-
-            <p>
-                {message}
-            </p>
 
             <form onSubmit={() => confirmOption()}>
                 <fieldset className="fieldset">
