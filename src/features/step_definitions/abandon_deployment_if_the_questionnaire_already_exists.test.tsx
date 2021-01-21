@@ -32,10 +32,10 @@ const mock_server_responses = (url: string) => {
             status: 201,
             json: () => Promise.resolve({}),
         });
-    } else if (url.includes("exists")) {
+    } else if (url.includes("/api/instruments/OPN2004A")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(true),
+            json: () => Promise.resolve({name: "OPN2004A", active: true}),
         });
     } else {
         return Promise.resolve({

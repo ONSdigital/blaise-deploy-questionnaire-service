@@ -37,6 +37,10 @@ function App(): ReactElement {
         setInstruments([]);
         fetch("/api/instruments")
             .then((r: Response) => {
+                if (r.status === 404) {
+                    setListError("No installed questionnaires found.");
+                    return;
+                }
                 if (r.status !== 200) {
                     throw r.status + " - " + r.statusText;
                 }
