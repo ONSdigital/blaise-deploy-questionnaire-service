@@ -14,6 +14,7 @@ interface Progress {
 function UploadPage(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [uploading, setUploading] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
     const [fileName, setFileName] = useState<string>("");
     const [instrumentName, setInstrumentName] = useState<string>("");
@@ -76,6 +77,7 @@ function UploadPage(): ReactElement {
         console.log("Start uploading the file");
         setLoading(true);
         setPanel("");
+        setUploading(true);
         uploader()
             .onProgress(({loaded, total}: Progress) => {
                 const percent = Math.round(loaded / total * 100 * 100) / 100;
@@ -88,6 +90,7 @@ function UploadPage(): ReactElement {
             })
             .send(file[0])
             .end((error: Error) => {
+                setUploading(false);
                 if (error) {
                     console.log("Failed to upload file, error: ", error);
                     setLoading(false);
@@ -260,6 +263,23 @@ function UploadPage(): ReactElement {
                                   loading={loading}/>
                 </Route>
             </Switch>
+
+            {
+                uploading &&
+                <>
+                    <p>Uploading: {uploadPercentage}%</p>
+                    <progress id="file"
+                              value={uploadPercentage}
+                              max="100"
+                              role="progressbar"
+                              aria-valuenow={uploadPercentage}
+                              aria-valuemin={0}
+                              aria-valuemax={100}>
+                        {uploadPercentage}%
+                    </progress>
+
+                </>
+            }
 
         </>
     );

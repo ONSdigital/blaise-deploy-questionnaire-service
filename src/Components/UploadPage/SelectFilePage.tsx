@@ -58,22 +58,6 @@ function SelectFilePage(props: SelectFilePageProps): ReactElement {
                        primary={true}
                        onClick={() => props.BeginUploadProcess()}
                        loading={loading}/>
-            {
-                loading &&
-                <>
-                    <p>Uploading: {uploadPercentage}%</p>
-                    <progress id="file"
-                              value={uploadPercentage}
-                              max="100"
-                              role="progressbar"
-                              aria-valuenow={uploadPercentage}
-                              aria-valuemin={0}
-                              aria-valuemax={100}>
-                        {uploadPercentage}%
-                    </progress>
-
-                </>
-            }
         </>
     );
 }
