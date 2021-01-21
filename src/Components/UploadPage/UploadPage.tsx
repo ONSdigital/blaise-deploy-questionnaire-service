@@ -58,7 +58,7 @@ function UploadPage(): ReactElement {
 
     async function UploadConfirm() {
         setLoading(true);
-        const hasData = await checkSurveyHasData(instrumentName);
+        const hasData = await checkSurveyIsActive(instrumentName);
 
         if (hasData) {
             setLoading(false);
@@ -105,14 +105,19 @@ function UploadPage(): ReactElement {
     function checkSurveyAlreadyExists(instrumentName: string) {
         console.log("Validating if survey already exists");
         return new Promise((resolve: any, reject: any) => {
-            fetch(`/api/instruments/${instrumentName}/exists`)
+            fetch(`/api/instruments/${instrumentName}`)
                 .then((r: Response) => {
+                    if (r.status === 404) {
+                        console.log(`${instrumentName} not found `);
+                        resolve(false);
+                        return;
+                    }
                     if (r.status !== 200) {
                         throw r.status + " - " + r.statusText;
                     }
                     r.json()
                         .then((json) => {
-                            if (json === true) {
+                            if (json.name === instrumentName) {
                                 console.log(`${instrumentName} already installed`);
                                 resolve(true);
                             } else {
@@ -133,30 +138,34 @@ function UploadPage(): ReactElement {
         });
     }
 
-    function checkSurveyHasData(instrumentName: string) {
-        console.log("Validating if survey has data");
+    function checkSurveyIsActive(instrumentName: string) {
+        console.log("Validating if survey is active");
         return new Promise((resolve: any, reject: any) => {
             fetch(`/api/instruments/${instrumentName}`)
                 .then((r: Response) => {
+                    if (r.status === 404) {
+                        resolve(false);
+                    }
                     if (r.status !== 200) {
                         throw r.status + " - " + r.statusText;
                     }
                     r.json()
                         .then((json) => {
-                            if (json.hasData) {
+                            console.log(json);
+                            if (json.active) {
                                 resolve(true);
                             } else {
                                 resolve(false);
                             }
                         })
                         .catch((error) => {
-                            console.error("Failed to validate if questionnaire has data, error: " + error);
+                            console.error("Failed to validate if questionnaire is active, error: " + error);
                             throw error;
                         });
                 })
                 .catch(async (error) => {
-                    console.error("Failed to validate if questionnaire has data, error: " + error);
-                    await setUploadStatus("Failed to validate if questionnaire has data");
+                    console.error("Failed to validate if questionnaire is active, error: " + error);
+                    await setUploadStatus("Failed to validate if questionnaire is Live");
                     setRedirect(true);
                 });
         });

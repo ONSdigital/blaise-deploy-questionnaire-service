@@ -23,7 +23,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             res.status(response.status).json(response.data);
         }).catch((error) => {
             req.log.error(error, `Call to ${method} ${url}`);
-            res.status(500).json(error);
+            res.status(error.response.status).json(error);
         });
     }
 
@@ -45,16 +45,16 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     });
 
     // Check if a specific instruments exists
-    router.get("/api/instruments/:instrumentName/exists", function (req: ResponseQuery, res: Response) {
-        const {instrumentName} = req.params;
-        const url = `/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`;
-        SendBlaiseAPIRequest(req, res, url, "GET");
-    });
+    // router.get("/api/instruments/:instrumentName/exists", function (req: ResponseQuery, res: Response) {
+    //     const {instrumentName} = req.params;
+    //     const url = `/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`;
+    //     SendBlaiseAPIRequest(req, res, url, "GET");
+    // });
 
     // Get a specific instrument information
     router.get("/api/instruments/:instrumentName", function (req: ResponseQuery, res: Response) {
         const {instrumentName} = req.params;
-        const url = `/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}`;
+        const url = `/api/v1/cati/serverparks/${SERVER_PARK}/instruments/${instrumentName}`;
         SendBlaiseAPIRequest(req, res, url, "GET");
     });
 
@@ -81,7 +81,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             res.status(response.status).json(response.data);
         }).catch((error) => {
             req.log.error(error, `Call to /api/v1/serverparks/${SERVER_PARK}/instruments`);
-            res.status(500).json(error);
+            res.status(error.response.status).json(error);
         });
     });
 
