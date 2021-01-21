@@ -245,8 +245,7 @@ function UploadPage(): ReactElement {
                     <SelectFilePage BeginUploadProcess={BeginUploadProcess}
                                     setFile={setFile}
                                     loading={loading}
-                                    panel={panel}
-                                    uploadPercentage={uploadPercentage}/>
+                                    panel={panel}/>
                 </Route>
                 <Route path={`${path}/survey-exists`}>
                     <AlreadyExists instrumentName={instrumentName}

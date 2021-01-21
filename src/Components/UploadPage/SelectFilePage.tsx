@@ -8,12 +8,11 @@ interface SelectFilePageProps {
     BeginUploadProcess: any
     setFile: any
     loading: boolean
-    uploadPercentage: number
     panel: string
 }
 
 function SelectFilePage(props: SelectFilePageProps): ReactElement {
-    const {loading, uploadPercentage, panel, setFile} = props;
+    const {loading, panel, setFile} = props;
 
     const handleFileChange = (selectorFiles: FileList | null) => {
         console.log(selectorFiles);
