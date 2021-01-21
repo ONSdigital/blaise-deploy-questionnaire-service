@@ -42,7 +42,12 @@ function InstrumentList({list, listError}: Props): ReactElement {
                             return (
                                 <tr className="table__row" key={item.name} data-testid={"instrument-table-row"}>
                                     <td className="table__cell ">
-                                        {item.name}
+                                        <Link to={{
+                                            pathname: "/questionnaire",
+                                            state: {instrument: item}
+                                        }}>
+                                            {item.name}
+                                        </Link>
                                     </td>
                                     <td className="table__cell ">
                                         {item.fieldPeriod}
@@ -58,7 +63,8 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                             item.active ?
                                                 "Questionnaire is live"
                                                 :
-                                                <Link id={`delete-button-${item.name}`} data-testid={`delete-${item.name}`} to={{
+                                                <Link id={`delete-button-${item.name}`}
+                                                      data-testid={`delete-${item.name}`} to={{
                                                     pathname: "/delete",
                                                     state: {instrumentName: item.name}
                                                 }}>

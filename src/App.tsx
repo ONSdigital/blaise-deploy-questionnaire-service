@@ -13,6 +13,7 @@ import DeploymentSummary from "./Components/DeploymentSummary";
 import {ONSPanel} from "./Components/ONSDesignSystem/ONSPanel";
 import DeleteConfirmation from "./Components/DeleteConfirmation";
 import NotProductionWarning from "./Components/ONSDesignSystem/NotProductionWarning";
+import InstrumentDetails from "./Components/InstrumentDetails";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -81,6 +82,9 @@ function App(): ReactElement {
                         <Switch>
                             <Route path="/UploadSummary">
                                 <DeploymentSummary getList={getInstrumentList}/>
+                            </Route>
+                            <Route path="/questionnaire">
+                                <InstrumentDetails/>
                             </Route>
                             <Route path="/upload">
                                 <UploadPage/>
