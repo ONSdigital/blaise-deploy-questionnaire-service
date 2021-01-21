@@ -4,11 +4,11 @@ import {ONSButton} from "../ONSDesignSystem/ONSButton";
 
 interface Props {
     instrumentName: string
-    UploadFile: any
+    ConfirmInstrumentOverride: any
     loading: boolean
 }
 
-function AlreadyExists({instrumentName, UploadFile, loading} : Props) {
+function AlreadyExists({instrumentName, ConfirmInstrumentOverride, loading} : Props) {
     const [confirm, setConfirm] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
     const history = useHistory();
@@ -19,7 +19,7 @@ function AlreadyExists({instrumentName, UploadFile, loading} : Props) {
             history.push("/");
             return;
         }
-        UploadFile();
+        ConfirmInstrumentOverride();
     }
 
     return (

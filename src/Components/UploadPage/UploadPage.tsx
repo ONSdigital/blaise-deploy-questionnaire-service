@@ -5,6 +5,7 @@ import SelectFilePage from "./SelectFilePage";
 import AlreadyExists from "./AlreadyExists";
 import LiveSurveyWarning from "./LiveSurveyWarning";
 import Confirmation from "./Confirmation";
+import {Instrument} from "../../../Interfaces";
 
 interface Progress {
     loaded: number
@@ -16,14 +17,14 @@ function UploadPage(): ReactElement {
     const [loading, setLoading] = useState<boolean>(false);
     const [uploading, setUploading] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
-    const [fileName, setFileName] = useState<string>("");
     const [instrumentName, setInstrumentName] = useState<string>("");
     const [panel, setPanel] = useState<string>("");
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [uploadStatus, setUploadStatus] = useState<string>("");
+    const [foundInstrument, setFoundInstrument] = useState<Instrument | null>(null);
     const timeout = (process.env.NODE_ENV === "test" ? 0 : 3000);
 
-    const {path, url} = useRouteMatch();
+    const {path} = useRouteMatch();
     const history = useHistory();
 
     async function BeginUploadProcess() {
@@ -44,7 +45,6 @@ function UploadPage(): ReactElement {
         }
 
         setLoading(true);
-        setFileName(fileName);
         setInstrumentName(instrumentName);
 
         const alreadyExists = await checkSurveyAlreadyExists(instrumentName);
@@ -57,20 +57,21 @@ function UploadPage(): ReactElement {
         }
     }
 
-    async function UploadConfirm() {
+    async function ConfirmInstrumentOverride() {
         setLoading(true);
-        const hasData = await checkSurveyIsActive(instrumentName);
 
-        if (hasData) {
+        if (foundInstrument?.active) {
+            // Survey is Live and so cannot be overwritten
             setLoading(false);
             history.push(`${path}/survey-live`);
         } else {
+            // Assume survey is not Live and so confirm the user is happy to override
             setLoading(false);
             history.push(`${path}/survey-confirm`);
         }
-        return;
     }
-    async function UploadFile(){
+
+    async function UploadFile() {
         if (file === undefined) {
             return;
         }
@@ -107,7 +108,7 @@ function UploadPage(): ReactElement {
 
     function checkSurveyAlreadyExists(instrumentName: string) {
         console.log("Validating if survey already exists");
-        return new Promise((resolve: any, reject: any) => {
+        return new Promise((resolve: (found: boolean) => void) => {
             fetch(`/api/instruments/${instrumentName}`)
                 .then((r: Response) => {
                     if (r.status === 404) {
@@ -121,6 +122,7 @@ function UploadPage(): ReactElement {
                     r.json()
                         .then((json) => {
                             if (json.name === instrumentName) {
+                                setFoundInstrument(json);
                                 console.log(`${instrumentName} already installed`);
                                 resolve(true);
                             } else {
@@ -140,40 +142,6 @@ function UploadPage(): ReactElement {
                 });
         });
     }
-
-    function checkSurveyIsActive(instrumentName: string) {
-        console.log("Validating if survey is active");
-        return new Promise((resolve: any, reject: any) => {
-            fetch(`/api/instruments/${instrumentName}`)
-                .then((r: Response) => {
-                    if (r.status === 404) {
-                        resolve(false);
-                    }
-                    if (r.status !== 200) {
-                        throw r.status + " - " + r.statusText;
-                    }
-                    r.json()
-                        .then((json) => {
-                            console.log(json);
-                            if (json.active) {
-                                resolve(true);
-                            } else {
-                                resolve(false);
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Failed to validate if questionnaire is active, error: " + error);
-                            throw error;
-                        });
-                })
-                .catch(async (error) => {
-                    console.error("Failed to validate if questionnaire is active, error: " + error);
-                    await setUploadStatus("Failed to validate if questionnaire is Live");
-                    setRedirect(true);
-                });
-        });
-    }
-
 
     function checkFileInBucket(filename: string) {
         console.log("Validating file is in the Bucket");
@@ -249,7 +217,7 @@ function UploadPage(): ReactElement {
                 </Route>
                 <Route path={`${path}/survey-exists`}>
                     <AlreadyExists instrumentName={instrumentName}
-                                   UploadFile={UploadConfirm}
+                                   ConfirmInstrumentOverride={ConfirmInstrumentOverride}
                                    loading={loading}/>
                 </Route>
                 <Route path={`${path}/survey-live`}>
