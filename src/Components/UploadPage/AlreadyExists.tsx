@@ -1,16 +1,15 @@
-import React, {useState} from "react";
+import React, {ReactElement, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {ONSButton} from "../ONSDesignSystem/ONSButton";
 
 interface Props {
     instrumentName: string
-    UploadFile: any
+    ConfirmInstrumentOverride: any
     loading: boolean
 }
 
-function AlreadyExists({instrumentName, UploadFile, loading} : Props) {
+function AlreadyExists({instrumentName, ConfirmInstrumentOverride, loading} : Props): ReactElement {
     const [confirm, setConfirm] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>("");
     const history = useHistory();
 
     function confirmOption() {
@@ -19,7 +18,7 @@ function AlreadyExists({instrumentName, UploadFile, loading} : Props) {
             history.push("/");
             return;
         }
-        UploadFile();
+        ConfirmInstrumentOverride();
     }
 
     return (
@@ -28,10 +27,6 @@ function AlreadyExists({instrumentName, UploadFile, loading} : Props) {
             <br/>
             What action do you want to take?
             </h1>
-
-            <p>
-                {message}
-            </p>
 
             <form onSubmit={() => confirmOption()}>
                 <fieldset className="fieldset">
