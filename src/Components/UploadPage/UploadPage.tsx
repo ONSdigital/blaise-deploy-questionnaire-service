@@ -6,6 +6,7 @@ import AlreadyExists from "./AlreadyExists";
 import LiveSurveyWarning from "./LiveSurveyWarning";
 import Confirmation from "./Confirmation";
 import {Instrument} from "../../../Interfaces";
+import DeploymentProgress from "./DeploymentProgress";
 
 interface Progress {
     loaded: number
@@ -15,7 +16,10 @@ interface Progress {
 function UploadPage(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const [uploading, setUploading] = useState<boolean>(false);
+    const [isDeploying, setIsDeploying] = useState<boolean>(false);
+    const [uploading, setUploading] = useState<boolean | null>(null);
+    const [isInstalling, setIsInstalling] = useState<boolean | null>(null);
+    const [isVerifyingUpload, setIsVerifyingUpload] = useState<boolean | null>(null);
     const [file, setFile] = useState<FileList>();
     const [instrumentName, setInstrumentName] = useState<string>("");
     const [panel, setPanel] = useState<string>("");
@@ -53,6 +57,7 @@ function UploadPage(): ReactElement {
             setLoading(false);
             history.push(`${path}/survey-exists`);
         } else {
+            setIsDeploying(true);
             await UploadFile();
         }
     }
@@ -145,6 +150,7 @@ function UploadPage(): ReactElement {
 
     function checkFileInBucket(filename: string) {
         console.log("Validating file is in the Bucket");
+        setIsVerifyingUpload(true);
         fetch(`/bucket?filename=${filename}`)
             .then((r: Response) => {
                 if (r.status !== 200) {
@@ -154,6 +160,7 @@ function UploadPage(): ReactElement {
                     .then((json) => {
                         if (json.name === filename) {
                             console.log(`File ${filename} successfully uploaded to bucket`);
+                            setIsVerifyingUpload(false);
                             sendInstallRequest(filename);
                         } else {
                             throw "Filename returned does not match sent file";
@@ -176,6 +183,7 @@ function UploadPage(): ReactElement {
 
     function sendInstallRequest(filename: string) {
         console.log("Sending request to start install");
+        setIsInstalling(true);
         fetch(`/api/install?filename=${filename}`)
             .then((r: Response) => {
                 console.log(r);
@@ -195,7 +203,11 @@ function UploadPage(): ReactElement {
             .catch((error) => {
                 setUploadStatus("Failed to install questionnaire");
                 console.error("Failed to install questionnaire, error: " + error);
-            }).finally(() => setRedirect(true));
+            })
+            .finally(() => {
+                setIsInstalling(false);
+                setRedirect(true);
+            });
     }
 
     return (
@@ -207,29 +219,39 @@ function UploadPage(): ReactElement {
                         state: {questionnaireName: instrumentName, status: uploadStatus}
                     }}/>
             }
+            {
+                isDeploying ?
+                    <DeploymentProgress instrumentName={instrumentName}
+                                        isInstalling={isInstalling}
+                                        isUploading={uploading}
+                                        isVerifyingUpload={isVerifyingUpload}
+                                        percentage={uploadPercentage}/>
+                    :
+                    <Switch>
 
-            <Switch>
-                <Route exact path={path}>
-                    <SelectFilePage BeginUploadProcess={BeginUploadProcess}
-                                    setFile={setFile}
-                                    loading={loading}
-                                    panel={panel}/>
-                </Route>
-                <Route path={`${path}/survey-exists`}>
-                    <AlreadyExists instrumentName={instrumentName}
-                                   ConfirmInstrumentOverride={ConfirmInstrumentOverride}
-                                   loading={loading}/>
-                </Route>
-                <Route path={`${path}/survey-live`}>
-                    <LiveSurveyWarning instrumentName={instrumentName}/>
-                </Route>
-                <Route path={`${path}/survey-confirm`}>
+                        <Route exact path={path}>
+                            <SelectFilePage BeginUploadProcess={BeginUploadProcess}
+                                            setFile={setFile}
+                                            loading={loading}
+                                            panel={panel}/>
+                        </Route>
+                        <Route path={`${path}/survey-exists`}>
+                            <AlreadyExists instrumentName={instrumentName}
+                                           ConfirmInstrumentOverride={ConfirmInstrumentOverride}
+                                           loading={loading}/>
+                        </Route>
+                        <Route path={`${path}/survey-live`}>
+                            <LiveSurveyWarning instrumentName={instrumentName}/>
+                        </Route>
+                        <Route path={`${path}/survey-confirm`}>
 
-                    <Confirmation instrumentName={instrumentName}
-                                  UploadFile={UploadFile}
-                                  loading={loading}/>
-                </Route>
-            </Switch>
+                            <Confirmation instrumentName={instrumentName}
+                                          UploadFile={UploadFile}
+                                          loading={loading}/>
+                        </Route>
+                    </Switch>
+            }
+
 
             {
                 uploading &&
