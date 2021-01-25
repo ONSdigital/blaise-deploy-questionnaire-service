@@ -27,6 +27,12 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         });
     }
 
+    // Get health status for Blaise connections
+    router.get("/api/health", function (req: ResponseQuery, res: Response) {
+        const url = "/api/v1/health";
+        SendBlaiseAPIRequest(req, res, url, "GET");
+    });
+
     interface ResponseQuery extends Request {
         query: { filename: string }
     }
