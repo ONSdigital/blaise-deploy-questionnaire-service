@@ -3,8 +3,13 @@ import {Link} from "react-router-dom";
 import {ErrorBoundary} from "./ErrorHandling/ErrorBoundary";
 
 
+interface BlaiseStatus {
+    "health check type": string
+    status: string
+}
+
 function StatusPage(): ReactElement {
-    const [statusList, setStatusList] = useState<any[]>([]);
+    const [statusList, setStatusList] = useState<BlaiseStatus[]>([]);
     const [listError, setListError] = useState<string>("Loading ...");
 
     useEffect(() => {
@@ -20,7 +25,7 @@ function StatusPage(): ReactElement {
                     throw r.status + " - " + r.statusText;
                 }
                 r.json()
-                    .then((json: any) => {
+                    .then((json: BlaiseStatus[]) => {
                         if (!Array.isArray(json)) {
                             throw "Json response is not a list";
                         }
@@ -56,7 +61,7 @@ function StatusPage(): ReactElement {
                         <dl className="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
                             title="Status information for connections to Blaise"
                             aria-label="Status information for connections to Blaise">
-                            {statusList.map((item: any) => {
+                            {statusList.map((item: BlaiseStatus) => {
                                 return (
                                     <Fragment key={item["health check type"]}>
                                         <dt className="metadata__term grid__col col-5@m">

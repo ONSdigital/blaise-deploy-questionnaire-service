@@ -1,13 +1,12 @@
 import React from "react";
 import Enzyme from "enzyme";
-import {render, waitFor, fireEvent, cleanup} from "@testing-library/react";
+import {render, waitFor, cleanup} from "@testing-library/react";
 import Adapter from "enzyme-adapter-react-16";
 import "@testing-library/jest-dom";
 import flushPromises from "../tests/utils";
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import StatusPage from "./StatusPage";
-import App from "../App";
 import {Router} from "react-router";
 
 
