@@ -21,10 +21,14 @@ function StatusPage(): ReactElement {
                 }
                 r.json()
                     .then((json: any) => {
-                        console.log("Retrieved instrument list, " + json.length + " items/s");
+                        if (!Array.isArray(json)) {
+                            throw "Json response is not a list";
+                        }
+                        console.log("Retrieved blaise status list, " + json.length + " items/s");
                         console.log(json);
                         setStatusList(json);
                         setListError("");
+                        if (json.length === 0) setListError("No connection details found.");
                     })
                     .catch((error) => {
                         console.error("Unable to read json from response, error: " + error);
