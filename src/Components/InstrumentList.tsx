@@ -26,6 +26,9 @@ function InstrumentList({list, listError}: Props): ReactElement {
                             <span>Field period</span>
                         </th>
                         <th scope="col" className="table__header ">
+                            <span>Status</span>
+                        </th>
+                        <th scope="col" className="table__header ">
                             <span>Install date</span>
                         </th>
                         <th scope="col" className="table__header ">
@@ -46,6 +49,9 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                     </td>
                                     <td className="table__cell ">
                                         {item.fieldPeriod}
+                                    </td>
+                                    <td className="table__cell ">
+                                        {item.status}
                                     </td>
                                     <td className="table__cell ">
                                         {dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}

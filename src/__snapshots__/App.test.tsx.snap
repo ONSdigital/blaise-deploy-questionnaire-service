@@ -176,6 +176,14 @@ Object {
                   scope="col"
                 >
                   <span>
+                    Status
+                  </span>
+                </th>
+                <th
+                  class="table__header "
+                  scope="col"
+                >
+                  <span>
                     Install date
                   </span>
                 </th>
@@ -217,6 +225,11 @@ Object {
                 <td
                   class="table__cell "
                 >
+                  Active
+                </td>
+                <td
+                  class="table__cell "
+                >
                   15/01/2021 15:26
                 </td>
                 <td
@@ -254,6 +267,11 @@ Object {
                 <td
                   class="table__cell "
                 >
+                  Active
+                </td>
+                <td
+                  class="table__cell "
+                >
                   15/01/2021 15:18
                 </td>
                 <td
@@ -281,6 +299,11 @@ Object {
                   class="table__cell "
                 >
                   January 2021
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  Active
                 </td>
                 <td
                   class="table__cell "
@@ -512,6 +535,14 @@ Object {
                 scope="col"
               >
                 <span>
+                  Status
+                </span>
+              </th>
+              <th
+                class="table__header "
+                scope="col"
+              >
+                <span>
                   Install date
                 </span>
               </th>
@@ -553,6 +584,11 @@ Object {
               <td
                 class="table__cell "
               >
+                Active
+              </td>
+              <td
+                class="table__cell "
+              >
                 15/01/2021 15:26
               </td>
               <td
@@ -590,6 +626,11 @@ Object {
               <td
                 class="table__cell "
               >
+                Active
+              </td>
+              <td
+                class="table__cell "
+              >
                 15/01/2021 15:18
               </td>
               <td
@@ -617,6 +658,11 @@ Object {
                 class="table__cell "
               >
                 January 2021
+              </td>
+              <td
+                class="table__cell "
+              >
+                Active
               </td>
               <td
                 class="table__cell "
