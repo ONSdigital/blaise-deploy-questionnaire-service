@@ -1,18 +1,50 @@
-import React, {ReactElement} from "react";
+import React, {ChangeEvent, ReactElement, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {Instrument} from "../../Interfaces";
 import dateFormatter from "dayjs";
+import {filter} from "lodash";
 
 interface Props {
-    list: Instrument[],
+    instrumentList: Instrument[],
     listError: string
 }
 
-function InstrumentList({list, listError}: Props): ReactElement {
+function InstrumentList({instrumentList, listError}: Props): ReactElement {
+
+
+    const [list, setList] = useState<Instrument[]>(instrumentList);
+    const [listMessage, setListMessage] = useState<string>(listError);
     list.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
+
+    useEffect(() => {
+        if (instrumentList !== list) {
+            setList(instrumentList);
+        }
+        if (listMessage !== listMessage) {
+            setListMessage(listMessage);
+        }
+    }, [instrumentList, listError]);
+
+    const filterList = (e: ChangeEvent<HTMLInputElement>) => {
+        const newFilteredList = filter(instrumentList, (listItem) => listItem.name.includes(e.target.value.toUpperCase()));
+        setList(newFilteredList);
+        if (newFilteredList.length === 0) {
+            setListMessage(`No results for ${e.target.value}`);
+        }
+    };
+
+
 
     return <>
         <h2 className="u-mt-m">Table of questionnaires</h2>
+
+        <div className="field">
+            <label className="label  " htmlFor="text">Enter some text
+            </label>
+            <input type="text" id="text" className="input input--text input-type__input   "
+                   onChange={(e) => filterList(e)}/>
+        </div>
+
         {
             list && list.length > 0
                 ?
@@ -64,7 +96,8 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                             item.active ?
                                                 "Questionnaire is live"
                                                 :
-                                                <Link id={`delete-button-${item.name}`} data-testid={`delete-${item.name}`} to={{
+                                                <Link id={`delete-button-${item.name}`}
+                                                      data-testid={`delete-${item.name}`} to={{
                                                     pathname: "/delete",
                                                     state: {instrumentName: item.name}
                                                 }}>
@@ -81,7 +114,7 @@ function InstrumentList({list, listError}: Props): ReactElement {
                 :
                 <div className="panel panel--info panel--no-title u-mb-m">
                     <div className="panel__body">
-                        <p>{listError}</p>
+                        <p>{listMessage}</p>
                     </div>
                 </div>
         }
