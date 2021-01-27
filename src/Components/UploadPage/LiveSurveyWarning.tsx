@@ -1,4 +1,4 @@
-import React, {ReactElement, useState} from "react";
+import React from "react";
 import { ONSButton } from "../ONSDesignSystem/ONSButton";
 import {ONSPanel} from "../ONSDesignSystem/ONSPanel";
 import {useHistory} from "react-router-dom";
