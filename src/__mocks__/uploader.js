@@ -1,4 +1,6 @@
-export default function () {
+let uploadSuccess = true;
+
+function uploader() {
     // return {
     //     options: jest.fn().mockReturnThis(),
     //     continue: jest.fn().mockReturnThis(),
@@ -22,10 +24,25 @@ export default function () {
             return this;
         },
         end: function (callback) {
-            callback();
+            if (uploadSuccess) {
+                callback();
+            } else {
+                callback("Failed");
+            }
         },
         abort: function () {
             return;
+        },
+        __setMockStatus: function (success = true) {
+            uploadSuccess = success;
         }
     };
 }
+
+function __setMockStatus(success = true) {
+    uploadSuccess = success;
+}
+
+uploader.__setMockStatus = __setMockStatus;
+
+export default uploader;
