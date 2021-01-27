@@ -59,7 +59,7 @@
     "@babel/preset-typescript": "^7.12.1",
     "@types/ejs": "^3.0.5",
     "@types/enzyme-adapter-react-16": "^1.0.5",
-    "@types/lodash": "^4.14.165",
+    "@types/lodash": "^4.14.168",
     "@types/multer": "^1.4.5",
     "@types/pino-http": "^5.0.6",
     "@types/react-router-dom": "^5.1.6",
