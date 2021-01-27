@@ -6,6 +6,7 @@ import AlreadyExists from "./AlreadyExists";
 import LiveSurveyWarning from "./LiveSurveyWarning";
 import Confirmation from "./Confirmation";
 import {Instrument} from "../../../Interfaces";
+import {verifyAndInstallInstrument, checkInstrumentAlreadyExists} from "../../utilities/http";
 
 interface Progress {
     loaded: number
@@ -34,6 +35,7 @@ function UploadPage(): ReactElement {
         }
         if (file.length !== 1) {
             setPanel("Invalid file");
+            return;
         }
 
         const fileName = file[0].name;
@@ -42,14 +44,21 @@ function UploadPage(): ReactElement {
 
         if (fileExtension[0] !== ".zip" && fileExtension[0] !== ".bpkg") {
             setPanel("File must be a .zip or .bpkg");
+            return;
         }
 
         setLoading(true);
         setInstrumentName(instrumentName);
 
-        const alreadyExists = await checkSurveyAlreadyExists(instrumentName);
+        const [alreadyExists, instrument] = await checkInstrumentAlreadyExists(instrumentName);
+        if (alreadyExists === null) {
+            setUploadStatus("Failed to validate if questionnaire already exists");
+            setRedirect(true);
+            return;
+        }
 
         if (alreadyExists) {
+            setFoundInstrument(instrument);
             setLoading(false);
             history.push(`${path}/survey-exists`);
         } else {
@@ -92,6 +101,7 @@ function UploadPage(): ReactElement {
             .send(file[0])
             .end((error: Error) => {
                 setUploading(false);
+                console.log("error "+  error);
                 if (error) {
                     console.log("Failed to upload file, error: ", error);
                     setLoading(false);
@@ -101,101 +111,15 @@ function UploadPage(): ReactElement {
                 }
                 console.log("File upload complete");
                 setTimeout(function () {
-                    checkFileInBucket(file[0].name.replace(/ /g, "_"));
+                    verifyAndInstallInstrument(file[0].name.replace(/ /g, "_"))
+                        .then(([installed, message]) => {
+                            if (!installed) {
+                                setUploadStatus(message);
+                            }
+                            setRedirect(true);
+                        });
                 }, timeout);
             });
-    }
-
-    function checkSurveyAlreadyExists(instrumentName: string) {
-        console.log("Validating if survey already exists");
-        return new Promise((resolve: (found: boolean) => void) => {
-            fetch(`/api/instruments/${instrumentName}`)
-                .then((r: Response) => {
-                    if (r.status === 404) {
-                        console.log(`${instrumentName} not found `);
-                        resolve(false);
-                        return;
-                    }
-                    if (r.status !== 200) {
-                        throw r.status + " - " + r.statusText;
-                    }
-                    r.json()
-                        .then((json) => {
-                            if (json.name === instrumentName) {
-                                setFoundInstrument(json);
-                                console.log(`${instrumentName} already installed`);
-                                resolve(true);
-                            } else {
-                                console.log(`${instrumentName} not found `);
-                                resolve(false);
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Failed to validate if questionnaire already exists, error: " + error);
-                            throw error;
-                        });
-                })
-                .catch(async (error) => {
-                    console.error("Failed to validate if questionnaire already exists, error: " + error);
-                    await setUploadStatus("Failed to validate if questionnaire already exists");
-                    setRedirect(true);
-                });
-        });
-    }
-
-    function checkFileInBucket(filename: string) {
-        console.log("Validating file is in the Bucket");
-        fetch(`/bucket?filename=${filename}`)
-            .then((r: Response) => {
-                if (r.status !== 200) {
-                    throw r.status + " - " + r.statusText;
-                }
-                r.json()
-                    .then((json) => {
-                        if (json.name === filename) {
-                            console.log(`File ${filename} successfully uploaded to bucket`);
-                            sendInstallRequest(filename);
-                        } else {
-                            throw "Filename returned does not match sent file";
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Failed to validate if file is in bucket, error: " + error);
-                    })
-                    .catch((error) => {
-                            console.error("Failed to validate if file is in bucket, error: " + error);
-                        }
-                    );
-            })
-            .catch(async (error) => {
-                console.error("Failed to validate if file is in bucket, error: " + error);
-                await setUploadStatus("Failed to validate if file has been uploaded");
-                setRedirect(true);
-            });
-    }
-
-    function sendInstallRequest(filename: string) {
-        console.log("Sending request to start install");
-        fetch(`/api/install?filename=${filename}`)
-            .then((r: Response) => {
-                console.log(r);
-                if (r.status !== 201) {
-                    throw r.status + " - " + r.statusText;
-                }
-                r.json()
-                    .then((json) => {
-                        console.log(json);
-                        console.log(`Questionnaire ${filename} successfully installed`);
-                    })
-                    .catch((error) => {
-                        console.error("Failed to validate if questionnaire is installed, error: " + error);
-                        setLoading(false);
-                    });
-            })
-            .catch((error) => {
-                setUploadStatus("Failed to install questionnaire");
-                console.error("Failed to install questionnaire, error: " + error);
-            }).finally(() => setRedirect(true));
     }
 
     return (
