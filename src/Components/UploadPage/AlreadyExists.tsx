@@ -28,7 +28,7 @@ function AlreadyExists({instrumentName, ConfirmInstrumentOverride, loading} : Pr
             What action do you want to take?
             </h1>
 
-            <form onSubmit={() => confirmOption()}>
+            <form>
                 <fieldset className="fieldset">
                     <legend className="fieldset__legend">
                     </legend>
