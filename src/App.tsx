@@ -13,6 +13,7 @@ import DeploymentSummary from "./Components/DeploymentSummary";
 import {ONSPanel} from "./Components/ONSDesignSystem/ONSPanel";
 import DeleteConfirmation from "./Components/DeleteConfirmation";
 import NotProductionWarning from "./Components/ONSDesignSystem/NotProductionWarning";
+import StatusPage from "./Components/StatusPage";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -79,6 +80,9 @@ function App(): ReactElement {
                     <DefaultErrorBoundary>
 
                         <Switch>
+                            <Route path="/status">
+                                <StatusPage/>
+                            </Route>
                             <Route path="/UploadSummary">
                                 <DeploymentSummary getList={getInstrumentList}/>
                             </Route>
