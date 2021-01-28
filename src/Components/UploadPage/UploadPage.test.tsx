@@ -17,8 +17,6 @@ jest.mock("../../uploader");
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 uploader.__setMockStatus(false);
-// Mock the Uploader.js module
-// jest.mock("../../uploader");
 
 function mock_server_request(returnedStatus: number, returnedJSON: any) {
     global.fetch = jest.fn(() =>
