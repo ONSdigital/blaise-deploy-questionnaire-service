@@ -65,4 +65,4 @@ function sendInstallRequest(filename: string): Promise<boolean> {
     });
 }
 
-export {verifyAndInstallInstrument};
+export {verifyAndInstallInstrument, checkFileInBucket};
