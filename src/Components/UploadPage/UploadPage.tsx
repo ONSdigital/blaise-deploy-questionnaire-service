@@ -43,7 +43,7 @@ function UploadPage(): ReactElement {
         const fileExtension = fileName.match(/\.[a-zA-Z]*$/) || [];
 
         if (fileExtension[0] !== ".bpkg") {
-            setPanel("File must be .bpkg");
+            setPanel("File must be a .bpkg");
             return;
         }
 

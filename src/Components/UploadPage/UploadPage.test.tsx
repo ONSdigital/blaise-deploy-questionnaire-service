@@ -3,7 +3,7 @@ import Enzyme from "enzyme";
 import {render, waitFor, fireEvent, cleanup, screen} from "@testing-library/react";
 import Adapter from "enzyme-adapter-react-16";
 import "@testing-library/jest-dom";
-import flushPromises from "../../tests/utils";
+import flushPromises, {mock_server_request_Return_JSON} from "../../tests/utils";
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
@@ -18,20 +18,11 @@ jest.mock("../../uploader");
 // @ts-ignore
 uploader.__setMockStatus(false);
 
-function mock_server_request(returnedStatus: number, returnedJSON: any) {
-    global.fetch = jest.fn(() =>
-        Promise.resolve({
-            status: returnedStatus,
-            json: () => Promise.resolve(returnedJSON),
-        })
-    );
-}
-
 describe("Upload Page", () => {
     Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
-        mock_server_request(200, instrumentList);
+        mock_server_request_Return_JSON(200, instrumentList);
     });
 
     it("select file page matches Snapshot", async () => {
@@ -81,7 +72,7 @@ describe("Upload Page", () => {
         });
     });
 
-    it("should display a message if select a file that is not .zip or .bpkg", async () => {
+    it("should display a message if select a file that is a .bpkg", async () => {
         const history = createMemoryHistory();
         const {getByText, getByLabelText, getByTestId} = render(
             <Router history={history}>
@@ -104,7 +95,7 @@ describe("Upload Page", () => {
         await fireEvent.click(getByTestId("button"));
 
         await waitFor(() => {
-            expect(getByText(/File must be a .zip or .bpkg/i)).toBeDefined();
+            expect(getByText(/File must be a .bpkg/i)).toBeDefined();
         });
     });
 
@@ -119,7 +110,7 @@ describe("Given the file fails to upload", () => {
     Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
-        mock_server_request(200, instrumentList);
+        mock_server_request_Return_JSON(200, instrumentList);
     });
 
     it("it should redirect to the summary page with an error", async () => {

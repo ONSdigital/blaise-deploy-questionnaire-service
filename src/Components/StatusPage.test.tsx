@@ -3,7 +3,7 @@ import Enzyme from "enzyme";
 import {render, waitFor, cleanup} from "@testing-library/react";
 import Adapter from "enzyme-adapter-react-16";
 import "@testing-library/jest-dom";
-import flushPromises from "../tests/utils";
+import flushPromises, {mock_server_request_Return_JSON} from "../tests/utils";
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import StatusPage from "./StatusPage";
@@ -29,20 +29,11 @@ const status_list = [
     }
 ];
 
-function mock_server_request(returnedStatus: number, returnedJSON: any) {
-    global.fetch = jest.fn(() =>
-        Promise.resolve({
-            status: returnedStatus,
-            json: () => Promise.resolve(returnedJSON),
-        })
-    );
-}
-
 describe("Blaise Status page", () => {
     Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
-        mock_server_request(200, status_list);
+        mock_server_request_Return_JSON(200, status_list);
     });
 
     it("view Blaise Status page matches Snapshot", async () => {
@@ -96,7 +87,7 @@ describe("Given the API returns a 500 status", () => {
     Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
-        mock_server_request(500, []);
+        mock_server_request_Return_JSON(500, []);
     });
 
     it("it should render with the error message displayed", async () => {
@@ -127,7 +118,7 @@ describe("Given the API returns malformed json", () => {
     Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
-        mock_server_request(200, {text: "Hello"});
+        mock_server_request_Return_JSON(200, {text: "Hello"});
     });
 
     it("it should render with the error message displayed", async () => {
@@ -158,7 +149,7 @@ describe("Given the API returns an empty list", () => {
     Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
-        mock_server_request(200, []);
+        mock_server_request_Return_JSON(200, []);
     });
 
     it("it should render with a message to inform the user in the list", async () => {
