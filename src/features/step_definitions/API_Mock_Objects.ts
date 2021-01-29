@@ -63,3 +63,13 @@ export const instrumentList: Instrument[] = [{
     fieldPeriod: "April 2020"
 }];
 
+export const opnInstrument: Instrument = {
+    name: "OPN2004A",
+    serverParkName: "gusty",
+    installDate: "2021-01-15T15:26:43.4233454+00:00",
+    status: "Active",
+    dataRecordCount: 0,
+    hasData: false,
+    active: false,
+    fieldPeriod: "April 2020"
+};
