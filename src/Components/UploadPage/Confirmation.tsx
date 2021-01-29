@@ -10,7 +10,6 @@ interface Props {
 
 function Confirmation({instrumentName, UploadFile, loading}: Props) {
     const [confirm, setConfirm] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>("");
     const history = useHistory();
 
     function confirmOption() {
@@ -28,10 +27,6 @@ function Confirmation({instrumentName, UploadFile, loading}: Props) {
                 Are you sure you want to overwrite the entire questionnaire <em
                 className="highlight">{instrumentName}</em>?
             </h1>
-
-            <p>
-                {message}
-            </p>
 
             <div className="panel panel--warn panel--no-title">
                 <span className="panel__icon" aria-hidden="true">!</span>

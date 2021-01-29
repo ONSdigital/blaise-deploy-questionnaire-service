@@ -30,6 +30,11 @@ const mock_server_responses = (url: string) => {
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
         });
+    } else if (url.includes("/api/instruments/OPN2004A")) {
+        return Promise.resolve({
+            status: 404,
+            json: () => Promise.resolve({}),
+        });
     } else if (url.includes("/api/install")) {
         return Promise.resolve({
             status: 201,
