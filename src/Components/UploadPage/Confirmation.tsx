@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
-import {ONSButton} from "../ONSDesignSystem/ONSButton";
+import {ONSButton} from "blaise-design-system-react-components";
 
 interface Props {
     instrumentName: string
