@@ -2,6 +2,7 @@ import {requestPromiseJson} from "./requestPromise";
 import {Instrument} from "../../../Interfaces";
 
 type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
+type getInstrumentListResponse = [boolean, Instrument[]];
 
 function checkInstrumentAlreadyExists(instrumentName: string): Promise<verifyInstrumentExistsResponse> {
     console.log(`Call to checkSurveyAlreadyExists(${instrumentName})`);
@@ -30,4 +31,30 @@ function checkInstrumentAlreadyExists(instrumentName: string): Promise<verifyIns
     });
 }
 
-export {checkInstrumentAlreadyExists};
+function getAllInstruments(): Promise<getInstrumentListResponse> {
+    let list: Instrument[] = [];
+    console.log("Call to getAllInstruments");
+    const url = "/api/instruments";
+
+    return new Promise((resolve: (object: getInstrumentListResponse) => void) => {
+        requestPromiseJson("GET", url).then(([status, data]) => {
+            console.log(`Response from get all instruments: Status ${status}, data ${data}`);
+            if (status === 200) {
+                if (!Array.isArray(data)) {
+                    resolve([false, list]);
+                }
+                list = data;
+                resolve([true, list]);
+            } else if (status === 404) {
+                resolve([true, list]);
+            } else {
+                resolve([false, list]);
+            }
+        }).catch((error: Error) => {
+            console.error(`Response from get all instruments Failed: Error ${error}`);
+            resolve([false, list]);
+        });
+    });
+}
+
+export {checkInstrumentAlreadyExists, getAllInstruments};

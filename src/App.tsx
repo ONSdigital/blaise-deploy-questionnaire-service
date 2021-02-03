@@ -16,6 +16,7 @@ import {
     ONSPanel,
     ONSErrorPanel
 } from "blaise-design-system-react-components";
+import {getAllInstruments} from "./utilities/http";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -33,41 +34,24 @@ function App(): ReactElement {
     const {status} = (location as Location).state || {status: ""};
 
     useEffect(() => {
-        getInstrumentList();
+        getInstrumentList().then(() => console.log("Call getInstrumentList Complete"));
     }, []);
 
-    function getInstrumentList() {
+    async function getInstrumentList() {
         setInstruments([]);
-        fetch("/api/instruments")
-            .then((r: Response) => {
-                if (r.status === 404) {
-                    setListError("No installed questionnaires found.");
-                    return;
-                }
-                if (r.status !== 200) {
-                    throw r.status + " - " + r.statusText;
-                }
-                r.json()
-                    .then((json: Instrument[]) => {
-                        if (!Array.isArray(json)) {
-                            throw "Json response is not a list";
-                        }
-                        console.log("Retrieved instrument list, " + json.length + " items/s");
-                        console.log(json);
-                        setInstruments(json);
 
-                        // If the list is empty then show this message in the list
-                        if (json.length === 0) setListError("No installed questionnaires found.");
-                    })
-                    .catch((error) => {
-                        console.error("Unable to read json from response, error: " + error);
-                        setListError("Unable to load questionnaires");
-                    });
-            }).catch((error) => {
-                console.error("Failed to retrieve instrument list, error: " + error);
-                setListError("Unable to load questionnaires");
-            }
-        );
+        const [success, instrumentList] = await getAllInstruments();
+
+        if (!success) {
+            setListError("Unable to load questionnaires");
+            return;
+        }
+
+        if (instrumentList.length === 0) {
+            setListError("No installed questionnaires found.");
+        }
+
+        setInstruments(instrumentList);
     }
 
     return (
