@@ -1,7 +1,5 @@
 import React from "react";
-import Enzyme from "enzyme";
 import {render, waitFor, cleanup} from "@testing-library/react";
-import Adapter from "enzyme-adapter-react-16";
 import "@testing-library/jest-dom";
 import flushPromises, {mock_server_request_Return_JSON} from "../tests/utils";
 import {act} from "react-dom/test-utils";
@@ -30,7 +28,6 @@ const status_list = [
 ];
 
 describe("Blaise Status page", () => {
-    Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
         mock_server_request_Return_JSON(200, status_list);
@@ -84,7 +81,6 @@ describe("Blaise Status page", () => {
 });
 
 describe("Given the API returns a 500 status", () => {
-    Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
         mock_server_request_Return_JSON(500, []);
@@ -115,7 +111,6 @@ describe("Given the API returns a 500 status", () => {
 });
 
 describe("Given the API returns malformed json", () => {
-    Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
         mock_server_request_Return_JSON(200, {text: "Hello"});
@@ -146,7 +141,6 @@ describe("Given the API returns malformed json", () => {
 });
 
 describe("Given the API returns an empty list", () => {
-    Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
         mock_server_request_Return_JSON(200, []);

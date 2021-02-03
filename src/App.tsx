@@ -1,19 +1,21 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import Header from "./Components/ONSDesignSystem/Header";
-import BetaBanner from "./Components/ONSDesignSystem/BetaBanner";
 import {DefaultErrorBoundary} from "./Components/ErrorHandling/DefaultErrorBoundary";
-import Footer from "./Components/ONSDesignSystem/Footer";
-import ONSErrorPanel from "./Components/ONSDesignSystem/ONSErrorPanel";
 import {Switch, Route, Link, useLocation} from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
 import {Instrument} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
 import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
-import {ONSPanel} from "./Components/ONSDesignSystem/ONSPanel";
 import DeleteConfirmation from "./Components/DeleteConfirmation";
-import NotProductionWarning from "./Components/ONSDesignSystem/NotProductionWarning";
 import StatusPage from "./Components/StatusPage";
+import {
+    NotProductionWarning,
+    Footer,
+    Header,
+    BetaBanner,
+    ONSPanel,
+    ONSErrorPanel
+} from "blaise-design-system-react-components";
 import {getAllInstruments} from "./utilities/http";
 
 const divStyle = {

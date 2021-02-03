@@ -1,8 +1,6 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {ONSPanel} from "./ONSDesignSystem/ONSPanel";
 import {Redirect, useHistory, useLocation} from "react-router-dom";
-import {ONSButton} from "./ONSDesignSystem/ONSButton";
-
+import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 interface Location {
     state: any
 }

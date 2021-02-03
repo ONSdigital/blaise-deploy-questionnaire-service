@@ -1,7 +1,5 @@
 import React from "react";
-import Enzyme from "enzyme";
 import {render, waitFor, fireEvent, cleanup, screen} from "@testing-library/react";
-import Adapter from "enzyme-adapter-react-16";
 import "@testing-library/jest-dom";
 import flushPromises, {mock_server_request_Return_JSON} from "../../tests/utils";
 import {act} from "react-dom/test-utils";
@@ -19,7 +17,6 @@ jest.mock("../../uploader");
 uploader.__setMockStatus(false);
 
 describe("Upload Page", () => {
-    Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
         mock_server_request_Return_JSON(200, instrumentList);
@@ -107,7 +104,6 @@ describe("Upload Page", () => {
 
 
 describe("Given the file fails to upload", () => {
-    Enzyme.configure({adapter: new Adapter()});
 
     beforeAll(() => {
         mock_server_request_Return_JSON(200, instrumentList);
