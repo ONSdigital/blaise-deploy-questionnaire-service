@@ -1,26 +1,17 @@
 import React from "react";
-import {render, waitFor, fireEvent, cleanup} from "@testing-library/react";
+import {render, waitFor, cleanup} from "@testing-library/react";
 import App from "./App";
 import "@testing-library/jest-dom";
-import flushPromises from "./tests/utils";
+import flushPromises, {mock_server_request_Return_JSON} from "./tests/utils";
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
 import {instrumentList} from "./features/step_definitions/API_Mock_Objects";
 
-function mock_server_request(returnedStatus: number, returnedJSON: any) {
-    global.fetch = jest.fn(() =>
-        Promise.resolve({
-            status: returnedStatus,
-            json: () => Promise.resolve(returnedJSON),
-        })
-    );
-}
-
 describe("React homepage", () => {
 
     beforeAll(() => {
-        mock_server_request(200, instrumentList);
+        mock_server_request_Return_JSON(200, instrumentList);
     });
 
     it("view instrument page matches Snapshot", async () => {
@@ -73,7 +64,7 @@ describe("React homepage", () => {
 describe("Given the API returns malformed json", () => {
 
     beforeAll(() => {
-        mock_server_request(200, {text: "Hello"});
+        mock_server_request_Return_JSON(200, {text: "Hello"});
     });
 
     it("it should render with the error message displayed", async () => {
@@ -103,7 +94,7 @@ describe("Given the API returns malformed json", () => {
 describe("Given the API returns an empty list", () => {
 
     beforeAll(() => {
-        mock_server_request(200, []);
+        mock_server_request_Return_JSON(200, []);
     });
 
     it("it should render with a message to inform the user in the list", async () => {
