@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",
-    "@babel/plugin-transform-react-jsx": "^7.12.1",
+    "@babel/plugin-transform-react-jsx": "^7.12.13",
     "@babel/preset-react": "^7.12.1",
     "@babel/preset-typescript": "^7.12.13",
     "@types/ejs": "^3.0.5",
