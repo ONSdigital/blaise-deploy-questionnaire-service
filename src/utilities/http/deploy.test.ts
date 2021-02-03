@@ -1,12 +1,9 @@
-import Enzyme from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
 import {cleanup} from "@testing-library/react";
 import {checkFileInBucket} from "./deploy";
 import {mock_server_request_function, mock_server_request_Return_JSON} from "../../tests/utils";
 
 
 describe("Function checkFileInBucket(filename: string) ", () => {
-    Enzyme.configure({adapter: new Adapter()});
 
     it("It should return true if object with the correct filename returned", async () => {
         mock_server_request_Return_JSON(200, {name: "OPN2004A.bpkg"});
