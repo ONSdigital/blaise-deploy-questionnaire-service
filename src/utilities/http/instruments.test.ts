@@ -1,12 +1,9 @@
-import Enzyme from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
 import {cleanup} from "@testing-library/react";
 import {mock_server_request_function, mock_server_request_Return_JSON} from "../../tests/utils";
 import {instrumentList, opnInstrument} from "../../features/step_definitions/API_Mock_Objects";
 import {checkInstrumentAlreadyExists, getAllInstruments} from "./instruments";
 
 describe("Function checkInstrumentAlreadyExists(instrumentName: string) ", () => {
-    Enzyme.configure({adapter: new Adapter()});
 
     it("It should return true and the instrument object if object with the correct name returned", async () => {
         mock_server_request_Return_JSON(200, opnInstrument);
@@ -67,7 +64,6 @@ describe("Function checkInstrumentAlreadyExists(instrumentName: string) ", () =>
 
 
 describe("Function getAllInstruments(filename: string) ", () => {
-    Enzyme.configure({adapter: new Adapter()});
 
     it("It should return true with data if the list is returned successfully", async () => {
         mock_server_request_Return_JSON(200, instrumentList);
