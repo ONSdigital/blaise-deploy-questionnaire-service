@@ -7181,10 +7181,10 @@ jest-config@^26.6.3:
     micromatch "^4.0.2"
     pretty-format "^26.6.2"
 
-jest-cucumber@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/jest-cucumber/-/jest-cucumber-3.0.0.tgz#371bdb6121799315e3605f7978a577002fb16f60"
-  integrity sha512-LV/s3O1HI65QsZg1PMqhskmZOY4GLklXlZ6CYL1MKxJWG9MN/BCPvM5NrFs64Bh1zJJjhQLAfbH6beDWAiNUng==
+jest-cucumber@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/jest-cucumber/-/jest-cucumber-3.0.1.tgz#1a1bf379cafbdf4e57c49e6f83ffab9a65b3a8fa"
+  integrity sha512-S2EelgezfwWP10VCgUkSOiJYiTIM0yM82KxrwBOn68wMmlqU5jNSf7xDIBS0tGwoFnNwUTFp7LPFmEnfilSJrA==
   dependencies:
     "@types/glob" "^7.1.3"
     "@types/jest" "^26.0.7"
