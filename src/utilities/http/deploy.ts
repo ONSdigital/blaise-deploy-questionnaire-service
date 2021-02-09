@@ -21,6 +21,24 @@ async function verifyAndInstallInstrument(filename: string): Promise<verifyAndIn
 
 }
 
+function getSignedUrlForBucket(filename: string): Promise<string> {
+    console.log(`Call to getSignedUrlForBucket(${filename})`);
+    const url = `/getSignedUrl?filename=${filename}`;
+
+    return new Promise((resolve: (object: string) => void) => {
+        requestPromiseJson("GET", url).then(([status, data]) => {
+            console.log(`Response from check bucket: Status ${status}, data []`);
+            if (status === 200) {
+                resolve(data);
+            } else {
+                resolve("false");
+            }
+        }).catch((error: Error) => {
+            console.error(`Response from check bucket Failed: Error ${error}`);
+            resolve("false");
+        });
+    });
+}
 
 function checkFileInBucket(filename: string): Promise<boolean> {
     console.log(`Call to checkFileInBucket(${filename})`);
@@ -65,4 +83,4 @@ function sendInstallRequest(filename: string): Promise<boolean> {
     });
 }
 
-export {verifyAndInstallInstrument, checkFileInBucket};
+export {verifyAndInstallInstrument, checkFileInBucket, getSignedUrlForBucket};

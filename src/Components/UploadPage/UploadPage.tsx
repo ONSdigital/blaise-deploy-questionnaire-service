@@ -1,17 +1,11 @@
 import React, {ReactElement, useState} from "react";
 import {Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
-import uploader from "../../uploader";
 import SelectFilePage from "./SelectFilePage";
 import AlreadyExists from "./AlreadyExists";
 import LiveSurveyWarning from "./LiveSurveyWarning";
 import Confirmation from "./Confirmation";
 import {Instrument} from "../../../Interfaces";
-import {verifyAndInstallInstrument, checkInstrumentAlreadyExists} from "../../utilities/http";
-
-interface Progress {
-    loaded: number
-    total: number
-}
+import {verifyAndInstallInstrument, checkInstrumentAlreadyExists, getSignedUrlForBucket} from "../../utilities/http";
 
 function UploadPage(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
@@ -62,7 +56,7 @@ function UploadPage(): ReactElement {
             setLoading(false);
             history.push(`${path}/survey-exists`);
         } else {
-            await UploadFile();
+            await UploadFile(fileName);
         }
     }
 
@@ -80,7 +74,7 @@ function UploadPage(): ReactElement {
         }
     }
 
-    async function UploadFile() {
+    async function UploadFile(fileName: string) {
         if (file === undefined) {
             return;
         }
@@ -88,29 +82,23 @@ function UploadPage(): ReactElement {
         setLoading(true);
         setPanel("");
         setUploading(true);
-        uploader()
-            .onProgress(({loaded, total}: Progress) => {
-                const percent = Math.round(loaded / total * 100 * 100) / 100;
-                console.log(`File upload ${percent}% ${loaded} / ${total}`);
-                setUploadPercentage(percent);
-            })
-            .options({
-                chunkSize: 5 * 1024 * 1024,
-                threadsQuantity: 5
-            })
-            .send(file[0])
-            .end((error: Error) => {
-                setUploading(false);
-                console.log("error "+  error);
-                if (error) {
-                    console.log("Failed to upload file, error: ", error);
-                    setLoading(false);
-                    setUploadStatus("Failed to upload file");
-                    setRedirect(true);
-                    return;
-                }
-                console.log("File upload complete");
-                setTimeout(function () {
+
+        const signedUrl = await getSignedUrlForBucket(fileName);
+        if (!signedUrl.includes("https://storage.googleapis.com")) {
+            setUploadStatus("Failed to upload file");
+            setRedirect(true);
+        }
+
+        fetch(signedUrl, {
+            method: "PUT",
+            body: file[0],
+            headers: {
+                "Content-Type": "application/octet-stream",
+            },
+        })
+            .then((r: Response) => {
+                if (r.status === 200) {
+                    console.log("Uploaded");
                     verifyAndInstallInstrument(file[0].name.replace(/ /g, "_"))
                         .then(([installed, message]) => {
                             if (!installed) {
@@ -118,7 +106,13 @@ function UploadPage(): ReactElement {
                             }
                             setRedirect(true);
                         });
-                }, timeout);
+                } else {
+                    throw r.status + " - " + r.statusText;
+                }
+            })
+            .catch(async (error) => {
+                console.error("Failed to delete questionnaire, error: " + error);
+                console.log("Failed");
             });
     }
 
@@ -158,17 +152,7 @@ function UploadPage(): ReactElement {
             {
                 uploading &&
                 <>
-                    <p>Uploading: {uploadPercentage}%</p>
-                    <progress id="file"
-                              value={uploadPercentage}
-                              max="100"
-                              role="progressbar"
-                              aria-valuenow={uploadPercentage}
-                              aria-valuemin={0}
-                              aria-valuemax={100}>
-                        {uploadPercentage}%
-                    </progress>
-
+                    <p>Uploading file</p>
                 </>
             }
 
