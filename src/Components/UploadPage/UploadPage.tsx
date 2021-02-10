@@ -84,7 +84,12 @@ function UploadPage(): ReactElement {
         setUploading(true);
 
         const signedUrl = await getSignedUrlForBucket(fileName);
-        if (!signedUrl.includes("https://storage.googleapis.com")) {
+        const signedUrlHost = new URL(signedUrl).host;
+        const allowedHosts = [
+            "storage.googleapis.com"
+        ];
+
+        if (!allowedHosts.includes(signedUrlHost)) {
             setUploadStatus("Failed to upload file");
             setRedirect(true);
         }
@@ -111,8 +116,9 @@ function UploadPage(): ReactElement {
                 }
             })
             .catch(async (error) => {
-                console.error("Failed to delete questionnaire, error: " + error);
-                console.log("Failed");
+                console.error("Failed to upload questionnaire, error: " + error);
+                setUploadStatus("Failed to upload questionnaire");
+                setRedirect(true);
             });
     }
 

@@ -21,6 +21,9 @@ const feature = loadFeature(
 
 const mock_server_responses = (url: string) => {
     console.log(url);
+    const allowedHosts = [
+        "storage.googleapis.com"
+    ];
     if (url.includes("bucket")) {
         return Promise.resolve({
             status: 200,
@@ -31,7 +34,7 @@ const mock_server_responses = (url: string) => {
             status: 200,
             json: () => Promise.resolve("https://storage.googleapis.com"),
         });
-    } else if (url.includes("https://storage.googleapis.com")) {
+    } else if (allowedHosts.includes(url)) {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve(""),

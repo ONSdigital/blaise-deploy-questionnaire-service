@@ -1,13 +1,13 @@
 import React from "react";
 import {render, waitFor, fireEvent, cleanup, screen} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import flushPromises, {mock_server_request_Return_JSON} from "../../tests/utils";
+import flushPromises, {mock_server_request_function, mock_server_request_Return_JSON} from "../../tests/utils";
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
-import {instrumentList} from "../../features/step_definitions/API_Mock_Objects";
+import {instrumentList, survey_list} from "../../features/step_definitions/API_Mock_Objects";
 import UploadPage from "./UploadPage";
-import navigateToDeployPageAndSelectFile from "../../features/step_definitions/functions";
+import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "../../features/step_definitions/functions";
 
 describe("Upload Page", () => {
 
@@ -95,11 +95,39 @@ describe("Upload Page", () => {
     });
 });
 
+const mock_server_responses = (url: string) => {
+    console.log(url);
+    const allowedHosts = [
+        "storage.googleapis.com"
+    ];
+    if (url.includes("bucket")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+        });
+    } else if (url.includes("getSignedUrl")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve("https://storage.googleapis.com"),
+        });
+    } else if (allowedHosts.includes(url)) {
+        return Promise.resolve({
+            status: 500,
+            json: () => Promise.resolve(""),
+        });
+    } else {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve(survey_list),
+        });
+    }
+};
+
 
 describe("Given the file fails to upload", () => {
 
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, instrumentList);
+        mock_fetch_requests(mock_server_responses);
     });
 
     it("it should redirect to the summary page with an error", async () => {

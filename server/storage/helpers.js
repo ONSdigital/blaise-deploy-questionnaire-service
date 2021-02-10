@@ -1,8 +1,6 @@
 import {getEnvironmentVariables} from "../Config";
 
-const util = require("util");
 const gc = require("./config");
-
 const {BUCKET_NAME} = getEnvironmentVariables();
 const bucket = gc.bucket(BUCKET_NAME);
 
