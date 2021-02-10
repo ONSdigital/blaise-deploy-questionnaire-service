@@ -9,8 +9,6 @@ if (process.env.NODE_ENV !== "production") {
     dotenv.config({path: __dirname + "/../../.env"});
 }
 
-import {loadingByChunks, initUploading} from "./storage/uploadByChunk";
-
 const server = express();
 const logger = createLogger();
 server.use(logger);
@@ -31,10 +29,6 @@ const {BUCKET_NAME} = environmentVariables;
 server.set("views", path.join(__dirname, buildFolder));
 server.engine("html", ejs.renderFile);
 server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static`)));
-
-server.post("/upload", loadingByChunks);
-
-server.post("/upload/init", initUploading);
 
 server.get("/getSignedUrl", function (req: Request, res: Response) {
     logger(req, res);
