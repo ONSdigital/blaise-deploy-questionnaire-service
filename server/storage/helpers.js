@@ -6,8 +6,6 @@ const gc = require("./config");
 const {BUCKET_NAME} = getEnvironmentVariables();
 const bucket = gc.bucket(BUCKET_NAME);
 
-const {format} = util;
-
 export const getSignedUrl = (filename) => new Promise((resolve, reject) => {
     async function getSignedUrl() {
         const maxAgeSeconds = 3600;
@@ -79,4 +77,4 @@ export const checkFile = (filename) => new Promise((resolve, reject) => {
 });
 
 
-module.exports = {uploadImage, checkFile, getSignedUrl};
+module.exports = {checkFile, getSignedUrl};

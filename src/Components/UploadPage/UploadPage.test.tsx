@@ -7,14 +7,7 @@ import {createMemoryHistory} from "history";
 import {Router} from "react-router";
 import {instrumentList} from "../../features/step_definitions/API_Mock_Objects";
 import UploadPage from "./UploadPage";
-import uploader from "../../uploader";
 import navigateToDeployPageAndSelectFile from "../../features/step_definitions/functions";
-
-jest.mock("../../uploader");
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-uploader.__setMockStatus(false);
 
 describe("Upload Page", () => {
 

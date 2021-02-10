@@ -9,9 +9,6 @@ import {survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
 
 
-// Mock the Uploader.js module
-jest.mock("../../uploader");
-
 
 // Load in feature details from .feature file
 const feature = loadFeature(
@@ -25,6 +22,16 @@ const mock_server_responses = (url: string) => {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+        });
+    }  else if (url.includes("getSignedUrl")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve("https://storage.googleapis.com"),
+        });
+    } else if (url.includes("https://storage.googleapis.com")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve(""),
         });
     } else if (url.includes("/api/install")) {
         return Promise.resolve({

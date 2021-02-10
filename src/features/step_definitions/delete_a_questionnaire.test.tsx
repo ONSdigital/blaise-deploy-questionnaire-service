@@ -13,10 +13,6 @@ import App from "../../App";
 import flushPromises from "../../tests/utils";
 
 
-// Mock the Uploader.js module
-jest.mock("../../uploader");
-
-
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/delete_a_questionnaire.feature",
