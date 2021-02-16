@@ -58,7 +58,7 @@
     "@babel/plugin-transform-react-jsx": "^7.12.16",
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.12.16",
-    "@types/ejs": "^3.0.5",
+    "@types/ejs": "^3.0.6",
     "@types/lodash": "^4.14.168",
     "@types/multer": "^1.4.5",
     "@types/pino-http": "^5.4.0",
