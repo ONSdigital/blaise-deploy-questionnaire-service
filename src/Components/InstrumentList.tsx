@@ -29,26 +29,25 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
         const newFilteredList = filter(instrumentList, (listItem) => listItem.name.includes(e.target.value.toUpperCase()));
         setList(newFilteredList);
         if (newFilteredList.length === 0) {
-            setListMessage(`No results for ${e.target.value}`);
+            setListMessage(`No questionnaires containing ${e.target.value}`);
         }
     };
-
 
 
     return <>
         <h2 className="u-mt-m">Table of questionnaires</h2>
 
         <div className="field">
-            <label className="label  " htmlFor="text">Enter some text
+            <label className="label  " htmlFor="filter-by-name">Filter by questionnaire name
             </label>
-            <input type="text" id="text" className="input input--text input-type__input   "
+            <input type="text" id="filter-by-name" className="input input--text input-type__input"
                    onChange={(e) => filterList(e)}/>
         </div>
 
         {
             list && list.length > 0
                 ?
-                <table id="instrument-table" className="table ">
+                <table id="instrument-table" className="table u-mt-s">
                     <thead className="table__head u-mt-m">
                     <tr className="table__row">
                         <th scope="col" className="table__header ">
