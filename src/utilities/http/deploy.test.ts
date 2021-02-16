@@ -24,23 +24,23 @@ describe("Function checkFileInBucket(filename: string) ", () => {
     });
 
     it("It should return false if request JSON is invalid", async () => {
-        mock_server_request_function(jest.fn(() =>
+        mock_server_request_function(() =>
             Promise.resolve({
                 status: 200,
                 json: () => Promise.reject("Failed"),
             })
-        ));
+        );
 
         const fileFound = await checkFileInBucket("OPN2004A.bpkg");
         expect(fileFound).toBeFalsy();
     });
 
     it("It should return false if request call fails", async () => {
-        mock_server_request_function(jest.fn(() =>
+        mock_server_request_function(() =>
             Promise.resolve(() => {
                 throw "error";
             })
-        ));
+        );
         const fileFound = await checkFileInBucket("OPN2004A.bpkg");
         expect(fileFound).toBeFalsy();
     });
