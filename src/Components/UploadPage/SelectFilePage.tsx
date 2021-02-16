@@ -1,7 +1,5 @@
 import {Link} from "react-router-dom";
-import {ONSPanel} from "../ONSDesignSystem/ONSPanel";
-import {ONSUpload} from "../ONSDesignSystem/ONSUpload";
-import {ONSButton} from "../ONSDesignSystem/ONSButton";
+import {ONSButton, ONSPanel, ONSUpload} from "blaise-design-system-react-components";
 import React, {ReactElement} from "react";
 
 interface SelectFilePageProps {
@@ -45,10 +43,10 @@ function SelectFilePage(props: SelectFilePageProps): ReactElement {
             </ONSPanel>
 
             <ONSUpload label="Select survey package"
-                       description="File type accepted are .bpkg and .zip only"
+                       description="File type accepted is .bpkg"
                        fileName="Package"
                        fileID="survey-selector"
-                       accept=".zip,.bpkg"
+                       accept=".bpkg"
                        onChange={(e) => handleFileChange(e.target.files)}
                        disabled={loading}/>
 

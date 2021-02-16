@@ -109,6 +109,9 @@ defineFeature(feature, test => {
             mock_fetch_requests(mock_server_responses_live);
             await navigateToDeployPageAndSelectFile();
             await fireEvent.click(screen.getByTestId("button"));
+            await act(async () => {
+                await flushPromises();
+            });
         });
 
         when("I select to 'overwrite' and the survey is live (within the specified survey days)", async () => {
@@ -139,6 +142,9 @@ defineFeature(feature, test => {
             mock_fetch_requests(mock_server_responses_not_live);
             await navigateToDeployPageAndSelectFile();
             await fireEvent.click(screen.getByTestId("button"));
+            await act(async () => {
+                await flushPromises();
+            });
         });
 
         when("I select to 'overwrite' and there is no sample or respondent data captured for the questionnaire", async () => {

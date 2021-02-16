@@ -1,6 +1,11 @@
 # Deploy Questionnaire Service
 
 [![codecov](https://codecov.io/gh/ONSdigital/blaise-deploy-questionnaire-service/branch/main/graph/badge.svg)](https://codecov.io/gh/ONSdigital/blaise-deploy-questionnaire-service)
+[![CI status](https://github.com/ONSdigital/blaise-deploy-questionnaire-service/workflows/Test%20coverage%20report/badge.svg)](https://github.com/ONSdigital/blaise-deploy-questionnaire-service/workflows/Test%20coverage%20report/badge.svg)
+<img src="https://img.shields.io/github/release/ONSdigital/blaise-deploy-questionnaire-service.svg?style=flat-square" alt="Nisra Case Mover release verison">
+[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/ONSdigital/blaise-deploy-questionnaire-service.svg)](https://github.com/ONSdigital/blaise-deploy-questionnaire-service/pulls)
+[![Github last commit](https://img.shields.io/github/last-commit/ONSdigital/blaise-deploy-questionnaire-service.svg)](https://github.com/ONSdigital/blaise-deploy-questionnaire-service/commits)
+[![Github contributors](https://img.shields.io/github/contributors/ONSdigital/blaise-deploy-questionnaire-service.svg)](https://github.com/ONSdigital/blaise-deploy-questionnaire-service/graphs/contributors)
 
 Service for uploading Instrument/Questionnaire files to Blaise. 
 

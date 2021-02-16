@@ -1,6 +1,5 @@
-import React, {ReactElement, useState} from "react";
-import { ONSButton } from "../ONSDesignSystem/ONSButton";
-import {ONSPanel} from "../ONSDesignSystem/ONSPanel";
+import React from "react";
+import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 import {useHistory} from "react-router-dom";
 
 

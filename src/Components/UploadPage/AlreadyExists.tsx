@@ -1,6 +1,6 @@
 import React, {ReactElement, useState} from "react";
 import {useHistory} from "react-router-dom";
-import {ONSButton} from "../ONSDesignSystem/ONSButton";
+import {ONSButton} from "blaise-design-system-react-components";
 
 interface Props {
     instrumentName: string
@@ -28,7 +28,7 @@ function AlreadyExists({instrumentName, ConfirmInstrumentOverride, loading} : Pr
             What action do you want to take?
             </h1>
 
-            <form onSubmit={() => confirmOption()}>
+            <form>
                 <fieldset className="fieldset">
                     <legend className="fieldset__legend">
                     </legend>
