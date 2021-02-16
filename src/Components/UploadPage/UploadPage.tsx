@@ -14,10 +14,8 @@ function UploadPage(): ReactElement {
     const [file, setFile] = useState<FileList>();
     const [instrumentName, setInstrumentName] = useState<string>("");
     const [panel, setPanel] = useState<string>("");
-    const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [uploadStatus, setUploadStatus] = useState<string>("");
     const [foundInstrument, setFoundInstrument] = useState<Instrument | null>(null);
-    const timeout = (process.env.NODE_ENV === "test" ? 0 : 3000);
 
     const {path} = useRouteMatch();
     const history = useHistory();
@@ -91,7 +89,7 @@ function UploadPage(): ReactElement {
         ];
 
         if (!allowedHosts.includes(signedUrlHost)) {
-            setUploadStatus("Failed to upload file");
+            setUploadStatus("Failed to upload questionnaire");
             setRedirect(true);
         }
 
