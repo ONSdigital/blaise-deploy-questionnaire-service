@@ -1,7 +1,7 @@
 import React from "react";
 import {render, waitFor, fireEvent, cleanup, screen} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import flushPromises, {mock_server_request_function, mock_server_request_Return_JSON} from "../../tests/utils";
+import flushPromises, {mock_server_request_Return_JSON} from "../../tests/utils";
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
@@ -97,10 +97,12 @@ describe("Upload Page", () => {
 
 const mock_server_responses = (url: string) => {
     console.log(url);
-    const allowedHosts = [
-        "storage.googleapis.com"
-    ];
-    if (url.includes("bucket")) {
+    if (url.includes("/api/instruments")) {
+        return Promise.resolve({
+            status: 404,
+            json: () => Promise.resolve(),
+        });
+    } else if (url.includes("bucket")) {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
@@ -108,9 +110,9 @@ const mock_server_responses = (url: string) => {
     } else if (url.includes("getSignedUrl")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve("https://storage.googleapis.com"),
+            json: () => Promise.resolve("https://storage.googleapis.com/mock_url"),
         });
-    } else if (allowedHosts.includes(url)) {
+    } else if (url === "https://storage.googleapis.com/mock_url") {
         return Promise.resolve({
             status: 500,
             json: () => Promise.resolve(""),
@@ -126,7 +128,7 @@ const mock_server_responses = (url: string) => {
 
 describe("Given the file fails to upload", () => {
 
-    beforeAll(() => {
+    beforeEach(() => {
         mock_fetch_requests(mock_server_responses);
     });
 
@@ -137,7 +139,7 @@ describe("Given the file fails to upload", () => {
 
         await waitFor(() => {
             expect(screen.getByText("File deploy failed")).toBeDefined();
-            expect(screen.getByText(/Failed to upload file/i)).toBeDefined();
+            expect(screen.getByText(/Failed to upload questionnaire/i)).toBeDefined();
         });
     });
 

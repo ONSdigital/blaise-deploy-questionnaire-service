@@ -45,6 +45,7 @@ function UploadPage(): ReactElement {
         setInstrumentName(instrumentName);
 
         const [alreadyExists, instrument] = await checkInstrumentAlreadyExists(instrumentName);
+        console.log(`alreadyExists ${alreadyExists}`);
         if (alreadyExists === null) {
             setUploadStatus("Failed to validate if questionnaire already exists");
             setRedirect(true);

@@ -32,9 +32,9 @@ const mock_server_responses = (url: string) => {
     } else if (url.includes("getSignedUrl")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve("https://storage.googleapis.com"),
+            json: () => Promise.resolve("https://storage.googleapis.com/mock_url"),
         });
-    } else if (allowedHosts.includes(url)) {
+    } else if (url === "https://storage.googleapis.com/mock_url") {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve(""),
