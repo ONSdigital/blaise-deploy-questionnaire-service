@@ -106,11 +106,11 @@ describe("Function getAllInstruments(filename: string) ", () => {
     });
 
     it("It should return false with an empty list if request call fails", async () => {
-        mock_server_request_function(jest.fn(() =>
+        mock_server_request_function(() =>
             Promise.resolve(() => {
                 throw "error";
             })
-        ));
+        );
         const [success, instruments] = await getAllInstruments();
         expect(success).toBeFalsy();
         expect(instruments).toEqual([]);
