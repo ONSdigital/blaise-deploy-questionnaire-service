@@ -11,7 +11,7 @@ function requestPromiseJson(method: string, url: string, body: any = null): Prom
                     data => (resolve([response.status, data]))
                 ).catch((error) => {
                     console.log(`Failed to read JSON from response, Error: ${error}`);
-                    resolve([response.status, "Read JSON failed"]);
+                    resolve([response.status, null]);
                 });
             })
             .catch(err => {
