@@ -59,9 +59,9 @@ export const checkFile = (filename) => new Promise((resolve, reject) => {
         }).catch((error) => {
         console.log(error.code);
         if (error.code === 404) {
-            resolve({ found: false});
+            resolve({found: false});
         }
-        reject(`Failed ${error}`);
+        reject(error);
     });
 });
 
