@@ -106,11 +106,11 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         SendBlaiseAPIRequest(req, res, url, "DELETE")
             .then(([status, data]) => {
                 if (status === 204) {
-                      auditLogInfo(req.log, `Successfully deleted questionnaire ${instrumentName}`);
+                      auditLogInfo(req.log, `Successfully uninstalled questionnaire ${instrumentName}`);
                 } else if (status === 404) {
-                     auditLogError(req.log, `Attempted to delete questionnaire ${instrumentName} that doesn't exist`);
+                     auditLogError(req.log, `Attempted to uninstall questionnaire ${instrumentName} that doesn't exist`);
                 } else {
-                     auditLogError(req.log, `Failed to delete questionnaire ${instrumentName}`);
+                     auditLogError(req.log, `Failed to uninstall questionnaire ${instrumentName}`);
                 }
                 res.status(status).json(data);
             })
