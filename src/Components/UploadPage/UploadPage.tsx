@@ -101,7 +101,6 @@ function UploadPage(): ReactElement {
             .send(file[0])
             .end((error: Error) => {
                 setUploading(false);
-                console.log("error "+  error);
                 if (error) {
                     console.log("Failed to upload file, error: ", error);
                     setLoading(false);

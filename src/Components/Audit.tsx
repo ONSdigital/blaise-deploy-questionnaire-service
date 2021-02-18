@@ -2,7 +2,7 @@ import React, {ReactElement, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {ErrorBoundary} from "./ErrorHandling/ErrorBoundary";
 import dateFormatter from "dayjs";
-import {ONSPanel} from "blaise-design-system-react-components";
+import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 
 
 interface BlaiseStatus {
@@ -55,6 +55,7 @@ function StatusPage(): ReactElement {
                 <Link to={"/"}>Previous</Link>
             </p>
             <h1>Questionnaire deployment audit logs</h1>
+            <ONSButton onClick={() => getAuditLogs()} label="Reload logs" primary={true} small={true}/>
             <ErrorBoundary errorMessageText={"Failed to load audit logs."}>
                 {
                     auditLogs && auditLogs.length > 0
@@ -80,8 +81,9 @@ function StatusPage(): ReactElement {
                                                 {dateFormatter(new Date(item.timestamp.seconds * 1000)).format("DD/MM/YYYY HH:mm:ss")}
                                             </td>
                                             <td className="table__cell ">
-                                                <span
-                                                    className={`status status--${item.severity.toLowerCase()}`}>{item.textPayload}</span>
+                                                <span className={`status status--${item.severity.toLowerCase()}`}>
+                                                    {item.jsonPayload.fields.message.stringValue.replace(/^AUDIT_LOG: /, "")}
+                                                </span>
 
                                             </td>
                                         </tr>

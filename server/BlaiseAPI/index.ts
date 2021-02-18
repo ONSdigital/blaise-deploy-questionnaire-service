@@ -3,7 +3,7 @@ import {Instrument} from "../../Interfaces";
 import axios, {AxiosRequestConfig} from "axios";
 import Functions from "../Functions";
 import {EnvironmentVariables} from "../Config";
-import { logToAudit } from "../audit_logging";
+import {auditLogError, auditLogInfo} from "../audit_logging";
 
 type PromiseResponse = [number, any];
 
@@ -70,9 +70,9 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         SendBlaiseAPIRequest(req, res, url, "POST", data)
             .then(([status, data]) => {
                 if (status === 201) {
-                    logToAudit(`Successfully installed questionnaire ${instrumentName}`, "INFO");
+                      auditLogInfo(req.log, `Successfully installed questionnaire ${instrumentName}`);
                 } else {
-                    logToAudit(`Failed to install questionnaire ${instrumentName}`, "ERROR");
+                      auditLogInfo(req.log, `Failed to install questionnaire ${instrumentName}`);
                 }
                 res.status(status).json(data);
             })
@@ -88,9 +88,9 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         SendBlaiseAPIRequest(req, res, url, "GET")
             .then(([status, data]) => {
                 if (status === 200) {
-                    logToAudit(`Attempting to install existing questionnaire ${instrumentName}`, "INFO");
+                     auditLogInfo(req.log, `Attempting to install existing questionnaire ${instrumentName}`);
                 } else if (status !== 404) {
-                    logToAudit(`Failed to install questionnaire ${instrumentName}, unable to verify if questionnaire is already installed`, "ERROR");
+                     auditLogError(req.log, `Failed to install questionnaire ${instrumentName}, unable to verify if questionnaire is already installed`);
                 }
                 res.status(status).json(data);
             })
@@ -106,11 +106,11 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         SendBlaiseAPIRequest(req, res, url, "DELETE")
             .then(([status, data]) => {
                 if (status === 204) {
-                    logToAudit(`Successfully deleted questionnaire ${instrumentName}`, "INFO");
+                      auditLogInfo(req.log, `Successfully deleted questionnaire ${instrumentName}`);
                 } else if (status === 404) {
-                    logToAudit(`Attempted to delete questionnaire ${instrumentName} that doesn't exist`, "ERROR");
+                     auditLogError(req.log, `Attempted to delete questionnaire ${instrumentName} that doesn't exist`);
                 } else {
-                    logToAudit(`Failed to delete questionnaire ${instrumentName}`, "ERROR");
+                     auditLogError(req.log, `Failed to delete questionnaire ${instrumentName}`);
                 }
                 res.status(status).json(data);
             })

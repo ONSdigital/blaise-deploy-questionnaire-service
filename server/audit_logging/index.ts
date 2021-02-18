@@ -1,39 +1,27 @@
 import {Entry} from "@google-cloud/logging";
 import logging from "./config";
+import {IncomingMessage} from "http";
 
-const logName = "blaise-dqs-audit"; // The name of the log to write to
+import {getEnvironmentVariables} from "../Config";
+const {PROJECT_ID} = getEnvironmentVariables();
 
-export const logToAudit = (message: string, severity: string): void => {
-    // Selects the log to write to
-    const log = logging.log(logName);
+const logName = `projects/${PROJECT_ID}/logs/stdout`; // The name of the log to write to
 
-    // The metadata associated with the entry
-    const metadata = {
-        resource: {type: "global"},
-        // See: https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity
-        severity: severity,
-    };
+export const auditLogInfo = (logger: IncomingMessage["log"], message: string): void => {
+    logger.info(`AUDIT_LOG: ${message}`);
+};
 
-    // Prepares a log entry
-    const entry = log.entry(metadata, message);
-
-    async function writeLog() {
-        // Writes the log entry
-        await log.write(entry);
-        console.log(`Logged: ${message}`);
-    }
-
-    writeLog().then(() => console.log(`Logged: ${message}`)).catch(error => console.log(error));
+export const auditLogError = (logger: IncomingMessage["log"], message: string): void => {
+    logger.error(`AUDIT_LOG: ${message}`);
 };
 
 export const getAuditLogs = (): Promise<Entry[]> => {
     return new Promise((resolve: (object: Entry[]) => void, reject: (error: string) => void) => {
         const log = logging.log(logName);
-
-        log.getEntries()
+        log.getEntries({filter: "jsonPayload.message=~\"^AUDIT_LOG: \""})
             .then(([entries]) => resolve(entries))
             .catch(error => reject(error));
     });
 };
 
-module.exports = {getAuditLogs, logToAudit};
+module.exports = {getAuditLogs, auditLogInfo, auditLogError};
