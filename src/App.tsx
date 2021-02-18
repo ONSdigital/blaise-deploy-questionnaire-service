@@ -87,11 +87,18 @@ function App(): ReactElement {
                                 {status !== "" && <ONSPanel status="success">{status}</ONSPanel>}
                                 {listError.includes("Unable") && <ONSErrorPanel/>}
 
-                                <p className="u-mt-m">
-                                    <Link to="/upload" id="deploy-questionnaire-link">
-                                        Deploy a questionnaire
-                                    </Link>
-                                </p>
+                                <ul className="list list--bare list--inline">
+                                    <li className="list__item">
+                                        <Link to="/upload" id="deploy-questionnaire-link">
+                                            Deploy a questionnaire
+                                        </Link>
+                                    </li>
+                                    <li className="list__item">
+                                        <Link to="/audit" id="audit-logs-link">
+                                            View audit logs
+                                        </Link>
+                                    </li>
+                                </ul>
 
                                 <ONSPanel>
                                     <p>

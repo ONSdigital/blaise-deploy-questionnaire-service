@@ -18,7 +18,7 @@ export const auditLogError = (logger: IncomingMessage["log"], message: string): 
 export const getAuditLogs = (): Promise<Entry[]> => {
     return new Promise((resolve: (object: Entry[]) => void, reject: (error: string) => void) => {
         const log = logging.log(logName);
-        log.getEntries({filter: "jsonPayload.message=~\"^AUDIT_LOG: \""})
+        log.getEntries({filter: "jsonPayload.message=~\"^AUDIT_LOG: \"", maxResults: 50})
             .then(([entries]) => resolve(entries))
             .catch(error => reject(error));
     });
