@@ -1,6 +1,6 @@
 import {requestPromiseJson} from "./requestPromise";
 
-type getAuditLogsResponse = [boolean, any[]];
+type getAuditLogsResponse = [boolean, never[]];
 
 function getAuditLogs(): Promise<getAuditLogsResponse> {
     let list: never[] = [];

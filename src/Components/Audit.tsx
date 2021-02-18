@@ -44,7 +44,7 @@ function StatusPage(): ReactElement {
                 <Link to={"/"}>Previous</Link>
             </p>
             <h1>Questionnaire deployment audit logs</h1>
-            <ONSButton onClick={() => getAuditLogs()} label="Reload logs" primary={true} small={true}/>
+            <ONSButton onClick={() => callAuditLogs()} label="Reload logs" primary={true} small={true}/>
             <ErrorBoundary errorMessageText={"Failed to load audit logs."}>
                 {
                     auditLogs && auditLogs.length > 0
