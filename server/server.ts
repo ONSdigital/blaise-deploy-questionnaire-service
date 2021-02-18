@@ -60,7 +60,7 @@ server.get("/bucket", function (req: Request, res: Response) {
         });
 });
 
-server.get("/audit_logs", function (req: Request, res: Response) {
+server.get("/api/audit", function (req: Request, res: Response) {
     logger(req, res);
     getAuditLogs()
         .then((file) => {

@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {ErrorBoundary} from "./ErrorHandling/ErrorBoundary";
 import dateFormatter from "dayjs";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
+import {getAuditLogs} from "../utilities/http";
 
 
 interface BlaiseStatus {
@@ -15,37 +16,25 @@ function StatusPage(): ReactElement {
     const [listError, setListError] = useState<string>("Loading ...");
 
     useEffect(() => {
-        getAuditLogs();
+        callAuditLogs().then(() => console.log("callAuditLogs Complete"));
     }, []);
 
-    function getAuditLogs() {
+    async function callAuditLogs() {
         setAuditLogs([]);
         setListError("Loading ...");
-        console.log("getAuditLogs");
-        fetch("/audit_logs")
-            .then((r: Response) => {
-                if (r.status !== 200) {
-                    throw r.status + " - " + r.statusText;
-                }
-                r.json()
-                    .then((json: BlaiseStatus[]) => {
-                        if (!Array.isArray(json)) {
-                            throw "Json response is not a list";
-                        }
-                        console.log("Retrieved audit logs, " + json.length + " items/s");
-                        setAuditLogs(json);
-                        setListError("");
-                        if (json.length === 0) setListError("No logs found.");
-                    })
-                    .catch((error) => {
-                        console.error("Unable to read json from response, error: " + error);
-                        setListError("Unable to get Audit logs");
-                    });
-            }).catch((error) => {
-                console.error("Failed to retrieve Blaise status, error: " + error);
-                setListError("Unable to get Audit logs");
-            }
-        );
+
+        const [success, auditLogs] = await getAuditLogs();
+
+        if (!success) {
+            setListError("Unable to load audit logs");
+            return;
+        }
+
+        if (auditLogs.length === 0) {
+            setListError("No audit logs found.");
+        }
+
+        setAuditLogs(auditLogs);
     }
 
 
