@@ -63,9 +63,9 @@ server.get("/bucket", function (req: Request, res: Response) {
 server.get("/api/audit", function (req: Request, res: Response) {
     logger(req, res);
     getAuditLogs()
-        .then((file) => {
-            req.log.info(`Retrieved audit logs ${BUCKET_NAME}`);
-            res.status(200).json(file);
+        .then((logs) => {
+            req.log.info("Retrieved audit logs");
+            res.status(200).json(logs);
         })
         .catch((error) => {
             req.log.error(error, "Failed calling getAuditLogs");

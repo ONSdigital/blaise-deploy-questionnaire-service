@@ -4,15 +4,10 @@ import {ErrorBoundary} from "./ErrorHandling/ErrorBoundary";
 import dateFormatter from "dayjs";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 import {getAuditLogs} from "../utilities/http";
-
-
-interface BlaiseStatus {
-    "health check type": string
-    status: string
-}
+import {AuditLog} from "../../Interfaces";
 
 function StatusPage(): ReactElement {
-    const [auditLogs, setAuditLogs] = useState<BlaiseStatus[]>([]);
+    const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
     const [listError, setListError] = useState<string>("Loading ...");
 
     useEffect(() => {
@@ -62,18 +57,17 @@ function StatusPage(): ReactElement {
                             </thead>
                             <tbody className="table__body">
                             {
-                                auditLogs.map((item: any) => {
+                                auditLogs.map(({id, timestamp, severity, message}: AuditLog) => {
                                     return (
-                                        <tr className="table__row" key={item.insertId}
+                                        <tr className="table__row" key={id}
                                             data-testid={"instrument-table-row"}>
                                             <td className="table__cell ">
-                                                {dateFormatter(new Date(item.timestamp.seconds * 1000)).format("DD/MM/YYYY HH:mm:ss")}
+                                                {dateFormatter(new Date(timestamp)).format("DD/MM/YYYY HH:mm:ss")}
                                             </td>
                                             <td className="table__cell ">
-                                                <span className={`status status--${item.severity.toLowerCase()}`}>
-                                                    {item.jsonPayload.fields.message.stringValue.replace(/^AUDIT_LOG: /, "")}
+                                                <span className={`status status--${severity.toLowerCase()}`}>
+                                                    {message}
                                                 </span>
-
                                             </td>
                                         </tr>
                                     );
