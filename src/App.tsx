@@ -17,7 +17,7 @@ import {
     ONSErrorPanel
 } from "blaise-design-system-react-components";
 import {getAllInstruments} from "./utilities/http";
-import Audit from "./Components/Audit";
+import AuditPage from "./Components/AuditPage";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -71,7 +71,7 @@ function App(): ReactElement {
                                 <StatusPage/>
                             </Route>
                             <Route path="/audit">
-                                <Audit/>
+                                <AuditPage/>
                             </Route>
                             <Route path="/UploadSummary">
                                 <DeploymentSummary getList={getInstrumentList}/>
