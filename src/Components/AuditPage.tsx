@@ -6,7 +6,7 @@ import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 import {getAuditLogs} from "../utilities/http";
 import {AuditLog} from "../../Interfaces";
 
-function StatusPage(): ReactElement {
+function AuditPage(): ReactElement {
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
     const [listError, setListError] = useState<string>("Loading ...");
 
@@ -24,6 +24,8 @@ function StatusPage(): ReactElement {
             setListError("Unable to load audit logs");
             return;
         }
+
+        console.log(auditLogs);
 
         if (auditLogs.length === 0) {
             setListError("No audit logs found.");
@@ -83,4 +85,4 @@ function StatusPage(): ReactElement {
     );
 }
 
-export default StatusPage;
+export default AuditPage;
