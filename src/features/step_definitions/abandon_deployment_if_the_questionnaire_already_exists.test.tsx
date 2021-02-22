@@ -24,15 +24,10 @@ const mock_server_responses = (url: string) => {
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
         });
-    }  else if (url.includes("getSignedUrl")) {
+    }  else if (url.includes("/upload")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve("https://storage.googleapis.com/mock_url"),
-        });
-    } else if (url === "https://storage.googleapis.com/mock_url") {
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve(""),
+            json: () => Promise.resolve(),
         });
     } else if (url.includes("/api/install")) {
         return Promise.resolve({
@@ -57,6 +52,7 @@ defineFeature(feature, test => {
         jest.clearAllMocks();
         cleanup();
         jest.resetModules();
+
     });
 
     beforeEach(() => {

@@ -11,7 +11,10 @@ import "@testing-library/jest-dom";
 import flushPromises from "../../tests/utils";
 import {survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
 
+const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
 // Load in feature details from .feature file
 const feature = loadFeature(
@@ -21,23 +24,10 @@ const feature = loadFeature(
 
 const mock_server_responses = (url: string) => {
     console.log(url);
-    const allowedHosts = [
-        "storage.googleapis.com"
-    ];
     if (url.includes("bucket")) {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
-        });
-    } else if (url.includes("getSignedUrl")) {
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve("https://storage.googleapis.com/mock_url"),
-        });
-    } else if (url === "https://storage.googleapis.com/mock_url") {
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve(""),
         });
     } else if (url.includes("/api/instruments/OPN2004A")) {
         return Promise.resolve({
@@ -62,10 +52,11 @@ defineFeature(feature, test => {
         jest.clearAllMocks();
         cleanup();
         jest.resetModules();
+        mock.reset();
     });
 
     beforeEach(() => {
-        cleanup();
+        mock.onPut(/^\/upload/).reply(200);
         mock_fetch_requests(mock_server_responses);
     });
 
