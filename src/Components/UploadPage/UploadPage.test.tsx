@@ -8,6 +8,10 @@ import {Router} from "react-router";
 import {instrumentList, survey_list} from "../../features/step_definitions/API_Mock_Objects";
 import UploadPage from "./UploadPage";
 import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "../../features/step_definitions/functions";
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
+
+const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
 describe("Upload Page", () => {
 
@@ -107,16 +111,6 @@ const mock_server_responses = (url: string) => {
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
         });
-    } else if (url.includes("getSignedUrl")) {
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve("https://storage.googleapis.com/mock_url"),
-        });
-    } else if (url === "https://storage.googleapis.com/mock_url") {
-        return Promise.resolve({
-            status: 500,
-            json: () => Promise.resolve(""),
-        });
     } else {
         return Promise.resolve({
             status: 200,
@@ -129,6 +123,9 @@ const mock_server_responses = (url: string) => {
 describe("Given the file fails to upload", () => {
 
     beforeEach(() => {
+        mock.onPut("^/upload").reply(500,
+            {},
+        );
         mock_fetch_requests(mock_server_responses);
     });
 

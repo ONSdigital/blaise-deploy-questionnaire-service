@@ -5,7 +5,8 @@ import AlreadyExists from "./AlreadyExists";
 import LiveSurveyWarning from "./LiveSurveyWarning";
 import Confirmation from "./Confirmation";
 import {Instrument} from "../../../Interfaces";
-import {verifyAndInstallInstrument, checkInstrumentAlreadyExists, getSignedUrlForBucket} from "../../utilities/http";
+import {verifyAndInstallInstrument, checkInstrumentAlreadyExists} from "../../utilities/http";
+import axios from "axios";
 
 function UploadPage(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
@@ -13,12 +14,20 @@ function UploadPage(): ReactElement {
     const [uploading, setUploading] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
     const [instrumentName, setInstrumentName] = useState<string>("");
+    const [fileName, setFileName] = useState<string>("");
+    const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [panel, setPanel] = useState<string>("");
     const [uploadStatus, setUploadStatus] = useState<string>("");
     const [foundInstrument, setFoundInstrument] = useState<Instrument | null>(null);
 
     const {path} = useRouteMatch();
     const history = useHistory();
+
+    function roundUp(num: number, precision: number) {
+        precision = Math.pow(10, precision);
+        return Math.ceil(num * precision) / precision;
+    }
+
 
     async function BeginUploadProcess() {
         if (file === undefined) {
@@ -39,6 +48,7 @@ function UploadPage(): ReactElement {
             return;
         }
 
+        await setFileName(fileName);
         setLoading(true);
         setInstrumentName(instrumentName);
 
@@ -55,7 +65,7 @@ function UploadPage(): ReactElement {
             setLoading(false);
             history.push(`${path}/survey-exists`);
         } else {
-            await UploadFile(fileName);
+            await UploadFile();
         }
     }
 
@@ -73,7 +83,7 @@ function UploadPage(): ReactElement {
         }
     }
 
-    async function UploadFile(fileName: string) {
+    async function UploadFile() {
         if (file === undefined) {
             return;
         }
@@ -82,44 +92,36 @@ function UploadPage(): ReactElement {
         setPanel("");
         setUploading(true);
 
-        const signedUrl = await getSignedUrlForBucket(fileName);
-        const signedUrlHost = new URL(signedUrl).host;
-        const allowedHosts = [
-            "storage.googleapis.com"
-        ];
-
-        if (!allowedHosts.includes(signedUrlHost)) {
-            setUploadStatus("Failed to upload questionnaire");
-            setRedirect(true);
-        }
-
-        fetch(signedUrl, {
-            method: "PUT",
-            body: file[0],
+        const config = {
+            onUploadProgress: (progressEvent: ProgressEvent) => onFileUploadProgress(progressEvent),
             headers: {
                 "Content-Type": "application/octet-stream",
-            },
-        })
-            .then((r: Response) => {
-                if (r.status === 200) {
-                    console.log("Uploaded");
-                    verifyAndInstallInstrument(file[0].name.replace(/ /g, "_"))
-                        .then(([installed, message]) => {
-                            if (!installed) {
-                                setUploadStatus(message);
-                            }
-                            setRedirect(true);
-                        });
-                } else {
-                    throw r.status + " - " + r.statusText;
-                }
+            }
+        };
+        setUploading(true);
+
+        axios.put(`/upload?filename=${file[0].name}`, file[0], config)
+            .then(function () {
+                console.log("File successful uploaded");
+                verifyAndInstallInstrument(file[0].name)
+                    .then(([installed, message]) => {
+                        if (!installed) {
+                            setUploadStatus(message);
+                        }
+                        setRedirect(true);
+                    });
             })
-            .catch(async (error) => {
+            .catch(function (error) {
                 console.error("Failed to upload questionnaire, error: " + error);
                 setUploadStatus("Failed to upload questionnaire");
                 setRedirect(true);
             });
     }
+
+    const onFileUploadProgress = (progressEvent: ProgressEvent) => {
+        const percentage: number = roundUp((progressEvent.loaded / progressEvent.total) * 100, 2);
+        setUploadPercentage(percentage);
+    };
 
     return (
         <>
@@ -157,7 +159,17 @@ function UploadPage(): ReactElement {
             {
                 uploading &&
                 <>
-                    <p>Uploading file</p>
+                    <p>Uploading: {uploadPercentage}%</p>
+                    <progress id="file"
+                              value={uploadPercentage}
+                              max="100"
+                              role="progressbar"
+                              aria-valuenow={uploadPercentage}
+                              aria-valuemin={0}
+                              aria-valuemax={100}>
+                        {uploadPercentage}%
+                    </progress>
+
                 </>
             }
 

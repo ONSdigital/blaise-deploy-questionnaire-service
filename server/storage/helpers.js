@@ -6,26 +6,27 @@ const bucket = gc.bucket(BUCKET_NAME);
 
 export const getSignedUrl = (filename) => new Promise((resolve, reject) => {
     async function getSignedUrl() {
-        const maxAgeSeconds = 3600;
-        const method = ["GET", "HEAD", "DELETE", "PUT", "POST"];
-        const origin = [
-            "http://localhost:3001",
-            "http://localhost:5000",
-            "https://mattest-dot-dqs-ui-dot-ons-blaise-v2-dev-matt58.nw.r.appspot.com",
-            "https://dqs-ui-dot-ons-blaise-v2-dev-matt58.nw.r.appspot.com",
-            "https://mattest-dot-dqs-ui-dot-ons-blaise-v2-dev.nw.r.appspot.com"
-        ];
-        const responseHeader = "content-type";
-
-
-        await bucket.setCorsConfiguration([
-            {
-                maxAgeSeconds,
-                method: [method],
-                origin: [origin],
-                responseHeader: [responseHeader],
-            },
-        ]);
+        // const maxAgeSeconds = 3600;
+        // const method = ["GET", "HEAD", "DELETE", "PUT", "POST"];
+        // const origin = [
+        //     "http://localhost:3000",
+        //     "http://localhost:5000",
+        //     "https://mattest-dot-dqs-ui-dot-ons-blaise-v2-dev-matt58.nw.r.appspot.com",
+        //     "https://dqs-ui-dot-ons-blaise-v2-dev-matt58.nw.r.appspot.com",
+        //     "https://mattest-dot-dqs-ui-dot-ons-blaise-v2-dev.nw.r.appspot.com"
+        // ];
+        // const responseHeader = "content-type";
+        //
+        //
+        // console.log("setCorsConfiguration");
+        // await bucket.setCorsConfiguration([
+        //     {
+        //         maxAgeSeconds,
+        //         method: [method],
+        //         origin: [origin],
+        //         responseHeader: [responseHeader],
+        //     },
+        // ]);
 
         const options = {
             version: "v4",
@@ -33,7 +34,7 @@ export const getSignedUrl = (filename) => new Promise((resolve, reject) => {
             expires: Date.now() + 15 * 60 * 1000, // 15 minutes
             contentType: "application/octet-stream",
         };
-
+        console.log("getSignedUrl");
         // Get a v4 signed URL for uploading file
         const [url] = await bucket
             .file(filename)
@@ -44,8 +45,8 @@ export const getSignedUrl = (filename) => new Promise((resolve, reject) => {
     getSignedUrl()
         .then((url) => {
             resolve(url);
-        }).catch((error) => {
-        reject(error);
+        }).catch(() => {
+        reject(null);
     });
 });
 
@@ -68,7 +69,7 @@ export const checkFile = (filename) => new Promise((resolve, reject) => {
         }).catch((error) => {
         console.log(error.code);
         if (error.code === 404) {
-            resolve({ found: false});
+            resolve({found: false});
         }
         reject(`Failed ${error}`);
     });

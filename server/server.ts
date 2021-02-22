@@ -4,6 +4,7 @@ import ejs from "ejs";
 import dotenv from "dotenv";
 import {getEnvironmentVariables} from "./Config";
 import createLogger from "./pino";
+import {createProxyMiddleware} from "http-proxy-middleware";
 
 if (process.env.NODE_ENV !== "production") {
     dotenv.config({path: __dirname + "/../../.env"});
@@ -30,20 +31,25 @@ server.set("views", path.join(__dirname, buildFolder));
 server.engine("html", ejs.renderFile);
 server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static`)));
 
-server.get("/getSignedUrl", function (req: Request, res: Response) {
-    logger(req, res);
+
+server.use("/upload", createProxyMiddleware({
+    target: "https://storage.googleapis.com",
+    logLevel: "debug",
+    changeOrigin: true,
+    pathRewrite
+}));
+
+async function pathRewrite(path: any, req: Request) {
     const {filename} = req.query;
-    req.log.info(`/getSignedUrl endpoint called with filename: ${filename}`);
-    getSignedUrl(filename)
-        .then((url) => {
-            req.log.info(url,`Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
-            res.status(200).json(url);
-        })
-        .catch((error) => {
-            req.log.error(error, "Failed calling getSignedUrl");
-            res.status(500).json("Failed to obtain Signed Url");
-        });
-});
+    const url = await getSignedUrl(filename);
+    if (url === null) {
+        req.log.error("Failed calling getSignedUrl");
+        return path;
+    }
+    req.log.info(url, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
+    path = url.replace(/^https:\/\/storage.googleapis.com/, "");
+    return path;
+}
 
 server.get("/bucket", function (req: Request, res: Response) {
     logger(req, res);
