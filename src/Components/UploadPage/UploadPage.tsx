@@ -159,7 +159,7 @@ function UploadPage(): ReactElement {
             {
                 uploading &&
                 <>
-                    <p>Uploading: {uploadPercentage}%</p>
+                    <p className="u-mt-m">Uploading: {uploadPercentage}%</p>
                     <progress id="file"
                               value={uploadPercentage}
                               max="100"

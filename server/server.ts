@@ -40,6 +40,7 @@ server.use("/upload", createProxyMiddleware({
 }));
 
 async function pathRewrite(path: any, req: Request) {
+    logger(req, <Response>{});
     const {filename} = req.query;
     const url = await getSignedUrl(filename);
     if (url === null) {

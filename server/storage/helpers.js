@@ -34,7 +34,6 @@ export const getSignedUrl = (filename) => new Promise((resolve, reject) => {
             expires: Date.now() + 15 * 60 * 1000, // 15 minutes
             contentType: "application/octet-stream",
         };
-        console.log("getSignedUrl");
         // Get a v4 signed URL for uploading file
         const [url] = await bucket
             .file(filename)
