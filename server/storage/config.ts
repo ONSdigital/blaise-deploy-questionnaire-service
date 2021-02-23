@@ -1,9 +1,8 @@
 import {getEnvironmentVariables} from "../Config";
 import path from "path";
 
-import Cloud, {StorageOptions} from "@google-cloud/storage";
+import Cloud, {Storage, StorageOptions} from "@google-cloud/storage";
 
-const {Storage} = Cloud;
 const {PROJECT_ID} = getEnvironmentVariables();
 
 let storageConfig = <StorageOptions>{
