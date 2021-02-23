@@ -63,17 +63,17 @@ server.get("/upload/verify", function (req: Request, res: Response) {
         .then((file) => {
             if (!file.found) {
                 req.log.warn(`File ${filename} not found in Bucket ${BUCKET_NAME}`);
-                 auditLogError(req.log, `Failed to install questionnaire ${filename}, file upload failed`);
+                auditLogError(req.log, `Failed to install questionnaire ${filename}, file upload failed`);
                 res.status(404).json("Not found");
                 return;
             }
-            req.log.info("String", "String2", `File ${filename} found in Bucket ${BUCKET_NAME}`);
-              auditLogInfo(req.log, `Successfully uploaded questionnaire file ${filename}`);
+            req.log.info(`File ${filename} found in Bucket ${BUCKET_NAME}`);
+            auditLogInfo(req.log, `Successfully uploaded questionnaire file ${filename}`);
             res.status(200).json(file);
         })
         .catch((error) => {
             req.log.error(error, "Failed calling checkFile");
-             auditLogError(req.log, `Failed to install questionnaire ${filename}, unable to verify if file had been uploaded`);
+            auditLogError(req.log, `Failed to install questionnaire ${filename}, unable to verify if file had been uploaded`);
             res.status(500).json(error);
         });
 });
