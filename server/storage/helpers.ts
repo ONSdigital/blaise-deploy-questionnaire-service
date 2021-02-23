@@ -2,7 +2,6 @@ import {getEnvironmentVariables} from "../Config";
 
 import {storage} from "./config";
 import {GetSignedUrlConfig} from "@google-cloud/storage";
-import {rejects} from "assert";
 
 const {BUCKET_NAME} = getEnvironmentVariables();
 const bucket = storage.bucket(BUCKET_NAME);

@@ -108,6 +108,7 @@ function UploadPage(): ReactElement {
             setRedirect(true);
             return;
         }
+        setUploading(false);
 
         // Validate the file is in the bucket and call the rest API to install
         verifyAndInstallInstrument(file[0].name)
