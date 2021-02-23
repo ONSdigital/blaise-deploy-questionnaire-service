@@ -7,22 +7,6 @@ const {BUCKET_NAME} = getEnvironmentVariables();
 const bucket = storage.bucket(BUCKET_NAME);
 
 const getSignedUrl = (filename: string): Promise<string> => new Promise((resolve, reject) => {
-    async function setCORS() {
-        const maxAgeSeconds = 3600;
-        const method = ["PUT"];
-        const origin = ["*"];
-        const responseHeader = "content-type";
-
-        await bucket.setCorsConfiguration([
-            {
-                maxAgeSeconds,
-                method: method,
-                origin: origin,
-                responseHeader: [responseHeader],
-            },
-        ]);
-    }
-
     async function getSignedUrl() {
 
         const options = <GetSignedUrlConfig>{
@@ -39,18 +23,12 @@ const getSignedUrl = (filename: string): Promise<string> => new Promise((resolve
         return url;
     }
 
-    setCORS()
-        .then(() => {
-            getSignedUrl()
-                .then((url) => {
-                    resolve(url);
-                }).catch((error) => {
-                console.error(error, "getSignedUrl Failed");
-                reject("getSignedUrl Failed");
-            });
+    getSignedUrl()
+        .then((url) => {
+            resolve(url);
         }).catch((error) => {
-        console.error(error, "setCORS Failed");
-        reject("setCORS Failed");
+        console.error(error, "getSignedUrl Failed");
+        reject("getSignedUrl Failed");
     });
 });
 
