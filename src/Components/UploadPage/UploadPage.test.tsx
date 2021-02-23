@@ -5,16 +5,13 @@ import flushPromises, {mock_server_request_Return_JSON} from "../../tests/utils"
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
-import {instrumentList} from "../../features/step_definitions/API_Mock_Objects";
+import {instrumentList, survey_list} from "../../features/step_definitions/API_Mock_Objects";
 import UploadPage from "./UploadPage";
-import uploader from "../../uploader";
-import navigateToDeployPageAndSelectFile from "../../features/step_definitions/functions";
+import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "../../features/step_definitions/functions";
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
 
-jest.mock("../../uploader");
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-uploader.__setMockStatus(false);
+const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
 describe("Upload Page", () => {
 
@@ -102,11 +99,34 @@ describe("Upload Page", () => {
     });
 });
 
+const mock_server_responses = (url: string) => {
+    console.log(url);
+    if (url.includes("/api/instruments")) {
+        return Promise.resolve({
+            status: 404,
+            json: () => Promise.resolve(),
+        });
+    } else if (url.includes("/upload/verify")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+        });
+    } else {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve(survey_list),
+        });
+    }
+};
+
 
 describe("Given the file fails to upload", () => {
 
-    beforeAll(() => {
-        mock_server_request_Return_JSON(200, instrumentList);
+    beforeEach(() => {
+        mock.onPut("^/upload").reply(500,
+            {},
+        );
+        mock_fetch_requests(mock_server_responses);
     });
 
     it("it should redirect to the summary page with an error", async () => {
@@ -116,7 +136,7 @@ describe("Given the file fails to upload", () => {
 
         await waitFor(() => {
             expect(screen.getByText("File deploy failed")).toBeDefined();
-            expect(screen.getByText(/Failed to upload file/i)).toBeDefined();
+            expect(screen.getByText(/Failed to upload questionnaire/i)).toBeDefined();
         });
     });
 
