@@ -20,7 +20,7 @@ steps:
 
   - name: "gcr.io/cloud-builders/gcloud"
     id: Deploy service
-    args: ["app", "deploy", "--version", "mattest", "--no-promote"]
+    args: [ "app", "deploy" ]
     timeout: "1600s"
 
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -38,7 +38,7 @@ steps:
 
   - name: "gcr.io/cloud-builders/gcloud"
     id: "Slack Notify"
-    waitFor: ["Deploy service"]
+    waitFor: [ "Deploy service" ]
     entrypoint: "/bin/bash"
     args:
       - "-c"
