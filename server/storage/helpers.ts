@@ -1,23 +1,24 @@
 import {getEnvironmentVariables} from "../Config";
 
-const gc = require("./config");
-const {BUCKET_NAME} = getEnvironmentVariables();
-const bucket = gc.bucket(BUCKET_NAME);
+import {storage} from "./config";
+import {GetSignedUrlConfig} from "@google-cloud/storage";
+import {rejects} from "assert";
 
-export const getSignedUrl = (filename) => new Promise((resolve) => {
+const {BUCKET_NAME} = getEnvironmentVariables();
+const bucket = storage.bucket(BUCKET_NAME);
+
+const getSignedUrl = (filename: string): Promise<string> => new Promise((resolve, reject) => {
     async function setCORS() {
         const maxAgeSeconds = 3600;
         const method = ["PUT"];
-        const origin = [
-            "*"
-        ];
+        const origin = ["*"];
         const responseHeader = "content-type";
 
         await bucket.setCorsConfiguration([
             {
                 maxAgeSeconds,
-                method: [method],
-                origin: [origin],
+                method: method,
+                origin: origin,
                 responseHeader: [responseHeader],
             },
         ]);
@@ -25,7 +26,7 @@ export const getSignedUrl = (filename) => new Promise((resolve) => {
 
     async function getSignedUrl() {
 
-        const options = {
+        const options = <GetSignedUrlConfig>{
             version: "v4",
             action: "write",
             expires: Date.now() + 15 * 60 * 1000, // 15 minutes
@@ -46,26 +47,30 @@ export const getSignedUrl = (filename) => new Promise((resolve) => {
                     resolve(url);
                 }).catch((error) => {
                 console.error(error, "getSignedUrl Failed");
-                resolve(null);
+                reject("getSignedUrl Failed");
             });
         }).catch((error) => {
         console.error(error, "setCORS Failed");
-        resolve(null);
+        reject("setCORS Failed");
     });
-
 });
 
-export const checkFile = (filename) => new Promise((resolve, reject) => {
+interface file {
+    name?: string
+    updated?: string
+    found: boolean
+}
+
+const checkFile = (filename: string): Promise<file> => new Promise((resolve, reject) => {
     async function getMetadata() {
         // Gets the metadata for the file
         const [metadata] = await bucket.file(filename).getMetadata();
 
-        const file = {
+        return {
             name: metadata.name,
             updated: metadata.updated,
             found: true
         };
-        return file;
     }
 
     getMetadata()
@@ -81,4 +86,4 @@ export const checkFile = (filename) => new Promise((resolve, reject) => {
 });
 
 
-module.exports = {checkFile, getSignedUrl};
+export {checkFile, getSignedUrl};

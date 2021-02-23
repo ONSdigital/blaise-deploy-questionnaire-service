@@ -51,6 +51,10 @@ server.get("/upload/init", function (req: Request, res: Response) {
     }
 
     const {filename} = req.query;
+    if (typeof filename !== "string") {
+        res.status(500).json("No filename provided");
+        return;
+    }
     req.log.info(`/getSignedUrl endpoint called with filename: ${filename}`);
     getSignedUrl(filename)
         .then((url) => {
@@ -67,6 +71,10 @@ server.get("/upload/init", function (req: Request, res: Response) {
 server.get("/upload/verify", function (req: Request, res: Response) {
     logger(req, res);
     const {filename} = req.query;
+    if (typeof filename !== "string") {
+        res.status(500).json("No filename provided");
+        return;
+    }
     req.log.info(`/upload/verify endpoint called with filename: ${filename}`);
     checkFile(filename)
         .then((file) => {
