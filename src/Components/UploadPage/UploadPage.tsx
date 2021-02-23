@@ -50,7 +50,6 @@ function UploadPage(): ReactElement {
         setLoading(true);
         setInstrumentName(instrumentName);
 
-        // await UploadFile();
         const [alreadyExists, instrument] = await checkInstrumentAlreadyExists(instrumentName);
         console.log(`alreadyExists ${alreadyExists}`);
         if (alreadyExists === null) {
@@ -111,13 +110,11 @@ function UploadPage(): ReactElement {
         setUploading(false);
 
         // Validate the file is in the bucket and call the rest API to install
-        verifyAndInstallInstrument(file[0].name)
-            .then(([installed, message]) => {
-                if (!installed) {
-                    setUploadStatus(message);
-                }
-                setRedirect(true);
-            });
+        const [installed, message] = await verifyAndInstallInstrument(file[0].name);
+        if (!installed) {
+            setUploadStatus(message);
+        }
+        setRedirect(true);
     }
 
     const onFileUploadProgress = (progressEvent: ProgressEvent) => {
