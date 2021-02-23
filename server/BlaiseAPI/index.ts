@@ -1,6 +1,6 @@
 import express, {Request, Response, Router} from "express";
 import {Instrument} from "../../Interfaces";
-import axios, {AxiosRequestConfig} from "axios";
+import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
 import Functions from "../Functions";
 import {EnvironmentVariables} from "../Config";
 import {auditLogError, auditLogInfo} from "../audit_logging";

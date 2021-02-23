@@ -1,17 +1,12 @@
 import React, {ReactElement, useState} from "react";
 import {Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
-import uploader from "../../uploader";
 import SelectFilePage from "./SelectFilePage";
 import AlreadyExists from "./AlreadyExists";
 import LiveSurveyWarning from "./LiveSurveyWarning";
 import Confirmation from "./Confirmation";
 import {Instrument} from "../../../Interfaces";
-import {verifyAndInstallInstrument, checkInstrumentAlreadyExists} from "../../utilities/http";
-
-interface Progress {
-    loaded: number
-    total: number
-}
+import {verifyAndInstallInstrument, checkInstrumentAlreadyExists, initialiseUpload} from "../../utilities/http";
+import {uploadFile} from "../../utilities/http";
 
 function UploadPage(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
@@ -19,14 +14,19 @@ function UploadPage(): ReactElement {
     const [uploading, setUploading] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
     const [instrumentName, setInstrumentName] = useState<string>("");
-    const [panel, setPanel] = useState<string>("");
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
+    const [panel, setPanel] = useState<string>("");
     const [uploadStatus, setUploadStatus] = useState<string>("");
     const [foundInstrument, setFoundInstrument] = useState<Instrument | null>(null);
-    const timeout = (process.env.NODE_ENV === "test" ? 0 : 3000);
 
     const {path} = useRouteMatch();
     const history = useHistory();
+
+    function roundUp(num: number, precision: number) {
+        precision = Math.pow(10, precision);
+        return Math.ceil(num * precision) / precision;
+    }
+
 
     async function BeginUploadProcess() {
         if (file === undefined) {
@@ -51,6 +51,7 @@ function UploadPage(): ReactElement {
         setInstrumentName(instrumentName);
 
         const [alreadyExists, instrument] = await checkInstrumentAlreadyExists(instrumentName);
+        console.log(`alreadyExists ${alreadyExists}`);
         if (alreadyExists === null) {
             setUploadStatus("Failed to validate if questionnaire already exists");
             setRedirect(true);
@@ -88,38 +89,38 @@ function UploadPage(): ReactElement {
         setLoading(true);
         setPanel("");
         setUploading(true);
-        uploader()
-            .onProgress(({loaded, total}: Progress) => {
-                const percent = Math.round(loaded / total * 100 * 100) / 100;
-                console.log(`File upload ${percent}% ${loaded} / ${total}`);
-                setUploadPercentage(percent);
-            })
-            .options({
-                chunkSize: 5 * 1024 * 1024,
-                threadsQuantity: 5
-            })
-            .send(file[0])
-            .end((error: Error) => {
-                setUploading(false);
-                if (error) {
-                    console.log("Failed to upload file, error: ", error);
-                    setLoading(false);
-                    setUploadStatus("Failed to upload file");
-                    setRedirect(true);
-                    return;
-                }
-                console.log("File upload complete");
-                setTimeout(function () {
-                    verifyAndInstallInstrument(file[0].name.replace(/ /g, "_"))
-                        .then(([installed, message]) => {
-                            if (!installed) {
-                                setUploadStatus(message);
-                            }
-                            setRedirect(true);
-                        });
-                }, timeout);
-            });
+
+        // Get the signed url to allow access to the bucket
+        const [initialised, signedUrl] = await initialiseUpload(file[0].name);
+        if (!initialised) {
+            console.error("Failed to initialiseUpload");
+            setUploadStatus("Failed to upload questionnaire");
+            setRedirect(true);
+            return;
+        }
+
+        // Upload the file using the GCP bucket url
+        const uploaded = await uploadFile(signedUrl, file[0], onFileUploadProgress);
+        if (!uploaded) {
+            console.error("Failed to Upload file");
+            setUploadStatus("Failed to upload questionnaire");
+            setRedirect(true);
+            return;
+        }
+        setUploading(false);
+
+        // Validate the file is in the bucket and call the rest API to install
+        const [installed, message] = await verifyAndInstallInstrument(file[0].name);
+        if (!installed) {
+            setUploadStatus(message);
+        }
+        setRedirect(true);
     }
+
+    const onFileUploadProgress = (progressEvent: ProgressEvent) => {
+        const percentage: number = roundUp((progressEvent.loaded / progressEvent.total) * 100, 2);
+        setUploadPercentage(percentage);
+    };
 
     return (
         <>
@@ -157,7 +158,7 @@ function UploadPage(): ReactElement {
             {
                 uploading &&
                 <>
-                    <p>Uploading: {uploadPercentage}%</p>
+                    <p className="u-mt-m">Uploading: {uploadPercentage}%</p>
                     <progress id="file"
                               value={uploadPercentage}
                               max="100"

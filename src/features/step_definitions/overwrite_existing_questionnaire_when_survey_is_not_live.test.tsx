@@ -8,9 +8,9 @@ import "@testing-library/jest-dom";
 import {survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
 import flushPromises from "../../tests/utils";
-
-// Mock the Uploader.js module
-jest.mock("../../uploader");
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
+const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
 
 // Load in feature details from .feature file
@@ -21,7 +21,12 @@ const feature = loadFeature(
 
 const mock_server_responses_not_live = (url: string) => {
     console.log(url);
-    if (url.includes("bucket")) {
+    if (url.includes("/upload/init")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve("https://storage.googleapis.com"),
+        });
+    } else if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
@@ -51,7 +56,12 @@ const mock_server_responses_not_live = (url: string) => {
 
 const mock_server_responses_live = (url: string) => {
     console.log(url);
-    if (url.includes("bucket")) {
+    if (url.includes("/upload/init")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve("https://storage.googleapis.com/"),
+        });
+    } else if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
@@ -79,6 +89,7 @@ defineFeature(feature, test => {
         jest.clearAllMocks();
         cleanup();
         jest.resetModules();
+        mock.reset();
     });
 
     beforeEach(() => {
@@ -88,6 +99,9 @@ defineFeature(feature, test => {
     test("Select a new questionnaire package file", ({given, when, then}) => {
         given("I have selected the questionnaire package I wish to deploy", async () => {
             mock_fetch_requests(mock_server_responses_not_live);
+            mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
+                {},
+            );
             await navigateToDeployPageAndSelectFile();
         });
 
@@ -107,6 +121,9 @@ defineFeature(feature, test => {
     test("Select to overwrite existing questionnaire when it is live", ({given, when, then, and}) => {
         given("I have been presented with the options to cancel or overwrite the questionnaire", async () => {
             mock_fetch_requests(mock_server_responses_live);
+            mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
+                {},
+            );
             await navigateToDeployPageAndSelectFile();
             await fireEvent.click(screen.getByTestId("button"));
             await act(async () => {
@@ -140,6 +157,9 @@ defineFeature(feature, test => {
                                                                                                                                                                  }) => {
         given("I have been presented with the options to cancel or overwrite the questionnaire", async () => {
             mock_fetch_requests(mock_server_responses_not_live);
+            mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
+                {},
+            );
             await navigateToDeployPageAndSelectFile();
             await fireEvent.click(screen.getByTestId("button"));
             await act(async () => {
@@ -160,14 +180,10 @@ defineFeature(feature, test => {
     });
 
 
-    test("Confirm overwrite of existing questionnaire package where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)", ({
-                                                                                                                                                                              given,
-                                                                                                                                                                              when,
-                                                                                                                                                                              then,
-                                                                                                                                                                              and
-                                                                                                                                                                          }) => {
+    test("Confirm overwrite of existing questionnaire package where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)", ({given, when, then, and}) => {
         given("I have been asked to confirm I want to overwrite an existing questionnaire in Blaise", async () => {
             mock_fetch_requests(mock_server_responses_not_live);
+            mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200, {});
             await navigateToDeployPageAndSelectFile();
             await fireEvent.click(screen.getByTestId("button"));
             await act(async () => {
@@ -197,6 +213,9 @@ defineFeature(feature, test => {
     test("Cancel overwrite of existing questionnaire package", ({given, when, then}) => {
         given("I have been presented with an overwrite warning", async () => {
             mock_fetch_requests(mock_server_responses_not_live);
+            mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
+                {},
+            );
             await navigateToDeployPageAndSelectFile();
             await fireEvent.click(screen.getByTestId("button"));
             await act(async () => {
