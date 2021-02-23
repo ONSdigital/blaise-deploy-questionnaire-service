@@ -32,24 +32,6 @@ server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static
 
 server.get("/upload/init", function (req: Request, res: Response) {
     logger(req, res);
-
-    const {host} = req.headers;
-    const re = /dqs-ui-dot-ons-blaise-v2-.*\.nw\.r\.appspot\.com$/;
-    req.log.info(req.headers, "data");
-
-    if (host !== undefined) {
-        const OK = re.exec(host);
-        if (!OK) {
-            req.log.warn(`Called with invalid host: ${host}`);
-            res.status(403).json();
-            return;
-        }
-    } else {
-        req.log.warn("No host in request");
-        res.status(401).json();
-        return;
-    }
-
     const {filename} = req.query;
     if (typeof filename !== "string") {
         res.status(500).json("No filename provided");
