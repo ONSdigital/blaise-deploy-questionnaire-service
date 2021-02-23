@@ -6,7 +6,7 @@ import LiveSurveyWarning from "./LiveSurveyWarning";
 import Confirmation from "./Confirmation";
 import {Instrument} from "../../../Interfaces";
 import {verifyAndInstallInstrument, checkInstrumentAlreadyExists, initialiseUpload} from "../../utilities/http";
-import {uploadFile} from "../../utilities/http/upload";
+import {uploadFile} from "../../utilities/http";
 
 function UploadPage(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
