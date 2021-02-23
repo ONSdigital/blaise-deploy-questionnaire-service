@@ -1,10 +1,11 @@
 import {requestPromiseJson} from "./requestPromise";
+import {validateUploadIsComplete} from "./upload";
 
 type verifyAndInstallResponse = [boolean, string];
 
 
 async function verifyAndInstallInstrument(filename: string): Promise<verifyAndInstallResponse> {
-    const fileFound = await checkFileInBucket(filename);
+    const fileFound = await validateUploadIsComplete(filename);
     if (!fileFound) {
         console.error("Failed to validate if file has been uploaded");
         return Promise.resolve([false, "Failed to validate if file has been uploaded successfully"]);
@@ -21,29 +22,6 @@ async function verifyAndInstallInstrument(filename: string): Promise<verifyAndIn
 
 }
 
-function checkFileInBucket(filename: string): Promise<boolean> {
-    console.log(`Call to checkFileInBucket(${filename})`);
-    const url = `/bucket?filename=${filename}`;
-
-    return new Promise((resolve: (object: boolean) => void) => {
-        requestPromiseJson("GET", url).then(([status, data]) => {
-            console.log(`Response from check bucket: Status ${status}, data ${data}`);
-            if (status === 200) {
-                if (data.name === filename) {
-                    resolve(true);
-                } else {
-                    console.log(`Filename returned (${data.name}) does not match sent file (${filename})`);
-                    resolve(false);
-                }
-            } else {
-                resolve(false);
-            }
-        }).catch((error: Error) => {
-            console.error(`Response from check bucket Failed: Error ${error}`);
-            resolve(false);
-        });
-    });
-}
 
 function sendInstallRequest(filename: string): Promise<boolean> {
     console.log("Sending request to start install");
@@ -64,4 +42,4 @@ function sendInstallRequest(filename: string): Promise<boolean> {
     });
 }
 
-export {verifyAndInstallInstrument, checkFileInBucket};
+export {verifyAndInstallInstrument};

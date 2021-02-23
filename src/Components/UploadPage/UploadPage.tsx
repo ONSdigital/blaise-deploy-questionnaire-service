@@ -5,8 +5,8 @@ import AlreadyExists from "./AlreadyExists";
 import LiveSurveyWarning from "./LiveSurveyWarning";
 import Confirmation from "./Confirmation";
 import {Instrument} from "../../../Interfaces";
-import {verifyAndInstallInstrument, checkInstrumentAlreadyExists} from "../../utilities/http";
-import axios from "axios";
+import {verifyAndInstallInstrument, checkInstrumentAlreadyExists, initialiseUpload} from "../../utilities/http";
+import {uploadFile} from "../../utilities/http/upload";
 
 function UploadPage(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
@@ -14,7 +14,6 @@ function UploadPage(): ReactElement {
     const [uploading, setUploading] = useState<boolean>(false);
     const [file, setFile] = useState<FileList>();
     const [instrumentName, setInstrumentName] = useState<string>("");
-    const [fileName, setFileName] = useState<string>("");
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [panel, setPanel] = useState<string>("");
     const [uploadStatus, setUploadStatus] = useState<string>("");
@@ -48,10 +47,10 @@ function UploadPage(): ReactElement {
             return;
         }
 
-        await setFileName(fileName);
         setLoading(true);
         setInstrumentName(instrumentName);
 
+        // await UploadFile();
         const [alreadyExists, instrument] = await checkInstrumentAlreadyExists(instrumentName);
         console.log(`alreadyExists ${alreadyExists}`);
         if (alreadyExists === null) {
@@ -92,28 +91,30 @@ function UploadPage(): ReactElement {
         setPanel("");
         setUploading(true);
 
-        const config = {
-            onUploadProgress: (progressEvent: ProgressEvent) => onFileUploadProgress(progressEvent),
-            headers: {
-                "Content-Type": "application/octet-stream",
-            }
-        };
-        setUploading(true);
+        // Get the signed url to allow access to the bucket
+        const [initialised, signedUrl] = await initialiseUpload(file[0].name);
+        if (!initialised) {
+            console.error("Failed to initialiseUpload");
+            setUploadStatus("Failed to upload questionnaire");
+            setRedirect(true);
+            return;
+        }
 
-        axios.put(`/upload?filename=${file[0].name}`, file[0], config)
-            .then(function () {
-                console.log("File successful uploaded");
-                verifyAndInstallInstrument(file[0].name)
-                    .then(([installed, message]) => {
-                        if (!installed) {
-                            setUploadStatus(message);
-                        }
-                        setRedirect(true);
-                    });
-            })
-            .catch(function (error) {
-                console.error("Failed to upload questionnaire, error: " + error);
-                setUploadStatus("Failed to upload questionnaire");
+        // Upload the file using the GCP bucket url
+        const uploaded = await uploadFile(signedUrl, file[0], onFileUploadProgress);
+        if (!uploaded) {
+            console.error("Failed to Upload file");
+            setUploadStatus("Failed to upload questionnaire");
+            setRedirect(true);
+            return;
+        }
+
+        // Validate the file is in the bucket and call the rest API to install
+        verifyAndInstallInstrument(file[0].name)
+            .then(([installed, message]) => {
+                if (!installed) {
+                    setUploadStatus(message);
+                }
                 setRedirect(true);
             });
     }

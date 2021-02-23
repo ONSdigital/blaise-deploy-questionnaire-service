@@ -4,7 +4,6 @@ import ejs from "ejs";
 import dotenv from "dotenv";
 import {getEnvironmentVariables} from "./Config";
 import createLogger from "./pino";
-import {createProxyMiddleware} from "http-proxy-middleware";
 
 if (process.env.NODE_ENV !== "production") {
     dotenv.config({path: __dirname + "/../../.env"});
@@ -31,31 +30,44 @@ server.set("views", path.join(__dirname, buildFolder));
 server.engine("html", ejs.renderFile);
 server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static`)));
 
+server.get("/upload/init", function (req: Request, res: Response) {
+    logger(req, res);
 
-server.use("/upload", createProxyMiddleware({
-    target: "https://storage.googleapis.com",
-    logLevel: "debug",
-    changeOrigin: true,
-    pathRewrite
-}));
+    const {host} = req.headers;
+    const re = /dqs-ui-dot-ons-blaise-v2-.*\.nw\.r\.appspot\.com$/;
+    req.log.info(req.headers, "data");
 
-async function pathRewrite(path: any, req: Request) {
-    logger(req, <Response>{});
-    const {filename} = req.query;
-    const url = await getSignedUrl(filename);
-    if (url === null) {
-        req.log.error("Failed calling getSignedUrl");
-        return path;
+    if (host !== undefined) {
+        const OK = re.exec(host);
+        if (!OK) {
+            req.log.warn(`Called with invalid host: ${host}`);
+            res.status(403).json();
+            return;
+        }
+    } else {
+        req.log.warn("No host in request");
+        res.status(401).json();
+        return;
     }
-    req.log.info(url, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
-    path = url.replace(/^https:\/\/storage.googleapis.com/, "");
-    return path;
-}
 
-server.get("/bucket", function (req: Request, res: Response) {
+    const {filename} = req.query;
+    req.log.info(`/getSignedUrl endpoint called with filename: ${filename}`);
+    getSignedUrl(filename)
+        .then((url) => {
+            req.log.info(url, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
+            res.status(200).json(url);
+        })
+        .catch((error) => {
+            req.log.error(error, "Failed to obtain Signed Url");
+            res.status(500).json("Failed to obtain Signed Url");
+        });
+});
+
+
+server.get("/upload/verify", function (req: Request, res: Response) {
     logger(req, res);
     const {filename} = req.query;
-    req.log.info(`/bucket endpoint called with filename: ${filename}`);
+    req.log.info(`/upload/verify endpoint called with filename: ${filename}`);
     checkFile(filename)
         .then((file) => {
             if (!file.found) {

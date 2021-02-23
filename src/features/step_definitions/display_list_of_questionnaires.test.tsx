@@ -22,7 +22,7 @@ const feature = loadFeature(
 
 const mock_server_responses = (url: string) => {
     console.log(url);
-    if (url.includes("bucket")) {
+    if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),

@@ -106,7 +106,7 @@ const mock_server_responses = (url: string) => {
             status: 404,
             json: () => Promise.resolve(),
         });
-    } else if (url.includes("bucket")) {
+    } else if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
