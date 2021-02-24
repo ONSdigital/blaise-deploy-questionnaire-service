@@ -34,23 +34,23 @@ describe("Function checkInstrumentAlreadyExists(instrumentName: string) ", () =>
     });
 
     it("It should return null and a null object if request JSON is invalid", async () => {
-        mock_server_request_function(jest.fn(() =>
+        mock_server_request_function(() =>
             Promise.resolve({
                 status: 200,
                 json: () => Promise.reject("Failed"),
             })
-        ));
+        );
         const [alreadyExists, instrument] = await checkInstrumentAlreadyExists("OPN2004A");
         expect(alreadyExists).toEqual(null);
         expect(instrument).toEqual(null);
     });
 
     it("It should return null and a null object if request call fails", async () => {
-        mock_server_request_function(jest.fn(() =>
+        mock_server_request_function(() =>
             Promise.resolve(() => {
                 throw "error";
             })
-        ));
+        );
         const [alreadyExists, instrument] = await checkInstrumentAlreadyExists("OPN2004A");
         expect(alreadyExists).toEqual(null);
         expect(instrument).toEqual(null);
@@ -87,12 +87,12 @@ describe("Function getAllInstruments(filename: string) ", () => {
     });
 
     it("It should return false with an empty list if request JSON is not a list", async () => {
-        mock_server_request_function(jest.fn(() =>
+        mock_server_request_function(() =>
             Promise.resolve({
                 status: 200,
                 json: () => Promise.reject("Failed"),
             })
-        ));
+        );
         const [success, instruments] = await getAllInstruments();
         expect(success).toBeFalsy();
         expect(instruments).toEqual([]);
@@ -106,11 +106,11 @@ describe("Function getAllInstruments(filename: string) ", () => {
     });
 
     it("It should return false with an empty list if request call fails", async () => {
-        mock_server_request_function(jest.fn(() =>
+        mock_server_request_function(() =>
             Promise.resolve(() => {
                 throw "error";
             })
-        ));
+        );
         const [success, instruments] = await getAllInstruments();
         expect(success).toBeFalsy();
         expect(instruments).toEqual([]);
