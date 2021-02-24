@@ -38,7 +38,7 @@ server.get("/upload/init", function (req: Request, res: Response) {
         res.status(500).json("No filename provided");
         return;
     }
-    req.log.info(`/getSignedUrl endpoint called with filename: ${filename}`);
+
     getSignedUrl(filename)
         .then((url) => {
             req.log.info({url}, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
@@ -58,7 +58,7 @@ server.get("/upload/verify", function (req: Request, res: Response) {
         res.status(500).json("No filename provided");
         return;
     }
-    req.log.info(`/upload/verify endpoint called with filename: ${filename}`);
+
     checkFile(filename)
         .then((file) => {
             if (!file.found) {
