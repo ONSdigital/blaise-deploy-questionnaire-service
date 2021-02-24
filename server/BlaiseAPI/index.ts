@@ -44,9 +44,6 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         SendBlaiseAPIRequest(req, res, url, "GET")
             .then(([status, data]) => {
                 res.status(status).json(data);
-            })
-            .catch(() => {
-                res.status(500).json("Request failed");
             });
     });
 
@@ -72,9 +69,6 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                     auditLogInfo(req.log, `Failed to install questionnaire ${instrumentName}`);
                 }
                 res.status(status).json(data);
-            })
-            .catch(() => {
-                res.status(500).json("Request failed");
             });
     });
 
@@ -90,9 +84,6 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                     auditLogError(req.log, `Failed to install questionnaire ${instrumentName}, unable to verify if questionnaire is already installed`);
                 }
                 res.status(status).json(data);
-            })
-            .catch(() => {
-                res.status(500).json("Request failed");
             });
     });
 
@@ -110,9 +101,6 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                     auditLogError(req.log, `Failed to uninstall questionnaire ${instrumentName}`);
                 }
                 res.status(status).json(data);
-            })
-            .catch(() => {
-                res.status(500).json("Request failed");
             });
     });
 
@@ -132,9 +120,6 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                 } else {
                     res.status(status).json(data);
                 }
-            })
-            .catch(() => {
-                res.status(500).json("Request failed");
             });
     });
 
