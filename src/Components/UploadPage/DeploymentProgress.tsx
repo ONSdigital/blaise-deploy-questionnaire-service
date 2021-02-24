@@ -9,6 +9,7 @@ interface Props {
     isInstalling: boolean | null
     isUploading: boolean | null
     isVerifyingUpload: boolean | null
+    isInitialisingUpload: boolean | null
     percentage: number
 }
 
@@ -18,7 +19,8 @@ function DeploymentSummary({
                                isInstalling,
                                isUploading,
                                percentage,
-                               isVerifyingUpload
+                               isVerifyingUpload,
+                               isInitialisingUpload
                            }: Props): ReactElement {
 
     return (
@@ -61,6 +63,28 @@ function DeploymentSummary({
                         <tbody className="summary__item">
                         <tr className="summary__row summary__row--has-values">
                             <td className="summary__item-title">
+                                {isInitialisingUpload === null ? "" : isInitialisingUpload ? <LoadingIcon/> :
+                                    <span className="summary__item-title-icon  summary__item-title-icon--check">
+                                    <svg className="svg-icon" viewBox="0 0 13 10" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M14.35,3.9l-.71-.71a.5.5,0,0,0-.71,0h0L5.79,10.34,3.07,7.61a.51.51,0,0,0-.71,0l-.71.71a.51.51,0,0,0,0,.71l3.78,3.78a.5.5,0,0,0,.71,0h0L14.35,4.6A.5.5,0,0,0,14.35,3.9Z"
+                                            transform="translate(-1.51 -3.04)"/>
+                                    </svg>
+                                </span>
+                                }
+                                <div className="summary__item--text summary__item-title--text">Initialise upload
+                                </div>
+                                <span className="u-d-no@s u-fs-r"> — Completed</span>
+                            </td>
+                            <td className="summary__values">
+                                {(isInitialisingUpload === null ? "Not started" : isInitialisingUpload ? "Initialing" : "Completed")}
+                            </td>
+
+                        </tr>
+                        </tbody>
+                        <tbody className="summary__item">
+                        <tr className="summary__row summary__row--has-values">
+                            <td className="summary__item-title">
                                 {isUploading === null ? "" : isUploading ? <LoadingIcon/> :
                                     <span className="summary__item-title-icon  summary__item-title-icon--check">
                                     <svg className="svg-icon" viewBox="0 0 13 10" xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +94,7 @@ function DeploymentSummary({
                                     </svg>
                                 </span>
                                 }
-                                <div className="summary__item--text summary__item-title--text">Uploading questionnaire
+                                <div className="summary__item--text summary__item-title--text">Upload questionnaire
                                     file
                                 </div>
                                 <span className="u-d-no@s u-fs-r"> — Completed</span>

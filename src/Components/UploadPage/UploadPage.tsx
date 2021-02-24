@@ -16,6 +16,7 @@ function UploadPage(): ReactElement {
     const [uploading, setUploading] = useState<boolean | null>(null);
     const [isInstalling, setIsInstalling] = useState<boolean | null>(null);
     const [isVerifyingUpload, setIsVerifyingUpload] = useState<boolean | null>(null);
+    const [isInitialisingUpload, setIsInitialisingUpload] = useState<boolean | null>(null);
     const [file, setFile] = useState<FileList>();
     const [instrumentName, setInstrumentName] = useState<string>("");
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
@@ -67,7 +68,6 @@ function UploadPage(): ReactElement {
             setLoading(false);
             history.push(`${path}/survey-exists`);
         } else {
-            setIsDeploying(true);
             await UploadFile();
         }
     }
@@ -91,9 +91,11 @@ function UploadPage(): ReactElement {
             return;
         }
         console.log("Start uploading the file");
+        setIsDeploying(true);
         setLoading(true);
         setPanel("");
-        setUploading(true);
+        setIsInitialisingUpload(true);
+
 
         // Get the signed url to allow access to the bucket
         const [initialised, signedUrl] = await initialiseUpload(file[0].name);
@@ -104,6 +106,8 @@ function UploadPage(): ReactElement {
             return;
         }
 
+        setIsInitialisingUpload(false);
+        setUploading(true);
         // Upload the file using the GCP bucket url
         const uploaded = await uploadFile(signedUrl, file[0], onFileUploadProgress);
         if (!uploaded) {
@@ -145,6 +149,7 @@ function UploadPage(): ReactElement {
                                         isInstalling={isInstalling}
                                         isUploading={uploading}
                                         isVerifyingUpload={isVerifyingUpload}
+                                        isInitialisingUpload={isInitialisingUpload}
                                         percentage={uploadPercentage}/>
                     :
                     <Switch>
