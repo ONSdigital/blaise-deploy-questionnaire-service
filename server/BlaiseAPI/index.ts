@@ -26,9 +26,9 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                 },
             }).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
-                    req.log.info(`Status ${response.status} from ${method} ${url}`);
+                    req.log.info(response, `Status ${response.status} from ${method} ${url}`);
                 } else {
-                    req.log.warn(`Status ${response.status} from ${method} ${url}`);
+                    req.log.warn(response, `Status ${response.status} from ${method} ${url}`);
                 }
                 resolve([response.status, response.data]);
             }).catch((error) => {
