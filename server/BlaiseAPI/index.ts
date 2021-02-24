@@ -20,20 +20,16 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             axios({
                 url: fullUrl,
                 method: method,
-                data: data
+                data: data,
+                validateStatus: function (status) {
+                    return status >= 200;
+                },
             }).then((response) => {
                 req.log.info(`Status ${response.status} from ${method} ${url}`);
                 resolve([response.status, response.data]);
             }).catch((error) => {
-                let statusCode: number;
-                try {
-                    statusCode = error.response.status;
-                    req.log.error(error, `Status ${statusCode} from ${method} ${url}`);
-                } catch (error) {
-                    req.log.error(error, `Failed to retrieve status code from from ${method} ${url}`);
-                    statusCode = 500;
-                }
-                resolve([statusCode, null]);
+                req.log.error(error, `${method} ${url} endpoint failed`);
+                resolve([500, null]);
             });
         });
     }
@@ -70,9 +66,9 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         SendBlaiseAPIRequest(req, res, url, "POST", data)
             .then(([status, data]) => {
                 if (status === 201) {
-                      auditLogInfo(req.log, `Successfully installed questionnaire ${instrumentName}`);
+                    auditLogInfo(req.log, `Successfully installed questionnaire ${instrumentName}`);
                 } else {
-                      auditLogInfo(req.log, `Failed to install questionnaire ${instrumentName}`);
+                    auditLogInfo(req.log, `Failed to install questionnaire ${instrumentName}`);
                 }
                 res.status(status).json(data);
             })
@@ -88,9 +84,9 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         SendBlaiseAPIRequest(req, res, url, "GET")
             .then(([status, data]) => {
                 if (status === 200) {
-                     auditLogInfo(req.log, `Attempting to install existing questionnaire ${instrumentName}`);
+                    auditLogInfo(req.log, `Attempting to install existing questionnaire ${instrumentName}`);
                 } else if (status !== 404) {
-                     auditLogError(req.log, `Failed to install questionnaire ${instrumentName}, unable to verify if questionnaire is already installed`);
+                    auditLogError(req.log, `Failed to install questionnaire ${instrumentName}, unable to verify if questionnaire is already installed`);
                 }
                 res.status(status).json(data);
             })
@@ -106,11 +102,11 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         SendBlaiseAPIRequest(req, res, url, "DELETE")
             .then(([status, data]) => {
                 if (status === 204) {
-                      auditLogInfo(req.log, `Successfully uninstalled questionnaire ${instrumentName}`);
+                    auditLogInfo(req.log, `Successfully uninstalled questionnaire ${instrumentName}`);
                 } else if (status === 404) {
-                     auditLogError(req.log, `Attempted to uninstall questionnaire ${instrumentName} that doesn't exist`);
+                    auditLogError(req.log, `Attempted to uninstall questionnaire ${instrumentName} that doesn't exist`);
                 } else {
-                     auditLogError(req.log, `Failed to uninstall questionnaire ${instrumentName}`);
+                    auditLogError(req.log, `Failed to uninstall questionnaire ${instrumentName}`);
                 }
                 res.status(status).json(data);
             })
