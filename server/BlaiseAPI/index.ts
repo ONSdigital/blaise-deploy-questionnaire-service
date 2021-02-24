@@ -14,7 +14,6 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     // Generic function to make requests to the API
     function SendBlaiseAPIRequest(req: Request, res: Response, url: string, method: AxiosRequestConfig["method"], data: any = null) {
         logger(req, res);
-        req.log.info(`${method} ${url} endpoint called`);
         const fullUrl = `http://${BLAISE_API_URL}${url}`;
         return new Promise((resolve: (object: PromiseResponse) => void) => {
             axios({
