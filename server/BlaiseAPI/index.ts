@@ -26,9 +26,9 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                 },
             }).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
-                    req.log.info(response, `Status ${response.status} from ${method} ${url}`);
+                    req.log.info(`Status ${response.status} from ${method} ${url}`);
                 } else {
-                    req.log.warn(response, `Status ${response.status} from ${method} ${url}`);
+                    req.log.warn(`Status ${response.status} from ${method} ${url}`);
                 }
                 resolve([response.status, response.data]);
             }).catch((error) => {
@@ -128,6 +128,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                     instruments.forEach(function (element: Instrument) {
                         element.fieldPeriod = Functions.field_period_to_text(element.name);
                     });
+                    req.log.info(instruments, `${instruments.length} instrument/s currently installed.`);
                     res.status(status).json(instruments);
                 } else {
                     res.status(status).json(data);
