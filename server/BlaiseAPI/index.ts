@@ -1,6 +1,6 @@
 import express, {Request, Response, Router} from "express";
 import {Instrument} from "../../Interfaces";
-import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
+import axios, {AxiosRequestConfig} from "axios";
 import Functions from "../Functions";
 import {EnvironmentVariables} from "../Config";
 import {auditLogError, auditLogInfo} from "../audit_logging";
@@ -25,7 +25,11 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                     return status >= 200;
                 },
             }).then((response) => {
-                req.log.info(`Status ${response.status} from ${method} ${url}`);
+                if (response.status >= 200 && response.status < 300) {
+                    req.log.info(`Status ${response.status} from ${method} ${url}`);
+                } else {
+                    req.log.warn(`Status ${response.status} from ${method} ${url}`);
+                }
                 resolve([response.status, response.data]);
             }).catch((error) => {
                 req.log.error(error, `${method} ${url} endpoint failed`);
@@ -37,16 +41,14 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     // Get health status for Blaise connections
     router.get("/api/health", function (req: ResponseQuery, res: Response) {
         const url = "/api/v1/health";
-        axios({
-            url: `http://${BLAISE_API_URL}/${url}`,
-            method: "GET"
-        }).then((response) => {
-            req.log.info(`Call to GET ${url}`);
-            res.status(response.status).json(response.data);
-        }).catch((error) => {
-            req.log.error(error, `Call to ${url}`);
-            res.status(error.response.status).json(error.response.data);
-        });
+
+        SendBlaiseAPIRequest(req, res, url, "GET")
+            .then(([status, data]) => {
+                res.status(status).json(data);
+            })
+            .catch(() => {
+                res.status(500).json("Request failed");
+            });
     });
 
     interface ResponseQuery extends Request {
