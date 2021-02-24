@@ -20,5 +20,5 @@ steps:
 
   - name: "gcr.io/cloud-builders/gcloud"
     id: Deploy service for testing
-    args: ["app", "deploy", "--version", "pull-request-number-$_PR_NUMBER-test", "--no-promote"]
+    args: ["app", "deploy", "--version", "pull-request-no-$_PR_NUMBER", "--no-promote"]
     timeout: "1600s"
