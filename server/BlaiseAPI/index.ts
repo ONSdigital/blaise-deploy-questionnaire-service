@@ -127,7 +127,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                     instruments.forEach(function (element: Instrument) {
                         element.fieldPeriod = Functions.field_period_to_text(element.name);
                     });
-                    req.log.debug(instruments, `${instruments.length} instrument/s currently installed.`);
+                    req.log.info({instruments}, `${instruments.length} instrument/s currently installed.`);
                     res.status(status).json(instruments);
                 } else {
                     res.status(status).json(data);
