@@ -98,6 +98,11 @@ function App(): ReactElement {
                                             View audit logs
                                         </Link>
                                     </li>
+                                    <li className="list__item">
+                                        <Link to="/status" id="blaise-status-link">
+                                            Check Blaise status
+                                        </Link>
+                                    </li>
                                 </ul>
 
                                 <ONSPanel>

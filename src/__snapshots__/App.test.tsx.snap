@@ -126,6 +126,16 @@ Object {
                 View audit logs
               </a>
             </li>
+            <li
+              class="list__item"
+            >
+              <a
+                href="/status"
+                id="blaise-status-link"
+              >
+                Check Blaise status
+              </a>
+            </li>
           </ul>
           <div
             class="panel panel--info panel--no-title  u-mt-m"
@@ -497,6 +507,16 @@ Object {
               id="audit-logs-link"
             >
               View audit logs
+            </a>
+          </li>
+          <li
+            class="list__item"
+          >
+            <a
+              href="/status"
+              id="blaise-status-link"
+            >
+              Check Blaise status
             </a>
           </li>
         </ul>
