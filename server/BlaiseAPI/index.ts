@@ -1,6 +1,6 @@
 import express, {Request, Response, Router} from "express";
 import {Instrument} from "../../Interfaces";
-import axios, {AxiosRequestConfig} from "axios";
+import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
 import Functions from "../Functions";
 import {EnvironmentVariables} from "../Config";
 
@@ -26,6 +26,21 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             res.status(error.response.status).json(error);
         });
     }
+
+    // Get health status for Blaise connections
+    router.get("/api/health", function (req: ResponseQuery, res: Response) {
+        const url = "/api/v1/health";
+        axios({
+            url: `http://${BLAISE_API_URL}/${url}`,
+            method: "GET"
+        }).then((response) => {
+            req.log.info(`Call to GET ${url}`);
+            res.status(response.status).json(response.data);
+        }).catch((error) => {
+            req.log.error(error, `Call to ${url}`);
+            res.status(error.response.status).json(error.response.data);
+        });
+    });
 
     interface ResponseQuery extends Request {
         query: { filename: string }

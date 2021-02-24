@@ -1,17 +1,13 @@
 import React, {ReactElement, useState} from "react";
 import {Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
-import uploader from "../../uploader";
 import SelectFilePage from "./SelectFilePage";
 import AlreadyExists from "./AlreadyExists";
 import LiveSurveyWarning from "./LiveSurveyWarning";
 import Confirmation from "./Confirmation";
 import {Instrument} from "../../../Interfaces";
 import DeploymentProgress from "./DeploymentProgress";
-
-interface Progress {
-    loaded: number
-    total: number
-}
+import {verifyAndInstallInstrument, checkInstrumentAlreadyExists, initialiseUpload} from "../../utilities/http";
+import {uploadFile} from "../../utilities/http";
 
 function UploadPage(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
@@ -22,14 +18,19 @@ function UploadPage(): ReactElement {
     const [isVerifyingUpload, setIsVerifyingUpload] = useState<boolean | null>(null);
     const [file, setFile] = useState<FileList>();
     const [instrumentName, setInstrumentName] = useState<string>("");
-    const [panel, setPanel] = useState<string>("");
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
+    const [panel, setPanel] = useState<string>("");
     const [uploadStatus, setUploadStatus] = useState<string>("");
     const [foundInstrument, setFoundInstrument] = useState<Instrument | null>(null);
-    const timeout = (process.env.NODE_ENV === "test" ? 0 : 3000);
 
     const {path} = useRouteMatch();
     const history = useHistory();
+
+    function roundUp(num: number, precision: number) {
+        precision = Math.pow(10, precision);
+        return Math.ceil(num * precision) / precision;
+    }
+
 
     async function BeginUploadProcess() {
         if (file === undefined) {
@@ -38,22 +39,31 @@ function UploadPage(): ReactElement {
         }
         if (file.length !== 1) {
             setPanel("Invalid file");
+            return;
         }
 
         const fileName = file[0].name;
         const instrumentName = fileName.replace(/\.[a-zA-Z]*$/, "");
         const fileExtension = fileName.match(/\.[a-zA-Z]*$/) || [];
 
-        if (fileExtension[0] !== ".zip" && fileExtension[0] !== ".bpkg") {
-            setPanel("File must be a .zip or .bpkg");
+        if (fileExtension[0] !== ".bpkg") {
+            setPanel("File must be a .bpkg");
+            return;
         }
 
         setLoading(true);
         setInstrumentName(instrumentName);
 
-        const alreadyExists = await checkSurveyAlreadyExists(instrumentName);
+        const [alreadyExists, instrument] = await checkInstrumentAlreadyExists(instrumentName);
+        console.log(`alreadyExists ${alreadyExists}`);
+        if (alreadyExists === null) {
+            setUploadStatus("Failed to validate if questionnaire already exists");
+            setRedirect(true);
+            return;
+        }
 
         if (alreadyExists) {
+            setFoundInstrument(instrument);
             setLoading(false);
             history.push(`${path}/survey-exists`);
         } else {
@@ -84,131 +94,41 @@ function UploadPage(): ReactElement {
         setLoading(true);
         setPanel("");
         setUploading(true);
-        uploader()
-            .onProgress(({loaded, total}: Progress) => {
-                const percent = Math.round(loaded / total * 100 * 100) / 100;
-                console.log(`File upload ${percent}% ${loaded} / ${total}`);
-                setUploadPercentage(percent);
-            })
-            .options({
-                chunkSize: 5 * 1024 * 1024,
-                threadsQuantity: 5
-            })
-            .send(file[0])
-            .end((error: Error) => {
-                setUploading(false);
-                if (error) {
-                    console.log("Failed to upload file, error: ", error);
-                    setLoading(false);
-                    setUploadStatus("Failed to upload file");
-                    setRedirect(true);
-                    return;
-                }
-                console.log("File upload complete");
-                setTimeout(function () {
-                    checkFileInBucket(file[0].name.replace(/ /g, "_"));
-                }, timeout);
-            });
-    }
 
-    function checkSurveyAlreadyExists(instrumentName: string) {
-        console.log("Validating if survey already exists");
-        return new Promise((resolve: (found: boolean) => void) => {
-            fetch(`/api/instruments/${instrumentName}`)
-                .then((r: Response) => {
-                    if (r.status === 404) {
-                        console.log(`${instrumentName} not found `);
-                        resolve(false);
-                        return;
-                    }
-                    if (r.status !== 200) {
-                        throw r.status + " - " + r.statusText;
-                    }
-                    r.json()
-                        .then((json) => {
-                            if (json.name === instrumentName) {
-                                setFoundInstrument(json);
-                                console.log(`${instrumentName} already installed`);
-                                resolve(true);
-                            } else {
-                                console.log(`${instrumentName} not found `);
-                                resolve(false);
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Failed to validate if questionnaire already exists, error: " + error);
-                            throw error;
-                        });
-                })
-                .catch(async (error) => {
-                    console.error("Failed to validate if questionnaire already exists, error: " + error);
-                    await setUploadStatus("Failed to validate if questionnaire already exists");
-                    setRedirect(true);
-                });
-        });
-    }
+        // Get the signed url to allow access to the bucket
+        const [initialised, signedUrl] = await initialiseUpload(file[0].name);
+        if (!initialised) {
+            console.error("Failed to initialiseUpload");
+            setUploadStatus("Failed to upload questionnaire");
+            setRedirect(true);
+            return;
+        }
 
-    function checkFileInBucket(filename: string) {
-        console.log("Validating file is in the Bucket");
+        // Upload the file using the GCP bucket url
+        const uploaded = await uploadFile(signedUrl, file[0], onFileUploadProgress);
+        if (!uploaded) {
+            console.error("Failed to Upload file");
+            setUploadStatus("Failed to upload questionnaire");
+            setRedirect(true);
+            return;
+        }
+        setUploading(false);
+
+
         setIsVerifyingUpload(true);
-        fetch(`/bucket?filename=${filename}`)
-            .then((r: Response) => {
-                if (r.status !== 200) {
-                    throw r.status + " - " + r.statusText;
-                }
-                r.json()
-                    .then((json) => {
-                        if (json.name === filename) {
-                            console.log(`File ${filename} successfully uploaded to bucket`);
-                            setIsVerifyingUpload(false);
-                            sendInstallRequest(filename);
-                        } else {
-                            throw "Filename returned does not match sent file";
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Failed to validate if file is in bucket, error: " + error);
-                    })
-                    .catch((error) => {
-                            console.error("Failed to validate if file is in bucket, error: " + error);
-                        }
-                    );
-            })
-            .catch(async (error) => {
-                console.error("Failed to validate if file is in bucket, error: " + error);
-                await setUploadStatus("Failed to validate if file has been uploaded");
-                setRedirect(true);
-            });
+        setIsInstalling(true);
+        // Validate the file is in the bucket and call the rest API to install
+        const [installed, message] = await verifyAndInstallInstrument(file[0].name);
+        if (!installed) {
+            setUploadStatus(message);
+        }
+        setRedirect(true);
     }
 
-    function sendInstallRequest(filename: string) {
-        console.log("Sending request to start install");
-        setIsInstalling(true);
-        fetch(`/api/install?filename=${filename}`)
-            .then((r: Response) => {
-                console.log(r);
-                if (r.status !== 201) {
-                    throw r.status + " - " + r.statusText;
-                }
-                r.json()
-                    .then((json) => {
-                        console.log(json);
-                        console.log(`Questionnaire ${filename} successfully installed`);
-                    })
-                    .catch((error) => {
-                        console.error("Failed to validate if questionnaire is installed, error: " + error);
-                        setLoading(false);
-                    });
-            })
-            .catch((error) => {
-                setUploadStatus("Failed to install questionnaire");
-                console.error("Failed to install questionnaire, error: " + error);
-            })
-            .finally(() => {
-                setIsInstalling(false);
-                setRedirect(true);
-            });
-    }
+    const onFileUploadProgress = (progressEvent: ProgressEvent) => {
+        const percentage: number = roundUp((progressEvent.loaded / progressEvent.total) * 100, 2);
+        setUploadPercentage(percentage);
+    };
 
     return (
         <>
@@ -256,7 +176,7 @@ function UploadPage(): ReactElement {
             {
                 uploading &&
                 <>
-                    <p>Uploading: {uploadPercentage}%</p>
+                    <p className="u-mt-m">Uploading: {uploadPercentage}%</p>
                     <progress id="file"
                               value={uploadPercentage}
                               max="100"

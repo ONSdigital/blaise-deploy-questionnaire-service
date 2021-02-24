@@ -13,9 +13,6 @@ import {instrumentList, survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
 
 
-// Mock the Uploader.js module
-jest.mock("../../uploader");
-
 
 // Load in feature details from .feature file
 const feature = loadFeature(
@@ -25,7 +22,7 @@ const feature = loadFeature(
 
 const mock_server_responses = (url: string) => {
     console.log(url);
-    if (url.includes("bucket")) {
+    if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
