@@ -41,7 +41,7 @@ server.get("/upload/init", function (req: Request, res: Response) {
     req.log.info(`/getSignedUrl endpoint called with filename: ${filename}`);
     getSignedUrl(filename)
         .then((url) => {
-            req.log.info(url, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
+            req.log.info(`Signed url for ${filename} created in Bucket ${BUCKET_NAME}`, url);
             res.status(200).json(url);
         })
         .catch((error) => {
