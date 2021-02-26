@@ -18,7 +18,6 @@ export const step_status = {
     FAILED: "Failed",
 };
 
-
 const SpaciousTableRow = styled.tr`
   td:first-of-type {
     padding: 1.3rem 0 1.3rem;
@@ -35,7 +34,6 @@ const StyledSVG = styled.svg`
 `;
 
 function DeploymentSummary({
-                               instrumentName,
                                isVerifyIsInstalled,
                                isInstalling,
                                isUploading,
@@ -55,7 +53,6 @@ function DeploymentSummary({
             case step_status.FAILED:
                 return <span className="status status--error">Failed</span>;
         }
-        return <p>hello</p>;
     }
 
     function getIsInitialisingUpload() {
@@ -69,7 +66,6 @@ function DeploymentSummary({
             case step_status.FAILED:
                 return <span className="status status--error">Failed</span>;
         }
-        return <p>hello</p>;
     }
 
     function getIsUploading() {
@@ -83,7 +79,6 @@ function DeploymentSummary({
             case step_status.FAILED:
                 return <span className="status status--error">Failed</span>;
         }
-        return <p>hello</p>;
     }
 
     function getIsVerifyingUpload() {
@@ -97,7 +92,6 @@ function DeploymentSummary({
             case step_status.FAILED:
                 return <span className="status status--error">Failed</span>;
         }
-        return <p>hello</p>;
     }
 
     function getIsInstalling() {
@@ -111,7 +105,6 @@ function DeploymentSummary({
             case step_status.FAILED:
                 return <span className="status status--error">Failed</span>;
         }
-        return <p>hello</p>;
     }
 
     return (
@@ -172,7 +165,6 @@ function DeploymentSummary({
                 </SpaciousTableRow>
                 </tbody>
             </table>
-
         </>
     );
 }
