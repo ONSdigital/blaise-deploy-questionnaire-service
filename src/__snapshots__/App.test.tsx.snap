@@ -96,8 +96,7 @@ Object {
         </div>
       </header>
       <div
-        class="page__container container"
-        style="min-height: calc(67vh);"
+        class="sc-dlfnbm fjtFaR page__container container"
       >
         <main
           class="page__main"
@@ -455,8 +454,7 @@ Object {
       </div>
     </header>
     <div
-      class="page__container container"
-      style="min-height: calc(67vh);"
+      class="sc-dlfnbm fjtFaR page__container container"
     >
       <main
         class="page__main"
