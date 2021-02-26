@@ -75,7 +75,6 @@ function UploadPage({reloadList}: Props): ReactElement {
         setInstrumentName(instrumentName);
         setIsVerifyIsInstalled(step_status.IN_PROGRESS);
         const [alreadyExists, instrument] = await checkInstrumentAlreadyExists(instrumentName);
-        console.log(`alreadyExists ${alreadyExists}`);
         if (alreadyExists === null) {
             showDeploymentStatusPage();
             endDeploymentProcess();
@@ -94,7 +93,7 @@ function UploadPage({reloadList}: Props): ReactElement {
     }
 
     function showDeploymentStatusPage() {
-        history.push(`${path}/UploadSummary`);
+        history.push(`${path}/summary`);
     }
 
     function endDeploymentProcess() {
@@ -197,7 +196,7 @@ function UploadPage({reloadList}: Props): ReactElement {
                                   UploadFile={UploadFile}
                                   loading={loading}/>
                 </Route>
-                <Route path={`${path}/UploadSummary`}>
+                <Route path={`${path}/summary`}>
                     <DeploymentSummary deploymentSteps={deploymentSteps}
                                        isDeploying={isDeploying}
                                        getList={() => reloadList()}/>
