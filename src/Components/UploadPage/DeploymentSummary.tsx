@@ -1,8 +1,8 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import {Redirect, useHistory} from "react-router-dom";
 import {ONSButton} from "blaise-design-system-react-components";
-import DeploymentProgress, {step_status} from "./UploadPage/DeploymentProgress";
-import DeploymentSummaryInfo from "./UploadPage/DeploymentSummaryInfo";
+import DeploymentProgress, {step_status} from "./DeploymentProgress";
+import DeploymentSummaryInfo from "./DeploymentSummaryInfo";
 
 interface Props {
     isDeploying: boolean

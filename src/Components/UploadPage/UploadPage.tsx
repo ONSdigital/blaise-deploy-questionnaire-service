@@ -13,7 +13,7 @@ import {
     validateUploadIsComplete
 } from "../../utilities/http";
 import {uploadFile} from "../../utilities/http";
-import DeploymentSummary from "../DeploymentSummary";
+import DeploymentSummary from "./DeploymentSummary";
 
 interface Props {
     reloadList: () => void
