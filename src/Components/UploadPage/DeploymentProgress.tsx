@@ -1,156 +1,177 @@
-import React, {ReactElement, useEffect, useState} from "react";
-
-interface Location {
-    state: any
-}
+import React, {ReactElement} from "react";
+import styled from "styled-components";
 
 interface Props {
     instrumentName: string
-    isInstalling: boolean | null
-    isUploading: boolean | null
-    isVerifyingUpload: boolean | null
-    isInitialisingUpload: boolean | null
-    percentage: number
+    isVerifyIsInstalled: string
+    isInstalling: string
+    isUploading: string
+    isVerifyingUpload: string
+    isInitialisingUpload: string
+    uploadPercentage: number
 }
 
+export const step_status = {
+    NOT_STARTED: "Not Started",
+    IN_PROGRESS: "In Progress",
+    COMPLETE: "Completed",
+    FAILED: "Failed",
+};
+
+
+const SpaciousTableRow = styled.tr`
+  td:first-of-type {
+    padding: 1.3rem 0 1.3rem;
+  }
+
+  td {
+    width: 1rem;
+    padding: 1.3rem 0 1.3rem 1rem;
+  }
+`;
+
+const StyledSVG = styled.svg`
+  margin-right: 5px
+`;
 
 function DeploymentSummary({
                                instrumentName,
+                               isVerifyIsInstalled,
                                isInstalling,
                                isUploading,
-                               percentage,
+                               uploadPercentage,
                                isVerifyingUpload,
                                isInitialisingUpload
                            }: Props): ReactElement {
 
+    function getIsVerifyIsInstalled() {
+        switch (isVerifyIsInstalled) {
+            case step_status.NOT_STARTED:
+                return <span className="status status--pending">Not started</span>;
+            case step_status.IN_PROGRESS:
+                return <><LoadingIcon/>Verifying</>;
+            case step_status.COMPLETE:
+                return <span className="status status--success">Completed</span>;
+            case step_status.FAILED:
+                return <span className="status status--error">Failed</span>;
+        }
+        return <p>hello</p>;
+    }
+
+    function getIsInitialisingUpload() {
+        switch (isInitialisingUpload) {
+            case step_status.NOT_STARTED:
+                return <span className="status status--pending">Not started</span>;
+            case step_status.IN_PROGRESS:
+                return <><LoadingIcon/>Initialing</>;
+            case step_status.COMPLETE:
+                return <span className="status status--success">Completed</span>;
+            case step_status.FAILED:
+                return <span className="status status--error">Failed</span>;
+        }
+        return <p>hello</p>;
+    }
+
+    function getIsUploading() {
+        switch (isUploading) {
+            case step_status.NOT_STARTED:
+                return <span className="status status--pending">Not started</span>;
+            case step_status.IN_PROGRESS:
+                return <><LoadingIcon/>Uploading {uploadPercentage}%</>;
+            case step_status.COMPLETE:
+                return <span className="status status--success">Completed</span>;
+            case step_status.FAILED:
+                return <span className="status status--error">Failed</span>;
+        }
+        return <p>hello</p>;
+    }
+
+    function getIsVerifyingUpload() {
+        switch (isVerifyingUpload) {
+            case step_status.NOT_STARTED:
+                return <span className="status status--pending">Not started</span>;
+            case step_status.IN_PROGRESS:
+                return <><LoadingIcon/>Verifying</>;
+            case step_status.COMPLETE:
+                return <span className="status status--success">Completed</span>;
+            case step_status.FAILED:
+                return <span className="status status--error">Failed</span>;
+        }
+        return <p>hello</p>;
+    }
+
+    function getIsInstalling() {
+        switch (isInstalling) {
+            case step_status.NOT_STARTED:
+                return <span className="status status--pending">Not started</span>;
+            case step_status.IN_PROGRESS:
+                return <><LoadingIcon/>Installing</>;
+            case step_status.COMPLETE:
+                return <span className="status status--success">Completed</span>;
+            case step_status.FAILED:
+                return <span className="status status--error">Failed</span>;
+        }
+        return <p>hello</p>;
+    }
+
     return (
         <>
-            <h1>
-                Deployment of <em>{instrumentName}</em> in progress
-            </h1>
 
-            <div className="summary summary--hub">
-                <div className="summary__group">
-                    <table className="summary__items">
-                        <thead className="u-vh">
-                        <tr>
-                            <th>Name of section or person</th>
-                            <th>Section progress</th>
-                            <th>Access section</th>
-                        </tr>
-                        </thead>
-                        <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                 <span className="summary__item-title-icon  summary__item-title-icon--check">
-                                   <svg className="svg-icon" viewBox="0 0 13 10" xmlns="http://www.w3.org/2000/svg">
-                                     <path
-                                         d="M14.35,3.9l-.71-.71a.5.5,0,0,0-.71,0h0L5.79,10.34,3.07,7.61a.51.51,0,0,0-.71,0l-.71.71a.51.51,0,0,0,0,.71l3.78,3.78a.5.5,0,0,0,.71,0h0L14.35,4.6A.5.5,0,0,0,14.35,3.9Z"
-                                         transform="translate(-1.51 -3.04)"/>
-                                   </svg>
-                                 </span>
-                                <div className="summary__item--text summary__item-title--text">Verify if questionnaire
-                                    is already installed
-                                </div>
-                                <span className="u-d-no@s u-fs-r"> — Completed</span>
-                            </td>
-                            <td className="summary__values">
-                                Completed
-                            </td>
 
-                        </tr>
-                        </tbody>
-                        <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                {isInitialisingUpload === null ? "" : isInitialisingUpload ? <LoadingIcon/> :
-                                    <span className="summary__item-title-icon  summary__item-title-icon--check">
-                                    <svg className="svg-icon" viewBox="0 0 13 10" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M14.35,3.9l-.71-.71a.5.5,0,0,0-.71,0h0L5.79,10.34,3.07,7.61a.51.51,0,0,0-.71,0l-.71.71a.51.51,0,0,0,0,.71l3.78,3.78a.5.5,0,0,0,.71,0h0L14.35,4.6A.5.5,0,0,0,14.35,3.9Z"
-                                            transform="translate(-1.51 -3.04)"/>
-                                    </svg>
-                                </span>
-                                }
-                                <div className="summary__item--text summary__item-title--text">Initialise upload
-                                </div>
-                                <span className="u-d-no@s u-fs-r"> — Completed</span>
-                            </td>
-                            <td className="summary__values">
-                                {(isInitialisingUpload === null ? "Not started" : isInitialisingUpload ? "Initialing" : "Completed")}
-                            </td>
-
-                        </tr>
-                        </tbody>
-                        <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                {isUploading === null ? "" : isUploading ? <LoadingIcon/> :
-                                    <span className="summary__item-title-icon  summary__item-title-icon--check">
-                                    <svg className="svg-icon" viewBox="0 0 13 10" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M14.35,3.9l-.71-.71a.5.5,0,0,0-.71,0h0L5.79,10.34,3.07,7.61a.51.51,0,0,0-.71,0l-.71.71a.51.51,0,0,0,0,.71l3.78,3.78a.5.5,0,0,0,.71,0h0L14.35,4.6A.5.5,0,0,0,14.35,3.9Z"
-                                            transform="translate(-1.51 -3.04)"/>
-                                    </svg>
-                                </span>
-                                }
-                                <div className="summary__item--text summary__item-title--text">Upload questionnaire
-                                    file
-                                </div>
-                                <span className="u-d-no@s u-fs-r"> — Completed</span>
-                            </td>
-                            <td className="summary__values">
-                                {(isUploading === null ? "Not started" : isUploading ? `Uploading ${percentage}%` : "Completed")}
-                            </td>
-
-                        </tr>
-                        </tbody>
-                        <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                {isVerifyingUpload === null ? "" : isVerifyingUpload ? <LoadingIcon/> :
-                                    <span className="summary__item-title-icon  summary__item-title-icon--check">
-                                    <svg className="svg-icon" viewBox="0 0 13 10" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M14.35,3.9l-.71-.71a.5.5,0,0,0-.71,0h0L5.79,10.34,3.07,7.61a.51.51,0,0,0-.71,0l-.71.71a.51.51,0,0,0,0,.71l3.78,3.78a.5.5,0,0,0,.71,0h0L14.35,4.6A.5.5,0,0,0,14.35,3.9Z"
-                                            transform="translate(-1.51 -3.04)"/>
-                                    </svg>
-                                </span>
-                                }
-                                <div className="summary__item--text summary__item-title--text">Verify that questionnaire
-                                    file has been uploaded
-                                </div>
-                                <span className="u-d-no@s u-fs-r"> — Completed</span>
-                            </td>
-                            <td className="summary__values">
-                                {(isVerifyingUpload === null ? "Not started" : isVerifyingUpload ? "Verifying" : "Completed")}
-                            </td>
-                        </tr>
-                        </tbody>
-                        <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                {isInstalling === null ? "" : isInstalling ? <LoadingIcon/> :
-                                    <span className="summary__item-title-icon  summary__item-title-icon--check">
-                                    <svg className="svg-icon" viewBox="0 0 13 10" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M14.35,3.9l-.71-.71a.5.5,0,0,0-.71,0h0L5.79,10.34,3.07,7.61a.51.51,0,0,0-.71,0l-.71.71a.51.51,0,0,0,0,.71l3.78,3.78a.5.5,0,0,0,.71,0h0L14.35,4.6A.5.5,0,0,0,14.35,3.9Z"
-                                            transform="translate(-1.51 -3.04)"/>
-                                    </svg>
-                                    </span>
-                                }
-                                <div className="summary__item--text summary__item-title--text">Install questionnaire
-                                </div>
-                                <span className="u-d-no@s u-fs-r"> — Partially completed</span>
-                            </td>
-                            <td className="summary__values">
-                                {(isInstalling === null ? "Not started" : isInstalling ? "Installing" : "Complete")}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <table id="deployment-progress-table" className="table summary__items  u-mt-m">
+                <thead className="table__head">
+                <tr className="table__row">
+                    <th scope="col" className="table__header ">
+                        <span>Deployment step</span>
+                    </th>
+                    <th scope="col" className="table__header ">
+                        <span>Status</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody className="table__body">
+                <SpaciousTableRow className="table__row">
+                    <td className="table__cell">
+                        Verify if questionnaire is already installed
+                    </td>
+                    <td className="table__cell">
+                        {getIsVerifyIsInstalled()}
+                    </td>
+                </SpaciousTableRow>
+                <SpaciousTableRow className="table__row">
+                    <td className="table__cell">
+                        Initialise upload
+                    </td>
+                    <td className="table__cell">
+                        {getIsInitialisingUpload()}
+                    </td>
+                </SpaciousTableRow>
+                <SpaciousTableRow className="table__row">
+                    <td className="table__cell">
+                        Upload questionnaire file
+                    </td>
+                    <td className="table__cell">
+                        {getIsUploading()}
+                    </td>
+                </SpaciousTableRow>
+                <SpaciousTableRow className="table__row">
+                    <td className="table__cell">
+                        Verify that questionnaire file has been uploaded
+                    </td>
+                    <td className="table__cell">
+                        {getIsVerifyingUpload()}
+                    </td>
+                </SpaciousTableRow>
+                <SpaciousTableRow className="table__row">
+                    <td className="table__cell">
+                        Install questionnaire
+                    </td>
+                    <td className="table__cell">
+                        {getIsInstalling()}
+                    </td>
+                </SpaciousTableRow>
+                </tbody>
+            </table>
 
         </>
     );
@@ -160,10 +181,10 @@ export default DeploymentSummary;
 
 function LoadingIcon() {
     return (
-        <svg className="summary__item-title-icon svg-icon uil-default" xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 100 100"
-             preserveAspectRatio="xMidYMid">
-            <rect x="0" y="0" width="100" height="100" fill="none" className="bk"></rect>
+        <StyledSVG className="svg-icon uil-default" style={{}} xmlns="http://www.w3.org/2000/svg"
+                   viewBox="0 0 100 100"
+                   preserveAspectRatio="xMidYMid">
+            <rect x="0" y="0" width="100" height="100" fill="none" className="bk"/>
             <rect x='46.5' y='40' width='7' height='20' rx='5' ry='5'
                   transform='rotate(0 50 50) translate(0 -30)'>
                 <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0s'
@@ -224,6 +245,6 @@ function LoadingIcon() {
                 <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.9166666666666666s'
                          repeatCount='indefinite'/>
             </rect>
-        </svg>
+        </StyledSVG>
     );
 }

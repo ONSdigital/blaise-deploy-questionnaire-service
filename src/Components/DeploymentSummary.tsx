@@ -1,67 +1,69 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {Redirect, useHistory, useLocation} from "react-router-dom";
-import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
-interface Location {
-    state: any
-}
+import {Redirect, useHistory} from "react-router-dom";
+import {ONSButton} from "blaise-design-system-react-components";
+import DeploymentProgress, {step_status} from "./UploadPage/DeploymentProgress";
+import DeploymentSummaryInfo from "./UploadPage/DeploymentSummaryInfo";
 
 interface Props {
+    isDeploying: boolean
     getList: () => void
+    deploymentSteps: DeploymentSteps
 }
 
-function DeploymentSummary({getList}: Props): ReactElement {
+interface DeploymentSteps {
+    instrumentName: string
+    isVerifyIsInstalled: string
+    isInstalling: string
+    isUploading: string
+    isVerifyingUpload: string
+    isInitialisingUpload: string
+    uploadPercentage: number
+}
+
+function DeploymentSummary({getList, isDeploying, deploymentSteps}: Props): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
-    const location = useLocation();
     const history = useHistory();
-    const {questionnaireName, status} = (location as Location).state || {questionnaireName: "/", status: ""};
+    const {instrumentName, isInstalling} = deploymentSteps;
 
     useEffect(() => {
         getList();
-    }, []);
+    }, [isDeploying]);
 
     return (
         <>
             {
                 redirect && <Redirect to="/"/>
             }
-            <h1>
-                Questionnaire
-                file <em>{questionnaireName}</em> {(status === "" ? "deployed" : "deploy failed")}
-            </h1>
             {
-                (status === "" ?
-                    <ONSPanel status="success">
-                        <p>
-                            The questionnaire file has been successfully deployed and will be displayed within the table
-                            of
-                            questionnaires.
-                        </p>
-                    </ONSPanel>
+                isDeploying ?
+                    <h1>
+                        Deployment of <em>{instrumentName}</em> in progress
+                    </h1>
                     :
-                    <ONSPanel status="error">
-                        <p>
-                            <b>File deploy failed</b>
-
-                            <br/>
-                            <br/>
-                            Questionnaire {questionnaireName} has failed to deploy. When reporting the issue to Service
-                            Desk provide the questionnaire name, time and date of failure.
-                        </p>
-                        <p>
-                            Reason: {status}
-                        </p>
-                    </ONSPanel>)
+                    <DeploymentSummaryInfo status={isInstalling} instrumentName={instrumentName}/>
             }
 
+            <DeploymentProgress instrumentName={instrumentName}
+                                isVerifyIsInstalled={deploymentSteps.isVerifyIsInstalled}
+                                isInstalling={deploymentSteps.isInstalling}
+                                isUploading={deploymentSteps.isUploading}
+                                isVerifyingUpload={deploymentSteps.isVerifyingUpload}
+                                isInitialisingUpload={deploymentSteps.isInitialisingUpload}
+                                uploadPercentage={deploymentSteps.uploadPercentage}/>
 
-            <br/>
-            <br/>
-            {(status !== "" && <ONSButton label="Return to select survey package page"
-                                          primary={true}
-                                          onClick={() => history.push("/upload")}/>)}
-            <ONSButton label="Go to table of questionnaires"
-                       primary={(status === "")}
-                       onClick={() => setRedirect(true)}/>
+            {
+                !isDeploying &&
+                <>
+                    <br/>
+                    {(isInstalling !== step_status.COMPLETE && <ONSButton label="Return to select survey package page"
+                                                                          primary={true}
+                                                                          onClick={() => history.push("/upload")}/>)}
+                    <ONSButton label="Go to table of questionnaires"
+                               primary={(deploymentSteps.isInstalling === step_status.COMPLETE)}
+                               onClick={() => setRedirect(true)}/>
+                </>
+            }
+
         </>
     );
 }
