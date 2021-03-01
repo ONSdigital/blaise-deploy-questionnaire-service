@@ -66,7 +66,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                 if (status === 201) {
                     auditLogInfo(req.log, `Successfully installed questionnaire ${instrumentName}`);
                 } else {
-                    auditLogInfo(req.log, `Failed to install questionnaire ${instrumentName}`);
+                    auditLogError(req.log, `Failed to install questionnaire ${instrumentName}`);
                 }
                 res.status(status).json(data);
             });
