@@ -1,13 +1,18 @@
 import React, {ReactElement, useState} from "react";
 import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
+import {Instrument} from "../../../Interfaces";
+import ErroneousWarning from "./ErroneousWarning";
+import {deleteInstrument} from "../../utilities/http";
 
 interface Props {
     getList: () => void
 }
 
 interface Location {
-    state: any
+    state: {
+        instrument: Instrument
+    }
 }
 
 function confirmDeleteRadios(setConfirm: (value: (((prevState: (boolean | null)) => (boolean | null)) | boolean | null)) => void) {
@@ -59,9 +64,9 @@ function DeleteConfirmation({getList}: Props): ReactElement {
     const [formError, setFormError] = useState<string>("");
     const history = useHistory();
     const location = useLocation();
-    const {instrumentName} = (location as Location).state || {instrumentName: ""};
+    const {instrument} = (location as Location).state || {instrument: ""};
 
-    function confirmOption(): void {
+    async function confirmOption() {
         if (confirm === null) {
             setFormError("Select an answer");
             return;
@@ -73,36 +78,18 @@ function DeleteConfirmation({getList}: Props): ReactElement {
 
         setLoading(true);
 
-        deleteInstrument()
-            .then(async () => {
-                getList();
-                setMessage(`Questionnaire: ${instrumentName} Successfully deleted`);
-                setLoading(false);
-                setRedirect(true);
-            })
-            .catch((error) => {
-                console.error(error, "Error");
-                setMessage("Failed to delete questionnaire");
-                setLoading(false);
-            });
-    }
 
-    function deleteInstrument() {
-        console.log("Sending request to delete questionnaire");
-        return new Promise((resolve: any, reject: any) => {
-            fetch(`/api/instruments/${instrumentName}`, {method: "DELETE"})
-                .then((r: Response) => {
-                    if (r.status === 204) {
-                        resolve(true);
-                    } else {
-                        throw r.status + " - " + r.statusText;
-                    }
-                })
-                .catch(async (error) => {
-                    console.error("Failed to delete questionnaire, error: " + error);
-                    reject(error);
-                });
-        });
+        const [deleted, message] = await deleteInstrument(instrument.name);
+        if (!deleted) {
+            setMessage("Failed to delete questionnaire");
+            setLoading(false);
+            return;
+        }
+
+        getList();
+        setMessage(`Questionnaire: ${instrument.name} Successfully deleted`);
+        setLoading(false);
+        setRedirect(true);
     }
 
     return (
@@ -117,43 +104,54 @@ function DeleteConfirmation({getList}: Props): ReactElement {
             <p>
                 <Link to={"/"}>Previous</Link>
             </p>
-            <h1>
-                Are you sure you want to delete the questionnaire <em className="highlight">{instrumentName}</em>?
-            </h1>
 
-            <p>
-                {message}
-            </p>
-
-            <form onSubmit={() => confirmOption()}>
-                {
-                    formError === "" ?
-                        confirmDeleteRadios(setConfirm)
+            {
+                (
+                    instrument.status === "Erroneous" ?
+                        <ErroneousWarning instrumentName={instrument.name} setRedirect={setRedirect}/>
                         :
-                        <ONSPanel status={"error"}>
-                            <p className="panel__error">
-                                <strong>{formError}</strong>
+                        <>
+                            <h1>
+                                Are you sure you want to delete the questionnaire <em
+                                className="highlight">{instrument.name}</em>?
+                            </h1>
+
+                            <p>
+                                {message}
                             </p>
-                            {confirmDeleteRadios(setConfirm)}
-                        </ONSPanel>
-                }
+
+                            <form onSubmit={() => confirmOption()}>
+                                {
+                                    formError === "" ?
+                                        confirmDeleteRadios(setConfirm)
+                                        :
+                                        <ONSPanel status={"error"}>
+                                            <p className="panel__error">
+                                                <strong>{formError}</strong>
+                                            </p>
+                                            {confirmDeleteRadios(setConfirm)}
+                                        </ONSPanel>
+                                }
 
 
-                <br/>
-                <ONSButton
-                    label={"Continue"}
-                    primary={true}
-                    loading={loading}
-                    id="confirm-delete"
-                    onClick={() => confirmOption()}/>
-                {!loading &&
-                <ONSButton
-                    label={"Cancel"}
-                    primary={false}
-                    id="cancel-delete"
-                    onClick={() => confirmOption()}/>
-                }
-            </form>
+                                <br/>
+                                <ONSButton
+                                    label={"Continue"}
+                                    primary={true}
+                                    loading={loading}
+                                    id="confirm-delete"
+                                    onClick={() => confirmOption()}/>
+                                {!loading &&
+                                <ONSButton
+                                    label={"Cancel"}
+                                    primary={false}
+                                    id="cancel-delete"
+                                    onClick={() => confirmOption()}/>
+                                }
+                            </form>
+                        </>
+                )
+            }
         </>
     );
 }
