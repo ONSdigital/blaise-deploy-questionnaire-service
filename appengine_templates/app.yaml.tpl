@@ -13,3 +13,9 @@ env_variables:
 basic_scaling:
   idle_timeout: 10m
   max_instances: 10
+
+handlers:
+- url: /.*
+  script: auto
+  secure: always
+  redirect_http_response_code: 301

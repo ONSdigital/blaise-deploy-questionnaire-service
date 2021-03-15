@@ -8,9 +8,9 @@ def slack_alert():
     attachments = []
 
     attachments.append({
-        'color': 'good',
-        'title': 'Deployed',
-        'text': '\n' + os.getenv('REPO_NAME')
+        'color': '#9370db',
+        'title': 'Deployed to ' + os.getenv('PROJECT_ID'),
+        'text': '\n' + os.getenv('REPO_NAME') 
     })
 
     text = 'Commit <https://github.com/ONSdigital/' + os.getenv('REPO_NAME') + '/commit/' + os.getenv('COMMIT_SHA') + '|' + os.getenv('SHORT_SHA') + '> of ' + os.getenv('REPO_NAME') + ' has been deployed to *' + os.getenv('PROJECT_ID') + '*, to view the cloud build job click <https://console.cloud.google.com/cloud-build/builds/' + os.getenv('BUILD_ID') + '?project=' + os.getenv('PROJECT_ID') + '|here>'

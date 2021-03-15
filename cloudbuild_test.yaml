@@ -20,20 +20,5 @@ steps:
 
   - name: "gcr.io/cloud-builders/gcloud"
     id: Deploy service for testing
-    args: ["app", "deploy", "--version", "pull-request-number-$_PR_NUMBER-test", "--no-promote"]
+    args: ["app", "deploy", "--version", "pull-request-no-$_PR_NUMBER", "--no-promote"]
     timeout: "1600s"
-    
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: Clean Up Old Versions
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        versions=$(gcloud app versions list --service "dqs-ui" --sort-by '~version' --format 'value(VERSION.ID)' --project "${_PROJECT_ID}" | tail -n +11)
-
-        versions=($versions)  # split to array $versions
-
-        for (( i=0; i<${#versions[@]}; i++ ))
-        do
-          gcloud app versions delete ${versions[$i]} --service "dqs-ui" --project "${_PROJECT_ID}" --quiet
-        done

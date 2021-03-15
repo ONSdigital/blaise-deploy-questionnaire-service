@@ -1,7 +1,5 @@
 import {Link} from "react-router-dom";
-import {ONSPanel} from "../ONSDesignSystem/ONSPanel";
-import {ONSUpload} from "../ONSDesignSystem/ONSUpload";
-import {ONSButton} from "../ONSDesignSystem/ONSButton";
+import {ONSButton, ONSPanel, ONSUpload} from "blaise-design-system-react-components";
 import React, {ReactElement} from "react";
 
 interface SelectFilePageProps {
@@ -16,6 +14,7 @@ function SelectFilePage(props: SelectFilePageProps): ReactElement {
 
     const handleFileChange = (selectorFiles: FileList | null) => {
         console.log(selectorFiles);
+
         if (selectorFiles !== null) {
             setFile(selectorFiles);
         }

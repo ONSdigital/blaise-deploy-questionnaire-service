@@ -1,7 +1,6 @@
 import React, {ReactElement, useState} from "react";
 import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
-import {ONSButton} from "./ONSDesignSystem/ONSButton";
-import {ONSPanel} from "./ONSDesignSystem/ONSPanel";
+import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 
 interface Props {
     getList: () => void
