@@ -123,7 +123,7 @@ Object {
                 href="/audit"
                 id="audit-logs-link"
               >
-                View audit logs
+                View deployment history
               </a>
             </li>
             <li
@@ -506,7 +506,7 @@ Object {
               href="/audit"
               id="audit-logs-link"
             >
-              View audit logs
+              View deployment history
             </a>
           </li>
           <li

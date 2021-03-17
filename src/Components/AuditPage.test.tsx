@@ -50,12 +50,12 @@ describe("Audit Logs page", () => {
         expect(queryByText(/Loading/i)).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(getByText(/Questionnaire deployment audit logs/i)).toBeDefined();
+            expect(getByText(/Questionnaire deployment history/i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
 
         await waitFor(() => {
-            expect(getByText(/Questionnaire deployment audit logs/i)).toBeDefined();
+            expect(getByText(/Questionnaire deployment history/i)).toBeDefined();
             expect(getByText(/Successfully uninstalled questionnaire OPN2012K/i)).toBeDefined();
             expect(getByText(/19\/02\/2021 12:46:29/i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
@@ -81,7 +81,7 @@ describe("Audit Logs page", () => {
 
         mock_server_request_Return_JSON(200, auditLogsList2);
 
-        await fireEvent.click(screen.getByText("Reload logs"));
+        await fireEvent.click(screen.getByText("Reload"));
 
         await act(async () => {
             await flushPromises();
@@ -117,7 +117,7 @@ describe("Given the API returns a 500 status", () => {
 
 
         await waitFor(() => {
-            expect(getByText(/Unable to load audit logs/i)).toBeDefined();
+            expect(getByText(/Unable to load deployment history./i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
 
@@ -147,7 +147,7 @@ describe("Given the API returns malformed json", () => {
 
 
         await waitFor(() => {
-            expect(getByText(/Unable to load audit logs/i)).toBeDefined();
+            expect(getByText(/Unable to load deployment history./i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
 
@@ -177,7 +177,7 @@ describe("Given the API returns an empty list", () => {
 
 
         await waitFor(() => {
-            expect(getByText(/No audit logs found./i)).toBeDefined();
+            expect(getByText(/No recent deployment history found./i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
 
