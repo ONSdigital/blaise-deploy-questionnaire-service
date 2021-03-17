@@ -95,7 +95,7 @@ function App(): ReactElement {
                                     </li>
                                     <li className="list__item">
                                         <Link to="/audit" id="audit-logs-link">
-                                            View audit logs
+                                            View deployment history
                                         </Link>
                                     </li>
                                     <li className="list__item">

@@ -21,14 +21,14 @@ function AuditPage(): ReactElement {
         const [success, auditLogs] = await getAuditLogs();
 
         if (!success) {
-            setListError("Unable to load audit logs");
+            setListError("Unable to load deployment history.");
             return;
         }
 
         console.log(auditLogs);
 
         if (auditLogs.length === 0) {
-            setListError("No audit logs found.");
+            setListError("No recent deployment history found.");
         }
 
         setAuditLogs(auditLogs);
@@ -40,9 +40,9 @@ function AuditPage(): ReactElement {
             <p>
                 <Link to={"/"}>Previous</Link>
             </p>
-            <h1>Questionnaire deployment audit logs</h1>
-            <ONSButton onClick={() => callAuditLogs()} label="Reload logs" primary={true} small={true}/>
-            <ErrorBoundary errorMessageText={"Failed to load audit logs."}>
+            <h1>Questionnaire deployment history</h1>
+            <ONSButton onClick={() => callAuditLogs()} label="Reload" primary={true} small={true}/>
+            <ErrorBoundary errorMessageText={"Failed to load deployment history."}>
                 {
                     auditLogs && auditLogs.length > 0
                         ?
@@ -78,7 +78,7 @@ function AuditPage(): ReactElement {
                             </tbody>
                         </table>
                         :
-                        <ONSPanel>{listError}</ONSPanel>
+                        <ONSPanel status={(listError.includes("Unable") ? "error" : "info")}>{listError}</ONSPanel>
                 }
             </ErrorBoundary>
         </>
