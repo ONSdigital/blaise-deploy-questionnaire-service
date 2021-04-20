@@ -3661,9 +3661,10 @@ bindings@^1.2.1, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blaise-design-system-react-components@ONSdigital/blaise-design-system-react-components#0.0.5:
+blaise-design-system-react-components@ONSdigital/blaise-design-system-react-components#v0.0.7:
   version "1.0.0"
-  resolved "https://codeload.github.com/ONSdigital/blaise-design-system-react-components/tar.gz/1eea4bc0ce622a079d6edc3d4a696b20bff2f632"
+  uid "3fdb476228f1f0e9c5b246083a609713cedc515b"
+  resolved "https://codeload.github.com/ONSdigital/blaise-design-system-react-components/tar.gz/3fdb476228f1f0e9c5b246083a609713cedc515b"
 
 bluebird@^3.5.5:
   version "3.7.2"
