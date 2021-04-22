@@ -120,7 +120,7 @@ function DeleteConfirmation({getList}: Props): ReactElement {
                                 {message}
                             </p>
 
-                            <form onSubmit={() => confirmOption()}>
+                            <form>
                                 {
                                     formError === "" ?
                                         confirmDeleteRadios(setConfirm)
