@@ -117,7 +117,7 @@ Object {
             class="panel panel--info panel--no-title  u-mt-m"
           >
             <div
-              class="panel__body"
+              class="panel__body "
             >
               <p>
                 Any 
@@ -490,7 +490,7 @@ Object {
           class="panel panel--info panel--no-title  u-mt-m"
         >
           <div
-            class="panel__body"
+            class="panel__body "
           >
             <p>
               Any 
