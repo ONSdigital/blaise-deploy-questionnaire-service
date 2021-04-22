@@ -19,7 +19,7 @@ Object {
         class="panel panel--info panel--no-title  u-mt-m"
       >
         <div
-          class="panel__body"
+          class="panel__body "
         >
           <p>
             When a questionnaire file is selected and you continue to deploy this questionnaire file, 
@@ -94,7 +94,7 @@ Object {
       class="panel panel--info panel--no-title  u-mt-m"
     >
       <div
-        class="panel__body"
+        class="panel__body "
       >
         <p>
           When a questionnaire file is selected and you continue to deploy this questionnaire file, 

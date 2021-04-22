@@ -3,6 +3,7 @@ import {Instrument} from "../../../Interfaces";
 
 type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];
+type deleteInstrumentResponse = [boolean, string];
 
 function checkInstrumentAlreadyExists(instrumentName: string): Promise<verifyInstrumentExistsResponse> {
     console.log(`Call to checkSurveyAlreadyExists(${instrumentName})`);
@@ -57,4 +58,23 @@ function getAllInstruments(): Promise<getInstrumentListResponse> {
     });
 }
 
-export {checkInstrumentAlreadyExists, getAllInstruments};
+function deleteInstrument(instrumentName: string): Promise<deleteInstrumentResponse> {
+    console.log("Call to deleteInstrument");
+    const url = `/api/instruments/${instrumentName}`;
+
+    return new Promise((resolve: (object: deleteInstrumentResponse) => void) => {
+        requestPromiseJson("DELETE", url).then(([status, data]) => {
+            console.log(`Response from deleteInstrument: Status ${status}, data ${data}`);
+            if (status === 204) {
+                resolve([true, ""]);
+            } else {
+                resolve([false, ""]);
+            }
+        }).catch((error: Error) => {
+            console.error(`Response from deleteInstrument: Error ${error}`);
+            resolve([false, ""]);
+        });
+    });
+}
+
+export {checkInstrumentAlreadyExists, getAllInstruments, deleteInstrument};

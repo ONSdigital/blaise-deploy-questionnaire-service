@@ -8,6 +8,17 @@ interface Props {
     listError: string
 }
 
+function getStatusColor(status: string | undefined) {
+    switch (status) {
+        case "Active":
+            return "success";
+        case "Erroneous":
+            return "error";
+        default:
+            return "info";
+    }
+}
+
 function InstrumentList({list, listError}: Props): ReactElement {
     list.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
 
@@ -51,7 +62,10 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                         {item.fieldPeriod}
                                     </td>
                                     <td className="table__cell ">
-                                        {item.status}
+                                        <span
+                                            className={`status status--${getStatusColor(item.status)}`}>
+                                            {item.status}
+                                        </span>
                                     </td>
                                     <td className="table__cell ">
                                         {dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}
@@ -64,9 +78,12 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                             item.active ?
                                                 "Questionnaire is live"
                                                 :
-                                                <Link id={`delete-button-${item.name}`} data-testid={`delete-${item.name}`} to={{
+                                                <Link id={`delete-button-${item.name}`}
+                                                      data-testid={`delete-${item.name}`}
+                                                      aria-label={`Delete questionnaire ${item.name}`}
+                                                      to={{
                                                     pathname: "/delete",
-                                                    state: {instrumentName: item.name}
+                                                    state: {instrument: item}
                                                 }}>
                                                     Delete
                                                 </Link>
@@ -85,7 +102,8 @@ function InstrumentList({list, listError}: Props): ReactElement {
                     </div>
                 </div>
         }
-    </>;
+    </>
+        ;
 }
 
 export default InstrumentList;
