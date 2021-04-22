@@ -6,7 +6,7 @@ import {Instrument} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
 import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
-import DeleteConfirmation from "./Components/DeleteConfirmation";
+import DeleteConfirmation from "./Components/DeletePage/DeleteConfirmation";
 import StatusPage from "./Components/StatusPage";
 import {
     NotProductionWarning,

@@ -38,7 +38,8 @@ const mock_server_responses = (url: string) => {
         });
     } else if (url.includes("OPN2004A")) {
         return Promise.resolve({
-            status: 204
+            status: 204,
+            json: () => Promise.resolve({}),
         });
     } else {
         return Promise.resolve({

@@ -225,7 +225,11 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  Active
+                  <span
+                    class="status status--success"
+                  >
+                    Active
+                  </span>
                 </td>
                 <td
                   class="table__cell "
@@ -242,6 +246,7 @@ Object {
                   id="delete-OPN2004A"
                 >
                   <a
+                    aria-label="Delete questionnaire OPN2004A"
                     data-testid="delete-OPN2004A"
                     href="/delete"
                     id="delete-button-OPN2004A"
@@ -267,7 +272,11 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  Active
+                  <span
+                    class="status status--success"
+                  >
+                    Active
+                  </span>
                 </td>
                 <td
                   class="table__cell "
@@ -303,7 +312,11 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  Active
+                  <span
+                    class="status status--success"
+                  >
+                    Active
+                  </span>
                 </td>
                 <td
                   class="table__cell "
@@ -320,6 +333,7 @@ Object {
                   id="delete-OPN2101A"
                 >
                   <a
+                    aria-label="Delete questionnaire OPN2101A"
                     data-testid="delete-OPN2101A"
                     href="/delete"
                     id="delete-button-OPN2101A"
@@ -584,7 +598,11 @@ Object {
               <td
                 class="table__cell "
               >
-                Active
+                <span
+                  class="status status--success"
+                >
+                  Active
+                </span>
               </td>
               <td
                 class="table__cell "
@@ -601,6 +619,7 @@ Object {
                 id="delete-OPN2004A"
               >
                 <a
+                  aria-label="Delete questionnaire OPN2004A"
                   data-testid="delete-OPN2004A"
                   href="/delete"
                   id="delete-button-OPN2004A"
@@ -626,7 +645,11 @@ Object {
               <td
                 class="table__cell "
               >
-                Active
+                <span
+                  class="status status--success"
+                >
+                  Active
+                </span>
               </td>
               <td
                 class="table__cell "
@@ -662,7 +685,11 @@ Object {
               <td
                 class="table__cell "
               >
-                Active
+                <span
+                  class="status status--success"
+                >
+                  Active
+                </span>
               </td>
               <td
                 class="table__cell "
@@ -679,6 +706,7 @@ Object {
                 id="delete-OPN2101A"
               >
                 <a
+                  aria-label="Delete questionnaire OPN2101A"
                   data-testid="delete-OPN2101A"
                   href="/delete"
                   id="delete-button-OPN2101A"
