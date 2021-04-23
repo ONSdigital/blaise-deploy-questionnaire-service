@@ -3661,7 +3661,7 @@ bindings@^1.2.1, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blaise-design-system-react-components@ONSdigital/blaise-design-system-react-components#v0.0.9:
+blaise-design-system-react-components@ONSdigital/blaise-design-system-react-components#0.0.9:
   version "1.0.0"
   resolved "https://codeload.github.com/ONSdigital/blaise-design-system-react-components/tar.gz/9c95d274fc39c068fa4c8e17aff6c94d184bd392"
 
