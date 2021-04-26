@@ -1,29 +1,18 @@
-import {requestPromiseJson} from "./requestPromise";
+import {requestPromiseJsonList} from "./requestPromise";
 
 type getAuditLogsResponse = [boolean, never[]];
 
 function getAuditLogs(): Promise<getAuditLogsResponse> {
-    let list: never[] = [];
     console.log("Call to getAuditLogs");
     const url = "/api/audit";
 
     return new Promise((resolve: (object: getAuditLogsResponse) => void) => {
-        requestPromiseJson("GET", url).then(([status, data]) => {
-            console.log(`Response from get audit logs: Status ${status}, data ${data}`);
-            if (status === 200) {
-                if (!Array.isArray(data)) {
-                    resolve([false, list]);
-                }
-                list = data;
-                resolve([true, list]);
-            } else if (status === 404) {
-                resolve([true, list]);
-            } else {
-                resolve([false, list]);
-            }
+        requestPromiseJsonList("GET", url).then(([success, data]) => {
+            console.log(`Response from get audit logs ${(success ? "successful" : "failed")}, data list length ${data.length}`);
+            resolve([success, data]);
         }).catch((error: Error) => {
-            console.error(`Response from get all audit Failed: Error ${error}`);
-            resolve([false, list]);
+            console.error(`Response from get audit logs Failed: Error ${error}`);
+            resolve([false, []]);
         });
     });
 }
