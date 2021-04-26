@@ -9,6 +9,17 @@ interface Props {
     listError: string
 }
 
+function getStatusColor(status: string | undefined) {
+    switch (status) {
+        case "Active":
+            return "success";
+        case "Erroneous":
+            return "error";
+        default:
+            return "info";
+    }
+}
+
 function InstrumentList({instrumentList, listError}: Props): ReactElement {
 
 
@@ -82,7 +93,10 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
                                         {item.fieldPeriod}
                                     </td>
                                     <td className="table__cell ">
-                                        {item.status}
+                                        <span
+                                            className={`status status--${getStatusColor(item.status)}`}>
+                                            {item.status}
+                                        </span>
                                     </td>
                                     <td className="table__cell ">
                                         {dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}
@@ -96,9 +110,11 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
                                                 "Questionnaire is live"
                                                 :
                                                 <Link id={`delete-button-${item.name}`}
-                                                      data-testid={`delete-${item.name}`} to={{
+                                                      data-testid={`delete-${item.name}`}
+                                                      aria-label={`Delete questionnaire ${item.name}`}
+                                                      to={{
                                                     pathname: "/delete",
-                                                    state: {instrumentName: item.name}
+                                                    state: {instrument: item}
                                                 }}>
                                                     Delete
                                                 </Link>

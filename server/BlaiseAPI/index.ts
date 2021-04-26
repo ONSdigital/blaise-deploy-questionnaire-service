@@ -1,6 +1,6 @@
 import express, {Request, Response, Router} from "express";
 import {Instrument} from "../../Interfaces";
-import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
+import axios, {AxiosRequestConfig} from "axios";
 import Functions from "../Functions";
 import {EnvironmentVariables} from "../Config";
 
@@ -28,8 +28,8 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     }
 
     // Get health status for Blaise connections
-    router.get("/api/health", function (req: ResponseQuery, res: Response) {
-        const url = "/api/v1/health";
+    router.get("/api/health/diagnosis", function (req: ResponseQuery, res: Response) {
+        const url = "/api/v1/health/diagnosis";
         axios({
             url: `http://${BLAISE_API_URL}/${url}`,
             method: "GET"
