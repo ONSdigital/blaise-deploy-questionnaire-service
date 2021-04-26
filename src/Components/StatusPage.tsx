@@ -19,7 +19,7 @@ function StatusPage(): ReactElement {
     function getHeathStatus() {
         setStatusList([]);
         console.log("getHeathStatus");
-        fetch("/api/health")
+        fetch("/api/health/diagnosis")
             .then((r: Response) => {
                 if (r.status !== 503 && r.status !== 200) {
                     throw r.status + " - " + r.statusText;
