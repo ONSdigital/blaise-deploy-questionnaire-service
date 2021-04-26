@@ -1726,7 +1726,7 @@
     retry-request "^4.1.1"
     teeny-request "^7.0.0"
 
-"@google-cloud/logging@^9.0.2":
+"@google-cloud/logging@^9.2.1":
   version "9.2.1"
   resolved "https://registry.yarnpkg.com/@google-cloud/logging/-/logging-9.2.1.tgz#acd2f0aa26922f2e6b044e2646078de30eaba15f"
   integrity sha512-aJ5ni6YBYTUieMzx6D0RII+DOlUnQBZXZVTHSzHy7NJ8JlfMWB0AA+vjIHVr6GX/FVSHcw6ca3lYl+AWdmH7yQ==

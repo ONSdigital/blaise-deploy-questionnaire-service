@@ -93,11 +93,11 @@ function App(): ReactElement {
                                             Deploy a questionnaire
                                         </Link>
                                     </li>
-                                    <li className="list__item">
-                                        <Link to="/audit" id="audit-logs-link">
-                                            View deployment history
-                                        </Link>
-                                    </li>
+                                    {/*<li className="list__item">*/}
+                                    {/*    <Link to="/audit" id="audit-logs-link">*/}
+                                    {/*        View deployment history*/}
+                                    {/*    </Link>*/}
+                                    {/*</li>*/}
                                     <li className="list__item">
                                         <Link to="/status" id="blaise-status-link">
                                             Check Blaise status
