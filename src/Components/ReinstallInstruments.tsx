@@ -38,7 +38,7 @@ function ReinstallInstruments({installedInstruments}: Props): ReactElement {
         const [success, bucketInstrumentList] = await getAllInstrumentsInBucket();
 
         if (!success) {
-            setListError("Unable to load questionnaires");
+            setListError("Unable to load questionnaires.");
             return;
         }
 
@@ -61,12 +61,11 @@ function ReinstallInstruments({installedInstruments}: Props): ReactElement {
         setLoading(true);
         setInstrumentName(instrumentToInstall.replace(/\.[a-zA-Z]*$/, ""));
 
-        // Validate the file is in the bucket and call the rest API to install
         const [installed, message] = await verifyAndInstallInstrument(instrumentToInstall);
         if (!installed) {
             setUploadStatus(message);
         }
-        console.log(installed);
+
         setRedirect(true);
     }
 
