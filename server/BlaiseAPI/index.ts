@@ -8,7 +8,7 @@ import {auditLogError, auditLogInfo} from "../audit_logging";
 type PromiseResponse = [number, any];
 
 export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariables, logger: any): Router {
-    const {BLAISE_API_URL, BUCKET_NAME, SERVER_PARK}: EnvironmentVariables = environmentVariables;
+    const {BLAISE_API_URL, SERVER_PARK}: EnvironmentVariables = environmentVariables;
     const router = express.Router();
 
     // Generic function to make requests to the API
@@ -56,9 +56,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         const {filename} = req.query;
         const instrumentName = filename.replace(/\.[a-zA-Z]*$/, "");
         const data = {
-            "instrumentName": instrumentName,
-            "instrumentFile": filename,
-            "bucketPath": BUCKET_NAME
+            "instrumentFile": filename
         };
         const url = `/api/v1/serverparks/${SERVER_PARK}/instruments`;
         SendBlaiseAPIRequest(req, res, url, "POST", data)
