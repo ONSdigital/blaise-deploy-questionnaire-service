@@ -1,4 +1,4 @@
-import {requestPromiseJson} from "./requestPromise";
+import {requestPromiseJson, requestPromiseJsonList} from "./requestPromise";
 import axios from "axios";
 
 type initialiseUploadResponse = [boolean, string];
@@ -78,4 +78,21 @@ function uploadFile(url: string, file: File, onFileUploadProgress: (event: Progr
     });
 }
 
-export {validateUploadIsComplete, initialiseUpload, uploadFile};
+type allInstrumentsInBucketResponse = [boolean, string[]];
+
+function getAllInstrumentsInBucket(): Promise<allInstrumentsInBucketResponse> {
+    console.log("Call to getAllInstruments");
+    const url = "/bucket/files";
+
+    return new Promise((resolve: (object: allInstrumentsInBucketResponse) => void) => {
+        requestPromiseJsonList("GET", url).then(([success, data]) => {
+            console.log(`Response from get all instruments in bucket  ${(success ? "successful" : "failed")}, data list length ${data.length}`);
+            resolve([success, data]);
+        }).catch((error: Error) => {
+            console.error(`Response from get all instruments in bucket Failed: Error ${error}`);
+            resolve([false, []]);
+        });
+    });
+}
+
+export {validateUploadIsComplete, initialiseUpload, uploadFile, getAllInstrumentsInBucket};
