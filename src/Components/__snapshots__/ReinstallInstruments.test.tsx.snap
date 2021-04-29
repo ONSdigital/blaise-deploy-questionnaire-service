@@ -85,7 +85,7 @@ Object {
           <span
             class="btn__inner"
           >
-            Install questionnaire
+            Install selected questionnaire
           </span>
         </button>
       </form>
@@ -172,7 +172,7 @@ Object {
         <span
           class="btn__inner"
         >
-          Install questionnaire
+          Install selected questionnaire
         </span>
       </button>
     </form>
