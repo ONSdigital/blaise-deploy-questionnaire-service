@@ -126,7 +126,7 @@ function ReinstallInstruments({installedInstruments}: Props): ReactElement {
                                 <br/>
 
                                 <ONSButton
-                                    label={"Install questionnaire"}
+                                    label={"Install selected questionnaire"}
                                     primary={true}
                                     loading={loading}
                                     id="confirm-install"
