@@ -226,9 +226,9 @@ Object {
                   class="table__cell "
                 >
                   <span
-                    class="status status--success"
+                    class="status status--error"
                   >
-                    Active
+                    Failed
                   </span>
                 </td>
                 <td
@@ -599,9 +599,9 @@ Object {
                 class="table__cell "
               >
                 <span
-                  class="status status--success"
+                  class="status status--error"
                 >
-                  Active
+                  Failed
                 </span>
               </td>
               <td
