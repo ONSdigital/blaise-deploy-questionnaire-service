@@ -14,6 +14,8 @@ function getStatusColor(status: string | undefined) {
             return "success";
         case "Erroneous":
             return "error";
+        case "Failed":
+            return "error";
         default:
             return "info";
     }
