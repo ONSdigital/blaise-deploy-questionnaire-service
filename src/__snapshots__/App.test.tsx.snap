@@ -146,7 +146,7 @@ Object {
             Table of questionnaires
           </h2>
           <table
-            class="table "
+            class="table u-mt-s"
             id="instrument-table"
           >
             <thead
@@ -519,7 +519,7 @@ Object {
           Table of questionnaires
         </h2>
         <table
-          class="table "
+          class="table u-mt-s"
           id="instrument-table"
         >
           <thead
