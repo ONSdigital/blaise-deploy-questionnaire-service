@@ -51,6 +51,7 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
         <h2 className="u-mt-m">Table of questionnaires</h2>
 
         {
+            // Add /?filter to url for feature toggle
             new URLSearchParams(useLocation().search).has("filter") && (
                 <>
                     <div className="field">
