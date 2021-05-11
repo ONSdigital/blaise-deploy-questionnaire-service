@@ -17,6 +17,7 @@ import {
     ONSErrorPanel
 } from "blaise-design-system-react-components";
 import {getAllInstruments} from "./utilities/http";
+import ReinstallInstruments from "./Components/ReinstallInstruments";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -68,6 +69,9 @@ function App(): ReactElement {
                         <Switch>
                             <Route path="/status">
                                 <StatusPage/>
+                            </Route>
+                            <Route path="/reinstall">
+                                <ReinstallInstruments installedInstruments={instruments}/>
                             </Route>
                             <Route path="/UploadSummary">
                                 <DeploymentSummary getList={getInstrumentList}/>

@@ -18,7 +18,7 @@ const server = express();
 const logger = createLogger();
 server.use(logger);
 
-import {checkFile, getSignedUrl} from "./storage/helpers";
+import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
 import BlaiseAPIRouter from "./BlaiseAPI";
 
 //axios.defaults.timeout = 10000;
@@ -51,6 +51,20 @@ server.get("/upload/init", function (req: Request, res: Response) {
         .catch((error) => {
             req.log.error(error, "Failed to obtain Signed Url");
             res.status(500).json("Failed to obtain Signed Url");
+        });
+});
+
+server.get("/bucket/files", function (req: Request, res: Response) {
+    logger(req, res);
+    req.log.info(`//bucket/files endpoint called`);
+    getBucketItems()
+        .then((url) => {
+            req.log.info(`Obtained list of files in Bucket ${BUCKET_NAME}`);
+            res.status(200).json(url);
+        })
+        .catch((error) => {
+            req.log.error(error, "Failed to obtain list of files in bucket");
+            res.status(500).json("Failed to list of files in bucket");
         });
 });
 
