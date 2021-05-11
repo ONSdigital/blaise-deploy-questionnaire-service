@@ -1,5 +1,5 @@
 import React, {ChangeEvent, ReactElement, useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {Instrument} from "../../Interfaces";
 import dateFormatter from "dayjs";
 import {filter} from "lodash";
@@ -33,8 +33,8 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
         if (instrumentList !== list) {
             setList(instrumentList);
         }
-        if (listMessage !== listMessage) {
-            setListMessage(listMessage);
+        if (listMessage !== listError) {
+            setListMessage(listError);
         }
     }, [instrumentList, listError]);
 
@@ -42,7 +42,7 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
         const newFilteredList = filter(instrumentList, (listItem) => listItem.name.includes(e.target.value.toUpperCase()));
         setList(newFilteredList);
         if (newFilteredList.length === 0) {
-            setListMessage(`No questionnaires containing ${e.target.value}`);
+            setListMessage(`No questionnaires containing ${e.target.value} found`);
         }
     };
 
@@ -50,12 +50,24 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
     return <>
         <h2 className="u-mt-m">Table of questionnaires</h2>
 
-        <div className="field">
-            <label className="label  " htmlFor="filter-by-name">Filter by questionnaire name
-            </label>
-            <input type="text" id="filter-by-name" className="input input--text input-type__input"
-                   onChange={(e) => filterList(e)}/>
-        </div>
+        {
+            new URLSearchParams(useLocation().search).has("filter") && (
+                <>
+                    <div className="field">
+                        <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
+                        </label>
+                        <input type="text" id="filter-by-name" className="input input--text input-type__input"
+                               onChange={(e) => filterList(e)}/>
+                    </div>
+
+                    <div className="u-mt-s" aria-live="polite">
+                        {
+                            list && <h3>{list.length} results of {instrumentList.length}</h3>
+                        }
+                    </div>
+                </>
+            )
+        }
 
         {
             list && list.length > 0
@@ -115,9 +127,9 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
                                                       data-testid={`delete-${item.name}`}
                                                       aria-label={`Delete questionnaire ${item.name}`}
                                                       to={{
-                                                    pathname: "/delete",
-                                                    state: {instrument: item}
-                                                }}>
+                                                          pathname: "/delete",
+                                                          state: {instrument: item}
+                                                      }}>
                                                     Delete
                                                 </Link>
                                         }
