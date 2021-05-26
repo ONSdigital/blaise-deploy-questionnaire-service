@@ -15,47 +15,6 @@ interface Location {
     }
 }
 
-function confirmDeleteRadios(setConfirm: (value: (((prevState: (boolean | null)) => (boolean | null)) | boolean | null)) => void) {
-    return <fieldset className="fieldset" id="delete-radios">
-        <legend className="fieldset__legend"></legend>
-        <div className="radios__items">
-            <p className="radios__item">
-                <span className="radio">
-                    <input
-                        type="radio"
-                        id="confirm-radio-delete"
-                        className="radio__input js-radio "
-                        value="True"
-                        name="confirm-radio-delete"
-                        aria-label="Yes"
-                        onChange={() => setConfirm(true)}
-                    />
-                    <label className="radio__label " htmlFor="confirm-radio-delete">
-                        Yes, delete questionnaire
-                    </label>
-                </span>
-            </p>
-            <br/>
-            <p className="radios__item">
-                <span className="radio">
-                    <input
-                        type="radio"
-                        id="cancel-radio-delete"
-                        className="radio__input js-radio "
-                        value="False"
-                        name="confirm-radio-delete"
-                        aria-label="No"
-                        onChange={() => setConfirm(false)}
-                    />
-                    <label className="radio__label " htmlFor="cancel-radio-delete">
-                        No, do not delete questionnaire
-                    </label>
-                    </span>
-            </p>
-        </div>
-    </fieldset>;
-}
-
 function DeleteConfirmation({getList}: Props): ReactElement {
     const [confirm, setConfirm] = useState<boolean | null>(null);
     const [message, setMessage] = useState<string>("");
@@ -66,18 +25,8 @@ function DeleteConfirmation({getList}: Props): ReactElement {
     const location = useLocation();
     const {instrument} = (location as Location).state || {instrument: ""};
 
-    async function confirmOption() {
-        if (confirm === null) {
-            setFormError("Select an answer");
-            return;
-        }
-        if (!confirm) {
-            history.push("/");
-            return;
-        }
-
+    async function confirmDelete() {
         setLoading(true);
-
 
         const [deleted, message] = await deleteInstrument(instrument.name);
         if (!deleted) {
@@ -89,6 +38,10 @@ function DeleteConfirmation({getList}: Props): ReactElement {
         getList();
         setMessage(`Questionnaire: ${instrument.name} Successfully deleted`);
         setLoading(false);
+        setRedirect(true);
+    }
+
+    async function cancelDelete() {
         setRedirect(true);
     }
 
@@ -115,38 +68,34 @@ function DeleteConfirmation({getList}: Props): ReactElement {
                                 Are you sure you want to delete the questionnaire <em
                                 className="highlight">{instrument.name}</em>?
                             </h1>
+                            <div className="panel panel--warn panel--no-title">
+                                <span className="panel__icon" aria-hidden="true">!</span>
+                                <span className="u-vh">Warning: </span>
+                                <div className="panel__body">
+                                    The questionnaire and all associated respondent data will be deleted 
+                                </div>
+                            </div>
 
                             <p>
                                 {message}
                             </p>
 
                             <form>
-                                {
-                                    formError === "" ?
-                                        confirmDeleteRadios(setConfirm)
-                                        :
-                                        <ONSPanel status={"error"}>
-                                            <p className="panel__error">
-                                                <strong>{formError}</strong>
-                                            </p>
-                                            {confirmDeleteRadios(setConfirm)}
-                                        </ONSPanel>
-                                }
-
-
                                 <br/>
                                 <ONSButton
-                                    label={"Continue"}
+                                    label={"Delete"}
                                     primary={true}
                                     loading={loading}
                                     id="confirm-delete"
-                                    onClick={() => confirmOption()}/>
+                                    testid="confirm-delete"
+                                    onClick={() => confirmDelete()}/>
                                 {!loading &&
                                 <ONSButton
                                     label={"Cancel"}
                                     primary={false}
                                     id="cancel-delete"
-                                    onClick={() => confirmOption()}/>
+                                    testid="cancel-delete"
+                                    onClick={() => cancelDelete()}/>
                                 }
                             </form>
                         </>
