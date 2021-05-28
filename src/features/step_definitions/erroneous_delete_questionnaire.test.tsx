@@ -109,8 +109,7 @@ defineFeature(feature, test => {
         });
 
         and("I am unable to delete the questionnaire", () => {
-            expect(screen.queryByText(/yes, delete questionnaire/i)).toBeNull();
-            expect(screen.queryByText(/continue/i)).toBeNull();
+            expect(screen.queryByTestId(/confirm-delete/i)).toBeNull();
             // expect(submitButton)
         });
     });
@@ -132,8 +131,7 @@ defineFeature(feature, test => {
         });
 
         when("I confirm that I want to proceed", async () => {
-            await fireEvent.click(screen.getByText(/yes, delete questionnaire/i));
-            await fireEvent.click(screen.getByText(/continue/i));
+            await fireEvent.click(screen.getByTestId(/confirm-delete/i));
         });
 
         and("it failed to delete and becomes erroneous", async () => {
