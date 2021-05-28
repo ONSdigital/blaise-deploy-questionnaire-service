@@ -5,7 +5,7 @@ import InstrumentList from "./Components/InstrumentList";
 import {Instrument} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
 import UploadPage from "./Components/UploadPage/UploadPage";
-import DeleteConfirmation from "./Components/DeleteConfirmation";
+import DeleteConfirmation from "./Components/DeletePage/DeleteConfirmation";
 import StatusPage from "./Components/StatusPage";
 import {
     NotProductionWarning,
@@ -17,6 +17,8 @@ import {
 } from "blaise-design-system-react-components";
 import {getAllInstruments} from "./utilities/http";
 import styled from "styled-components";
+import ReinstallInstruments from "./Components/ReinstallInstruments";
+import DeploymentSummary from "./Components/UploadPage/DeploymentSummary";
 
 const PageContainer = styled.div`
   min-height: calc(67vh);
@@ -69,6 +71,9 @@ function App(): ReactElement {
                             <Route path="/status">
                                 <StatusPage/>
                             </Route>
+                            <Route path="/reinstall">
+                                <ReinstallInstruments installedInstruments={instruments}/>
+                            </Route>
                             <Route path="/upload">
                                 <UploadPage reloadList={getInstrumentList}/>
                             </Route>
@@ -96,7 +101,7 @@ function App(): ReactElement {
                                     </p>
                                 </ONSPanel>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList list={instruments} listError={listError}/>
+                                    <InstrumentList instrumentList={instruments} listError={listError}/>
                                 </ErrorBoundary>
                             </Route>
                         </Switch>

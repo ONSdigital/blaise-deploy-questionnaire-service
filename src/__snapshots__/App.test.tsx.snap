@@ -65,7 +65,7 @@ Object {
                     <img
                       alt="Office for National Statistics logo"
                       class="header__logo"
-                      src="https://ons-design-system.netlify.app/img/ons-logo-neg-en.svg"
+                      src="https://cdn.ons.gov.uk/sdc/design-system/31.4.0/img/ons-logo-neg-en.svg"
                     />
                   </picture>
                 </a>
@@ -116,7 +116,7 @@ Object {
             class="panel panel--info panel--no-title  u-mt-m"
           >
             <div
-              class="panel__body"
+              class="panel__body "
             >
               <p>
                 Any 
@@ -145,7 +145,7 @@ Object {
             Table of questionnaires
           </h2>
           <table
-            class="table "
+            class="table u-mt-s"
             id="instrument-table"
           >
             <thead
@@ -224,7 +224,11 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  Active
+                  <span
+                    class="status status--error"
+                  >
+                    Failed
+                  </span>
                 </td>
                 <td
                   class="table__cell "
@@ -241,6 +245,7 @@ Object {
                   id="delete-OPN2004A"
                 >
                   <a
+                    aria-label="Delete questionnaire OPN2004A"
                     data-testid="delete-OPN2004A"
                     href="/delete"
                     id="delete-button-OPN2004A"
@@ -266,7 +271,11 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  Active
+                  <span
+                    class="status status--success"
+                  >
+                    Active
+                  </span>
                 </td>
                 <td
                   class="table__cell "
@@ -302,7 +311,11 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  Active
+                  <span
+                    class="status status--success"
+                  >
+                    Active
+                  </span>
                 </td>
                 <td
                   class="table__cell "
@@ -319,6 +332,7 @@ Object {
                   id="delete-OPN2101A"
                 >
                   <a
+                    aria-label="Delete questionnaire OPN2101A"
                     data-testid="delete-OPN2101A"
                     href="/delete"
                     id="delete-button-OPN2101A"
@@ -423,7 +437,7 @@ Object {
                   <img
                     alt="Office for National Statistics logo"
                     class="header__logo"
-                    src="https://ons-design-system.netlify.app/img/ons-logo-neg-en.svg"
+                    src="https://cdn.ons.gov.uk/sdc/design-system/31.4.0/img/ons-logo-neg-en.svg"
                   />
                 </picture>
               </a>
@@ -474,7 +488,7 @@ Object {
           class="panel panel--info panel--no-title  u-mt-m"
         >
           <div
-            class="panel__body"
+            class="panel__body "
           >
             <p>
               Any 
@@ -503,7 +517,7 @@ Object {
           Table of questionnaires
         </h2>
         <table
-          class="table "
+          class="table u-mt-s"
           id="instrument-table"
         >
           <thead
@@ -582,7 +596,11 @@ Object {
               <td
                 class="table__cell "
               >
-                Active
+                <span
+                  class="status status--error"
+                >
+                  Failed
+                </span>
               </td>
               <td
                 class="table__cell "
@@ -599,6 +617,7 @@ Object {
                 id="delete-OPN2004A"
               >
                 <a
+                  aria-label="Delete questionnaire OPN2004A"
                   data-testid="delete-OPN2004A"
                   href="/delete"
                   id="delete-button-OPN2004A"
@@ -624,7 +643,11 @@ Object {
               <td
                 class="table__cell "
               >
-                Active
+                <span
+                  class="status status--success"
+                >
+                  Active
+                </span>
               </td>
               <td
                 class="table__cell "
@@ -660,7 +683,11 @@ Object {
               <td
                 class="table__cell "
               >
-                Active
+                <span
+                  class="status status--success"
+                >
+                  Active
+                </span>
               </td>
               <td
                 class="table__cell "
@@ -677,6 +704,7 @@ Object {
                 id="delete-OPN2101A"
               >
                 <a
+                  aria-label="Delete questionnaire OPN2101A"
                   data-testid="delete-OPN2101A"
                   href="/delete"
                   id="delete-button-OPN2101A"

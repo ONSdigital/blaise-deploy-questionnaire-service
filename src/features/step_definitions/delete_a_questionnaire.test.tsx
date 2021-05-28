@@ -38,7 +38,8 @@ const mock_server_responses = (url: string) => {
         });
     } else if (url.includes("OPN2004A")) {
         return Promise.resolve({
-            status: 204
+            status: 204,
+            json: () => Promise.resolve({}),
         });
     } else {
         return Promise.resolve({
@@ -138,12 +139,11 @@ defineFeature(feature, test => {
             });
 
             when("I confirm that I want to proceed", async () => {
-                await fireEvent.click(screen.getByText(/yes, delete questionnaire/i));
-                await fireEvent.click(screen.getByText(/continue/i));
+                await fireEvent.click(screen.getByTestId(/confirm-delete/i));
             });
 
             then("the questionnaire and data is deleted from Blaise", () => {
-
+                expect(global.fetch).toBeCalledWith("/api/instruments/OPN2004A", {"body": null, "method": "DELETE"});
             });
 
             and("I'm presented with a successful deletion banner on the launch page", async () => {
@@ -154,7 +154,7 @@ defineFeature(feature, test => {
         });
 
 
-        test("Cancel deletion", ({given, when, then}) => {
+        test("Cancel deletion", ({given, when, then, and}) => {
             given("I have been presented with a warning that I am about to delete a questionnaire from Blaise", async () => {
                 mock_fetch_requests(mock_server_responses);
                 const history = createMemoryHistory();
@@ -169,12 +169,15 @@ defineFeature(feature, test => {
                 await fireEvent.click(screen.getByTestId("delete-OPN2004A"));
             });
 
-            when("I confirm that I do NOT want to proceed", async () => {
-                await fireEvent.click(screen.getByText(/no, do not delete questionnaire/i));
-                await fireEvent.click(screen.getByText(/continue/i));
+            when("I click cancel", async () => {
+                await fireEvent.click(screen.getByTestId(/cancel-delete/i));
             });
 
-            then("I am returned to the landing page", async () => {
+            then("the questionnaire and data is not deleted from Blaise", () => {
+                expect(global.fetch).not.toBeCalledWith("/api/instruments/OPN2004A", {"body": null, "method": "DELETE"});
+            });
+            
+            and("I am returned to the landing page", async () => {
                 await waitFor(() => {
                     expect(screen.getByText(/table of questionnaires/i)).toBeDefined();
                 });
