@@ -42,4 +42,4 @@ function sendInstallRequest(filename: string): Promise<boolean> {
     });
 }
 
-export {verifyAndInstallInstrument};
+export {sendInstallRequest, verifyAndInstallInstrument};

@@ -1,23 +1,47 @@
 import React, {ReactElement, useState} from "react";
-import {Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
+import {Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
 import SelectFilePage from "./SelectFilePage";
 import AlreadyExists from "./AlreadyExists";
 import LiveSurveyWarning from "./LiveSurveyWarning";
 import Confirmation from "./Confirmation";
 import {Instrument} from "../../../Interfaces";
-import {verifyAndInstallInstrument, checkInstrumentAlreadyExists, initialiseUpload} from "../../utilities/http";
+import {step_status} from "./DeploymentProgress";
+import {
+    checkInstrumentAlreadyExists,
+    initialiseUpload,
+    sendInstallRequest,
+    validateUploadIsComplete
+} from "../../utilities/http";
 import {uploadFile} from "../../utilities/http";
+import DeploymentSummary from "./DeploymentSummary";
 
-function UploadPage(): ReactElement {
-    const [redirect, setRedirect] = useState<boolean>(false);
+interface Props {
+    reloadList: () => void
+}
+
+function UploadPage({reloadList}: Props): ReactElement {
     const [loading, setLoading] = useState<boolean>(false);
-    const [uploading, setUploading] = useState<boolean>(false);
+    const [isDeploying, setIsDeploying] = useState<boolean>(false);
+    const [isVerifyIsInstalled, setIsVerifyIsInstalled] = useState<string>(step_status.NOT_STARTED);
+    const [isInitialisingUpload, setIsInitialisingUpload] = useState<string>(step_status.NOT_STARTED);
+    const [uploading, setUploading] = useState<string>(step_status.NOT_STARTED);
+    const [isVerifyingUpload, setIsVerifyingUpload] = useState<string>(step_status.NOT_STARTED);
+    const [isInstalling, setIsInstalling] = useState<string>(step_status.NOT_STARTED);
     const [file, setFile] = useState<FileList>();
     const [instrumentName, setInstrumentName] = useState<string>("");
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [panel, setPanel] = useState<string>("");
-    const [uploadStatus, setUploadStatus] = useState<string>("");
     const [foundInstrument, setFoundInstrument] = useState<Instrument | null>(null);
+
+    const deploymentSteps = {
+        instrumentName: instrumentName,
+        isVerifyIsInstalled: isVerifyIsInstalled,
+        isInstalling: isInstalling,
+        isUploading: uploading,
+        isVerifyingUpload: isVerifyingUpload,
+        isInitialisingUpload: isInitialisingUpload,
+        uploadPercentage: uploadPercentage
+    };
 
     const {path} = useRouteMatch();
     const history = useHistory();
@@ -49,14 +73,15 @@ function UploadPage(): ReactElement {
 
         setLoading(true);
         setInstrumentName(instrumentName);
-
+        setIsVerifyIsInstalled(step_status.IN_PROGRESS);
         const [alreadyExists, instrument] = await checkInstrumentAlreadyExists(instrumentName);
-        console.log(`alreadyExists ${alreadyExists}`);
         if (alreadyExists === null) {
-            setUploadStatus("Failed to validate if questionnaire already exists");
-            setRedirect(true);
+            showDeploymentStatusPage();
+            endDeploymentProcess();
+            setIsVerifyIsInstalled(step_status.FAILED);
             return;
         }
+        setIsVerifyIsInstalled(step_status.COMPLETE);
 
         if (alreadyExists) {
             setFoundInstrument(instrument);
@@ -65,6 +90,15 @@ function UploadPage(): ReactElement {
         } else {
             await UploadFile();
         }
+    }
+
+    function showDeploymentStatusPage() {
+        history.push(`${path}/summary`);
+    }
+
+    function endDeploymentProcess() {
+        setIsDeploying(false);
+        setLoading(false);
     }
 
     async function ConfirmInstrumentOverride() {
@@ -86,35 +120,52 @@ function UploadPage(): ReactElement {
             return;
         }
         console.log("Start uploading the file");
+        setIsDeploying(true);
         setLoading(true);
         setPanel("");
-        setUploading(true);
+        showDeploymentStatusPage();
+        setIsInitialisingUpload(step_status.IN_PROGRESS);
 
         // Get the signed url to allow access to the bucket
         const [initialised, signedUrl] = await initialiseUpload(file[0].name);
         if (!initialised) {
             console.error("Failed to initialiseUpload");
-            setUploadStatus("Failed to upload questionnaire");
-            setRedirect(true);
+            setIsInitialisingUpload(step_status.FAILED);
+            endDeploymentProcess();
             return;
         }
 
+        setIsInitialisingUpload(step_status.COMPLETE);
+        setUploading(step_status.IN_PROGRESS);
         // Upload the file using the GCP bucket url
         const uploaded = await uploadFile(signedUrl, file[0], onFileUploadProgress);
         if (!uploaded) {
             console.error("Failed to Upload file");
-            setUploadStatus("Failed to upload questionnaire");
-            setRedirect(true);
+            setUploading(step_status.FAILED);
+            endDeploymentProcess();
             return;
         }
-        setUploading(false);
 
+        setUploading(step_status.COMPLETE);
+        setIsVerifyingUpload(step_status.IN_PROGRESS);
         // Validate the file is in the bucket and call the rest API to install
-        const [installed, message] = await verifyAndInstallInstrument(file[0].name);
-        if (!installed) {
-            setUploadStatus(message);
+        const fileFound = await validateUploadIsComplete(file[0].name);
+        if (!fileFound) {
+            console.error("Failed to validate if file has been uploaded");
+            setIsVerifyingUpload(step_status.FAILED);
+            endDeploymentProcess();
+            return;
         }
-        setRedirect(true);
+
+        setIsVerifyingUpload(step_status.COMPLETE);
+        setIsInstalling(step_status.IN_PROGRESS);
+        const installSuccess = await sendInstallRequest(file[0].name);
+        if (!installSuccess) {
+            console.error("Failed to install the questionnaire");
+            setIsInstalling(step_status.FAILED);
+        }
+        setIsInstalling(step_status.COMPLETE);
+        endDeploymentProcess();
     }
 
     const onFileUploadProgress = (progressEvent: ProgressEvent) => {
@@ -124,14 +175,6 @@ function UploadPage(): ReactElement {
 
     return (
         <>
-            {
-                redirect && <Redirect
-                    to={{
-                        pathname: "/UploadSummary",
-                        state: {questionnaireName: instrumentName, status: uploadStatus}
-                    }}/>
-            }
-
             <Switch>
                 <Route exact path={path}>
                     <SelectFilePage BeginUploadProcess={BeginUploadProcess}
@@ -153,25 +196,12 @@ function UploadPage(): ReactElement {
                                   UploadFile={UploadFile}
                                   loading={loading}/>
                 </Route>
+                <Route path={`${path}/summary`}>
+                    <DeploymentSummary deploymentSteps={deploymentSteps}
+                                       isDeploying={isDeploying}
+                                       getList={() => reloadList()}/>
+                </Route>
             </Switch>
-
-            {
-                uploading &&
-                <>
-                    <p className="u-mt-m">Uploading: {uploadPercentage}%</p>
-                    <progress id="file"
-                              value={uploadPercentage}
-                              max="100"
-                              role="progressbar"
-                              aria-valuenow={uploadPercentage}
-                              aria-valuemin={0}
-                              aria-valuemax={100}>
-                        {uploadPercentage}%
-                    </progress>
-
-                </>
-            }
-
         </>
     );
 }

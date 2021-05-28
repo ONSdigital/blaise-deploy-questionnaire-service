@@ -5,7 +5,6 @@ import InstrumentList from "./Components/InstrumentList";
 import {Instrument} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
 import UploadPage from "./Components/UploadPage/UploadPage";
-import DeploymentSummary from "./Components/DeploymentSummary";
 import DeleteConfirmation from "./Components/DeletePage/DeleteConfirmation";
 import StatusPage from "./Components/StatusPage";
 import {
@@ -17,11 +16,13 @@ import {
     ONSErrorPanel
 } from "blaise-design-system-react-components";
 import {getAllInstruments} from "./utilities/http";
+import styled from "styled-components";
 import ReinstallInstruments from "./Components/ReinstallInstruments";
+import DeploymentSummary from "./Components/UploadPage/DeploymentSummary";
 
-const divStyle = {
-    minHeight: "calc(67vh)"
-};
+const PageContainer = styled.div`
+  min-height: calc(67vh);
+`;
 
 interface Location {
     state: any
@@ -62,7 +63,7 @@ function App(): ReactElement {
             }
             <BetaBanner/>
             <Header title={"Deploy Questionnaire Service"}/>
-            <div style={divStyle} className="page__container container">
+            <PageContainer className="page__container container">
                 <main id="main-content" className="page__main">
                     <DefaultErrorBoundary>
 
@@ -73,11 +74,8 @@ function App(): ReactElement {
                             <Route path="/reinstall">
                                 <ReinstallInstruments installedInstruments={instruments}/>
                             </Route>
-                            <Route path="/UploadSummary">
-                                <DeploymentSummary getList={getInstrumentList}/>
-                            </Route>
                             <Route path="/upload">
-                                <UploadPage/>
+                                <UploadPage reloadList={getInstrumentList}/>
                             </Route>
                             <Route path="/delete">
                                 <DeleteConfirmation getList={getInstrumentList}/>
@@ -109,7 +107,7 @@ function App(): ReactElement {
                         </Switch>
                     </DefaultErrorBoundary>
                 </main>
-            </div>
+            </PageContainer>
             <Footer/>
         </>
     );

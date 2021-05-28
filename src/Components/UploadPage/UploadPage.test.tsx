@@ -136,7 +136,6 @@ describe("Given the file fails to upload", () => {
 
         await waitFor(() => {
             expect(screen.getByText("File deploy failed")).toBeDefined();
-            expect(screen.getByText(/Failed to upload questionnaire/i)).toBeDefined();
         });
     });
 

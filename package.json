@@ -36,6 +36,7 @@
     "@types/node": "^14.14.41",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "@types/styled-components": "^5.1.7",
     "axios": "^0.21.0",
     "blaise-design-system-react-components": "ONSdigital/blaise-design-system-react-components#v0.0.11",
     "dayjs": "^1.10.4",
@@ -49,7 +50,8 @@
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "typescript": "~4.2.4"
+    "typescript": "~4.2.4",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
