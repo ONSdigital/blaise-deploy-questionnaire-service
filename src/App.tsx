@@ -103,7 +103,7 @@ function App(): ReactElement {
                                     </p>
                                 </ONSPanel>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList list={instruments} listError={listError}/>
+                                    <InstrumentList instrumentList={instruments} listError={listError}/>
                                 </ErrorBoundary>
                             </Route>
                         </Switch>

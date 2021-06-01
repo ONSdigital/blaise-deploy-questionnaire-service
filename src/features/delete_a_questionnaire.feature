@@ -22,5 +22,6 @@ Feature: delete a questionnaire
 
   Scenario: Cancel deletion
     Given I have been presented with a warning that I am about to delete a questionnaire from Blaise
-    When I confirm that I do NOT want to proceed
-    Then I am returned to the landing page
+    When I click cancel
+    Then the questionnaire and data is not deleted from Blaise
+    And I am returned to the landing page
