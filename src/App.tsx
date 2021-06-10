@@ -84,7 +84,7 @@ function App(): ReactElement {
                                 <DeploymentSummary getList={getInstrumentList}/>
                             </Route>
                             <Route path="/upload">
-                                <Suspense fallback={<ONSErrorPanel/>}>
+                                <Suspense fallback={<div>Loading upload page</div>}>
                                     <UploadPage/>
                                 </Suspense>
 
