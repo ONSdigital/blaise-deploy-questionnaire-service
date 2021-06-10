@@ -1,13 +1,13 @@
-import React, {ReactElement, useEffect, useState} from "react";
+import React, {lazy, ReactElement, Suspense, useEffect, useState} from "react";
 import {DefaultErrorBoundary} from "./Components/ErrorHandling/DefaultErrorBoundary";
 import {Switch, Route, Link, useLocation} from "react-router-dom";
-import InstrumentList from "./Components/InstrumentList";
+// import InstrumentList from "./Components/InstrumentList";
 import {Instrument} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
-import UploadPage from "./Components/UploadPage/UploadPage";
+// import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
 import DeleteConfirmation from "./Components/DeletePage/DeleteConfirmation";
-import StatusPage from "./Components/StatusPage";
+// import StatusPage from "./Components/StatusPage";
 import {
     NotProductionWarning,
     Footer,
@@ -18,6 +18,11 @@ import {
 } from "blaise-design-system-react-components";
 import {getAllInstruments} from "./utilities/http";
 import ReinstallInstruments from "./Components/ReinstallInstruments";
+
+const InstrumentList = lazy(() => import("./Components/InstrumentList"));
+const StatusPage = lazy(() => import("./Components/StatusPage"));
+const UploadPage = lazy(() => import("./Components/UploadPage/UploadPage"));
+
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -68,7 +73,9 @@ function App(): ReactElement {
 
                         <Switch>
                             <Route path="/status">
-                                <StatusPage/>
+                                <Suspense fallback={<div>Loading status page</div>}>
+                                    <StatusPage/>
+                                </Suspense>
                             </Route>
                             <Route path="/reinstall">
                                 <ReinstallInstruments installedInstruments={instruments}/>
@@ -77,7 +84,10 @@ function App(): ReactElement {
                                 <DeploymentSummary getList={getInstrumentList}/>
                             </Route>
                             <Route path="/upload">
-                                <UploadPage/>
+                                <Suspense fallback={<ONSErrorPanel/>}>
+                                    <UploadPage/>
+                                </Suspense>
+
                             </Route>
                             <Route path="/delete">
                                 <DeleteConfirmation getList={getInstrumentList}/>
@@ -91,6 +101,9 @@ function App(): ReactElement {
                                     <Link to="/upload" id="deploy-questionnaire-link">
                                         Deploy a questionnaire
                                     </Link>
+                                    <Link to="/status" id="deploy-questionnaire-link">
+                                        Status
+                                    </Link>
                                 </p>
 
                                 <ONSPanel>
@@ -103,7 +116,9 @@ function App(): ReactElement {
                                     </p>
                                 </ONSPanel>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList instrumentList={instruments} listError={listError}/>
+                                    <Suspense fallback={<div>Loading... some stuff</div>}>
+                                        <InstrumentList instrumentList={instruments} listError={listError}/>
+                                    </Suspense>
                                 </ErrorBoundary>
                             </Route>
                         </Switch>
