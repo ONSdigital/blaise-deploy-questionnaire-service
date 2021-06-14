@@ -26,7 +26,7 @@
   ],
   "dependencies": {
     "@google-cloud/profiler": "^4.1.1",
-    "@google-cloud/storage": "^5.8.4",
+    "@google-cloud/storage": "^5.8.5",
     "@testing-library/dom": "^7.30.4",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.6",
