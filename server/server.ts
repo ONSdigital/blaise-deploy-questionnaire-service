@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const server = express();
-const logger = createLogger();
+const logger: any = createLogger();
 server.use(logger);
 
 import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
