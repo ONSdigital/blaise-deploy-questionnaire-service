@@ -17,6 +17,7 @@ import {
     ONSErrorPanel
 } from "blaise-design-system-react-components";
 import {getAllInstruments} from "./utilities/http";
+import AuditPage from "./Components/AuditPage";
 import ReinstallInstruments from "./Components/ReinstallInstruments";
 
 const divStyle = {
@@ -73,6 +74,9 @@ function App(): ReactElement {
                             <Route path="/reinstall">
                                 <ReinstallInstruments installedInstruments={instruments}/>
                             </Route>
+                            <Route path="/audit">
+                                <AuditPage/>
+                            </Route>
                             <Route path="/UploadSummary">
                                 <DeploymentSummary getList={getInstrumentList}/>
                             </Route>
@@ -87,11 +91,23 @@ function App(): ReactElement {
                                 {status !== "" && <ONSPanel status="success">{status}</ONSPanel>}
                                 {listError.includes("Unable") && <ONSErrorPanel/>}
 
-                                <p className="u-mt-m">
-                                    <Link to="/upload" id="deploy-questionnaire-link">
-                                        Deploy a questionnaire
-                                    </Link>
-                                </p>
+                                <ul className="list list--bare list--inline u-mt-m">
+                                    <li className="list__item">
+                                        <Link to="/upload" id="deploy-questionnaire-link">
+                                            Deploy a questionnaire
+                                        </Link>
+                                    </li>
+                                    {/*<li className="list__item">*/}
+                                    {/*    <Link to="/audit" id="audit-logs-link">*/}
+                                    {/*        View deployment history*/}
+                                    {/*    </Link>*/}
+                                    {/*</li>*/}
+                                    <li className="list__item">
+                                        <Link to="/status" id="blaise-status-link">
+                                            Check Blaise status
+                                        </Link>
+                                    </li>
+                                </ul>
 
                                 <ONSPanel>
                                     <p>

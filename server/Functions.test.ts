@@ -1,4 +1,4 @@
-import Functions from "../Functions";
+import Functions from "./Functions";
 
 describe("Field period to text test", () => {
     it("should return 'April 2020' for field period 2004", () => {

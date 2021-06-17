@@ -1,4 +1,4 @@
-import {getEnvironmentVariables} from "../Config";
+import {getEnvironmentVariables} from "./Config";
 
 describe("Config setup", () => {
     afterEach(() => {

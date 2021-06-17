@@ -20,6 +20,7 @@ server.use(logger);
 
 import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
 import BlaiseAPIRouter from "./BlaiseAPI";
+import {auditLogError, auditLogInfo, getAuditLogs} from "./audit_logging";
 
 //axios.defaults.timeout = 10000;
 
@@ -42,10 +43,10 @@ server.get("/upload/init", function (req: Request, res: Response) {
         res.status(500).json("No filename provided");
         return;
     }
-    req.log.info(`/getSignedUrl endpoint called with filename: ${filename}`);
+
     getSignedUrl(filename)
         .then((url) => {
-            req.log.info(url, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
+            req.log.info({url}, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
             res.status(200).json(url);
         })
         .catch((error) => {
@@ -76,19 +77,35 @@ server.get("/upload/verify", function (req: Request, res: Response) {
         res.status(500).json("No filename provided");
         return;
     }
-    req.log.info(`/upload/verify endpoint called with filename: ${filename}`);
+
     checkFile(filename)
         .then((file) => {
             if (!file.found) {
                 req.log.warn(`File ${filename} not found in Bucket ${BUCKET_NAME}`);
+                auditLogError(req.log, `Failed to install questionnaire ${filename}, file upload failed`);
                 res.status(404).json("Not found");
                 return;
             }
             req.log.info(`File ${filename} found in Bucket ${BUCKET_NAME}`);
+            auditLogInfo(req.log, `Successfully uploaded questionnaire file ${filename}`);
             res.status(200).json(file);
         })
         .catch((error) => {
             req.log.error(error, "Failed calling checkFile");
+            auditLogError(req.log, `Failed to install questionnaire ${filename}, unable to verify if file had been uploaded`);
+            res.status(500).json(error);
+        });
+});
+
+server.get("/api/audit", function (req: Request, res: Response) {
+    logger(req, res);
+    getAuditLogs()
+        .then((logs) => {
+            req.log.info("Retrieved audit logs");
+            res.status(200).json(logs);
+        })
+        .catch((error) => {
+            req.log.error(error, "Failed calling getAuditLogs");
             res.status(500).json(error);
         });
 });
