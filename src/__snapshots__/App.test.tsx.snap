@@ -120,6 +120,16 @@ Object {
               class="list__item"
             >
               <a
+                href="/audit"
+                id="audit-logs-link"
+              >
+                View deployment history
+              </a>
+            </li>
+            <li
+              class="list__item"
+            >
+              <a
                 href="/status"
                 id="blaise-status-link"
               >
@@ -501,6 +511,16 @@ Object {
               id="deploy-questionnaire-link"
             >
               Deploy a questionnaire
+            </a>
+          </li>
+          <li
+            class="list__item"
+          >
+            <a
+              href="/audit"
+              id="audit-logs-link"
+            >
+              View deployment history
             </a>
           </li>
           <li
