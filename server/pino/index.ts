@@ -21,8 +21,8 @@ const defaultPinoConf = {
                 level: number,
             };
         },
-        log(error: never) {
-            return {error};
+        log(info: never) {
+            return {info};
         },
     },
     serializers: {

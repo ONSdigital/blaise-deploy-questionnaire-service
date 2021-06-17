@@ -103,16 +103,40 @@ Object {
           class="page__main"
           id="main-content"
         >
-          <p
-            class="u-mt-m"
+          <ul
+            class="list list--bare list--inline u-mt-m"
           >
-            <a
-              href="/upload"
-              id="deploy-questionnaire-link"
+            <li
+              class="list__item"
             >
-              Deploy a questionnaire
-            </a>
-          </p>
+              <a
+                href="/upload"
+                id="deploy-questionnaire-link"
+              >
+                Deploy a questionnaire
+              </a>
+            </li>
+            <li
+              class="list__item"
+            >
+              <a
+                href="/audit"
+                id="audit-logs-link"
+              >
+                View deployment history
+              </a>
+            </li>
+            <li
+              class="list__item"
+            >
+              <a
+                href="/status"
+                id="blaise-status-link"
+              >
+                Check Blaise status
+              </a>
+            </li>
+          </ul>
           <div
             class="panel panel--info panel--no-title  u-mt-m"
           >
@@ -476,16 +500,40 @@ Object {
         class="page__main"
         id="main-content"
       >
-        <p
-          class="u-mt-m"
+        <ul
+          class="list list--bare list--inline u-mt-m"
         >
-          <a
-            href="/upload"
-            id="deploy-questionnaire-link"
+          <li
+            class="list__item"
           >
-            Deploy a questionnaire
-          </a>
-        </p>
+            <a
+              href="/upload"
+              id="deploy-questionnaire-link"
+            >
+              Deploy a questionnaire
+            </a>
+          </li>
+          <li
+            class="list__item"
+          >
+            <a
+              href="/audit"
+              id="audit-logs-link"
+            >
+              View deployment history
+            </a>
+          </li>
+          <li
+            class="list__item"
+          >
+            <a
+              href="/status"
+              id="blaise-status-link"
+            >
+              Check Blaise status
+            </a>
+          </li>
+        </ul>
         <div
           class="panel panel--info panel--no-title  u-mt-m"
         >
