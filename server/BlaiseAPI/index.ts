@@ -83,6 +83,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             [status, data] = await SendBlaiseAPIRequest(req, res, url2, "GET");
         }
         res.status(status).json(data);
+
     });
 
     // Delete an instrument

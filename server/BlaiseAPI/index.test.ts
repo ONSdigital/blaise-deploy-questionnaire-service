@@ -96,6 +96,7 @@ describe("BlaiseAPI Get all instruments from API", () => {
     });
 });
 
+
 describe("BlaiseAPI Get specific instrument information from API", () => {
     it("should return a 200 status with the data as false when API returns can't find the instrument", async done => {
         mock.onGet(/v1\/serverparks\/server-park\/instruments\/OPN2004A\/exists$/).reply(200, false);
