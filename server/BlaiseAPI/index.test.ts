@@ -97,17 +97,19 @@ describe("BlaiseAPI Get all instruments from API", () => {
 });
 
 describe("BlaiseAPI Get specific instrument information from API", () => {
-    it("should return a 404 status when API returns can't find the instrument", async done => {
-        mock.onGet(/v1\/cati\/serverparks\/server-park\/instruments\/OPN2004A$/).reply(404, {});
-
+    it("should return a 200 status with the data as false when API returns can't find the instrument", async done => {
+        mock.onGet(/v1\/serverparks\/server-park\/instruments\/OPN2004A\/exists$/).reply(200, false);
 
         const response: Response = await request.get("/api/instruments/OPN2004A");
 
-        expect(response.status).toEqual(404);
+        expect(response.status).toEqual(200);
+        expect(response.body).toEqual(false);
+
         done();
     });
 
     it("should return a 200 status and an json object when API returns a instrument object", async done => {
+        mock.onGet(/v1\/serverparks\/server-park\/instruments\/OPN2101A\/exists$/).reply(200, true);
         mock.onGet(/v1\/cati\/serverparks\/server-park\/instruments\/OPN2101A$/).reply(200, instrumentFromAPI);
 
         const response: Response = await request.get("/api/instruments/OPN2101A");

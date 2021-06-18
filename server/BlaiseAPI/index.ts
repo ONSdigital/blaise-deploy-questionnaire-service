@@ -75,16 +75,14 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         const {instrumentName} = req.params;
         const url = `/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`;
         const url2 = `/api/v1/cati/serverparks/${SERVER_PARK}/instruments/${instrumentName}`;
-        SendBlaiseAPIRequest(req, res, url, "GET")
-            .then(([status, data]) => {
-                if (data === true) {
-                    auditLogInfo(req.log, `Attempting to install existing questionnaire ${instrumentName}`);
-                    const [status, data] = await SendBlaiseAPIRequest(req, res, url2, "GET");
-                } else {
-                    auditLogError(req.log, `Failed to install questionnaire ${instrumentName}, unable to verify if questionnaire is already installed`);
-                }
-                res.status(status).json(data);
-            });
+
+        let [status, data] = await SendBlaiseAPIRequest(req, res, url, "GET");
+
+        if (data === true) {
+            auditLogInfo(req.log, `Attempting to install existing questionnaire ${instrumentName}`);
+            [status, data] = await SendBlaiseAPIRequest(req, res, url2, "GET");
+        }
+        res.status(status).json(data);
     });
 
     // Delete an instrument
