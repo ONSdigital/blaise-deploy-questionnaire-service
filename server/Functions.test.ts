@@ -16,8 +16,13 @@ describe("Field period to text test", () => {
         ).toBe("December 2020");
     });
 
+    it("should return an message if the survey is a DST test instrument", () => {
+        expect(Functions.field_period_to_text("DST2008A")
+        ).toBe("Automated tests questionnaire");
+    });
+
     it("should return an unknown message if the survey is unrecognised", () => {
-        expect(Functions.field_period_to_text("DST2008")
+        expect(Functions.field_period_to_text("BAS2008")
         ).toBe("Field period unknown");
     });
 
