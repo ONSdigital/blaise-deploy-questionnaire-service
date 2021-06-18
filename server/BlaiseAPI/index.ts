@@ -70,33 +70,17 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             });
     });
 
-    // Check an instrument exists
-    router.get("/api/instruments/:instrumentName/exists", function (req: ResponseQuery, res: Response) {
+    // Get a specific instrument information
+    router.get("/api/instruments/:instrumentName", async function (req: ResponseQuery, res: Response) {
         const {instrumentName} = req.params;
         const url = `/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`;
+        const url2 = `/api/v1/cati/serverparks/${SERVER_PARK}/instruments/${instrumentName}`;
         SendBlaiseAPIRequest(req, res, url, "GET")
             .then(([status, data]) => {
                 if (data === true) {
-                    auditLogInfo(req.log, `${instrumentName} exists`);
-                } else if (data === false) {
-                    auditLogInfo(req.log, `${instrumentName} doesn't exist`);
-                } else {
-                    auditLogError(req.log, `${instrumentName} Unknown Status: ${data}`);
-                }
-                res.status(status).json(data);
-            });
-    });
-
-
-    // Get a specific instrument information
-    router.get("/api/instruments/:instrumentName", function (req: ResponseQuery, res: Response) {
-        const {instrumentName} = req.params;
-        const url = `/api/v1/cati/serverparks/${SERVER_PARK}/instruments/${instrumentName}`;
-        SendBlaiseAPIRequest(req, res, url, "GET")
-            .then(([status, data]) => {
-                if (status === 200) {
                     auditLogInfo(req.log, `Attempting to install existing questionnaire ${instrumentName}`);
-                } else if (status !== 404) {
+                    const [status, data] = await SendBlaiseAPIRequest(req, res, url2, "GET");
+                } else {
                     auditLogError(req.log, `Failed to install questionnaire ${instrumentName}, unable to verify if questionnaire is already installed`);
                 }
                 res.status(status).json(data);

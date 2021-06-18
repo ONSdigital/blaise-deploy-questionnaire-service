@@ -96,28 +96,6 @@ describe("BlaiseAPI Get all instruments from API", () => {
     });
 });
 
-describe("BlaiseAPI check a specific instrument exists using API", () => {
-    it("should return a false response when API can't find the instrument", async done => {
-        mock.onGet(/v1\/serverparks\/server-park\/instruments\/OPN2004A\/exists$/).reply(200, false);
-
-        const response: Response = await request.get("/api/instruments/OPN2004A/exists");
-
-        expect(response.status).toEqual(200);
-        expect(response.body).toEqual(false);
-        done();
-    });
-
-    it("should return a true response when API can find the instrument", async done => {
-        mock.onGet(/v1\/serverparks\/server-park\/instruments\/OPN2101A\/exists$/).reply(200, true);
-
-        const response: Response = await request.get("/api/instruments/OPN2101A/exists");
-
-        expect(response.status).toEqual(200);
-        expect(response.body).toEqual(true);
-        done();
-    });
-});
-
 describe("BlaiseAPI Get specific instrument information from API", () => {
     it("should return a 404 status when API returns can't find the instrument", async done => {
         mock.onGet(/v1\/cati\/serverparks\/server-park\/instruments\/OPN2004A$/).reply(404, {});
