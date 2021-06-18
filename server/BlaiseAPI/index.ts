@@ -81,7 +81,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                 } else if (data === "false") {
                     auditLogInfo(req.log, `${instrumentName} doesn't exist`);
                 } else {
-                    auditLogError(req.log, `${instrumentName} Unknown Status!`);
+                    auditLogError(req.log, `${instrumentName} Unknown Status: ${data}`);
                 }
                 res.status(status).json(data);
             });
