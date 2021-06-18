@@ -113,7 +113,7 @@ describe("BlaiseAPI check a specific instrument exists using API", () => {
         const response: Response = await request.get("/api/instruments/OPN2101A/exists");
 
         expect(response.status).toEqual(200);
-        expect(response.body).toStrictEqual(true);
+        expect(response.body).toEqual(true);
         done();
     });
 });
