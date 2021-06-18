@@ -98,7 +98,7 @@ describe("BlaiseAPI Get all instruments from API", () => {
 
 describe("BlaiseAPI check a specific instrument exists using API", () => {
     it("should return a false response when API can't find the instrument", async done => {
-        mock.onGet(/v1\/cati\/serverparks\/server-park\/instruments\/OPN2004A$\/exists/).reply(200, "false");
+        mock.onGet(/v1\/serverparks\/server-park\/instruments\/OPN2004A$\/exists/).reply(200, "false");
 
         const response: Response = await request.get("/api/instruments/OPN2004A/exists");
 
@@ -108,7 +108,7 @@ describe("BlaiseAPI check a specific instrument exists using API", () => {
     });
 
     it("should return a true response when API can find the instrument", async done => {
-        mock.onGet(/v1\/cati\/serverparks\/server-park\/instruments\/OPN2101A$\/exists/).reply(200, "true");
+        mock.onGet(/v1\/serverparks\/server-park\/instruments\/OPN2101A$\/exists/).reply(200, "true");
 
         const response: Response = await request.get("/api/instruments/OPN2101A/exists");
 
