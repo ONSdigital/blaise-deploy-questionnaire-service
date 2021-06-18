@@ -27,6 +27,8 @@ function field_period_to_text(instrument_name: string) : string {
 
     if (survey_tla === "OPN") {
         return OPN_field_period_generation(instrument_name);
+    } if (survey_tla === "DST") {
+        return "Automated tests questionnaire";
     } else {
         return "Field period unknown";
     }
