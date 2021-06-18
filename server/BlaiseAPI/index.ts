@@ -76,9 +76,9 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         const url = `/api/v1/serverparks/${SERVER_PARK}/instruments/${instrumentName}/exists`;
         SendBlaiseAPIRequest(req, res, url, "GET")
             .then(([status, data]) => {
-                if (data === "true") {
+                if (data === true) {
                     auditLogInfo(req.log, `${instrumentName} exists`);
-                } else if (data === "false") {
+                } else if (data === false) {
                     auditLogInfo(req.log, `${instrumentName} doesn't exist`);
                 } else {
                     auditLogError(req.log, `${instrumentName} Unknown Status: ${data}`);
