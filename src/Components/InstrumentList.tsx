@@ -3,10 +3,12 @@ import {Link, useLocation} from "react-router-dom";
 import {Instrument} from "../../Interfaces";
 import dateFormatter from "dayjs";
 import {filter} from "lodash";
+import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 
 interface Props {
     instrumentList: Instrument[],
     listError: string
+    listLoading: boolean
 }
 
 function getStatusColor(status: string | undefined) {
@@ -22,7 +24,7 @@ function getStatusColor(status: string | undefined) {
     }
 }
 
-function InstrumentList({instrumentList, listError}: Props): ReactElement {
+function InstrumentList({instrumentList, listError, listLoading}: Props): ReactElement {
 
 
     const [list, setList] = useState<Instrument[]>(instrumentList);
@@ -142,11 +144,14 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
                     </tbody>
                 </table>
                 :
-                <div className="panel panel--info panel--no-title u-mb-m">
-                    <div className="panel__body">
-                        <p>{listMessage}</p>
-                    </div>
-                </div>
+                (
+                    listLoading ?
+                        <ONSLoadingPanel/>
+                        :
+                        <ONSPanel>
+                            <p>{listMessage}</p>
+                        </ONSPanel>
+                )
         }
     </>;
 }

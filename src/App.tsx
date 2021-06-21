@@ -31,6 +31,7 @@ interface Location {
 function App(): ReactElement {
     const [instruments, setInstruments] = useState<Instrument[]>([]);
     const [listError, setListError] = useState<string>("Loading ...");
+    const [listLoading, setListLoading] = useState<boolean>(false);
 
     const location = useLocation();
     const {status} = (location as Location).state || {status: ""};
@@ -41,8 +42,11 @@ function App(): ReactElement {
 
     async function getInstrumentList() {
         setInstruments([]);
+        setListLoading(true);
 
         const [success, instrumentList] = await getAllInstruments();
+
+        setListLoading(false);
 
         if (!success) {
             setListError("Unable to load questionnaires");
@@ -119,7 +123,7 @@ function App(): ReactElement {
                                     </p>
                                 </ONSPanel>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList instrumentList={instruments} listError={listError}/>
+                                    <InstrumentList instrumentList={instruments} listError={listError} listLoading={listLoading}/>
                                 </ErrorBoundary>
                             </Route>
                         </Switch>
