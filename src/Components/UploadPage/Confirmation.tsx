@@ -35,7 +35,7 @@ function Confirmation({instrumentName, UploadFile, loading}: Props) {
                 </div>
             </div>
 
-            <form onSubmit={() => confirmOption()}>
+            <form>
                 <fieldset className="fieldset">
                     <legend className="fieldset__legend">
                     </legend>
