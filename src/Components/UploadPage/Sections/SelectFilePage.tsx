@@ -1,35 +1,28 @@
-import {Link} from "react-router-dom";
-import {ONSButton, ONSPanel, ONSUpload} from "blaise-design-system-react-components";
+import {ONSPanel, ONSUpload} from "blaise-design-system-react-components";
 import React, {ReactElement} from "react";
+import {FormikContextType, useFormikContext} from "formik";
 
 interface SelectFilePageProps {
-    BeginUploadProcess: any
     setFile: any
     loading: boolean
-    panel: string
 }
 
 function SelectFilePage(props: SelectFilePageProps): ReactElement {
-    const {loading, panel, setFile} = props;
+    const {setFile} = props;
+
+    const {isSubmitting}: FormikContextType<unknown> = useFormikContext();
 
     const handleFileChange = (selectorFiles: FileList | null) => {
-        console.log(selectorFiles);
-
-        if (selectorFiles !== null) {
-            setFile(selectorFiles);
+        if (selectorFiles && selectorFiles.length === 1) {
+            setFile(selectorFiles[0]);
         }
     };
 
     return (
         <>
-            <Link to="/">
-                Previous
-            </Link>
             <h1 className="u-mt-s">
                 Deploy a questionnaire file
             </h1>
-
-            {panel !== "" && <ONSPanel status="error">{panel}</ONSPanel>}
 
             <ONSPanel>
                 <p>
@@ -49,13 +42,7 @@ function SelectFilePage(props: SelectFilePageProps): ReactElement {
                        fileID="survey-selector"
                        accept=".bpkg"
                        onChange={(e) => handleFileChange(e.target.files)}
-                       disabled={loading}/>
-
-            <ONSButton label="Continue"
-                       id="continue-deploy-button"
-                       primary={true}
-                       onClick={() => props.BeginUploadProcess()}
-                       loading={loading}/>
+                       disabled={isSubmitting}/>
         </>
     );
 }

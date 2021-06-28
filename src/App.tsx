@@ -19,6 +19,7 @@ import {
 import {getAllInstruments} from "./utilities/http";
 import AuditPage from "./Components/AuditPage";
 import ReinstallInstruments from "./Components/ReinstallInstruments";
+import LiveSurveyWarning from "./Components/UploadPage/LiveSurveyWarning";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -79,6 +80,9 @@ function App(): ReactElement {
                             </Route>
                             <Route path="/UploadSummary">
                                 <DeploymentSummary getList={getInstrumentList}/>
+                            </Route>
+                            <Route path={"/upload/survey-live/:instrumentName"}>
+                                <LiveSurveyWarning/>
                             </Route>
                             <Route path="/upload">
                                 <UploadPage/>

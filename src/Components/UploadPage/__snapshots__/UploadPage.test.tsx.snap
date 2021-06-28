@@ -5,153 +5,191 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <a
-        href="/"
+      <main
+        class="page__main u-mt-no"
+        id="main-content"
       >
-        Previous
-      </a>
-      <h1
-        class="u-mt-s"
-      >
-        Deploy a questionnaire file
-      </h1>
-      <div
-        class="panel panel--info panel--no-title  u-mt-m"
-      >
-        <div
-          class="panel__body "
+        <form
+          action="#"
+          id="formID"
         >
-          <p>
-            When a questionnaire file is selected and you continue to deploy this questionnaire file, 
-            <b>
-              this may take a few minutes
-            </b>
-            .
-            <br />
-            <br />
-            Given this, 
-            <b>
-              do not navigate away
-            </b>
-             from this page during this process. You will be re-directed when there is an update regarding the deploy of the questionnaire.
-          </p>
-        </div>
-      </div>
-      <div
-        class="field"
-      >
-        <p
-          class="field"
-        >
-          <label
-            class="label"
-            for="survey-selector"
+          <h1
+            class="u-mt-s"
           >
-            Select survey package
-            <br />
-            <span
-              class="label__description"
+            Deploy a questionnaire file
+          </h1>
+          <div
+            class="panel panel--info panel--no-title  u-mt-m"
+          >
+            <div
+              class="panel__body "
             >
-              File type accepted is .bpkg
-            </span>
-          </label>
-          <input
-            accept=".bpkg"
-            class="input input--text input-type__input input--upload"
-            id="survey-selector"
-            name="Package"
-            style="position: static;"
-            type="file"
-          />
-        </p>
-      </div>
-      <button
-        class="btn "
-        data-testid="button"
-        id="continue-deploy-button"
-        type="button"
-      >
-        <span
-          class="btn__inner"
-        >
-          Continue
-        </span>
-      </button>
+              <p>
+                When a questionnaire file is selected and you continue to deploy this questionnaire file, 
+                <b>
+                  this may take a few minutes
+                </b>
+                .
+                <br />
+                <br />
+                Given this, 
+                <b>
+                  do not navigate away
+                </b>
+                 from this page during this process. You will be re-directed when there is an update regarding the deploy of the questionnaire.
+              </p>
+            </div>
+          </div>
+          <div
+            class="field"
+          >
+            <p
+              class="field"
+            >
+              <label
+                class="label"
+                for="survey-selector"
+              >
+                Select survey package
+                <br />
+                <span
+                  class="label__description"
+                >
+                  File type accepted is .bpkg
+                </span>
+              </label>
+              <input
+                accept=".bpkg"
+                class="input input--text input-type__input input--upload"
+                id="survey-selector"
+                name="Package"
+                style="position: static;"
+                type="file"
+              />
+            </p>
+          </div>
+          <div
+            class="btn-group u-mt-m"
+          >
+            <button
+              class="btn "
+              data-testid="button"
+              type="submit"
+            >
+              <span
+                class="btn__inner"
+              >
+                Continue
+              </span>
+            </button>
+            <button
+              class="btn btn--secondary "
+              data-testid="button"
+              type="button"
+            >
+              <span
+                class="btn__inner"
+              >
+                Cancel
+              </span>
+            </button>
+          </div>
+        </form>
+      </main>
     </div>
   </body>,
   "container": <div>
-    <a
-      href="/"
+    <main
+      class="page__main u-mt-no"
+      id="main-content"
     >
-      Previous
-    </a>
-    <h1
-      class="u-mt-s"
-    >
-      Deploy a questionnaire file
-    </h1>
-    <div
-      class="panel panel--info panel--no-title  u-mt-m"
-    >
-      <div
-        class="panel__body "
+      <form
+        action="#"
+        id="formID"
       >
-        <p>
-          When a questionnaire file is selected and you continue to deploy this questionnaire file, 
-          <b>
-            this may take a few minutes
-          </b>
-          .
-          <br />
-          <br />
-          Given this, 
-          <b>
-            do not navigate away
-          </b>
-           from this page during this process. You will be re-directed when there is an update regarding the deploy of the questionnaire.
-        </p>
-      </div>
-    </div>
-    <div
-      class="field"
-    >
-      <p
-        class="field"
-      >
-        <label
-          class="label"
-          for="survey-selector"
+        <h1
+          class="u-mt-s"
         >
-          Select survey package
-          <br />
-          <span
-            class="label__description"
+          Deploy a questionnaire file
+        </h1>
+        <div
+          class="panel panel--info panel--no-title  u-mt-m"
+        >
+          <div
+            class="panel__body "
           >
-            File type accepted is .bpkg
-          </span>
-        </label>
-        <input
-          accept=".bpkg"
-          class="input input--text input-type__input input--upload"
-          id="survey-selector"
-          name="Package"
-          style="position: static;"
-          type="file"
-        />
-      </p>
-    </div>
-    <button
-      class="btn "
-      data-testid="button"
-      id="continue-deploy-button"
-      type="button"
-    >
-      <span
-        class="btn__inner"
-      >
-        Continue
-      </span>
-    </button>
+            <p>
+              When a questionnaire file is selected and you continue to deploy this questionnaire file, 
+              <b>
+                this may take a few minutes
+              </b>
+              .
+              <br />
+              <br />
+              Given this, 
+              <b>
+                do not navigate away
+              </b>
+               from this page during this process. You will be re-directed when there is an update regarding the deploy of the questionnaire.
+            </p>
+          </div>
+        </div>
+        <div
+          class="field"
+        >
+          <p
+            class="field"
+          >
+            <label
+              class="label"
+              for="survey-selector"
+            >
+              Select survey package
+              <br />
+              <span
+                class="label__description"
+              >
+                File type accepted is .bpkg
+              </span>
+            </label>
+            <input
+              accept=".bpkg"
+              class="input input--text input-type__input input--upload"
+              id="survey-selector"
+              name="Package"
+              style="position: static;"
+              type="file"
+            />
+          </p>
+        </div>
+        <div
+          class="btn-group u-mt-m"
+        >
+          <button
+            class="btn "
+            data-testid="button"
+            type="submit"
+          >
+            <span
+              class="btn__inner"
+            >
+              Continue
+            </span>
+          </button>
+          <button
+            class="btn btn--secondary "
+            data-testid="button"
+            type="button"
+          >
+            <span
+              class="btn__inner"
+            >
+              Cancel
+            </span>
+          </button>
+        </div>
+      </form>
+    </main>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
