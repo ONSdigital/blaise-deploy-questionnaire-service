@@ -48,6 +48,7 @@ export async function uploadAndInstallFile(instrumentName: string, liveDate: str
         if (!liveDateCreated) {
             setUploadStatus("Failed to store live date specified");
             setUploading(false);
+            return;
         }
     }
 
