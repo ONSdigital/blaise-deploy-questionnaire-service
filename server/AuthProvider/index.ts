@@ -1,0 +1,43 @@
+import jwt, {Jwt} from "jsonwebtoken";
+import getGoogleAuthToken from "./GoogleTokenProvider";
+
+export default class AuthProvider {
+    private readonly DDS_CLIENT_ID: string;
+    private token: string;
+
+    constructor(DDS_CLIENT_ID: string) {
+        this.DDS_CLIENT_ID = DDS_CLIENT_ID;
+        this.token = "";
+    }
+
+    async getAuthHeader(): Promise<{ Authorization: string }> {
+        if (!this.isValidToken()) {
+            this.token = await getGoogleAuthToken(this.DDS_CLIENT_ID);
+        }
+        return {Authorization: `Bearer ${this.token}`};
+    }
+
+    private isValidToken(): boolean {
+        if (this.token === "") {
+            return false;
+        }
+        const decodedToken : Jwt | null = jwt.decode(this.token, {json: true});
+        if (decodedToken === null) {
+            console.log("Failed to decode token, Calling for new Google auth Token");
+            return false;
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        } else { // @ts-ignore
+            if (AuthProvider.hasTokenExpired(decodedToken["exp"])) {
+                        console.log("Auth Token Expired, Calling for new Google auth Token");
+
+                        return false;
+                    }
+        }
+
+        return true;
+    }
+
+    private static hasTokenExpired(expireTimestamp: number): boolean {
+        return expireTimestamp < Math.floor(new Date().getTime() / 1000);
+    }
+}
