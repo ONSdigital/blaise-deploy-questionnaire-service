@@ -1,12 +1,12 @@
 import {
     checkInstrumentAlreadyExists,
-    initialiseUpload,
+    initialiseUpload, setLiveDate,
     uploadFile,
     verifyAndInstallInstrument
 } from "../../utilities/http";
 import {Instrument} from "../../../Interfaces";
 
-export async function validateSelectedInstrumentExists(file: File | undefined, setInstrumentName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundInstrument: (object: Instrument  | null) => void): Promise<boolean | null> {
+export async function validateSelectedInstrumentExists(file: File | undefined, setInstrumentName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundInstrument: (object: Instrument | null) => void): Promise<boolean | null> {
     if (file === undefined) {
         return null;
     }
@@ -35,12 +35,21 @@ export async function validateSelectedInstrumentExists(file: File | undefined, s
     return alreadyExists;
 }
 
-export async function uploadAndInstallFile(file: File | undefined, setUploading: (boolean: boolean) => void, setUploadStatus: (status: string) => void, onFileUploadProgress: (progressEvent: ProgressEvent) => void): Promise<void> {
+export async function uploadAndInstallFile(instrumentName: string, liveDate: string | undefined, file: File | undefined, setUploading: (boolean: boolean) => void, setUploadStatus: (status: string) => void, onFileUploadProgress: (progressEvent: ProgressEvent) => void): Promise<void> {
     if (file === undefined) {
         return;
     }
     console.log("Start uploading the file");
     setUploading(true);
+
+    console.log(`liveDate ${liveDate}`);
+    if (liveDate !== undefined) {
+        const liveDateCreated = await setLiveDate(instrumentName, liveDate);
+        if (!liveDateCreated) {
+            setUploadStatus("Failed to store live date specified");
+            setUploading(false);
+        }
+    }
 
     // Get the signed url to allow access to the bucket
     const [initialised, signedUrl] = await initialiseUpload(file.name);

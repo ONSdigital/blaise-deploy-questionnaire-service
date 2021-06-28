@@ -13,7 +13,7 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
         const {instrumentName} = req.params;
         const data = req.body;
 
-        const url = `${BIMS_API_URL}/livedate/${instrumentName}/create`;
+        const url = `${BIMS_API_URL}/livedate/${instrumentName}`;
 
         const authHeader = await authProvider.getAuthHeader();
         req.log.info(authHeader, "Obtained Google auth request header");

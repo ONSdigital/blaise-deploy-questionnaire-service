@@ -143,7 +143,7 @@ defineFeature(feature, test => {
             });
 
             then("the questionnaire and data is deleted from Blaise", () => {
-                expect(global.fetch).toBeCalledWith("/api/instruments/OPN2004A", {"body": null, "method": "DELETE"});
+                expect(global.fetch).toBeCalledWith("/api/instruments/OPN2004A", {"body": null, "method": "DELETE", "headers": {"Content-Type": "application/json"}});
             });
 
             and("I'm presented with a successful deletion banner on the launch page", async () => {

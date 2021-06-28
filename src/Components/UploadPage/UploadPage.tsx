@@ -55,7 +55,7 @@ function UploadPage(): ReactElement {
     }
 
     async function _submitForm(values: any, actions: any) {
-        await uploadAndInstallFile(file, setUploading, setUploadStatus, onFileUploadProgress);
+        await uploadAndInstallFile(instrumentName, values["set live date"], file, setUploading, setUploadStatus, onFileUploadProgress);
         actions.setSubmitting(false);
 
         setActiveStep(activeStep + 1);
