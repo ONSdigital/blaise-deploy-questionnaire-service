@@ -35,6 +35,24 @@ export default async function navigateToDeployPageAndSelectFile() {
     fireEvent.change(inputEl);
 }
 
+export async function navigatePastSettingLiveDateAndStartDeployment() {
+    await act(async () => {
+        await flushPromises();
+    });
+    await fireEvent.click(screen.getByText(/no, deploy without live date/i));
+    await fireEvent.click(screen.getByText(/Continue/i));
+
+    await act(async () => {
+        await flushPromises();
+    });
+
+    await fireEvent.click(screen.getByText(/Deploy questionnaire/));
+
+    await act(async () => {
+        await flushPromises();
+    });
+}
+
 export function mock_fetch_requests(mock_server_responses: any) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
