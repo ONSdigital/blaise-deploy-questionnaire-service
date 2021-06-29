@@ -10,7 +10,6 @@ function requestPromiseJson(method: string, url: string, body: any = null): Prom
             },
         })
             .then(async response => {
-                console.warn(response);
                 response.json().then(
                     data => (resolve([response.status, data]))
                 ).catch((error) => {
