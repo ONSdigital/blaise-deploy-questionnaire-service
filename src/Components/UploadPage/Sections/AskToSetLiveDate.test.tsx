@@ -28,10 +28,6 @@ const mock_server_responses = (url: string) => {
 describe("Ask to set live date page", () => {
 
     beforeEach(() => {
-        // mock.onPut("^/upload").reply(500,
-        //     {},
-        // ); Select an option = Enter a live date
-
         mock_fetch_requests(mock_server_responses);
     });
 
