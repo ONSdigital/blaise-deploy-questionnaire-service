@@ -10,7 +10,7 @@ import {createMemoryHistory} from "history";
 import {Router} from "react-router";
 import App from "../../App";
 import flushPromises from "../../tests/utils";
-import {Instrument} from "../../../Interfaces";
+import {instrumentList} from "./API_Mock_Objects";
 
 
 // Load in feature details from .feature file
@@ -18,26 +18,6 @@ const feature = loadFeature(
     "./src/features/erroneous_delete_questionnaire.feature",
     {tagFilter: "not @server and not @integration"}
 );
-
-const instrumentListWithErroneous: Instrument[] = [{
-    name: "OPN2101A",
-    serverParkName: "gusty",
-    installDate: "2021-01-15T14:41:29.4399898+00:00",
-    status: "Erroneous",
-    dataRecordCount: 0,
-    hasData: false,
-    active: false,
-    fieldPeriod: "January 2021"
-}, {
-    name: "OPN2004A",
-    serverParkName: "gusty",
-    installDate: "2021-01-15T15:26:43.4233454+00:00",
-    status: "Active",
-    dataRecordCount: 0,
-    hasData: false,
-    active: false,
-    fieldPeriod: "April 2020"
-}];
 
 const mock_server_responses = (url: string) => {
     console.log(url);
@@ -65,7 +45,7 @@ const mock_server_responses = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(instrumentListWithErroneous),
+            json: () => Promise.resolve(instrumentList),
 
         });
     }
@@ -127,7 +107,7 @@ defineFeature(feature, test => {
             await act(async () => {
                 await flushPromises();
             });
-            await fireEvent.click(screen.getByTestId("delete-OPN2004A"));
+            await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
         });
 
         when("I confirm that I want to proceed", async () => {
