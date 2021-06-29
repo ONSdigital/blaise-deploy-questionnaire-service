@@ -9,6 +9,8 @@ env_variables:
   PROJECT_ID: _PROJECT_ID
   BUCKET_NAME: _BUCKET_NAME
   SERVER_PARK: _SERVER_PARK
+  BIMS_API_URL: _BIMS_API_URL
+  BIMS_CLIENT_ID: BIMS_CLIENT_ID
 
 basic_scaling:
   idle_timeout: 10m
