@@ -1,6 +1,7 @@
 import React, {ReactElement} from "react";
 import {FormikContextType, useFormikContext} from "formik";
 import {Instrument} from "../../../../Interfaces";
+import dateFormatter from "dayjs";
 
 interface PageFourProps {
     file: File | undefined
@@ -43,7 +44,7 @@ function DeployFormSummary({file, foundInstrument}: PageFourProps): ReactElement
                             <td className="summary__values">
                                 {
                                     foundInstrument ?
-                                        "Yes, overriding questionnaire." : "No"
+                                        "Yes, overriding questionnaire." : "No."
                                 }
                             </td>
                         </tr>
@@ -59,7 +60,7 @@ function DeployFormSummary({file, foundInstrument}: PageFourProps): ReactElement
                             <td className="summary__values">
                                 {
                                     formValues["set live date"] ?
-                                        `Live date set to ${formValues["set live date"]}.`
+                                        `Live date set to ${dateFormatter(formValues["set live date"]).format("DD/MM/YYYY")}.`
                                         :
                                         "Live date not specified."
                                 }
