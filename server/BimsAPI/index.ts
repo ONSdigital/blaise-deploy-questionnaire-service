@@ -20,7 +20,8 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
 
         const [status, result, contentType] = await SendAPIRequest(logger, req, res, url, "POST", data, authHeader);
 
-        if (contentType !== "application/json") {
+        // If status is successful but contentType is not application/json
+        if (status >= 200 && status < 300 && contentType !== "application/json") {
             req.log.warn("Response was not JSON, most likely invalid auth");
             res.status(400).json([]);
             return;
