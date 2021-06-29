@@ -96,12 +96,12 @@ defineFeature(feature, test => {
                 await flushPromises();
             });
             await waitFor(() => {
-                expect(screen.getByText(/OPN2101A/i)).toBeDefined();
+                expect(screen.getByText(/OPN2004A/i)).toBeDefined();
             });
         });
 
         when("I select a link to delete that questionnaire", async () => {
-            await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
+            await fireEvent.click(screen.getByTestId("delete-OPN2004A"));
         });
 
         then("I am presented with a warning banner that I cannot delete the questionnaire and a service desk must be raised", () => {
