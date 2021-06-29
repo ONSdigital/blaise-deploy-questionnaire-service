@@ -60,7 +60,7 @@ function DeleteConfirmation({getList}: Props): ReactElement {
 
             {
                 (
-                    instrument.status === "Erroneous" ?
+                    instrument.status === "Failed" ?
                         <ErroneousWarning instrumentName={instrument.name} setRedirect={setRedirect}/>
                         :
                         <>
