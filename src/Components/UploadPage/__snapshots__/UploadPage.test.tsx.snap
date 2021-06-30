@@ -70,6 +70,7 @@ Object {
             <button
               class="btn "
               data-testid="button"
+              id="continue-deploy-button"
               type="submit"
             >
               <span
@@ -160,6 +161,7 @@ Object {
           <button
             class="btn "
             data-testid="button"
+            id="continue-deploy-button"
             type="submit"
           >
             <span
