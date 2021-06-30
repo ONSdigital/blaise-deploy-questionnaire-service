@@ -1,6 +1,7 @@
 import {
     checkInstrumentAlreadyExists,
-    initialiseUpload, setLiveDate,
+    initialiseUpload,
+    setLiveDate,
     uploadFile,
     verifyAndInstallInstrument
 } from "../../utilities/http";
@@ -13,11 +14,6 @@ export async function validateSelectedInstrumentExists(file: File | undefined, s
 
     const fileName = file.name;
     const instrumentName = fileName.replace(/\.[a-zA-Z]*$/, "");
-    const fileExtension = fileName.match(/\.[a-zA-Z]*$/) || [];
-
-    if (fileExtension[0] !== ".bpkg") {
-        return null;
-    }
 
     setInstrumentName(instrumentName);
 

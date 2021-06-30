@@ -1,7 +1,6 @@
 import React, {ReactElement, useState} from "react";
 import {Redirect, useHistory} from "react-router-dom";
 import {ONSButton} from "blaise-design-system-react-components";
-// import Breadcrumbs from "../Components/Breadcrumbs";
 import {Formik, Form} from "formik";
 import SelectFile from "./Sections/SelectFile";
 import AskToSetLiveDate from "./Sections/AskToSetLiveDate";
@@ -50,8 +49,6 @@ function UploadPage(): ReactElement {
                 return <AskToSetLiveDate instrumentName={instrumentName}/>;
             case 4:
                 return <DeployFormSummary file={file} foundInstrument={foundInstrument}/>;
-            default:
-                return <div>Not Found</div>;
         }
     }
 
@@ -105,8 +102,6 @@ function UploadPage(): ReactElement {
                     if (values.askToSetLiveDate === "no") {
                         values["set live date"] = undefined;
                     }
-                    break;
-                default:
                     break;
             }
             setActiveStep(activeStep + 1);
