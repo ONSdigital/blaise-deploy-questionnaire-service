@@ -38,7 +38,8 @@ function UploadPage(): ReactElement {
         switch (step) {
             case 0:
                 return (
-                    <SelectFilePage setFile={setFile}
+                    <SelectFilePage file={file}
+                                    setFile={setFile}
                                     loading={false}/>
                 );
             case 1:

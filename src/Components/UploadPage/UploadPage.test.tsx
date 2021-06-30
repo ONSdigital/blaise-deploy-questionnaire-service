@@ -54,9 +54,9 @@ describe("Upload Page", () => {
         });
     });
 
-    it.skip("should display a message if you dont select a file", async () => {
+    it("should display a message if you dont select a file", async () => {
         const history = createMemoryHistory();
-        const {getByText, getByTestId} = render(
+        render(
             <Router history={history}>
                 <UploadPage/>
             </Router>
@@ -65,19 +65,19 @@ describe("Upload Page", () => {
         await fireEvent.click(screen.getByText(/Continue/));
 
         await waitFor(() => {
-            expect(getByText(/You must select a file/i)).toBeDefined();
+            expect(screen.queryAllByText("Select a file")).toHaveLength(2);
         });
     });
 
-    it.skip("should display a message if select a file that is a .bpkg", async () => {
+    it("should display a message if select a file that is a .bpkg", async () => {
         const history = createMemoryHistory();
-        const {getByText, getByLabelText, getByTestId} = render(
+        render(
             <Router history={history}>
                 <UploadPage/>
             </Router>
         );
 
-        const inputEl = getByLabelText(/Select survey package/i);
+        const inputEl = screen.getByLabelText(/Select survey package/i);
 
         const file = new File(["(⌐□_□)"], "OPN2004A.pdf", {
             type: "pdf"
@@ -92,7 +92,7 @@ describe("Upload Page", () => {
         await fireEvent.click(screen.getByText(/Continue/));
 
         await waitFor(() => {
-            expect(getByText(/File must be a .bpkg/i)).toBeDefined();
+            expect(screen.queryAllByText("File must be a .bpkg")).toHaveLength(2);
         });
     });
 
