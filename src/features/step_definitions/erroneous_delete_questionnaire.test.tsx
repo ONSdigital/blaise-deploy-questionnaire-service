@@ -92,6 +92,13 @@ defineFeature(feature, test => {
             expect(screen.queryByTestId(/confirm-delete/i)).toBeNull();
             // expect(submitButton)
         });
+
+        and("I can return to the questionnaire list", () => {
+            expect(screen.getByText(/Return to table of questionnaires/i)).toBeDefined();
+            fireEvent.click(screen.getByText(/Return to table of questionnaires/i));
+
+            expect(screen.getByText(/Table of questionnaires/i)).toBeDefined();
+        });
     });
 
 
@@ -123,4 +130,3 @@ defineFeature(feature, test => {
         });
     });
 });
-

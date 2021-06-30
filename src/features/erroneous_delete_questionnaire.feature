@@ -9,6 +9,7 @@ Feature: DQS - Attempt to delete a survey and the survey becomes erroneous
     When I select a link to delete that questionnaire
     Then I am presented with a warning banner that I cannot delete the questionnaire and a service desk must be raised
     And I am unable to delete the questionnaire
+    And I can return to the questionnaire list
 
   # Scenario 2:
   Scenario: Select to deploy a new questionnaire
