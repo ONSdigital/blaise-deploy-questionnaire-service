@@ -68,13 +68,9 @@ function DeleteConfirmation({getList}: Props): ReactElement {
                                 Are you sure you want to delete the questionnaire <em
                                 className="highlight">{instrument.name}</em>?
                             </h1>
-                            <div className="panel panel--warn panel--no-title">
-                                <span className="panel__icon" aria-hidden="true">!</span>
-                                <span className="u-vh">Warning: </span>
-                                <div className="panel__body">
-                                    The questionnaire and all associated respondent data will be deleted 
-                                </div>
-                            </div>
+                            <ONSPanel status={"warn"}>
+                                The questionnaire and all associated respondent data will be deleted
+                            </ONSPanel>
 
                             <p>
                                 {message}

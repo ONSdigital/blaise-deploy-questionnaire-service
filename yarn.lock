@@ -3794,9 +3794,9 @@ bindings@^1.2.1, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blaise-design-system-react-components@ONSdigital/blaise-design-system-react-components#v0.2.0:
+blaise-design-system-react-components@ONSdigital/blaise-design-system-react-components#v0.3.0:
   version "1.0.0"
-  resolved "https://codeload.github.com/ONSdigital/blaise-design-system-react-components/tar.gz/486d8036a53ed1fda3af94f585f3740d10d11cc6"
+  resolved "https://codeload.github.com/ONSdigital/blaise-design-system-react-components/tar.gz/ff93c586a256439bc183264c905deb0222e4cc48"
   dependencies:
     formik "^2.2.9"
     react "^17.0.1"

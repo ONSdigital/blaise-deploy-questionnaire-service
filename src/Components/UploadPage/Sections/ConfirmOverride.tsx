@@ -1,5 +1,5 @@
 import React, {ReactElement} from "react";
-import {StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
+import {ONSPanel, StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
 
 interface SelectFilePageProps {
     instrumentName: string
@@ -34,12 +34,9 @@ function ConfirmOverride({instrumentName}: SelectFilePageProps): ReactElement {
                 className="highlight">{instrumentName}</em>?
             </h1>
 
-            <div className="panel panel--warn panel--no-title">
-                <span className="panel__icon" aria-hidden="true">!</span>
-                <div className="panel__body">
-                    All existing questionnaire information will be deleted
-                </div>
-            </div>
+            <ONSPanel status={"warn"}>
+                All existing questionnaire information will be deleted
+            </ONSPanel>
 
             <StyledFormErrorSummary/>
 
