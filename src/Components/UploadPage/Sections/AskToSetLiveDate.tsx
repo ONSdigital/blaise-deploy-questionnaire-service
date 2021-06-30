@@ -1,8 +1,7 @@
 import React, {ReactElement} from "react";
-import {ONSRadioFieldset} from "../FormElements/ONSRadioFieldset";
-import ErrorSummary from "../FormElements/ErrorSummary";
 import dateFormatter from "dayjs";
 import {useFormikContext} from "formik";
+import {StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
 
 interface SelectFilePageProps {
     instrumentName: string
@@ -51,9 +50,9 @@ function AskToSetLiveDate({instrumentName}: SelectFilePageProps): ReactElement {
                 Would you like to set a live date for questionnaire <em className="highlight">{instrumentName}</em>?
             </h1>
 
-            <ErrorSummary/>
+            <StyledFormErrorSummary/>
 
-            <ONSRadioFieldset {...field}/>
+            <StyledFormField {...field}/>
         </>
     );
 }

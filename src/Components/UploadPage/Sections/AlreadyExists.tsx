@@ -1,6 +1,5 @@
 import React, {ReactElement} from "react";
-import {ONSRadioFieldset} from "../FormElements/ONSRadioFieldset";
-import ErrorSummary from "../FormElements/ErrorSummary";
+import {StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
 
 interface SelectFilePageProps {
     instrumentName: string
@@ -36,9 +35,9 @@ function AlreadyExists({instrumentName}: SelectFilePageProps): ReactElement {
                 What action do you want to take?
             </h1>
 
-            <ErrorSummary/>
+            <StyledFormErrorSummary/>
 
-            <ONSRadioFieldset {...field}/>
+            <StyledFormField {...field}/>
         </>
     );
 }

@@ -40,7 +40,6 @@ export async function uploadAndInstallFile(instrumentName: string, liveDate: str
         return;
     }
     console.log("Start uploading the file");
-    setUploading(true);
 
     console.log(`liveDate ${liveDate}`);
     if (liveDate !== undefined) {
@@ -60,6 +59,8 @@ export async function uploadAndInstallFile(instrumentName: string, liveDate: str
         setUploading(false);
         return;
     }
+
+    setUploading(true);
 
     // Upload the file using the GCP bucket url
     const uploaded = await uploadFile(signedUrl, file, onFileUploadProgress);
