@@ -1,4 +1,4 @@
-import {ONSPanel, ONSUpload, StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
+import {ONSPanel, StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
 import React, {ChangeEvent, ReactElement} from "react";
 import {FormikContextType, useFormikContext} from "formik";
 
@@ -8,7 +8,7 @@ interface SelectFilePageProps {
     loading: boolean
 }
 
-function SelectFilePage(props: SelectFilePageProps): ReactElement {
+function SelectFile(props: SelectFilePageProps): ReactElement {
     const {file, setFile} = props;
     const {isSubmitting}: FormikContextType<unknown> = useFormikContext();
 
@@ -34,6 +34,7 @@ function SelectFilePage(props: SelectFilePageProps): ReactElement {
         name: "Select survey package",
         description: "File type accepted is .bpkg",
         type: "file",
+        id: "survey-selector",
         validate: validateInput,
         className: "input input--text input-type__input input--upload",
         onChange: (e: ChangeEvent<HTMLInputElement>) => handleFileChange(e.target.files),
@@ -66,4 +67,4 @@ function SelectFilePage(props: SelectFilePageProps): ReactElement {
     );
 }
 
-export default SelectFilePage;
+export default SelectFile;

@@ -3,7 +3,7 @@ import {Redirect, useHistory} from "react-router-dom";
 import {ONSButton} from "blaise-design-system-react-components";
 // import Breadcrumbs from "../Components/Breadcrumbs";
 import {Formik, Form} from "formik";
-import SelectFilePage from "./Sections/SelectFilePage";
+import SelectFile from "./Sections/SelectFile";
 import AskToSetLiveDate from "./Sections/AskToSetLiveDate";
 import DeployFormSummary from "./Sections/DeployFormSummary";
 import {Instrument} from "../../../Interfaces";
@@ -38,9 +38,9 @@ function UploadPage(): ReactElement {
         switch (step) {
             case 0:
                 return (
-                    <SelectFilePage file={file}
-                                    setFile={setFile}
-                                    loading={false}/>
+                    <SelectFile file={file}
+                                setFile={setFile}
+                                loading={false}/>
                 );
             case 1:
                 return <AlreadyExists instrumentName={instrumentName}/>;
