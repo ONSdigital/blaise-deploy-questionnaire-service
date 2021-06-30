@@ -144,6 +144,7 @@ function UploadPage(): ReactElement {
 
                                 <div className="btn-group u-mt-m">
                                     <ONSButton
+                                        id={"continue-deploy-button"}
                                         submit={true}
                                         loading={isSubmitting}
                                         primary={true} label={isLastStep ? "Deploy questionnaire" : "Continue"}/>
