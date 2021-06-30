@@ -45,7 +45,7 @@ Object {
           >
             <label
               class="label label--with-description"
-              for="Select survey package"
+              for="survey-selector"
             >
               Select survey package
             </label>
@@ -58,7 +58,7 @@ Object {
             <input
               accept=".bpkg"
               class="input input--text input-type__input input--upload"
-              id="Select survey package"
+              id="survey-selector"
               name="Select survey package"
               type="file"
               value=""
@@ -135,7 +135,7 @@ Object {
         >
           <label
             class="label label--with-description"
-            for="Select survey package"
+            for="survey-selector"
           >
             Select survey package
           </label>
@@ -148,7 +148,7 @@ Object {
           <input
             accept=".bpkg"
             class="input input--text input-type__input input--upload"
-            id="Select survey package"
+            id="survey-selector"
             name="Select survey package"
             type="file"
             value=""
