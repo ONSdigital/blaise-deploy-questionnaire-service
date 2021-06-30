@@ -2,6 +2,7 @@ import {EnvironmentVariables} from "../Config";
 import express, {Request, Response, Router} from "express";
 import {SendAPIRequest} from "../SendRequest";
 import AuthProvider from "../AuthProvider";
+import {auditLogError, auditLogInfo} from "../audit_logging";
 
 export default function BimsAPIRouter(environmentVariables: EnvironmentVariables, logger: any): Router {
     const {BIMS_API_URL, BIMS_CLIENT_ID}: EnvironmentVariables = environmentVariables;
@@ -19,6 +20,12 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
         req.log.info(authHeader, "Obtained Google auth request header");
 
         const [status, result, contentType] = await SendAPIRequest(logger, req, res, url, "POST", data, authHeader);
+
+        if (status === 201) {
+            auditLogInfo(req.log, `Successfully set live date of ${data.livedate} for questionnaire ${instrumentName}`);
+        } else {
+            auditLogError(req.log, `Failed to set live date of ${data.livedate} for questionnaire ${instrumentName}`);
+        }
 
         // If status is successful but contentType is not application/json
         if (status >= 200 && status < 300 && contentType !== "application/json") {
