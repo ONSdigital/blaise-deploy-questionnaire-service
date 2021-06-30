@@ -43,30 +43,26 @@ Object {
           <div
             class="field"
           >
-            <p
-              class="field"
+            <label
+              class="label label--with-description"
+              for="Select survey package"
             >
-              <label
-                class="label"
-                for="survey-selector"
-              >
-                Select survey package
-                <br />
-                <span
-                  class="label__description"
-                >
-                  File type accepted is .bpkg
-                </span>
-              </label>
-              <input
-                accept=".bpkg"
-                class="input input--text input-type__input input--upload"
-                id="survey-selector"
-                name="Package"
-                style="position: static;"
-                type="file"
-              />
-            </p>
+              Select survey package
+            </label>
+            <span
+              class="label__description  input--with-description"
+              id="description-hint"
+            >
+              File type accepted is .bpkg
+            </span>
+            <input
+              accept=".bpkg"
+              class="input input--text input-type__input input--upload"
+              id="Select survey package"
+              name="Select survey package"
+              type="file"
+              value=""
+            />
           </div>
           <div
             class="btn-group u-mt-m"
@@ -137,30 +133,26 @@ Object {
         <div
           class="field"
         >
-          <p
-            class="field"
+          <label
+            class="label label--with-description"
+            for="Select survey package"
           >
-            <label
-              class="label"
-              for="survey-selector"
-            >
-              Select survey package
-              <br />
-              <span
-                class="label__description"
-              >
-                File type accepted is .bpkg
-              </span>
-            </label>
-            <input
-              accept=".bpkg"
-              class="input input--text input-type__input input--upload"
-              id="survey-selector"
-              name="Package"
-              style="position: static;"
-              type="file"
-            />
-          </p>
+            Select survey package
+          </label>
+          <span
+            class="label__description  input--with-description"
+            id="description-hint"
+          >
+            File type accepted is .bpkg
+          </span>
+          <input
+            accept=".bpkg"
+            class="input input--text input-type__input input--upload"
+            id="Select survey package"
+            name="Select survey package"
+            type="file"
+            value=""
+          />
         </div>
         <div
           class="btn-group u-mt-m"
