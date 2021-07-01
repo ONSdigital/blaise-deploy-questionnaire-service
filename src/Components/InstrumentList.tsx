@@ -193,7 +193,7 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                     <li key={item.name}
                                         id="instrument-table-row"
                                         className="filter__item js-filter__item"
-                                        data-filter={`opn ${item.status} ${(item.active && "Live")}`}
+                                        data-filter={`${item.name.substr(0, 3)} ${item.status} ${(item.active && "Live")}`}
                                         data-sort-index={index}>
                                         <div className="download__content">
                                             <h2 className="u-fs-m u-mt-no u-mb-xs">{item.name}</h2>
@@ -211,21 +211,28 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                                 <dd className="metadata__value grid__col col-8@m">{item.dataRecordCount}</dd>
 
                                             </dl>
-                                            <p id={`delete-${item.name}`}
-                                               data-testid={`delete-${item.name}-block`}>
-                                                {
-                                                    item.active ?
-                                                        "Questionnaire is live"
-                                                        :
-                                                        <Link id={`delete-button-${item.name}`}
-                                                              data-testid={`delete-${item.name}`} to={{
-                                                            pathname: "/delete",
-                                                            state: {instrumentName: item.name}
-                                                        }}>
-                                                            Delete
-                                                        </Link>
-                                                }
-                                            </p>
+
+                                            <ul className="list list--bare list--inline u-mt-m">
+                                                <li className="list__item" id={`delete-${item.name}`} data-testid={`delete-${item.name}-block`}>
+                                                    {
+                                                        item.active ?
+                                                            "Questionnaire is live"
+                                                            :
+                                                            <Link id={`delete-button-${item.name}`}
+                                                                  data-testid={`delete-${item.name}`} to={{
+                                                                pathname: "/delete",
+                                                                state: {instrumentName: item.name}
+                                                            }}>
+                                                                Delete
+                                                            </Link>
+                                                    }
+                                                </li>
+                                                <li className="list__item">
+                                                    <Link to="/audit" id="audit-logs-link">
+                                                        Questionnaire details
+                                                    </Link>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </li>
                                 );
