@@ -148,7 +148,7 @@ defineFeature(feature, test => {
         then("I am presented with an information banner with an error message", async () => {
             await waitFor(() => {
                 expect(screen.getByText("File deploy failed")).toBeDefined();
-                expect(screen.getByText(/Failed to store live date specified/i)).toBeDefined();
+                expect(screen.getByText(/Failed to store telephone operations start date specified/i)).toBeDefined();
             });
         });
     });

@@ -41,7 +41,7 @@ export async function uploadAndInstallFile(instrumentName: string, liveDate: str
     if (liveDate !== undefined) {
         const liveDateCreated = await setLiveDate(instrumentName, liveDate);
         if (!liveDateCreated) {
-            setUploadStatus("Failed to store live date specified");
+            setUploadStatus("Failed to store telephone operations start date specified");
             setUploading(false);
             return;
         }
