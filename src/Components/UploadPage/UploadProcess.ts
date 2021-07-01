@@ -1,7 +1,7 @@
 import {
     checkInstrumentAlreadyExists,
     initialiseUpload,
-    setLiveDate,
+    setTOStartDate,
     uploadFile,
     verifyAndInstallInstrument
 } from "../../utilities/http";
@@ -31,15 +31,15 @@ export async function validateSelectedInstrumentExists(file: File | undefined, s
     return alreadyExists;
 }
 
-export async function uploadAndInstallFile(instrumentName: string, liveDate: string | undefined, file: File | undefined, setUploading: (boolean: boolean) => void, setUploadStatus: (status: string) => void, onFileUploadProgress: (progressEvent: ProgressEvent) => void): Promise<void> {
+export async function uploadAndInstallFile(instrumentName: string, toStartDate: string | undefined, file: File | undefined, setUploading: (boolean: boolean) => void, setUploadStatus: (status: string) => void, onFileUploadProgress: (progressEvent: ProgressEvent) => void): Promise<void> {
     if (file === undefined) {
         return;
     }
     console.log("Start uploading the file");
 
-    console.log(`liveDate ${liveDate}`);
-    if (liveDate !== undefined) {
-        const liveDateCreated = await setLiveDate(instrumentName, liveDate);
+    console.log(`liveDate ${toStartDate}`);
+    if (toStartDate !== undefined) {
+        const liveDateCreated = await setTOStartDate(instrumentName, toStartDate);
         if (!liveDateCreated) {
             setUploadStatus("Failed to store telephone operations start date specified");
             setUploading(false);
