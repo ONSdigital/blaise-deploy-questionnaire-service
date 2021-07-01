@@ -99,7 +99,7 @@ defineFeature(feature, test => {
     });
 
 
-    test("Setting the live date fails during deployment", ({given, when, then}) => {
+    test("Setting the start date fails during deployment", ({given, when, then}) => {
 
         const mock_server_responses = (url: string) => {
             console.log(url);
@@ -116,7 +116,7 @@ defineFeature(feature, test => {
             }
         };
 
-        given("I have selected the questionnaire package I wish to deploy and set a live date", async () => {
+        given("I have selected the questionnaire package I wish to deploy and set a start date", async () => {
             mock_fetch_requests(mock_server_responses);
             await navigateToDeployPageAndSelectFile();
 
@@ -126,7 +126,7 @@ defineFeature(feature, test => {
                 await flushPromises();
             });
 
-            await fireEvent.click(screen.getByText(/Yes, let me specify a live date/i));
+            await fireEvent.click(screen.getByText(/Yes, let me specify a start date/i));
 
             fireEvent.change(screen.getByLabelText(/Please specify date/i), {target: {value: "2030-06-05"}});
 
@@ -137,7 +137,7 @@ defineFeature(feature, test => {
             });
         });
 
-        when("I confirm my selection and the set live date fails", async () => {
+        when("I confirm my selection and the set TO start date fails", async () => {
             await fireEvent.click(screen.getByText(/Deploy questionnaire/));
 
             await act(async () => {

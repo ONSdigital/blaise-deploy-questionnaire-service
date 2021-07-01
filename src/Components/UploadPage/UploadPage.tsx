@@ -3,7 +3,7 @@ import {Redirect, useHistory} from "react-router-dom";
 import {ONSButton} from "blaise-design-system-react-components";
 import {Formik, Form} from "formik";
 import SelectFile from "./Sections/SelectFile";
-import AskToSetLiveDate from "./Sections/AskToSetLiveDate";
+import AskToSetTOStartDate from "./Sections/AskToSetTOStartDate";
 import DeployFormSummary from "./Sections/DeployFormSummary";
 import {Instrument} from "../../../Interfaces";
 import AlreadyExists from "./Sections/AlreadyExists";
@@ -46,14 +46,14 @@ function UploadPage(): ReactElement {
             case 2:
                 return <ConfirmOverride instrumentName={instrumentName}/>;
             case 3:
-                return <AskToSetLiveDate instrumentName={instrumentName}/>;
+                return <AskToSetTOStartDate instrumentName={instrumentName}/>;
             case 4:
                 return <DeployFormSummary file={file} foundInstrument={foundInstrument}/>;
         }
     }
 
     async function _submitForm(values: any, actions: any) {
-        await uploadAndInstallFile(instrumentName, values["set live date"], file, setUploading, setUploadStatus, onFileUploadProgress);
+        await uploadAndInstallFile(instrumentName, values["set TO start date"], file, setUploading, setUploadStatus, onFileUploadProgress);
         actions.setSubmitting(false);
 
         setActiveStep(activeStep + 1);
@@ -99,8 +99,8 @@ function UploadPage(): ReactElement {
                     }
                     break;
                 case 3:
-                    if (values.askToSetLiveDate === "no") {
-                        values["set live date"] = undefined;
+                    if (values.askToSetTOStartDate === "no") {
+                        values["set TO start date"] = undefined;
                     }
                     break;
             }
@@ -129,7 +129,7 @@ function UploadPage(): ReactElement {
                     <Formik
                         validateOnBlur={false}
                         validateOnChange={false}
-                        initialValues={{override: "", askToSetLiveDate: "", "set live date": ""}}
+                        initialValues={{override: "", askToSetTOStartDate: "", "set TO start date": ""}}
                         onSubmit={_handleSubmit}
                     >
                         {({isSubmitting}) => (

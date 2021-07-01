@@ -15,8 +15,8 @@ Feature: DQS - Handling of a failure to deploy a questionnaire
     When the package fails to deploy and I'm presented with a failure message
     Then I am able to return to the select survey package screen
 
-  # Scenario 3: Live date fails
-  Scenario: Setting the live date fails during deployment
-    Given I have selected the questionnaire package I wish to deploy and set a live date
-    When I confirm my selection and the set live date fails
+  # Scenario 3: TO Start date fails
+  Scenario: Setting the start date fails during deployment
+    Given I have selected the questionnaire package I wish to deploy and set a start date
+    When I confirm my selection and the set TO start date fails
     Then I am presented with an information banner with an error message

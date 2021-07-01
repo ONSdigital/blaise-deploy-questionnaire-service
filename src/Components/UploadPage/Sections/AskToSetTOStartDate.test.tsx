@@ -25,7 +25,7 @@ const mock_server_responses = (url: string) => {
     }
 };
 
-describe("Ask to set live date page", () => {
+describe("Ask to set TO start date page", () => {
 
     beforeEach(() => {
         mock_fetch_requests(mock_server_responses);
@@ -51,7 +51,7 @@ describe("Ask to set live date page", () => {
         });
     });
 
-    it("should come up with a error panel if pick set to set a live date but don't enter one", async () => {
+    it("should come up with a error panel if pick set to set a start date but don't enter one", async () => {
         await navigateToDeployPageAndSelectFile();
 
         await fireEvent.click(screen.getByText(/Continue/));
@@ -60,7 +60,7 @@ describe("Ask to set live date page", () => {
             await flushPromises();
         });
 
-        await fireEvent.click(screen.getByText(/Yes, let me specify a live date/i));
+        await fireEvent.click(screen.getByText(/Yes, let me specify a start date/i));
         await fireEvent.click(screen.getByText(/Continue/i));
 
         await act(async () => {
@@ -68,7 +68,7 @@ describe("Ask to set live date page", () => {
         });
 
         await waitFor(() => {
-            expect(screen.queryAllByText("Enter a live date")).toHaveLength(2);
+            expect(screen.queryAllByText("Enter a start date")).toHaveLength(2);
         });
     });
 
@@ -81,7 +81,7 @@ describe("Ask to set live date page", () => {
             await flushPromises();
         });
 
-        await fireEvent.click(screen.getByText(/Yes, let me specify a live date/i));
+        await fireEvent.click(screen.getByText(/Yes, let me specify a start date/i));
 
         fireEvent.change(screen.getByLabelText(/Please specify date/i), {target: {value: "2030-06-05"}});
 
@@ -93,7 +93,7 @@ describe("Ask to set live date page", () => {
 
         await waitFor(() => {
             expect(screen.getByText(/Deployment summary/i)).toBeDefined();
-            expect(screen.getByText(/Live date set to 05\/06\/2030/i)).toBeDefined();
+            expect(screen.getByText(/Start date set to 05\/06\/2030/i)).toBeDefined();
         });
     });
 

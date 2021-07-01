@@ -54,15 +54,15 @@ function DeployFormSummary({file, foundInstrument}: PageFourProps): ReactElement
                         <tr className="summary__row summary__row--has-values">
                             <td className="summary__item-title">
                                 <div className="summary__item--text">
-                                    Set a live date for questionnaire?
+                                    Set a telephone operations start date for questionnaire?
                                 </div>
                             </td>
                             <td className="summary__values">
                                 {
-                                    formValues["set live date"] ?
-                                        `Live date set to ${dateFormatter(formValues["set live date"]).format("DD/MM/YYYY")}.`
+                                    formValues["set TO start date"] ?
+                                        `Start date set to ${dateFormatter(formValues["set TO start date"]).format("DD/MM/YYYY")}.`
                                         :
-                                        "Live date not specified."
+                                        "Date date not specified."
                                 }
 
                             </td>
