@@ -99,9 +99,9 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
         }
 
         if (status === 200 || status === 201) {
-            auditLogInfo(req.log, `Successfully set TO start date to ${data.livedate} for questionnaire ${instrumentName}`);
+            auditLogInfo(req.log, `Successfully set TO start date to ${data.tostartdate} for questionnaire ${instrumentName}`);
         } else {
-            auditLogError(req.log, `Failed to set TO start date to ${data.livedate} for questionnaire ${instrumentName}`);
+            auditLogError(req.log, `Failed to set TO start date to ${data.tostartdate} for questionnaire ${instrumentName}`);
         }
 
         // If status is successful but contentType is not application/json
