@@ -56,7 +56,7 @@ export const instrumentList: Instrument[] = [{
     name: "OPN2004A",
     serverParkName: "gusty",
     installDate: "2021-01-15T15:26:43.4233454+00:00",
-    status: "Active",
+    status: "Failed",
     dataRecordCount: 0,
     hasData: false,
     active: false,

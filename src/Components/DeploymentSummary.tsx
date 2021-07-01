@@ -1,6 +1,7 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import {Redirect, useHistory, useLocation} from "react-router-dom";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
+
 interface Location {
     state: any
 }
@@ -24,35 +25,44 @@ function DeploymentSummary({getList}: Props): ReactElement {
             {
                 redirect && <Redirect to="/"/>
             }
-            <h1>
-                Questionnaire
-                file <em>{questionnaireName}</em> {(status === "" ? "deployed" : "deploy failed")}
-            </h1>
+
             {
                 (status === "" ?
-                    <ONSPanel status="success">
-                        <p>
-                            The questionnaire file has been successfully deployed and will be displayed within the table
-                            of
-                            questionnaires.
-                        </p>
-                    </ONSPanel>
-                    :
-                    <ONSPanel status="error">
-                        <p>
-                            <b>File deploy failed</b>
+                        <ONSPanel status="success" bigIcon={true}>
+                            <h1>
+                                Questionnaire
+                                file <em>{questionnaireName}</em> deployed
+                            </h1>
+                            <p>
+                                The questionnaire file has been successfully deployed and will be displayed within the
+                                table
+                                of
+                                questionnaires.
+                            </p>
+                        </ONSPanel>
+                        :
+                        <>
+                            <h1>
+                                Questionnaire
+                                file <em>{questionnaireName}</em> deploy failed
+                            </h1>
+                            <ONSPanel status="error">
+                                <p>
+                                    <b>File deploy failed</b>
 
-                            <br/>
-                            <br/>
-                            Questionnaire {questionnaireName} has failed to deploy. When reporting the issue to Service
-                            Desk provide the questionnaire name, time and date of failure.
-                        </p>
-                        <p>
-                            Reason: {status}
-                        </p>
-                    </ONSPanel>)
+                                    <br/>
+                                    <br/>
+                                    Questionnaire {questionnaireName} has failed to deploy. When reporting the issue to
+                                    Service
+                                    Desk provide the questionnaire name, time and date of failure.
+                                </p>
+                                <p>
+                                    Reason: {status}
+                                </p>
+                            </ONSPanel>
+                        </>
+                )
             }
-
 
             <br/>
             <br/>

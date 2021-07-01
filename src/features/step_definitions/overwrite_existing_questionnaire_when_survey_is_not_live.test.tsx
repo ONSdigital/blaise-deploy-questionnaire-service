@@ -145,6 +145,7 @@ defineFeature(feature, test => {
         and("can only return to the landing page", async () => {
             await waitFor((() => {
                 expect(screen.getByText(/accept and go to table of questionnaires/i));
+                fireEvent.click(screen.getByText(/accept and go to table of questionnaires/i));
             }));
         });
     });

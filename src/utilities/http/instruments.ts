@@ -1,8 +1,9 @@
-import {requestPromiseJson} from "./requestPromise";
+import {requestPromiseJson, requestPromiseJsonList} from "./requestPromise";
 import {Instrument} from "../../../Interfaces";
 
 type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];
+type deleteInstrumentResponse = [boolean, string];
 
 function checkInstrumentAlreadyExists(instrumentName: string): Promise<verifyInstrumentExistsResponse> {
     console.log(`Call to checkSurveyAlreadyExists(${instrumentName})`);
@@ -32,29 +33,37 @@ function checkInstrumentAlreadyExists(instrumentName: string): Promise<verifyIns
 }
 
 function getAllInstruments(): Promise<getInstrumentListResponse> {
-    let list: Instrument[] = [];
     console.log("Call to getAllInstruments");
     const url = "/api/instruments";
 
     return new Promise((resolve: (object: getInstrumentListResponse) => void) => {
-        requestPromiseJson("GET", url).then(([status, data]) => {
-            console.log(`Response from get all instruments: Status ${status}, data ${data}`);
-            if (status === 200) {
-                if (!Array.isArray(data)) {
-                    resolve([false, list]);
-                }
-                list = data;
-                resolve([true, list]);
-            } else if (status === 404) {
-                resolve([true, list]);
-            } else {
-                resolve([false, list]);
-            }
+        requestPromiseJsonList("GET", url).then(([success, data]) => {
+            console.log(`Response from get all instruments ${(success ? "successful" : "failed")}, data list length ${data.length}`);
+            resolve([success, data]);
         }).catch((error: Error) => {
             console.error(`Response from get all instruments Failed: Error ${error}`);
-            resolve([false, list]);
+            resolve([false, []]);
         });
     });
 }
 
-export {checkInstrumentAlreadyExists, getAllInstruments};
+function deleteInstrument(instrumentName: string): Promise<deleteInstrumentResponse> {
+    console.log("Call to deleteInstrument");
+    const url = `/api/instruments/${instrumentName}`;
+
+    return new Promise((resolve: (object: deleteInstrumentResponse) => void) => {
+        requestPromiseJson("DELETE", url).then(([status, data]) => {
+            console.log(`Response from deleteInstrument: Status ${status}, data ${data}`);
+            if (status === 204) {
+                resolve([true, ""]);
+            } else {
+                resolve([false, ""]);
+            }
+        }).catch((error: Error) => {
+            console.error(`Response from deleteInstrument: Error ${error}`);
+            resolve([false, ""]);
+        });
+    });
+}
+
+export {checkInstrumentAlreadyExists, getAllInstruments, deleteInstrument};

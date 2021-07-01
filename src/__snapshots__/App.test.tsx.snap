@@ -3,9 +3,7 @@
 exports[`React homepage view instrument page matches Snapshot 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": <body
-    class="js-enabled"
-  >
+  "baseElement": <body>
     <div>
       <div
         class="phase-banner"
@@ -67,7 +65,7 @@ Object {
                     <img
                       alt="Office for National Statistics logo"
                       class="header__logo"
-                      src="https://ons-design-system.netlify.app/img/ons-logo-neg-en.svg"
+                      src="https://cdn.ons.gov.uk/sdc/design-system/31.4.0/img/ons-logo-neg-en.svg"
                     />
                   </picture>
                 </a>
@@ -105,599 +103,271 @@ Object {
           class="page__main"
           id="main-content"
         >
-          <p
+          <ul
+            class="list list--bare list--inline u-mt-m"
+          >
+            <li
+              class="list__item"
+            >
+              <a
+                href="/upload"
+                id="deploy-questionnaire-link"
+              >
+                Deploy a questionnaire
+              </a>
+            </li>
+            <li
+              class="list__item"
+            >
+              <a
+                href="/audit"
+                id="audit-logs-link"
+              >
+                View deployment history
+              </a>
+            </li>
+            <li
+              class="list__item"
+            >
+              <a
+                href="/status"
+                id="blaise-status-link"
+              >
+                Check Blaise status
+              </a>
+            </li>
+          </ul>
+          <div
+            class="panel panel--info panel--no-title  u-mt-m"
+          >
+            <div
+              class="panel__body "
+            >
+              <p>
+                Any 
+                <b>
+                  live
+                </b>
+                 questionnaire within the table below 
+                <b>
+                  does not
+                </b>
+                 have the option to delete and 
+                <b>
+                  cannot be deleted
+                </b>
+                . If a 
+                <b>
+                  live
+                </b>
+                 questionnaire requires deletion, raise a Service Desk ticket to complete this request.
+              </p>
+            </div>
+          </div>
+          <h2
             class="u-mt-m"
           >
-            <a
-              href="/upload"
-              id="deploy-questionnaire-link"
-            >
-              Deploy a questionnaire
-            </a>
-          </p>
-          <h1>
             Table of questionnaires
-          </h1>
-          <div
-            class="u-mb-s"
+          </h2>
+          <table
+            class="table u-mt-s"
+            id="instrument-table"
           >
-            <div
-              class="panel panel--info panel--no-title  u-mt-m"
+            <thead
+              class="table__head u-mt-m"
             >
-              <div
-                class="panel__body"
+              <tr
+                class="table__row"
               >
-                <p>
-                  Any 
-                  <b>
-                    live
-                  </b>
-                   questionnaire within the table below 
-                  <b>
-                    does not
-                  </b>
-                   have the option to delete and 
-                  <b>
-                    cannot be deleted
-                  </b>
-                  . If a 
-                  <b>
-                    live
-                  </b>
-                   questionnaire requires deletion, raise a Service Desk ticket to complete this request.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            class="js-adv-filter"
-          >
-            <div
-              class="grid grid--column@xxs@s u-mb-m@m"
+                <th
+                  class="table__header "
+                  scope="col"
+                >
+                  <span>
+                    Questionnaire
+                  </span>
+                </th>
+                <th
+                  class="table__header "
+                  scope="col"
+                >
+                  <span>
+                    Field period
+                  </span>
+                </th>
+                <th
+                  class="table__header "
+                  scope="col"
+                >
+                  <span>
+                    Status
+                  </span>
+                </th>
+                <th
+                  class="table__header "
+                  scope="col"
+                >
+                  <span>
+                    Install date
+                  </span>
+                </th>
+                <th
+                  class="table__header "
+                  scope="col"
+                >
+                  <span>
+                    Cases
+                  </span>
+                </th>
+                <th
+                  class="table__header "
+                  scope="col"
+                >
+                  <span>
+                    Delete questionnaire
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="table__body"
             >
-              <div
-                class="grid__col col-4@m"
+              <tr
+                class="table__row"
+                data-testid="instrument-table-row"
               >
-                <button
-                  aria-controls="filter-panel"
-                  aria-expanded="false"
-                  aria-label="Toggle filters"
-                  class="btn adv-filter__trigger js-adv-filter__trigger btn btn--secondary btn--small u-mb-m"
-                  name="btn-submit"
-                  type="button"
+                <td
+                  class="table__cell "
+                >
+                  OPN2004A
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  April 2020
+                </td>
+                <td
+                  class="table__cell "
                 >
                   <span
-                    class="btn__inner"
+                    class="status status--error"
                   >
-                    Show filters
+                    Failed
                   </span>
-                </button>
-                <div
-                  class="adv-filter__panel js-adv-filter__panel"
-                  id="filter-panel"
+                </td>
+                <td
+                  class="table__cell "
                 >
-                  <h2
-                    class="u-fs-l"
+                  15/01/2021 15:26
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  0
+                </td>
+                <td
+                  class="table__cell "
+                  id="delete-OPN2004A"
+                >
+                  <a
+                    aria-label="Delete questionnaire OPN2004A"
+                    data-testid="delete-OPN2004A"
+                    href="/delete"
+                    id="delete-button-OPN2004A"
                   >
-                    Filters
-                  </h2>
-                  <form
-                    class="js-adv-filter__form"
-                    method="POST"
-                  >
-                    <button
-                      class="adv-filter__reset js-adv-filter__reset btn btn--secondary btn--small"
-                      id="reset-filter-button"
-                      type="reset"
-                    >
-                      <span
-                        class="btn__inner"
-                      >
-                        Reset all filters
-                      </span>
-                    </button>
-                    <div
-                      class="adv-filter__item js-adv-filter__item"
-                      data-default-text="All surveys"
-                      data-multi-select-text="{n} filters selected"
-                    >
-                      <fieldset
-                        aria-controls="adv-filter-gallery"
-                        class="fieldset"
-                      >
-                        <legend
-                          class="fieldset__legend"
-                        >
-                          Surveys
-                        </legend>
-                        <div
-                          class="adv-filter__selection"
-                        >
-                          <span
-                            class="u-vh"
-                          >
-                            Active filters: 
-                          </span>
-                          <span
-                            class="u-fs-s js-adv-filter__selection"
-                          >
-                            All surveys
-                          </span>
-                        </div>
-                        <p
-                          class="checkboxes__label"
-                        />
-                        <div
-                          class="checkboxes__items"
-                        >
-                          <p
-                            class="checkboxes__item"
-                          >
-                            <span
-                              class="checkbox checkbox--toggle"
-                            >
-                              <input
-                                class="checkbox__input js-checkbox "
-                                data-filter="opn"
-                                id="opn"
-                                type="checkbox"
-                                value="opn"
-                              />
-                              <label
-                                class="checkbox__label  "
-                                for="opn"
-                                id="opn-label"
-                              >
-                                OPN
-                              </label>
-                            </span>
-                          </p>
-                          <br />
-                          <p
-                            class="checkboxes__item"
-                          >
-                            <span
-                              class="checkbox checkbox--toggle"
-                            >
-                              <input
-                                class="checkbox__input js-checkbox "
-                                data-filter="lms"
-                                id="lms"
-                                type="checkbox"
-                                value="lms"
-                              />
-                              <label
-                                class="checkbox__label  "
-                                for="lms"
-                                id="lms-label"
-                              >
-                                LMS
-                              </label>
-                            </span>
-                          </p>
-                        </div>
-                      </fieldset>
-                    </div>
-                    <div
-                      class="adv-filter__item js-adv-filter__item"
-                      data-default-text="All statuses"
-                      data-multi-select-text="{n} filters selected"
-                    >
-                      <fieldset
-                        aria-controls="adv-filter-gallery"
-                        class="fieldset"
-                      >
-                        <legend
-                          class="fieldset__legend"
-                        >
-                          Questionnaire status
-                        </legend>
-                        <div
-                          class="adv-filter__selection"
-                        >
-                          <span
-                            class="u-vh"
-                          >
-                            Active filters: 
-                          </span>
-                          <span
-                            class="u-fs-s js-adv-filter__selection"
-                          >
-                            All statuses
-                          </span>
-                        </div>
-                        <p
-                          class="checkboxes__label"
-                        />
-                        <div
-                          class="checkboxes__items"
-                        >
-                          <p
-                            class="checkboxes__item"
-                          >
-                            <span
-                              class="checkbox checkbox--toggle"
-                            >
-                              <input
-                                class="checkbox__input js-checkbox "
-                                data-filter="Active"
-                                id="Active"
-                                type="checkbox"
-                                value="Active"
-                              />
-                              <label
-                                class="checkbox__label  "
-                                for="Active"
-                                id="Active-label"
-                              >
-                                Active
-                              </label>
-                            </span>
-                          </p>
-                          <br />
-                          <p
-                            class="checkboxes__item"
-                          >
-                            <span
-                              class="checkbox checkbox--toggle"
-                            >
-                              <input
-                                class="checkbox__input js-checkbox "
-                                data-filter="Erroneous"
-                                id="Erroneous"
-                                type="checkbox"
-                                value="Erroneous"
-                              />
-                              <label
-                                class="checkbox__label  "
-                                for="Erroneous"
-                                id="Erroneous-label"
-                              >
-                                Erroneous
-                              </label>
-                            </span>
-                          </p>
-                          <br />
-                          <p
-                            class="checkboxes__item"
-                          >
-                            <span
-                              class="checkbox checkbox--toggle"
-                            >
-                              <input
-                                class="checkbox__input js-checkbox "
-                                data-filter="Live"
-                                id="Live"
-                                type="checkbox"
-                                value="Live"
-                              />
-                              <label
-                                class="checkbox__label  "
-                                for="Live"
-                                id="Live-label"
-                              >
-                                Live
-                              </label>
-                            </span>
-                          </p>
-                        </div>
-                      </fieldset>
-                    </div>
-                    <div
-                      class="adv-filter__actions"
-                    >
-                      <button
-                        class="btn btn btn--small js-adv-filter__show"
-                        name="btn-submit"
-                        type="button"
-                      >
-                        <span
-                          class="btn__inner"
-                        >
-                          Show (
-                          <span
-                            class="js-adv-filter__show-results"
-                          >
-                            7
-                          </span>
-                           results)
-                        </span>
-                      </button>
-                      <button
-                        class="btn btn--small btn--secondary js-adv-filter__close"
-                        name="btn-submit"
-                        type="button"
-                      >
-                        <span
-                          class="btn__inner"
-                        >
-                          Close
-                        </span>
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <div
-                class="grid__col col-8@m"
-                id="instrument-table"
+                    Delete
+                  </a>
+                </td>
+              </tr>
+              <tr
+                class="table__row"
+                data-testid="instrument-table-row"
               >
-                <div
-                  class="adv-filter__results-options"
+                <td
+                  class="table__cell "
                 >
-                  <div
-                    class="adv-filter__results-count"
-                  >
-                    <span
-                      class="js-adv-filter__results-count"
-                    >
-                      3
-                    </span>
-                     results of 
-                    3
-                  </div>
-                  <div
-                    class="adv-filter__results-sort"
-                  >
-                    <label
-                      class="label"
-                      for="sort"
-                    >
-                      Sort by
-                    </label>
-                    <select
-                      aria-controls="adv-filter-gallery"
-                      class="input input--select"
-                      data-sort="true"
-                      id="sort"
-                      name="sort"
-                    >
-                      <option
-                        data-sort-number="true"
-                        value="index"
-                      >
-                        Latest installed
-                      </option>
-                      <option
-                        data-sort-number="true"
-                        data-sort-order="desc"
-                        value="index"
-                      >
-                        Oldest installed
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <ul
-                  class="adv-filter__gallery js-adv-filter__gallery"
-                  data-filter-animation="off"
-                  id="adv-filter-gallery"
+                  OPN2007T
+                </td>
+                <td
+                  class="table__cell "
                 >
-                  <li
-                    class="filter__item js-filter__item"
-                    data-filter="opn Active false"
-                    data-sort-index="0"
-                  >
-                    <div
-                      class="download__content"
-                    >
-                      <h2
-                        class="u-fs-m u-mt-no u-mb-xs"
-                      >
-                        OPN2004A
-                      </h2>
-                      <dl
-                        aria-label="This is an example of the metadata component"
-                        class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-                        title="This is an example of the metadata component"
-                      >
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Field Period:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          April 2020
-                        </dd>
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Status:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          Active
-                        </dd>
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Installed date:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          15/01/2021 15:26
-                        </dd>
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Number of cases:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          0
-                        </dd>
-                      </dl>
-                      <p
-                        data-testid="delete-OPN2004A-block"
-                        id="delete-OPN2004A"
-                      >
-                        <a
-                          data-testid="delete-OPN2004A"
-                          href="/delete"
-                          id="delete-button-OPN2004A"
-                        >
-                          Delete
-                        </a>
-                      </p>
-                    </div>
-                  </li>
-                  <li
-                    class="filter__item js-filter__item"
-                    data-filter="opn Active Live"
-                    data-sort-index="1"
-                  >
-                    <div
-                      class="download__content"
-                    >
-                      <h2
-                        class="u-fs-m u-mt-no u-mb-xs"
-                      >
-                        OPN2007T
-                      </h2>
-                      <dl
-                        aria-label="This is an example of the metadata component"
-                        class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-                        title="This is an example of the metadata component"
-                      >
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Field Period:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          July 2020
-                        </dd>
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Status:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          Active
-                        </dd>
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Installed date:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          15/01/2021 15:18
-                        </dd>
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Number of cases:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          10
-                        </dd>
-                      </dl>
-                      <p
-                        data-testid="delete-OPN2007T-block"
-                        id="delete-OPN2007T"
-                      >
-                        Questionnaire is live
-                      </p>
-                    </div>
-                  </li>
-                  <li
-                    class="filter__item js-filter__item"
-                    data-filter="opn Active false"
-                    data-sort-index="2"
-                  >
-                    <div
-                      class="download__content"
-                    >
-                      <h2
-                        class="u-fs-m u-mt-no u-mb-xs"
-                      >
-                        OPN2101A
-                      </h2>
-                      <dl
-                        aria-label="This is an example of the metadata component"
-                        class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-                        title="This is an example of the metadata component"
-                      >
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Field Period:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          January 2021
-                        </dd>
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Status:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          Active
-                        </dd>
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Installed date:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          15/01/2021 14:41
-                        </dd>
-                        <dt
-                          class="metadata__term grid__col col-4@m"
-                        >
-                          Number of cases:
-                        </dt>
-                        <dd
-                          class="metadata__value grid__col col-8@m"
-                        >
-                          0
-                        </dd>
-                      </dl>
-                      <p
-                        data-testid="delete-OPN2101A-block"
-                        id="delete-OPN2101A"
-                      >
-                        <a
-                          data-testid="delete-OPN2101A"
-                          href="/delete"
-                          id="delete-button-OPN2101A"
-                        >
-                          Delete
-                        </a>
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-                <div
-                  class="adv-filter__no-results u-hidden"
-                  data-fallback-gallery-id="adv-filter-gallery"
+                  July 2020
+                </td>
+                <td
+                  class="table__cell "
                 >
-                  <h2>
-                    No results found
-                  </h2>
-                </div>
-              </div>
-            </div>
-          </div>
+                  <span
+                    class="status status--success"
+                  >
+                    Active
+                  </span>
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  15/01/2021 15:18
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  10
+                </td>
+                <td
+                  class="table__cell "
+                  id="delete-OPN2007T"
+                >
+                  Questionnaire is live
+                </td>
+              </tr>
+              <tr
+                class="table__row"
+                data-testid="instrument-table-row"
+              >
+                <td
+                  class="table__cell "
+                >
+                  OPN2101A
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  January 2021
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  <span
+                    class="status status--success"
+                  >
+                    Active
+                  </span>
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  15/01/2021 14:41
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  0
+                </td>
+                <td
+                  class="table__cell "
+                  id="delete-OPN2101A"
+                >
+                  <a
+                    aria-label="Delete questionnaire OPN2101A"
+                    data-testid="delete-OPN2101A"
+                    href="/delete"
+                    id="delete-button-OPN2101A"
+                  >
+                    Delete
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </main>
       </div>
       <footer
@@ -730,9 +400,6 @@ Object {
         </div>
       </footer>
     </div>
-    <script
-      src="https://cdn.ons.gov.uk/sdc/design-system/31.4.0/scripts/main.es5.js"
-    />
   </body>,
   "container": <div>
     <div
@@ -795,7 +462,7 @@ Object {
                   <img
                     alt="Office for National Statistics logo"
                     class="header__logo"
-                    src="https://ons-design-system.netlify.app/img/ons-logo-neg-en.svg"
+                    src="https://cdn.ons.gov.uk/sdc/design-system/31.4.0/img/ons-logo-neg-en.svg"
                   />
                 </picture>
               </a>
@@ -833,599 +500,271 @@ Object {
         class="page__main"
         id="main-content"
       >
-        <p
+        <ul
+          class="list list--bare list--inline u-mt-m"
+        >
+          <li
+            class="list__item"
+          >
+            <a
+              href="/upload"
+              id="deploy-questionnaire-link"
+            >
+              Deploy a questionnaire
+            </a>
+          </li>
+          <li
+            class="list__item"
+          >
+            <a
+              href="/audit"
+              id="audit-logs-link"
+            >
+              View deployment history
+            </a>
+          </li>
+          <li
+            class="list__item"
+          >
+            <a
+              href="/status"
+              id="blaise-status-link"
+            >
+              Check Blaise status
+            </a>
+          </li>
+        </ul>
+        <div
+          class="panel panel--info panel--no-title  u-mt-m"
+        >
+          <div
+            class="panel__body "
+          >
+            <p>
+              Any 
+              <b>
+                live
+              </b>
+               questionnaire within the table below 
+              <b>
+                does not
+              </b>
+               have the option to delete and 
+              <b>
+                cannot be deleted
+              </b>
+              . If a 
+              <b>
+                live
+              </b>
+               questionnaire requires deletion, raise a Service Desk ticket to complete this request.
+            </p>
+          </div>
+        </div>
+        <h2
           class="u-mt-m"
         >
-          <a
-            href="/upload"
-            id="deploy-questionnaire-link"
-          >
-            Deploy a questionnaire
-          </a>
-        </p>
-        <h1>
           Table of questionnaires
-        </h1>
-        <div
-          class="u-mb-s"
+        </h2>
+        <table
+          class="table u-mt-s"
+          id="instrument-table"
         >
-          <div
-            class="panel panel--info panel--no-title  u-mt-m"
+          <thead
+            class="table__head u-mt-m"
           >
-            <div
-              class="panel__body"
+            <tr
+              class="table__row"
             >
-              <p>
-                Any 
-                <b>
-                  live
-                </b>
-                 questionnaire within the table below 
-                <b>
-                  does not
-                </b>
-                 have the option to delete and 
-                <b>
-                  cannot be deleted
-                </b>
-                . If a 
-                <b>
-                  live
-                </b>
-                 questionnaire requires deletion, raise a Service Desk ticket to complete this request.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div
-          class="js-adv-filter"
-        >
-          <div
-            class="grid grid--column@xxs@s u-mb-m@m"
+              <th
+                class="table__header "
+                scope="col"
+              >
+                <span>
+                  Questionnaire
+                </span>
+              </th>
+              <th
+                class="table__header "
+                scope="col"
+              >
+                <span>
+                  Field period
+                </span>
+              </th>
+              <th
+                class="table__header "
+                scope="col"
+              >
+                <span>
+                  Status
+                </span>
+              </th>
+              <th
+                class="table__header "
+                scope="col"
+              >
+                <span>
+                  Install date
+                </span>
+              </th>
+              <th
+                class="table__header "
+                scope="col"
+              >
+                <span>
+                  Cases
+                </span>
+              </th>
+              <th
+                class="table__header "
+                scope="col"
+              >
+                <span>
+                  Delete questionnaire
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="table__body"
           >
-            <div
-              class="grid__col col-4@m"
+            <tr
+              class="table__row"
+              data-testid="instrument-table-row"
             >
-              <button
-                aria-controls="filter-panel"
-                aria-expanded="false"
-                aria-label="Toggle filters"
-                class="btn adv-filter__trigger js-adv-filter__trigger btn btn--secondary btn--small u-mb-m"
-                name="btn-submit"
-                type="button"
+              <td
+                class="table__cell "
+              >
+                OPN2004A
+              </td>
+              <td
+                class="table__cell "
+              >
+                April 2020
+              </td>
+              <td
+                class="table__cell "
               >
                 <span
-                  class="btn__inner"
+                  class="status status--error"
                 >
-                  Show filters
+                  Failed
                 </span>
-              </button>
-              <div
-                class="adv-filter__panel js-adv-filter__panel"
-                id="filter-panel"
+              </td>
+              <td
+                class="table__cell "
               >
-                <h2
-                  class="u-fs-l"
+                15/01/2021 15:26
+              </td>
+              <td
+                class="table__cell "
+              >
+                0
+              </td>
+              <td
+                class="table__cell "
+                id="delete-OPN2004A"
+              >
+                <a
+                  aria-label="Delete questionnaire OPN2004A"
+                  data-testid="delete-OPN2004A"
+                  href="/delete"
+                  id="delete-button-OPN2004A"
                 >
-                  Filters
-                </h2>
-                <form
-                  class="js-adv-filter__form"
-                  method="POST"
-                >
-                  <button
-                    class="adv-filter__reset js-adv-filter__reset btn btn--secondary btn--small"
-                    id="reset-filter-button"
-                    type="reset"
-                  >
-                    <span
-                      class="btn__inner"
-                    >
-                      Reset all filters
-                    </span>
-                  </button>
-                  <div
-                    class="adv-filter__item js-adv-filter__item"
-                    data-default-text="All surveys"
-                    data-multi-select-text="{n} filters selected"
-                  >
-                    <fieldset
-                      aria-controls="adv-filter-gallery"
-                      class="fieldset"
-                    >
-                      <legend
-                        class="fieldset__legend"
-                      >
-                        Surveys
-                      </legend>
-                      <div
-                        class="adv-filter__selection"
-                      >
-                        <span
-                          class="u-vh"
-                        >
-                          Active filters: 
-                        </span>
-                        <span
-                          class="u-fs-s js-adv-filter__selection"
-                        >
-                          All surveys
-                        </span>
-                      </div>
-                      <p
-                        class="checkboxes__label"
-                      />
-                      <div
-                        class="checkboxes__items"
-                      >
-                        <p
-                          class="checkboxes__item"
-                        >
-                          <span
-                            class="checkbox checkbox--toggle"
-                          >
-                            <input
-                              class="checkbox__input js-checkbox "
-                              data-filter="opn"
-                              id="opn"
-                              type="checkbox"
-                              value="opn"
-                            />
-                            <label
-                              class="checkbox__label  "
-                              for="opn"
-                              id="opn-label"
-                            >
-                              OPN
-                            </label>
-                          </span>
-                        </p>
-                        <br />
-                        <p
-                          class="checkboxes__item"
-                        >
-                          <span
-                            class="checkbox checkbox--toggle"
-                          >
-                            <input
-                              class="checkbox__input js-checkbox "
-                              data-filter="lms"
-                              id="lms"
-                              type="checkbox"
-                              value="lms"
-                            />
-                            <label
-                              class="checkbox__label  "
-                              for="lms"
-                              id="lms-label"
-                            >
-                              LMS
-                            </label>
-                          </span>
-                        </p>
-                      </div>
-                    </fieldset>
-                  </div>
-                  <div
-                    class="adv-filter__item js-adv-filter__item"
-                    data-default-text="All statuses"
-                    data-multi-select-text="{n} filters selected"
-                  >
-                    <fieldset
-                      aria-controls="adv-filter-gallery"
-                      class="fieldset"
-                    >
-                      <legend
-                        class="fieldset__legend"
-                      >
-                        Questionnaire status
-                      </legend>
-                      <div
-                        class="adv-filter__selection"
-                      >
-                        <span
-                          class="u-vh"
-                        >
-                          Active filters: 
-                        </span>
-                        <span
-                          class="u-fs-s js-adv-filter__selection"
-                        >
-                          All statuses
-                        </span>
-                      </div>
-                      <p
-                        class="checkboxes__label"
-                      />
-                      <div
-                        class="checkboxes__items"
-                      >
-                        <p
-                          class="checkboxes__item"
-                        >
-                          <span
-                            class="checkbox checkbox--toggle"
-                          >
-                            <input
-                              class="checkbox__input js-checkbox "
-                              data-filter="Active"
-                              id="Active"
-                              type="checkbox"
-                              value="Active"
-                            />
-                            <label
-                              class="checkbox__label  "
-                              for="Active"
-                              id="Active-label"
-                            >
-                              Active
-                            </label>
-                          </span>
-                        </p>
-                        <br />
-                        <p
-                          class="checkboxes__item"
-                        >
-                          <span
-                            class="checkbox checkbox--toggle"
-                          >
-                            <input
-                              class="checkbox__input js-checkbox "
-                              data-filter="Erroneous"
-                              id="Erroneous"
-                              type="checkbox"
-                              value="Erroneous"
-                            />
-                            <label
-                              class="checkbox__label  "
-                              for="Erroneous"
-                              id="Erroneous-label"
-                            >
-                              Erroneous
-                            </label>
-                          </span>
-                        </p>
-                        <br />
-                        <p
-                          class="checkboxes__item"
-                        >
-                          <span
-                            class="checkbox checkbox--toggle"
-                          >
-                            <input
-                              class="checkbox__input js-checkbox "
-                              data-filter="Live"
-                              id="Live"
-                              type="checkbox"
-                              value="Live"
-                            />
-                            <label
-                              class="checkbox__label  "
-                              for="Live"
-                              id="Live-label"
-                            >
-                              Live
-                            </label>
-                          </span>
-                        </p>
-                      </div>
-                    </fieldset>
-                  </div>
-                  <div
-                    class="adv-filter__actions"
-                  >
-                    <button
-                      class="btn btn btn--small js-adv-filter__show"
-                      name="btn-submit"
-                      type="button"
-                    >
-                      <span
-                        class="btn__inner"
-                      >
-                        Show (
-                        <span
-                          class="js-adv-filter__show-results"
-                        >
-                          7
-                        </span>
-                         results)
-                      </span>
-                    </button>
-                    <button
-                      class="btn btn--small btn--secondary js-adv-filter__close"
-                      name="btn-submit"
-                      type="button"
-                    >
-                      <span
-                        class="btn__inner"
-                      >
-                        Close
-                      </span>
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div
-              class="grid__col col-8@m"
-              id="instrument-table"
+                  Delete
+                </a>
+              </td>
+            </tr>
+            <tr
+              class="table__row"
+              data-testid="instrument-table-row"
             >
-              <div
-                class="adv-filter__results-options"
+              <td
+                class="table__cell "
               >
-                <div
-                  class="adv-filter__results-count"
-                >
-                  <span
-                    class="js-adv-filter__results-count"
-                  >
-                    3
-                  </span>
-                   results of 
-                  3
-                </div>
-                <div
-                  class="adv-filter__results-sort"
-                >
-                  <label
-                    class="label"
-                    for="sort"
-                  >
-                    Sort by
-                  </label>
-                  <select
-                    aria-controls="adv-filter-gallery"
-                    class="input input--select"
-                    data-sort="true"
-                    id="sort"
-                    name="sort"
-                  >
-                    <option
-                      data-sort-number="true"
-                      value="index"
-                    >
-                      Latest installed
-                    </option>
-                    <option
-                      data-sort-number="true"
-                      data-sort-order="desc"
-                      value="index"
-                    >
-                      Oldest installed
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <ul
-                class="adv-filter__gallery js-adv-filter__gallery"
-                data-filter-animation="off"
-                id="adv-filter-gallery"
+                OPN2007T
+              </td>
+              <td
+                class="table__cell "
               >
-                <li
-                  class="filter__item js-filter__item"
-                  data-filter="opn Active false"
-                  data-sort-index="0"
-                >
-                  <div
-                    class="download__content"
-                  >
-                    <h2
-                      class="u-fs-m u-mt-no u-mb-xs"
-                    >
-                      OPN2004A
-                    </h2>
-                    <dl
-                      aria-label="This is an example of the metadata component"
-                      class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-                      title="This is an example of the metadata component"
-                    >
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Field Period:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        April 2020
-                      </dd>
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Status:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        Active
-                      </dd>
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Installed date:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        15/01/2021 15:26
-                      </dd>
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Number of cases:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        0
-                      </dd>
-                    </dl>
-                    <p
-                      data-testid="delete-OPN2004A-block"
-                      id="delete-OPN2004A"
-                    >
-                      <a
-                        data-testid="delete-OPN2004A"
-                        href="/delete"
-                        id="delete-button-OPN2004A"
-                      >
-                        Delete
-                      </a>
-                    </p>
-                  </div>
-                </li>
-                <li
-                  class="filter__item js-filter__item"
-                  data-filter="opn Active Live"
-                  data-sort-index="1"
-                >
-                  <div
-                    class="download__content"
-                  >
-                    <h2
-                      class="u-fs-m u-mt-no u-mb-xs"
-                    >
-                      OPN2007T
-                    </h2>
-                    <dl
-                      aria-label="This is an example of the metadata component"
-                      class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-                      title="This is an example of the metadata component"
-                    >
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Field Period:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        July 2020
-                      </dd>
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Status:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        Active
-                      </dd>
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Installed date:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        15/01/2021 15:18
-                      </dd>
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Number of cases:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        10
-                      </dd>
-                    </dl>
-                    <p
-                      data-testid="delete-OPN2007T-block"
-                      id="delete-OPN2007T"
-                    >
-                      Questionnaire is live
-                    </p>
-                  </div>
-                </li>
-                <li
-                  class="filter__item js-filter__item"
-                  data-filter="opn Active false"
-                  data-sort-index="2"
-                >
-                  <div
-                    class="download__content"
-                  >
-                    <h2
-                      class="u-fs-m u-mt-no u-mb-xs"
-                    >
-                      OPN2101A
-                    </h2>
-                    <dl
-                      aria-label="This is an example of the metadata component"
-                      class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-                      title="This is an example of the metadata component"
-                    >
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Field Period:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        January 2021
-                      </dd>
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Status:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        Active
-                      </dd>
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Installed date:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        15/01/2021 14:41
-                      </dd>
-                      <dt
-                        class="metadata__term grid__col col-4@m"
-                      >
-                        Number of cases:
-                      </dt>
-                      <dd
-                        class="metadata__value grid__col col-8@m"
-                      >
-                        0
-                      </dd>
-                    </dl>
-                    <p
-                      data-testid="delete-OPN2101A-block"
-                      id="delete-OPN2101A"
-                    >
-                      <a
-                        data-testid="delete-OPN2101A"
-                        href="/delete"
-                        id="delete-button-OPN2101A"
-                      >
-                        Delete
-                      </a>
-                    </p>
-                  </div>
-                </li>
-              </ul>
-              <div
-                class="adv-filter__no-results u-hidden"
-                data-fallback-gallery-id="adv-filter-gallery"
+                July 2020
+              </td>
+              <td
+                class="table__cell "
               >
-                <h2>
-                  No results found
-                </h2>
-              </div>
-            </div>
-          </div>
-        </div>
+                <span
+                  class="status status--success"
+                >
+                  Active
+                </span>
+              </td>
+              <td
+                class="table__cell "
+              >
+                15/01/2021 15:18
+              </td>
+              <td
+                class="table__cell "
+              >
+                10
+              </td>
+              <td
+                class="table__cell "
+                id="delete-OPN2007T"
+              >
+                Questionnaire is live
+              </td>
+            </tr>
+            <tr
+              class="table__row"
+              data-testid="instrument-table-row"
+            >
+              <td
+                class="table__cell "
+              >
+                OPN2101A
+              </td>
+              <td
+                class="table__cell "
+              >
+                January 2021
+              </td>
+              <td
+                class="table__cell "
+              >
+                <span
+                  class="status status--success"
+                >
+                  Active
+                </span>
+              </td>
+              <td
+                class="table__cell "
+              >
+                15/01/2021 14:41
+              </td>
+              <td
+                class="table__cell "
+              >
+                0
+              </td>
+              <td
+                class="table__cell "
+                id="delete-OPN2101A"
+              >
+                <a
+                  aria-label="Delete questionnaire OPN2101A"
+                  data-testid="delete-OPN2101A"
+                  href="/delete"
+                  id="delete-button-OPN2101A"
+                >
+                  Delete
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </main>
     </div>
     <footer

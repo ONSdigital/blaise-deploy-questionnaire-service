@@ -21,4 +21,39 @@ function requestPromiseJson(method: string, url: string, body: any = null): Prom
     });
 }
 
-export {requestPromiseJson};
+type PromiseResponseList = [boolean, []];
+
+function requestPromiseJsonList(method: string, url: string, body: any = null): Promise<PromiseResponseList> {
+    return new Promise((resolve: (object: PromiseResponseList) => void, reject: (error: string) => void) => {
+        fetch(url, {
+            "method": method,
+            "body": body
+        })
+            .then(async response => {
+                response.json().then(
+                    data => {
+                        if (response.status === 200) {
+                            if (!Array.isArray(data)) {
+                                resolve([false, []]);
+                            }
+                            resolve([true, data]);
+                        } else if (response.status === 404) {
+                            resolve([true, data]);
+                        } else {
+                            resolve([false, []]);
+                        }
+                    }
+                ).catch((error) => {
+                    console.log(`Failed to read JSON from response, Error: ${error}`);
+                    resolve([false, []]);
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                reject(err);
+            });
+    });
+}
+
+export {requestPromiseJson, requestPromiseJsonList};
+

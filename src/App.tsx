@@ -6,7 +6,7 @@ import {Instrument} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
 import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
-import DeleteConfirmation from "./Components/DeleteConfirmation";
+import DeleteConfirmation from "./Components/DeletePage/DeleteConfirmation";
 import StatusPage from "./Components/StatusPage";
 import {
     NotProductionWarning,
@@ -17,6 +17,8 @@ import {
     ONSErrorPanel
 } from "blaise-design-system-react-components";
 import {getAllInstruments} from "./utilities/http";
+import AuditPage from "./Components/AuditPage";
+import ReinstallInstruments from "./Components/ReinstallInstruments";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -69,6 +71,12 @@ function App(): ReactElement {
                             <Route path="/status">
                                 <StatusPage/>
                             </Route>
+                            <Route path="/reinstall">
+                                <ReinstallInstruments installedInstruments={instruments}/>
+                            </Route>
+                            <Route path="/audit">
+                                <AuditPage/>
+                            </Route>
                             <Route path="/UploadSummary">
                                 <DeploymentSummary getList={getInstrumentList}/>
                             </Route>
@@ -83,13 +91,35 @@ function App(): ReactElement {
                                 {status !== "" && <ONSPanel status="success">{status}</ONSPanel>}
                                 {listError.includes("Unable") && <ONSErrorPanel/>}
 
-                                <p className="u-mt-m">
-                                    <Link to="/upload" id="deploy-questionnaire-link">
-                                        Deploy a questionnaire
-                                    </Link>
-                                </p>
+                                <ul className="list list--bare list--inline u-mt-m">
+                                    <li className="list__item">
+                                        <Link to="/upload" id="deploy-questionnaire-link">
+                                            Deploy a questionnaire
+                                        </Link>
+                                    </li>
+                                    <li className="list__item">
+                                        <Link to="/audit" id="audit-logs-link">
+                                            View deployment history
+                                        </Link>
+                                    </li>
+                                    <li className="list__item">
+                                        <Link to="/status" id="blaise-status-link">
+                                            Check Blaise status
+                                        </Link>
+                                    </li>
+                                </ul>
+
+                                <ONSPanel>
+                                    <p>
+                                        Any <b>live</b> questionnaire within the table below <b>does not</b> have the
+                                        option to delete and <b>cannot be deleted</b>.
+
+                                        If a <b>live</b> questionnaire requires deletion, raise a Service Desk ticket to
+                                        complete this request.
+                                    </p>
+                                </ONSPanel>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList list={instruments} listError={listError}/>
+                                    <InstrumentList instrumentList={instruments} listError={listError}/>
                                 </ErrorBoundary>
                             </Route>
                         </Switch>

@@ -25,6 +25,7 @@
   ],
   "exclude": [
     "node_modules",
-    "server/**/*.test.js"
+    "server/**/*.test.js",
+    "**/*.test.ts"
   ]
 }

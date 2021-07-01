@@ -19,4 +19,11 @@ interface Survey {
     survey: string
 }
 
-export type {Instrument, Survey};
+interface AuditLog {
+    id: string
+    timestamp: string
+    message: string
+    severity: string
+}
+
+export type {Instrument, Survey, AuditLog};

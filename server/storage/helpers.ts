@@ -32,6 +32,28 @@ const getSignedUrl = (filename: string): Promise<string> => new Promise((resolve
     });
 });
 
+const getBucketItems = (): Promise<string[]> => new Promise((resolve, reject) => {
+    async function getBucketItems() {
+        const [files] = await bucket.getFiles();
+        const fileList: string[] = [];
+
+        files.map(({name}) => {
+            if (name.endsWith(".bpkg")) {
+                fileList.push(name)
+            }
+        })
+        return fileList;
+    }
+
+    getBucketItems()
+        .then((files) => {
+            resolve(files);
+        }).catch((error) => {
+        console.error(error, "getBucketItems Failed");
+        reject("getBucketItems Failed");
+    });
+});
+
 interface file {
     name?: string
     updated?: string
@@ -63,4 +85,4 @@ const checkFile = (filename: string): Promise<file> => new Promise((resolve, rej
 });
 
 
-export {checkFile, getSignedUrl};
+export {checkFile, getSignedUrl, getBucketItems};

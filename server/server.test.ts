@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import app from "../server"; // Link to your server file
+import app from "./server"; // Link to your server file
 import supertest from "supertest";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
@@ -10,6 +10,17 @@ const request = supertest(app);
 
 // This sets the mock adapter on the default instance
 const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
+
+
+describe("Test Heath Endpoint", () => {
+    it("should return a 200 status and json message", async done => {
+        const response = await request.get("/health_check");
+
+        expect(response.statusCode).toEqual(200);
+        expect(response.body).toStrictEqual({status: 200});
+        done();
+    });
+});
 
 
 // Mock any GET request to /api/instruments

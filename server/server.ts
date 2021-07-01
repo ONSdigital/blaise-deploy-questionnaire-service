@@ -4,17 +4,23 @@ import ejs from "ejs";
 import dotenv from "dotenv";
 import {getEnvironmentVariables} from "./Config";
 import createLogger from "./pino";
+import * as profiler from "@google-cloud/profiler";
+
+profiler.start({logLevel: 4}).catch((err: unknown) => {
+    console.log(`Failed to start profiler: ${err}`);
+});
 
 if (process.env.NODE_ENV !== "production") {
     dotenv.config({path: __dirname + "/../../.env"});
 }
 
 const server = express();
-const logger = createLogger();
+const logger: any = createLogger();
 server.use(logger);
 
-import {checkFile, getSignedUrl} from "./storage/helpers";
+import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
 import BlaiseAPIRouter from "./BlaiseAPI";
+import {auditLogError, auditLogInfo, getAuditLogs} from "./audit_logging";
 
 //axios.defaults.timeout = 10000;
 
@@ -37,15 +43,29 @@ server.get("/upload/init", function (req: Request, res: Response) {
         res.status(500).json("No filename provided");
         return;
     }
-    req.log.info(`/getSignedUrl endpoint called with filename: ${filename}`);
+
     getSignedUrl(filename)
         .then((url) => {
-            req.log.info(url, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
+            req.log.info({url}, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
             res.status(200).json(url);
         })
         .catch((error) => {
             req.log.error(error, "Failed to obtain Signed Url");
             res.status(500).json("Failed to obtain Signed Url");
+        });
+});
+
+server.get("/bucket/files", function (req: Request, res: Response) {
+    logger(req, res);
+    req.log.info(`//bucket/files endpoint called`);
+    getBucketItems()
+        .then((url) => {
+            req.log.info(`Obtained list of files in Bucket ${BUCKET_NAME}`);
+            res.status(200).json(url);
+        })
+        .catch((error) => {
+            req.log.error(error, "Failed to obtain list of files in bucket");
+            res.status(500).json("Failed to list of files in bucket");
         });
 });
 
@@ -57,19 +77,35 @@ server.get("/upload/verify", function (req: Request, res: Response) {
         res.status(500).json("No filename provided");
         return;
     }
-    req.log.info(`/upload/verify endpoint called with filename: ${filename}`);
+
     checkFile(filename)
         .then((file) => {
             if (!file.found) {
                 req.log.warn(`File ${filename} not found in Bucket ${BUCKET_NAME}`);
+                auditLogError(req.log, `Failed to install questionnaire ${filename}, file upload failed`);
                 res.status(404).json("Not found");
                 return;
             }
             req.log.info(`File ${filename} found in Bucket ${BUCKET_NAME}`);
+            auditLogInfo(req.log, `Successfully uploaded questionnaire file ${filename}`);
             res.status(200).json(file);
         })
         .catch((error) => {
             req.log.error(error, "Failed calling checkFile");
+            auditLogError(req.log, `Failed to install questionnaire ${filename}, unable to verify if file had been uploaded`);
+            res.status(500).json(error);
+        });
+});
+
+server.get("/api/audit", function (req: Request, res: Response) {
+    logger(req, res);
+    getAuditLogs()
+        .then((logs) => {
+            req.log.info("Retrieved audit logs");
+            res.status(200).json(logs);
+        })
+        .catch((error) => {
+            req.log.error(error, "Failed calling getAuditLogs");
             res.status(500).json(error);
         });
 });

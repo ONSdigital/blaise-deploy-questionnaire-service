@@ -37,6 +37,42 @@
           "sizes": "192x192"
         }
       ]
+    },
+    {
+      "name": "Deploy new questionnaire",
+      "short_name": "Deploy",
+      "description": "Deploy a new questionnaire to Blaise",
+      "url": "/upload?source=pwa",
+      "icons": [
+        {
+          "src": "/static/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Check Blaise Status",
+      "short_name": "Status",
+      "description": "Check the current state of the Blaise connection",
+      "url": "/status?source=pwa",
+      "icons": [
+        {
+          "src": "/static/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "View deployment history",
+      "short_name": "Audit",
+      "description": "View deployment history of questionnaires",
+      "url": "/audit?source=pwa",
+      "icons": [
+        {
+          "src": "/static/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
