@@ -1,14 +1,14 @@
 import {requestPromiseJson} from "./requestPromise";
 
-function setTOStartDate(instrumentName: string, liveDate: string): Promise<boolean> {
-    console.log(`Call to setTOStartDate(${instrumentName}, ${liveDate})`);
+function setTOStartDate(instrumentName: string, toStartDate: string | undefined): Promise<boolean> {
+    console.log(`Call to setTOStartDate(${instrumentName}, ${toStartDate})`);
     const url = `/api/livedate/${instrumentName}`;
-    const data = {"livedate": liveDate};
+    const data = {"livedate": toStartDate};
 
     return new Promise((resolve: (object: boolean) => void) => {
         requestPromiseJson("POST", url, data).then(([status, data]) => {
             console.log(`Response from set TO start date: Status ${status}, data ${data}`);
-            if (status === 201) {
+            if (status === 200 || status === 201) {
                 resolve(true);
             } else {
                 resolve(false);

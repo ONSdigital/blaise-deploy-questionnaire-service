@@ -38,13 +38,11 @@ export async function uploadAndInstallFile(instrumentName: string, toStartDate: 
     console.log("Start uploading the file");
 
     console.log(`liveDate ${toStartDate}`);
-    if (toStartDate !== undefined) {
-        const liveDateCreated = await setTOStartDate(instrumentName, toStartDate);
-        if (!liveDateCreated) {
-            setUploadStatus("Failed to store telephone operations start date specified");
-            setUploading(false);
-            return;
-        }
+    const liveDateCreated = await setTOStartDate(instrumentName, toStartDate);
+    if (!liveDateCreated) {
+        setUploadStatus("Failed to store telephone operations start date specified");
+        setUploading(false);
+        return;
     }
 
     // Get the signed url to allow access to the bucket

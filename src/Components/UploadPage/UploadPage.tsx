@@ -100,7 +100,7 @@ function UploadPage(): ReactElement {
                     break;
                 case 3:
                     if (values.askToSetTOStartDate === "no") {
-                        values["set TO start date"] = undefined;
+                        values["set TO start date"] = "";
                     }
                     break;
             }
