@@ -145,6 +145,7 @@ function UploadPage(): ReactElement {
                                         primary={true} label={isLastStep ? "Deploy questionnaire" : "Continue"}/>
                                     {!uploading && !isSubmitting && (
                                         <ONSButton
+                                            id={"cancel-deploy-button"}
                                             onClick={() => history.push("/")}
                                             primary={false} label={"Cancel"}/>
                                     )}
