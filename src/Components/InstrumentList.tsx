@@ -5,12 +5,25 @@ import dateFormatter from "dayjs";
 import {ONSPanel} from "blaise-design-system-react-components";
 
 interface Props {
-    list: Instrument[],
+    instrumentList: Instrument[],
     listError: string
 }
 
-function InstrumentList({list, listError}: Props): ReactElement {
-    list.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
+function getStatusColor(status: string | undefined) {
+    switch (status) {
+        case "Active":
+            return "success";
+        case "Erroneous":
+            return "error";
+        case "Failed":
+            return "error";
+        default:
+            return "info";
+    }
+}
+
+function InstrumentList({instrumentList, listError}: Props): ReactElement {
+    instrumentList.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
 
     useEffect(() => {
         document.body.className = "js-enabled";
@@ -31,14 +44,14 @@ function InstrumentList({list, listError}: Props): ReactElement {
 
     useEffect(() => {
         const filterButton = document.getElementById("reset-filter-button");
-        if (filterButton !== null){
+        if (filterButton !== null) {
             filterButton.click();
             filterButton.click();
         }
-    }, [list]);
+    }, [instrumentList]);
 
     return <>
-        <h1>
+        <h1 className={"u-mt-m"}>
             Table of questionnaires
         </h1>
         <div className="u-mb-s">
@@ -136,9 +149,9 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                         <br/>
                                         <p className="checkboxes__item">
                                   <span className="checkbox checkbox--toggle">
-                                    <input type="checkbox" id="Erroneous" className="checkbox__input js-checkbox "
-                                           value="Erroneous" data-filter="Erroneous"/>
-                                    <label className="checkbox__label  " htmlFor="Erroneous" id="Erroneous-label">Erroneous
+                                    <input type="checkbox" id="Failed" className="checkbox__input js-checkbox "
+                                           value="Failed" data-filter="Failed"/>
+                                    <label className="checkbox__label  " htmlFor="Failed" id="Failed-label">Failed
                                     </label>
                                   </span>
                                         </p>
@@ -173,7 +186,8 @@ function InstrumentList({list, listError}: Props): ReactElement {
                 <div className="grid__col col-8@m" id="instrument-table">
                     <div className="adv-filter__results-options">
                         <div className="adv-filter__results-count">
-                            <span className="js-adv-filter__results-count">{list.length}</span> results of {list.length}
+                            <span className="js-adv-filter__results-count">{instrumentList.length}</span> results
+                            of {instrumentList.length}
                         </div>
                         <div className="adv-filter__results-sort">
                             <label className="label" htmlFor="sort">Sort by</label>
@@ -188,12 +202,12 @@ function InstrumentList({list, listError}: Props): ReactElement {
                     <ul className="adv-filter__gallery js-adv-filter__gallery" id="adv-filter-gallery"
                         data-filter-animation="off">
                         {
-                            list.map((item: Instrument, index) => {
+                            instrumentList.map((item: Instrument, index) => {
                                 return (
                                     <li key={item.name}
                                         id="instrument-table-row"
                                         className="filter__item js-filter__item"
-                                        data-filter={`${item.name.substr(0, 3)} ${item.status} ${(item.active && "Live")}`}
+                                        data-filter={`${item.name.substr(0, 3).toLowerCase()} ${item.status} ${(item.active && "Live")}`}
                                         data-sort-index={index}>
                                         <div className="download__content">
                                             <h2 className="u-fs-m u-mt-no u-mb-xs">{item.name}</h2>
@@ -203,7 +217,12 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                                 <dt className="metadata__term grid__col col-4@m">Field Period:</dt>
                                                 <dd className="metadata__value grid__col col-8@m">{item.fieldPeriod}</dd>
                                                 <dt className="metadata__term grid__col col-4@m">Status:</dt>
-                                                <dd className="metadata__value grid__col col-8@m">{item.status}</dd>
+                                                <dd className="metadata__value grid__col col-8@m">
+                                                    <span
+                                                        className={`status status--${getStatusColor(item.status)}`}>
+                                                        {item.status}
+                                                    </span>
+                                                </dd>
                                                 <dt className="metadata__term grid__col col-4@m">Installed date:</dt>
                                                 <dd className="metadata__value grid__col col-8@m">{dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}
                                                 </dd>
@@ -213,7 +232,8 @@ function InstrumentList({list, listError}: Props): ReactElement {
                                             </dl>
 
                                             <ul className="list list--bare list--inline u-mt-m">
-                                                <li className="list__item" id={`delete-${item.name}`} data-testid={`delete-${item.name}-block`}>
+                                                <li className="list__item" id={`delete-${item.name}`}
+                                                    data-testid={`delete-${item.name}-block`}>
                                                     {
                                                         item.active ?
                                                             "Questionnaire is live"
@@ -239,9 +259,9 @@ function InstrumentList({list, listError}: Props): ReactElement {
                             })
                         }
                     </ul>
-                    <div className={`adv-filter__no-results ${list.length > 0 && "u-hidden"}`}
+                    <div className={`adv-filter__no-results ${instrumentList.length > 0 && "u-hidden"}`}
                          data-fallback-gallery-id="adv-filter-gallery">
-                        <h2>{(list.length > 0 ? "No results found" : listError)}</h2>
+                        <h2>{(instrumentList.length > 0 ? "No results found" : listError)}</h2>
                     </div>
                 </div>
             </div>
