@@ -75,7 +75,7 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
 
         let [status, result, contentType] = await bimsAPI.getStartDate(req, res, instrumentName);
 
-        const startDateExists = (status === 200 && result.livedate.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}.{1}[0-9]{2}:[0-9]{2}:[0-9]{2}/) !== null);
+        const startDateExists = (status === 200 && result.tostartdate.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}.{1}[0-9]{2}:[0-9]{2}:[0-9]{2}/) !== null);
 
         if (startDateExists && data.livedate === "") {
             const [status, result] = await bimsAPI.deleteStartDate(req, res, instrumentName);
