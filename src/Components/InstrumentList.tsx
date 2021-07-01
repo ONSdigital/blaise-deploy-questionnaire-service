@@ -239,10 +239,12 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
                                                             "Questionnaire is live"
                                                             :
                                                             <Link id={`delete-button-${item.name}`}
-                                                                  data-testid={`delete-${item.name}`} to={{
-                                                                pathname: "/delete",
-                                                                state: {instrumentName: item.name}
-                                                            }}>
+                                                                  data-testid={`delete-${item.name}`}
+                                                                  aria-label={`Delete questionnaire ${item.name}`}
+                                                                  to={{
+                                                                      pathname: "/delete",
+                                                                      state: {instrument: item}
+                                                                  }}>
                                                                 Delete
                                                             </Link>
                                                     }
