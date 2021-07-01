@@ -2,8 +2,8 @@ import {requestPromiseJson} from "./requestPromise";
 
 function setTOStartDate(instrumentName: string, toStartDate: string | undefined): Promise<boolean> {
     console.log(`Call to setTOStartDate(${instrumentName}, ${toStartDate})`);
-    const url = `/api/livedate/${instrumentName}`;
-    const data = {"livedate": toStartDate};
+    const url = `/api/tostartdate/${instrumentName}`;
+    const data = {"tostartdate": toStartDate};
 
     return new Promise((resolve: (object: boolean) => void) => {
         requestPromiseJson("POST", url, data).then(([status, data]) => {

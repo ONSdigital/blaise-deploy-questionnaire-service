@@ -103,7 +103,7 @@ defineFeature(feature, test => {
 
         const mock_server_responses = (url: string) => {
             console.log(url);
-            if (url.includes("/api/livedate")) {
+            if (url.includes("/api/tostartdate")) {
                 return Promise.resolve({
                     status: 500,
                     json: () => Promise.resolve({}),

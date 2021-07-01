@@ -19,7 +19,7 @@ class BimsAPI {
     }
 
     async getStartDate(req: Request, res: Response, instrumentName: string): Promise<[number, any, string]> {
-        const url = `${this.BIMS_API_URL}/livedate/${instrumentName}`;
+        const url = `${this.BIMS_API_URL}/tostartdate/${instrumentName}`;
 
         const authHeader = await this.authProvider.getAuthHeader();
         req.log.info(authHeader, "Obtained Google auth request header");
@@ -30,7 +30,7 @@ class BimsAPI {
     }
 
     async deleteStartDate(req: Request, res: Response, instrumentName: string): Promise<[number, any, string]> {
-        const url = `${this.BIMS_API_URL}/livedate/${instrumentName}`;
+        const url = `${this.BIMS_API_URL}/tostartdate/${instrumentName}`;
 
         const authHeader = await this.authProvider.getAuthHeader();
         req.log.info(authHeader, "Obtained Google auth request header");
@@ -41,7 +41,7 @@ class BimsAPI {
     }
 
     async createStartDate(req: Request, res: Response, instrumentName: string, data: any): Promise<[number, any, string]> {
-        const url = `${this.BIMS_API_URL}/livedate/${instrumentName}`;
+        const url = `${this.BIMS_API_URL}/tostartdate/${instrumentName}`;
 
         const authHeader = await this.authProvider.getAuthHeader();
         req.log.info(authHeader, "Obtained Google auth request header");
@@ -52,7 +52,7 @@ class BimsAPI {
     }
 
     async updateStartDate(req: Request, res: Response, instrumentName: string, data: any): Promise<[number, any, string]> {
-        const url = `${this.BIMS_API_URL}/livedate/${instrumentName}`;
+        const url = `${this.BIMS_API_URL}/tostartdate/${instrumentName}`;
 
         const authHeader = await this.authProvider.getAuthHeader();
         req.log.info(authHeader, "Obtained Google auth request header");
@@ -69,7 +69,7 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
 
     const bimsAPI = new BimsAPI(BIMS_API_URL, BIMS_CLIENT_ID, logger);
 
-    router.post("/api/livedate/:instrumentName", async function (req: Request, res: Response) {
+    router.post("/api/tostartdate/:instrumentName", async function (req: Request, res: Response) {
         const {instrumentName} = req.params;
         const data = req.body;
 
