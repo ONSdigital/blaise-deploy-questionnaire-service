@@ -80,11 +80,11 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
         if (startDateExists && data.livedate === "") {
             const [status, result] = await bimsAPI.deleteStartDate(req, res, instrumentName);
 
-            if (status === 201) {
-                auditLogInfo(req.log, `Successfully set TO start date to ${data.livedate} for questionnaire ${instrumentName}`);
+            if (status === 204) {
+                auditLogInfo(req.log, `Successfully removed TO start date for questionnaire ${instrumentName}`);
                 res.status(200).json(result);
             } else {
-                auditLogError(req.log, `Failed to set TO start date to ${data.livedate} for questionnaire ${instrumentName}`);
+                auditLogError(req.log, `Failed to remove TO start date for questionnaire ${instrumentName}`);
                 res.status(500).json(result);
             }
 
