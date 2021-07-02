@@ -38,13 +38,14 @@ function DeployFormSummary({file, foundInstrument}: PageFourProps): ReactElement
                         <tbody className="summary__item">
                         <tr className="summary__row summary__row--has-values">
                             <td className="summary__item-title">
-                                <div className="summary__item--text">Does the questionnaire already exist in blaise?
+                                <div className="summary__item--text">
+                                    Does the questionnaire already exist in blaise?
                                 </div>
                             </td>
                             <td className="summary__values">
                                 {
                                     foundInstrument ?
-                                        "Yes, overriding questionnaire." : "No."
+                                        "Yes, overriding questionnaire" : "No"
                                 }
                             </td>
                         </tr>
@@ -60,9 +61,9 @@ function DeployFormSummary({file, foundInstrument}: PageFourProps): ReactElement
                             <td className="summary__values">
                                 {
                                     formValues["set TO start date"] ?
-                                        `Start date set to ${dateFormatter(formValues["set TO start date"]).format("DD/MM/YYYY")}.`
+                                        `Start date set to ${dateFormatter(formValues["set TO start date"]).format("DD/MM/YYYY")}`
                                         :
-                                        "Start date not specified."
+                                        "Start date not specified"
                                 }
 
                             </td>
