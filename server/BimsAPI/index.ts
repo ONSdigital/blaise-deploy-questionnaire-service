@@ -77,7 +77,7 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
 
         const startDateExists = (status === 200 && result.tostartdate.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}.{1}[0-9]{2}:[0-9]{2}:[0-9]{2}/) !== null);
 
-        if (startDateExists && data.livedate === "") {
+        if (startDateExists && data.tostartdate === "") {
             const [status, result] = await bimsAPI.deleteStartDate(req, res, instrumentName);
 
             if (status === 204) {
@@ -114,6 +114,21 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
         res.status(status).json(result);
     });
 
+    router.delete("/api/tostartdate/:instrumentName", async function (req: Request, res: Response) {
+        const {instrumentName} = req.params;
+
+        const [status, result] = await bimsAPI.deleteStartDate(req, res, instrumentName);
+
+        if (status === 204) {
+            auditLogInfo(req.log, `Successfully removed TO start date for questionnaire ${instrumentName}`);
+            res.status(204).json(result);
+        } else {
+            auditLogError(req.log, `Failed to remove TO start date for questionnaire ${instrumentName}`);
+            res.status(500).json(result);
+        }
+
+        res.status(status).json(result);
+    });
 
     return router;
 }
