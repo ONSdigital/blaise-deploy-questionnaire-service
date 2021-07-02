@@ -62,7 +62,7 @@ function DeployFormSummary({file, foundInstrument}: PageFourProps): ReactElement
                                     formValues["set TO start date"] ?
                                         `Start date set to ${dateFormatter(formValues["set TO start date"]).format("DD/MM/YYYY")}.`
                                         :
-                                        "Date date not specified."
+                                        "Start date not specified."
                                 }
 
                             </td>
