@@ -8,7 +8,7 @@ import "@testing-library/jest-dom";
 import {survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
-    navigatePastSettingLiveDateAndStartDeployment
+    navigatePastSettingTOStartDateAndStartDeployment
 } from "./functions";
 import flushPromises from "../../tests/utils";
 
@@ -66,7 +66,7 @@ defineFeature(feature, test => {
         when("I confirm my selection and the questionnaire fails to deploy", async () => {
             await fireEvent.click(screen.getByText(/Continue/));
 
-            await navigatePastSettingLiveDateAndStartDeployment();
+            await navigatePastSettingTOStartDateAndStartDeployment();
         });
 
         then("I am presented with an information banner with an error message", async () => {
@@ -81,7 +81,7 @@ defineFeature(feature, test => {
             mock_fetch_requests(mock_server_responses);
             await navigateToDeployPageAndSelectFile();
             fireEvent.click(screen.getByText(/Continue/));
-            await navigatePastSettingLiveDateAndStartDeployment();
+            await navigatePastSettingTOStartDateAndStartDeployment();
         });
 
         when("the package fails to deploy and I'm presented with a failure message", async () => {

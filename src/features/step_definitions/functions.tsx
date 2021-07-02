@@ -35,7 +35,7 @@ export default async function navigateToDeployPageAndSelectFile() {
     fireEvent.change(inputEl);
 }
 
-export async function navigatePastSettingLiveDateAndStartDeployment() {
+export async function navigatePastSettingTOStartDateAndStartDeployment() {
     await act(async () => {
         await flushPromises();
     });

@@ -2,7 +2,7 @@ import {mock_server_request_function, mock_server_request_Return_JSON} from "../
 import {cleanup} from "@testing-library/react";
 import {setTOStartDate} from "./toStartDate";
 
-describe("Function setLiveDate(instrumentName: string, liveDate: string) ", () => {
+describe("Function setTOStartDate(instrumentName: string, toStartDate: string) ", () => {
 
     it("It should return true if created 201 response is returned", async () => {
         mock_server_request_Return_JSON(201, {});

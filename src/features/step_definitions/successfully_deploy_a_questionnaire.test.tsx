@@ -12,7 +12,7 @@ import flushPromises from "../../tests/utils";
 import {survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
-    navigatePastSettingLiveDateAndStartDeployment
+    navigatePastSettingTOStartDateAndStartDeployment
 } from "./functions";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
@@ -151,7 +151,7 @@ defineFeature(feature, test => {
         when("I confirm my selection", async () => {
             fireEvent.click(screen.getByText(/Continue/));
 
-            await navigatePastSettingLiveDateAndStartDeployment();
+            await navigatePastSettingTOStartDateAndStartDeployment();
         });
 
         then("the questionnaire package is deployed and populates a SQL database on the Blaise Tel server", async () => {

@@ -8,7 +8,7 @@ import "@testing-library/jest-dom";
 import {survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
-    navigatePastSettingLiveDateAndStartDeployment
+    navigatePastSettingTOStartDateAndStartDeployment
 } from "./functions";
 import flushPromises from "../../tests/utils";
 import MockAdapter from "axios-mock-adapter";
@@ -204,7 +204,7 @@ defineFeature(feature, test => {
             await fireEvent.click(screen.getByText(/yes, overwrite questionnaire/i));
             await fireEvent.click(screen.getByText(/Continue/));
 
-            await navigatePastSettingLiveDateAndStartDeployment();
+            await navigatePastSettingTOStartDateAndStartDeployment();
         });
 
         then("the questionnaire package is deployed and overwrites the existing questionnaire in the SQL database on the Blaise Tel server", () => {

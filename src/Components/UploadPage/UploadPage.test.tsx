@@ -8,7 +8,7 @@ import {Router} from "react-router";
 import {instrumentList, survey_list} from "../../features/step_definitions/API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
-    navigatePastSettingLiveDateAndStartDeployment
+    navigatePastSettingTOStartDateAndStartDeployment
 } from "../../features/step_definitions/functions";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
@@ -137,7 +137,7 @@ describe("Given the file fails to upload", () => {
 
         await fireEvent.click(screen.getByText(/Continue/));
 
-        await navigatePastSettingLiveDateAndStartDeployment();
+        await navigatePastSettingTOStartDateAndStartDeployment();
 
         await waitFor(() => {
             expect(screen.getByText("File deploy failed")).toBeDefined();
