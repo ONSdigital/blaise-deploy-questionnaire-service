@@ -2,6 +2,7 @@ import React, {ReactElement} from "react";
 import {FormikContextType, useFormikContext} from "formik";
 import {Instrument} from "../../../../Interfaces";
 import dateFormatter from "dayjs";
+import {roundUp} from "../../../utilities";
 
 interface PageFourProps {
     file: File | undefined
@@ -27,11 +28,35 @@ function DeployFormSummary({file, foundInstrument}: PageFourProps): ReactElement
                         <tr className="summary__row summary__row--has-values">
                             <td className="summary__item-title">
                                 <div className="summary__item--text">
-                                    Questionnaire file to deploy
+                                    Questionnaire file name
                                 </div>
                             </td>
                             <td className="summary__values">
                                 {file?.name}
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody className="summary__item">
+                        <tr className="summary__row summary__row--has-values">
+                            <td className="summary__item-title">
+                                <div className="summary__item--text">
+                                    Questionnaire file last modified date
+                                </div>
+                            </td>
+                            <td className="summary__values">
+                                {dateFormatter(file?.lastModified).format("DD/MM/YYYY HH:MM")}
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody className="summary__item">
+                        <tr className="summary__row summary__row--has-values">
+                            <td className="summary__item-title">
+                                <div className="summary__item--text">
+                                    Questionnaire file size
+                                </div>
+                            </td>
+                            <td className="summary__values">
+                                {(file && roundUp(file.size / 1000000, 0))}MB
                             </td>
                         </tr>
                         </tbody>
