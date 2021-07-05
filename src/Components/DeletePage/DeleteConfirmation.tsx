@@ -3,7 +3,7 @@ import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 import {Instrument} from "../../../Interfaces";
 import ErroneousWarning from "./ErroneousWarning";
-import {removeToStartDateAndDeleteInstrument} from "../../utilities/http";
+import {removeToStartDateAndDeleteInstrument} from "../../utilities/processes";
 
 interface Props {
     getList: () => void

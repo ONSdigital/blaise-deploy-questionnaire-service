@@ -2,10 +2,10 @@ import {
     checkInstrumentAlreadyExists,
     initialiseUpload,
     setTOStartDate,
-    uploadFile,
-    verifyAndInstallInstrument
+    uploadFile
 } from "../../utilities/http";
 import {Instrument} from "../../../Interfaces";
+import {verifyAndInstallInstrument} from "../../utilities/processes";
 
 export async function validateSelectedInstrumentExists(file: File | undefined, setInstrumentName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundInstrument: (object: Instrument | null) => void): Promise<boolean | null> {
     if (file === undefined) {

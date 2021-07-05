@@ -1,5 +1,4 @@
-import {deleteInstrument} from "./instruments";
-import {deleteTOStartDate} from "./toStartDate";
+import {deleteInstrument, deleteTOStartDate} from "../http";
 
 type removeToStartDateAndDeleteInstrumentResponse = [boolean, string];
 

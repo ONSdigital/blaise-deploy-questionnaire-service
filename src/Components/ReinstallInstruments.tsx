@@ -1,9 +1,10 @@
 import React, {Fragment, ReactElement, useEffect, useState} from "react";
 import {Link, Redirect} from "react-router-dom";
 import {ErrorBoundary} from "./ErrorHandling/ErrorBoundary";
-import {getAllInstrumentsInBucket, verifyAndInstallInstrument} from "../utilities/http";
+import {getAllInstrumentsInBucket} from "../utilities/http";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 import {Instrument} from "../../Interfaces";
+import {verifyAndInstallInstrument} from "../utilities/processes";
 
 interface Props {
     installedInstruments: Instrument[]
