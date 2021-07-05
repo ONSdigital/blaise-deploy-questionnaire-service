@@ -133,7 +133,7 @@ defineFeature(feature, test => {
         });
 
         then("I am presented with a warning banner informing me that the questionnaire cannot be deleted", () => {
-            expect(screen.getByText(/Failed to delete questionnaire/i)).toBeDefined();
+            expect(screen.getByText(/Failed to delete the questionnaire/i)).toBeDefined();
         });
     });
 });

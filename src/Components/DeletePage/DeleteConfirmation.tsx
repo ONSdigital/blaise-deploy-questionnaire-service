@@ -28,9 +28,9 @@ function DeleteConfirmation({getList}: Props): ReactElement {
     async function confirmDelete() {
         setLoading(true);
 
-        const [deleted] = await removeToStartDateAndDeleteInstrument(instrument.name);
+        const [deleted, message] = await removeToStartDateAndDeleteInstrument(instrument.name);
         if (!deleted) {
-            setMessage("Failed to delete questionnaire");
+            setMessage(message);
             setLoading(false);
             return;
         }
