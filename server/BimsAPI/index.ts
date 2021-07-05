@@ -88,7 +88,6 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
                 res.status(500).json(result);
             }
 
-            res.status(status).json(result);
             return;
         }
 
