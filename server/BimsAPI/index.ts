@@ -56,7 +56,14 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
     router.delete("/api/tostartdate/:instrumentName", async function (req: Request, res: Response) {
         const {instrumentName} = req.params;
 
-        const [status, result] = await bimsAPI.deleteStartDate(req, res, instrumentName);
+        let [status, result] = await bimsAPI.getStartDate(req, res, instrumentName);
+        const startDateExists = (status === 200 && result.tostartdate.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}.{1}[0-9]{2}:[0-9]{2}:[0-9]{2}/) !== null);
+        if (!startDateExists) {
+            res.status(204).json(result);
+            return;
+        }
+
+        [status, result] = await bimsAPI.deleteStartDate(req, res, instrumentName);
 
         if (status === 204) {
             auditLogInfo(req.log, `Successfully removed TO start date for questionnaire ${instrumentName}`);

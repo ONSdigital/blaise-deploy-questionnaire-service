@@ -3,7 +3,7 @@ import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 import {Instrument} from "../../../Interfaces";
 import ErroneousWarning from "./ErroneousWarning";
-import {deleteInstrument} from "../../utilities/http";
+import {removeToStartDateAndDeleteInstrument} from "../../utilities/http";
 
 interface Props {
     getList: () => void
@@ -28,7 +28,7 @@ function DeleteConfirmation({getList}: Props): ReactElement {
     async function confirmDelete() {
         setLoading(true);
 
-        const [deleted, message] = await deleteInstrument(instrument.name);
+        const [deleted] = await removeToStartDateAndDeleteInstrument(instrument.name);
         if (!deleted) {
             setMessage("Failed to delete questionnaire");
             setLoading(false);

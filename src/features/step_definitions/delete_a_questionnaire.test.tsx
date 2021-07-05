@@ -36,6 +36,11 @@ const mock_server_responses = (url: string) => {
             status: 500,
             json: () => Promise.resolve({}),
         });
+    } else if (url.includes("/api/tostartdate/OPN2101A")) {
+        return Promise.resolve({
+            status: 204,
+            json: () => Promise.resolve({}),
+        });
     } else if (url.includes("OPN2101A")) {
         return Promise.resolve({
             status: 204,
@@ -142,8 +147,15 @@ defineFeature(feature, test => {
                 await fireEvent.click(screen.getByTestId(/confirm-delete/i));
             });
 
-            then("the questionnaire and data is deleted from Blaise", () => {
-                expect(global.fetch).toBeCalledWith("/api/instruments/OPN2101A", {"body": null, "method": "DELETE", "headers": {"Content-Type": "application/json"}});
+            then("the questionnaire and data is deleted from Blaise", async () => {
+                await act(async () => {
+                    await flushPromises();
+                });
+                expect(global.fetch).toHaveBeenCalledWith("/api/instruments/OPN2101A", {
+                    "body": null,
+                    "method": "DELETE",
+                    "headers": {"Content-Type": "application/json"}
+                });
             });
 
             and("I'm presented with a successful deletion banner on the launch page", async () => {
@@ -176,7 +188,7 @@ defineFeature(feature, test => {
             then("the questionnaire and data is not deleted from Blaise", () => {
                 expect(global.fetch).not.toBeCalledWith("/api/instruments/OPN2101A", {"body": null, "method": "DELETE"});
             });
-            
+
             and("I am returned to the landing page", async () => {
                 await waitFor(() => {
                     expect(screen.getByText(/table of questionnaires/i)).toBeDefined();

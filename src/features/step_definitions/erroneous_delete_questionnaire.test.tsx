@@ -36,7 +36,12 @@ const mock_server_responses = (url: string) => {
             status: 500,
             json: () => Promise.resolve({}),
         });
-    } else if (url.includes("OPN2004A")) {
+    } else if (url.includes("/api/tostartdate/OPN2101A")) {
+        return Promise.resolve({
+            status: 204,
+            json: () => Promise.resolve({}),
+        });
+    }  else if (url.includes("OPN2004A")) {
         // DELETE request
         return Promise.resolve({
             status: 420,
@@ -122,7 +127,9 @@ defineFeature(feature, test => {
         });
 
         and("it failed to delete and becomes erroneous", async () => {
-            console.log("");
+            await act(async () => {
+                await flushPromises();
+            });
         });
 
         then("I am presented with a warning banner informing me that the questionnaire cannot be deleted", () => {
