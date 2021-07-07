@@ -65,7 +65,7 @@ Object {
                     <img
                       alt="Office for National Statistics logo"
                       class="header__logo"
-                      src="https://ons-design-system.netlify.app/img/ons-logo-neg-en.svg"
+                      src="https://cdn.ons.gov.uk/sdc/design-system/31.4.0/img/ons-logo-neg-en.svg"
                     />
                   </picture>
                 </a>
@@ -103,21 +103,45 @@ Object {
           class="page__main"
           id="main-content"
         >
-          <p
-            class="u-mt-m"
+          <ul
+            class="list list--bare list--inline u-mt-m"
           >
-            <a
-              href="/upload"
-              id="deploy-questionnaire-link"
+            <li
+              class="list__item"
             >
-              Deploy a questionnaire
-            </a>
-          </p>
+              <a
+                href="/upload"
+                id="deploy-questionnaire-link"
+              >
+                Deploy a questionnaire
+              </a>
+            </li>
+            <li
+              class="list__item"
+            >
+              <a
+                href="/audit"
+                id="audit-logs-link"
+              >
+                View deployment history
+              </a>
+            </li>
+            <li
+              class="list__item"
+            >
+              <a
+                href="/status"
+                id="blaise-status-link"
+              >
+                Check Blaise status
+              </a>
+            </li>
+          </ul>
           <div
             class="panel panel--info panel--no-title  u-mt-m"
           >
             <div
-              class="panel__body"
+              class="panel__body "
             >
               <p>
                 Any 
@@ -146,7 +170,7 @@ Object {
             Table of questionnaires
           </h2>
           <table
-            class="table "
+            class="table u-mt-s"
             id="instrument-table"
           >
             <thead
@@ -169,6 +193,14 @@ Object {
                 >
                   <span>
                     Field period
+                  </span>
+                </th>
+                <th
+                  class="table__header "
+                  scope="col"
+                >
+                  <span>
+                    Status
                   </span>
                 </th>
                 <th
@@ -217,6 +249,15 @@ Object {
                 <td
                   class="table__cell "
                 >
+                  <span
+                    class="status status--error"
+                  >
+                    Failed
+                  </span>
+                </td>
+                <td
+                  class="table__cell "
+                >
                   15/01/2021 15:26
                 </td>
                 <td
@@ -229,6 +270,7 @@ Object {
                   id="delete-OPN2004A"
                 >
                   <a
+                    aria-label="Delete questionnaire OPN2004A"
                     data-testid="delete-OPN2004A"
                     href="/delete"
                     id="delete-button-OPN2004A"
@@ -250,6 +292,15 @@ Object {
                   class="table__cell "
                 >
                   July 2020
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  <span
+                    class="status status--success"
+                  >
+                    Active
+                  </span>
                 </td>
                 <td
                   class="table__cell "
@@ -285,6 +336,15 @@ Object {
                 <td
                   class="table__cell "
                 >
+                  <span
+                    class="status status--success"
+                  >
+                    Active
+                  </span>
+                </td>
+                <td
+                  class="table__cell "
+                >
                   15/01/2021 14:41
                 </td>
                 <td
@@ -297,6 +357,7 @@ Object {
                   id="delete-OPN2101A"
                 >
                   <a
+                    aria-label="Delete questionnaire OPN2101A"
                     data-testid="delete-OPN2101A"
                     href="/delete"
                     id="delete-button-OPN2101A"
@@ -401,7 +462,7 @@ Object {
                   <img
                     alt="Office for National Statistics logo"
                     class="header__logo"
-                    src="https://ons-design-system.netlify.app/img/ons-logo-neg-en.svg"
+                    src="https://cdn.ons.gov.uk/sdc/design-system/31.4.0/img/ons-logo-neg-en.svg"
                   />
                 </picture>
               </a>
@@ -439,21 +500,45 @@ Object {
         class="page__main"
         id="main-content"
       >
-        <p
-          class="u-mt-m"
+        <ul
+          class="list list--bare list--inline u-mt-m"
         >
-          <a
-            href="/upload"
-            id="deploy-questionnaire-link"
+          <li
+            class="list__item"
           >
-            Deploy a questionnaire
-          </a>
-        </p>
+            <a
+              href="/upload"
+              id="deploy-questionnaire-link"
+            >
+              Deploy a questionnaire
+            </a>
+          </li>
+          <li
+            class="list__item"
+          >
+            <a
+              href="/audit"
+              id="audit-logs-link"
+            >
+              View deployment history
+            </a>
+          </li>
+          <li
+            class="list__item"
+          >
+            <a
+              href="/status"
+              id="blaise-status-link"
+            >
+              Check Blaise status
+            </a>
+          </li>
+        </ul>
         <div
           class="panel panel--info panel--no-title  u-mt-m"
         >
           <div
-            class="panel__body"
+            class="panel__body "
           >
             <p>
               Any 
@@ -482,7 +567,7 @@ Object {
           Table of questionnaires
         </h2>
         <table
-          class="table "
+          class="table u-mt-s"
           id="instrument-table"
         >
           <thead
@@ -505,6 +590,14 @@ Object {
               >
                 <span>
                   Field period
+                </span>
+              </th>
+              <th
+                class="table__header "
+                scope="col"
+              >
+                <span>
+                  Status
                 </span>
               </th>
               <th
@@ -553,6 +646,15 @@ Object {
               <td
                 class="table__cell "
               >
+                <span
+                  class="status status--error"
+                >
+                  Failed
+                </span>
+              </td>
+              <td
+                class="table__cell "
+              >
                 15/01/2021 15:26
               </td>
               <td
@@ -565,6 +667,7 @@ Object {
                 id="delete-OPN2004A"
               >
                 <a
+                  aria-label="Delete questionnaire OPN2004A"
                   data-testid="delete-OPN2004A"
                   href="/delete"
                   id="delete-button-OPN2004A"
@@ -586,6 +689,15 @@ Object {
                 class="table__cell "
               >
                 July 2020
+              </td>
+              <td
+                class="table__cell "
+              >
+                <span
+                  class="status status--success"
+                >
+                  Active
+                </span>
               </td>
               <td
                 class="table__cell "
@@ -621,6 +733,15 @@ Object {
               <td
                 class="table__cell "
               >
+                <span
+                  class="status status--success"
+                >
+                  Active
+                </span>
+              </td>
+              <td
+                class="table__cell "
+              >
                 15/01/2021 14:41
               </td>
               <td
@@ -633,6 +754,7 @@ Object {
                 id="delete-OPN2101A"
               >
                 <a
+                  aria-label="Delete questionnaire OPN2101A"
                   data-testid="delete-OPN2101A"
                   href="/delete"
                   id="delete-button-OPN2101A"

@@ -1,18 +1,25 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import Header from "./Components/ONSDesignSystem/Header";
-import BetaBanner from "./Components/ONSDesignSystem/BetaBanner";
 import {DefaultErrorBoundary} from "./Components/ErrorHandling/DefaultErrorBoundary";
-import Footer from "./Components/ONSDesignSystem/Footer";
-import ONSErrorPanel from "./Components/ONSDesignSystem/ONSErrorPanel";
 import {Switch, Route, Link, useLocation} from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
 import {Instrument} from "../Interfaces";
 import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
 import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
-import {ONSPanel} from "./Components/ONSDesignSystem/ONSPanel";
-import DeleteConfirmation from "./Components/DeleteConfirmation";
-import NotProductionWarning from "./Components/ONSDesignSystem/NotProductionWarning";
+import DeleteConfirmation from "./Components/DeletePage/DeleteConfirmation";
+import StatusPage from "./Components/StatusPage";
+import {
+    NotProductionWarning,
+    Footer,
+    Header,
+    BetaBanner,
+    ONSPanel,
+    ONSErrorPanel
+} from "blaise-design-system-react-components";
+import {getAllInstruments} from "./utilities/http";
+import AuditPage from "./Components/AuditPage";
+import ReinstallInstruments from "./Components/ReinstallInstruments";
+import LiveSurveyWarning from "./Components/UploadPage/LiveSurveyWarning";
 import InstrumentDetails from "./Components/InstrumentDetails";
 
 const divStyle = {
@@ -31,41 +38,24 @@ function App(): ReactElement {
     const {status} = (location as Location).state || {status: ""};
 
     useEffect(() => {
-        getInstrumentList();
+        getInstrumentList().then(() => console.log("Call getInstrumentList Complete"));
     }, []);
 
-    function getInstrumentList() {
+    async function getInstrumentList() {
         setInstruments([]);
-        fetch("/api/instruments")
-            .then((r: Response) => {
-                if (r.status === 404) {
-                    setListError("No installed questionnaires found.");
-                    return;
-                }
-                if (r.status !== 200) {
-                    throw r.status + " - " + r.statusText;
-                }
-                r.json()
-                    .then((json: Instrument[]) => {
-                        if (!Array.isArray(json)) {
-                            throw "Json response is not a list";
-                        }
-                        console.log("Retrieved instrument list, " + json.length + " items/s");
-                        console.log(json);
-                        setInstruments(json);
 
-                        // If the list is empty then show this message in the list
-                        if (json.length === 0) setListError("No installed questionnaires found.");
-                    })
-                    .catch((error) => {
-                        console.error("Unable to read json from response, error: " + error);
-                        setListError("Unable to load questionnaires");
-                    });
-            }).catch((error) => {
-                console.error("Failed to retrieve instrument list, error: " + error);
-                setListError("Unable to load questionnaires");
-            }
-        );
+        const [success, instrumentList] = await getAllInstruments();
+
+        if (!success) {
+            setListError("Unable to load questionnaires");
+            return;
+        }
+
+        if (instrumentList.length === 0) {
+            setListError("No installed questionnaires found.");
+        }
+
+        setInstruments(instrumentList);
     }
 
     return (
@@ -80,8 +70,20 @@ function App(): ReactElement {
                     <DefaultErrorBoundary>
 
                         <Switch>
+                            <Route path="/status">
+                                <StatusPage/>
+                            </Route>
+                            <Route path="/reinstall">
+                                <ReinstallInstruments installedInstruments={instruments}/>
+                            </Route>
+                            <Route path="/audit">
+                                <AuditPage/>
+                            </Route>
                             <Route path="/UploadSummary">
                                 <DeploymentSummary getList={getInstrumentList}/>
+                            </Route>
+                            <Route path={"/upload/survey-live/:instrumentName"}>
+                                <LiveSurveyWarning/>
                             </Route>
                             <Route path="/questionnaire">
                                 <InstrumentDetails/>
@@ -90,18 +92,30 @@ function App(): ReactElement {
                                 <UploadPage/>
                             </Route>
                             <Route path="/delete">
-                                <DeleteConfirmation  getList={getInstrumentList}/>
+                                <DeleteConfirmation getList={getInstrumentList}/>
                             </Route>
                             <Route path="/">
 
                                 {status !== "" && <ONSPanel status="success">{status}</ONSPanel>}
                                 {listError.includes("Unable") && <ONSErrorPanel/>}
 
-                                <p className="u-mt-m">
-                                    <Link to="/upload" id="deploy-questionnaire-link">
-                                        Deploy a questionnaire
-                                    </Link>
-                                </p>
+                                <ul className="list list--bare list--inline u-mt-m">
+                                    <li className="list__item">
+                                        <Link to="/upload" id="deploy-questionnaire-link">
+                                            Deploy a questionnaire
+                                        </Link>
+                                    </li>
+                                    <li className="list__item">
+                                        <Link to="/audit" id="audit-logs-link">
+                                            View deployment history
+                                        </Link>
+                                    </li>
+                                    <li className="list__item">
+                                        <Link to="/status" id="blaise-status-link">
+                                            Check Blaise status
+                                        </Link>
+                                    </li>
+                                </ul>
 
                                 <ONSPanel>
                                     <p>
@@ -113,7 +127,7 @@ function App(): ReactElement {
                                     </p>
                                 </ONSPanel>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList list={instruments} listError={listError}/>
+                                    <InstrumentList instrumentList={instruments} listError={listError}/>
                                 </ErrorBoundary>
                             </Route>
                         </Switch>

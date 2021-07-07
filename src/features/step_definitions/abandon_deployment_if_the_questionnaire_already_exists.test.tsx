@@ -2,16 +2,13 @@
 import React from "react";
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
-import {cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
+import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
 import {survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
+import flushPromises from "../../tests/utils";
 
-
-
-// Mock the Uploader.js module
-jest.mock("../../uploader");
 
 
 // Load in feature details from .feature file
@@ -22,10 +19,15 @@ const feature = loadFeature(
 
 const mock_server_responses = (url: string) => {
     console.log(url);
-    if (url.includes("bucket")) {
+    if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+        });
+    }  else if (url.includes("/upload")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve(),
         });
     } else if (url.includes("/api/install")) {
         return Promise.resolve({
@@ -50,6 +52,7 @@ defineFeature(feature, test => {
         jest.clearAllMocks();
         cleanup();
         jest.resetModules();
+
     });
 
     beforeEach(() => {
@@ -64,7 +67,7 @@ defineFeature(feature, test => {
         });
 
         when("I confirm my selection and the name/ref of the questionnaire package is the same as one already deployed in Blaise", async () => {
-            await fireEvent.click(screen.getByTestId("button"));
+            await fireEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am presented with the options to cancel or overwrite the questionnaire", async () => {
@@ -79,12 +82,15 @@ defineFeature(feature, test => {
     test("Back-out of deploying a questionnaire", ({given, when, then}) => {
         given("I have been presented with the options: Cancel or Overwrite", async () => {
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByTestId("button"));
+            await fireEvent.click(screen.getByText(/Continue/));
+            await act(async () => {
+                await flushPromises();
+            });
         });
 
         when("I select to 'cancel'", async () => {
             await fireEvent.click(screen.getByText("Cancel and keep original questionnaire"));
-            await fireEvent.click(screen.getByText("Save"));
+            await fireEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am returned to the landing page", async () => {

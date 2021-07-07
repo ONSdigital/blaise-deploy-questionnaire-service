@@ -20,7 +20,7 @@ steps:
 
   - name: "gcr.io/cloud-builders/gcloud"
     id: Deploy service
-    args: ["app", "deploy"]
+    args: [ "app", "deploy" ]
     timeout: "1600s"
 
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -30,20 +30,15 @@ steps:
       - '-c'
       - |
         versions=$(gcloud app versions list --service "dqs-ui" --sort-by '~version' --format 'value(VERSION.ID)' --project "${_PROJECT_ID}" | tail -n +11)
-
-        SAVEIFS=$IFS          # Save current IFS
-        IFS=$'\n'             # Change IFS to new line
         versions=($versions)  # split to array $versions
-        IFS=$SAVEIFS          # Restore IFS
-
         for (( i=0; i<${#versions[@]}; i++ ))
         do
           gcloud app versions delete ${versions[$i]} --service "dqs-ui" --project "${_PROJECT_ID}" --quiet
         done
-        
+
   - name: "gcr.io/cloud-builders/gcloud"
     id: "Slack Notify"
-    waitFor: ["Deploy service"]
+    waitFor: [ "Deploy service" ]
     entrypoint: "/bin/bash"
     args:
       - "-c"
