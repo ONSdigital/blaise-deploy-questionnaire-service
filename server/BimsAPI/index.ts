@@ -17,7 +17,10 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
 
         const startDateExists = (status === 200 && result.tostartdate.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}.{1}[0-9]{2}:[0-9]{2}:[0-9]{2}/) !== null);
 
-        req.log.info(`startDateExists ${startDateExists} data.tostartdate ${data.tostartdate}`);
+        if (!startDateExists && data.tostartdate === "") {
+            req.log.info(`No previous TO start date found and none specified for questionnaire ${instrumentName}`);
+            return;
+        }
 
         if (startDateExists && data.tostartdate === "") {
             const [status, result] = await bimsAPI.deleteStartDate(req, res, instrumentName);
