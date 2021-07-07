@@ -36,7 +36,12 @@ const mock_server_responses = (url: string) => {
             status: 500,
             json: () => Promise.resolve({}),
         });
-    } else if (url.includes("OPN2004A")) {
+    } else if (url.includes("/api/tostartdate/OPN2101A")) {
+        return Promise.resolve({
+            status: 204,
+            json: () => Promise.resolve({}),
+        });
+    } else if (url.includes("OPN2101A")) {
         return Promise.resolve({
             status: 204,
             json: () => Promise.resolve({}),
@@ -114,7 +119,7 @@ defineFeature(feature, test => {
         });
 
         when("I select a link to delete that questionnaire", async () => {
-            await fireEvent.click(screen.getByTestId("delete-OPN2004A"));
+            await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
         });
 
         then("I am presented with a warning", async () => {
@@ -135,20 +140,27 @@ defineFeature(feature, test => {
                 await act(async () => {
                     await flushPromises();
                 });
-                await fireEvent.click(screen.getByTestId("delete-OPN2004A"));
+                await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
             });
 
             when("I confirm that I want to proceed", async () => {
                 await fireEvent.click(screen.getByTestId(/confirm-delete/i));
             });
 
-            then("the questionnaire and data is deleted from Blaise", () => {
-                expect(global.fetch).toBeCalledWith("/api/instruments/OPN2004A", {"body": null, "method": "DELETE"});
+            then("the questionnaire and data is deleted from Blaise", async () => {
+                await act(async () => {
+                    await flushPromises();
+                });
+                expect(global.fetch).toHaveBeenCalledWith("/api/instruments/OPN2101A", {
+                    "body": null,
+                    "method": "DELETE",
+                    "headers": {"Content-Type": "application/json"}
+                });
             });
 
             and("I'm presented with a successful deletion banner on the launch page", async () => {
                 await waitFor(() => {
-                    expect(screen.getByText(/questionnaire: OPN2004A successfully deleted/i)).toBeDefined();
+                    expect(screen.getByText(/questionnaire: OPN2101A successfully deleted/i)).toBeDefined();
                 });
             });
         });
@@ -166,7 +178,7 @@ defineFeature(feature, test => {
                 await act(async () => {
                     await flushPromises();
                 });
-                await fireEvent.click(screen.getByTestId("delete-OPN2004A"));
+                await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
             });
 
             when("I click cancel", async () => {
@@ -174,9 +186,9 @@ defineFeature(feature, test => {
             });
 
             then("the questionnaire and data is not deleted from Blaise", () => {
-                expect(global.fetch).not.toBeCalledWith("/api/instruments/OPN2004A", {"body": null, "method": "DELETE"});
+                expect(global.fetch).not.toBeCalledWith("/api/instruments/OPN2101A", {"body": null, "method": "DELETE"});
             });
-            
+
             and("I am returned to the landing page", async () => {
                 await waitFor(() => {
                     expect(screen.getByText(/table of questionnaires/i)).toBeDefined();

@@ -3,7 +3,7 @@ import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 import {Instrument} from "../../../Interfaces";
 import ErroneousWarning from "./ErroneousWarning";
-import {deleteInstrument} from "../../utilities/http";
+import {removeToStartDateAndDeleteInstrument} from "../../utilities/processes";
 
 interface Props {
     getList: () => void
@@ -28,9 +28,9 @@ function DeleteConfirmation({getList}: Props): ReactElement {
     async function confirmDelete() {
         setLoading(true);
 
-        const [deleted, message] = await deleteInstrument(instrument.name);
+        const [deleted, message] = await removeToStartDateAndDeleteInstrument(instrument.name);
         if (!deleted) {
-            setMessage("Failed to delete questionnaire");
+            setMessage(message);
             setLoading(false);
             return;
         }
@@ -60,7 +60,7 @@ function DeleteConfirmation({getList}: Props): ReactElement {
 
             {
                 (
-                    instrument.status === "Erroneous" ?
+                    instrument.status === "Failed" ?
                         <ErroneousWarning instrumentName={instrument.name} setRedirect={setRedirect}/>
                         :
                         <>
@@ -68,13 +68,9 @@ function DeleteConfirmation({getList}: Props): ReactElement {
                                 Are you sure you want to delete the questionnaire <em
                                 className="highlight">{instrument.name}</em>?
                             </h1>
-                            <div className="panel panel--warn panel--no-title">
-                                <span className="panel__icon" aria-hidden="true">!</span>
-                                <span className="u-vh">Warning: </span>
-                                <div className="panel__body">
-                                    The questionnaire and all associated respondent data will be deleted 
-                                </div>
-                            </div>
+                            <ONSPanel status={"warn"}>
+                                The questionnaire and all associated respondent data will be deleted
+                            </ONSPanel>
 
                             <p>
                                 {message}

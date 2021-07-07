@@ -10,7 +10,10 @@ import "@testing-library/jest-dom";
 // Mock elements
 import flushPromises from "../../tests/utils";
 import {survey_list} from "./API_Mock_Objects";
-import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
+import navigateToDeployPageAndSelectFile, {
+    mock_fetch_requests,
+    navigatePastSettingTOStartDateAndStartDeployment
+} from "./functions";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 
@@ -129,7 +132,7 @@ defineFeature(feature, test => {
         });
 
         when("I confirm my selection", async () => {
-            await fireEvent.click(screen.getByTestId("button"));
+            await fireEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am unable to select another file or continue again until the deployment has finished", () => {
@@ -146,7 +149,9 @@ defineFeature(feature, test => {
         });
 
         when("I confirm my selection", async () => {
-            fireEvent.click(screen.getByTestId("button"));
+            fireEvent.click(screen.getByText(/Continue/));
+
+            await navigatePastSettingTOStartDateAndStartDeployment();
         });
 
         then("the questionnaire package is deployed and populates a SQL database on the Blaise Tel server", async () => {
