@@ -36,8 +36,7 @@ function AskToSetTOStartDate({instrumentName}: SelectFilePageProps): ReactElemen
                     type: "date",
                     id: "set-live-date",
                     name: "set TO start date",
-                    description: "Please specify date",
-                    min: dateFormatter(new Date(Date.now())).format("YYYY-MM-DD")
+                    description: "Please specify date"
                 }
             },
         ]
