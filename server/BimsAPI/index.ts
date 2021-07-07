@@ -19,7 +19,7 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
 
         if (!startDateExists && data.tostartdate === "") {
             req.log.info(`No previous TO start date found and none specified for questionnaire ${instrumentName}`);
-            res.status(200);
+            res.status(200).json("");
             return;
         }
 
