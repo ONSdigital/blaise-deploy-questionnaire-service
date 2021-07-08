@@ -1,4 +1,4 @@
-import React, {ReactElement, useState} from "react";
+import React, {ReactElement} from "react";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {Calendar} from "react-yearly-calendar";
@@ -9,7 +9,7 @@ interface Props {
     surveyDays: string[] | undefined
 }
 
-function CalendarSection({surveyDays}: Props) {
+function CalendarSection({surveyDays}: Props): ReactElement {
 
     if (surveyDays === undefined) {
         surveyDays = [];

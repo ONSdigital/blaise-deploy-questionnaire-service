@@ -1,10 +1,7 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
-import CalendarSection from "../CalendarSection";
-import {getAllInstruments, getTOStartDate} from "../../utilities/http";
-import {Instrument} from "../../../Interfaces";
+import React, {ReactElement, useState} from "react";
+import {Link, Redirect, useLocation} from "react-router-dom";
+import CalendarSection from "./CalendarSection";
 import dateFormatter from "dayjs";
-import {ONSPanel} from "blaise-design-system-react-components/src/components/ONSPanel";
 import ViewToStartDate from "./ViewToStartDate";
 
 
@@ -16,7 +13,6 @@ function InstrumentDetails(): ReactElement {
 
     const [message, setMessage] = useState<string>("");
     const [redirect, setRedirect] = useState<boolean>(false);
-    const history = useHistory();
     const location = useLocation();
     const {instrument} = (location as Location).state || {instrument: null};
 
