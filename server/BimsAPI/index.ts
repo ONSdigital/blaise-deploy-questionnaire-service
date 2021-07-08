@@ -82,5 +82,19 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
         res.status(status).json(result);
     });
 
+    router.get("/api/tostartdate/:instrumentName", async function (req: Request, res: Response) {
+        const {instrumentName} = req.params;
+
+        const [status, result, contentType] = await bimsAPI.getStartDate(req, res, instrumentName);
+
+        if (contentType !== "application/json") {
+            req.log.warn("Response was not JSON, most likely invalid auth");
+            res.status(400).json({});
+            return;
+        }
+
+        res.status(status).json(result);
+    });
+
     return router;
 }

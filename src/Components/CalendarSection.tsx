@@ -8,6 +8,7 @@ import dateFormatter from "dayjs";
 interface Props {
     surveyDays: string[] | undefined
 }
+
 function CalendarSection({surveyDays}: Props) {
 
     if (surveyDays === undefined) {
@@ -15,7 +16,7 @@ function CalendarSection({surveyDays}: Props) {
     }
 
     surveyDays = surveyDays.map((item) => dateFormatter(item).format("YYYY-MM-DD"));
-    const year = parseInt(dateFormatter(surveyDays[surveyDays.length -1 ] ).format("YYYY"));
+    const year = parseInt(dateFormatter(surveyDays[surveyDays.length - 1]).format("YYYY"));
 
     const customCSSclasses = {
         holidays: surveyDays,
@@ -34,11 +35,14 @@ function CalendarSection({surveyDays}: Props) {
         weekend: "Sat,Sun",
     };
 
-    return(
-        <Calendar
-            year={year}
-            customClasses={customCSSclasses}
-        />
+    return (
+        <>
+            <p>Year: {year}</p>
+            <Calendar
+                year={year}
+                customClasses={customCSSclasses}
+            />
+        </>
     );
 }
 

@@ -20,7 +20,8 @@ import {getAllInstruments} from "./utilities/http";
 import AuditPage from "./Components/AuditPage";
 import ReinstallInstruments from "./Components/ReinstallInstruments";
 import LiveSurveyWarning from "./Components/UploadPage/LiveSurveyWarning";
-import InstrumentDetails from "./Components/InstrumentDetails";
+import InstrumentDetails from "./Components/InstrumentDetails/InstrumentDetails";
+import ChangeToStartDate from "./Components/InstrumentDetails/ChangeToStartDate";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -84,6 +85,9 @@ function App(): ReactElement {
                             </Route>
                             <Route path={"/upload/survey-live/:instrumentName"}>
                                 <LiveSurveyWarning/>
+                            </Route>
+                            <Route path="/questionnaire/start-date">
+                                <ChangeToStartDate/>
                             </Route>
                             <Route path="/questionnaire">
                                 <InstrumentDetails/>
