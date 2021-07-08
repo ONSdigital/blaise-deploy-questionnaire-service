@@ -1,34 +1,29 @@
-import React, {ReactElement, useState} from "react";
+import React, {ReactElement} from "react";
 import {Link, Redirect, useLocation} from "react-router-dom";
 import CalendarSection from "./CalendarSection";
 import dateFormatter from "dayjs";
 import ViewToStartDate from "./ViewToStartDate";
+import {Instrument} from "../../../Interfaces";
 
+interface State {
+    instrument: Instrument | null
+}
 
 interface Location {
-    state: any
+    state: State
 }
 
 function InstrumentDetails(): ReactElement {
-
-    const [message, setMessage] = useState<string>("");
-    const [redirect, setRedirect] = useState<boolean>(false);
     const location = useLocation();
     const {instrument} = (location as Location).state || {instrument: null};
 
+    if (instrument === null) {
+        // No instrument provided so return users to the homepage
+        return (<Redirect to={"/"}/>);
+    }
 
     return (
         <>
-            {
-                redirect && <Redirect
-                    to={{
-                        pathname: "/",
-                        state: {status: message}
-                    }}/>
-            }
-            {
-                message !== "" && <p>{message}</p>
-            }
             <p>
                 <Link to={"/"}>Previous</Link>
             </p>
@@ -37,7 +32,6 @@ function InstrumentDetails(): ReactElement {
             </h1>
 
             <ViewToStartDate instrumentName={instrument.name}/>
-
 
             <dl className="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
                 title="Questionnaire details"
@@ -52,7 +46,6 @@ function InstrumentDetails(): ReactElement {
 
             <h2>Survey days</h2>
             <CalendarSection surveyDays={instrument.surveyDays}/>
-
         </>
     );
 }
