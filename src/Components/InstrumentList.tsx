@@ -102,7 +102,11 @@ function InstrumentList({instrumentList, listError}: Props): ReactElement {
                             return (
                                 <tr className="table__row" key={item.name} data-testid={"instrument-table-row"}>
                                     <td className="table__cell ">
-                                        <Link to={{
+                                        <Link
+                                            id={`info-${item.name}`}
+                                            data-testid={`info-${item.name}`}
+                                            aria-label={`View more information for questionnaire ${item.name}`}
+                                            to={{
                                             pathname: "/questionnaire",
                                             state: {instrument: item}
                                         }}>

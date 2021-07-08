@@ -74,6 +74,7 @@
     "eslint": "^7.25.0",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "identity-obj-proxy": "^3.0.0",
     "pino-pretty": "^5.0.2",
     "supertest": "^6.1.3"
   },

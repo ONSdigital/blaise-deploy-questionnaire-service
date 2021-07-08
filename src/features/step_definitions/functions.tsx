@@ -39,7 +39,7 @@ export async function navigatePastSettingTOStartDateAndStartDeployment() {
     await act(async () => {
         await flushPromises();
     });
-    await fireEvent.click(screen.getByText(/no, deploy without a start date/i));
+    await fireEvent.click(screen.getByText(/No start date/i));
     await fireEvent.click(screen.getByText(/Continue/));
 
     await act(async () => {
