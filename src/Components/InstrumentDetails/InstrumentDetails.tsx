@@ -34,16 +34,55 @@ function InstrumentDetails(): ReactElement {
 
             <ViewToStartDate instrumentName={instrument.name}/>
 
-            <dl className="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-                title="Questionnaire details"
-                aria-label="Questionnaire details">
-                <dt className="metadata__term grid__col col-3@m">Questionnaire status:</dt>
-                <dd className="metadata__value grid__col col-8@m"><InstrumentStatus status={instrument.status ? instrument.status: ""}/></dd>
-                <dt className="metadata__term grid__col col-3@m">Number of cases:</dt>
-                <dd className="metadata__value grid__col col-8@m">{instrument.dataRecordCount}</dd>
-                <dt className="metadata__term grid__col col-3@m">Install date:</dt>
-                <dd className="metadata__value grid__col col-8@m">{dateFormatter(instrument.installDate).format("DD/MM/YYYY")}</dd>
-            </dl>
+            <div className="summary u-mb-m">
+                <div className="summary__group">
+                    <h2 className="summary__group-title">Questionnaire details</h2>
+                    <table className="summary__items">
+                        <thead className="u-vh">
+                        <tr>
+                            <th>Detail</th>
+                            <th>Output</th>
+                        </tr>
+                        </thead>
+                        <tbody className="summary__item">
+                        <tr className="summary__row summary__row--has-values">
+                            <td className="summary__item-title">
+                                <div className="summary__item--text">
+                                    Questionnaire status
+                                </div>
+                            </td>
+                            <td className="summary__values" colSpan={2}>
+                                <InstrumentStatus status={instrument.status ? instrument.status: ""}/>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody className="summary__item">
+                        <tr className="summary__row summary__row--has-values">
+                            <td className="summary__item-title">
+                                <div className="summary__item--text">
+                                    Number of cases
+                                </div>
+                            </td>
+                            <td className="summary__values" colSpan={2}>
+                                {instrument.dataRecordCount}
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody className="summary__item">
+                        <tr className="summary__row summary__row--has-values">
+                            <td className="summary__item-title">
+                                <div className="summary__item--text">
+                                    Install date
+                                </div>
+                            </td>
+                            <td className="summary__values" colSpan={2}>
+                                {dateFormatter(instrument.installDate).format("DD/MM/YYYY HH:mm")}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
             <h2>Survey days</h2>
             <YearCalendar surveyDays={instrument.surveyDays}/>

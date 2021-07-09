@@ -40,7 +40,7 @@ function ViewToStartDate({instrumentName}: Props): ReactElement {
 
     if (loading) {
         return (
-            <div className="u-mb-l" aria-busy="true">
+            <div className="u-mb-m" aria-busy="true">
                 <ONSLoadingPanel message={"Getting Telephone Operations start date"}/>
             </div>
         );
@@ -48,7 +48,7 @@ function ViewToStartDate({instrumentName}: Props): ReactElement {
 
     if (errored) {
         return (
-            <div className="u-mb-l">
+            <div className="u-mb-m">
                 <ONSPanel status={"error"}>Failed to get Telephone Operations start date</ONSPanel>
             </div>
         );
@@ -56,7 +56,7 @@ function ViewToStartDate({instrumentName}: Props): ReactElement {
 
     return (
         <>
-            <div className="summary u-mb-l">
+            <div className="summary u-mb-m">
                 <div className="summary__group">
                     <h2 className="summary__group-title">Telephone Operations start date</h2>
                     <table className="summary__items">
