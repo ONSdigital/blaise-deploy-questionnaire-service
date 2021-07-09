@@ -6,6 +6,8 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/ONSdigital/blaise-deploy-questionnaire-service.svg)](https://github.com/ONSdigital/blaise-deploy-questionnaire-service/pulls)
 [![Github last commit](https://img.shields.io/github/last-commit/ONSdigital/blaise-deploy-questionnaire-service.svg)](https://github.com/ONSdigital/blaise-deploy-questionnaire-service/commits)
 [![Github contributors](https://img.shields.io/github/contributors/ONSdigital/blaise-deploy-questionnaire-service.svg)](https://github.com/ONSdigital/blaise-deploy-questionnaire-service/graphs/contributors)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ONSdigital/blaise-deploy-questionnaire-service.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ONSdigital/blaise-deploy-questionnaire-service/context:javascript)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ONSdigital/blaise-deploy-questionnaire-service.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ONSdigital/blaise-deploy-questionnaire-service/alerts/)
 
 Service for uploading Instrument/Questionnaire files to Blaise. 
 
@@ -31,11 +33,13 @@ Create a new .env file and add the following variables.
 
 | Variable                      | Description                                                                     | Var Example                  |
 |-------------------------------|---------------------------------------------------------------------------------|------------------------------|
-| PORT                          | Optional variable, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default React project locally runs on port 3000.                                              | 5009                         |
-| BLAISE_API_URL                | Url that the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) is running on to send calls to. | localhost:90 |
+| PORT                          | Optional variable, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default React project locally runs on port 3000.  | 5009  |
+| BLAISE_API_URL                | Url that the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) is running on to send calls to.  | localhost:90 |
 | PROJECT_ID                    | GCP Project ID                                                                  | ons-blaise-dev-matt55        |
-| BUCKET_NAME                   | GCP Bucket name for the instrument file to be put in                            | ons-blaise-dev-matt55-dqs  |
+| BUCKET_NAME                   | GCP Bucket name for the instrument file to be put in                            | ons-blaise-dev-matt55-dqs    |
 | SERVER_PARK                   | Name of Blaise Server Park                                                      | gusty                        |
+| BIMS_API_URL                  | Url that the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service) is running on to send calls to set and get the live date.  | localhost:5011 |
+| BIMS_CLIENT_ID                | GCP IAP ID for the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service)  | randomKey0112 |
 
 
 The .env file should be setup as below
@@ -45,6 +49,8 @@ BLAISE_API_URL='localhost:90'
 PROJECT_ID='ons-blaise-dev-matt55'             
 BUCKET_NAME='ons-blaise-dev-matt55-dqs'
 SERVER_PARK=gusty
+BIMS_API_URL=localhost:5011
+BIMS_CLIENT_ID=randomKey0778
 ```
 
 Install required modules

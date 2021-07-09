@@ -6,10 +6,13 @@ import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
 import {instrumentList, survey_list} from "../../features/step_definitions/API_Mock_Objects";
-import UploadPage from "./UploadPage";
-import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "../../features/step_definitions/functions";
+import navigateToDeployPageAndSelectFile, {
+    mock_fetch_requests,
+    navigatePastSettingTOStartDateAndStartDeployment
+} from "../../features/step_definitions/functions";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import UploadPage from "./UploadPage";
 
 const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
@@ -53,28 +56,28 @@ describe("Upload Page", () => {
 
     it("should display a message if you dont select a file", async () => {
         const history = createMemoryHistory();
-        const {getByText, getByTestId} = render(
+        render(
             <Router history={history}>
                 <UploadPage/>
             </Router>
         );
 
-        await fireEvent.click(getByTestId("button"));
+        await fireEvent.click(screen.getByText(/Continue/));
 
         await waitFor(() => {
-            expect(getByText(/You must select a file/i)).toBeDefined();
+            expect(screen.queryAllByText("Select a file")).toHaveLength(2);
         });
     });
 
     it("should display a message if select a file that is a .bpkg", async () => {
         const history = createMemoryHistory();
-        const {getByText, getByLabelText, getByTestId} = render(
+        render(
             <Router history={history}>
                 <UploadPage/>
             </Router>
         );
 
-        const inputEl = getByLabelText(/Select survey package/i);
+        const inputEl = screen.getByLabelText(/Select survey package/i);
 
         const file = new File(["(⌐□_□)"], "OPN2004A.pdf", {
             type: "pdf"
@@ -86,10 +89,10 @@ describe("Upload Page", () => {
 
         fireEvent.change(inputEl);
 
-        await fireEvent.click(getByTestId("button"));
+        await fireEvent.click(screen.getByText(/Continue/));
 
         await waitFor(() => {
-            expect(getByText(/File must be a .bpkg/i)).toBeDefined();
+            expect(screen.queryAllByText("File must be a .bpkg")).toHaveLength(2);
         });
     });
 
@@ -132,7 +135,9 @@ describe("Given the file fails to upload", () => {
     it("it should redirect to the summary page with an error", async () => {
         await navigateToDeployPageAndSelectFile();
 
-        await fireEvent.click(screen.getByTestId("button"));
+        await fireEvent.click(screen.getByText(/Continue/));
+
+        await navigatePastSettingTOStartDateAndStartDeployment();
 
         await waitFor(() => {
             expect(screen.getByText("File deploy failed")).toBeDefined();

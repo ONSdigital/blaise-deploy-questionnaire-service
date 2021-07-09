@@ -10,7 +10,7 @@ import {createMemoryHistory} from "history";
 import {Router} from "react-router";
 import App from "../../App";
 import flushPromises from "../../tests/utils";
-import {Instrument} from "../../../Interfaces";
+import {instrumentList} from "./API_Mock_Objects";
 
 
 // Load in feature details from .feature file
@@ -18,26 +18,6 @@ const feature = loadFeature(
     "./src/features/erroneous_delete_questionnaire.feature",
     {tagFilter: "not @server and not @integration"}
 );
-
-const instrumentListWithErroneous: Instrument[] = [{
-    name: "OPN2101A",
-    serverParkName: "gusty",
-    installDate: "2021-01-15T14:41:29.4399898+00:00",
-    status: "Erroneous",
-    dataRecordCount: 0,
-    hasData: false,
-    active: false,
-    fieldPeriod: "January 2021"
-}, {
-    name: "OPN2004A",
-    serverParkName: "gusty",
-    installDate: "2021-01-15T15:26:43.4233454+00:00",
-    status: "Active",
-    dataRecordCount: 0,
-    hasData: false,
-    active: false,
-    fieldPeriod: "April 2020"
-}];
 
 const mock_server_responses = (url: string) => {
     console.log(url);
@@ -56,7 +36,12 @@ const mock_server_responses = (url: string) => {
             status: 500,
             json: () => Promise.resolve({}),
         });
-    } else if (url.includes("OPN2004A")) {
+    } else if (url.includes("/api/tostartdate/OPN2101A")) {
+        return Promise.resolve({
+            status: 204,
+            json: () => Promise.resolve({}),
+        });
+    }  else if (url.includes("OPN2004A")) {
         // DELETE request
         return Promise.resolve({
             status: 420,
@@ -65,7 +50,7 @@ const mock_server_responses = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(instrumentListWithErroneous),
+            json: () => Promise.resolve(instrumentList),
 
         });
     }
@@ -96,12 +81,12 @@ defineFeature(feature, test => {
                 await flushPromises();
             });
             await waitFor(() => {
-                expect(screen.getByText(/OPN2101A/i)).toBeDefined();
+                expect(screen.getByText(/OPN2004A/i)).toBeDefined();
             });
         });
 
         when("I select a link to delete that questionnaire", async () => {
-            await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
+            await fireEvent.click(screen.getByTestId("delete-OPN2004A"));
         });
 
         then("I am presented with a warning banner that I cannot delete the questionnaire and a service desk must be raised", () => {
@@ -111,6 +96,13 @@ defineFeature(feature, test => {
         and("I am unable to delete the questionnaire", () => {
             expect(screen.queryByTestId(/confirm-delete/i)).toBeNull();
             // expect(submitButton)
+        });
+
+        and("I can return to the questionnaire list", () => {
+            expect(screen.getByText(/Return to table of questionnaires/i)).toBeDefined();
+            fireEvent.click(screen.getByText(/Return to table of questionnaires/i));
+
+            expect(screen.getByText(/Table of questionnaires/i)).toBeDefined();
         });
     });
 
@@ -127,7 +119,7 @@ defineFeature(feature, test => {
             await act(async () => {
                 await flushPromises();
             });
-            await fireEvent.click(screen.getByTestId("delete-OPN2004A"));
+            await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
         });
 
         when("I confirm that I want to proceed", async () => {
@@ -135,12 +127,13 @@ defineFeature(feature, test => {
         });
 
         and("it failed to delete and becomes erroneous", async () => {
-            console.log("");
+            await act(async () => {
+                await flushPromises();
+            });
         });
 
         then("I am presented with a warning banner informing me that the questionnaire cannot be deleted", () => {
-            expect(screen.getByText(/Failed to delete questionnaire/i)).toBeDefined();
+            expect(screen.getByText(/Failed to delete the questionnaire/i)).toBeDefined();
         });
     });
 });
-
