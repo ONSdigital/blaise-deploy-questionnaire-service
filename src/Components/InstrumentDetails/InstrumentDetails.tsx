@@ -4,6 +4,7 @@ import YearCalendar from "./YearCalendar";
 import dateFormatter from "dayjs";
 import ViewToStartDate from "./ViewToStartDate";
 import {Instrument} from "../../../Interfaces";
+import InstrumentStatus from "../InstrumentStatus";
 
 interface State {
     instrument: Instrument | null
@@ -37,7 +38,7 @@ function InstrumentDetails(): ReactElement {
                 title="Questionnaire details"
                 aria-label="Questionnaire details">
                 <dt className="metadata__term grid__col col-3@m">Questionnaire status:</dt>
-                <dd className="metadata__value grid__col col-8@m">{instrument.status}</dd>
+                <dd className="metadata__value grid__col col-8@m"><InstrumentStatus status={instrument.status ? instrument.status: ""}/></dd>
                 <dt className="metadata__term grid__col col-3@m">Number of cases:</dt>
                 <dd className="metadata__value grid__col col-8@m">{instrument.dataRecordCount}</dd>
                 <dt className="metadata__term grid__col col-3@m">Install date:</dt>
