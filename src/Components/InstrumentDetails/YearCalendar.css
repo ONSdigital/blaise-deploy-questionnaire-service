@@ -1,6 +1,6 @@
 table.calendar .holidays {
     color: #ffffff;
-    background-color: #0b0d7a;
+    background-color: #033e58;
 }
 
 table.calendar {
@@ -8,7 +8,7 @@ table.calendar {
 }
 
 table.calendar thead {
-    background-color: #5A5A5A;
+    background-color: #3b7a9e;
     color: white;
     margin-bottom: 3px;
     border-bottom: 2px solid white
@@ -70,8 +70,8 @@ table.calendar td.bolder {
 
 /* Single selected day */
 table.calendar td.selected {
-    background-color: #7a2d0b;
-    color: #f50000;
+    background-color: #3b7a9e;
+    color: #ffffff;
     font-weight: bold;
 }
 

@@ -1,6 +1,6 @@
 import React, {ReactElement} from "react";
 import {Link, Redirect, useLocation} from "react-router-dom";
-import CalendarSection from "./CalendarSection";
+import YearCalendar from "./YearCalendar";
 import dateFormatter from "dayjs";
 import ViewToStartDate from "./ViewToStartDate";
 import {Instrument} from "../../../Interfaces";
@@ -45,7 +45,7 @@ function InstrumentDetails(): ReactElement {
             </dl>
 
             <h2>Survey days</h2>
-            <CalendarSection surveyDays={instrument.surveyDays}/>
+            <YearCalendar surveyDays={instrument.surveyDays}/>
         </>
     );
 }
