@@ -8,7 +8,7 @@ table.calendar {
 }
 
 table.calendar thead {
-    background-color: #3b7a9e;
+    background-color: #414042;
     color: white;
     margin-bottom: 3px;
     border-bottom: 2px solid white
@@ -70,9 +70,7 @@ table.calendar td.bolder {
 
 /* Single selected day */
 table.calendar td.selected {
-    background-color: #3b7a9e;
-    color: #ffffff;
-    font-weight: bold;
+    border: 3px solid #fbc900;
 }
 
 /* Selected range */
