@@ -14,8 +14,14 @@
       "type": "image/png"
     },
     {
-      "src": "/static/maskable_icon_x1-853×853.png",
-      "sizes": "853×853",
+      "src": "/static/maskable_icon_x1-192×192.png",
+      "sizes": "192×192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/static/maskable_icon_x1-512×512.png",
+      "sizes": "512×512",
       "type": "image/png",
       "purpose": "any maskable"
     }
