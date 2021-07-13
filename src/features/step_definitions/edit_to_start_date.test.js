@@ -11,9 +11,13 @@ const feature = loadFeature(
 
 defineFeature(feature, test => {
     const toStartDate = new Date("01 Dec 2021 00:00:00 GMT");
+    const instrument1 = "OPN2004A";
+    const instrument2 = "OPN20101A";
+
+
     const mock_server_responses = (url) => {
         console.log(url);
-        if (url.includes(`/api/tostartdate/${instrumentList[0].name}`)) {
+        if (url.includes(`/api/tostartdate/${instrument1}`)) {
             return Promise.resolve({
                 status: 200,
                 json: () => Promise.resolve({tostartdate: toStartDate}),
@@ -44,6 +48,12 @@ defineFeature(feature, test => {
     const aQuestionnaireThatHasBeenDeployed = (given) => {
         given("a questionnaire is deployed", () => {
             expect(instrumentList).toHaveLength(3);
+            expect(instrumentList).toEqual(expect.objectContaining(
+                {"name": instrument1})
+            );
+            expect(instrumentList).toEqual(expect.objectContaining(
+                {"name": instrument2})
+            );
         });
     };
 
@@ -53,10 +63,10 @@ defineFeature(feature, test => {
         });
     };
 
-    const iSelectAQuestionnaire = (when) => {
+    const iSelectAQuestionnaire = (when, instrumentName) => {
         when("I select the questionnaire", async () => {
             await renderHomepage();
-            await fireEvent.click(screen.getByText(instrumentList[0].name));
+            await fireEvent.click(screen.getByText(instrumentName));
         });
     };
 
@@ -69,10 +79,33 @@ defineFeature(feature, test => {
         });
     };
 
+    const iHaveTheOptionToChangeOrDeleteTheToStartDate = (then) => {
+        then("I have the option to change or delete the TO Start date", async () => {
+            await waitFor(() => {
+
+                expect(screen.getByText(/Change or delete start date/i)).toBeDefined();
+            });
+        });
+    };
+
     test("View TO Start Date if specified", ({given, and, when, then}) => {
         aQuestionnaireThatHasBeenDeployed(given);
         aToStartDateHasBeenSpecified(and);
-        iSelectAQuestionnaire(when);
+        iSelectAQuestionnaire(when, instrument1);
         iCanViewTheToStartDateThatWasSpecified(then);
+    });
+
+    test("Change TO Start Date if specified", ({given, and, when, then}) => {
+        aQuestionnaireThatHasBeenDeployed(given);
+        aToStartDateHasBeenSpecified(and);
+        iSelectAQuestionnaire(when, instrument1);
+        iHaveTheOptionToChangeOrDeleteTheToStartDate(then);
+    });
+
+    test("Add TO Start Date if not previously specified", ({given, and, when, then}) => {
+        aQuestionnaireThatHasBeenDeployed(given);
+        aToStartDateHasBeenSpecified(and);
+        iSelectAQuestionnaire(when, instrument2);
+        iHaveTheOptionToChangeOrDeleteTheToStartDate(then);
     });
 });
