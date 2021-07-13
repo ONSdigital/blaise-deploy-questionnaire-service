@@ -11,18 +11,18 @@ const feature = loadFeature(
 
 defineFeature(feature, test => {
     const toStartDate = new Date("01 Dec 2021 00:00:00 GMT");
-    const instrument1 = "OPN2004A";
-    const instrument2 = "OPN20101A";
+    const instrumentThatHasStartDate = "OPN2004A";
+    const instrumentThatDoesNotHaveStartDate = "OPN2101A";
 
 
     const mock_server_responses = (url) => {
         console.log(url);
-        if (url.includes(`/api/tostartdate/${instrument1}`)) {
+        if (url.includes(`/api/tostartdate/${instrumentThatHasStartDate}`)) {
             return Promise.resolve({
                 status: 200,
                 json: () => Promise.resolve({tostartdate: toStartDate}),
             });
-        } else if (url.includes("/api/tostartate/")) {
+        } else if (url.includes("/api/tostartdate")) {
             return Promise.resolve({
                 status: 404,
                 json: () => Promise.resolve({}),
@@ -35,7 +35,7 @@ defineFeature(feature, test => {
         }
     };
 
-    beforeAll(() => {
+    beforeEach(() => {
         mock_fetch_requests(mock_server_responses);
     });
 
@@ -48,18 +48,29 @@ defineFeature(feature, test => {
     const aQuestionnaireThatHasBeenDeployed = (given) => {
         given("a questionnaire is deployed", () => {
             expect(instrumentList).toHaveLength(3);
-            expect(instrumentList).toEqual(expect.objectContaining(
-                {"name": instrument1})
-            );
-            expect(instrumentList).toEqual(expect.objectContaining(
-                {"name": instrument2})
-            );
+
+            expect(instrumentList).toEqual(expect.arrayContaining(
+                [expect.objectContaining({"name": instrumentThatHasStartDate})]
+            ));
+            expect(instrumentList).toEqual(expect.arrayContaining(
+                [expect.objectContaining({"name": instrumentThatDoesNotHaveStartDate})]
+            ));
         });
     };
 
-    const aToStartDateHasBeenSpecified = (given) => {
-        given("a TO Start date has been specified", () => {
-            expect(toStartDate).not.toBeNull();
+    const aToStartDateHasBeenSpecified = (given, instrumentName) => {
+        given("a TO Start date has been specified", async () => {
+            expect(await mock_server_responses(`/api/tostartdate/${instrumentName}`)).toEqual(expect.objectContaining(
+                {status: 200}
+            ));
+        });
+    };
+
+    const noToStartDateHasBeenSpecified = (given, instrumentName) => {
+        given("no TO Start date has been specified", async () => {
+            expect(await mock_server_responses(`/api/tostartdate/${instrumentName}`)).toEqual(expect.objectContaining(
+                {status: 404}
+            ));
         });
     };
 
@@ -88,24 +99,33 @@ defineFeature(feature, test => {
         });
     };
 
+    const iHaveTheOptionToAddAToStartDate = (then) => {
+        then("I have the option to add a TO Start date", async () => {
+            await waitFor(() => {
+
+                expect(screen.getByText(/Add start date/i)).toBeDefined();
+            });
+        });
+    };
+
     test("View TO Start Date if specified", ({given, and, when, then}) => {
         aQuestionnaireThatHasBeenDeployed(given);
-        aToStartDateHasBeenSpecified(and);
-        iSelectAQuestionnaire(when, instrument1);
+        aToStartDateHasBeenSpecified(and, instrumentThatHasStartDate);
+        iSelectAQuestionnaire(when, instrumentThatHasStartDate);
         iCanViewTheToStartDateThatWasSpecified(then);
     });
 
     test("Change TO Start Date if specified", ({given, and, when, then}) => {
         aQuestionnaireThatHasBeenDeployed(given);
-        aToStartDateHasBeenSpecified(and);
-        iSelectAQuestionnaire(when, instrument1);
+        aToStartDateHasBeenSpecified(and, instrumentThatHasStartDate);
+        iSelectAQuestionnaire(when, instrumentThatHasStartDate);
         iHaveTheOptionToChangeOrDeleteTheToStartDate(then);
     });
 
     test("Add TO Start Date if not previously specified", ({given, and, when, then}) => {
         aQuestionnaireThatHasBeenDeployed(given);
-        aToStartDateHasBeenSpecified(and);
-        iSelectAQuestionnaire(when, instrument2);
-        iHaveTheOptionToChangeOrDeleteTheToStartDate(then);
+        noToStartDateHasBeenSpecified(and, instrumentThatDoesNotHaveStartDate);
+        iSelectAQuestionnaire(when, instrumentThatDoesNotHaveStartDate);
+        iHaveTheOptionToAddAToStartDate(then);
     });
 });
