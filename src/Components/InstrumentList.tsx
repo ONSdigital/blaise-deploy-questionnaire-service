@@ -1,12 +1,15 @@
-import React, {ChangeEvent, ReactElement, useEffect, useState} from "react";
-import {Link, useLocation} from "react-router-dom";
-import {Instrument} from "../../Interfaces";
-import dateFormatter from "dayjs";
+import React, {ReactElement, useEffect, useState} from "react";
+import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import {filter} from "lodash";
+import {Instrument} from "../../Interfaces";
+import ONSTable, {TableColumns} from "./ONSTable";
+import dateFormatter from "dayjs";
+import {Link, useLocation} from "react-router-dom";
 
 interface Props {
-    instrumentList: Instrument[],
-    listError: string
+    instrumentList: Instrument[]
+    loading: boolean
+    listMessage: string
 }
 
 function getStatusColor(status: string | undefined) {
@@ -22,133 +25,146 @@ function getStatusColor(status: string | undefined) {
     }
 }
 
-function InstrumentList({instrumentList, listError}: Props): ReactElement {
+export const InstrumentList = (props: Props): ReactElement => {
+    const {instrumentList, loading, listMessage} = props;
+
+    const [message, setMessage] = useState<string>("");
+    const [filterValue, setFilterValue] = useState<string>("");
+    const [filteredList, setFilteredList] = useState<Instrument[]>([]);
+
+    // Add /?filter to url for feature toggle of filter field
+    const showFilter = new URLSearchParams(useLocation().search).has("filter");
 
 
-    const [list, setList] = useState<Instrument[]>(instrumentList);
-    const [listMessage, setListMessage] = useState<string>(listError);
-    list.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
+    const filterList = () => {
+        // Filter by the search field
+        const newFilteredList = filter(instrumentList, (listItem) => listItem.name.includes(filterValue.toUpperCase()));
+        // Order by date
+        newFilteredList.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
 
-    useEffect(() => {
-        if (instrumentList !== list) {
-            setList(instrumentList);
-        }
-        if (listMessage !== listError) {
-            setListMessage(listError);
-        }
-    }, [instrumentList, listError]);
+        setFilteredList(newFilteredList);
 
-    const filterList = (e: ChangeEvent<HTMLInputElement>) => {
-        const newFilteredList = filter(instrumentList, (listItem) => listItem.name.includes(e.target.value.toUpperCase()));
-        setList(newFilteredList);
-        if (newFilteredList.length === 0) {
-            setListMessage(`No questionnaires containing ${e.target.value} found`);
+        if (instrumentList.length > 0 && newFilteredList.length === 0) {
+            setMessage(`No questionnaires containing ${filterValue} found`);
+        } else {
+            setMessage(listMessage);
         }
     };
 
+    useEffect(() => {
+        filterList();
+    }, [instrumentList, filterValue, listMessage]);
 
-    return <>
-        <h2 className="u-mt-m">Table of questionnaires</h2>
+    const tableColumns: TableColumns[] =
+        [
+            {
+                title: "Questionnaire"
+            },
+            {
+                title: "Field period"
+            },
+            {
+                title: "Status"
+            },
+            {
+                title: "Install date"
+            },
+            {
+                title: "Cases"
+            },
+            {
+                title: "Delete questionnaire"
+            }
+        ];
 
-        {
-            // Add /?filter to url for feature toggle
-            new URLSearchParams(useLocation().search).has("filter") && (
-                <>
-                    <div className="field">
-                        <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
-                        </label>
-                        <input type="text" id="filter-by-name" className="input input--text input-type__input"
-                               onChange={(e) => filterList(e)}/>
-                    </div>
 
-                    <div className="u-mt-s" aria-live="polite">
-                        {
-                            list && <h3>{list.length} results of {instrumentList.length}</h3>
-                        }
-                    </div>
-                </>
-            )
-        }
-
-        {
-            list && list.length > 0
-                ?
-                <table id="instrument-table" className="table u-mt-s">
-                    <thead className="table__head u-mt-m">
-                    <tr className="table__row">
-                        <th scope="col" className="table__header ">
-                            <span>Questionnaire</span>
-                        </th>
-                        <th scope="col" className="table__header ">
-                            <span>Field period</span>
-                        </th>
-                        <th scope="col" className="table__header ">
-                            <span>Status</span>
-                        </th>
-                        <th scope="col" className="table__header ">
-                            <span>Install date</span>
-                        </th>
-                        <th scope="col" className="table__header ">
-                            <span>Cases</span>
-                        </th>
-                        <th scope="col" className="table__header ">
-                            <span>Delete questionnaire</span>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody className="table__body">
-                    {
-                        list.map((item: Instrument) => {
-                            return (
-                                <tr className="table__row" key={item.name} data-testid={"instrument-table-row"}>
-                                    <td className="table__cell ">
-                                        {item.name}
-                                    </td>
-                                    <td className="table__cell ">
-                                        {item.fieldPeriod}
-                                    </td>
-                                    <td className="table__cell ">
+    function instrumentListBody(): ReactElement {
+        return <>
+            {
+                filteredList.map((item: Instrument) => {
+                    return (
+                        <tr className="table__row" key={item.name} data-testid={"instrument-table-row"}>
+                            <td className="table__cell ">
+                                {item.name}
+                            </td>
+                            <td className="table__cell ">
+                                {item.fieldPeriod}
+                            </td>
+                            <td className="table__cell ">
                                         <span
                                             className={`status status--${getStatusColor(item.status)}`}>
                                             {item.status}
                                         </span>
-                                    </td>
-                                    <td className="table__cell ">
-                                        {dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}
-                                    </td>
-                                    <td className="table__cell ">
-                                        {item.dataRecordCount}
-                                    </td>
-                                    <td className={"table__cell "} id={`delete-${item.name}`}>
-                                        {
-                                            item.active ?
-                                                "Questionnaire is live"
-                                                :
-                                                <Link id={`delete-button-${item.name}`}
-                                                      data-testid={`delete-${item.name}`}
-                                                      aria-label={`Delete questionnaire ${item.name}`}
-                                                      to={{
-                                                          pathname: "/delete",
-                                                          state: {instrument: item}
-                                                      }}>
-                                                    Delete
-                                                </Link>
-                                        }
-                                    </td>
-                                </tr>
-                            );
-                        })
+                            </td>
+                            <td className="table__cell ">
+                                {dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}
+                            </td>
+                            <td className="table__cell ">
+                                {item.dataRecordCount}
+                            </td>
+                            <td className={"table__cell "} id={`delete-${item.name}`}>
+                                {
+                                    item.active ?
+                                        "Questionnaire is live"
+                                        :
+                                        <Link id={`delete-button-${item.name}`}
+                                              data-testid={`delete-${item.name}`}
+                                              aria-label={`Delete questionnaire ${item.name}`}
+                                              to={{
+                                                  pathname: "/delete",
+                                                  state: {instrument: item}
+                                              }}>
+                                            Delete
+                                        </Link>
+                                }
+                            </td>
+                        </tr>
+                    );
+                })
+            }
+        </>;
+    }
+
+
+    if (loading) {
+        return <ONSLoadingPanel/>;
+    } else {
+        return (
+            <>
+                <div className={"elementToFadeIn"}>
+                    {
+                        showFilter &&
+                        <div className="field">
+                            <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
+                            </label>
+                            <input type="text" id="filter-by-name" className="input input--text input-type__input"
+                                   onChange={(e) => setFilterValue(e.target.value)}/>
+                        </div>
+
                     }
-                    </tbody>
-                </table>
-                :
-                <div className="panel panel--info panel--no-title u-mb-m">
-                    <div className="panel__body">
-                        <p>{listMessage}</p>
+
+
+                    <div className="u-mt-s">
+                        {
+                            instrumentList &&
+                            <h3 aria-live="polite">{filteredList.length} results of {instrumentList.length}</h3>
+                        }
+
+                        {
+                            filteredList && filteredList.length > 0 ?
+                                <ONSTable columns={tableColumns}
+                                          tableID={"tableID"}
+                                          tableBody={instrumentListBody()}/>
+                                :
+                                <ONSPanel spacious={true}
+                                          status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>
+                        }
                     </div>
                 </div>
-        }
-    </>;
-}
+            </>
+
+        );
+    }
+};
 
 export default InstrumentList;

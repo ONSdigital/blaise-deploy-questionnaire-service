@@ -1,3 +1,4 @@
+import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import React, {Fragment, ReactElement, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {ErrorBoundary} from "./ErrorHandling/ErrorBoundary";
@@ -10,15 +11,19 @@ interface BlaiseStatus {
 
 function StatusPage(): ReactElement {
     const [statusList, setStatusList] = useState<BlaiseStatus[]>([]);
-    const [listError, setListError] = useState<string>("Loading ...");
+    const [listError, setListError] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(true);
+    const [loadingMessage, setLoadingMessage] = useState<string>("Checking Blaise status");
 
     useEffect(() => {
-        getHeathStatus();
-    }, []);
-
-    function getHeathStatus() {
         setStatusList([]);
-        console.log("getHeathStatus");
+        setLoading(true);
+        setTimeout(function () {
+            if (loading) {
+                setLoadingMessage("Looks like it's taking its time, best assume Blaise is not working.");
+            }
+        }, 10000);
+
         fetch("/api/health/diagnosis")
             .then((r: Response) => {
                 if (r.status !== 503 && r.status !== 200) {
@@ -43,8 +48,8 @@ function StatusPage(): ReactElement {
                 console.error("Failed to retrieve Blaise status, error: " + error);
                 setListError("Unable to get Blaise status");
             }
-        );
-    }
+        ).finally(() => setLoading(false));
+    }, []);
 
 
     return (
@@ -55,28 +60,33 @@ function StatusPage(): ReactElement {
             <h1>Blaise connection status</h1>
             <ErrorBoundary errorMessageText={"Failed to load Blaise Status, best to assume its not working."}>
                 {
-                    listError !== "" ?
-                        <p>{listError}</p>
+                    loading ?
+                        <ONSLoadingPanel message={loadingMessage}/>
                         :
-                        <dl className="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-                            title="Status information for connections to Blaise"
-                            aria-label="Status information for connections to Blaise">
-                            {statusList.map((item: BlaiseStatus) => {
-                                return (
-                                    <Fragment key={item["health check type"]}>
-                                        <dt className="metadata__term grid__col col-5@m">
-                                            {item["health check type"]}:
-                                        </dt>
-                                        <dd className="metadata__value grid__col col-7@m">
+                        listError !== "" ?
+                            <ONSPanel>{listError}</ONSPanel>
+                            :
+                            <div className={"elementToFadeIn"}>
+                                <dl className="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
+                                    title="Status information for connections to Blaise"
+                                    aria-label="Status information for connections to Blaise">
+                                    {statusList.map((item: BlaiseStatus) => {
+                                        return (
+                                            <Fragment key={item["health check type"]}>
+                                                <dt className="metadata__term grid__col col-5@m">
+                                                    {item["health check type"]}:
+                                                </dt>
+                                                <dd className="metadata__value grid__col col-7@m">
                                              <span
                                                  className={`status status--${(item.status === "OK" ? "success" : "error")}`}>
                                                  {item.status}
                                              </span>
-                                        </dd>
-                                    </Fragment>
-                                );
-                            })}
-                        </dl>
+                                                </dd>
+                                            </Fragment>
+                                        );
+                                    })}
+                                </dl>
+                            </div>
                 }
             </ErrorBoundary>
         </>

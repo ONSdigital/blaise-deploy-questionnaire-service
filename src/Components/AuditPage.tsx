@@ -2,12 +2,13 @@ import React, {ReactElement, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {ErrorBoundary} from "./ErrorHandling/ErrorBoundary";
 import dateFormatter from "dayjs";
-import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
+import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import {getAuditLogs} from "../utilities/http";
 import {AuditLog} from "../../Interfaces";
 
 function AuditPage(): ReactElement {
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
     const [listError, setListError] = useState<string>("Loading ...");
 
     useEffect(() => {
@@ -16,12 +17,13 @@ function AuditPage(): ReactElement {
 
     async function callAuditLogs() {
         setAuditLogs([]);
-        setListError("Loading ...");
+        setLoading(true);
 
         const [success, auditLogs] = await getAuditLogs();
 
         if (!success) {
             setListError("Unable to load deployment history.");
+            setLoading(false);
             return;
         }
 
@@ -32,6 +34,7 @@ function AuditPage(): ReactElement {
         }
 
         setAuditLogs(auditLogs);
+        setLoading(false);
     }
 
 
@@ -46,7 +49,7 @@ function AuditPage(): ReactElement {
                 {
                     auditLogs && auditLogs.length > 0
                         ?
-                        <table id="audit-table" className="table ">
+                        <table id="audit-table" className="table elementToFadeIn">
                             <thead className="table__head u-mt-m">
                             <tr className="table__row">
                                 <th scope="col" className="table__header ">
@@ -78,7 +81,10 @@ function AuditPage(): ReactElement {
                             </tbody>
                         </table>
                         :
-                        <ONSPanel status={(listError.includes("Unable") ? "error" : "info")}>{listError}</ONSPanel>
+                        loading ?
+                            <ONSLoadingPanel/>
+                            :
+                            <ONSPanel status={(listError.includes("Unable") ? "error" : "info")}>{listError}</ONSPanel>
                 }
             </ErrorBoundary>
         </>
