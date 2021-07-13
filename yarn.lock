@@ -3857,9 +3857,14 @@ bindings@^1.2.1, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blaise-design-system-react-components@ONSdigital/blaise-design-system-react-components#v0.3.1:
+blaise-design-system-react-components@ONSdigital/blaise-design-system-react-components#v0.4.0:
   version "1.0.0"
-  resolved "https://codeload.github.com/ONSdigital/blaise-design-system-react-components/tar.gz/a9ea1fa9a6732dc7b29b85892f017da213e0efbb"
+  resolved "https://codeload.github.com/ONSdigital/blaise-design-system-react-components/tar.gz/16f781c7c3678bf059e8148258f6e175881814db"
+  dependencies:
+    formik "^2.2.9"
+    react "^17.0.1"
+    react-dom "^17.0.0"
+    react-loader-spinner "^4.0.0"
 
 bluebird@^3.5.5:
   version "3.7.2"
