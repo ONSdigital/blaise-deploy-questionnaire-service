@@ -5,6 +5,20 @@ import App from "../../App";
 import flushPromises from "../../tests/utils";
 import React from "react";
 
+
+
+export async function renderHomepage() {
+    const history = createMemoryHistory();
+    render(
+        <Router history={history}>
+            <App/>
+        </Router>
+    );
+    await act(async () => {
+        await flushPromises();
+    });
+}
+
 /*
 * Renders the App in a Mock Router, then navigates the the 'Deploy a questionnaire' page
 * and then selects a mock OPN2004A.bpkg in the File select Input field.
