@@ -1,10 +1,7 @@
 import {defineFeature, loadFeature} from "jest-cucumber";
 import {mock_fetch_requests, renderHomepage} from "./functions";
 import {instrumentList} from "./API_Mock_Objects";
-import {fireEvent, screen} from "@testing-library/react";
-import {waitFor} from "@babel/core/lib/gensync-utils/async";
-import dateFormatter from "dayjs";
-
+import {cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 
 const feature = loadFeature(
     "./src/features/edit_to_start_date.feature",
@@ -13,14 +10,13 @@ const feature = loadFeature(
 
 
 defineFeature(feature, test => {
-
-    const toStartDate = new Date();
+    const toStartDate = new Date("01 Dec 2021 00:00:00 GMT");
     const mock_server_responses = (url) => {
         console.log(url);
         if (url.includes(`/api/tostartdate/${instrumentList[0].name}`)) {
             return Promise.resolve({
                 status: 200,
-                json: () => Promise.resolve({toStartDate: toStartDate}),
+                json: () => Promise.resolve({tostartdate: toStartDate}),
             });
         } else if (url.includes("/api/tostartate/")) {
             return Promise.resolve({
@@ -37,6 +33,12 @@ defineFeature(feature, test => {
 
     beforeAll(() => {
         mock_fetch_requests(mock_server_responses);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        jest.resetModules();
     });
 
     const aQuestionnaireThatHasBeenDeployed = (given) => {
@@ -62,7 +64,7 @@ defineFeature(feature, test => {
         then("I can view the TO Start Date that was specified", async () => {
             await waitFor(() => {
 
-                expect(screen.getByText(dateFormatter(toStartDate.toString()).format("DD/MM/YYYY"))).toBeDefined();
+                expect(screen.getByText(/01\/12\/2021/i)).toBeDefined();
             });
         });
     };
@@ -73,5 +75,4 @@ defineFeature(feature, test => {
         iSelectAQuestionnaire(when);
         iCanViewTheToStartDateThatWasSpecified(then);
     });
-})
-;
+});
