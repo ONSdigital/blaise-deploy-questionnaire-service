@@ -153,7 +153,7 @@ export const InstrumentList = (props: Props): ReactElement => {
                         {
                             filteredList && filteredList.length > 0 ?
                                 <ONSTable columns={tableColumns}
-                                          tableID={"tableID"}
+                                          tableID={"instrument-table"}
                                           tableBody={instrumentListBody()}/>
                                 :
                                 <ONSPanel spacious={true}

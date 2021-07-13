@@ -27,7 +27,7 @@ Object {
         </span>
       </button>
       <table
-        class="table "
+        class="table elementToFadeIn"
         id="audit-table"
       >
         <thead
@@ -103,7 +103,7 @@ Object {
       </span>
     </button>
     <table
-      class="table "
+      class="table elementToFadeIn"
       id="audit-table"
     >
       <thead
