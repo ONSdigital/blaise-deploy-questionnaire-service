@@ -63,7 +63,7 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
         const {instrumentName} = req.params;
 
         let [status, result] = await bimsAPI.getStartDate(req, res, instrumentName);
-        const startDateExists = (status === 200 && result.tostartdate.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}.{1}[0-9]{2}:[0-9]{2}:[0-9]{2}/) !== null);
+        const startDateExists = (status === 200 && result.tostartdate.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}/) !== null);
         if (!startDateExists) {
             res.status(204).json(result);
             return;
@@ -76,10 +76,8 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
             res.status(204).json(result);
         } else {
             auditLogError(req.log, `Failed to remove TO start date for questionnaire ${instrumentName}`);
-            res.status(500).json(result);
+            res.status(status).json(result);
         }
-
-        res.status(status).json(result);
     });
 
     router.get("/api/tostartdate/:instrumentName", async function (req: Request, res: Response) {
@@ -87,7 +85,7 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
 
         const [status, result, contentType] = await bimsAPI.getStartDate(req, res, instrumentName);
 
-        if (contentType !== "application/json") {
+        if (status === 200 && contentType !== "application/json") {
             req.log.warn("Response was not JSON, most likely invalid auth");
             res.status(400).json({});
             return;
