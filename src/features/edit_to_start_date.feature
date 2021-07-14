@@ -24,3 +24,24 @@ Feature: Add option to DQS to edit a TO Start Date for an existing instrument
     And no TO Start date has been specified
     When I select the questionnaire
     Then I have the option to add a TO Start date
+
+  # Scenario 4:
+  Scenario: Change an existing TO Start Date for a deployed questionnaire
+    Given I have selected to change or delete a TO Start Date for a deployed questionnaire
+    And I specify a TO Start Date
+    When I select the continue button
+    Then the TO Start Date is stored against the questionnaire
+
+  # Scenario 5:
+  Scenario: Delete a TO Start Date from a deployed questionnaire
+    Given I have selected to change or delete a TO Start Date for a deployed questionnaire
+    And I delete the TO Start Date
+    When I select the continue button
+    Then the TO Start Date is deleted from the questionnaire
+
+  # Scenario 6:
+  Scenario: Add a TO Start Date to a deployed questionnaire
+    Given I have selected to add a TO Start Date for a deployed questionnaire
+    And I specify a TO Start Date
+    When I select the continue button
+    Then the TO Start Date is stored against the questionnaire
