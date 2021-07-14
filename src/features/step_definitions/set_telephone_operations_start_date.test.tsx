@@ -123,7 +123,7 @@ defineFeature(feature, test => {
         });
 
         when("I select to not provide a TO Start Date", async () => {
-            await fireEvent.click(screen.getByText(/no, deploy without a start date/i));
+            await fireEvent.click(screen.getByText(/No start date/i));
             await fireEvent.click(screen.getByText(/Continue/));
 
             await act(async () => {

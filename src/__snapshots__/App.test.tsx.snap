@@ -239,7 +239,14 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  OPN2004A
+                  <a
+                    aria-label="View more information for questionnaire OPN2004A"
+                    data-testid="info-OPN2004A"
+                    href="/questionnaire"
+                    id="info-OPN2004A"
+                  >
+                    OPN2004A
+                  </a>
                 </td>
                 <td
                   class="table__cell "
@@ -286,7 +293,14 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  OPN2007T
+                  <a
+                    aria-label="View more information for questionnaire OPN2007T"
+                    data-testid="info-OPN2007T"
+                    href="/questionnaire"
+                    id="info-OPN2007T"
+                  >
+                    OPN2007T
+                  </a>
                 </td>
                 <td
                   class="table__cell "
@@ -326,7 +340,14 @@ Object {
                 <td
                   class="table__cell "
                 >
-                  OPN2101A
+                  <a
+                    aria-label="View more information for questionnaire OPN2101A"
+                    data-testid="info-OPN2101A"
+                    href="/questionnaire"
+                    id="info-OPN2101A"
+                  >
+                    OPN2101A
+                  </a>
                 </td>
                 <td
                   class="table__cell "
@@ -636,7 +657,14 @@ Object {
               <td
                 class="table__cell "
               >
-                OPN2004A
+                <a
+                  aria-label="View more information for questionnaire OPN2004A"
+                  data-testid="info-OPN2004A"
+                  href="/questionnaire"
+                  id="info-OPN2004A"
+                >
+                  OPN2004A
+                </a>
               </td>
               <td
                 class="table__cell "
@@ -683,7 +711,14 @@ Object {
               <td
                 class="table__cell "
               >
-                OPN2007T
+                <a
+                  aria-label="View more information for questionnaire OPN2007T"
+                  data-testid="info-OPN2007T"
+                  href="/questionnaire"
+                  id="info-OPN2007T"
+                >
+                  OPN2007T
+                </a>
               </td>
               <td
                 class="table__cell "
@@ -723,7 +758,14 @@ Object {
               <td
                 class="table__cell "
               >
-                OPN2101A
+                <a
+                  aria-label="View more information for questionnaire OPN2101A"
+                  data-testid="info-OPN2101A"
+                  href="/questionnaire"
+                  id="info-OPN2101A"
+                >
+                  OPN2101A
+                </a>
               </td>
               <td
                 class="table__cell "

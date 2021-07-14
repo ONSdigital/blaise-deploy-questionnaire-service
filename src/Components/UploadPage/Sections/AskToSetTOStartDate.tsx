@@ -1,5 +1,4 @@
 import React, {ReactElement} from "react";
-import dateFormatter from "dayjs";
 import {useFormikContext} from "formik";
 import {StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
 
@@ -28,7 +27,7 @@ function AskToSetTOStartDate({instrumentName}: SelectFilePageProps): ReactElemen
         validate: validateRadio,
         radioOptions: [
             {
-                id: "no", label: "No, deploy without a start date", value: "no"
+                id: "no", label: "No start date", value: "no"
             },
             {
                 id: "yes", label: "Yes, let me specify a start date", value: "yes",

@@ -20,6 +20,32 @@ function setTOStartDate(instrumentName: string, toStartDate: string | undefined)
     });
 }
 
+function getTOStartDate(instrumentName: string): Promise<[boolean | null , string]> {
+    console.log(`Call to getTOStartDate(${instrumentName})`);
+    const url = `/api/tostartdate/${instrumentName}`;
+
+    return new Promise((resolve: (object: [boolean | null, string]) => void) => {
+        requestPromiseJson("GET", url).then(([status, data]) => {
+            console.log(`Response from set TO start date: Status ${status}, data ${data}`);
+            if (status === 200) {
+                if (data.tostartdate !== undefined) {
+                    resolve([true, data.tostartdate]);
+                } else {
+                    resolve([null, ""]);
+                }
+            } else if (status === 404) {
+                resolve([false, ""]);
+            } else {
+                resolve([null, ""]);
+            }
+        }).catch((error: Error) => {
+            console.error(`Response from set start date Failed: Error ${error}`);
+            resolve([null, ""]);
+        });
+    });
+}
+
+
 function deleteTOStartDate(instrumentName: string): Promise<boolean> {
     console.log(`Call to deleteTOStartDate(${instrumentName})`);
     const url = `/api/tostartdate/${instrumentName}`;
@@ -39,4 +65,4 @@ function deleteTOStartDate(instrumentName: string): Promise<boolean> {
     });
 }
 
-export {setTOStartDate, deleteTOStartDate};
+export {setTOStartDate, getTOStartDate, deleteTOStartDate};
