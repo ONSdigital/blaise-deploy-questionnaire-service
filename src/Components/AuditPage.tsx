@@ -5,11 +5,12 @@ import dateFormatter from "dayjs";
 import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import {getAuditLogs} from "../utilities/http";
 import {AuditLog} from "../../Interfaces";
+import ONSTable, {TableColumns} from "./ONSTable";
 
 function AuditPage(): ReactElement {
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [listError, setListError] = useState<string>("Loading ...");
+    const [listError, setListError] = useState<string>("");
 
     useEffect(() => {
         callAuditLogs().then(() => console.log("callAuditLogs Complete"));
@@ -18,6 +19,7 @@ function AuditPage(): ReactElement {
     async function callAuditLogs() {
         setAuditLogs([]);
         setLoading(true);
+        setListError("");
 
         const [success, auditLogs] = await getAuditLogs();
 
@@ -37,6 +39,54 @@ function AuditPage(): ReactElement {
         setLoading(false);
     }
 
+    const tableColumns: TableColumns[] = [
+        {title: "Date and time"},
+        {title: "Information"}
+    ];
+
+
+    function auditPageBody() {
+        return <>
+            {
+                auditLogs.map(({id, timestamp, severity, message}: AuditLog) => {
+                    return (
+                        <tr className="table__row" key={id}
+                            data-testid={"instrument-table-row"}>
+                            <td className="table__cell ">
+                                {dateFormatter(new Date(timestamp)).format("DD/MM/YYYY HH:mm:ss")}
+                            </td>
+                            <td className="table__cell ">
+                                                <span className={`status status--${severity.toLowerCase()}`}>
+                                                    {message}
+                                                </span>
+                            </td>
+                        </tr>
+                    );
+                })
+            }
+        </>;
+    }
+
+    function displayAuditPage() {
+        if (loading) {
+            return <ONSLoadingPanel/>;
+        } else if (listError !== "") {
+            return (
+                <ONSPanel status={listError.includes("Unable") ? "error" : "info"}
+                          spacious={true}>
+                    {listError}
+                </ONSPanel>
+            );
+        }
+
+        return (
+            <div className={"elementToFadeIn"}>
+                <ErrorBoundary errorMessageText={"Failed to load deployment history."}>
+                    <ONSTable columns={tableColumns} tableBody={auditPageBody()} tableID={"audit-table"} />
+                </ErrorBoundary>
+            </div>
+        );
+    }
 
     return (
         <>
@@ -45,48 +95,9 @@ function AuditPage(): ReactElement {
             </p>
             <h1>Questionnaire deployment history</h1>
             <ONSButton onClick={() => callAuditLogs()} label="Reload" primary={true} small={true}/>
-            <ErrorBoundary errorMessageText={"Failed to load deployment history."}>
-                {
-                    auditLogs && auditLogs.length > 0
-                        ?
-                        <table id="audit-table" className="table elementToFadeIn">
-                            <thead className="table__head u-mt-m">
-                            <tr className="table__row">
-                                <th scope="col" className="table__header ">
-                                    <span>Date and time</span>
-                                </th>
-                                <th scope="col" className="table__header ">
-                                    <span>Information</span>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody className="table__body">
-                            {
-                                auditLogs.map(({id, timestamp, severity, message}: AuditLog) => {
-                                    return (
-                                        <tr className="table__row" key={id}
-                                            data-testid={"instrument-table-row"}>
-                                            <td className="table__cell ">
-                                                {dateFormatter(new Date(timestamp)).format("DD/MM/YYYY HH:mm:ss")}
-                                            </td>
-                                            <td className="table__cell ">
-                                                <span className={`status status--${severity.toLowerCase()}`}>
-                                                    {message}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    );
-                                })
-                            }
-                            </tbody>
-                        </table>
-                        :
-                        loading ?
-                            <ONSLoadingPanel/>
-                            :
-                            <ONSPanel status={(listError.includes("Unable") ? "error" : "info")}>{listError}</ONSPanel>
-                }
-            </ErrorBoundary>
+
+            {displayAuditPage()}
+
         </>
     );
 }

@@ -52,43 +52,48 @@ function StatusPage(): ReactElement {
     }, []);
 
 
+    function displayBlaiseStatus() {
+        if (loading) {
+            return <ONSLoadingPanel message={loadingMessage}/>;
+        } else if (listError !== "") {
+            return <ONSPanel>{listError}</ONSPanel>;
+        }
+
+        return (
+            <ErrorBoundary errorMessageText={"Failed to load Blaise Status, best to assume its not working."}>
+                <div className={"elementToFadeIn"}>
+                    <dl className="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
+                        title="Status information for connections to Blaise"
+                        aria-label="Status information for connections to Blaise">
+                        {statusList.map((item: BlaiseStatus) => {
+                            return (
+                                <Fragment key={item["health check type"]}>
+                                    <dt className="metadata__term grid__col col-5@m">
+                                        {item["health check type"]}:
+                                    </dt>
+                                    <dd className="metadata__value grid__col col-7@m">
+                                             <span
+                                                 className={`status status--${(item.status === "OK" ? "success" : "error")}`}>
+                                                 {item.status}
+                                             </span>
+                                    </dd>
+                                </Fragment>
+                            );
+                        })}
+                    </dl>
+                </div>
+            </ErrorBoundary>
+        );
+    }
+
     return (
         <>
             <p>
                 <Link to={"/"}>Previous</Link>
             </p>
             <h1>Blaise connection status</h1>
-            <ErrorBoundary errorMessageText={"Failed to load Blaise Status, best to assume its not working."}>
-                {
-                    loading ?
-                        <ONSLoadingPanel message={loadingMessage}/>
-                        :
-                        listError !== "" ?
-                            <ONSPanel>{listError}</ONSPanel>
-                            :
-                            <div className={"elementToFadeIn"}>
-                                <dl className="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-                                    title="Status information for connections to Blaise"
-                                    aria-label="Status information for connections to Blaise">
-                                    {statusList.map((item: BlaiseStatus) => {
-                                        return (
-                                            <Fragment key={item["health check type"]}>
-                                                <dt className="metadata__term grid__col col-5@m">
-                                                    {item["health check type"]}:
-                                                </dt>
-                                                <dd className="metadata__value grid__col col-7@m">
-                                             <span
-                                                 className={`status status--${(item.status === "OK" ? "success" : "error")}`}>
-                                                 {item.status}
-                                             </span>
-                                                </dd>
-                                            </Fragment>
-                                        );
-                                    })}
-                                </dl>
-                            </div>
-                }
-            </ErrorBoundary>
+
+            {displayBlaiseStatus()}
         </>
     );
 }
