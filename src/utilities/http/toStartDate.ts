@@ -28,7 +28,11 @@ function getTOStartDate(instrumentName: string): Promise<[boolean | null , strin
         requestPromiseJson("GET", url).then(([status, data]) => {
             console.log(`Response from set TO start date: Status ${status}, data ${data}`);
             if (status === 200) {
-                resolve([true, data.tostartdate]);
+                if (data.tostartdate !== undefined) {
+                    resolve([true, data.tostartdate]);
+                } else {
+                    resolve([null, ""]);
+                }
             } else if (status === 404) {
                 resolve([false, ""]);
             } else {
