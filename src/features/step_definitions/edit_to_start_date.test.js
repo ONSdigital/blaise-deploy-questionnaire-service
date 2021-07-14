@@ -2,7 +2,6 @@ import {defineFeature, loadFeature} from "jest-cucumber";
 import {mock_fetch_requests, renderHomepage} from "./functions";
 import {instrumentList} from "./API_Mock_Objects";
 import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
-import dateFormatter from "dayjs";
 import flushPromises from "../../tests/utils";
 
 const feature = loadFeature(
@@ -19,7 +18,6 @@ defineFeature(feature, test => {
 
     const toStartDate = new Date("01 Dec 2021 00:00:00 GMT");
     const toStartDateFormatted = /01\/12\/2021/i;
-    const newToStartDate = new Date("23 Jan 2021 00:00:00 GMT");
     const newToStartDateValue = "2021-01-23";
     const instrumentThatHasStartDate = "OPN2004A";
     const instrumentThatDoesNotHaveStartDate = "OPN2101A";
