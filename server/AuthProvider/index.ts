@@ -21,17 +21,14 @@ export default class AuthProvider {
         if (this.token === "") {
             return false;
         }
-        const decodedToken : Jwt | null = jwt.decode(this.token, {json: true});
+        const decodedToken = jwt.decode(this.token, {json: true});
         if (decodedToken === null) {
             console.log("Failed to decode token, Calling for new Google auth Token");
             return false;
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        } else { // @ts-ignore
-            if (AuthProvider.hasTokenExpired(decodedToken["exp"])) {
-                        console.log("Auth Token Expired, Calling for new Google auth Token");
+        } else if (AuthProvider.hasTokenExpired(decodedToken["exp"] || 0)) {
+            console.log("Auth Token Expired, Calling for new Google auth Token");
 
-                        return false;
-                    }
+            return false;
         }
 
         return true;
