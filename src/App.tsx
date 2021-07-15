@@ -81,7 +81,7 @@ function App(): ReactElement {
                                 <StatusPage/>
                             </Route>
                             <Route path="/reinstall">
-                                <ReinstallInstruments installedInstruments={instruments}/>
+                                <ReinstallInstruments installedInstruments={instruments} listLoading={listLoading}/>
                             </Route>
                             <Route path="/audit">
                                 <AuditPage/>
