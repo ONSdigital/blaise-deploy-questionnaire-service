@@ -56,7 +56,7 @@ function ViewToStartDate({instrumentName}: Props): ReactElement {
 
     return (
         <>
-            <div className="summary u-mb-m">
+            <div className="summary u-mb-m elementToFadeIn">
                 <div className="summary__group">
                     <h2 className="summary__group-title">Telephone Operations start date</h2>
                     <table className="summary__items">

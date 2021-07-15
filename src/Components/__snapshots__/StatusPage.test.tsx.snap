@@ -15,6 +15,92 @@ Object {
       <h1>
         Blaise connection status
       </h1>
+      <div
+        class="elementToFadeIn"
+      >
+        <dl
+          aria-label="Status information for connections to Blaise"
+          class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
+          title="Status information for connections to Blaise"
+        >
+          <dt
+            class="metadata__term grid__col col-5@m"
+          >
+            Connection model
+            :
+          </dt>
+          <dd
+            class="metadata__value grid__col col-7@m"
+          >
+            <span
+              class="status status--success"
+            >
+              OK
+            </span>
+          </dd>
+          <dt
+            class="metadata__term grid__col col-5@m"
+          >
+            Blaise connection
+            :
+          </dt>
+          <dd
+            class="metadata__value grid__col col-7@m"
+          >
+            <span
+              class="status status--success"
+            >
+              OK
+            </span>
+          </dd>
+          <dt
+            class="metadata__term grid__col col-5@m"
+          >
+            Remote data server connection
+            :
+          </dt>
+          <dd
+            class="metadata__value grid__col col-7@m"
+          >
+            <span
+              class="status status--success"
+            >
+              OK
+            </span>
+          </dd>
+          <dt
+            class="metadata__term grid__col col-5@m"
+          >
+            Remote Cati management connection
+            :
+          </dt>
+          <dd
+            class="metadata__value grid__col col-7@m"
+          >
+            <span
+              class="status status--success"
+            >
+              OK
+            </span>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <p>
+      <a
+        href="/"
+      >
+        Previous
+      </a>
+    </p>
+    <h1>
+      Blaise connection status
+    </h1>
+    <div
+      class="elementToFadeIn"
+    >
       <dl
         aria-label="Status information for connections to Blaise"
         class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
@@ -82,84 +168,6 @@ Object {
         </dd>
       </dl>
     </div>
-  </body>,
-  "container": <div>
-    <p>
-      <a
-        href="/"
-      >
-        Previous
-      </a>
-    </p>
-    <h1>
-      Blaise connection status
-    </h1>
-    <dl
-      aria-label="Status information for connections to Blaise"
-      class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-      title="Status information for connections to Blaise"
-    >
-      <dt
-        class="metadata__term grid__col col-5@m"
-      >
-        Connection model
-        :
-      </dt>
-      <dd
-        class="metadata__value grid__col col-7@m"
-      >
-        <span
-          class="status status--success"
-        >
-          OK
-        </span>
-      </dd>
-      <dt
-        class="metadata__term grid__col col-5@m"
-      >
-        Blaise connection
-        :
-      </dt>
-      <dd
-        class="metadata__value grid__col col-7@m"
-      >
-        <span
-          class="status status--success"
-        >
-          OK
-        </span>
-      </dd>
-      <dt
-        class="metadata__term grid__col col-5@m"
-      >
-        Remote data server connection
-        :
-      </dt>
-      <dd
-        class="metadata__value grid__col col-7@m"
-      >
-        <span
-          class="status status--success"
-        >
-          OK
-        </span>
-      </dd>
-      <dt
-        class="metadata__term grid__col col-5@m"
-      >
-        Remote Cati management connection
-        :
-      </dt>
-      <dd
-        class="metadata__value grid__col col-7@m"
-      >
-        <span
-          class="status status--success"
-        >
-          OK
-        </span>
-      </dd>
-    </dl>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
