@@ -5,24 +5,12 @@ import {Instrument} from "../../Interfaces";
 import ONSTable, {TableColumns} from "./ONSTable";
 import dateFormatter from "dayjs";
 import {Link, useLocation} from "react-router-dom";
+import InstrumentStatus from "./InstrumentStatus";
 
 interface Props {
     instrumentList: Instrument[]
     loading: boolean
     listMessage: string
-}
-
-function getStatusColor(status: string | undefined) {
-    switch (status) {
-        case "Active":
-            return "success";
-        case "Erroneous":
-            return "error";
-        case "Failed":
-            return "error";
-        default:
-            return "info";
-    }
 }
 
 export const InstrumentList = (props: Props): ReactElement => {
@@ -85,16 +73,22 @@ export const InstrumentList = (props: Props): ReactElement => {
                     return (
                         <tr className="table__row" key={item.name} data-testid={"instrument-table-row"}>
                             <td className="table__cell ">
-                                {item.name}
+                                <Link
+                                    id={`info-${item.name}`}
+                                    data-testid={`info-${item.name}`}
+                                    aria-label={`View more information for questionnaire ${item.name}`}
+                                    to={{
+                                        pathname: "/questionnaire",
+                                        state: {instrument: item}
+                                    }}>
+                                    {item.name}
+                                </Link>
                             </td>
                             <td className="table__cell ">
                                 {item.fieldPeriod}
                             </td>
                             <td className="table__cell ">
-                                        <span
-                                            className={`status status--${getStatusColor(item.status)}`}>
-                                            {item.status}
-                                        </span>
+                                <InstrumentStatus status={item.status ? item.status: ""}/>
                             </td>
                             <td className="table__cell ">
                                 {dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}
