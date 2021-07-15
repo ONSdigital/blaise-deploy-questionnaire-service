@@ -44,7 +44,7 @@ function AuditPage(): ReactElement {
         {title: "Information"}
     ];
 
-    function displayAuditPage() {
+    function DisplayAuditPage(): ReactElement {
         if (loading) {
             return <ONSLoadingPanel/>;
         } else if (listError !== "") {
@@ -91,7 +91,7 @@ function AuditPage(): ReactElement {
             <h1>Questionnaire deployment history</h1>
             <ONSButton onClick={() => callAuditLogs()} label="Reload" primary={true} small={true}/>
 
-            {displayAuditPage()}
+            <DisplayAuditPage/>
 
         </>
     );

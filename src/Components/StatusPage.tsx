@@ -52,7 +52,7 @@ function StatusPage(): ReactElement {
     }, []);
 
 
-    function displayBlaiseStatus() {
+    function DisplayBlaiseStatus(): ReactElement {
         if (loading) {
             return <ONSLoadingPanel message={loadingMessage}/>;
         } else if (listError !== "") {
@@ -93,7 +93,7 @@ function StatusPage(): ReactElement {
             </p>
             <h1>Blaise connection status</h1>
 
-            {displayBlaiseStatus()}
+            <DisplayBlaiseStatus/>
         </>
     );
 }
