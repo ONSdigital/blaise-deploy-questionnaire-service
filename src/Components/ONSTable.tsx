@@ -6,12 +6,12 @@ export interface TableColumns {
 
 interface ONSTable {
     columns: TableColumns[]
-    tableBody: ReactElement
+    children: ReactElement
     tableID?: string
     tableCaption?: string
 }
 
-export const ONSTable = ({columns, tableBody, tableCaption, tableID}: ONSTable): ReactElement => {
+export const ONSTable = ({columns, children, tableCaption, tableID}: ONSTable): ReactElement => {
     return (
         <>
             <table
@@ -28,7 +28,7 @@ export const ONSTable = ({columns, tableBody, tableCaption, tableID}: ONSTable):
                 </tr>
                 </thead>
                 <tbody className="table__body">
-                {tableBody}
+                {children}
                 </tbody>
             </table>
         </>

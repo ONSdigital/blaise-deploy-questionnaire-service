@@ -44,29 +44,6 @@ function AuditPage(): ReactElement {
         {title: "Information"}
     ];
 
-
-    function auditPageBody() {
-        return <>
-            {
-                auditLogs.map(({id, timestamp, severity, message}: AuditLog) => {
-                    return (
-                        <tr className="table__row" key={id}
-                            data-testid={"instrument-table-row"}>
-                            <td className="table__cell ">
-                                {dateFormatter(new Date(timestamp)).format("DD/MM/YYYY HH:mm:ss")}
-                            </td>
-                            <td className="table__cell ">
-                                                <span className={`status status--${severity.toLowerCase()}`}>
-                                                    {message}
-                                                </span>
-                            </td>
-                        </tr>
-                    );
-                })
-            }
-        </>;
-    }
-
     function displayAuditPage() {
         if (loading) {
             return <ONSLoadingPanel/>;
@@ -82,7 +59,25 @@ function AuditPage(): ReactElement {
         return (
             <div className={"elementToFadeIn"}>
                 <ErrorBoundary errorMessageText={"Failed to load deployment history."}>
-                    <ONSTable columns={tableColumns} tableBody={auditPageBody()} tableID={"audit-table"} />
+                    <ONSTable columns={tableColumns} tableID={"audit-table"}>
+                        {
+                            auditLogs.map(({id, timestamp, severity, message}: AuditLog) => {
+                                return (
+                                    <tr className="table__row" key={id}
+                                        data-testid={"instrument-table-row"}>
+                                        <td className="table__cell ">
+                                            {dateFormatter(new Date(timestamp)).format("DD/MM/YYYY HH:mm:ss")}
+                                        </td>
+                                        <td className="table__cell ">
+                                                <span className={`status status--${severity.toLowerCase()}`}>
+                                                    {message}
+                                                </span>
+                                        </td>
+                                    </tr>
+                                );
+                            })
+                        }
+                    </ONSTable>
                 </ErrorBoundary>
             </div>
         );

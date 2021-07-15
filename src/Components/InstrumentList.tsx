@@ -13,6 +13,53 @@ interface Props {
     listMessage: string
 }
 
+function instrumentTableRow(item: Instrument) {
+    return (
+        <tr className="table__row" key={item.name} data-testid={"instrument-table-row"}>
+            <td className="table__cell ">
+                <Link
+                    id={`info-${item.name}`}
+                    data-testid={`info-${item.name}`}
+                    aria-label={`View more information for questionnaire ${item.name}`}
+                    to={{
+                        pathname: "/questionnaire",
+                        state: {instrument: item}
+                    }}>
+                    {item.name}
+                </Link>
+            </td>
+            <td className="table__cell ">
+                {item.fieldPeriod}
+            </td>
+            <td className="table__cell ">
+                <InstrumentStatus status={item.status ? item.status : ""}/>
+            </td>
+            <td className="table__cell ">
+                {dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}
+            </td>
+            <td className="table__cell ">
+                {item.dataRecordCount}
+            </td>
+            <td className={"table__cell "} id={`delete-${item.name}`}>
+                {
+                    item.active ?
+                        "Questionnaire is live"
+                        :
+                        <Link id={`delete-button-${item.name}`}
+                              data-testid={`delete-${item.name}`}
+                              aria-label={`Delete questionnaire ${item.name}`}
+                              to={{
+                                  pathname: "/delete",
+                                  state: {instrument: item}
+                              }}>
+                            Delete
+                        </Link>
+                }
+            </td>
+        </tr>
+    );
+}
+
 export const InstrumentList = (props: Props): ReactElement => {
     const {instrumentList, loading, listMessage} = props;
 
@@ -66,60 +113,6 @@ export const InstrumentList = (props: Props): ReactElement => {
         ];
 
 
-    function instrumentListBody(): ReactElement {
-        return <>
-            {
-                filteredList.map((item: Instrument) => {
-                    return (
-                        <tr className="table__row" key={item.name} data-testid={"instrument-table-row"}>
-                            <td className="table__cell ">
-                                <Link
-                                    id={`info-${item.name}`}
-                                    data-testid={`info-${item.name}`}
-                                    aria-label={`View more information for questionnaire ${item.name}`}
-                                    to={{
-                                        pathname: "/questionnaire",
-                                        state: {instrument: item}
-                                    }}>
-                                    {item.name}
-                                </Link>
-                            </td>
-                            <td className="table__cell ">
-                                {item.fieldPeriod}
-                            </td>
-                            <td className="table__cell ">
-                                <InstrumentStatus status={item.status ? item.status: ""}/>
-                            </td>
-                            <td className="table__cell ">
-                                {dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}
-                            </td>
-                            <td className="table__cell ">
-                                {item.dataRecordCount}
-                            </td>
-                            <td className={"table__cell "} id={`delete-${item.name}`}>
-                                {
-                                    item.active ?
-                                        "Questionnaire is live"
-                                        :
-                                        <Link id={`delete-button-${item.name}`}
-                                              data-testid={`delete-${item.name}`}
-                                              aria-label={`Delete questionnaire ${item.name}`}
-                                              to={{
-                                                  pathname: "/delete",
-                                                  state: {instrument: item}
-                                              }}>
-                                            Delete
-                                        </Link>
-                                }
-                            </td>
-                        </tr>
-                    );
-                })
-            }
-        </>;
-    }
-
-
     if (loading) {
         return <ONSLoadingPanel/>;
     } else {
@@ -148,7 +141,13 @@ export const InstrumentList = (props: Props): ReactElement => {
                             filteredList && filteredList.length > 0 ?
                                 <ONSTable columns={tableColumns}
                                           tableID={"instrument-table"}
-                                          tableBody={instrumentListBody()}/>
+                                >
+                                    {
+                                        filteredList.map((item: Instrument) => {
+                                            return instrumentTableRow(item);
+                                        })
+                                    }
+                                </ONSTable>
                                 :
                                 <ONSPanel spacious={true}
                                           status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>
