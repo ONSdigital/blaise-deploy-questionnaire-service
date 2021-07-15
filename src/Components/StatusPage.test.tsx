@@ -58,18 +58,18 @@ describe("Blaise Status page", () => {
             </Router>
         );
 
-        expect(queryByText(/Loading/i)).toBeInTheDocument();
+        expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
         await waitFor(() => {
             expect(getByText(/Blaise connection status/i)).toBeDefined();
-            expect(queryByText(/Loading/i)).not.toBeInTheDocument();
+            expect(queryByText(/Checking Blaise status/i)).not.toBeInTheDocument();
         });
 
         await waitFor(() => {
             expect(getByText(/Blaise connection status/i)).toBeDefined();
             expect(getByText(/Connection model/i)).toBeDefined();
             expect(getByText(/Remote Cati management connection/i)).toBeDefined();
-            expect(queryByText(/Loading/i)).not.toBeInTheDocument();
+            expect(queryByText(/Checking Blaise status/i)).not.toBeInTheDocument();
         });
 
     });
@@ -94,12 +94,12 @@ describe("Given the API returns a 500 status", () => {
             </Router>
         );
 
-        expect(queryByText(/Loading/i)).toBeInTheDocument();
+        expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
 
         await waitFor(() => {
             expect(getByText(/Unable to get Blaise status/i)).toBeDefined();
-            expect(queryByText(/Loading/i)).not.toBeInTheDocument();
+            expect(queryByText(/Checking Blaise status/i)).not.toBeInTheDocument();
         });
 
     });
@@ -124,12 +124,12 @@ describe("Given the API returns malformed json", () => {
             </Router>
         );
 
-        expect(queryByText(/Loading/i)).toBeInTheDocument();
+        expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
 
         await waitFor(() => {
             expect(getByText(/Unable to get Blaise status/i)).toBeDefined();
-            expect(queryByText(/Loading/i)).not.toBeInTheDocument();
+            expect(queryByText(/Checking Blaise status/i)).not.toBeInTheDocument();
         });
 
     });
@@ -154,12 +154,12 @@ describe("Given the API returns an empty list", () => {
             </Router>
         );
 
-        expect(queryByText(/Loading/i)).toBeInTheDocument();
+        expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
 
         await waitFor(() => {
             expect(getByText(/No connection details found./i)).toBeDefined();
-            expect(queryByText(/Loading/i)).not.toBeInTheDocument();
+            expect(queryByText(/Checking Blaise status/i)).not.toBeInTheDocument();
         });
 
     });

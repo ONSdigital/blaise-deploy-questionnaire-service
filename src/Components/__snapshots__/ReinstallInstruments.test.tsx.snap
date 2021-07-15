@@ -15,6 +15,100 @@ Object {
       <h1>
         Reinstall questionnaire
       </h1>
+      <div
+        class="elementToFadeIn"
+      >
+        <form>
+          <fieldset
+            class="fieldset"
+          >
+            <legend
+              class="fieldset__legend"
+            >
+              Select a questionnaire to install
+            </legend>
+            <div
+              class="radios__items"
+            >
+              <p
+                class="radios__item"
+              >
+                <span
+                  class="radio"
+                >
+                  <input
+                    aria-label="No"
+                    class="radio__input js-radio "
+                    id="install-OPN2004A.bpkg"
+                    name="select-survey"
+                    type="radio"
+                    value="OPN2004A.bpkg"
+                  />
+                  <label
+                    class="radio__label "
+                    for="install-OPN2004A.bpkg"
+                  >
+                    OPN2004A.bpkg
+                  </label>
+                </span>
+              </p>
+              <br />
+              <p
+                class="radios__item"
+              >
+                <span
+                  class="radio"
+                >
+                  <input
+                    aria-label="No"
+                    class="radio__input js-radio "
+                    id="install-LMS2101_BK2.bpkg"
+                    name="select-survey"
+                    type="radio"
+                    value="LMS2101_BK2.bpkg"
+                  />
+                  <label
+                    class="radio__label "
+                    for="install-LMS2101_BK2.bpkg"
+                  >
+                    LMS2101_BK2.bpkg
+                  </label>
+                </span>
+              </p>
+              <br />
+            </div>
+          </fieldset>
+          <br />
+          <button
+            class="btn "
+            data-testid="button"
+            id="confirm-install"
+            type="button"
+          >
+            <span
+              class="btn__inner"
+            >
+              Install selected questionnaire
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <p>
+      <a
+        href="/"
+      >
+        Previous
+      </a>
+    </p>
+    <h1>
+      Reinstall questionnaire
+    </h1>
+    <div
+      class="elementToFadeIn"
+    >
       <form>
         <fieldset
           class="fieldset"
@@ -90,92 +184,6 @@ Object {
         </button>
       </form>
     </div>
-  </body>,
-  "container": <div>
-    <p>
-      <a
-        href="/"
-      >
-        Previous
-      </a>
-    </p>
-    <h1>
-      Reinstall questionnaire
-    </h1>
-    <form>
-      <fieldset
-        class="fieldset"
-      >
-        <legend
-          class="fieldset__legend"
-        >
-          Select a questionnaire to install
-        </legend>
-        <div
-          class="radios__items"
-        >
-          <p
-            class="radios__item"
-          >
-            <span
-              class="radio"
-            >
-              <input
-                aria-label="No"
-                class="radio__input js-radio "
-                id="install-OPN2004A.bpkg"
-                name="select-survey"
-                type="radio"
-                value="OPN2004A.bpkg"
-              />
-              <label
-                class="radio__label "
-                for="install-OPN2004A.bpkg"
-              >
-                OPN2004A.bpkg
-              </label>
-            </span>
-          </p>
-          <br />
-          <p
-            class="radios__item"
-          >
-            <span
-              class="radio"
-            >
-              <input
-                aria-label="No"
-                class="radio__input js-radio "
-                id="install-LMS2101_BK2.bpkg"
-                name="select-survey"
-                type="radio"
-                value="LMS2101_BK2.bpkg"
-              />
-              <label
-                class="radio__label "
-                for="install-LMS2101_BK2.bpkg"
-              >
-                LMS2101_BK2.bpkg
-              </label>
-            </span>
-          </p>
-          <br />
-        </div>
-      </fieldset>
-      <br />
-      <button
-        class="btn "
-        data-testid="button"
-        id="confirm-install"
-        type="button"
-      >
-        <span
-          class="btn__inner"
-        >
-          Install selected questionnaire
-        </span>
-      </button>
-    </form>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
