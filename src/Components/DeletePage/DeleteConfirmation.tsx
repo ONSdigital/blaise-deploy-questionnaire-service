@@ -1,5 +1,5 @@
 import React, {ReactElement, useState} from "react";
-import {Link, Redirect, useHistory, useLocation} from "react-router-dom";
+import {Link, Redirect, useLocation} from "react-router-dom";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 import {Instrument} from "../../../Interfaces";
 import ErroneousWarning from "./ErroneousWarning";
@@ -16,12 +16,9 @@ interface Location {
 }
 
 function DeleteConfirmation({getList}: Props): ReactElement {
-    const [confirm, setConfirm] = useState<boolean | null>(null);
     const [message, setMessage] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [redirect, setRedirect] = useState<boolean>(false);
-    const [formError, setFormError] = useState<string>("");
-    const history = useHistory();
     const location = useLocation();
     const {instrument} = (location as Location).state || {instrument: ""};
 
