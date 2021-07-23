@@ -1,8 +1,6 @@
-// React
-import React from "react";
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
-import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
+import {cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
 import {survey_list} from "./API_Mock_Objects";
@@ -10,8 +8,6 @@ import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
 } from "./functions";
-import flushPromises from "../../tests/utils";
-
 
 
 // Load in feature details from .feature file
