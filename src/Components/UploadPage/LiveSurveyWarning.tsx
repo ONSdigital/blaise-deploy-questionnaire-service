@@ -1,19 +1,20 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 
-
-interface Props {
+interface Params {
     instrumentName: string
 }
 
-function LiveSurveyWarning({instrumentName}: Props) {
-    const history=useHistory();
+function LiveSurveyWarning(): ReactElement {
+    const history = useHistory();
+
+    const { instrumentName }: Params = useParams();
+
     return (
         <>
-            <h1>Cannot overwrite questionnaire <em> {instrumentName} </em> as it is currently live.</h1>
-
             <ONSPanel status="error">
+                <h1>Cannot overwrite questionnaire <em>{instrumentName}</em> as it is currently live.</h1>
                 <p>
                     Note, you cannot overwrite questionnaire that are currently live.
                     <br/>
@@ -23,7 +24,7 @@ function LiveSurveyWarning({instrumentName}: Props) {
             <br/>
             <br/>
             <ONSButton label="Accept and go to table of questionnaires"
-                primary={true}
+                       primary={true}
                        id="return-to-home"
                        onClick={() => history.push("/")}/>
 

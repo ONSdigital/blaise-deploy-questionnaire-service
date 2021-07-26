@@ -1,10 +1,11 @@
-import express, {NextFunction, Request, Response} from "express";
+import express, {NextFunction, Request, RequestHandler, Response} from "express";
 import path from "path";
 import ejs from "ejs";
 import dotenv from "dotenv";
 import {getEnvironmentVariables} from "./Config";
 import createLogger from "./pino";
 import * as profiler from "@google-cloud/profiler";
+import bodyParser from "body-parser";
 
 profiler.start({logLevel: 4}).catch((err: unknown) => {
     console.log(`Failed to start profiler: ${err}`);
@@ -15,12 +16,15 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const server = express();
+server.use(bodyParser.json() as RequestHandler);
+
 const logger: any = createLogger();
 server.use(logger);
 
 import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
 import BlaiseAPIRouter from "./BlaiseAPI";
 import {auditLogError, auditLogInfo, getAuditLogs} from "./audit_logging";
+import BimsAPIRouter from "./BimsAPI";
 
 //axios.defaults.timeout = 10000;
 
@@ -112,11 +116,12 @@ server.get("/api/audit", function (req: Request, res: Response) {
 
 // All Endpoints calling the Blaise API
 server.use("/", BlaiseAPIRouter(environmentVariables, logger));
+server.use("/", BimsAPIRouter(environmentVariables, logger));
 
 // Health Check endpoint
-server.get("/health_check", async function (req: Request, res: Response) {
+server.get("/dqs-ui/:version/health", async function (req: Request, res: Response) {
     console.log("Heath Check endpoint called");
-    res.status(200).json({status: 200});
+    res.status(200).json({healthy: true});
 });
 
 server.get("*", function (req: Request, res: Response) {

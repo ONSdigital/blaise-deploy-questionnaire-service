@@ -14,10 +14,10 @@ const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
 describe("Test Heath Endpoint", () => {
     it("should return a 200 status and json message", async done => {
-        const response = await request.get("/health_check");
+        const response = await request.get("/dqs-ui/version/health");
 
         expect(response.statusCode).toEqual(200);
-        expect(response.body).toStrictEqual({status: 200});
+        expect(response.body).toStrictEqual({healthy: true});
         done();
     });
 });

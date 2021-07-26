@@ -4,7 +4,10 @@ function requestPromiseJson(method: string, url: string, body: any = null): Prom
     return new Promise((resolve: (object: PromiseResponse) => void, reject: (error: string) => void) => {
         fetch(url, {
             "method": method,
-            "body": body
+            "body": (body !== null ? JSON.stringify(body): null),
+            headers: {
+                "Content-Type": "application/json"
+            },
         })
             .then(async response => {
                 response.json().then(

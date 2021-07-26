@@ -1,12 +1,13 @@
-// React
-import React from "react";
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
 import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
 import {survey_list} from "./API_Mock_Objects";
-import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
+import navigateToDeployPageAndSelectFile, {
+    mock_fetch_requests,
+    navigatePastSettingTOStartDateAndStartDeployment
+} from "./functions";
 import flushPromises from "../../tests/utils";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
@@ -106,7 +107,7 @@ defineFeature(feature, test => {
         });
 
         when("I confirm my selection and the name/ref of the questionnaire package is the same as one already deployed in Blaise", async () => {
-            await fireEvent.click(screen.getByTestId("button"));
+            await fireEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am presented with the options to cancel or overwrite the questionnaire", async () => {
@@ -125,7 +126,7 @@ defineFeature(feature, test => {
                 {},
             );
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByTestId("button"));
+            await fireEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
@@ -133,7 +134,7 @@ defineFeature(feature, test => {
 
         when("I select to 'overwrite' and the survey is live (within the specified survey days)", async () => {
             await fireEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
-            await fireEvent.click(screen.getByText(/save/i));
+            await fireEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am presented with a warning banner that I cannot overwrite the survey", async () => {
@@ -162,7 +163,7 @@ defineFeature(feature, test => {
                 {},
             );
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByTestId("button"));
+            await fireEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
@@ -170,7 +171,7 @@ defineFeature(feature, test => {
 
         when("I select to 'overwrite' and there is no sample or respondent data captured for the questionnaire", async () => {
             await fireEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
-            await fireEvent.click(screen.getByText(/save/i));
+            await fireEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am presented with a warning, to confirm overwrite", async () => {
@@ -186,17 +187,22 @@ defineFeature(feature, test => {
             mock_fetch_requests(mock_server_responses_not_live);
             mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200, {});
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByTestId("button"));
+            await fireEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
             await fireEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
-            await fireEvent.click(screen.getByText(/save/i));
+            await fireEvent.click(screen.getByText(/Continue/));
+            await act(async () => {
+                await flushPromises();
+            });
         });
 
         when("I confirm I want to do this", async () => {
             await fireEvent.click(screen.getByText(/yes, overwrite questionnaire/i));
-            await fireEvent.click(screen.getByText(/continue/i));
+            await fireEvent.click(screen.getByText(/Continue/));
+
+            await navigatePastSettingTOStartDateAndStartDeployment();
         });
 
         then("the questionnaire package is deployed and overwrites the existing questionnaire in the SQL database on the Blaise Tel server", () => {
@@ -218,17 +224,20 @@ defineFeature(feature, test => {
                 {},
             );
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByTestId("button"));
+            await fireEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
             await fireEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
-            await fireEvent.click(screen.getByText(/save/i));
+            await fireEvent.click(screen.getByText(/Continue/));
+            await act(async () => {
+                await flushPromises();
+            });
         });
 
         when("I confirm that I do NOT want to continue", async () => {
             await fireEvent.click(screen.getByText(/no, do not overwrite questionnaire/i));
-            await fireEvent.click(screen.getByText(/continue/i));
+            await fireEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am returned to the landing page", async () => {
