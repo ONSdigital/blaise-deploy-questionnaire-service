@@ -11,7 +11,7 @@ function BlaiseNodeInfo({instrument}: NodeProps): ReactElement {
 
     return (
         <>
-            <Collapsible title="What is the questionnaire install states on the Blaise nodes?">
+            <Collapsible title="What are the questionnaire install states on the Blaise nodes?">
                 <>
                     <h3 className="u-mt-m">Blaise Nodes</h3>
                     <dl className="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
