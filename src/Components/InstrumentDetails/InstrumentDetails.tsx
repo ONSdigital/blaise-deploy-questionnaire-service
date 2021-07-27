@@ -5,13 +5,14 @@ import dateFormatter from "dayjs";
 import ViewToStartDate from "./ViewToStartDate";
 import {Instrument} from "../../../Interfaces";
 import InstrumentStatus from "../InstrumentStatus";
+import BlaiseNodeInfo from "./BlaiseNodeInfo";
 
 interface State {
-    instrument: Instrument | null
+    instrument: Instrument | null;
 }
 
 interface Location {
-    state: State
+    state: State;
 }
 
 function InstrumentDetails(): ReactElement {
@@ -52,7 +53,7 @@ function InstrumentDetails(): ReactElement {
                                 </div>
                             </td>
                             <td className="summary__values" colSpan={2}>
-                                <InstrumentStatus status={instrument.status ? instrument.status: ""}/>
+                                <InstrumentStatus status={instrument.status ? instrument.status : ""}/>
                             </td>
                         </tr>
                         </tbody>
@@ -86,8 +87,11 @@ function InstrumentDetails(): ReactElement {
 
             <h2>Survey days</h2>
             <YearCalendar surveyDays={instrument.surveyDays}/>
+
+            <BlaiseNodeInfo instrument={instrument}/>
         </>
     );
 }
 
 export default InstrumentDetails;
+
