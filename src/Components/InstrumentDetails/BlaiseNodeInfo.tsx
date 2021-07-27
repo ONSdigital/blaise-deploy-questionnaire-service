@@ -15,8 +15,8 @@ function BlaiseNodeInfo({instrument}: NodeProps): ReactElement {
                 <>
                     <h3 className="u-mt-m">Blaise Nodes</h3>
                     <dl className="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
-                        title="Questionnaire install state on Blaise nodes"
-                        aria-label="Questionnaire install state on Blaise nodes">
+                        title="Questionnaire install state on the Blaise nodes"
+                        aria-label="Questionnaire install state on the Blaise nodes">
                         {
                             instrument.nodes && instrument.nodes.map((node) => {
                                 return (
