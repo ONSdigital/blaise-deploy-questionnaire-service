@@ -4,7 +4,6 @@ import {EnvironmentVariables} from "../Config";
 import {auditLogError, auditLogInfo} from "../audit_logging";
 import BlaiseApiRest, {Instrument, InstallInstrument} from "blaise-api-node-client";
 
-
 export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariables, logger: any): Router {
     const {BLAISE_API_URL, SERVER_PARK}: EnvironmentVariables = environmentVariables;
     const router = express.Router();
@@ -85,8 +84,10 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             .catch((error) => {
                 if (error.status === 404) {
                     auditLogError(req.log, `Attempted to uninstall questionnaire ${instrumentName} that doesn't exist`);
+                    res.status(404).json(null);
                 } else {
                     auditLogError(req.log, `Failed to uninstall questionnaire ${instrumentName}`);
+                    res.status(500).json(null);
                 }
             });
     });
