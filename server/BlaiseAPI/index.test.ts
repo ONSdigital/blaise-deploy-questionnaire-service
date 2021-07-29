@@ -9,7 +9,6 @@ const {DiagnosticMockObject, InstrumentListMockObject, InstrumentMockObject} = j
 // Mock Express Server
 const request = supertest(app);
 
-
 describe("BlaiseAPI Get health Check from API", () => {
     it("should return a 200 status and an json list of 4 items when API returns a 4 item list", async done => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
