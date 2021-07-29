@@ -21,7 +21,7 @@ const instrumentList: Instrument[] = [{
     fieldPeriod: "January 2021"
 }];
 
-const bucketInstrument: string[] = ["OPN2101A.bpkg", "OPN2004A.bpkg", "LMS2101_BK2.bpkg"]
+const bucketInstrument: string[] = ["OPN2101A.bpkg", "OPN2004A.bpkg", "LMS2101_BK2.bpkg"];
 
 describe("Reinstall instruments list", () => {
 
@@ -33,7 +33,7 @@ describe("Reinstall instruments list", () => {
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList}/>
+                <ReinstallInstruments installedInstruments={instrumentList}  listLoading={false}/>
             </Router>
         );
 
@@ -50,7 +50,7 @@ describe("Reinstall instruments list", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList}/>
+                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false}/>
             </Router>
         );
 
@@ -72,7 +72,7 @@ describe("Reinstall instruments list", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList}/>
+                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false}/>
             </Router>
         );
 
@@ -125,7 +125,7 @@ describe("Reinstall an instruments", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList}/>
+                <ReinstallInstruments installedInstruments={instrumentList}  listLoading={false}/>
             </Router>
         );
 
@@ -153,7 +153,7 @@ describe("Reinstall an instruments", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList}/>
+                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false}/>
             </Router>
         );
 
@@ -186,7 +186,7 @@ describe("Given the API returns a 500 status", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList}/>
+                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false}/>
             </Router>
         );
 
@@ -214,7 +214,7 @@ describe("Given the API returns an empty list", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList}/>
+                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false}/>
             </Router>
         );
 

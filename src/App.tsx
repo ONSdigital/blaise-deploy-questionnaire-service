@@ -20,6 +20,9 @@ import {getAllInstruments} from "./utilities/http";
 import AuditPage from "./Components/AuditPage";
 import ReinstallInstruments from "./Components/ReinstallInstruments";
 import LiveSurveyWarning from "./Components/UploadPage/LiveSurveyWarning";
+import InstrumentDetails from "./Components/InstrumentDetails/InstrumentDetails";
+import ChangeToStartDate from "./Components/InstrumentDetails/ChangeToStartDate";
+import "./style.css";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -31,30 +34,35 @@ interface Location {
 
 function App(): ReactElement {
     const [instruments, setInstruments] = useState<Instrument[]>([]);
-    const [listError, setListError] = useState<string>("Loading ...");
+    const [listLoading, setListLoading] = useState<boolean>(true);
+    const [listMessage, setListMessage] = useState<string>("");
 
     const location = useLocation();
     const {status} = (location as Location).state || {status: ""};
 
     useEffect(() => {
-        getInstrumentList().then(() => console.log("Call getInstrumentList Complete"));
+        getInstrumentList().then(() => console.log("getInstrumentList complete"));
     }, []);
 
     async function getInstrumentList() {
+        setListLoading(true);
         setInstruments([]);
 
         const [success, instrumentList] = await getAllInstruments();
+        console.log("get all instruments successful hello");
 
         if (!success) {
-            setListError("Unable to load questionnaires");
+            setListMessage("Unable to load questionnaires");
+            setListLoading(false);
             return;
         }
 
         if (instrumentList.length === 0) {
-            setListError("No installed questionnaires found.");
+            setListMessage("No installed questionnaires found.");
         }
 
         setInstruments(instrumentList);
+        setListLoading(false);
     }
 
     return (
@@ -73,7 +81,7 @@ function App(): ReactElement {
                                 <StatusPage/>
                             </Route>
                             <Route path="/reinstall">
-                                <ReinstallInstruments installedInstruments={instruments}/>
+                                <ReinstallInstruments installedInstruments={instruments} listLoading={listLoading}/>
                             </Route>
                             <Route path="/audit">
                                 <AuditPage/>
@@ -84,6 +92,12 @@ function App(): ReactElement {
                             <Route path={"/upload/survey-live/:instrumentName"}>
                                 <LiveSurveyWarning/>
                             </Route>
+                            <Route path="/questionnaire/start-date">
+                                <ChangeToStartDate/>
+                            </Route>
+                            <Route path="/questionnaire">
+                                <InstrumentDetails/>
+                            </Route>
                             <Route path="/upload">
                                 <UploadPage/>
                             </Route>
@@ -93,7 +107,7 @@ function App(): ReactElement {
                             <Route path="/">
 
                                 {status !== "" && <ONSPanel status="success">{status}</ONSPanel>}
-                                {listError.includes("Unable") && <ONSErrorPanel/>}
+                                {listMessage.includes("Unable") && <ONSErrorPanel/>}
 
                                 <ul className="list list--bare list--inline u-mt-m">
                                     <li className="list__item">
@@ -122,8 +136,9 @@ function App(): ReactElement {
                                         complete this request.
                                     </p>
                                 </ONSPanel>
+                                <h2 className="u-mt-m">Table of questionnaires</h2>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList instrumentList={instruments} listError={listError}/>
+                                    <InstrumentList instrumentList={instruments} listMessage={listMessage} loading={listLoading}/>
                                 </ErrorBoundary>
                             </Route>
                         </Switch>

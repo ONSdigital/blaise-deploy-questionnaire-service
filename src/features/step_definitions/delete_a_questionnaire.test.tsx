@@ -5,8 +5,8 @@ import {defineFeature, loadFeature} from "jest-cucumber";
 import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import {instrumentList, survey_list} from "./API_Mock_Objects";
-import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
+import {instrumentList} from "./API_Mock_Objects";
+import {mock_fetch_requests} from "./functions";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
 import App from "../../App";

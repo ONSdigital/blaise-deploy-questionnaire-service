@@ -1,5 +1,3 @@
-// React
-import React from "react";
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
 import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
@@ -7,8 +5,7 @@ import "@testing-library/jest-dom";
 // Mock elements
 import {survey_list} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
-    mock_fetch_requests,
-    navigatePastSettingTOStartDateAndStartDeployment
+    mock_fetch_requests
 } from "./functions";
 import flushPromises from "../../tests/utils";
 
@@ -123,7 +120,7 @@ defineFeature(feature, test => {
         });
 
         when("I select to not provide a TO Start Date", async () => {
-            await fireEvent.click(screen.getByText(/no, deploy without a start date/i));
+            await fireEvent.click(screen.getByText(/No start date/i));
             await fireEvent.click(screen.getByText(/Continue/));
 
             await act(async () => {
