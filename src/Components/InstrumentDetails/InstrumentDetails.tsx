@@ -6,6 +6,7 @@ import ViewToStartDate from "./ViewToStartDate";
 import {Instrument} from "../../../Interfaces";
 import InstrumentStatus from "../InstrumentStatus";
 import BlaiseNodeInfo from "./BlaiseNodeInfo";
+import ViewWebModeDetails from "./ViewWebModeDetails";
 
 interface State {
     instrument: Instrument | null;
@@ -85,7 +86,9 @@ function InstrumentDetails(): ReactElement {
                 </div>
             </div>
 
-            <h2>Survey days</h2>
+            <ViewWebModeDetails instrument={instrument}/>
+
+            <h2 className={"u-mt-m"}>Survey days</h2>
             <YearCalendar surveyDays={instrument.surveyDays}/>
 
             <BlaiseNodeInfo instrument={instrument}/>

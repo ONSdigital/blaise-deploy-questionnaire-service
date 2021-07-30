@@ -85,5 +85,32 @@ function sendInstallRequest(filename: string): Promise<boolean> {
     });
 }
 
+function doesInstrumentHaveCAWIMode(instrumentName: string): Promise<boolean> {
+    console.log("Sending request does instrument have cawi mode");
+    const url = `/api/instruments/${instrumentName}/modes/CAWI`;
 
-export {checkInstrumentAlreadyExists, getAllInstruments, deleteInstrument, sendInstallRequest};
+    return new Promise((resolve: (object: boolean) => void) => {
+        requestPromiseJson("GET", url).then(([status, data]) => {
+            console.log(`Response from does instrument have cawi mode: Status ${status}, data ${data}`);
+            if (status === 200) {
+                if (data === true) {
+                    resolve(true);
+                }
+                resolve(false);
+            } else {
+                resolve(false);
+            }
+        }).catch((error: Error) => {
+            console.error(`Failed to does instrument have cawi mode, Error ${error}`);
+            resolve(false);
+        });
+    });
+}
+
+export {
+    checkInstrumentAlreadyExists,
+    getAllInstruments,
+    deleteInstrument,
+    sendInstallRequest,
+    doesInstrumentHaveCAWIMode
+};
