@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {doesInstrumentHaveCAWIMode} from "../../utilities/http";
+import {doesInstrumentHaveCAWIMode, generateUACCodes} from "../../utilities/http";
 import {Instrument} from "../../../Interfaces";
 import {ONSButton, ONSLoadingPanel} from "blaise-design-system-react-components";
 
@@ -25,6 +25,13 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
         setLoading(true);
         setLoadingMessage("Generating Unique Access Codes for cases");
         // DO thing
+        generateUACCodes(instrument.name)
+            .then((success) => {
+                if (success) {
+                    console.log("Generated UAC Codes");
+                }
+                
+            }).finally(() => setLoading(false));
     };
 
     if (loading) {
@@ -72,7 +79,31 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
 
     return (
         <>
-            <p>Questionnaire does not have a Web Mode</p>
+            <div className="summary u-mb-m elementToFadeIn">
+                <div className="summary__group">
+                    <h2 className="summary__group-title">Web mode details</h2>
+                    <table className="summary__items">
+                        <thead className="u-vh">
+                        <tr>
+                            <th>Questionnaire detail</th>
+                            <th>result</th>
+                        </tr>
+                        </thead>
+                        <tbody className="summary__item">
+                        <tr className="summary__row summary__row--has-values">
+                            <td className="summary__item-title">
+                                <div className="summary__item--text">
+                                    Does questionnaire have a Web Mode?
+                                </div>
+                            </td>
+                            <td className="summary__values">
+                                No
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </>
     );
 };
