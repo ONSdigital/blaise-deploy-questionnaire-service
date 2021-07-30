@@ -9,11 +9,11 @@ export class BusAPI {
     private readonly logger: PinoHttp.HttpLogger;
     private authProvider: AuthProvider;
 
-    constructor(BIMS_API_URL: string, BIMS_CLIENT_ID: string, logger: PinoHttp.HttpLogger) {
-        this.BUS_API_URL = BIMS_API_URL;
-        this.BUS_CLIENT_ID = BIMS_CLIENT_ID;
+    constructor(BUS_API_URL: string, BUS_CLIENT_ID: string, logger: PinoHttp.HttpLogger) {
+        this.BUS_API_URL = BUS_API_URL;
+        this.BUS_CLIENT_ID = BUS_CLIENT_ID;
         this.logger = logger;
-        this.authProvider = new AuthProvider(BIMS_CLIENT_ID);
+        this.authProvider = new AuthProvider(BUS_CLIENT_ID);
     }
 
     async generateUACsForInstrument(req: Request, res: Response, instrumentName: string): Promise<[number, any, string]> {
@@ -22,7 +22,10 @@ export class BusAPI {
         const authHeader = await this.authProvider.getAuthHeader();
         req.log.info(authHeader, "Obtained Google auth request header");
 
-        const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "POST", null, authHeader);
+        const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "POST", "", authHeader);
+
+        req.log.info(status.toString(), `Status ${status} Response from BUS`);
+        req.log.info(contentType, `Content type ${contentType} Response from BUS`);
 
         return [status, result, contentType];
     }
@@ -36,6 +39,8 @@ export class BusAPI {
 
         const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "GET", null, authHeader);
 
+        req.log.info(status.toString(), `Status ${status} Response from BUS`);
+        req.log.info(contentType, `Content type ${contentType} Response from BUS`);
         return [status, result, contentType];
     }
 }
