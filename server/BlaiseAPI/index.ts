@@ -2,14 +2,14 @@ import express, {Request, Response, Router} from "express";
 import Functions from "../Functions";
 import {EnvironmentVariables} from "../Config";
 import {auditLogError, auditLogInfo} from "../audit_logging";
-import BlaiseApiRest, {Instrument, InstallInstrument} from "blaise-api-node-client";
+import BlaiseApiRest, {InstallInstrument, Instrument} from "blaise-api-node-client";
 
 export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariables, logger: any): Router {
     const {BLAISE_API_URL, SERVER_PARK}: EnvironmentVariables = environmentVariables;
     const router = express.Router();
 
     interface ResponseQuery extends Request {
-        query: { filename: string }
+        query: { filename: string };
     }
 
     // Get health status for Blaise connections
@@ -89,6 +89,21 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
                     auditLogError(req.log, `Failed to uninstall questionnaire ${instrumentName}`);
                     res.status(500).json(null);
                 }
+            });
+    });
+
+    // Check if instrument has a mode
+    router.get("/api/instruments/:instrumentName/modes/:mode", function (req: ResponseQuery, res: Response) {
+        const {instrumentName, mode} = req.params;
+        const blaiseApiClient = new BlaiseApiRest(`http://${BLAISE_API_URL}`);
+        blaiseApiClient.doesInstrumentHaveMode(SERVER_PARK, instrumentName, mode)
+            .then((response) => {
+                req.log.info({response}, `Successfully called does instrument have mode endpoint for ${instrumentName}`);
+                res.status(200).json(response);
+            })
+            .catch((error) => {
+                req.log.error(error, `does instrument have mode failed for ${instrumentName}`);
+                res.status(500).json(null);
             });
     });
 
