@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {doesInstrumentHaveCAWIMode, generateUACCodes} from "../../utilities/http";
+import {doesInstrumentHaveCAWIMode, generateUACCodes, getCountOfUACs} from "../../utilities/http";
 import {Instrument} from "../../../Interfaces";
 import {ONSButton, ONSLoadingPanel} from "blaise-design-system-react-components";
 
@@ -11,6 +11,7 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
     const [cawiMode, setCawiMode] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [loadingMessage, setLoadingMessage] = useState<string>("Getting web mode information");
+    const [uacCount, setUacCount] = useState<string>("¯\\_(ツ)_/¯");
 
     useEffect(() => {
         doesInstrumentHaveCAWIMode(instrument.name)
@@ -19,18 +20,22 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
                     setCawiMode(true);
                 }
             }).finally(() => setLoading(false));
+        getCountOfUACs(instrument.name)
+            .then((count) => {
+                console.log(`count: ${count}`);
+                if (count !== null) setUacCount(count);
+            });
     }, []);
 
     const generateUACs = () => {
         setLoading(true);
         setLoadingMessage("Generating Unique Access Codes for cases");
-        // DO thing
         generateUACCodes(instrument.name)
             .then((success) => {
                 if (success) {
                     console.log("Generated UAC Codes");
                 }
-                
+
             }).finally(() => setLoading(false));
     };
 
@@ -61,7 +66,7 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
                                 </div>
                             </td>
                             <td className="summary__values">
-                                Numberwang UAC number
+                                {uacCount}
                             </td>
                             <td className="summary__actions">
                                 <ONSButton label={"Generate Unique Access Codes for cases"}
