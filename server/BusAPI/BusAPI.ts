@@ -22,7 +22,7 @@ export class BusAPI {
         const authHeader = await this.authProvider.getAuthHeader();
         req.log.info(authHeader, "Obtained Google auth request header");
 
-        const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "get", null, authHeader);
+        const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "POST", null, authHeader);
 
         return [status, result, contentType];
     }
