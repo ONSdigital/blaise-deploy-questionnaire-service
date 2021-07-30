@@ -31,7 +31,7 @@ export class BusAPI {
     }
 
     async getCountOfUACsForInstrument(req: Request, res: Response, instrumentName: string): Promise<[number, any, string]> {
-        const url = `${this.BUS_API_URL}/instrument/${instrumentName}/count`;
+        const url = `${this.BUS_API_URL}/uacs/instrument/${instrumentName}/count`;
 
 
         const authHeader = await this.authProvider.getAuthHeader();

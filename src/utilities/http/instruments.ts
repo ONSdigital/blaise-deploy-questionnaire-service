@@ -85,11 +85,11 @@ function sendInstallRequest(filename: string): Promise<boolean> {
     });
 }
 
-function doesInstrumentHaveCAWIMode(instrumentName: string): Promise<boolean> {
+function doesInstrumentHaveCAWIMode(instrumentName: string): Promise<boolean | null> {
     console.log("Sending request does instrument have cawi mode");
     const url = `/api/instruments/${instrumentName}/modes/CAWI`;
 
-    return new Promise((resolve: (object: boolean) => void) => {
+    return new Promise((resolve: (object: boolean | null) => void) => {
         requestPromiseJson("GET", url).then(([status, data]) => {
             console.log(`Response from does instrument have cawi mode: Status ${status}, data ${data}`);
             if (status === 200) {
@@ -98,11 +98,11 @@ function doesInstrumentHaveCAWIMode(instrumentName: string): Promise<boolean> {
                 }
                 resolve(false);
             } else {
-                resolve(false);
+                resolve(null);
             }
         }).catch((error: Error) => {
             console.error(`Failed to does instrument have cawi mode, Error ${error}`);
-            resolve(false);
+            resolve(null);
         });
     });
 }

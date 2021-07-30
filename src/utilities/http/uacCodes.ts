@@ -22,15 +22,15 @@ function generateUACCodes(instrumentName: string): Promise<boolean> {
     });
 }
 
-function getCountOfUACs(instrumentName: string): Promise<string | null> {
+function getCountOfUACs(instrumentName: string): Promise<number | null> {
     console.log(`Sending request to get UAC code count for ${instrumentName}`);
     const url = `/api/uacs/instrument/${instrumentName}/count`;
 
-    return new Promise((resolve: (object: string | null) => void) => {
+    return new Promise((resolve: (object: number | null) => void) => {
         requestPromiseJson("GET", url).then(([status, data]) => {
             console.log(`Response from get UAC code count: Status ${status}, data ${data}`);
-            if (status === 200) {
-                resolve(data);
+            if (status === 200 && typeof data.count === "number") {
+                resolve(data.count);
             } else {
                 resolve(null);
             }
