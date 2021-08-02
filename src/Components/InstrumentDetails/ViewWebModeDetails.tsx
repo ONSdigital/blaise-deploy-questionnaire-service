@@ -98,7 +98,7 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
                             uacGenerationFailed &&
                             <tr className="summary__row">
                                 <th colSpan={3} className="summary__row-title u-fs-r">
-                                    Unique Access Codes generation failed, try again? I might work ¯\_(ツ)_/¯
+                                    I receive an appropriate error describing suitable user actions
                                 </th>
                             </tr>
                         }
