@@ -42,8 +42,6 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
         let bool = true;
         if (instrument.dataRecordCount === 0) {
             bool = false;
-        } else if (uacCount === instrument.dataRecordCount) {
-            bool = false;
         }
         setShowGenerateUACsButton(bool);
     }, [instrument, uacCount]);
