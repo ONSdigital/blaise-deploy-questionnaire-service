@@ -281,3 +281,44 @@ describe("BlaiseAPI Delete a specific instrument", () => {
     });
 });
 
+describe("BlaiseAPI does instrument have a specific mode API", () => {
+    it("should return a 200 status and an json boolean when API returns a boolean", async done => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        BlaiseApiRest.mockImplementation(() => {
+            return {
+                doesInstrumentHaveMode: () => {
+                    return Promise.resolve(true);
+                },
+            };
+        });
+
+        const response: Response = await request.get("/api/instruments/OPN2101A/modes/CAWI");
+
+        expect(response.status).toEqual(200);
+        expect(response.body).toStrictEqual(true);
+        done();
+    });
+
+    it("should return a 500 status direct from the API", async done => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        BlaiseApiRest.mockImplementation(() => {
+            return {
+                doesInstrumentHaveMode: () => {
+                    return Promise.reject(true);
+                },
+            };
+        });
+
+        const response: Response = await request.get("/api/instruments/OPN2101A/modes/CAWI");
+
+        expect(response.status).toEqual(500);
+        done();
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+    });
+});
