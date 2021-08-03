@@ -283,8 +283,9 @@ defineFeature(feature, test => {
         andIClickGenerateCases(and);
 
         then("I receive the confirmation message:", () => {
-            // TODO: So the UI doesn't actually come back with a success response message.
-            // So this test is just checking that the call has been made.
+            // TODO: Improve generate UAC codes successful response in UI
+            // So the UI doesn't actually come back with a success response message, It just reloads the UAC count.
+            // This test is just checking that the POST request has been made.
             // I know it's not great but ¯\_(ツ)_/¯.
 
             expect(global.fetch).toHaveBeenCalledWith(`/api/uacs/instrument/${instrumentNameWithCAWIMode}`, {
