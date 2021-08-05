@@ -6,6 +6,11 @@ import {getEnvironmentVariables} from "./Config";
 import createLogger from "./pino";
 import * as profiler from "@google-cloud/profiler";
 import bodyParser from "body-parser";
+import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
+import BlaiseAPIRouter from "./BlaiseAPI";
+import {auditLogError, auditLogInfo, getAuditLogs} from "./audit_logging";
+import BimsAPIRouter from "./BimsAPI";
+import BusAPIRouter from "./BusAPI";
 
 profiler.start({logLevel: 4}).catch((err: unknown) => {
     console.log(`Failed to start profiler: ${err}`);
@@ -20,11 +25,6 @@ server.use(bodyParser.json() as RequestHandler);
 
 const logger: any = createLogger();
 server.use(logger);
-
-import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
-import BlaiseAPIRouter from "./BlaiseAPI";
-import {auditLogError, auditLogInfo, getAuditLogs} from "./audit_logging";
-import BimsAPIRouter from "./BimsAPI";
 
 //axios.defaults.timeout = 10000;
 
@@ -117,6 +117,7 @@ server.get("/api/audit", function (req: Request, res: Response) {
 // All Endpoints calling the Blaise API
 server.use("/", BlaiseAPIRouter(environmentVariables, logger));
 server.use("/", BimsAPIRouter(environmentVariables, logger));
+server.use("/", BusAPIRouter(environmentVariables, logger));
 
 // Health Check endpoint
 server.get("/dqs-ui/:version/health", async function (req: Request, res: Response) {

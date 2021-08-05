@@ -11,6 +11,8 @@ env_variables:
   SERVER_PARK: _SERVER_PARK
   BIMS_API_URL: _BIMS_API_URL
   BIMS_CLIENT_ID: _BIMS_CLIENT_ID
+  BUS_API_URL: _BUS_API_URL
+  BUS_CLIENT_ID: _BUS_CLIENT_ID
 
 basic_scaling:
   idle_timeout: 10m
