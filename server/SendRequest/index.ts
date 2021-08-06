@@ -19,6 +19,8 @@ export function SendAPIRequest(logger: PinoHttp.HttpLogger, req: Request, res: a
         }).then((response) => {
             if (response.status >= 200 && response.status < 300) {
                 req.log.info(`Status ${response.status} from ${method} ${url}`);
+            } else if (response.status === 404) {
+                req.log.info(`Status ${response.status} from ${method} ${url}`);
             } else {
                 req.log.warn(`Status ${response.status} from ${method} ${url}`);
             }
