@@ -24,7 +24,6 @@ export default function BusAPIRouter(environmentVariables: EnvironmentVariables,
     router.get("/api/uacs/instrument/:instrumentName/count", async function (req: Request, res: Response) {
         const {instrumentName} = req.params;
         const [status, result, contentType] = await bimsAPI.getCountOfUACsForInstrument(req, res, instrumentName);
-        req.log.warn(`contentType is ${contentType}`);
         if (status === 200 && !contentType.includes("application/json")) {
             req.log.warn("Response was not JSON, most likely invalid auth");
             res.status(400).json({});
