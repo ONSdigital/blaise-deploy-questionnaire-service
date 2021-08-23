@@ -1,20 +1,20 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {DefaultErrorBoundary} from "./Components/ErrorHandling/DefaultErrorBoundary";
-import {Switch, Route, Link, useLocation} from "react-router-dom";
+import {Link, Route, Switch, useLocation} from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
 import {Instrument} from "../Interfaces";
-import {ErrorBoundary} from "./Components/ErrorHandling/ErrorBoundary";
 import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
 import DeleteConfirmation from "./Components/DeletePage/DeleteConfirmation";
 import StatusPage from "./Components/StatusPage";
 import {
-    NotProductionWarning,
+    BetaBanner,
+    DefaultErrorBoundary,
+    ErrorBoundary,
     Footer,
     Header,
-    BetaBanner,
-    ONSPanel,
-    ONSErrorPanel
+    NotProductionWarning,
+    ONSErrorPanel,
+    ONSPanel
 } from "blaise-design-system-react-components";
 import {getAllInstruments} from "./utilities/http";
 import AuditPage from "./Components/AuditPage";
@@ -29,7 +29,7 @@ const divStyle = {
 };
 
 interface Location {
-    state: any
+    state: any;
 }
 
 function App(): ReactElement {
@@ -138,7 +138,8 @@ function App(): ReactElement {
                                 </ONSPanel>
                                 <h2 className="u-mt-m">Table of questionnaires</h2>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList instrumentList={instruments} listMessage={listMessage} loading={listLoading}/>
+                                    <InstrumentList instrumentList={instruments} listMessage={listMessage}
+                                                    loading={listLoading}/>
                                 </ErrorBoundary>
                             </Route>
                         </Switch>
