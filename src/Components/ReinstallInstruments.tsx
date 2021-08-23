@@ -1,14 +1,13 @@
 import React, {Fragment, ReactElement, useEffect, useState} from "react";
 import {Link, Redirect} from "react-router-dom";
-import {ErrorBoundary} from "./ErrorHandling/ErrorBoundary";
 import {getAllInstrumentsInBucket} from "../utilities/http";
-import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import {ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import {Instrument} from "../../Interfaces";
 import {verifyAndInstallInstrument} from "../utilities/processes";
 
 interface Props {
-    installedInstruments: Instrument[]
-    listLoading: boolean
+    installedInstruments: Instrument[];
+    listLoading: boolean;
 }
 
 function ReinstallInstruments({installedInstruments, listLoading}: Props): ReactElement {

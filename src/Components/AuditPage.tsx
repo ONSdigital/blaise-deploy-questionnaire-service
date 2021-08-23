@@ -1,8 +1,7 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {ErrorBoundary} from "./ErrorHandling/ErrorBoundary";
 import dateFormatter from "dayjs";
-import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import {ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import {getAuditLogs} from "../utilities/http";
 import {AuditLog} from "../../Interfaces";
 import ONSTable, {TableColumns} from "./ONSTable";
