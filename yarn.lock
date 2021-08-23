@@ -4534,9 +4534,9 @@ bindings@^1.2.1, bindings@^1.5.0:
     axios "^0.21.1"
     typescript "~4.2.2"
 
-"blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components#v0.5.0":
+"blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components#v0.8.0":
   version "1.0.0"
-  resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#c839120304147282ef9927b6bed1588b981b1e1f"
+  resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#24c4f313c15d30da08555f698cd0879d518df0e1"
   dependencies:
     formik "^2.2.9"
     react "^17.0.1"

@@ -1,12 +1,11 @@
-import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import {ErrorBoundary, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import React, {Fragment, ReactElement, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {ErrorBoundary} from "./ErrorHandling/ErrorBoundary";
 
 
 interface BlaiseStatus {
-    "health check type": string
-    status: string
+    "health check type": string;
+    status: string;
 }
 
 function StatusPage(): ReactElement {
