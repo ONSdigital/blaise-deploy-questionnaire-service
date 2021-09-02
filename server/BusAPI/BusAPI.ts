@@ -2,6 +2,7 @@ import * as PinoHttp from "pino-http";
 import AuthProvider from "../AuthProvider";
 import {Request, Response} from "express";
 import {SendAPIRequest} from "../SendRequest";
+import {InstrumentUacDetails} from "./interfaces/instrument-uac-details";
 
 export class BusAPI {
     private readonly BUS_API_URL: string;
@@ -16,7 +17,7 @@ export class BusAPI {
         this.authProvider = new AuthProvider(BUS_CLIENT_ID);
     }
 
-    async generateUACsForInstrument(req: Request, res: Response, instrumentName: string): Promise<[number, any, string]> {
+    async generateUACsForInstrument(req: Request, res: Response, instrumentName: string): Promise<[number, InstrumentUacDetails, string]> {
         const url = `${this.BUS_API_URL}/uacs/instrument/${instrumentName}`;
 
         const authHeader = await this.authProvider.getAuthHeader();

@@ -2,22 +2,25 @@
 
 
 import {requestPromiseJson} from "./requestPromise";
+import {InstrumentUacDetails} from "../../../server/BusAPI/interfaces/instrument-uac-details";
 
-function generateUACCodes(instrumentName: string): Promise<boolean> {
+type generateUACResponse = [boolean, InstrumentUacDetails | null];
+
+function generateUACCodes(instrumentName: string): Promise<generateUACResponse> {
     console.log("Sending request generate UAC codes");
     const url = `/api/uacs/instrument/${instrumentName}`;
 
-    return new Promise((resolve: (object: boolean) => void) => {
+    return new Promise((resolve: (object: generateUACResponse) => void) => {
         requestPromiseJson("POST", url).then(([status, data]) => {
             console.log(`Response from generate UAC codes: Status ${status}, data ${data}`);
             if (status === 200) {
-                resolve(true);
+                resolve([true, data]);
             } else {
-                resolve(false);
+                resolve([false, data]);
             }
         }).catch((error: Error) => {
             console.error(`Failed to generate UAC codes, Error ${error}`);
-            resolve(false);
+            resolve([false, null]);
         });
     });
 }

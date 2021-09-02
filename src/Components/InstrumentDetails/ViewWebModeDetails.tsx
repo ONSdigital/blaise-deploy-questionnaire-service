@@ -2,6 +2,8 @@ import React, {ReactElement, useEffect, useState} from "react";
 import {doesInstrumentHaveCAWIMode, generateUACCodes, getCountOfUACs} from "../../utilities/http";
 import {Instrument} from "../../../Interfaces";
 import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import CsvDownloader from "react-csv-downloader";
+import {Datas} from "react-csv-downloader/dist/esm/lib/csv";
 
 interface Props {
     instrument: Instrument;
@@ -46,17 +48,35 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
         setShowGenerateUACsButton(bool);
     }, [instrument, uacCount]);
 
-    const generateUACs = () => {
+    const generateUACs = async (): Promise<Datas> => {
         setLoading(true);
         setLoadingMessage("Generating Unique Access Codes for cases");
         setUacGenerationFailed(false);
-        generateUACCodes(instrument.name)
-            .then((success) => {
+
+        return generateUACCodes(instrument.name)
+            .then(([success, uacList]) => {
                 if (success) {
                     console.log("Generated UAC Codes");
                     getIACsCount();
+
+                    const array: Datas = [];
+                    if (uacList === null) {
+                        return [];
+                    }
+
+                    Object.entries(uacList).forEach(([, value]) => {
+                        array.push({
+                            case_id: value.case_id,
+                            UAC1: value.uac_chunks.uac1,
+                            UAC2: value.uac_chunks.uac2,
+                            UAC3: value.uac_chunks.uac3
+                        });
+                    });
+
+                    return array;
                 } else {
                     setUacGenerationFailed(true);
+                    return [];
                 }
             }).finally(() => setLoading(false));
     };
@@ -113,10 +133,12 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
                                 {
                                     showGenerateUACsButton &&
                                     <>
-                                        <ONSButton label={"Generate Unique Access Codes for cases"}
-                                                   primary={false}
-                                                   small={true}
-                                                   onClick={() => generateUACs()}/>
+                                        <CsvDownloader datas={generateUACs}
+                                                       filename={`${instrument.name}-uac-codes.csv`}>
+                                            <ONSButton label={"Generate and download Unique Access Codes"}
+                                                       primary={false} small={true}
+                                                       loading={loading}/>
+                                        </CsvDownloader>
                                     </>
 
                                 }

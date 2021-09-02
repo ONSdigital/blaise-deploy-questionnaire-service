@@ -7028,6 +7028,11 @@ file-loader@6.1.1:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
+file-saver@^2.0.2:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+  integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
+
 file-uri-to-path@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
@@ -11762,6 +11767,13 @@ react-app-polyfill@^2.0.0:
     raf "^3.4.1"
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
+
+react-csv-downloader@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-csv-downloader/-/react-csv-downloader-2.7.0.tgz#655e28a450877c7c92220198469400192e46b80a"
+  integrity sha512-IK3eg2/c8KA8XAT4pr436tYOVtZj1fC/T2hEzaVLDp9EliG8S6ix/jwAtNLE3q0C3GhC/QCZ1tX41si3Z0bpCQ==
+  dependencies:
+    file-saver "^2.0.2"
 
 react-dev-utils@^11.0.3:
   version "11.0.4"
