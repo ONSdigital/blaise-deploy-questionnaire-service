@@ -3,10 +3,9 @@ import {defineFeature, loadFeature} from "jest-cucumber";
 import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import {survey_list} from "./API_Mock_Objects";
+import {instrumentList} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "./functions";
 import flushPromises from "../../tests/utils";
-
 
 
 // Load in feature details from .feature file
@@ -22,7 +21,7 @@ const mock_server_responses = (url: string) => {
             status: 200,
             json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
         });
-    }  else if (url.includes("/upload")) {
+    } else if (url.includes("/upload")) {
         return Promise.resolve({
             status: 200,
             json: () => Promise.resolve(),
@@ -40,7 +39,7 @@ const mock_server_responses = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(survey_list),
+            json: () => Promise.resolve(instrumentList),
         });
     }
 };

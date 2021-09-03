@@ -3,7 +3,7 @@ import {defineFeature, loadFeature} from "jest-cucumber";
 import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import {survey_list} from "./API_Mock_Objects";
+import {instrumentList} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
@@ -11,6 +11,7 @@ import navigateToDeployPageAndSelectFile, {
 import flushPromises from "../../tests/utils";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+
 const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
 
@@ -50,7 +51,7 @@ const mock_server_responses_not_live = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(survey_list),
+            json: () => Promise.resolve(instrumentList),
         });
     }
 };
@@ -80,7 +81,7 @@ const mock_server_responses_live = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(survey_list),
+            json: () => Promise.resolve(instrumentList),
         });
     }
 };
@@ -182,7 +183,12 @@ defineFeature(feature, test => {
     });
 
 
-    test("Confirm overwrite of existing questionnaire package where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)", ({given, when, then, and}) => {
+    test("Confirm overwrite of existing questionnaire package where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)", ({
+                                                                                                                                                                              given,
+                                                                                                                                                                              when,
+                                                                                                                                                                              then,
+                                                                                                                                                                              and
+                                                                                                                                                                          }) => {
         given("I have been asked to confirm I want to overwrite an existing questionnaire in Blaise", async () => {
             mock_fetch_requests(mock_server_responses_not_live);
             mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200, {});
