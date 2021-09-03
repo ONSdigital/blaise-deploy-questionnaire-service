@@ -21,6 +21,7 @@ function AuditPage(): ReactElement {
         setListError("");
 
         const [success, auditLogs] = await getAuditLogs();
+        console.log(`Response from get audit logs ${(success ? "successful" : "failed")}, data list length ${auditLogs.length}`);
 
         if (!success) {
             setListError("Unable to load deployment history.");

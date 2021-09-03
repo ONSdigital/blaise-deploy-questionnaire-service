@@ -84,14 +84,8 @@ function getAllInstrumentsInBucket(): Promise<allInstrumentsInBucketResponse> {
     console.log("Call to getAllInstruments");
     const url = "/bucket/files";
 
-    return new Promise((resolve: (object: allInstrumentsInBucketResponse) => void) => {
-        requestPromiseJsonList("GET", url).then(([success, data]) => {
-            console.log(`Response from get all instruments in bucket  ${(success ? "successful" : "failed")}, data list length ${data.length}`);
-            resolve([success, data]);
-        }).catch((error: Error) => {
-            console.error(`Response from get all instruments in bucket Failed: Error ${error}`);
-            resolve([false, []]);
-        });
+    return requestPromiseJsonList("GET", url).then((response) => {
+        return response;
     });
 }
 

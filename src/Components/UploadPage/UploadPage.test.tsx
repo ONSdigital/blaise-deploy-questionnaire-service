@@ -1,11 +1,11 @@
 import React from "react";
-import {render, waitFor, fireEvent, cleanup, screen} from "@testing-library/react";
+import {cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises, {mock_server_request_Return_JSON} from "../../tests/utils";
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
-import {instrumentList, survey_list} from "../../features/step_definitions/API_Mock_Objects";
+import {instrumentList} from "../../features/step_definitions/API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
@@ -102,9 +102,9 @@ describe("Upload Page", () => {
     });
 });
 
-const mock_server_responses = (url: string) => {
+const mock_server_responses = (url: string, config: any) => {
     console.log(url);
-    if (url.includes("/api/instruments")) {
+    if ((url.includes("/api/instruments")) && (config !== undefined && config.method === "POST")) {
         return Promise.resolve({
             status: 404,
             json: () => Promise.resolve(),
@@ -117,7 +117,7 @@ const mock_server_responses = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(survey_list),
+            json: () => Promise.resolve(instrumentList),
         });
     }
 };

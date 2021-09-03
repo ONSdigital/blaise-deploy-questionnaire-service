@@ -36,14 +36,8 @@ function getAllInstruments(): Promise<getInstrumentListResponse> {
     console.log("Call to getAllInstruments");
     const url = "/api/instruments";
 
-    return new Promise((resolve: (object: getInstrumentListResponse) => void) => {
-        requestPromiseJsonList("GET", url).then(([success, data]) => {
-            console.log(`Response from get all instruments ${(success ? "successful" : "failed")}, data list length ${data.length}`);
-            resolve([success, data]);
-        }).catch((error: Error) => {
-            console.error(`Response from get all instruments Failed: Error ${error}`);
-            resolve([false, []]);
-        });
+    return requestPromiseJsonList("GET", url).then((response) => {
+        return response;
     });
 }
 

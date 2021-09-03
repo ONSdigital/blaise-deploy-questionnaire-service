@@ -1,8 +1,6 @@
-import navigateToDeployPageAndSelectFile, {
-    mock_fetch_requests
-} from "../../../features/step_definitions/functions";
+import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "../../../features/step_definitions/functions";
 import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
-import {survey_list} from "../../../features/step_definitions/API_Mock_Objects";
+import {instrumentList} from "../../../features/step_definitions/API_Mock_Objects";
 import flushPromises from "../../../tests/utils";
 
 const mock_server_responses = (url: string) => {
@@ -20,7 +18,7 @@ const mock_server_responses = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(survey_list),
+            json: () => Promise.resolve(instrumentList),
         });
     }
 };
