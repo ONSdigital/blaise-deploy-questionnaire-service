@@ -122,6 +122,7 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
                                     showGenerateUACsButton &&
                                     <>
                                         <CsvDownloader datas={generateUACs}
+                                                       bom={false}
                                                        filename={`${instrument.name}-uac-codes.csv`}>
                                             <ONSButton label={"Generate and download Unique Access Codes"}
                                                        primary={false} small={true}
