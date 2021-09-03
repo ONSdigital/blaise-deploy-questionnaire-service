@@ -20,7 +20,7 @@ defineFeature(feature, test => {
     const instrumentNameWithoutCAWIMode = "OPN2007T";
     const fiveThousandCases = 5000;
 
-    const generateUACsLink = /Generate Unique Access Codes for cases/i;
+    const generateUACsLink = /Generate and download Unique Access Codes/i;
     const UACFailedErrorMessage = /I receive an appropriate error describing suitable user actions/i;
 
     // Not 100% necessary for these tests, just mocking as the TO start date field will render on Instrument details page
@@ -83,6 +83,7 @@ defineFeature(feature, test => {
     };
 
     beforeEach(() => {
+        global.URL.createObjectURL = jest.fn();
         mock_fetch_requests(mock_server_responses);
     });
 

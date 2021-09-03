@@ -16,7 +16,7 @@ function generateUACCodes(instrumentName: string): Promise<generateUACResponse> 
             if (status === 200) {
                 resolve([true, data]);
             } else {
-                resolve([false, data]);
+                resolve([false, null]);
             }
         }).catch((error: Error) => {
             console.error(`Failed to generate UAC codes, Error ${error}`);

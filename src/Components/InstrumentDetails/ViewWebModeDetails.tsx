@@ -48,7 +48,7 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
         setShowGenerateUACsButton(bool);
     }, [instrument, uacCount]);
 
-    const generateUACs = async (): Promise<Datas> => {
+    const generateUACs = async () => {
         setLoading(true);
         setLoadingMessage("Generating Unique Access Codes for cases");
         setUacGenerationFailed(false);
@@ -61,7 +61,7 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
 
                     const array: Datas = [];
                     if (uacList === null) {
-                        return [];
+                        return Promise.reject();
                     }
 
                     Object.entries(uacList).forEach(([, value]) => {
@@ -75,9 +75,12 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
 
                     return array;
                 } else {
-                    setUacGenerationFailed(true);
-                    return [];
+                    return Promise.reject();
                 }
+            }).catch(() => {
+                setUacGenerationFailed(true);
+                console.error("Error occurred while generating Unique Access Codes");
+                return [{error: "Error occurred while generating Unique Access Codes"}];
             }).finally(() => setLoading(false));
     };
 
