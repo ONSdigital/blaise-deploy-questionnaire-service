@@ -1,13 +1,13 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {doesInstrumentHaveCAWIMode, generateUACCodes, getCountOfUACs} from "../../utilities/http";
+import {doesInstrumentHaveCAWIMode, generateUACCodesAndCSVFile, getCountOfUACs} from "../../utilities/http";
 import {Instrument} from "../../../Interfaces";
 import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import CsvDownloader from "react-csv-downloader";
-import {Datas} from "react-csv-downloader/dist/esm/lib/csv";
 
 interface Props {
     instrument: Instrument;
 }
+
 
 const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
     const [errored, setErrored] = useState<boolean>(false);
@@ -53,27 +53,12 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
         setLoadingMessage("Generating Unique Access Codes for cases");
         setUacGenerationFailed(false);
 
-        return generateUACCodes(instrument.name)
-            .then(([success, uacList]) => {
-                if (success) {
+        return generateUACCodesAndCSVFile(instrument.name)
+            .then((uacList) => {
+                if (uacList.length > 0) {
                     console.log("Generated UAC Codes");
                     getIACsCount();
-
-                    const array: Datas = [];
-                    if (uacList === null) {
-                        return Promise.reject();
-                    }
-
-                    Object.entries(uacList).forEach(([, value]) => {
-                        array.push({
-                            case_id: value.case_id,
-                            UAC1: value.uac_chunks.uac1,
-                            UAC2: value.uac_chunks.uac2,
-                            UAC3: value.uac_chunks.uac3
-                        });
-                    });
-
-                    return array;
+                    return uacList;
                 } else {
                     return Promise.reject();
                 }

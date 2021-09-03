@@ -1,28 +1,34 @@
-// /api/uacs/instrument/:instrumentName
-
-
 import {requestPromiseJson} from "./requestPromise";
 import {InstrumentUacDetails} from "../../../server/BusAPI/interfaces/instrument-uac-details";
+import {Datas} from "react-csv-downloader/dist/esm/lib/csv";
 
-type generateUACResponse = [boolean, InstrumentUacDetails | null];
+function mapUACsToCSVFile(uacList: InstrumentUacDetails | null): Datas {
+    const array: Datas = [];
+    if (uacList === null) {
+        return [];
+    }
 
-function generateUACCodes(instrumentName: string): Promise<generateUACResponse> {
+    Object.entries(uacList).forEach(([, value]) => {
+        array.push({
+            case_id: value.case_id,
+            UAC1: value.uac_chunks.uac1,
+            UAC2: value.uac_chunks.uac2,
+            UAC3: value.uac_chunks.uac3
+        });
+    });
+
+    return array;
+}
+
+function generateUACCodesAndCSVFile(instrumentName: string): Promise<Datas> {
     console.log("Sending request generate UAC codes");
     const url = `/api/uacs/instrument/${instrumentName}`;
 
-    return new Promise((resolve: (object: generateUACResponse) => void) => {
-        requestPromiseJson("POST", url).then(([status, data]) => {
+    return requestPromiseJson("POST", url)
+        .then(([status, data]) => {
             console.log(`Response from generate UAC codes: Status ${status}, data ${data}`);
-            if (status === 200) {
-                resolve([true, data]);
-            } else {
-                resolve([false, null]);
-            }
-        }).catch((error: Error) => {
-            console.error(`Failed to generate UAC codes, Error ${error}`);
-            resolve([false, null]);
+            return mapUACsToCSVFile(data);
         });
-    });
 }
 
 function getCountOfUACs(instrumentName: string): Promise<number | null> {
@@ -45,4 +51,4 @@ function getCountOfUACs(instrumentName: string): Promise<number | null> {
 }
 
 
-export {generateUACCodes, getCountOfUACs};
+export {generateUACCodesAndCSVFile, getCountOfUACs, mapUACsToCSVFile};
