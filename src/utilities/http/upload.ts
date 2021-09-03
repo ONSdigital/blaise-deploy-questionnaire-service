@@ -7,52 +7,48 @@ function initialiseUpload(filename: string): Promise<initialiseUploadResponse> {
     console.log(`Call to initialiseUpload(${filename})`);
     const url = `/upload/init?filename=${filename}`;
 
-    return new Promise((resolve: (object: initialiseUploadResponse) => void) => {
-        requestPromiseJson("GET", url).then(([status, data]) => {
-            console.log(`Response from initialise Upload: Status ${status}, data ${data}`);
-            if (status === 200) {
-                // Validate the url is a valid url for storage.googleapis.com
-                const signedUrlHost = new URL(data).host;
-                const allowedHosts = [
-                    "storage.googleapis.com"
-                ];
+    return requestPromiseJson("GET", url).then(([status, data]): initialiseUploadResponse => {
+        console.log(`Response from initialise Upload: Status ${status}, data ${data}`);
+        if (status === 200) {
+            // Validate the url is a valid url for storage.googleapis.com
+            const signedUrlHost = new URL(data).host;
+            const allowedHosts = [
+                "storage.googleapis.com"
+            ];
 
-                if (!allowedHosts.includes(signedUrlHost)) {
-                    resolve([false, ""]);
-                }
-
-                resolve([true, data]);
-            } else {
-                resolve([false, ""]);
+            if (!allowedHosts.includes(signedUrlHost)) {
+                return [false, ""];
             }
-        }).catch((error: Error) => {
-            console.error(`Response from initialise Upload: Error ${error}`);
-            resolve([false, ""]);
-        });
+            return [true, data];
+        } else {
+            return [false, ""];
+        }
+    }).catch((error: Error) => {
+        console.error(`Response from initialise Upload: Error ${error}`);
+        return [false, ""];
     });
+
 }
 
 function validateUploadIsComplete(filename: string): Promise<boolean> {
     console.log(`Call to validateUploadIsComplete(${filename})`);
     const url = `/upload/verify?filename=${filename}`;
 
-    return new Promise((resolve: (object: boolean) => void) => {
-        requestPromiseJson("GET", url).then(([status, data]) => {
-            console.log(`Response from check bucket: Status ${status}, data ${data}`);
-            if (status === 200) {
-                if (data.name === filename) {
-                    resolve(true);
-                } else {
-                    console.log(`Filename returned (${data.name}) does not match sent file (${filename})`);
-                    resolve(false);
-                }
+    return requestPromiseJson("GET", url).then(([status, data]): boolean => {
+        console.log(`Response from check bucket: Status ${status}, data ${data}`);
+        if (status === 200) {
+            if (data.name === filename) {
+                return true;
             } else {
-                resolve(false);
+                console.log(`Filename returned (${data.name}) does not match sent file (${filename})`);
+                return false;
             }
-        }).catch((error: Error) => {
-            console.error(`Response from check bucket Failed: Error ${error}`);
-            resolve(false);
-        });
+        } else {
+            return false;
+        }
+    }).catch((error: Error) => {
+        console.error(`Response from check bucket Failed: Error ${error}`);
+        return false;
     });
 }
 
