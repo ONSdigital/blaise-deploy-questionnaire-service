@@ -8,10 +8,6 @@ export default function BusAPIRouter(environmentVariables: EnvironmentVariables,
 
     const bimsAPI = new BusAPI(BUS_API_URL, BUS_CLIENT_ID, logger);
 
-    function getRestAPICaseIds() {
-        return ["1251021", "1251031"];
-    }
-
     router.post("/api/uacs/instrument/:instrumentName", async function (req: Request, res: Response) {
         const {instrumentName} = req.params;
         const [status, result, contentType] = await bimsAPI.generateUACsForInstrument(req, res, instrumentName);
