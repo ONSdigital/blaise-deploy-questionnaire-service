@@ -2,7 +2,8 @@
 import React from "react";
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
-import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {act, cleanup, render, screen, waitFor} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 // Mock elements
 import {instrumentList} from "./API_Mock_Objects";
@@ -119,7 +120,7 @@ defineFeature(feature, test => {
         });
 
         when("I select a link to delete that questionnaire", async () => {
-            await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
+            userEvent.click(screen.getByTestId("delete-OPN2101A"));
         });
 
         then("I am presented with a warning", async () => {
@@ -140,11 +141,11 @@ defineFeature(feature, test => {
                 await act(async () => {
                     await flushPromises();
                 });
-                await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
+                userEvent.click(screen.getByTestId("delete-OPN2101A"));
             });
 
             when("I confirm that I want to proceed", async () => {
-                await fireEvent.click(screen.getByTestId(/confirm-delete/i));
+                userEvent.click(screen.getByTestId(/confirm-delete/i));
             });
 
             then("the questionnaire and data is deleted from Blaise", async () => {
@@ -178,15 +179,18 @@ defineFeature(feature, test => {
                 await act(async () => {
                     await flushPromises();
                 });
-                await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
+                userEvent.click(screen.getByTestId("delete-OPN2101A"));
             });
 
             when("I click cancel", async () => {
-                await fireEvent.click(screen.getByTestId(/cancel-delete/i));
+                userEvent.click(screen.getByTestId(/cancel-delete/i));
             });
 
             then("the questionnaire and data is not deleted from Blaise", () => {
-                expect(global.fetch).not.toBeCalledWith("/api/instruments/OPN2101A", {"body": null, "method": "DELETE"});
+                expect(global.fetch).not.toBeCalledWith("/api/instruments/OPN2101A", {
+                    "body": null,
+                    "method": "DELETE"
+                });
             });
 
             and("I am returned to the landing page", async () => {

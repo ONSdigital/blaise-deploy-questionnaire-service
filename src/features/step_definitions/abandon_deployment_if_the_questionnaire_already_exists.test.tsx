@@ -1,6 +1,7 @@
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
-import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
+import {act, cleanup, screen, waitFor} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 // Mock elements
 import {instrumentList} from "./API_Mock_Objects";
@@ -64,7 +65,7 @@ defineFeature(feature, test => {
         });
 
         when("I confirm my selection and the name/ref of the questionnaire package is the same as one already deployed in Blaise", async () => {
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am presented with the options to cancel or overwrite the questionnaire", async () => {
@@ -79,15 +80,15 @@ defineFeature(feature, test => {
     test("Back-out of deploying a questionnaire", ({given, when, then}) => {
         given("I have been presented with the options: Cancel or Overwrite", async () => {
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
         });
 
         when("I select to 'cancel'", async () => {
-            await fireEvent.click(screen.getByText("Cancel and keep original questionnaire"));
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText("Cancel and keep original questionnaire"));
+            userEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am returned to the landing page", async () => {

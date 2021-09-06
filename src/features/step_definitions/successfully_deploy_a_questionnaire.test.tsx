@@ -16,6 +16,7 @@ import navigateToDeployPageAndSelectFile, {
 } from "./functions";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import userEvent from "@testing-library/user-event";
 
 const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
@@ -100,8 +101,7 @@ defineFeature(feature, test => {
             await act(async () => {
                 await flushPromises();
             });
-
-            await fireEvent.click(screen.getByText(/Deploy a questionnaire/i));
+            userEvent.click(screen.getByText(/Deploy a questionnaire/i));
         });
 
         when("I am presented with an option to choose a file containing the questionnaire", async () => {
@@ -111,17 +111,11 @@ defineFeature(feature, test => {
         });
 
         then("I am able to select a pre-prepared questionnaire package from a folder/file share", async () => {
-            const inputEl = screen.getByLabelText(/Select survey package/i);
+            const input = screen.getByLabelText(/Select survey package/i);
 
-            const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {
-                type: "bpkg"
-            });
+            const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {type: "application/zip"});
 
-            Object.defineProperty(inputEl, "files", {
-                value: [file]
-            });
-
-            fireEvent.change(inputEl);
+            userEvent.upload(input, file);
         });
     });
 
@@ -132,7 +126,7 @@ defineFeature(feature, test => {
         });
 
         when("I confirm my selection", async () => {
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am unable to select another file or continue again until the deployment has finished", () => {

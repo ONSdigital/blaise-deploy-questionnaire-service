@@ -13,7 +13,6 @@ import {instrumentList} from "./API_Mock_Objects";
 import {mock_fetch_requests} from "./functions";
 
 
-
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/display_list_of_questionnaires.feature",

@@ -1,6 +1,7 @@
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
 import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 // Mock elements
 import {instrumentList} from "./API_Mock_Objects";
@@ -63,7 +64,7 @@ defineFeature(feature, test => {
 
         when("I select a file to deploy", async () => {
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am presented with an option to specify a TO Start Date", async () => {
@@ -76,18 +77,18 @@ defineFeature(feature, test => {
         given("I am presented with an option to specify a TO Start Date", async () => {
             mock_fetch_requests(mock_server_responses);
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
             await waitFor(() => {
                 expect(screen.getByText(/Would you like to set a telephone operations start date/i)).toBeDefined();
             });
         });
 
         when("I enter a date", async () => {
-            await fireEvent.click(screen.getByText(/Yes, let me specify a start date/i));
+            userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
 
             fireEvent.change(screen.getByLabelText(/Please specify date/i), {target: {value: "2030-06-05"}});
 
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
 
             await act(async () => {
                 await flushPromises();
@@ -111,15 +112,15 @@ defineFeature(feature, test => {
         given("I am presented with an option to specify a live date", async () => {
             mock_fetch_requests(mock_server_responses);
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
         });
 
         when("I select to not provide a TO Start Date", async () => {
-            await fireEvent.click(screen.getByText(/No start date/i));
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/No start date/i));
+            userEvent.click(screen.getByText(/Continue/));
 
             await act(async () => {
                 await flushPromises();
@@ -140,21 +141,18 @@ defineFeature(feature, test => {
             mock_fetch_requests(mock_server_responses);
             await navigateToDeployPageAndSelectFile();
 
-            await fireEvent.click(screen.getByText(/Continue/));
-
+            userEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
-
-
         });
 
         and("set a TO Start Date", async () => {
-            await fireEvent.click(screen.getByText(/Yes, let me specify a start date/i));
+            userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
 
             fireEvent.change(screen.getByLabelText(/Please specify date/i), {target: {value: "2030-06-05"}});
 
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
 
             await act(async () => {
                 await flushPromises();
@@ -162,7 +160,7 @@ defineFeature(feature, test => {
         });
 
         when("I confirm my selection", async () => {
-            await fireEvent.click(screen.getByText(/Deploy questionnaire/));
+            userEvent.click(screen.getByText(/Deploy questionnaire/));
 
             await act(async () => {
                 await flushPromises();

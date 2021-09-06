@@ -1,6 +1,7 @@
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
 import {cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 // Mock elements
 import {instrumentList} from "./API_Mock_Objects";
@@ -60,7 +61,7 @@ defineFeature(feature, test => {
         });
 
         when("I confirm my selection and the questionnaire fails to deploy", async () => {
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
 
             await navigatePastSettingTOStartDateAndStartDeployment();
         });
