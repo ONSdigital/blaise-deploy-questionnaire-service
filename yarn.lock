@@ -4524,7 +4524,7 @@ bindings@^1.2.1, bindings@^1.5.0:
 
 "blaise-api-node-client@git+https://github.com/ONSdigital/blaise-api-node-client":
   version "1.0.0"
-  resolved "git+https://github.com/ONSdigital/blaise-api-node-client#31ec0a4e746901c0185398319e3526b29f2528ea"
+  resolved "git+https://github.com/ONSdigital/blaise-api-node-client#8339f09ea12602b900db7cf46b3143cd830a8326"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"

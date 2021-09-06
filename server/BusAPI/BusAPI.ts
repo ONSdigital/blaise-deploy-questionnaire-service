@@ -25,9 +25,6 @@ export class BusAPI {
 
         const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "POST", "", authHeader);
 
-        req.log.info(status.toString(), `Status ${status} Response from BUS`);
-        req.log.info(contentType, `Content type ${contentType} Response from BUS`);
-
         return [status, result, contentType];
     }
 
@@ -40,8 +37,6 @@ export class BusAPI {
 
         const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "GET", null, authHeader);
 
-        req.log.info(status.toString(), `Status ${status} Response from BUS`);
-        req.log.info(contentType, `Content type ${contentType} Response from BUS`);
         return [status, result, contentType];
     }
 }

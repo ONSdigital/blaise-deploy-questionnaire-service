@@ -1,10 +1,9 @@
 interface InstrumentUacDetails {
-    [uac: string]: Uac;
+    [case_id: string]: Uac;
 }
 
 interface Uac {
     instrument_name: string,
-    case_id: string,
     postcode_attempts: number,
     postcode_attempt_timestamp: string,
     uac_chunks: UacChunks

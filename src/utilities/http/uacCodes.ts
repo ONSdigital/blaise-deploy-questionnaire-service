@@ -1,33 +1,15 @@
 import {requestPromiseJson} from "./requestPromise";
 import {InstrumentUacDetails} from "../../../server/BusAPI/interfaces/instrument-uac-details";
-import {Datas} from "react-csv-downloader/dist/esm/lib/csv";
 
-function mapUACsToCSVFile(uacList: InstrumentUacDetails | null): Datas {
-    const array: Datas = [];
-    if (uacList === null) {
-        return [];
-    }
 
-    Object.entries(uacList).forEach(([, value]) => {
-        array.push({
-            case_id: value.case_id,
-            UAC1: value.uac_chunks.uac1,
-            UAC2: value.uac_chunks.uac2,
-            UAC3: value.uac_chunks.uac3
-        });
-    });
-
-    return array;
-}
-
-function generateUACCodesAndCSVFile(instrumentName: string): Promise<Datas> {
+function generateUACCodes(instrumentName: string): Promise<boolean> {
     console.log("Sending request generate UAC codes");
     const url = `/api/uacs/instrument/${instrumentName}`;
 
     return requestPromiseJson("POST", url)
         .then(([status, data]) => {
             console.log(`Response from generate UAC codes: Status ${status}, data ${data}`);
-            return mapUACsToCSVFile(data);
+            return status === 200;
         });
 }
 
@@ -49,4 +31,22 @@ function getCountOfUACs(instrumentName: string): Promise<number | null> {
 }
 
 
-export {generateUACCodesAndCSVFile, getCountOfUACs, mapUACsToCSVFile};
+function getUACCodesByCaseID(instrumentName: string): Promise<InstrumentUacDetails | undefined> {
+    console.log(`Sending request to get UAC codes by case ID ${instrumentName}`);
+    const url = `/api/uacs/instrument/${instrumentName}/bycaseid`;
+
+    return requestPromiseJson("GET", url).then(([status, data]): InstrumentUacDetails | undefined => {
+        console.log(`Response from get UAC codes by case ID: Status ${status}, data ${data}`);
+        if (status === 200) {
+            return data;
+        } else {
+            return undefined;
+        }
+    }).catch((error: Error) => {
+        console.error(`Failed to get UAC codes by case ID, Error ${error}`);
+        return undefined;
+    });
+}
+
+
+export {generateUACCodes, getCountOfUACs, getUACCodesByCaseID};

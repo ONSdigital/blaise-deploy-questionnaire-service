@@ -4,6 +4,7 @@ import {Instrument} from "../../../Interfaces";
 type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];
 type deleteInstrumentResponse = [boolean, string];
+type getInstrumentCaseIDsResponse = [boolean, string[]];
 
 function checkInstrumentAlreadyExists(instrumentName: string): Promise<verifyInstrumentExistsResponse> {
     console.log(`Call to checkSurveyAlreadyExists(${instrumentName})`);
@@ -86,10 +87,20 @@ function doesInstrumentHaveCAWIMode(instrumentName: string): Promise<boolean | n
     });
 }
 
+function getInstrumentCaseIds(instrumentName: string): Promise<getInstrumentCaseIDsResponse> {
+    console.log("Call to getAllInstruments");
+    const url = `/api/instruments/${instrumentName}/cases/ids`;
+
+    return requestPromiseJsonList("GET", url).then((response) => {
+        return response;
+    });
+}
+
 export {
     checkInstrumentAlreadyExists,
     getAllInstruments,
     deleteInstrument,
     sendInstallRequest,
-    doesInstrumentHaveCAWIMode
+    doesInstrumentHaveCAWIMode,
+    getInstrumentCaseIds
 };

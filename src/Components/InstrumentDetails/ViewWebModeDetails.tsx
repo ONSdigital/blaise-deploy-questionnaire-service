@@ -1,8 +1,9 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {doesInstrumentHaveCAWIMode, generateUACCodesAndCSVFile, getCountOfUACs} from "../../utilities/http";
+import {doesInstrumentHaveCAWIMode, getCountOfUACs} from "../../utilities/http";
 import {Instrument} from "../../../Interfaces";
 import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import CsvDownloader from "react-csv-downloader";
+import {generateUACCodesAndCSVFileData} from "../../utilities/processes";
 
 interface Props {
     instrument: Instrument;
@@ -53,17 +54,14 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
         setLoadingMessage("Generating Unique Access Codes for cases");
         setUacGenerationFailed(false);
 
-        return generateUACCodesAndCSVFile(instrument.name)
+        return generateUACCodesAndCSVFileData(instrument.name)
             .then((uacList) => {
-                if (uacList.length > 0) {
-                    console.log("Generated UAC Codes");
-                    getIACsCount();
-                    return uacList;
-                } else {
-                    return Promise.reject();
-                }
-            }).catch(() => {
+                console.log("Generated UAC Codes");
+                getIACsCount();
+                return uacList;
+            }).catch((error) => {
                 setUacGenerationFailed(true);
+                console.error(error);
                 console.error("Error occurred while generating Unique Access Codes");
                 return [{error: "Error occurred while generating Unique Access Codes"}];
             }).finally(() => setLoading(false));
