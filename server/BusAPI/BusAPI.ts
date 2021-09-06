@@ -28,6 +28,15 @@ export class BusAPI {
         return [status, result, contentType];
     }
 
+    async getUacCodesForInstrument(req: Request, res: Response, instrumentName: string): Promise<[number, InstrumentUacDetails, string]> {
+        const url = `${this.BUS_API_URL}/uacs/instrument/${instrumentName}/bycaseid`;
+        const authHeader = await this.authProvider.getAuthHeader();
+
+        const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "GET", null, authHeader);
+
+        return [status, result, contentType];
+    }
+
     async getCountOfUACsForInstrument(req: Request, res: Response, instrumentName: string): Promise<[number, any, string]> {
         const url = `${this.BUS_API_URL}/uacs/instrument/${instrumentName}/count`;
 
