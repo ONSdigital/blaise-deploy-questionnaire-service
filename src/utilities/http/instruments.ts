@@ -1,7 +1,7 @@
 import {requestPromiseJson, requestPromiseJsonList} from "./requestPromise";
 import {Instrument} from "../../../Interfaces";
 
-type verifyInstrumentExistsResponse = [boolean | null, Instrument | null] | [null, null];
+type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];
 type deleteInstrumentResponse = [boolean, string];
 
