@@ -3,22 +3,23 @@ import {cleanup} from "@testing-library/react";
 import {getCountOfUACs} from "./uacCodes";
 
 describe("Function getCountOfUACs(instrumentName: string) ", () => {
+    const instrumentName = "OPN2004A";
 
     it("It should return true if object with count as type number is returned", async () => {
         mock_server_request_Return_JSON(200, {count: 100});
-        const count = await getCountOfUACs("OPN2004A.bpkg");
+        const count = await getCountOfUACs(instrumentName);
         expect(count).toBeTruthy();
     });
 
     it("It should return false if object is returned with count not of type number", async () => {
         mock_server_request_Return_JSON(200, {count: "100"});
-        const count = await getCountOfUACs("OPN2004A");
+        const count = await getCountOfUACs(instrumentName);
         expect(count).toBeFalsy();
     });
 
     it("It should return false if request returns an error code", async () => {
         mock_server_request_Return_JSON(500, {});
-        const count = await getCountOfUACs("OPN2004A");
+        const count = await getCountOfUACs(instrumentName);
         expect(count).toBeFalsy();
     });
 
@@ -30,7 +31,7 @@ describe("Function getCountOfUACs(instrumentName: string) ", () => {
             })
         );
 
-        const count = await getCountOfUACs("OPN2004A");
+        const count = await getCountOfUACs(instrumentName);
         expect(count).toBeFalsy();
     });
 
@@ -40,7 +41,7 @@ describe("Function getCountOfUACs(instrumentName: string) ", () => {
                 throw "error";
             })
         );
-        const count = await getCountOfUACs("OPN2004A");
+        const count = await getCountOfUACs(instrumentName);
         expect(count).toBeFalsy();
     });
 
