@@ -39,6 +39,7 @@ function ReinstallInstruments({installedInstruments, listLoading}: Props): React
         setListError("");
 
         const [success, bucketInstrumentList] = await getAllInstrumentsInBucket();
+        console.log(`Response from get all instruments in bucket  ${(success ? "successful" : "failed")}, data list length ${bucketInstrumentList.length}`);
 
         if (!success) {
             setListError("Unable to load questionnaires.");

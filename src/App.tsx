@@ -49,7 +49,7 @@ function App(): ReactElement {
         setInstruments([]);
 
         const [success, instrumentList] = await getAllInstruments();
-        console.log("get all instruments successful hello");
+        console.log(`Response from get all instruments ${(status ? "successful" : "failed")}, data list length ${instrumentList.length}`);
 
         if (!success) {
             setListMessage("Unable to load questionnaires");

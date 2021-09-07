@@ -2,6 +2,7 @@ import * as PinoHttp from "pino-http";
 import AuthProvider from "../AuthProvider";
 import {Request, Response} from "express";
 import {SendAPIRequest} from "../SendRequest";
+import {InstrumentUacDetails} from "./interfaces/instrument-uac-details";
 
 export class BusAPI {
     private readonly BUS_API_URL: string;
@@ -16,7 +17,7 @@ export class BusAPI {
         this.authProvider = new AuthProvider(BUS_CLIENT_ID);
     }
 
-    async generateUACsForInstrument(req: Request, res: Response, instrumentName: string): Promise<[number, any, string]> {
+    async generateUACsForInstrument(req: Request, res: Response, instrumentName: string): Promise<[number, InstrumentUacDetails, string]> {
         const url = `${this.BUS_API_URL}/uacs/instrument/${instrumentName}`;
 
         const authHeader = await this.authProvider.getAuthHeader();
@@ -24,8 +25,14 @@ export class BusAPI {
 
         const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "POST", "", authHeader);
 
-        req.log.info(status.toString(), `Status ${status} Response from BUS`);
-        req.log.info(contentType, `Content type ${contentType} Response from BUS`);
+        return [status, result, contentType];
+    }
+
+    async getUacCodesForInstrument(req: Request, res: Response, instrumentName: string): Promise<[number, InstrumentUacDetails, string]> {
+        const url = `${this.BUS_API_URL}/uacs/instrument/${instrumentName}/bycaseid`;
+        const authHeader = await this.authProvider.getAuthHeader();
+
+        const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "GET", null, authHeader);
 
         return [status, result, contentType];
     }
@@ -39,8 +46,6 @@ export class BusAPI {
 
         const [status, result, contentType] = await SendAPIRequest(this.logger, req, res, url, "GET", null, authHeader);
 
-        req.log.info(status.toString(), `Status ${status} Response from BUS`);
-        req.log.info(contentType, `Content type ${contentType} Response from BUS`);
         return [status, result, contentType];
     }
 }

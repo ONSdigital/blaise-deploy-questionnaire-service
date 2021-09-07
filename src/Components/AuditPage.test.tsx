@@ -1,19 +1,29 @@
 import React from "react";
-import {render, waitFor, cleanup, fireEvent, screen} from "@testing-library/react";
+import {cleanup, render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises, {mock_server_request_Return_JSON} from "../tests/utils";
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
 import AuditPage from "./AuditPage";
-
+import userEvent from "@testing-library/user-event";
 
 const auditLogsList = [
-    {id: "602fb3250003c61e92b25da0", timestamp: "Fri Feb 19 2021 12:46:29 GMT+0000 (Greenwich Mean Time)", message: "Successfully uninstalled questionnaire OPN2012K", severity: "INFO"}
+    {
+        id: "602fb3250003c61e92b25da0",
+        timestamp: "Fri Feb 19 2021 12:46:29 GMT+0000 (Greenwich Mean Time)",
+        message: "Successfully uninstalled questionnaire OPN2012K",
+        severity: "INFO"
+    }
 ];
 
 const auditLogsList2 = [
-    {id: "602fb3250003c61e92b25da0", timestamp: "Fri Feb 19 2021 12:47:29 GMT+0000 (Greenwich Mean Time)", message: "Successfully installed questionnaire OPN2012K", severity: "INFO"}
+    {
+        id: "602fb3250003c61e92b25da0",
+        timestamp: "Fri Feb 19 2021 12:47:29 GMT+0000 (Greenwich Mean Time)",
+        message: "Successfully installed questionnaire OPN2012K",
+        severity: "INFO"
+    }
 ];
 
 describe("Audit Logs page", () => {
@@ -81,7 +91,7 @@ describe("Audit Logs page", () => {
 
         mock_server_request_Return_JSON(200, auditLogsList2);
 
-        await fireEvent.click(screen.getByText("Reload"));
+        userEvent.click(screen.getByText("Reload"));
 
         await act(async () => {
             await flushPromises();

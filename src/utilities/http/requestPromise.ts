@@ -4,7 +4,7 @@ function requestPromiseJson(method: string, url: string, body: any = null): Prom
     return new Promise((resolve: (object: PromiseResponse) => void, reject: (error: string) => void) => {
         fetch(url, {
             "method": method,
-            "body": (body !== null ? JSON.stringify(body): null),
+            "body": (body !== null ? JSON.stringify(body) : null),
             headers: {
                 "Content-Type": "application/json"
             },
@@ -27,7 +27,7 @@ function requestPromiseJson(method: string, url: string, body: any = null): Prom
 type PromiseResponseList = [boolean, []];
 
 function requestPromiseJsonList(method: string, url: string, body: any = null): Promise<PromiseResponseList> {
-    return new Promise((resolve: (object: PromiseResponseList) => void, reject: (error: string) => void) => {
+    return new Promise((resolve: (object: PromiseResponseList) => void) => {
         fetch(url, {
             "method": method,
             "body": body
@@ -41,7 +41,7 @@ function requestPromiseJsonList(method: string, url: string, body: any = null): 
                             }
                             resolve([true, data]);
                         } else if (response.status === 404) {
-                            resolve([true, data]);
+                            resolve([false, []]);
                         } else {
                             resolve([false, []]);
                         }
@@ -53,7 +53,7 @@ function requestPromiseJsonList(method: string, url: string, body: any = null): 
             })
             .catch(err => {
                 console.log(err);
-                reject(err);
+                resolve([false, []]);
             });
     });
 }

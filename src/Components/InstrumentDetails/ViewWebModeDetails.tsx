@@ -1,11 +1,14 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {doesInstrumentHaveCAWIMode, generateUACCodes, getCountOfUACs} from "../../utilities/http";
+import {doesInstrumentHaveCAWIMode, getCountOfUACs} from "../../utilities/http";
 import {Instrument} from "../../../Interfaces";
 import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import CsvDownloader from "react-csv-downloader";
+import {generateUACCodesAndCSVFileData} from "../../utilities/processes";
 
 interface Props {
     instrument: Instrument;
 }
+
 
 const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
     const [errored, setErrored] = useState<boolean>(false);
@@ -46,18 +49,21 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
         setShowGenerateUACsButton(bool);
     }, [instrument, uacCount]);
 
-    const generateUACs = () => {
+    const generateUACs = async () => {
         setLoading(true);
         setLoadingMessage("Generating Unique Access Codes for cases");
         setUacGenerationFailed(false);
-        generateUACCodes(instrument.name)
-            .then((success) => {
-                if (success) {
-                    console.log("Generated UAC Codes");
-                    getIACsCount();
-                } else {
-                    setUacGenerationFailed(true);
-                }
+
+        return generateUACCodesAndCSVFileData(instrument.name)
+            .then((uacList) => {
+                console.log("Generated UAC Codes");
+                getIACsCount();
+                return uacList;
+            }).catch((error) => {
+                setUacGenerationFailed(true);
+                console.error(error);
+                console.error("Error occurred while generating Unique Access Codes");
+                return [{error: "Error occurred while generating Unique Access Codes"}];
             }).finally(() => setLoading(false));
     };
 
@@ -113,10 +119,13 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
                                 {
                                     showGenerateUACsButton &&
                                     <>
-                                        <ONSButton label={"Generate Unique Access Codes for cases"}
-                                                   primary={false}
-                                                   small={true}
-                                                   onClick={() => generateUACs()}/>
+                                        <CsvDownloader datas={generateUACs}
+                                                       bom={false}
+                                                       filename={`${instrument.name}-uac-codes.csv`}>
+                                            <ONSButton label={"Generate and download Unique Access Codes"}
+                                                       primary={false} small={true}
+                                                       loading={loading}/>
+                                        </CsvDownloader>
                                     </>
 
                                 }

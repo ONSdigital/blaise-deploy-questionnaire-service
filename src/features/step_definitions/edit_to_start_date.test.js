@@ -1,7 +1,8 @@
 import {defineFeature, loadFeature} from "jest-cucumber";
 import {mock_fetch_requests, renderHomepage} from "./functions";
 import {instrumentList} from "./API_Mock_Objects";
-import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
+import {act, cleanup, screen, waitFor} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import flushPromises from "../../tests/utils";
 
 const feature = loadFeature(
@@ -90,7 +91,7 @@ defineFeature(feature, test => {
     const iSelectAQuestionnaire = (when, instrumentName) => {
         when("I select the questionnaire", async () => {
             await renderHomepage();
-            await fireEvent.click(screen.getByText(instrumentName));
+            userEvent.click(screen.getByText(instrumentName));
         });
     };
 
@@ -124,33 +125,30 @@ defineFeature(feature, test => {
     const iHaveSelectedToChangeOrDeleteAToStartDateForADeployedQuestionnaire = (given, instrumentName) => {
         given("I have selected to change or delete a TO Start Date for a deployed questionnaire", async () => {
             await renderHomepage();
-            await fireEvent.click(screen.getByText(instrumentName));
+            userEvent.click(screen.getByText(instrumentName));
             await act(async () => {
                 await flushPromises();
             });
-            await fireEvent.click(screen.getByText(changeOrDeleteLink));
+            userEvent.click(screen.getByText(changeOrDeleteLink));
         });
     };
 
     const iHaveSelectedToAddAToStartDateForADeployedQuestionnaire = (given, instrumentName) => {
         given("I have selected to add a TO Start Date for a deployed questionnaire", async () => {
             await renderHomepage();
-            await fireEvent.click(screen.getByText(instrumentName));
+            userEvent.click(screen.getByText(instrumentName));
             await act(async () => {
                 await flushPromises();
             });
-            await fireEvent.click(screen.getByText(addLink));
+            userEvent.click(screen.getByText(addLink));
         });
     };
 
     const iSpecifyAToStartDate = (and) => {
         and("I specify a TO Start Date", async () => {
 
-            await fireEvent.click(screen.getByText(/Yes, let me specify a start date/i));
-            await fireEvent.change(screen.getByLabelText(/Please specify date/i),
-                {
-                    target: {value: newToStartDateValue}
-                });
+            userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
+            userEvent.type(screen.getByLabelText(/Please specify date/i), newToStartDateValue);
             await act(async () => {
                 await flushPromises();
             });
@@ -159,7 +157,7 @@ defineFeature(feature, test => {
 
     const iSelectTheContinueButton = (when) => {
         when("I select the continue button", async () => {
-            await fireEvent.click(screen.getByText(continueButton));
+            userEvent.click(screen.getByText(continueButton));
             await act(async () => {
                 await flushPromises();
             });
@@ -168,7 +166,7 @@ defineFeature(feature, test => {
 
     const iDeleteTheToStartDate = (and) => {
         and("I delete the TO start date", async () => {
-            await fireEvent.click(screen.getByText(noToStartDateRadioOption));
+            userEvent.click(screen.getByText(noToStartDateRadioOption));
             await act(async () => {
                 await flushPromises();
             });
