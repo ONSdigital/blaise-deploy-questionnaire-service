@@ -155,6 +155,8 @@ function ReinstallInstruments({installedInstruments, listLoading}: Props): React
                 <h1 className="u-mb-l">Reinstall questionnaire</h1>
                 <p>
                     Reinstall a previously uploaded questionnaire.
+                    <br/>
+                    This will always deploy the last uploaded version of the questionnaire.
                 </p>
                 {
                     (listLoading || loading) ?
