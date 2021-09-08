@@ -3,7 +3,7 @@ import {defineFeature, loadFeature} from "jest-cucumber";
 import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import {survey_list} from "./API_Mock_Objects";
+import {instrumentList} from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
@@ -11,6 +11,8 @@ import navigateToDeployPageAndSelectFile, {
 import flushPromises from "../../tests/utils";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import userEvent from "@testing-library/user-event";
+
 const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
 
@@ -50,7 +52,7 @@ const mock_server_responses_not_live = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(survey_list),
+            json: () => Promise.resolve(instrumentList),
         });
     }
 };
@@ -80,7 +82,7 @@ const mock_server_responses_live = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(survey_list),
+            json: () => Promise.resolve(instrumentList),
         });
     }
 };
@@ -107,7 +109,7 @@ defineFeature(feature, test => {
         });
 
         when("I confirm my selection and the name/ref of the questionnaire package is the same as one already deployed in Blaise", async () => {
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am presented with the options to cancel or overwrite the questionnaire", async () => {
@@ -126,15 +128,15 @@ defineFeature(feature, test => {
                 {},
             );
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
         });
 
         when("I select to 'overwrite' and the survey is live (within the specified survey days)", async () => {
-            await fireEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
+            userEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am presented with a warning banner that I cannot overwrite the survey", async () => {
@@ -163,15 +165,15 @@ defineFeature(feature, test => {
                 {},
             );
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
         });
 
         when("I select to 'overwrite' and there is no sample or respondent data captured for the questionnaire", async () => {
-            await fireEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
+            userEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am presented with a warning, to confirm overwrite", async () => {
@@ -182,25 +184,30 @@ defineFeature(feature, test => {
     });
 
 
-    test("Confirm overwrite of existing questionnaire package where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)", ({given, when, then, and}) => {
+    test("Confirm overwrite of existing questionnaire package where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)", ({
+                                                                                                                                                                              given,
+                                                                                                                                                                              when,
+                                                                                                                                                                              then,
+                                                                                                                                                                              and
+                                                                                                                                                                          }) => {
         given("I have been asked to confirm I want to overwrite an existing questionnaire in Blaise", async () => {
             mock_fetch_requests(mock_server_responses_not_live);
             mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200, {});
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
-            await fireEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
+            userEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
         });
 
         when("I confirm I want to do this", async () => {
-            await fireEvent.click(screen.getByText(/yes, overwrite questionnaire/i));
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/yes, overwrite questionnaire/i));
+            userEvent.click(screen.getByText(/Continue/));
 
             await navigatePastSettingTOStartDateAndStartDeployment();
         });
@@ -224,20 +231,20 @@ defineFeature(feature, test => {
                 {},
             );
             await navigateToDeployPageAndSelectFile();
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
-            await fireEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
+            userEvent.click(screen.getByText(/Continue/));
             await act(async () => {
                 await flushPromises();
             });
         });
 
         when("I confirm that I do NOT want to continue", async () => {
-            await fireEvent.click(screen.getByText(/no, do not overwrite questionnaire/i));
-            await fireEvent.click(screen.getByText(/Continue/));
+            userEvent.click(screen.getByText(/no, do not overwrite questionnaire/i));
+            userEvent.click(screen.getByText(/Continue/));
         });
 
         then("I am returned to the landing page", async () => {

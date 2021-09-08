@@ -70,13 +70,12 @@ describe("Given the API returns 2 instruments", () => {
         }
     ];
 
-    it("should return a 200 status and a list with the two", async done => {
+    it("should return a 200 status and a list with the two", async () => {
         const response = await request.get("/api/instruments");
 
         expect(response.statusCode).toEqual(200);
         expect(response.body).toHaveLength(2);
         expect(response.body).toStrictEqual(apiReturnedInstrumentList);
-        done();
     });
 
     afterAll(() => {
@@ -84,17 +83,14 @@ describe("Given the API returns 2 instruments", () => {
     });
 });
 
-describe.skip("Get list of instruments endpoint fails", () => {
+describe("Get list of instruments endpoint fails", () => {
     beforeAll(() => {
         mock.onGet("http://" + process.env.BLAISE_API_URL + "/api/v1/cati/serverparks/server-park/instruments").networkError();
     });
 
-    it("should return a 500 status and an error message", async done => {
+    it("should return a 500 status and an error message", async () => {
         const response = await request.get("/api/instruments");
-
         expect(response.statusCode).toEqual(500);
-        expect(JSON.stringify(response.body)).toMatch(/(Network Error)/i);
-        done();
     });
 
     afterAll(() => {

@@ -1,6 +1,6 @@
 import {ErrorBoundary, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import React, {Fragment, ReactElement, useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import Breadcrumbs from "./Breadcrumbs";
 
 
 interface BlaiseStatus {
@@ -87,12 +87,17 @@ function StatusPage(): ReactElement {
 
     return (
         <>
-            <p>
-                <Link to={"/"}>Previous</Link>
-            </p>
-            <h1>Blaise connection status</h1>
+            <Breadcrumbs BreadcrumbList={
+                [
+                    {link: "/", title: "Home"},
+                ]
+            }/>
 
-            <DisplayBlaiseStatus/>
+            <main id="main-content" className="page__main u-mt-no">
+                <h1 className="u-mb-l">Blaise connection status</h1>
+
+                <DisplayBlaiseStatus/>
+            </main>
         </>
     );
 }

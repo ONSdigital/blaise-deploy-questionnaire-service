@@ -4,31 +4,30 @@ import {Instrument} from "../../../Interfaces";
 type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];
 type deleteInstrumentResponse = [boolean, string];
+type getInstrumentCaseIDsResponse = [boolean, string[]];
 
 function checkInstrumentAlreadyExists(instrumentName: string): Promise<verifyInstrumentExistsResponse> {
     console.log(`Call to checkSurveyAlreadyExists(${instrumentName})`);
     const url = `/api/instruments/${instrumentName}`;
 
-    return new Promise((resolve: (object: verifyInstrumentExistsResponse) => void) => {
-        requestPromiseJson("GET", url).then(([status, data]) => {
-            console.log(`Response from check exists: Status ${status}, data ${data}`);
-            if (status === 200) {
-                if (data.name === instrumentName) {
-                    console.log(`${instrumentName} already installed`);
-                    resolve([true, data]);
-                } else {
-                    console.log(`${instrumentName} not found`);
-                    resolve([false, null]);
-                }
-            } else if (status === 404) {
-                resolve([false, null]);
+    return requestPromiseJson("GET", url).then(([status, data]): verifyInstrumentExistsResponse => {
+        console.log(`Response from check exists: Status ${status}, data ${data}`);
+        if (status === 200) {
+            if (data.name === instrumentName) {
+                console.log(`${instrumentName} already installed`);
+                return [true, data];
             } else {
-                resolve([null, null]);
+                console.log(`${instrumentName} not found`);
+                return [false, null];
             }
-        }).catch((error: Error) => {
-            console.error(`Response from check bucket Failed: Error ${error}`);
-            resolve([null, null]);
-        });
+        } else if (status === 404) {
+            return [false, null];
+        } else {
+            return [null, null];
+        }
+    }).catch((error: Error) => {
+        console.error(`Response from check bucket Failed: Error ${error}`);
+        return [null, null];
     });
 }
 
@@ -36,14 +35,8 @@ function getAllInstruments(): Promise<getInstrumentListResponse> {
     console.log("Call to getAllInstruments");
     const url = "/api/instruments";
 
-    return new Promise((resolve: (object: getInstrumentListResponse) => void) => {
-        requestPromiseJsonList("GET", url).then(([success, data]) => {
-            console.log(`Response from get all instruments ${(success ? "successful" : "failed")}, data list length ${data.length}`);
-            resolve([success, data]);
-        }).catch((error: Error) => {
-            console.error(`Response from get all instruments Failed: Error ${error}`);
-            resolve([false, []]);
-        });
+    return requestPromiseJsonList("GET", url).then((response) => {
+        return response;
     });
 }
 
@@ -51,18 +44,16 @@ function deleteInstrument(instrumentName: string): Promise<deleteInstrumentRespo
     console.log("Call to deleteInstrument");
     const url = `/api/instruments/${instrumentName}`;
 
-    return new Promise((resolve: (object: deleteInstrumentResponse) => void) => {
-        requestPromiseJson("DELETE", url).then(([status, data]) => {
-            console.log(`Response from deleteInstrument: Status ${status}, data ${data}`);
-            if (status === 204) {
-                resolve([true, ""]);
-            } else {
-                resolve([false, ""]);
-            }
-        }).catch((error: Error) => {
-            console.error(`Response from deleteInstrument: Error ${error}`);
-            resolve([false, ""]);
-        });
+    return requestPromiseJson("DELETE", url).then(([status, data]): deleteInstrumentResponse => {
+        console.log(`Response from deleteInstrument: Status ${status}, data ${data}`);
+        if (status === 204) {
+            return [true, ""];
+        } else {
+            return [false, ""];
+        }
+    }).catch((error: Error) => {
+        console.error(`Response from deleteInstrument: Error ${error}`);
+        return [false, ""];
     });
 }
 
@@ -70,18 +61,12 @@ function sendInstallRequest(filename: string): Promise<boolean> {
     console.log("Sending request to start install");
     const url = `/api/install?filename=${filename}`;
 
-    return new Promise((resolve: (object: boolean) => void) => {
-        requestPromiseJson("GET", url).then(([status, data]) => {
-            console.log(`Response from install instrument: Status ${status}, data ${data}`);
-            if (status === 201) {
-                resolve(true);
-            } else {
-                resolve(false);
-            }
-        }).catch((error: Error) => {
-            console.error(`Failed to install questionnaire, Error ${error}`);
-            resolve(false);
-        });
+    return requestPromiseJson("GET", url).then(([status, data]): boolean => {
+        console.log(`Response from install instrument: Status ${status}, data ${data}`);
+        return status === 201;
+    }).catch((error: Error) => {
+        console.error(`Failed to install questionnaire, Error ${error}`);
+        return false;
     });
 }
 
@@ -89,21 +74,25 @@ function doesInstrumentHaveCAWIMode(instrumentName: string): Promise<boolean | n
     console.log("Sending request does instrument have cawi mode");
     const url = `/api/instruments/${instrumentName}/modes/CAWI`;
 
-    return new Promise((resolve: (object: boolean | null) => void) => {
-        requestPromiseJson("GET", url).then(([status, data]) => {
-            console.log(`Response from does instrument have cawi mode: Status ${status}, data ${data}`);
-            if (status === 200) {
-                if (data === true) {
-                    resolve(true);
-                }
-                resolve(false);
-            } else {
-                resolve(null);
-            }
-        }).catch((error: Error) => {
-            console.error(`Failed to does instrument have cawi mode, Error ${error}`);
-            resolve(null);
-        });
+    return requestPromiseJson("GET", url).then(([status, data]): boolean | null => {
+        console.log(`Response from does instrument have cawi mode: Status ${status}, data ${data}`);
+        if (status === 200) {
+            return data === true;
+        } else {
+            return null;
+        }
+    }).catch((error: Error) => {
+        console.error(`Failed to does instrument have cawi mode, Error ${error}`);
+        return null;
+    });
+}
+
+function getInstrumentCaseIds(instrumentName: string): Promise<getInstrumentCaseIDsResponse> {
+    console.log("Call to getAllInstruments");
+    const url = `/api/instruments/${instrumentName}/cases/ids`;
+
+    return requestPromiseJsonList("GET", url).then((response) => {
+        return response;
     });
 }
 
@@ -112,5 +101,6 @@ export {
     getAllInstruments,
     deleteInstrument,
     sendInstallRequest,
-    doesInstrumentHaveCAWIMode
+    doesInstrumentHaveCAWIMode,
+    getInstrumentCaseIds
 };

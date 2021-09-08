@@ -53,7 +53,7 @@ describe("Function validateUploadIsComplete(filename: string) ", () => {
 
 describe("Function getAllInstrumentsInBucket() ", () => {
 
-    const instrumentsInBucket : string[] = ["OPN2101A.bpkg", "OPN2004A.bpkg", "LMS2101_BK2.bpkg"];
+    const instrumentsInBucket: string[] = ["OPN2101A.bpkg", "OPN2004A.bpkg", "LMS2101_BK2.bpkg"];
 
     it("It should return true with data if the list is returned successfully", async () => {
         mock_server_request_Return_JSON(200, instrumentsInBucket);
@@ -62,10 +62,10 @@ describe("Function getAllInstrumentsInBucket() ", () => {
         expect(instruments).toEqual(instruments);
     });
 
-    it("It should return true with an empty list if a 404 is returned from the server", async () => {
+    it("It should return false with an empty list if a 404 is returned from the server", async () => {
         mock_server_request_Return_JSON(404, []);
         const [success, instruments] = await getAllInstrumentsInBucket();
-        expect(success).toBeTruthy();
+        expect(success).toBeFalsy();
         expect(instruments).toEqual([]);
     });
 

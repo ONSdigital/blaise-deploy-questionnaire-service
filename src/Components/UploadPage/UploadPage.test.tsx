@@ -1,11 +1,11 @@
 import React from "react";
-import {render, waitFor, fireEvent, cleanup, screen} from "@testing-library/react";
+import {cleanup, render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises, {mock_server_request_Return_JSON} from "../../tests/utils";
 import {act} from "react-dom/test-utils";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
-import {instrumentList, survey_list} from "../../features/step_definitions/API_Mock_Objects";
+import {instrumentList} from "../../features/step_definitions/API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
@@ -13,6 +13,7 @@ import navigateToDeployPageAndSelectFile, {
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import UploadPage from "./UploadPage";
+import userEvent from "@testing-library/user-event";
 
 const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 
@@ -62,7 +63,7 @@ describe("Upload Page", () => {
             </Router>
         );
 
-        await fireEvent.click(screen.getByText(/Continue/));
+        userEvent.click(screen.getByText(/Continue/));
 
         await waitFor(() => {
             expect(screen.queryAllByText("Select a file")).toHaveLength(2);
@@ -77,19 +78,13 @@ describe("Upload Page", () => {
             </Router>
         );
 
-        const inputEl = screen.getByLabelText(/Select survey package/i);
+        const input = screen.getByLabelText(/Select survey package/i);
 
-        const file = new File(["(⌐□_□)"], "OPN2004A.pdf", {
-            type: "pdf"
-        });
+        const file = new File(["(⌐□_□)"], "OPN2004A.pdf", {type: "application/pdf"});
 
-        Object.defineProperty(inputEl, "files", {
-            value: [file]
-        });
+        userEvent.upload(input, file);
 
-        fireEvent.change(inputEl);
-
-        await fireEvent.click(screen.getByText(/Continue/));
+        userEvent.click(screen.getByText(/Continue/));
 
         await waitFor(() => {
             expect(screen.queryAllByText("File must be a .bpkg")).toHaveLength(2);
@@ -102,9 +97,9 @@ describe("Upload Page", () => {
     });
 });
 
-const mock_server_responses = (url: string) => {
+const mock_server_responses = (url: string, config: any) => {
     console.log(url);
-    if (url.includes("/api/instruments")) {
+    if ((url.includes("/api/instruments")) && (config !== undefined && config.method === "POST")) {
         return Promise.resolve({
             status: 404,
             json: () => Promise.resolve(),
@@ -117,7 +112,7 @@ const mock_server_responses = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(survey_list),
+            json: () => Promise.resolve(instrumentList),
         });
     }
 };
@@ -135,7 +130,7 @@ describe("Given the file fails to upload", () => {
     it("it should redirect to the summary page with an error", async () => {
         await navigateToDeployPageAndSelectFile();
 
-        await fireEvent.click(screen.getByText(/Continue/));
+        userEvent.click(screen.getByText(/Continue/));
 
         await navigatePastSettingTOStartDateAndStartDeployment();
 

@@ -1,7 +1,7 @@
 import React, {ReactElement, useState} from "react";
 import {Redirect, useHistory} from "react-router-dom";
 import {ONSButton} from "blaise-design-system-react-components";
-import {Formik, Form} from "formik";
+import {Form, Formik} from "formik";
 import SelectFile from "./Sections/SelectFile";
 import AskToSetTOStartDate from "./Sections/AskToSetTOStartDate";
 import DeployFormSummary from "./Sections/DeployFormSummary";
@@ -10,6 +10,7 @@ import AlreadyExists from "./Sections/AlreadyExists";
 import ConfirmOverride from "./Sections/ConfirmOverride";
 import {uploadAndInstallFile, validateSelectedInstrumentExists} from "./UploadProcess";
 import {roundUp} from "../../utilities";
+import Breadcrumbs from "../Breadcrumbs";
 
 const steps = ["Select file", "Already exits prompt", "Confirm Override", "Want to set a live date", "Summary"];
 
@@ -112,11 +113,11 @@ function UploadPage(): ReactElement {
 
     return (
         <>
-            {/*<Breadcrumbs BreadcrumbList={*/}
-            {/*    [*/}
-            {/*        {link: "/", title: "Home"},*/}
-            {/*    ]*/}
-            {/*}/>*/}
+            <Breadcrumbs BreadcrumbList={
+                [
+                    {link: "/", title: "Home"},
+                ]
+            }/>
 
             <main id="main-content" className="page__main u-mt-no">
                 {activeStep === steps.length ? (

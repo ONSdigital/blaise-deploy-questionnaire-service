@@ -1,9 +1,8 @@
-import navigateToDeployPageAndSelectFile, {
-    mock_fetch_requests
-} from "../../../features/step_definitions/functions";
+import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "../../../features/step_definitions/functions";
 import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
-import {survey_list} from "../../../features/step_definitions/API_Mock_Objects";
+import {instrumentList} from "../../../features/step_definitions/API_Mock_Objects";
 import flushPromises from "../../../tests/utils";
+import userEvent from "@testing-library/user-event";
 
 const mock_server_responses = (url: string) => {
     console.log(url);
@@ -20,7 +19,7 @@ const mock_server_responses = (url: string) => {
     } else {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve(survey_list),
+            json: () => Promise.resolve(instrumentList),
         });
     }
 };
@@ -34,13 +33,13 @@ describe("Ask to set TO start date page", () => {
     it("should come up with a error panel if you don't pick an option", async () => {
         await navigateToDeployPageAndSelectFile();
 
-        await fireEvent.click(screen.getByText(/Continue/));
+        userEvent.click(screen.getByText(/Continue/));
 
         await act(async () => {
             await flushPromises();
         });
 
-        await fireEvent.click(screen.getByText(/Continue/i));
+        userEvent.click(screen.getByText(/Continue/i));
 
         await act(async () => {
             await flushPromises();
@@ -54,14 +53,14 @@ describe("Ask to set TO start date page", () => {
     it("should come up with a error panel if pick set to set a start date but don't enter one", async () => {
         await navigateToDeployPageAndSelectFile();
 
-        await fireEvent.click(screen.getByText(/Continue/));
+        userEvent.click(screen.getByText(/Continue/));
 
         await act(async () => {
             await flushPromises();
         });
 
-        await fireEvent.click(screen.getByText(/Yes, let me specify a start date/i));
-        await fireEvent.click(screen.getByText(/Continue/i));
+        userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
+        userEvent.click(screen.getByText(/Continue/i));
 
         await act(async () => {
             await flushPromises();
@@ -75,17 +74,17 @@ describe("Ask to set TO start date page", () => {
     it("should show selected date on the summary page", async () => {
         await navigateToDeployPageAndSelectFile();
 
-        await fireEvent.click(screen.getByText(/Continue/));
+        userEvent.click(screen.getByText(/Continue/));
 
         await act(async () => {
             await flushPromises();
         });
 
-        await fireEvent.click(screen.getByText(/Yes, let me specify a start date/i));
+        userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
 
         fireEvent.change(screen.getByLabelText(/Please specify date/i), {target: {value: "2030-06-05"}});
 
-        await fireEvent.click(screen.getByText(/Continue/i));
+        userEvent.click(screen.getByText(/Continue/i));
 
         await act(async () => {
             await flushPromises();

@@ -6,11 +6,6 @@ import {getEnvironmentVariables} from "./Config";
 import createLogger from "./pino";
 import * as profiler from "@google-cloud/profiler";
 import bodyParser from "body-parser";
-import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
-import BlaiseAPIRouter from "./BlaiseAPI";
-import {auditLogError, auditLogInfo, getAuditLogs} from "./audit_logging";
-import BimsAPIRouter from "./BimsAPI";
-import BusAPIRouter from "./BusAPI";
 
 profiler.start({logLevel: 4}).catch((err: unknown) => {
     console.log(`Failed to start profiler: ${err}`);
@@ -19,6 +14,12 @@ profiler.start({logLevel: 4}).catch((err: unknown) => {
 if (process.env.NODE_ENV !== "production") {
     dotenv.config({path: __dirname + "/../../.env"});
 }
+
+import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
+import BlaiseAPIRouter from "./BlaiseAPI";
+import {auditLogError, auditLogInfo, getAuditLogs} from "./audit_logging";
+import BimsAPIRouter from "./BimsAPI";
+import BusAPIRouter from "./BusAPI";
 
 const server = express();
 server.use(bodyParser.json() as RequestHandler);

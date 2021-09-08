@@ -1,4 +1,4 @@
-import jwt, {Jwt} from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import getGoogleAuthToken from "./GoogleTokenProvider";
 
 export default class AuthProvider {
@@ -8,6 +8,10 @@ export default class AuthProvider {
     constructor(DDS_CLIENT_ID: string) {
         this.DDS_CLIENT_ID = DDS_CLIENT_ID;
         this.token = "";
+    }
+
+    private static hasTokenExpired(expireTimestamp: number): boolean {
+        return expireTimestamp < Math.floor(new Date().getTime() / 1000);
     }
 
     async getAuthHeader(): Promise<{ Authorization: string }> {
@@ -32,9 +36,5 @@ export default class AuthProvider {
         }
 
         return true;
-    }
-
-    private static hasTokenExpired(expireTimestamp: number): boolean {
-        return expireTimestamp < Math.floor(new Date().getTime() / 1000);
     }
 }
