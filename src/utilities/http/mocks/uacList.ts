@@ -35,19 +35,19 @@ export const uacDetails: InstrumentUacDetails = {
 
 export const uacDetailsFormattedToCSV = [
     {
-        case_id: "100000001",
+        serial_number: "100000001",
         UAC1: "0009",
         UAC2: "7565",
         UAC3: "3827"
     },
     {
-        case_id: "100000002",
+        serial_number: "100000002",
         UAC1: "3453",
         UAC2: "6545",
         UAC3: "4564"
     },
     {
-        case_id: "100000003",
+        serial_number: "100000003",
         UAC1: "9789",
         UAC2: "7578",
         UAC3: "5367"
