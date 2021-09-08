@@ -1,9 +1,9 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {doesInstrumentHaveCAWIMode, getCountOfUACs} from "../../utilities/http";
-import {Instrument} from "../../../Interfaces";
+import {doesInstrumentHaveCAWIMode, getCountOfUACs} from "../../../utilities/http";
+import {Instrument} from "../../../../Interfaces";
 import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import CsvDownloader from "react-csv-downloader";
-import {generateUACCodesAndCSVFileData} from "../../utilities/processes";
+import {generateUACCodesAndCSVFileData} from "../../../utilities/processes";
 
 interface Props {
     instrument: Instrument;

@@ -1,13 +1,13 @@
 import React, {ReactElement} from "react";
 import {Redirect, useLocation} from "react-router-dom";
-import YearCalendar from "./YearCalendar";
 import dateFormatter from "dayjs";
-import ViewToStartDate from "./ViewToStartDate";
 import {Instrument} from "../../../Interfaces";
-import InstrumentStatus from "../InstrumentStatus";
-import BlaiseNodeInfo from "./BlaiseNodeInfo";
-import ViewWebModeDetails from "./ViewWebModeDetails";
 import Breadcrumbs from "../Breadcrumbs";
+import InstrumentStatus from "../InstrumentStatus";
+import BlaiseNodeInfo from "./Sections/BlaiseNodeInfo";
+import ViewWebModeDetails from "./Sections/ViewWebModeDetails";
+import ViewToStartDate from "./Sections/ViewToStartDate";
+import YearCalendar from "./Sections/YearCalendar";
 
 interface State {
     instrument: Instrument | null;
