@@ -5,14 +5,151 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <p>
-        <a
-          href="/"
+      <nav
+        aria-label="Breadcrumb"
+        class="breadcrumb"
+      >
+        <ol
+          class="breadcrumb__items u-fs-s"
         >
-          Previous
-        </a>
-      </p>
-      <h1>
+          <li
+            class="breadcrumb__item"
+            id="breadcrumb-0"
+          >
+            <a
+              class="breadcrumb__link"
+              href="/"
+            >
+              Home
+            </a>
+            <svg
+              class="svg-icon"
+              focusable="false"
+              viewBox="0 0 8 13"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z"
+                transform="translate(-5.02 -1.59)"
+              />
+            </svg>
+          </li>
+        </ol>
+      </nav>
+      <main
+        class="page__main u-mt-no"
+        id="main-content"
+      >
+        <h1
+          class="u-mb-l"
+        >
+          Questionnaire deployment history
+        </h1>
+        <button
+          class="btn btn--small "
+          data-testid="button"
+          type="button"
+        >
+          <span
+            class="btn__inner"
+          >
+            Reload
+          </span>
+        </button>
+        <div
+          class="elementToFadeIn"
+        >
+          <table
+            class="table"
+            id="audit-table"
+          >
+            <thead
+              class="table__head"
+            >
+              <tr
+                class="table__row"
+              >
+                <th
+                  class="table__header"
+                  scope="col"
+                >
+                  Date and time
+                </th>
+                <th
+                  class="table__header"
+                  scope="col"
+                >
+                  Information
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="table__body"
+            >
+              <tr
+                class="table__row"
+                data-testid="instrument-table-row"
+              >
+                <td
+                  class="table__cell "
+                >
+                  19/02/2021 12:46:29
+                </td>
+                <td
+                  class="table__cell "
+                >
+                  <span
+                    class="status status--info"
+                  >
+                    Successfully uninstalled questionnaire OPN2012K
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </body>,
+  "container": <div>
+    <nav
+      aria-label="Breadcrumb"
+      class="breadcrumb"
+    >
+      <ol
+        class="breadcrumb__items u-fs-s"
+      >
+        <li
+          class="breadcrumb__item"
+          id="breadcrumb-0"
+        >
+          <a
+            class="breadcrumb__link"
+            href="/"
+          >
+            Home
+          </a>
+          <svg
+            class="svg-icon"
+            focusable="false"
+            viewBox="0 0 8 13"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z"
+              transform="translate(-5.02 -1.59)"
+            />
+          </svg>
+        </li>
+      </ol>
+    </nav>
+    <main
+      class="page__main u-mt-no"
+      id="main-content"
+    >
+      <h1
+        class="u-mb-l"
+      >
         Questionnaire deployment history
       </h1>
       <button
@@ -78,82 +215,7 @@ Object {
           </tbody>
         </table>
       </div>
-    </div>
-  </body>,
-  "container": <div>
-    <p>
-      <a
-        href="/"
-      >
-        Previous
-      </a>
-    </p>
-    <h1>
-      Questionnaire deployment history
-    </h1>
-    <button
-      class="btn btn--small "
-      data-testid="button"
-      type="button"
-    >
-      <span
-        class="btn__inner"
-      >
-        Reload
-      </span>
-    </button>
-    <div
-      class="elementToFadeIn"
-    >
-      <table
-        class="table"
-        id="audit-table"
-      >
-        <thead
-          class="table__head"
-        >
-          <tr
-            class="table__row"
-          >
-            <th
-              class="table__header"
-              scope="col"
-            >
-              Date and time
-            </th>
-            <th
-              class="table__header"
-              scope="col"
-            >
-              Information
-            </th>
-          </tr>
-        </thead>
-        <tbody
-          class="table__body"
-        >
-          <tr
-            class="table__row"
-            data-testid="instrument-table-row"
-          >
-            <td
-              class="table__cell "
-            >
-              19/02/2021 12:46:29
-            </td>
-            <td
-              class="table__cell "
-            >
-              <span
-                class="status status--info"
-              >
-                Successfully uninstalled questionnaire OPN2012K
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    </main>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
