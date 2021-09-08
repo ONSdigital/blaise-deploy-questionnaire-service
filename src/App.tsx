@@ -106,24 +106,26 @@ function App(): ReactElement {
                             <DeleteConfirmation getList={getInstrumentList}/>
                         </Route>
                         <Route path="/">
+                            <main id="main-content" className="page__main u-mt-no">
 
-                            {status !== "" && <ONSPanel status="success">{status}</ONSPanel>}
-                            {listMessage.includes("Unable") && <ONSErrorPanel/>}
+                                {status !== "" && <ONSPanel status="success">{status}</ONSPanel>}
+                                {listMessage.includes("Unable") && <ONSErrorPanel/>}
 
-                            <ONSPanel>
-                                <p>
-                                    Any <b>live</b> questionnaire within the table below <b>does not</b> have the
-                                    option to delete and <b>cannot be deleted</b>.
+                                <ONSPanel>
+                                    <p>
+                                        Any <b>live</b> questionnaire within the table below <b>does not</b> have the
+                                        option to delete and <b>cannot be deleted</b>.
 
-                                    If a <b>live</b> questionnaire requires deletion, raise a Service Desk ticket to
-                                    complete this request.
-                                </p>
-                            </ONSPanel>
-                            <h2 className="u-mt-m">Table of questionnaires</h2>
-                            <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                <InstrumentList instrumentList={instruments} listMessage={listMessage}
-                                                loading={listLoading}/>
-                            </ErrorBoundary>
+                                        If a <b>live</b> questionnaire requires deletion, raise a Service Desk ticket to
+                                        complete this request.
+                                    </p>
+                                </ONSPanel>
+                                <h2 className="u-mt-m">Table of questionnaires</h2>
+                                <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
+                                    <InstrumentList instrumentList={instruments} listMessage={listMessage}
+                                                    loading={listLoading}/>
+                                </ErrorBoundary>
+                            </main>
                         </Route>
                     </Switch>
                 </DefaultErrorBoundary>
