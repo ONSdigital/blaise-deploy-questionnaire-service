@@ -3,9 +3,9 @@ import React, {ChangeEvent, ReactElement} from "react";
 import {FormikContextType, useFormikContext} from "formik";
 
 interface SelectFilePageProps {
-    file: File | undefined
-    setFile: any
-    loading: boolean
+    file: File | undefined;
+    setFile: any;
+    loading: boolean;
 }
 
 function SelectFile(props: SelectFilePageProps): ReactElement {
@@ -44,9 +44,7 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
 
     return (
         <>
-            <h1 className="u-mt-s">
-                Deploy a questionnaire file
-            </h1>
+            <h1 className="u-mb-l">Deploy a questionnaire file</h1>
 
             <ONSPanel>
                 <p>

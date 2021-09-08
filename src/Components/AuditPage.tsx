@@ -1,10 +1,10 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 import dateFormatter from "dayjs";
 import {ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import {getAuditLogs} from "../utilities/http";
 import {AuditLog} from "../../Interfaces";
 import ONSTable, {TableColumns} from "./ONSTable";
+import Breadcrumbs from "./Breadcrumbs";
 
 function AuditPage(): ReactElement {
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
@@ -85,13 +85,18 @@ function AuditPage(): ReactElement {
 
     return (
         <>
-            <p>
-                <Link to={"/"}>Previous</Link>
-            </p>
-            <h1>Questionnaire deployment history</h1>
-            <ONSButton onClick={() => callAuditLogs()} label="Reload" primary={true} small={true}/>
+            <Breadcrumbs BreadcrumbList={
+                [
+                    {link: "/", title: "Home"},
+                ]
+            }/>
 
-            <DisplayAuditPage/>
+            <main id="main-content" className="page__main u-mt-no">
+                <h1 className="u-mb-l">Questionnaire deployment history</h1>
+                <ONSButton onClick={() => callAuditLogs()} label="Reload" primary={true} small={true}/>
+
+                <DisplayAuditPage/>
+            </main>
 
         </>
     );

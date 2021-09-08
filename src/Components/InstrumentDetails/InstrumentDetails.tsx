@@ -1,5 +1,5 @@
 import React, {ReactElement} from "react";
-import {Link, Redirect, useLocation} from "react-router-dom";
+import {Redirect, useLocation} from "react-router-dom";
 import YearCalendar from "./YearCalendar";
 import dateFormatter from "dayjs";
 import ViewToStartDate from "./ViewToStartDate";
@@ -7,6 +7,7 @@ import {Instrument} from "../../../Interfaces";
 import InstrumentStatus from "../InstrumentStatus";
 import BlaiseNodeInfo from "./BlaiseNodeInfo";
 import ViewWebModeDetails from "./ViewWebModeDetails";
+import Breadcrumbs from "../Breadcrumbs";
 
 interface State {
     instrument: Instrument | null;
@@ -27,71 +28,76 @@ function InstrumentDetails(): ReactElement {
 
     return (
         <>
-            <p>
-                <Link to={"/"}>Previous</Link>
-            </p>
-            <h1>
-                {instrument.name}
-            </h1>
+            <Breadcrumbs BreadcrumbList={
+                [
+                    {link: "/", title: "Home"},
+                ]
+            }/>
 
-            <ViewToStartDate instrumentName={instrument.name}/>
+            <main id="main-content" className="page__main u-mt-no">
+                <h1 className="u-mb-l">
+                    {instrument.name}
+                </h1>
 
-            <div className="summary u-mb-m">
-                <div className="summary__group">
-                    <h2 className="summary__group-title">Questionnaire details</h2>
-                    <table className="summary__items">
-                        <thead className="u-vh">
-                        <tr>
-                            <th>Detail</th>
-                            <th>Output</th>
-                        </tr>
-                        </thead>
-                        <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                <div className="summary__item--text">
-                                    Questionnaire status
-                                </div>
-                            </td>
-                            <td className="summary__values" colSpan={2}>
-                                <InstrumentStatus status={instrument.status ? instrument.status : ""}/>
-                            </td>
-                        </tr>
-                        </tbody>
-                        <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                <div className="summary__item--text">
-                                    Number of cases
-                                </div>
-                            </td>
-                            <td className="summary__values" colSpan={2}>
-                                {instrument.dataRecordCount}
-                            </td>
-                        </tr>
-                        </tbody>
-                        <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                <div className="summary__item--text">
-                                    Install date
-                                </div>
-                            </td>
-                            <td className="summary__values" colSpan={2}>
-                                {dateFormatter(instrument.installDate).format("DD/MM/YYYY HH:mm")}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <ViewToStartDate instrumentName={instrument.name}/>
+
+                <div className="summary u-mb-m">
+                    <div className="summary__group">
+                        <h2 className="summary__group-title">Questionnaire details</h2>
+                        <table className="summary__items">
+                            <thead className="u-vh">
+                            <tr>
+                                <th>Detail</th>
+                                <th>Output</th>
+                            </tr>
+                            </thead>
+                            <tbody className="summary__item">
+                            <tr className="summary__row summary__row--has-values">
+                                <td className="summary__item-title">
+                                    <div className="summary__item--text">
+                                        Questionnaire status
+                                    </div>
+                                </td>
+                                <td className="summary__values" colSpan={2}>
+                                    <InstrumentStatus status={instrument.status ? instrument.status : ""}/>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody className="summary__item">
+                            <tr className="summary__row summary__row--has-values">
+                                <td className="summary__item-title">
+                                    <div className="summary__item--text">
+                                        Number of cases
+                                    </div>
+                                </td>
+                                <td className="summary__values" colSpan={2}>
+                                    {instrument.dataRecordCount}
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody className="summary__item">
+                            <tr className="summary__row summary__row--has-values">
+                                <td className="summary__item-title">
+                                    <div className="summary__item--text">
+                                        Install date
+                                    </div>
+                                </td>
+                                <td className="summary__values" colSpan={2}>
+                                    {dateFormatter(instrument.installDate).format("DD/MM/YYYY HH:mm")}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
 
-            <ViewWebModeDetails instrument={instrument}/>
+                <ViewWebModeDetails instrument={instrument}/>
 
-            <h2 className={"u-mt-m"}>Survey days</h2>
-            <YearCalendar surveyDays={instrument.surveyDays}/>
+                <h2 className={"u-mt-m"}>Survey days</h2>
+                <YearCalendar surveyDays={instrument.surveyDays}/>
 
-            <BlaiseNodeInfo instrument={instrument}/>
+                <BlaiseNodeInfo instrument={instrument}/>
+            </main>
         </>
     );
 }

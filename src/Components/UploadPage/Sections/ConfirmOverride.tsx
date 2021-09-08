@@ -2,7 +2,7 @@ import React, {ReactElement} from "react";
 import {ONSPanel, StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
 
 interface SelectFilePageProps {
-    instrumentName: string
+    instrumentName: string;
 }
 
 function ConfirmOverride({instrumentName}: SelectFilePageProps): ReactElement {
@@ -29,7 +29,7 @@ function ConfirmOverride({instrumentName}: SelectFilePageProps): ReactElement {
 
     return (
         <>
-            <h1 className="u-mt-s">
+            <h1 className="u-mb-l">
                 Are you sure you want to overwrite the entire questionnaire <em
                 className="highlight">{instrumentName}</em>?
             </h1>
