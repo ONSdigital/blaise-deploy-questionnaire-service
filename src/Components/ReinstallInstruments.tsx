@@ -147,12 +147,15 @@ function ReinstallInstruments({installedInstruments, listLoading}: Props): React
             }
             <Breadcrumbs BreadcrumbList={
                 [
-                    {link: "/", title: "Home"},
+                    {link: "/", title: "Home"}, {link: "/upload", title: "Deploy a questionnaire"}
                 ]
             }/>
 
             <main id="main-content" className="page__main u-mt-no">
                 <h1 className="u-mb-l">Reinstall questionnaire</h1>
+                <p>
+                    Reinstall a previously uploaded questionnaire.
+                </p>
                 {
                     (listLoading || loading) ?
                         <ONSLoadingPanel/>

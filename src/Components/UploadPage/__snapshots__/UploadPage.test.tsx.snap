@@ -49,6 +49,15 @@ Object {
           >
             Deploy a questionnaire file
           </h1>
+          <p>
+            Upload and deploy a new Blaise package. You can also 
+            <a
+              href="/reinstall"
+            >
+              reinstall a previously uploaded questionnaire
+            </a>
+            .
+          </p>
           <div
             class="panel panel--info panel--no-title  u-mt-m"
           >
@@ -172,6 +181,15 @@ Object {
         >
           Deploy a questionnaire file
         </h1>
+        <p>
+          Upload and deploy a new Blaise package. You can also 
+          <a
+            href="/reinstall"
+          >
+            reinstall a previously uploaded questionnaire
+          </a>
+          .
+        </p>
         <div
           class="panel panel--info panel--no-title  u-mt-m"
         >

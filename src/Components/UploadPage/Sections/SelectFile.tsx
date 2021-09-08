@@ -1,6 +1,7 @@
 import {ONSPanel, StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
 import React, {ChangeEvent, ReactElement} from "react";
 import {FormikContextType, useFormikContext} from "formik";
+import {Link} from "react-router-dom";
 
 interface SelectFilePageProps {
     file: File | undefined;
@@ -45,6 +46,10 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
     return (
         <>
             <h1 className="u-mb-l">Deploy a questionnaire file</h1>
+            <p>
+                Upload and deploy a new Blaise package.
+                You can also <Link to={"/reinstall"}>reinstall a previously uploaded questionnaire</Link>.
+            </p>
 
             <ONSPanel>
                 <p>
