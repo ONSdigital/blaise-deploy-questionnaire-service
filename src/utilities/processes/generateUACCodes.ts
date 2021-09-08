@@ -14,7 +14,7 @@ function mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails): 
             return;
         }
         array.push({
-            case_id: caseID,
+            serial_number: caseID,
             UAC1: foundCase.uac_chunks.uac1,
             UAC2: foundCase.uac_chunks.uac2,
             UAC3: foundCase.uac_chunks.uac3
@@ -38,7 +38,7 @@ async function generateUACCodesAndCSVFileData(instrumentName: string): Promise<D
     if (uacCodes === undefined) {
         throw new Error("Failed to get UAC codes by case ID");
     }
-    
+
     const [getInstrumentCaseIdsSuccess, caseIDs] = await getInstrumentCaseIds(instrumentName);
     if (!getInstrumentCaseIdsSuccess) {
         throw new Error("Failed to get instrument case IDs");

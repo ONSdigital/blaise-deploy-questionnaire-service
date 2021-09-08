@@ -66,8 +66,8 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
 
         expect(Object.keys(mergedCases).length).toEqual(2);
         expect(mergedCases).toEqual([
-                {"UAC1": "0008", "UAC2": "4545", "UAC3": "9373", "case_id": "0008"},
-                {"UAC1": "0009", "UAC2": "3454", "UAC3": "4521", "case_id": "0009"}
+                {"UAC1": "0008", "UAC2": "4545", "UAC3": "9373", "serial_number": "0008"},
+                {"UAC1": "0009", "UAC2": "3454", "UAC3": "4521", "serial_number": "0009"}
             ]
         );
     });
@@ -133,7 +133,7 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
         expect(mergedCases).toHaveLength(2);
         expect(mergedCases[0]).toEqual(expect.objectContaining(
             {
-                "case_id": "0008",
+                "serial_number": "0008",
                 "UAC1": "0008",
                 "UAC2": "4545",
                 "UAC3": "9373"
