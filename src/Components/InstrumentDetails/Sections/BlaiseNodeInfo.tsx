@@ -1,6 +1,6 @@
-import {Instrument} from "../../../Interfaces";
+import {Instrument} from "../../../../Interfaces";
 import {Collapsible} from "blaise-design-system-react-components";
-import InstrumentStatus from "../InstrumentStatus";
+import InstrumentStatus from "../../InstrumentStatus";
 import React, {Fragment, ReactElement} from "react";
 
 interface NodeProps {

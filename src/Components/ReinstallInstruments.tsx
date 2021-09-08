@@ -1,9 +1,10 @@
 import React, {Fragment, ReactElement, useEffect, useState} from "react";
-import {Link, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import {getAllInstrumentsInBucket} from "../utilities/http";
 import {ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import {Instrument} from "../../Interfaces";
 import {verifyAndInstallInstrument} from "../utilities/processes";
+import Breadcrumbs from "./Breadcrumbs";
 
 interface Props {
     installedInstruments: Instrument[];
@@ -83,7 +84,7 @@ function ReinstallInstruments({installedInstruments, listLoading}: Props): React
                     <form>
                         {
                             listError !== "" ?
-                                <ONSPanel>{listError}</ONSPanel>
+                                <ONSPanel spacious={true}>{listError}</ONSPanel>
                                 :
                                 <>
                                     <fieldset className="fieldset">
@@ -144,16 +145,26 @@ function ReinstallInstruments({installedInstruments, listLoading}: Props): React
                         state: {questionnaireName: instrumentName, status: uploadStatus}
                     }}/>
             }
-            <p>
-                <Link to={"/"}>Previous</Link>
-            </p>
-            <h1>Reinstall questionnaire</h1>
-            {
-                (listLoading || loading) ?
-                    <ONSLoadingPanel/>
-                    :
-                    DisplayInstrumentsToInstallList()
-            }
+            <Breadcrumbs BreadcrumbList={
+                [
+                    {link: "/", title: "Home"}, {link: "/upload", title: "Deploy a questionnaire"}
+                ]
+            }/>
+
+            <main id="main-content" className="page__main u-mt-no">
+                <h1 className="u-mb-l">Reinstall questionnaire</h1>
+                <p>
+                    Reinstall a previously uploaded questionnaire.
+                    <br/>
+                    This will always deploy the last uploaded version of the questionnaire.
+                </p>
+                {
+                    (listLoading || loading) ?
+                        <ONSLoadingPanel/>
+                        :
+                        DisplayInstrumentsToInstallList()
+                }
+            </main>
         </>
     );
 }

@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {Link, Route, Switch, useLocation} from "react-router-dom";
+import {Route, Switch, useLocation} from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
 import {Instrument} from "../Interfaces";
 import UploadPage from "./Components/UploadPage/UploadPage";
@@ -23,6 +23,7 @@ import LiveSurveyWarning from "./Components/UploadPage/LiveSurveyWarning";
 import InstrumentDetails from "./Components/InstrumentDetails/InstrumentDetails";
 import ChangeToStartDate from "./Components/InstrumentDetails/ChangeToStartDate";
 import "./style.css";
+import {NavigationLinks} from "./Components/NavigationLinks";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -67,65 +68,48 @@ function App(): ReactElement {
 
     return (
         <>
+            <a className="skip__link" href="#main-content">Skip to content</a>
             {
                 (window.location.hostname.includes("dev")) && <NotProductionWarning/>
             }
             <BetaBanner/>
             <Header title={"Deploy Questionnaire Service"}/>
+            <NavigationLinks/>
             <div style={divStyle} className="page__container container">
-                <main id="main-content" className="page__main">
-                    <DefaultErrorBoundary>
-
-                        <Switch>
-                            <Route path="/status">
-                                <StatusPage/>
-                            </Route>
-                            <Route path="/reinstall">
-                                <ReinstallInstruments installedInstruments={instruments} listLoading={listLoading}/>
-                            </Route>
-                            <Route path="/audit">
-                                <AuditPage/>
-                            </Route>
-                            <Route path="/UploadSummary">
-                                <DeploymentSummary getList={getInstrumentList}/>
-                            </Route>
-                            <Route path={"/upload/survey-live/:instrumentName"}>
-                                <LiveSurveyWarning/>
-                            </Route>
-                            <Route path="/questionnaire/start-date">
-                                <ChangeToStartDate/>
-                            </Route>
-                            <Route path="/questionnaire">
-                                <InstrumentDetails/>
-                            </Route>
-                            <Route path="/upload">
-                                <UploadPage/>
-                            </Route>
-                            <Route path="/delete">
-                                <DeleteConfirmation getList={getInstrumentList}/>
-                            </Route>
-                            <Route path="/">
+                <DefaultErrorBoundary>
+                    <Switch>
+                        <Route path="/status">
+                            <StatusPage/>
+                        </Route>
+                        <Route path="/reinstall">
+                            <ReinstallInstruments installedInstruments={instruments} listLoading={listLoading}/>
+                        </Route>
+                        <Route path="/audit">
+                            <AuditPage/>
+                        </Route>
+                        <Route path="/UploadSummary">
+                            <DeploymentSummary getList={getInstrumentList}/>
+                        </Route>
+                        <Route path={"/upload/survey-live/:instrumentName"}>
+                            <LiveSurveyWarning/>
+                        </Route>
+                        <Route path="/questionnaire/start-date">
+                            <ChangeToStartDate/>
+                        </Route>
+                        <Route path="/questionnaire">
+                            <InstrumentDetails/>
+                        </Route>
+                        <Route path="/upload">
+                            <UploadPage/>
+                        </Route>
+                        <Route path="/delete">
+                            <DeleteConfirmation getList={getInstrumentList}/>
+                        </Route>
+                        <Route path="/">
+                            <main id="main-content" className="page__main u-mt-no">
 
                                 {status !== "" && <ONSPanel status="success">{status}</ONSPanel>}
                                 {listMessage.includes("Unable") && <ONSErrorPanel/>}
-
-                                <ul className="list list--bare list--inline u-mt-m">
-                                    <li className="list__item">
-                                        <Link to="/upload" id="deploy-questionnaire-link">
-                                            Deploy a questionnaire
-                                        </Link>
-                                    </li>
-                                    <li className="list__item">
-                                        <Link to="/audit" id="audit-logs-link">
-                                            View deployment history
-                                        </Link>
-                                    </li>
-                                    <li className="list__item">
-                                        <Link to="/status" id="blaise-status-link">
-                                            Check Blaise status
-                                        </Link>
-                                    </li>
-                                </ul>
 
                                 <ONSPanel>
                                     <p>
@@ -141,10 +125,10 @@ function App(): ReactElement {
                                     <InstrumentList instrumentList={instruments} listMessage={listMessage}
                                                     loading={listLoading}/>
                                 </ErrorBoundary>
-                            </Route>
-                        </Switch>
-                    </DefaultErrorBoundary>
-                </main>
+                            </main>
+                        </Route>
+                    </Switch>
+                </DefaultErrorBoundary>
             </div>
             <Footer/>
         </>
