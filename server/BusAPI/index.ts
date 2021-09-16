@@ -25,6 +25,7 @@ export default function BusAPIRouter(environmentVariables: EnvironmentVariables,
             return;
         }
 
+        req.log.info(`Generate UAC codes for ${instrumentName} response successful`);
         res.status(200).json(uacCodes);
     }));
 
@@ -38,6 +39,7 @@ export default function BusAPIRouter(environmentVariables: EnvironmentVariables,
             return;
         }
 
+        req.log.info(`Get UAC codes by case ID for ${instrumentName} response successful`);
         res.status(200).json(uacCodes);
     }));
 
@@ -51,7 +53,7 @@ export default function BusAPIRouter(environmentVariables: EnvironmentVariables,
             return;
         }
 
-        req.log.error(`Get UAC code count for ${instrumentName} response successful, count: ${uacCount.count}`);
+        req.log.info(`Get UAC code count for ${instrumentName} response successful, count: ${uacCount.count}`);
         res.status(200).json(uacCount);
     }));
 
