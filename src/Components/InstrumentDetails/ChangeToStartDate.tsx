@@ -5,14 +5,15 @@ import dateFormatter from "dayjs";
 import {useHistory, useLocation} from "react-router-dom";
 import {Form, Formik} from "formik";
 import AskToSetTOStartDate from "../UploadPage/Sections/AskToSetTOStartDate";
+import Breadcrumbs from "../Breadcrumbs";
 
 interface LocationState {
-    toStartDate: string | null
-    instrumentName: string
+    toStartDate: string | null;
+    instrumentName: string;
 }
 
 interface Location {
-    state: LocationState
+    state: LocationState;
 }
 
 function ChangeToStartDate(): ReactElement {
@@ -47,37 +48,41 @@ function ChangeToStartDate(): ReactElement {
 
     return (
         <>
-            {/*<p>*/}
-            {/*    <Link to={history[history.length -1]}>Previous</Link>*/}
-            {/*</p>*/}
+            <Breadcrumbs BreadcrumbList={
+                [
+                    {link: "/", title: "Home"}, {link: "/questionnaire", title: instrumentName}
+                ]
+            }/>
 
-            <Formik
-                validateOnBlur={false}
-                validateOnChange={false}
-                initialValues={initialValues}
-                onSubmit={_handleSubmit}
-            >
-                {({isSubmitting}) => (
-                    <Form id={"formID"}>
-                        <AskToSetTOStartDate instrumentName={instrumentName}/>
+            <main id="main-content" className="page__main u-mt-no">
+                <Formik
+                    validateOnBlur={false}
+                    validateOnChange={false}
+                    initialValues={initialValues}
+                    onSubmit={_handleSubmit}
+                >
+                    {({isSubmitting}) => (
+                        <Form id={"formID"}>
+                            <AskToSetTOStartDate instrumentName={instrumentName}/>
 
-                        <div className="btn-group u-mt-m">
-                            <ONSButton
-                                id={"continue-deploy-button"}
-                                submit={true}
-                                loading={isSubmitting}
-                                primary={true} label={"Continue"}/>
-                            {!isSubmitting && (
+                            <div className="btn-group u-mt-m">
                                 <ONSButton
-                                    id={"cancel-deploy-button"}
-                                    onClick={() => history.goBack()}
-                                    primary={false} label={"Cancel"}/>
-                            )}
-                        </div>
+                                    id={"continue-deploy-button"}
+                                    submit={true}
+                                    loading={isSubmitting}
+                                    primary={true} label={"Continue"}/>
+                                {!isSubmitting && (
+                                    <ONSButton
+                                        id={"cancel-deploy-button"}
+                                        onClick={() => history.goBack()}
+                                        primary={false} label={"Cancel"}/>
+                                )}
+                            </div>
 
-                    </Form>
-                )}
-            </Formik>
+                        </Form>
+                    )}
+                </Formik>
+            </main>
         </>
     );
 }

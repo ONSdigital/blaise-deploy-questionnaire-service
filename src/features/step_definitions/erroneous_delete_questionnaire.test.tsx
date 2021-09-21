@@ -3,14 +3,15 @@ import React from "react";
 // Test modules
 import {defineFeature, loadFeature} from "jest-cucumber";
 import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 // Mock elements
 import {mock_fetch_requests} from "./functions";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
 import App from "../../App";
-import flushPromises from "../../tests/utils";
 import {instrumentList} from "./API_Mock_Objects";
+import flushPromises from "../../tests/utils";
 
 
 // Load in feature details from .feature file
@@ -41,7 +42,7 @@ const mock_server_responses = (url: string) => {
             status: 204,
             json: () => Promise.resolve({}),
         });
-    }  else if (url.includes("OPN2004A")) {
+    } else if (url.includes("OPN2004A")) {
         // DELETE request
         return Promise.resolve({
             status: 420,
@@ -86,7 +87,7 @@ defineFeature(feature, test => {
         });
 
         when("I select a link to delete that questionnaire", async () => {
-            await fireEvent.click(screen.getByTestId("delete-OPN2004A"));
+            userEvent.click(screen.getByTestId("delete-OPN2004A"));
         });
 
         then("I am presented with a warning banner that I cannot delete the questionnaire and a service desk must be raised", () => {
@@ -119,11 +120,11 @@ defineFeature(feature, test => {
             await act(async () => {
                 await flushPromises();
             });
-            await fireEvent.click(screen.getByTestId("delete-OPN2101A"));
+            userEvent.click(screen.getByTestId("delete-OPN2101A"));
         });
 
         when("I confirm that I want to proceed", async () => {
-            await fireEvent.click(screen.getByTestId(/confirm-delete/i));
+            userEvent.click(screen.getByTestId(/confirm-delete/i));
         });
 
         and("it failed to delete and becomes erroneous", async () => {

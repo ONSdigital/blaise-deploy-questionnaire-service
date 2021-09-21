@@ -128,6 +128,23 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             });
     });
 
+    // Get list of case ids for installed instrument
+    router.get("/api/instruments/:instrumentName/cases/ids", function (req: ResponseQuery, res: Response) {
+        const {instrumentName} = req.params;
+        logger(req, res);
+        const blaiseApiClient = new BlaiseApiRest(`http://${BLAISE_API_URL}`);
+
+        blaiseApiClient.getInstrumentCaseIds(SERVER_PARK, instrumentName)
+            .then((response) => {
+                req.log.info({response}, `Successfully called get cases IDs for instrument ${instrumentName}`);
+                res.status(200).json(response);
+            })
+            .catch((error) => {
+                req.log.error(error, `Get cases IDs for instrument ${instrumentName}`);
+                res.status(500).json(null);
+            });
+    });
+
     return router;
 }
 

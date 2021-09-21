@@ -1,18 +1,19 @@
 import React, {ReactElement, useState} from "react";
-import {Link, Redirect, useLocation} from "react-router-dom";
+import {Redirect, useLocation} from "react-router-dom";
 import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 import {Instrument} from "../../../Interfaces";
 import ErroneousWarning from "./ErroneousWarning";
 import {removeToStartDateAndDeleteInstrument} from "../../utilities/processes";
+import Breadcrumbs from "../Breadcrumbs";
 
 interface Props {
-    getList: () => void
+    getList: () => void;
 }
 
 interface Location {
     state: {
         instrument: Instrument
-    }
+    };
 }
 
 function DeleteConfirmation({getList}: Props): ReactElement {
@@ -51,49 +52,53 @@ function DeleteConfirmation({getList}: Props): ReactElement {
                         state: {status: message}
                     }}/>
             }
-            <p>
-                <Link to={"/"}>Previous</Link>
-            </p>
+            <Breadcrumbs BreadcrumbList={
+                [
+                    {link: "/", title: "Home"},
+                ]
+            }/>
 
-            {
-                (
-                    instrument.status === "Failed" ?
-                        <ErroneousWarning instrumentName={instrument.name} setRedirect={setRedirect}/>
-                        :
-                        <>
-                            <h1>
-                                Are you sure you want to delete the questionnaire <em
-                                className="highlight">{instrument.name}</em>?
-                            </h1>
-                            <ONSPanel status={"warn"}>
-                                The questionnaire and all associated respondent data will be deleted
-                            </ONSPanel>
+            <main id="main-content" className="page__main u-mt-no">
+                {
+                    (
+                        instrument.status === "Failed" ?
+                            <ErroneousWarning instrumentName={instrument.name} setRedirect={setRedirect}/>
+                            :
+                            <>
+                                <h1 className="u-mb-l">
+                                    Are you sure you want to delete the questionnaire <em
+                                    className="highlight">{instrument.name}</em>?
+                                </h1>
+                                <ONSPanel status={"warn"}>
+                                    The questionnaire and all associated respondent data will be deleted
+                                </ONSPanel>
 
-                            <p>
-                                {message}
-                            </p>
+                                <p>
+                                    {message}
+                                </p>
 
-                            <form>
-                                <br/>
-                                <ONSButton
-                                    label={"Delete"}
-                                    primary={true}
-                                    loading={loading}
-                                    id="confirm-delete"
-                                    testid="confirm-delete"
-                                    onClick={() => confirmDelete()}/>
-                                {!loading &&
-                                <ONSButton
-                                    label={"Cancel"}
-                                    primary={false}
-                                    id="cancel-delete"
-                                    testid="cancel-delete"
-                                    onClick={() => cancelDelete()}/>
-                                }
-                            </form>
-                        </>
-                )
-            }
+                                <form>
+                                    <br/>
+                                    <ONSButton
+                                        label={"Delete"}
+                                        primary={true}
+                                        loading={loading}
+                                        id="confirm-delete"
+                                        testid="confirm-delete"
+                                        onClick={() => confirmDelete()}/>
+                                    {!loading &&
+                                    <ONSButton
+                                        label={"Cancel"}
+                                        primary={false}
+                                        id="cancel-delete"
+                                        testid="cancel-delete"
+                                        onClick={() => cancelDelete()}/>
+                                    }
+                                </form>
+                            </>
+                    )
+                }
+            </main>
         </>
     );
 }

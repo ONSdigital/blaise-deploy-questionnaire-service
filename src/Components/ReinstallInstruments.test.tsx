@@ -1,5 +1,5 @@
 import React from "react";
-import {render, waitFor, cleanup, screen, fireEvent} from "@testing-library/react";
+import {cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises, {mock_server_request_Return_JSON} from "../tests/utils";
 import {act} from "react-dom/test-utils";
@@ -33,7 +33,7 @@ describe("Reinstall instruments list", () => {
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList}  listLoading={false}/>
+                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false}/>
             </Router>
         );
 
@@ -97,7 +97,7 @@ describe("Reinstall an instruments", () => {
         console.log(url);
         if (url.includes("/bucket/files")) {
             return Promise.resolve({
-                status: 404,
+                status: 200,
                 json: () => Promise.resolve(bucketInstrument),
             });
         } else if (url.includes("/upload/verify")) {
@@ -125,7 +125,7 @@ describe("Reinstall an instruments", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList}  listLoading={false}/>
+                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false}/>
             </Router>
         );
 
@@ -172,8 +172,6 @@ describe("Reinstall an instruments", () => {
         cleanup();
     });
 });
-
-
 
 
 describe("Given the API returns a 500 status", () => {

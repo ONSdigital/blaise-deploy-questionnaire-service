@@ -5,6 +5,12 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
+      <a
+        class="skip__link"
+        href="#main-content"
+      >
+        Skip to content
+      </a>
       <div
         class="phase-banner"
       >
@@ -96,47 +102,76 @@ Object {
         </div>
       </header>
       <div
+        class="header__bottom"
+      >
+        <div
+          class="container container--gutterless@xxs@m"
+        >
+          <nav
+            aria-label="Main menu"
+            class="header-nav js-header-nav"
+            data-analytics="header-navigation"
+            id="main-nav"
+          >
+            <ul
+              class="header-nav__list"
+            >
+              <li
+                class="header-nav__item  header-nav__item--active"
+              >
+                <a
+                  class="header-nav__link"
+                  href="/"
+                  id="home-link"
+                >
+                  Home
+                </a>
+              </li>
+              <li
+                class="header-nav__item  "
+              >
+                <a
+                  class="header-nav__link"
+                  href="/upload"
+                  id="deploy-questionnaire-link"
+                >
+                  Deploy a questionnaire
+                </a>
+              </li>
+              <li
+                class="header-nav__item  "
+              >
+                <a
+                  class="header-nav__link"
+                  href="/audit"
+                  id="audit-logs-link"
+                >
+                  View deployment history
+                </a>
+              </li>
+              <li
+                class="header-nav__item  "
+              >
+                <a
+                  class="header-nav__link"
+                  href="/status"
+                  id="blaise-status-link"
+                >
+                  Check Blaise status
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div
         class="page__container container"
         style="min-height: calc(67vh);"
       >
         <main
-          class="page__main"
+          class="page__main u-mt-no"
           id="main-content"
         >
-          <ul
-            class="list list--bare list--inline u-mt-m"
-          >
-            <li
-              class="list__item"
-            >
-              <a
-                href="/upload"
-                id="deploy-questionnaire-link"
-              >
-                Deploy a questionnaire
-              </a>
-            </li>
-            <li
-              class="list__item"
-            >
-              <a
-                href="/audit"
-                id="audit-logs-link"
-              >
-                View deployment history
-              </a>
-            </li>
-            <li
-              class="list__item"
-            >
-              <a
-                href="/status"
-                id="blaise-status-link"
-              >
-                Check Blaise status
-              </a>
-            </li>
-          </ul>
           <div
             class="panel panel--info panel--no-title  u-mt-m"
           >
@@ -426,6 +461,12 @@ Object {
     </div>
   </body>,
   "container": <div>
+    <a
+      class="skip__link"
+      href="#main-content"
+    >
+      Skip to content
+    </a>
     <div
       class="phase-banner"
     >
@@ -517,47 +558,76 @@ Object {
       </div>
     </header>
     <div
+      class="header__bottom"
+    >
+      <div
+        class="container container--gutterless@xxs@m"
+      >
+        <nav
+          aria-label="Main menu"
+          class="header-nav js-header-nav"
+          data-analytics="header-navigation"
+          id="main-nav"
+        >
+          <ul
+            class="header-nav__list"
+          >
+            <li
+              class="header-nav__item  header-nav__item--active"
+            >
+              <a
+                class="header-nav__link"
+                href="/"
+                id="home-link"
+              >
+                Home
+              </a>
+            </li>
+            <li
+              class="header-nav__item  "
+            >
+              <a
+                class="header-nav__link"
+                href="/upload"
+                id="deploy-questionnaire-link"
+              >
+                Deploy a questionnaire
+              </a>
+            </li>
+            <li
+              class="header-nav__item  "
+            >
+              <a
+                class="header-nav__link"
+                href="/audit"
+                id="audit-logs-link"
+              >
+                View deployment history
+              </a>
+            </li>
+            <li
+              class="header-nav__item  "
+            >
+              <a
+                class="header-nav__link"
+                href="/status"
+                id="blaise-status-link"
+              >
+                Check Blaise status
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div
       class="page__container container"
       style="min-height: calc(67vh);"
     >
       <main
-        class="page__main"
+        class="page__main u-mt-no"
         id="main-content"
       >
-        <ul
-          class="list list--bare list--inline u-mt-m"
-        >
-          <li
-            class="list__item"
-          >
-            <a
-              href="/upload"
-              id="deploy-questionnaire-link"
-            >
-              Deploy a questionnaire
-            </a>
-          </li>
-          <li
-            class="list__item"
-          >
-            <a
-              href="/audit"
-              id="audit-logs-link"
-            >
-              View deployment history
-            </a>
-          </li>
-          <li
-            class="list__item"
-          >
-            <a
-              href="/status"
-              id="blaise-status-link"
-            >
-              Check Blaise status
-            </a>
-          </li>
-        </ul>
         <div
           class="panel panel--info panel--no-title  u-mt-m"
         >

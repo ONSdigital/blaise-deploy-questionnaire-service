@@ -20,11 +20,6 @@ interface Node {
     nodeStatus: string;
 }
 
-interface Survey {
-    instruments: Instrument[];
-    survey: string;
-}
-
 interface AuditLog {
     id: string;
     timestamp: string;
@@ -32,4 +27,4 @@ interface AuditLog {
     severity: string;
 }
 
-export type {Instrument, Survey, AuditLog};
+export type {Instrument, AuditLog};

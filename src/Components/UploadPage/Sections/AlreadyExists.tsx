@@ -2,7 +2,7 @@ import React, {ReactElement} from "react";
 import {StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
 
 interface SelectFilePageProps {
-    instrumentName: string
+    instrumentName: string;
 }
 
 function AlreadyExists({instrumentName}: SelectFilePageProps): ReactElement {
@@ -29,7 +29,7 @@ function AlreadyExists({instrumentName}: SelectFilePageProps): ReactElement {
 
     return (
         <>
-            <h1 className="u-mt-s">
+            <h1 className="u-mb-l">
                 Questionnaire file <em className="highlight">{instrumentName}</em> already exists in the system.
                 <br/>
                 What action do you want to take?

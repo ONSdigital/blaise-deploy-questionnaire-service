@@ -1,10 +1,10 @@
 import {createMemoryHistory} from "history";
-import {act, fireEvent, render, screen} from "@testing-library/react";
+import {act, render, screen} from "@testing-library/react";
 import {Router} from "react-router";
 import App from "../../App";
 import flushPromises from "../../tests/utils";
 import React from "react";
-
+import userEvent from "@testing-library/user-event";
 
 
 export async function renderHomepage(): Promise<void> {
@@ -34,33 +34,27 @@ export default async function navigateToDeployPageAndSelectFile(): Promise<void>
         await flushPromises();
     });
 
-    await fireEvent.click(screen.getByText(/Deploy a questionnaire/i));
+    userEvent.click(screen.getByText(/Deploy a questionnaire/i));
 
-    const inputEl = screen.getByLabelText(/Select survey package/i);
+    const input = screen.getByLabelText(/Select survey package/i);
 
-    const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {
-        type: "bpkg"
-    });
+    const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {type: "application/zip"});
 
-    Object.defineProperty(inputEl, "files", {
-        value: [file]
-    });
-
-    fireEvent.change(inputEl);
+    userEvent.upload(input, file);
 }
 
 export async function navigatePastSettingTOStartDateAndStartDeployment(): Promise<void> {
     await act(async () => {
         await flushPromises();
     });
-    await fireEvent.click(screen.getByText(/No start date/i));
-    await fireEvent.click(screen.getByText(/Continue/));
+    userEvent.click(screen.getByText(/No start date/i));
+    userEvent.click(screen.getByText(/Continue/));
 
     await act(async () => {
         await flushPromises();
     });
 
-    await fireEvent.click(screen.getByText(/Deploy questionnaire/));
+    userEvent.click(screen.getByText(/Deploy questionnaire/));
 
     await act(async () => {
         await flushPromises();

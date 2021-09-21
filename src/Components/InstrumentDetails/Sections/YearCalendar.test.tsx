@@ -1,8 +1,9 @@
 import React from "react";
-import {cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {cleanup, render, screen, waitFor} from "@testing-library/react";
 import {act} from "react-dom/test-utils";
-import flushPromises from "../../tests/utils";
+import flushPromises from "../../../tests/utils";
 import YearCalendar from "./YearCalendar";
+import userEvent from "@testing-library/user-event";
 
 describe("Year calendar", () => {
     const surveyDays = [
@@ -33,14 +34,14 @@ describe("Year calendar", () => {
             await flushPromises();
         });
 
-        await fireEvent.click(screen.getByText("«"));
+        userEvent.click(screen.getByText("«"));
 
         await waitFor(() => {
             expect(screen.getByText(/1996/i)).toBeDefined();
         });
     });
 
-     it("should go forward a year when you press the forward button (»)", async () => {
+    it("should go forward a year when you press the forward button (»)", async () => {
         render(
             <YearCalendar surveyDays={surveyDays}/>
         );
@@ -49,7 +50,7 @@ describe("Year calendar", () => {
             await flushPromises();
         });
 
-        await fireEvent.click(screen.getByText("»"));
+        userEvent.click(screen.getByText("»"));
 
         await waitFor(() => {
             expect(screen.getByText(/1998/i)).toBeDefined();

@@ -12,10 +12,10 @@ describe("Function getAuditLogs(filename: string) ", () => {
         expect(instruments).toEqual(instruments);
     });
 
-    it("It should return true with an empty list if a 404 is returned from the server", async () => {
+    it("It should return false with an empty list if a 404 is returned from the server", async () => {
         mock_server_request_Return_JSON(404, []);
         const [success, instruments] = await getAuditLogs();
-        expect(success).toBeTruthy();
+        expect(success).toBeFalsy();
         expect(instruments).toEqual([]);
     });
 
