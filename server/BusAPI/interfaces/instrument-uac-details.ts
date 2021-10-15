@@ -12,7 +12,8 @@ interface Uac {
 interface UacChunks {
     uac1: string,
     uac2: string,
-    uac3: string
+    uac3: string,
+    uac4?: string
 }
 
-export type {InstrumentUacDetails};
+export type { InstrumentUacDetails };
