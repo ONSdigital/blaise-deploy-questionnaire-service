@@ -1,6 +1,6 @@
-import {generateUACCodes, getInstrumentCaseIds, getUACCodesByCaseID,} from "../http";
-import {Datas} from "react-csv-downloader/dist/esm/lib/csv";
-import {InstrumentUacDetails} from "../../../server/BusAPI/interfaces/instrument-uac-details";
+import { generateUACCodes, getInstrumentCaseIds, getUACCodesByCaseID, } from "../http";
+import { Datas } from "react-csv-downloader/dist/esm/lib/csv";
+import { InstrumentUacDetails } from "../../../server/BusAPI/interfaces/instrument-uac-details";
 
 function mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails): Datas {
     if (caseIDs.length === 0 || Object.keys(uacCodes).length === 0) {
@@ -13,12 +13,16 @@ function mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails): 
         if (foundCase === undefined) {
             return;
         }
-        array.push({
+        const uacInfo: { [key: string]: string | null | undefined } = {
             serial_number: caseID,
             UAC1: foundCase.uac_chunks.uac1,
             UAC2: foundCase.uac_chunks.uac2,
             UAC3: foundCase.uac_chunks.uac3
-        });
+        };
+        if (foundCase.uac_chunks.uac4) {
+            uacInfo.UAC4 = foundCase.uac_chunks.uac4;
+        }
+        array.push(uacInfo);
     });
 
     if (caseIDs.length !== array.length) {
@@ -47,4 +51,4 @@ async function generateUACCodesAndCSVFileData(instrumentName: string): Promise<D
     return mapCasesToUACCodes(caseIDs, uacCodes);
 }
 
-export {generateUACCodesAndCSVFileData, mapCasesToUACCodes};
+export { generateUACCodesAndCSVFileData, mapCasesToUACCodes };
