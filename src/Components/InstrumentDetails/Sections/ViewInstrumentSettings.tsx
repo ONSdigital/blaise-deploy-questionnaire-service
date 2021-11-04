@@ -10,9 +10,28 @@ interface Props {
 }
 
 const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
-    const [setting, setSetting] = useState<InstrumentSettings>();
     const [mode, setMode] = useState<string>();
+    const [setting, setSetting] = useState<InstrumentSettings>();
     const [errored, setErrored] = useState<boolean>(false);
+    const validMixedModeSettings =
+        {
+            "type": "StrictInterviewing",
+            "saveSessionOnTimeout": true,
+            "saveSessionOnQuit": true,
+            "deleteSessionOnTimeout": true,
+            "deleteSessionOnQuit": true,
+            "applyRecordLocking": true
+        };
+    const validCatiModeSettings = [
+        {
+            "type": "StrictInterviewing",
+            "saveSessionOnTimeout": true,
+            "saveSessionOnQuit": true,
+            "deleteSessionOnTimeout": "any",
+            "deleteSessionOnQuit": "any",
+            "applyRecordLocking": false
+        }
+    ];
 
     useEffect(() => {
         getInstrumentModes(instrument.name)
@@ -45,42 +64,24 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
             });
     }, []);
 
-    const validCatiModeSettings = [
-        {
-            "type": "StrictInterviewing",
-            "saveSessionOnTimeout": true,
-            "saveSessionOnQuit": true,
-            "deleteSessionOnTimeout": "any",
-            "deleteSessionOnQuit": "any",
-            "applyRecordLocking": false
-        }
-    ];
-
-    const validMixedModeSettings =
-        {
-            "type": "StrictInterviewing",
-            "saveSessionOnTimeout": true,
-            "saveSessionOnQuit": true,
-            "deleteSessionOnTimeout": true,
-            "deleteSessionOnQuit": true,
-            "applyRecordLocking": true
-        };
-
-    // function shallowEqual(expectedSetting: object, actualSetting: object) {
-    //     const expectedKeys = Object.keys(expectedSetting);
-    //     const actualKeys = Object.keys(actualSetting);
-    //
-    //     if (expectedKeys.length !== actualKeys.length) {
-    //         return false;
-    //     }
-    //     for (let key of expectedKeys) {
-    //         if (expectedSetting[key] !== actualSetting[key]) {
-    //             return false;
-    //         }
-    //     }
-    // };
-
+    // TODO: Help
     useEffect(() => {
+        if (mode == "Mixed") {
+            if (setting === null) {
+                console.log("Setting was null");
+                return;
+            }
+
+            // TODO: Check 'em
+            if (setting !== validMixedModeSettings) {
+                console.log("computer says no");
+            }
+
+            // TODO: Shallow check 'em and return issues or something...?
+            const whateverTheOutputIs = shallowEqual(validMixedModeSettings, setting);
+
+
+        }
         if (mode === "CATI") {
             // Rules for CATI ONLY questionnaires:
             //
@@ -90,37 +91,8 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
             // deleteSessionOnQuit: any
             // applyRecordLocking: any
         }
-        if (mode == "Mixed") {
-            if (setting === null) {
-                console.log("Setting was null");
-                return;
-            }
 
-            console.log(setting);
-            console.log(validMixedModeSettings);
-            if (setting !== validMixedModeSettings) {
-                console.log("computer says no");
-            }
-            // Rules for Mixed mode questionnaires:
-            //
-            // saveSessionOnTimeout: true
-            // saveSessionOnQuit: true
-            // deleteSessionOnTimeout: true
-            // deleteSessionOnQuit: true
-            // applyRecordLocking: true
-        }
     }, [setting]);
-
-    if (errored) {
-        return (
-            <>
-                <ONSPanel status={"error"}>
-                    <p>Failed to get questionnaire settings</p>
-                </ONSPanel>
-            </>
-
-        );
-    }
 
     function convertJsonToTable(object: any) {
         const elementList: ReactElement[] = [];
@@ -146,6 +118,32 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
         }));
     }
 
+    // TODO: Grrr
+    function shallowEqual(expectedSetting: object, actualSetting: object) {
+        const expectedKeys = Object.keys(expectedSetting);
+        const actualKeys = Object.keys(actualSetting);
+
+        if (expectedKeys.length !== actualKeys.length) {
+            return false;
+        }
+        for (let key of expectedKeys) {
+            if (expectedSetting[key] !== actualSetting[key]) {
+                return false;
+            }
+        }
+    };
+
+    if (errored) {
+        return (
+            <>
+                <ONSPanel status={"error"}>
+                    <p>Failed to get questionnaire settings</p>
+                </ONSPanel>
+            </>
+
+        );
+    }
+
     if (setting) {
         return (
             <div className="summary">
@@ -160,7 +158,6 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
             </div>
         );
     }
-
 
     return (
         <div>
