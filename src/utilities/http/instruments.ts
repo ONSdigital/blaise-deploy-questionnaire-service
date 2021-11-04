@@ -1,5 +1,6 @@
 import {requestPromiseJson, requestPromiseJsonList} from "./requestPromise";
 import {Instrument} from "../../../Interfaces";
+import {InstrumentSettings} from "blaise-api-node-client";
 
 type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];
@@ -87,6 +88,40 @@ function doesInstrumentHaveCAWIMode(instrumentName: string): Promise<boolean | n
     });
 }
 
+function getInstrumentModes(instrumentName: string): Promise<string[] | null> {
+    console.log("Sending request get instrument modes");
+    const url = `/api/instruments/${instrumentName}/modes`;
+
+    return requestPromiseJson("GET", url).then(([status, data]): string[] | null => {
+        console.log(`Response from get instrument modes: Status ${status}, data ${data}`);
+        if (status === 200) {
+            return data;
+        } else {
+            return null;
+        }
+    }).catch((error: Error) => {
+        console.error(`Failed to get instrument modes, Error ${error}`);
+        return null;
+    });
+}
+
+function getInstrumentSettings(instrumentName: string): Promise<InstrumentSettings[] | null> {
+    console.log("Sending request get instrument settings");
+    const url = `/api/instruments/${instrumentName}/settings`;
+
+    return requestPromiseJson("GET", url).then(([status, data]): InstrumentSettings[] | null => {
+        console.log(`Response from get instrument settings: Status ${status}, data ${data}`);
+        if (status === 200) {
+            return data;
+        } else {
+            return null;
+        }
+    }).catch((error: Error) => {
+        console.error(`Failed to get instrument settings, Error ${error}`);
+        return null;
+    });
+}
+
 function getInstrumentCaseIds(instrumentName: string): Promise<getInstrumentCaseIDsResponse> {
     console.log("Call to getAllInstruments");
     const url = `/api/instruments/${instrumentName}/cases/ids`;
@@ -102,5 +137,7 @@ export {
     deleteInstrument,
     sendInstallRequest,
     doesInstrumentHaveCAWIMode,
+    getInstrumentModes,
+    getInstrumentSettings,
     getInstrumentCaseIds
 };
