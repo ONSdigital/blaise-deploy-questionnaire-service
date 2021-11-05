@@ -4,6 +4,7 @@ import {Instrument} from "../../../../Interfaces";
 import {ONSPanel} from "blaise-design-system-react-components";
 import {InstrumentSettings} from "blaise-api-node-client";
 import {formatText} from "../../../utilities/TextFormatting/TextFormatting";
+import { transform, isEqual, isObject } from "lodash";
 
 interface Props {
     instrument: Instrument;
@@ -13,25 +14,23 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
     const [mode, setMode] = useState<string>();
     const [setting, setSetting] = useState<InstrumentSettings>();
     const [errored, setErrored] = useState<boolean>(false);
-    const validMixedModeSettings =
-        {
+    const validMixedModeSettings = {
             "type": "StrictInterviewing",
             "saveSessionOnTimeout": true,
             "saveSessionOnQuit": true,
             "deleteSessionOnTimeout": true,
             "deleteSessionOnQuit": true,
-            "applyRecordLocking": true
+            "applyRecordLocking": true,
+            "sessionTimeout": 15
         };
-    const validCatiModeSettings = [
-        {
+    const validCatiModeSettings = {
             "type": "StrictInterviewing",
             "saveSessionOnTimeout": true,
             "saveSessionOnQuit": true,
             "deleteSessionOnTimeout": "any",
             "deleteSessionOnQuit": "any",
             "applyRecordLocking": false
-        }
-    ];
+    };
 
     useEffect(() => {
         getInstrumentModes(instrument.name)
@@ -56,11 +55,12 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
                     setErrored(true);
                     return;
                 }
-                console.log(data);
+                console.log("data: " + data);
                 const setting = data.find(x => x.type === "StrictInterviewing");
                 if (setting !== undefined) {
                     setSetting(setting);
                 }
+                console.log("setting: " + setting);
             });
     }, []);
 
@@ -71,28 +71,51 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
                 console.log("Setting was null");
                 return;
             }
+            // // TODO: Check 'em
+            // if (setting !== validMixedModeSettings) {
+            //     console.log(setting);
+            //     console.log(validMixedModeSettings);
+            // }
 
-            // TODO: Check 'em
-            if (setting !== validMixedModeSettings) {
-                console.log("computer says no");
-            }
-
-            // TODO: Shallow check 'em and return issues or something...?
-            const whateverTheOutputIs = shallowEqual(validMixedModeSettings, setting);
-
+            // TODO: Shallow check 'em and highlight invalid fields accordingly
+            const invalidSettings = difference(validMixedModeSettings, setting);
+            console.log("validMixedModeSettings: ", validMixedModeSettings);
+            console.log("setting: ", setting);
+            console.log("output: ", invalidSettings);
 
         }
         if (mode === "CATI") {
-            // Rules for CATI ONLY questionnaires:
-            //
-            // saveSessionOnTimeout: true
-            // saveSessionOnQuit: true
-            // deleteSessionOnTimeout: any
-            // deleteSessionOnQuit: any
-            // applyRecordLocking: any
+            console.log("do the same above but for CATI");
         }
 
     }, [setting]);
+
+    function difference(object: any, base: any) {
+        return transform(object, (result, value, key) => {
+            if (!isEqual(value, base[key])) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                result[key] = isObject(value) && isObject(base[key]) ? difference(value, base[key]) : value;
+            }
+        });
+    }
+
+    function shallowEqual(expectedSetting: any, actualSetting: any) {
+        const expectedKeys = Object.keys(expectedSetting);
+        const actualKeys = Object.keys(actualSetting);
+
+        if (expectedKeys.length !== actualKeys.length) {
+            console.log("expectedKeys.length: " + expectedKeys.length + ". actualKeys.length: " + actualKeys.length);
+            return false;
+        }
+        // for (const key of expectedKeys) {
+        //     if (expectedSetting[key] !== actualSetting[key]) {
+        //         console.log("expectedSetting[key]:", key);
+        //         // console.log("actualSetting[key]:", actualSetting[key]);
+        //         return false;
+        //     }
+        // }
+    }
 
     function convertJsonToTable(object: any) {
         const elementList: ReactElement[] = [];
@@ -117,21 +140,6 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
             return element;
         }));
     }
-
-    // TODO: Grrr
-    function shallowEqual(expectedSetting: object, actualSetting: object) {
-        const expectedKeys = Object.keys(expectedSetting);
-        const actualKeys = Object.keys(actualSetting);
-
-        if (expectedKeys.length !== actualKeys.length) {
-            return false;
-        }
-        for (let key of expectedKeys) {
-            if (expectedSetting[key] !== actualSetting[key]) {
-                return false;
-            }
-        }
-    };
 
     if (errored) {
         return (
