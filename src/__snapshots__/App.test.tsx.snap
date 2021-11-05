@@ -208,6 +208,21 @@ Object {
             class="elementToFadeIn"
           >
             <div
+              class="field"
+            >
+              <label
+                class="label"
+                for="filter-by-name"
+              >
+                Filter by questionnaire name
+              </label>
+              <input
+                class="input input--text input-type__input"
+                id="filter-by-name"
+                type="text"
+              />
+            </div>
+            <div
               class="u-mt-s"
             >
               <h3
@@ -663,6 +678,21 @@ Object {
         <div
           class="elementToFadeIn"
         >
+          <div
+            class="field"
+          >
+            <label
+              class="label"
+              for="filter-by-name"
+            >
+              Filter by questionnaire name
+            </label>
+            <input
+              class="input input--text input-type__input"
+              id="filter-by-name"
+              type="text"
+            />
+          </div>
           <div
             class="u-mt-s"
           >
