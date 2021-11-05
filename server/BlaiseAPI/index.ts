@@ -145,12 +145,6 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             });
     });
 
-
-
-    // Get list of modes for instrument
-    // GET /api/v1/serverparks/{serverParkName}/instruments/{instrumentName}/modes
-    // GET /api/v1/serverparks/{serverParkName}/instruments/{instrumentName}/settings
-
     router.get("/api/instruments/:instrumentName/modes", function (req: ResponseQuery, res: Response) {
         const {instrumentName} = req.params;
         logger(req, res);

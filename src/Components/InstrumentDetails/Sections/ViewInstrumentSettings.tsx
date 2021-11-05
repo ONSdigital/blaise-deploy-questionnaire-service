@@ -4,32 +4,34 @@ import {Instrument} from "../../../../Interfaces";
 import {ONSPanel} from "blaise-design-system-react-components";
 import {InstrumentSettings} from "blaise-api-node-client";
 import {formatText} from "../../../utilities/TextFormatting/TextFormatting";
-import { transform, isEqual, isObject } from "lodash";
+import {transform, isEqual, isObject} from "lodash";
 
 interface Props {
     instrument: Instrument;
 }
 
 const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
+    // TODO: refactor types in difference() so that I can assign invalidSettings as a global useState
+    // TODO: highlight bad settings
+    // TODO: tests!
+    // TODO: tidy console.log()s
+
     const [mode, setMode] = useState<string>();
     const [setting, setSetting] = useState<InstrumentSettings>();
     const [errored, setErrored] = useState<boolean>(false);
+    // const [invalidSettings, setInvalidSettings] = useState<string[]>();
     const validMixedModeSettings = {
-            "type": "StrictInterviewing",
-            "saveSessionOnTimeout": true,
-            "saveSessionOnQuit": true,
-            "deleteSessionOnTimeout": true,
-            "deleteSessionOnQuit": true,
-            "applyRecordLocking": true,
-            "sessionTimeout": 15
-        };
+        "type": "StrictInterviewing",
+        "saveSessionOnTimeout": true,
+        "saveSessionOnQuit": true,
+        "deleteSessionOnTimeout": true,
+        "deleteSessionOnQuit": true,
+        "applyRecordLocking": true,
+    };
     const validCatiModeSettings = {
-            "type": "StrictInterviewing",
-            "saveSessionOnTimeout": true,
-            "saveSessionOnQuit": true,
-            "deleteSessionOnTimeout": "any",
-            "deleteSessionOnQuit": "any",
-            "applyRecordLocking": false
+        "type": "StrictInterviewing",
+        "saveSessionOnTimeout": true,
+        "saveSessionOnQuit": true,
     };
 
     useEffect(() => {
@@ -55,42 +57,45 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
                     setErrored(true);
                     return;
                 }
-                console.log("data: " + data);
+                console.log("data: ", data);
                 const setting = data.find(x => x.type === "StrictInterviewing");
                 if (setting !== undefined) {
                     setSetting(setting);
                 }
-                console.log("setting: " + setting);
             });
     }, []);
 
-    // TODO: Help
     useEffect(() => {
-        if (mode == "Mixed") {
+        if (mode === "Mixed") {
             if (setting === null) {
-                console.log("Setting was null");
+                setErrored(true);
                 return;
             }
-            // // TODO: Check 'em
-            // if (setting !== validMixedModeSettings) {
-            //     console.log(setting);
-            //     console.log(validMixedModeSettings);
-            // }
 
-            // TODO: Shallow check 'em and highlight invalid fields accordingly
             const invalidSettings = difference(validMixedModeSettings, setting);
             console.log("validMixedModeSettings: ", validMixedModeSettings);
-            console.log("setting: ", setting);
-            console.log("output: ", invalidSettings);
+            console.log("actualMixedModeSettings: ", setting);
+            console.log("invalidMixedModeSettings: ", invalidSettings);
 
         }
         if (mode === "CATI") {
-            console.log("do the same above but for CATI");
+            if (setting === null) {
+                setErrored(true);
+                return;
+            }
+
+            const invalidSettings = difference(validCatiModeSettings, setting);
+            console.log("validCatiModeSettings: ", validCatiModeSettings);
+            console.log("actualCatiModeSettings: ", setting);
+            console.log("invalidCatiModeSettings: ", invalidSettings);
         }
 
     }, [setting]);
 
     function difference(object: any, base: any) {
+        if (mode === "CATI") {
+            ["deleteSessionOnTimeout", "deleteSessionOnQuit", "applyRecordLocking"].forEach(item => delete base[item]);
+        }
         return transform(object, (result, value, key) => {
             if (!isEqual(value, base[key])) {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -98,23 +103,6 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
                 result[key] = isObject(value) && isObject(base[key]) ? difference(value, base[key]) : value;
             }
         });
-    }
-
-    function shallowEqual(expectedSetting: any, actualSetting: any) {
-        const expectedKeys = Object.keys(expectedSetting);
-        const actualKeys = Object.keys(actualSetting);
-
-        if (expectedKeys.length !== actualKeys.length) {
-            console.log("expectedKeys.length: " + expectedKeys.length + ". actualKeys.length: " + actualKeys.length);
-            return false;
-        }
-        // for (const key of expectedKeys) {
-        //     if (expectedSetting[key] !== actualSetting[key]) {
-        //         console.log("expectedSetting[key]:", key);
-        //         // console.log("actualSetting[key]:", actualSetting[key]);
-        //         return false;
-        //     }
-        // }
     }
 
     function convertJsonToTable(object: any) {

@@ -220,15 +220,15 @@ describe("Function getInstrumentModes(instrumentName: string)", () => {
         expect(success).toEqual(null);
     });
 
-    // it("It should return null object if request call fails", async () => {
-    //     mock_server_request_function(() =>
-    //         Promise.resolve(() => {
-    //             throw "error";
-    //         })
-    //     );
-    //     const success = await getInstrumentModes("OPN2004A");
-    //     expect(success).toEqual(null);
-    // });
+    it("It should return null object if request call fails", async () => {
+        mock_server_request_function(() =>
+            Promise.resolve(() => {
+                throw "error";
+            })
+        );
+        const success = await getInstrumentModes("OPN2004A");
+        expect(success).toEqual(null);
+    });
 
     afterAll(() => {
         jest.clearAllMocks();
