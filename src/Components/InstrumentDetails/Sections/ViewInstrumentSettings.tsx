@@ -56,7 +56,7 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
                     setErrored(true);
                     return;
                 }
-                console.log(`returned instrument settings: ${data}`);
+                console.log("returned instrument settings: ", data);
                 const setting = data.find(x => x.type === "StrictInterviewing");
                 if (setting !== undefined) {
                     setSetting(setting);
@@ -67,16 +67,16 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
     useEffect(() => {
         if (mode === "Mixed") {
             setInvalidSettings(difference(validMixedModeSettings, setting));
-            console.log(`expected settings: ${validMixedModeSettings}`);
-            console.log(`actual settings: ${setting}`);
-            console.log(`diff: ${invalidSettings}`);
+            console.log("expected settings: ", validMixedModeSettings);
+            console.log("actual settings: ", setting);
+            console.log("diff: ", invalidSettings);
 
         }
         if (mode === "CATI") {
             setInvalidSettings(difference(validCatiModeSettings, setting));
-            console.log(`expected settings: ${validCatiModeSettings}`);
-            console.log(`actual settings: ${setting}`);
-            console.log(`diff: ${invalidSettings}`);
+            console.log("expected settings: ", validCatiModeSettings);
+            console.log("actual settings: ", setting);
+            console.log("diff: ", invalidSettings);
         }
 
     }, [setting]);
