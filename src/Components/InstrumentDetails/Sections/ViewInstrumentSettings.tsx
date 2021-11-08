@@ -1,7 +1,7 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import {getInstrumentModes, getInstrumentSettings} from "../../../utilities/http";
 import {Instrument} from "../../../../Interfaces";
-import {ONSPanel} from "blaise-design-system-react-components";
+import {ONSPanel, ONSLoadingPanel} from "blaise-design-system-react-components";
 import {InstrumentSettings} from "blaise-api-node-client";
 import {formatText} from "../../../utilities/TextFormatting/TextFormatting";
 import {transform, isEqual, isObject} from "lodash";
@@ -10,16 +10,11 @@ interface Props {
     instrument: Instrument;
 }
 
-const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
-    // TODO: refactor types in difference() so that I can assign invalidSettings as a global useState
-    // TODO: highlight bad settings
-    // TODO: tests!
-    // TODO: tidy console.log()s
-
+function ViewInstrumentSettings({instrument}: Props): ReactElement {
     const [mode, setMode] = useState<string>();
     const [setting, setSetting] = useState<InstrumentSettings>();
     const [errored, setErrored] = useState<boolean>(false);
-    // const [invalidSettings, setInvalidSettings] = useState<string[]>();
+    const [invalidSettings, setInvalidSettings] = useState<InstrumentSettings>();
     const validMixedModeSettings = {
         "type": "StrictInterviewing",
         "saveSessionOnTimeout": true,
@@ -28,6 +23,7 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
         "deleteSessionOnQuit": true,
         "applyRecordLocking": true,
     };
+
     const validCatiModeSettings = {
         "type": "StrictInterviewing",
         "saveSessionOnTimeout": true,
@@ -37,27 +33,30 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
     useEffect(() => {
         getInstrumentModes(instrument.name)
             .then((data) => {
-                console.log(data);
-                if (data === null) {
+                if (data === null || data.length === 0) {
+                    console.error("returned instrument mode was null/empty");
                     setErrored(true);
                     return;
                 }
+                console.log(`returned instrument mode: ${data}`);
                 if (data.includes("CATI")) {
+                    console.log("setting mode to 'CATI'");
                     setMode("CATI");
                 }
                 if (data.length > 1) {
+                    console.log("setting mode to 'Mixed'");
                     setMode("Mixed");
                 }
-                console.log(mode);
             });
 
         getInstrumentSettings(instrument.name)
             .then((data) => {
-                if (data === null) {
+                if (data === null || data.length === 0) {
+                    console.error("returned instrument settings were null/empty");
                     setErrored(true);
                     return;
                 }
-                console.log("data: ", data);
+                console.log(`returned instrument settings: ${data}`);
                 const setting = data.find(x => x.type === "StrictInterviewing");
                 if (setting !== undefined) {
                     setSetting(setting);
@@ -67,39 +66,29 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
 
     useEffect(() => {
         if (mode === "Mixed") {
-            if (setting === null) {
-                setErrored(true);
-                return;
-            }
-
-            const invalidSettings = difference(validMixedModeSettings, setting);
-            console.log("validMixedModeSettings: ", validMixedModeSettings);
-            console.log("actualMixedModeSettings: ", setting);
-            console.log("invalidMixedModeSettings: ", invalidSettings);
+            setInvalidSettings(difference(validMixedModeSettings, setting));
+            console.log(`expected settings: ${validMixedModeSettings}`);
+            console.log(`actual settings: ${setting}`);
+            console.log(`diff: ${invalidSettings}`);
 
         }
         if (mode === "CATI") {
-            if (setting === null) {
-                setErrored(true);
-                return;
-            }
-
-            const invalidSettings = difference(validCatiModeSettings, setting);
-            console.log("validCatiModeSettings: ", validCatiModeSettings);
-            console.log("actualCatiModeSettings: ", setting);
-            console.log("invalidCatiModeSettings: ", invalidSettings);
+            setInvalidSettings(difference(validCatiModeSettings, setting));
+            console.log(`expected settings: ${validCatiModeSettings}`);
+            console.log(`actual settings: ${setting}`);
+            console.log(`diff: ${invalidSettings}`);
         }
 
     }, [setting]);
 
-    function difference(object: any, base: any) {
+    function difference(object: any, base: any): any {
         if (mode === "CATI") {
-            ["deleteSessionOnTimeout", "deleteSessionOnQuit", "applyRecordLocking"].forEach(item => delete base[item]);
+            const irrelevantSettings = ["deleteSessionOnTimeout", "deleteSessionOnQuit", "applyRecordLocking"];
+            console.log(`removing ${irrelevantSettings} from comparison`);
+            irrelevantSettings.forEach(item => delete base[item]);
         }
         return transform(object, (result, value, key) => {
             if (!isEqual(value, base[key])) {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 result[key] = isObject(value) && isObject(base[key]) ? difference(value, base[key]) : value;
             }
         });
@@ -107,10 +96,27 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
 
     function convertJsonToTable(object: any) {
         const elementList: ReactElement[] = [];
-        const entries: [string, (string | null | number)][] = Object.entries(object);
+        const entries: [string, (string | null | number | boolean)][] = Object.entries(object);
+
         for (const [field, data] of entries) {
+            let invalid = false;
+            let fieldCorrectValue;
+            if (invalidSettings !== undefined) {
+                invalid = Object.prototype.hasOwnProperty.call(invalidSettings, field);
+                fieldCorrectValue = Object.getOwnPropertyDescriptor(invalidSettings, field)?.value;
+            }
+
             elementList.push(
-                <tbody className="summary__item" key={field}>
+                <tbody className={`summary__item ${invalid ? "summary__item--error" : ""}`} key={field}>
+                {
+                    invalid &&
+                    <tr className="summary__row">
+                        <th colSpan={3} className="summary__row-title u-fs-r">
+                            {formatText(field)} should
+                            be {(typeof fieldCorrectValue === "boolean") ? (fieldCorrectValue ? "True" : "False") : fieldCorrectValue}
+                        </th>
+                    </tr>
+                }
                 <tr className="summary__row summary__row--has-values">
                     <td className="summary__item-title">
                         <div className="summary__item--text">
@@ -156,10 +162,8 @@ const ViewInstrumentSettings = ({instrument}: Props): ReactElement => {
     }
 
     return (
-        <div>
-            <p>Loading...</p>
-        </div>
+        <ONSLoadingPanel message={"Getting questionnaire settings"}/>
     );
-};
+}
 
 export default ViewInstrumentSettings;
