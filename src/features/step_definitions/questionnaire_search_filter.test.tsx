@@ -32,8 +32,6 @@ defineFeature(feature, test => {
     test("Search for a questionnaire", ({given, when, then}) => {
         given("I have launched the DQS", async () => {
             const history = createMemoryHistory();
-            // Add /?filter to url for feature toggle
-            history.push("/?filter");
             render(
                 <Router history={history}>
                     <App/>
@@ -67,8 +65,6 @@ defineFeature(feature, test => {
     test("Questionnaire not found", ({given, when, then}) => {
         given("I have entered a questionnaire name and asked to search", async () => {
             const history = createMemoryHistory();
-            // Add /?filter to url for feature toggle
-            history.push("/?filter");
             render(
                 <Router history={history}>
                     <App/>
