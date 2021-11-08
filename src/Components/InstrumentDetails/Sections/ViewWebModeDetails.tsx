@@ -86,7 +86,7 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
 
     if (cawiMode) {
         return (
-            <div className="summary u-mb-m elementToFadeIn">
+            <div className="summary u-mb-m elementToFadeIn u-mt-m">
                 <div className="summary__group">
                     <h2 className="summary__group-title">Web mode details</h2>
                     <table className="summary__items">
@@ -140,7 +140,7 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
 
     return (
         <>
-            <div className="summary u-mb-m elementToFadeIn">
+            <div className="summary u-mb-m elementToFadeIn u-mt-m">
                 <div className="summary__group">
                     <h2 className="summary__group-title">Web mode details</h2>
                     <table className="summary__items">
