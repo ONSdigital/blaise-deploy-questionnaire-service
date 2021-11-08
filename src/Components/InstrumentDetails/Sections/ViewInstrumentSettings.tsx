@@ -43,7 +43,7 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
                     console.log("setting mode to 'CATI'");
                     setMode("CATI");
                 }
-                if (data.length > 1) {
+                else if (data.length > 1) {
                     console.log("setting mode to 'Mixed'");
                     setMode("Mixed");
                 }
