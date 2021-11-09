@@ -42,8 +42,7 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
                 if (data === ["CATI"]) {
                     console.log("setting mode to 'CATI'");
                     setMode("CATI");
-                }
-                else if (data.length > 1) {
+                } else if (data.length > 1) {
                     console.log("setting mode to 'Mixed'");
                     setMode("Mixed");
                 }
@@ -65,6 +64,9 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
     }, []);
 
     useEffect(() => {
+        if (setting === undefined) {
+            return;
+        }
         if (mode === "Mixed") {
             setInvalidSettings(difference(validMixedModeSettings, setting));
             console.log("expected settings: ", validMixedModeSettings);
@@ -79,7 +81,7 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
             console.log("diff: ", invalidSettings);
         }
 
-    }, [setting]);
+    }, [setting, mode]);
 
     function difference(object: any, base: any): any {
         if (mode === "CATI") {
@@ -94,45 +96,60 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
         });
     }
 
-    function convertJsonToTable(object: any) {
-        const elementList: ReactElement[] = [];
-        const entries: [string, (string | null | number | boolean)][] = Object.entries(object);
+    interface ConvertJsonToTableProps {
+        instrumentSettings: InstrumentSettings
+    }
+    function ConvertJsonToTable({instrumentSettings}: ConvertJsonToTableProps): ReactElement {
+        const [settingsObjects, setSettingsObjects] = useState<ReactElement[]>([]);
 
-        for (const [field, data] of entries) {
-            let invalid = false;
-            let fieldCorrectValue;
-            if (invalidSettings !== undefined) {
-                invalid = Object.prototype.hasOwnProperty.call(invalidSettings, field);
-                fieldCorrectValue = Object.getOwnPropertyDescriptor(invalidSettings, field)?.value;
-            }
-
-            elementList.push(
-                <tbody className={`summary__item ${invalid ? "summary__item--error" : ""}`} key={field}>
-                {
-                    invalid &&
-                    <tr className="summary__row">
-                        <th colSpan={3} className="summary__row-title u-fs-r">
-                            {formatText(field)} should
-                            be {(typeof fieldCorrectValue === "boolean") ? (fieldCorrectValue ? "True" : "False") : fieldCorrectValue}
-                        </th>
-                    </tr>
+        useEffect(() => {
+            const entries: [string, (string | null | number | boolean)][] = Object.entries(instrumentSettings);
+            const newElements: ReactElement[] = [];
+            for (const [field, data] of entries) {
+                let invalid = false;
+                let fieldCorrectValue;
+                if (invalidSettings !== undefined) {
+                    invalid = Object.prototype.hasOwnProperty.call(invalidSettings, field);
+                    fieldCorrectValue = Object.getOwnPropertyDescriptor(invalidSettings, field)?.value;
                 }
-                <tr className="summary__row summary__row--has-values">
-                    <td className="summary__item-title">
-                        <div className="summary__item--text">
-                            {formatText(field)}
-                        </div>
-                    </td>
-                    <td className="summary__values" colSpan={2}>
-                        {(typeof data === "boolean") ? (data ? "True" : "False") : data}
-                    </td>
-                </tr>
-                </tbody>
-            );
-        }
-        return elementList.map((element => {
-            return element;
-        }));
+
+                newElements.push(
+                    <tbody className={`summary__item ${invalid ? "summary__item--error" : ""}`} key={field}>
+                    {
+                        invalid &&
+                        <tr className="summary__row">
+                            <th colSpan={3} className="summary__row-title u-fs-r">
+                                {formatText(field)} should
+                                be {(typeof fieldCorrectValue === "boolean") ? (fieldCorrectValue ? "True" : "False") : fieldCorrectValue}
+                            </th>
+                        </tr>
+                    }
+                    <tr className="summary__row summary__row--has-values">
+                        <td className="summary__item-title">
+                            <div className="summary__item--text">
+                                {formatText(field)}
+                            </div>
+                        </td>
+                        <td className="summary__values" colSpan={2}>
+                            {(typeof data === "boolean") ? (data ? "True" : "False") : data}
+                        </td>
+                    </tr>
+                    </tbody>
+                );
+                setSettingsObjects(newElements);
+
+            }
+        }, [instrumentSettings, invalidSettings]);
+
+        return (
+            <>
+                {
+                    settingsObjects.map((element => {
+                        return element;
+                    }))
+                }
+            </>
+        );
     }
 
     if (errored) {
@@ -152,9 +169,7 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
                 <div className="summary__group">
                     <h2>Questionnaire settings</h2>
                     <table id="report-table" className="summary__items u-mt-s">
-                        {
-                            convertJsonToTable(setting)
-                        }
+                        <ConvertJsonToTable instrumentSettings={setting}/>
                     </table>
                 </div>
             </div>
