@@ -4,13 +4,13 @@ import {filter} from "lodash";
 import {Instrument} from "../../Interfaces";
 import ONSTable, {TableColumns} from "./ONSTable";
 import dateFormatter from "dayjs";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 import InstrumentStatus from "./InstrumentStatus";
 
 interface Props {
-    instrumentList: Instrument[]
-    loading: boolean
-    listMessage: string
+    instrumentList: Instrument[];
+    loading: boolean;
+    listMessage: string;
 }
 
 function instrumentTableRow(item: Instrument) {
@@ -67,10 +67,6 @@ export const InstrumentList = (props: Props): ReactElement => {
     const [filterValue, setFilterValue] = useState<string>("");
     const [filteredList, setFilteredList] = useState<Instrument[]>([]);
 
-    // Add /?filter to url for feature toggle of filter field
-    const showFilter = new URLSearchParams(useLocation().search).has("filter");
-
-
     const filterList = () => {
         // Filter by the search field
         const newFilteredList = filter(instrumentList, (listItem) => listItem.name.includes(filterValue.toUpperCase()));
@@ -119,16 +115,12 @@ export const InstrumentList = (props: Props): ReactElement => {
         return (
             <>
                 <div className={"elementToFadeIn"}>
-                    {
-                        showFilter &&
-                        <div className="field">
-                            <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
-                            </label>
-                            <input type="text" id="filter-by-name" className="input input--text input-type__input"
-                                   onChange={(e) => setFilterValue(e.target.value)}/>
-                        </div>
-
-                    }
+                    <div className="field">
+                        <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
+                        </label>
+                        <input type="text" id="filter-by-name" className="input input--text input-type__input"
+                               onChange={(e) => setFilterValue(e.target.value)}/>
+                    </div>
 
 
                     <div className="u-mt-s">
