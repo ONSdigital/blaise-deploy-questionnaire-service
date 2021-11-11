@@ -10,7 +10,7 @@ const {DiagnosticMockObject, InstrumentListMockObject, InstrumentMockObject, Ins
 const request = supertest(app);
 
 describe("BlaiseAPI Get health Check from API", () => {
-    it("should return a 200 status and an json list of 4 items when API returns a 4 item list", async done => {
+    it("should return a 200 status and a json list of 4 items when API returns a 4 item list", async done => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         BlaiseApiRest.mockImplementation(() => {
@@ -71,7 +71,7 @@ describe("BlaiseAPI Get all instruments from API", () => {
         done();
     });
 
-    it("should return a 200 status and an json list of 3 items when API returns a 3 item list", async done => {
+    it("should return a 200 status and a json list of 3 items when API returns a 3 item list", async done => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         BlaiseApiRest.mockImplementation(() => {
@@ -133,7 +133,7 @@ describe("BlaiseAPI Get specific instrument information from API", () => {
         done();
     });
 
-    it("should return a 200 status and an json object when API returns a instrument object", async done => {
+    it("should return a 200 status and a json object when API returns a instrument object", async done => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         BlaiseApiRest.mockImplementation(() => {
