@@ -113,7 +113,6 @@ describe("BlaiseAPI Get all instruments from API", () => {
     });
 });
 
-
 describe("BlaiseAPI Get specific instrument information from API", () => {
     it("should return a 404 status with the data as false when API returns can't find the instrument", async done => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -181,7 +180,6 @@ describe("BlaiseAPI Get specific instrument information from API", () => {
     });
 });
 
-
 describe("BlaiseAPI Post to API to install a specific instrument", () => {
     it("should return a 201 status when API installs a instrument", async done => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -222,7 +220,6 @@ describe("BlaiseAPI Post to API to install a specific instrument", () => {
         jest.resetModules();
     });
 });
-
 
 describe("BlaiseAPI Delete a specific instrument", () => {
     it("should return a 204 status when API deletes a instrument successfuly", async done => {
