@@ -113,8 +113,6 @@ describe("Given the API successfully loads the instrument settings", () => {
         );
 
         await act(async () => {
-            // TODO: Do I need two?
-            await flushPromises();
             await flushPromises();
         });
 
