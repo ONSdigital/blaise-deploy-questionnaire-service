@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Given the API successfully loads the instrument mode and settings matches Snapshot for the view Instrument Settings page 1`] = `
+exports[`Given the API successfully loads the instrument mode and settings for CATI only mode matches Snapshot for the view Instrument Settings page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -42,8 +42,20 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item "
+              class="summary__item summary__item--error"
             >
+              <tr
+                class="summary__row"
+              >
+                <th
+                  class="summary__row-title u-fs-r"
+                  colspan="3"
+                >
+                  SaveSessionOnTimeout
+                   should be 
+                  True
+                </th>
+              </tr>
               <tr
                 class="summary__row summary__row--has-values"
               >
@@ -60,7 +72,448 @@ Object {
                   class="summary__values"
                   colspan="2"
                 >
+                  False
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="summary__item "
+            >
+              <tr
+                class="summary__row summary__row--has-values"
+              >
+                <td
+                  class="summary__item-title"
+                >
+                  <div
+                    class="summary__item--text"
+                  >
+                    SaveSessionOnQuit
+                  </div>
+                </td>
+                <td
+                  class="summary__values"
+                  colspan="2"
+                >
                   True
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="summary__item "
+            >
+              <tr
+                class="summary__row summary__row--has-values"
+              >
+                <td
+                  class="summary__item-title"
+                >
+                  <div
+                    class="summary__item--text"
+                  >
+                    DeleteSessionOnTimeout
+                  </div>
+                </td>
+                <td
+                  class="summary__values"
+                  colspan="2"
+                >
+                  False
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="summary__item "
+            >
+              <tr
+                class="summary__row summary__row--has-values"
+              >
+                <td
+                  class="summary__item-title"
+                >
+                  <div
+                    class="summary__item--text"
+                  >
+                    DeleteSessionOnQuit
+                  </div>
+                </td>
+                <td
+                  class="summary__values"
+                  colspan="2"
+                >
+                  False
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="summary__item "
+            >
+              <tr
+                class="summary__row summary__row--has-values"
+              >
+                <td
+                  class="summary__item-title"
+                >
+                  <div
+                    class="summary__item--text"
+                  >
+                    SessionTimeout
+                  </div>
+                </td>
+                <td
+                  class="summary__values"
+                  colspan="2"
+                >
+                  15
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="summary__item "
+            >
+              <tr
+                class="summary__row summary__row--has-values"
+              >
+                <td
+                  class="summary__item-title"
+                >
+                  <div
+                    class="summary__item--text"
+                  >
+                    ApplyRecordLocking
+                  </div>
+                </td>
+                <td
+                  class="summary__values"
+                  colspan="2"
+                >
+                  False
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="summary"
+    >
+      <div
+        class="summary__group"
+      >
+        <h2>
+          Questionnaire settings
+        </h2>
+        <table
+          class="summary__items u-mt-s"
+          id="report-table"
+        >
+          <tbody
+            class="summary__item "
+          >
+            <tr
+              class="summary__row summary__row--has-values"
+            >
+              <td
+                class="summary__item-title"
+              >
+                <div
+                  class="summary__item--text"
+                >
+                  Type
+                </div>
+              </td>
+              <td
+                class="summary__values"
+                colspan="2"
+              >
+                StrictInterviewing
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="summary__item summary__item--error"
+          >
+            <tr
+              class="summary__row"
+            >
+              <th
+                class="summary__row-title u-fs-r"
+                colspan="3"
+              >
+                SaveSessionOnTimeout
+                 should be 
+                True
+              </th>
+            </tr>
+            <tr
+              class="summary__row summary__row--has-values"
+            >
+              <td
+                class="summary__item-title"
+              >
+                <div
+                  class="summary__item--text"
+                >
+                  SaveSessionOnTimeout
+                </div>
+              </td>
+              <td
+                class="summary__values"
+                colspan="2"
+              >
+                False
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="summary__item "
+          >
+            <tr
+              class="summary__row summary__row--has-values"
+            >
+              <td
+                class="summary__item-title"
+              >
+                <div
+                  class="summary__item--text"
+                >
+                  SaveSessionOnQuit
+                </div>
+              </td>
+              <td
+                class="summary__values"
+                colspan="2"
+              >
+                True
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="summary__item "
+          >
+            <tr
+              class="summary__row summary__row--has-values"
+            >
+              <td
+                class="summary__item-title"
+              >
+                <div
+                  class="summary__item--text"
+                >
+                  DeleteSessionOnTimeout
+                </div>
+              </td>
+              <td
+                class="summary__values"
+                colspan="2"
+              >
+                False
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="summary__item "
+          >
+            <tr
+              class="summary__row summary__row--has-values"
+            >
+              <td
+                class="summary__item-title"
+              >
+                <div
+                  class="summary__item--text"
+                >
+                  DeleteSessionOnQuit
+                </div>
+              </td>
+              <td
+                class="summary__values"
+                colspan="2"
+              >
+                False
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="summary__item "
+          >
+            <tr
+              class="summary__row summary__row--has-values"
+            >
+              <td
+                class="summary__item-title"
+              >
+                <div
+                  class="summary__item--text"
+                >
+                  SessionTimeout
+                </div>
+              </td>
+              <td
+                class="summary__values"
+                colspan="2"
+              >
+                15
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="summary__item "
+          >
+            <tr
+              class="summary__row summary__row--has-values"
+            >
+              <td
+                class="summary__item-title"
+              >
+                <div
+                  class="summary__item--text"
+                >
+                  ApplyRecordLocking
+                </div>
+              </td>
+              <td
+                class="summary__values"
+                colspan="2"
+              >
+                False
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Given the API successfully loads the instrument mode and settings for mixed mode matches Snapshot for the view Instrument Settings page 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="summary"
+      >
+        <div
+          class="summary__group"
+        >
+          <h2>
+            Questionnaire settings
+          </h2>
+          <table
+            class="summary__items u-mt-s"
+            id="report-table"
+          >
+            <tbody
+              class="summary__item "
+            >
+              <tr
+                class="summary__row summary__row--has-values"
+              >
+                <td
+                  class="summary__item-title"
+                >
+                  <div
+                    class="summary__item--text"
+                  >
+                    Type
+                  </div>
+                </td>
+                <td
+                  class="summary__values"
+                  colspan="2"
+                >
+                  StrictInterviewing
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="summary__item summary__item--error"
+            >
+              <tr
+                class="summary__row"
+              >
+                <th
+                  class="summary__row-title u-fs-r"
+                  colspan="3"
+                >
+                  SaveSessionOnTimeout
+                   should be 
+                  True
+                </th>
+              </tr>
+              <tr
+                class="summary__row summary__row--has-values"
+              >
+                <td
+                  class="summary__item-title"
+                >
+                  <div
+                    class="summary__item--text"
+                  >
+                    SaveSessionOnTimeout
+                  </div>
+                </td>
+                <td
+                  class="summary__values"
+                  colspan="2"
+                >
+                  False
                 </td>
               </tr>
             </tbody>
@@ -258,8 +711,20 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item "
+            class="summary__item summary__item--error"
           >
+            <tr
+              class="summary__row"
+            >
+              <th
+                class="summary__row-title u-fs-r"
+                colspan="3"
+              >
+                SaveSessionOnTimeout
+                 should be 
+                True
+              </th>
+            </tr>
             <tr
               class="summary__row summary__row--has-values"
             >
@@ -276,7 +741,7 @@ Object {
                 class="summary__values"
                 colspan="2"
               >
-                True
+                False
               </td>
             </tr>
           </tbody>
