@@ -39,7 +39,7 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
                     return;
                 }
                 console.log(`returned instrument mode: ${data}`);
-                if (data === ["CATI"]) {
+                if (data.length === 1 && data[0] === "CATI") {
                     console.log("setting mode to 'CATI'");
                     setMode("CATI");
                 } else if (data.length > 1) {
