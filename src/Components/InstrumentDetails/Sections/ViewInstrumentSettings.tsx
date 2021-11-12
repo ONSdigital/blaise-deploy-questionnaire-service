@@ -84,11 +84,6 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
     }, [setting, mode]);
 
     function difference(object: any, base: any): any {
-        if (mode === "CATI") {
-            const irrelevantSettings = ["deleteSessionOnTimeout", "deleteSessionOnQuit", "applyRecordLocking"];
-            console.log(`removing ${irrelevantSettings} from comparison`);
-            irrelevantSettings.forEach(item => delete base[item]);
-        }
         return transform(object, (result, value, key) => {
             if (!isEqual(value, base[key])) {
                 result[key] = isObject(value) && isObject(base[key]) ? difference(value, base[key]) : value;
