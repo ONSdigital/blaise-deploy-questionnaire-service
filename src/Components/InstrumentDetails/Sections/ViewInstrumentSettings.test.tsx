@@ -197,7 +197,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
     });
 });
 
-describe("Given the API fails to load the instrument mode and settings", () => {
+describe("Given the API fails to load the instrument mode or settings", () => {
 
     const mock_server_responses = (url: string) => {
         console.log(url);
@@ -253,7 +253,7 @@ describe("Given the API fails to load the instrument mode and settings", () => {
     });
 });
 
-describe("Given the API returns an empty list for instrument mode and/or settings", () => {
+describe("Given the API returns an empty list for instrument mode or settings", () => {
 
     const mock_server_responses = (url: string) => {
         console.log(url);
