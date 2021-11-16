@@ -1,5 +1,6 @@
 import {requestPromiseJson, requestPromiseJsonList} from "./requestPromise";
 import {Instrument} from "../../../Interfaces";
+import {InstrumentSettings} from "blaise-api-node-client";
 
 type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];
@@ -70,19 +71,36 @@ function sendInstallRequest(filename: string): Promise<boolean> {
     });
 }
 
-function doesInstrumentHaveCAWIMode(instrumentName: string): Promise<boolean | null> {
-    console.log("Sending request does instrument have cawi mode");
-    const url = `/api/instruments/${instrumentName}/modes/CAWI`;
+function getInstrumentModes(instrumentName: string): Promise<string[] | null> {
+    console.log("Sending request get instrument modes");
+    const url = `/api/instruments/${instrumentName}/modes`;
 
-    return requestPromiseJson("GET", url).then(([status, data]): boolean | null => {
-        console.log(`Response from does instrument have cawi mode: Status ${status}, data ${data}`);
+    return requestPromiseJson("GET", url).then(([status, data]): string[] | null => {
+        console.log(`Response from get instrument modes: Status ${status}, data ${data}`);
         if (status === 200) {
-            return data === true;
+            return data;
         } else {
             return null;
         }
     }).catch((error: Error) => {
-        console.error(`Failed to does instrument have cawi mode, Error ${error}`);
+        console.error(`Failed to get instrument modes, Error ${error}`);
+        return null;
+    });
+}
+
+function getInstrumentSettings(instrumentName: string): Promise<InstrumentSettings[] | null> {
+    console.log("Sending request get instrument settings");
+    const url = `/api/instruments/${instrumentName}/settings`;
+
+    return requestPromiseJson("GET", url).then(([status, data]): InstrumentSettings[] | null => {
+        console.log(`Response from get instrument settings: Status ${status}, data ${data}`);
+        if (status === 200) {
+            return data;
+        } else {
+            return null;
+        }
+    }).catch((error: Error) => {
+        console.error(`Failed to get instrument settings, Error ${error}`);
         return null;
     });
 }
@@ -101,6 +119,7 @@ export {
     getAllInstruments,
     deleteInstrument,
     sendInstallRequest,
-    doesInstrumentHaveCAWIMode,
+    getInstrumentModes,
+    getInstrumentSettings,
     getInstrumentCaseIds
 };

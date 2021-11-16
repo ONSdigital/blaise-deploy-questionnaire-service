@@ -19,6 +19,8 @@ defineFeature(feature, test => {
     const instrumentNameWithCAWIModeAndUACs = "OPN2004A";
     const instrumentNameWithoutCAWIMode = "OPN2007T";
     const fiveThousandCases = 5000;
+    const modeListWithCAWI = ["CATI", "CAWI"];
+    const modeListWithoutCAWI = ["CATI"];
 
     const generateUACsLink = /Generate and download Unique Access Codes/i;
     const UACFailedErrorMessage = /I receive an appropriate error describing suitable user actions/i;
@@ -44,25 +46,25 @@ defineFeature(feature, test => {
                 status: 500,
                 json: () => Promise.resolve(true),
             });
-        } else if (url.includes(`/api/instruments/${instrumentNameWithCAWIModeThatFailsUACGeneration}/modes/CAWI`)) {
+        } else if (url.includes(`/api/instruments/${instrumentNameWithCAWIModeThatFailsUACGeneration}/modes`)) {
             return Promise.resolve({
                 status: 200,
-                json: () => Promise.resolve(true),
+                json: () => Promise.resolve(modeListWithCAWI),
             });
-        } else if (url.includes(`/api/instruments/${instrumentNameWithCAWIMode}/modes/CAWI`)) {
+        } else if (url.includes(`/api/instruments/${instrumentNameWithCAWIMode}/modes`)) {
             return Promise.resolve({
                 status: 200,
-                json: () => Promise.resolve(true),
+                json: () => Promise.resolve(modeListWithCAWI),
             });
-        } else if (url.includes(`/api/instruments/${instrumentNameWithCAWIModeAndUACs}/modes/CAWI`)) {
+        } else if (url.includes(`/api/instruments/${instrumentNameWithCAWIModeAndUACs}/modes`)) {
             return Promise.resolve({
                 status: 200,
-                json: () => Promise.resolve(true),
+                json: () => Promise.resolve(modeListWithCAWI),
             });
-        } else if (url.includes(`/api/instruments/${instrumentNameWithoutCAWIMode}/modes/CAWI`)) {
+        } else if (url.includes(`/api/instruments/${instrumentNameWithoutCAWIMode}/modes`)) {
             return Promise.resolve({
                 status: 200,
-                json: () => Promise.resolve(false),
+                json: () => Promise.resolve(modeListWithoutCAWI),
             });
         } else if (url.includes(`/api/uacs/instrument/${instrumentNameWithCAWIModeAndUACs}/count`)) {
             return Promise.resolve({
@@ -126,8 +128,8 @@ defineFeature(feature, test => {
         given(/^an instrument is installed in CAWI mode$/, async () => {
             const response = await mock_server_responses(`/api/instruments/${instrumentName}/modes/CAWI`);
 
-            expect(await response.json()).toEqual(
-                true
+            expect(await response.json()).toContain(
+                "CAWI"
             );
         });
     };
@@ -136,8 +138,8 @@ defineFeature(feature, test => {
         given(/^an instrument is installed in CATI mode$/, async () => {
             const response = await mock_server_responses(`/api/instruments/${instrumentName}/modes/CAWI`);
 
-            expect(await response.json()).toEqual(
-                false
+            expect(await response.json()).toContain(
+                "CATI"
             );
         });
     };

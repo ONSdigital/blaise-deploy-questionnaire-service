@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {doesInstrumentHaveCAWIMode, getCountOfUACs} from "../../../utilities/http";
+import {getCountOfUACs, getInstrumentModes} from "../../../utilities/http";
 import {Instrument} from "../../../../Interfaces";
 import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 import CsvDownloader from "react-csv-downloader";
@@ -20,12 +20,13 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
     const [showGenerateUACsButton, setShowGenerateUACsButton] = useState<boolean>(false);
 
     useEffect(() => {
-        doesInstrumentHaveCAWIMode(instrument.name)
-            .then((cawiMode) => {
-                if (cawiMode === null) {
+        getInstrumentModes(instrument.name)
+            .then((modes) => {
+                if (modes === null) {
                     setErrored(true);
+                    return;
                 }
-                if (cawiMode) {
+                if (modes.includes("CAWI")) {
                     setCawiMode(true);
                 }
             }).finally(() => setLoading(false));
@@ -86,7 +87,7 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
 
     if (cawiMode) {
         return (
-            <div className="summary u-mb-m elementToFadeIn">
+            <div className="summary u-mb-m elementToFadeIn u-mt-m">
                 <div className="summary__group">
                     <h2 className="summary__group-title">Web mode details</h2>
                     <table className="summary__items">
@@ -140,7 +141,7 @@ const ViewWebModeDetails = ({instrument}: Props): ReactElement => {
 
     return (
         <>
-            <div className="summary u-mb-m elementToFadeIn">
+            <div className="summary u-mb-m elementToFadeIn u-mt-m">
                 <div className="summary__group">
                     <h2 className="summary__group-title">Web mode details</h2>
                     <table className="summary__items">
