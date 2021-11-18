@@ -2,7 +2,13 @@ import express, {Request, Response, Router} from "express";
 import Functions from "../Functions";
 import {EnvironmentVariables} from "../Config";
 import {auditLogError, auditLogInfo} from "../audit_logging";
-import BlaiseApiRest, {InstallInstrument, Instrument} from "blaise-api-node-client";
+import BlaiseApiRest, { InstallInstrument, Instrument, InstrumentSettings } from "blaise-api-node-client";
+
+export interface InstrumentWithSettings extends Instrument {
+    settings?: InstrumentSettings[]
+    modes?: string[]
+    validSettings?: boolean
+}
 
 export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariables, logger: any): Router {
     const {BLAISE_API_URL, SERVER_PARK}: EnvironmentVariables = environmentVariables;
@@ -110,15 +116,11 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     // Get list of all instruments installed in a specified server park
     router.get("/api/instruments", function (req: ResponseQuery, res: Response) {
         logger(req, res);
+        console.log(BLAISE_API_URL);
         const blaiseApiClient = new BlaiseApiRest(`http://${BLAISE_API_URL}`);
 
-        blaiseApiClient.getInstrumentsWithCatiData(SERVER_PARK)
-            .then((response) => {
-                const instruments: Instrument[] = response;
-                instruments.forEach(function (element: Instrument) {
-                    element.fieldPeriod = Functions.field_period_to_text(element.name);
-                });
 
+        getInstrumentsWithSettings(blaiseApiClient, SERVER_PARK).then((instruments) => {
                 req.log.info({instruments}, `${instruments.length} instrument/s currently installed.`);
                 res.status(200).json(instruments);
             })
@@ -180,3 +182,35 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     return router;
 }
 
+async function getInstrumentsWithSettings(blaiseApiClient: BlaiseApiRest, serverPark: string): Promise<InstrumentWithSettings[]> {
+    const instruments: InstrumentWithSettings[] = await blaiseApiClient.getInstrumentsWithCatiData(serverPark);
+
+    for await (const instrument of instruments) {
+        instrument.fieldPeriod = Functions.field_period_to_text(instrument.name);
+        instrument.settings = await blaiseApiClient.getInstrumentSettings(serverPark, instrument.name);
+        instrument.modes = await blaiseApiClient.getInstrumentModes(serverPark, instrument.name);
+        instrument.validSettings = instrumentSettingsValid(instrument);
+    }
+    return instruments;
+}
+
+function instrumentSettingsValid(instrument: InstrumentWithSettings): boolean {
+    if (!instrument.settings || !instrument.modes) {
+        return false;
+    }
+
+    const settings = instrument.settings.find(setting => setting.type === "StrictInterviewing");
+    if (instrument.modes === ["CATI"]) {
+        return (
+            settings?.saveSessionOnTimeout == true &&
+            settings?.saveSessionOnQuit == true
+        );
+    }
+    return (
+        settings?.saveSessionOnTimeout == true &&
+        settings?.saveSessionOnQuit == true &&
+        settings?.deleteSessionOnTimeout == true &&
+        settings?.deleteSessionOnQuit == true &&
+        settings?.applyRecordLocking == true
+    );
+}

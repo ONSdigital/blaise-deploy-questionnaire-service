@@ -1,6 +1,6 @@
-import {Instrument} from "../../Interfaces";
+import { InstrumentWithSettings } from ".";
 
-export const expectedInstrumentList: Instrument[] = [{
+export const expectedInstrumentList: InstrumentWithSettings[] = [{
     name: "OPN2101A",
     serverParkName: "gusty",
     installDate: "2021-01-15T14:41:29.4399898+00:00",
@@ -8,7 +8,10 @@ export const expectedInstrumentList: Instrument[] = [{
     dataRecordCount: 0,
     hasData: false,
     active: false,
-    fieldPeriod: "January 2021"
+    fieldPeriod: "January 2021",
+    settings: [],
+    modes: [],
+    validSettings: false
 }, {
     name: "OPN2007T",
     serverParkName: "gusty",
@@ -17,7 +20,10 @@ export const expectedInstrumentList: Instrument[] = [{
     dataRecordCount: 10,
     hasData: true,
     active: true,
-    fieldPeriod: "July 2020"
+    fieldPeriod: "July 2020",
+    settings: [],
+    modes: [],
+    validSettings: false
 }, {
     name: "LMS2101_AA1",
     serverParkName: "gusty",
@@ -26,5 +32,8 @@ export const expectedInstrumentList: Instrument[] = [{
     dataRecordCount: 0,
     hasData: false,
     active: false,
-    fieldPeriod: "Field period unknown"
+    fieldPeriod: "Field period unknown",
+    settings: [],
+    modes: [],
+    validSettings: false
 }];

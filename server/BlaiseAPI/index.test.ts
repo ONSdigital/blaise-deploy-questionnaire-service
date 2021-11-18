@@ -79,6 +79,12 @@ describe("BlaiseAPI Get all instruments from API", () => {
                 getInstrumentsWithCatiData: () => {
                     return Promise.resolve(InstrumentListMockObject);
                 },
+                getInstrumentSettings: () => {
+                    return Promise.resolve([]);
+                },
+                getInstrumentModes: () => {
+                    return Promise.resolve([]);
+                }
             };
         });
 

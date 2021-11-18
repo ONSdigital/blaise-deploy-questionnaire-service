@@ -59,4 +59,3 @@ function requestPromiseJsonList(method: string, url: string, body: any = null): 
 }
 
 export {requestPromiseJson, requestPromiseJsonList};
-
