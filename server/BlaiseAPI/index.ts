@@ -145,6 +145,38 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             });
     });
 
+    router.get("/api/instruments/:instrumentName/modes", function (req: ResponseQuery, res: Response) {
+        const {instrumentName} = req.params;
+        logger(req, res);
+        const blaiseApiClient = new BlaiseApiRest(`http://${BLAISE_API_URL}`);
+
+        blaiseApiClient.getInstrumentModes(SERVER_PARK, instrumentName)
+            .then((response) => {
+                req.log.info({response}, `Successfully called get instrument modes for ${instrumentName}`);
+                res.status(200).json(response);
+            })
+            .catch((error) => {
+                req.log.error(error, `Get instrument modes for ${instrumentName}`);
+                res.status(500).json(null);
+            });
+    });
+
+    router.get("/api/instruments/:instrumentName/settings", function (req: ResponseQuery, res: Response) {
+        const {instrumentName} = req.params;
+        logger(req, res);
+        const blaiseApiClient = new BlaiseApiRest(`http://${BLAISE_API_URL}`);
+
+        blaiseApiClient.getInstrumentSettings(SERVER_PARK, instrumentName)
+            .then((response) => {
+                req.log.info({response}, `Successfully called get instrument settings for ${instrumentName}`);
+                res.status(200).json(response);
+            })
+            .catch((error) => {
+                req.log.error(error, `Get instrument settings for ${instrumentName}`);
+                res.status(500).json(null);
+            });
+    });
+
     return router;
 }
 

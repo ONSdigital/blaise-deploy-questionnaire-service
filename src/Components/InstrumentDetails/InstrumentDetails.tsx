@@ -8,6 +8,7 @@ import BlaiseNodeInfo from "./Sections/BlaiseNodeInfo";
 import ViewWebModeDetails from "./Sections/ViewWebModeDetails";
 import ViewToStartDate from "./Sections/ViewToStartDate";
 import YearCalendar from "./Sections/YearCalendar";
+import ViewInstrumentSettings from "./Sections/ViewInstrumentSettings";
 
 interface State {
     instrument: Instrument | null;
@@ -91,6 +92,7 @@ function InstrumentDetails(): ReactElement {
                     </div>
                 </div>
 
+                <ViewInstrumentSettings instrument={instrument}/>
                 <ViewWebModeDetails instrument={instrument}/>
 
                 <h2 className={"u-mt-m"}>Survey days</h2>
