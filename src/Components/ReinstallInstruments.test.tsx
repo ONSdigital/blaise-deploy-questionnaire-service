@@ -173,7 +173,6 @@ describe("Reinstall an instruments", () => {
     });
 });
 
-
 describe("Given the API returns a 500 status", () => {
 
     beforeAll(() => {
