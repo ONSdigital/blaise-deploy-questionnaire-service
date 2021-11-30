@@ -8,8 +8,6 @@
 [![Github contributors](https://img.shields.io/github/contributors/ONSdigital/blaise-deploy-questionnaire-service.svg)](https://github.com/ONSdigital/blaise-deploy-questionnaire-service/graphs/contributors)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ONSdigital/blaise-deploy-questionnaire-service.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ONSdigital/blaise-deploy-questionnaire-service/context:javascript)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/ONSdigital/blaise-deploy-questionnaire-service.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ONSdigital/blaise-deploy-questionnaire-service/alerts/)
-[![dependencies Status](https://status.david-dm.org/gh/ONSdigital/blaise-deploy-questionnaire-service.svg)](https://david-dm.org/ONSdigital/blaise-deploy-questionnaire-service)
-[![devDependencies Status](https://status.david-dm.org/gh/ONSdigital/blaise-deploy-questionnaire-service.svg?type=dev)](https://david-dm.org/ONSdigital/blaise-deploy-questionnaire-service?type=dev)
 
 Service for uploading Instrument/Questionnaire files to Blaise. 
 
