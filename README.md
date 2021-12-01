@@ -14,8 +14,8 @@ Service for uploading Instrument/Questionnaire files to Blaise.
 This is done by uploading the Instrument/Questionnaire package to a GCP Bucket then sending a request to
 the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) to install it onto Blaise.
 
-This project is a React application which when build is rendered by a Node.js express server. The Node.js handles the
-file being uploaded from the client and uploads the file a GCP bucket using
+This project is a React application which when built is rendered by a Node.js express server. The Node.js handles the
+file being uploaded from the client and uploads the file to a GCP bucket using
 the [@google-cloud/storage module](https://www.npmjs.com/package/@google-cloud/storage).
 
 ![Diagram of Deploy Questionnaire Service setup](.github/Diagram.png)
@@ -48,7 +48,8 @@ Create a new .env file and add the following variables.
 
 | Variable       | Description                                                                                                                                                                                                                                                                           | Var Example               |
 |----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
-| PORT           | **Optional variable**, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default React project locally runs on port 3000. | 5009                      |
+| PORT           | **Optional
+variable**, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default React project locally runs on port 3000. | 5009                      |
 | BLAISE_API_URL | Url that the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) is running on to send calls to.                                                                                                                                                                         | localhost:90              |
 | PROJECT_ID     | GCP Project ID                                                                                                                                                                                                                                                                        | ons-blaise-dev-matt55     |
 | BUCKET_NAME    | GCP Bucket name for the instrument file to be put in                                                                                                                                                                                                                                  | ons-blaise-dev-matt55-dqs |
@@ -77,7 +78,7 @@ yarn
 
 To get the service working locally with a remote GCP Bucket, you need
 to [obtain a JSON service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys), this
-will need to a service account with create and list permissions to the specified bucket. Save the service account key
+will need to be a service account with create and list permissions to the specified bucket. Save the service account key
 as  `keys.json` and place in the root of the project. Providing the NODE_ENV is not production, then the GCP storage
 config (Found at `server/storage/config.js`) will attempt to use this file.  **DO NOT COMMIT THIS FILE**
 
@@ -85,13 +86,13 @@ config (Found at `server/storage/config.js`) will attempt to use this file.  **D
 
 The following run commands are available, these are all setup in the `package.json` under `scripts`.
 
-| Command                | Description                                                                                                                                               |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `yarn server`          | Starts the complied express server (Used by App Engine to start the server), Note: The server will need to be complied and the React Project will need to be built first.  |
-| `yarn start-server`    | Complies Typescript and starts the express server, Note: For the website to be rendered the React Project will need to be built.                          |
-| `yarn start-react`     | Starts react project in local development setup with quick reloading on making changes. Note: For instruments to be shown the server needs to be running. |
-| `yarn build-react`     | Compiles build project ready to be served by express. The build in outputted to the the `build` directory which express points to with the var `buildFolder` in `server/server.js`.                       |
-| `yarn test`            | Runs all tests for server and React Components and outputs coverage statistics.                                                                           |
+| Command             | Description                                                                                                                                                                              |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `yarn server`       | Starts the complied express server (Used by App Engine to start the server), Note: The server will need to be complied and the React Project will need to be built first.                |
+| `yarn start-server` | Complies Typescript and starts the express server, Note: For the website to be rendered the React Project will need to be built.                                                         |
+| `yarn start-react`  | Starts react project in local development setup with quick reloading on making changes. Note: For instruments to be shown the server needs to be running.                                |
+| `yarn build-react`  | Compiles build project ready to be served by express. The build in outputted to the the `build` directory which express points to with the var `buildFolder` in `server/server.js`.      |
+| `yarn test`         | Runs all tests for server and React Components and outputs coverage statistics.                                                                                                          |
 | `gcp-build`         | [App Engine custom build step](https://cloud.google.com/appengine/docs/standard/nodejs/running-custom-build-step) which builds the react application and complies the TypeScript server. |
 
 ##### Simple setup for local development
@@ -102,8 +103,8 @@ Setup express project to be call Blaise Instrument Checker. By default, will be 
 yarn start-server
 ```
 
-Next to make sure the React project make requests the express server make sure the proxy option is set to the right port
-in the 'package.json'
+Next, to make sure the React project make requests to the Express server make sure the proxy option is set to the right
+port in the 'package.json'
 
 ```.json
 "proxy": "http://localhost:5000",
