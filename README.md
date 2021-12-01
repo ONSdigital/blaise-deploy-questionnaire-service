@@ -18,7 +18,15 @@ This project is a React application which when built is rendered by a Node.js ex
 file being uploaded from the client and uploads the file to a GCP bucket using
 the [@google-cloud/storage module](https://www.npmjs.com/package/@google-cloud/storage).
 
-![Diagram of Deploy Questionnaire Service setup](.github/Diagram.png)
+![React and NodeJS server setup diagram](.github/DQS_Architecture_Diagram.jpg)
+
+### Instrument/Questionnaire package upload process
+
+![Instrument/Questionnaire package upload process](.github/DQS_upload_process_Diagram.jpg)
+
+[Blaise Instrument Metadata Service (BIMS)](https://github.com/ONSdigital/blaise-instrument-metadata-service) handles
+storing Instrument Metadata like the Telephone Operations start date used
+by [Telephone Operations Blaise Interface (TOBI)](https://github.com/ONSdigital/telephone-operations-blaise-interface).
 
 ### Setup
 
@@ -29,8 +37,9 @@ well as [yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable).
 
 To have the list of instruments load on the page, you'll need to
 have [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) running locally (On a Windows machine), or you
-can [create an Identity-Aware Proxy (IAP) tunnel](https://cloud.google.com/sdk/gcloud/reference/compute/start-iap-tunnel) from a GCP Compute
-Instance running the rest API in a sandbox. An example command to connect to the rest api VM on local port `5011`:
+can [create an Identity-Aware Proxy (IAP) tunnel](https://cloud.google.com/sdk/gcloud/reference/compute/start-iap-tunnel)
+from a GCP Compute Instance running the rest API in a sandbox. An example command to connect to the rest api VM on local
+port `5011`:
 
 ```shell
 sudo gcloud compute start-iap-tunnel restapi-1 80 --local-host-port=localhost:5011 --zone europe-west2-a
@@ -48,7 +57,8 @@ Create a new .env file and add the following variables.
 
 | Variable       | Description                                                                                                                                                                                                                                                                            | Var Example               |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
-| PORT           | **Optional variable**, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default, React project locally runs on port 3000. | 5009                      |
+| PORT           | **Optional
+variable**, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default, React project locally runs on port 3000. | 5009                      |
 | BLAISE_API_URL | Url that the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) is running on to send calls to.                                                                                                                                                                          | localhost:90              |
 | PROJECT_ID     | GCP Project ID                                                                                                                                                                                                                                                                         | ons-blaise-dev-matt55     |
 | BUCKET_NAME    | GCP Bucket name for the instrument file to be put in                                                                                                                                                                                                                                   | ons-blaise-dev-matt55-dqs |
