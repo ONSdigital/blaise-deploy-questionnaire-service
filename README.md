@@ -28,6 +28,9 @@ the [@google-cloud/storage module](https://www.npmjs.com/package/@google-cloud/s
 storing Instrument Metadata like the Telephone Operations start date used
 by [Telephone Operations Blaise Interface (TOBI)](https://github.com/ONSdigital/telephone-operations-blaise-interface).
 
+[Blaise UAC Service (BUS)](https://github.com/ONSdigital/blaise-uac-service) handles the generation of Unique Access
+Codes (UACs) for Instruments/Questionnaires.
+
 ### Setup
 
 #### Prerequisites
