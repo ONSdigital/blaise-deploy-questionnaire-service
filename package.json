@@ -12,7 +12,7 @@
     "gcp-build": "react-scripts build && tsc --project tsconfig.server.json",
     "lint-fix": "node_modules/.bin/eslint . --fix"
   },
-  "proxy": "http://localhost:5007",
+  "proxy": "http://localhost:5000",
   "keywords": [],
   "author": "",
   "license": "ISC",
