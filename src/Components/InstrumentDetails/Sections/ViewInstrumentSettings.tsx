@@ -1,34 +1,21 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {getInstrumentModes, getInstrumentSettings} from "../../../utilities/http";
-import {Instrument} from "../../../../Interfaces";
-import {ONSPanel, ONSLoadingPanel} from "blaise-design-system-react-components";
-import {InstrumentSettings} from "blaise-api-node-client";
-import {formatText} from "../../../utilities/TextFormatting/TextFormatting";
-import {transform, isEqual, isObject} from "lodash";
+import React, { ReactElement, useEffect, useState } from "react";
+import { getInstrumentModes, getInstrumentSettings } from "../../../utilities/http";
+import { Instrument } from "../../../../Interfaces";
+import { ONSPanel, ONSLoadingPanel } from "blaise-design-system-react-components";
+import { InstrumentSettings } from "blaise-api-node-client";
+import { formatText } from "../../../utilities/TextFormatting/TextFormatting";
+import { GetStrictInterviewingSettings, ValidateSettings } from "../../../utilities/instrument_settings";
+import { transform, isEqual, isObject } from "lodash";
 
 interface Props {
     instrument: Instrument;
 }
 
-function ViewInstrumentSettings({instrument}: Props): ReactElement {
+function ViewInstrumentSettings({ instrument }: Props): ReactElement {
     const [mode, setMode] = useState<string>();
     const [setting, setSetting] = useState<InstrumentSettings>();
     const [errored, setErrored] = useState<boolean>(false);
-    const [invalidSettings, setInvalidSettings] = useState<InstrumentSettings>();
-    const validMixedModeSettings = {
-        "type": "StrictInterviewing",
-        "saveSessionOnTimeout": true,
-        "saveSessionOnQuit": true,
-        "deleteSessionOnTimeout": true,
-        "deleteSessionOnQuit": true,
-        "applyRecordLocking": true,
-    };
-
-    const validCatiModeSettings = {
-        "type": "StrictInterviewing",
-        "saveSessionOnTimeout": true,
-        "saveSessionOnQuit": true,
-    };
+    const [invalidSettings, setInvalidSettings] = useState<Partial<InstrumentSettings>>();
 
     useEffect(() => {
         getInstrumentModes(instrument.name)
@@ -49,86 +36,66 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
             });
 
         getInstrumentSettings(instrument.name)
-            .then((data) => {
-                if (data === null || data.length === 0) {
+            .then((instrumentSettingsList) => {
+                if (instrumentSettingsList === null || instrumentSettingsList.length === 0) {
                     console.error("returned instrument settings were null/empty");
                     setErrored(true);
                     return;
                 }
-                console.log("returned instrument settings: ", data);
-                const setting = data.find(x => x.type === "StrictInterviewing");
-                if (setting !== undefined) {
-                    setSetting(setting);
-                }
+                console.log("returned instrument settings: ", instrumentSettingsList);
+                setSetting(GetStrictInterviewingSettings(instrumentSettingsList));
             });
     }, []);
 
     useEffect(() => {
-        if (setting === undefined) {
+        if (setting === undefined || mode == undefined) {
             return;
         }
-        if (mode === "Mixed") {
-            setInvalidSettings(difference(validMixedModeSettings, setting));
-            console.log("expected settings: ", validMixedModeSettings);
-            console.log("actual settings: ", setting);
-            console.log("diff: ", invalidSettings);
-
-        }
-        if (mode === "CATI") {
-            setInvalidSettings(difference(validCatiModeSettings, setting));
-            console.log("expected settings: ", validCatiModeSettings);
-            console.log("actual settings: ", setting);
-            console.log("diff: ", invalidSettings);
+        const [valid, invalidSettings] = ValidateSettings(setting, mode);
+        if (!valid) {
+            setInvalidSettings(invalidSettings);
         }
 
     }, [setting, mode]);
-
-    function difference(object: any, base: any): any {
-        return transform(object, (result, value, key) => {
-            if (!isEqual(value, base[key])) {
-                result[key] = isObject(value) && isObject(base[key]) ? difference(value, base[key]) : value;
-            }
-        });
-    }
-
     interface ConvertJsonToTableProps {
         instrumentSettings: InstrumentSettings
     }
-    function ConvertJsonToTable({instrumentSettings}: ConvertJsonToTableProps): ReactElement {
+    function ConvertJsonToTable({ instrumentSettings }: ConvertJsonToTableProps): ReactElement {
         const [settingsObjects, setSettingsObjects] = useState<ReactElement[]>([]);
 
         useEffect(() => {
-            const entries: [string, (string | null | number | boolean)][] = Object.entries(instrumentSettings);
             const newElements: ReactElement[] = [];
-            for (const [field, data] of entries) {
+            for (const [field, data] of Object.entries(instrumentSettings)) {
                 let invalid = false;
                 let fieldCorrectValue;
                 if (invalidSettings !== undefined) {
-                    invalid = Object.prototype.hasOwnProperty.call(invalidSettings, field);
-                    fieldCorrectValue = Object.getOwnPropertyDescriptor(invalidSettings, field)?.value;
+                    if (field in invalidSettings) {
+                        invalid = true;
+                        fieldCorrectValue = invalidSettings[field as keyof InstrumentSettings];
+                    }
                 }
 
                 newElements.push(
                     <tbody className={`summary__item ${invalid ? "summary__item--error" : ""}`} key={field}>
-                    {
-                        invalid &&
-                        <tr className="summary__row">
-                            <th colSpan={3} className="summary__row-title u-fs-r">
-                                {formatText(field)} should
-                                be {(typeof fieldCorrectValue === "boolean") ? (fieldCorrectValue ? "True" : "False") : fieldCorrectValue}
-                            </th>
+                        {
+                            invalid &&
+                            <tr className="summary__row">
+                                <th colSpan={3} className="summary__row-title u-fs-r">
+                                    {formatText(field)} should
+                                    be {(typeof fieldCorrectValue === "boolean") ? (fieldCorrectValue ? "True" : "False") : fieldCorrectValue}
+                                </th>
+                            </tr>
+                        }
+                        <tr className="summary__row summary__row--has-values">
+                            <td className="summary__item-title">
+                                <div className="summary__item--text">
+                                    {formatText(field)}
+                                </div>
+                            </td>
+                            <td className="summary__values" colSpan={2}>
+                                {(typeof data === "boolean") ? (data ? "True" : "False") : data}
+                            </td>
                         </tr>
-                    }
-                    <tr className="summary__row summary__row--has-values">
-                        <td className="summary__item-title">
-                            <div className="summary__item--text">
-                                {formatText(field)}
-                            </div>
-                        </td>
-                        <td className="summary__values" colSpan={2}>
-                            {(typeof data === "boolean") ? (data ? "True" : "False") : data}
-                        </td>
-                    </tr>
                     </tbody>
                 );
                 setSettingsObjects(newElements);
@@ -164,7 +131,7 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
                 <div className="summary__group">
                     <h2>Questionnaire settings</h2>
                     <table id="report-table" className="summary__items u-mt-s">
-                        <ConvertJsonToTable instrumentSettings={setting}/>
+                        <ConvertJsonToTable instrumentSettings={setting} />
                     </table>
                 </div>
             </div>
@@ -172,7 +139,7 @@ function ViewInstrumentSettings({instrument}: Props): ReactElement {
     }
 
     return (
-        <ONSLoadingPanel message={"Getting questionnaire settings"}/>
+        <ONSLoadingPanel message={"Getting questionnaire settings"} />
     );
 }
 
