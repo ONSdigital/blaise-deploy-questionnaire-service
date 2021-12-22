@@ -1,18 +1,24 @@
-import React, {ReactElement, useState} from "react";
-import {Redirect, useHistory} from "react-router-dom";
-import {ONSButton} from "blaise-design-system-react-components";
-import {Form, Formik} from "formik";
+import React, { ReactElement, useState } from "react";
+import { Redirect, useHistory } from "react-router-dom";
+import { ONSButton } from "blaise-design-system-react-components";
+import { Form, Formik } from "formik";
 import SelectFile from "./Sections/SelectFile";
 import AskToSetTOStartDate from "./Sections/AskToSetTOStartDate";
 import DeployFormSummary from "./Sections/DeployFormSummary";
-import {Instrument} from "../../../Interfaces";
+import { Instrument } from "../../../Interfaces";
 import AlreadyExists from "./Sections/AlreadyExists";
 import ConfirmOverride from "./Sections/ConfirmOverride";
-import {uploadAndInstallFile, validateSelectedInstrumentExists} from "./UploadProcess";
-import {roundUp} from "../../utilities";
+import { uploadAndInstallFile, validateSelectedInstrumentExists } from "./UploadProcess";
+import { roundUp } from "../../utilities";
 import Breadcrumbs from "../Breadcrumbs";
 
-const steps = ["Select file", "Already exits prompt", "Confirm Override", "Want to set a live date", "Summary"];
+const steps = [
+    "Select file",
+    "Already exits prompt",
+    "Confirm Override",
+    "Want to set a live date",
+    "Summary"
+];
 
 
 function UploadPage(): ReactElement {
@@ -39,21 +45,21 @@ function UploadPage(): ReactElement {
             case 0:
                 return (
                     <SelectFile file={file}
-                                setFile={setFile}
-                                loading={false}/>
+                        setFile={setFile}
+                        loading={false} />
                 );
             case 1:
-                return <AlreadyExists instrumentName={instrumentName}/>;
+                return <AlreadyExists instrumentName={instrumentName} />;
             case 2:
-                return <ConfirmOverride instrumentName={instrumentName}/>;
+                return <ConfirmOverride instrumentName={instrumentName} />;
             case 3:
-                return <AskToSetTOStartDate instrumentName={instrumentName}/>;
+                return <AskToSetTOStartDate instrumentName={instrumentName} />;
             case 4:
-                return <DeployFormSummary file={file} foundInstrument={foundInstrument}/>;
+                return <DeployFormSummary file={file} foundInstrument={foundInstrument} />;
         }
     }
 
-    async function _submitForm(values: any, actions: any) {
+    async function _uploadAndInstallInstrument(values: any, actions: any) {
         await uploadAndInstallFile(instrumentName, values["set TO start date"], file, setUploading, setUploadStatus, onFileUploadProgress);
         actions.setSubmitting(false);
 
@@ -63,7 +69,7 @@ function UploadPage(): ReactElement {
     async function _handleSubmit(values: any, actions: any) {
         let result;
         if (isLastStep) {
-            await _submitForm(values, actions);
+            await _uploadAndInstallInstrument(values, actions);
         } else {
             switch (activeStep) {
                 case 0:
@@ -115,40 +121,39 @@ function UploadPage(): ReactElement {
         <>
             <Breadcrumbs BreadcrumbList={
                 [
-                    {link: "/", title: "Home"},
+                    { link: "/", title: "Home" },
                 ]
-            }/>
+            } />
 
             <main id="main-content" className="page__main u-mt-no">
                 {activeStep === steps.length ? (
                     <Redirect
                         to={{
                             pathname: "/UploadSummary",
-                            state: {questionnaireName: instrumentName, status: uploadStatus}
-                        }}/>
+                            state: { questionnaireName: instrumentName, status: uploadStatus }
+                        }} />
                 ) : (
                     <Formik
                         validateOnBlur={false}
                         validateOnChange={false}
-                        initialValues={{override: "", askToSetTOStartDate: "", "set TO start date": ""}}
+                        initialValues={{ override: "", askToSetTOStartDate: "", "set TO start date": "" }}
                         onSubmit={_handleSubmit}
                     >
-                        {({isSubmitting}) => (
+                        {({ isSubmitting }) => (
                             <Form id={"formID"}>
                                 {_renderStepContent(activeStep)}
-
 
                                 <div className="btn-group u-mt-m">
                                     <ONSButton
                                         id={"continue-deploy-button"}
                                         submit={true}
                                         loading={isSubmitting}
-                                        primary={true} label={isLastStep ? "Deploy questionnaire" : "Continue"}/>
+                                        primary={true} label={isLastStep ? "Deploy questionnaire" : "Continue"} />
                                     {!uploading && !isSubmitting && (
                                         <ONSButton
                                             id={"cancel-deploy-button"}
                                             onClick={() => history.push("/")}
-                                            primary={false} label={"Cancel"}/>
+                                            primary={false} label={"Cancel"} />
                                     )}
                                 </div>
                             </Form>
@@ -161,12 +166,12 @@ function UploadPage(): ReactElement {
                     <>
                         <p className="u-mt-m">Uploading: {uploadPercentage}%</p>
                         <progress id="file"
-                                  value={uploadPercentage}
-                                  max="100"
-                                  role="progressbar"
-                                  aria-valuenow={uploadPercentage}
-                                  aria-valuemin={0}
-                                  aria-valuemax={100}>
+                            value={uploadPercentage}
+                            max="100"
+                            role="progressbar"
+                            aria-valuenow={uploadPercentage}
+                            aria-valuemin={0}
+                            aria-valuemax={100}>
                             {uploadPercentage}%
                         </progress>
                     </>
