@@ -58,6 +58,33 @@ function deleteInstrument(instrumentName: string): Promise<deleteInstrumentRespo
     });
 }
 
+function activateInstrument(instrumentName: string): Promise<boolean> {
+    console.log("Call to activateInstrument");
+    const url = `/api/instruments/${instrumentName}/activate`;
+
+    return requestPromiseJson("PATCH", url).then(([status, data]): boolean => {
+        console.log(`Response from activateInstrument: Status ${status}, data ${data}`);
+        return status === 204;
+    }).catch((error: Error) => {
+        console.error(`Response from activateInstrument: Error ${error}`);
+        return false;
+    });
+}
+
+
+function deactivateInstrument(instrumentName: string): Promise<boolean> {
+    console.log("Call to deactivateInstrument");
+    const url = `/api/instruments/${instrumentName}/deactivate`;
+
+    return requestPromiseJson("PATCH", url).then(([status, data]): boolean => {
+        console.log(`Response from deactivateInstrument: Status ${status}, data ${data}`);
+        return status === 204;
+    }).catch((error: Error) => {
+        console.error(`Response from deactivateInstrument: Error ${error}`);
+        return false;
+    });
+}
+
 function sendInstallRequest(filename: string): Promise<boolean> {
     console.log("Sending request to start install");
     const url = `/api/install?filename=${filename}`;
@@ -118,6 +145,8 @@ export {
     checkInstrumentAlreadyExists,
     getAllInstruments,
     deleteInstrument,
+    activateInstrument,
+    deactivateInstrument,
     sendInstallRequest,
     getInstrumentModes,
     getInstrumentSettings,
