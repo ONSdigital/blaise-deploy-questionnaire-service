@@ -1,5 +1,6 @@
 
 import { InstrumentSettings } from "blaise-api-node-client";
+import { InstrumentMode } from "./instrument_mode";
 
 export const ValidMixedModeSettings: Partial<InstrumentSettings> = {
   saveSessionOnTimeout: true,
@@ -24,8 +25,8 @@ export function GetStrictInterviewingSettings(instrumentSettingsList: Instrument
   return {} as InstrumentSettings;
 }
 
-export function ValidateSettings(instrumentSettings: InstrumentSettings, instrumentMode: string): [boolean, Partial<InstrumentSettings>] {
-  if (instrumentMode === "CATI") {
+export function ValidateSettings(instrumentSettings: InstrumentSettings, instrumentMode: InstrumentMode): [boolean, Partial<InstrumentSettings>] {
+  if (instrumentMode === InstrumentMode.Cati) {
     return ValidateCATIModeSettings(instrumentSettings);
   }
   return ValidateMixedModeSettings(instrumentSettings);

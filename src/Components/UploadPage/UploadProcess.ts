@@ -2,10 +2,17 @@ import {
     checkInstrumentAlreadyExists,
     initialiseUpload,
     setTOStartDate,
-    uploadFile
+    uploadFile,
+    getInstrumentSettings,
+    getInstrumentModes,
 } from "../../utilities/http";
+import {
+    GetStrictInterviewingSettings,
+    ValidateSettings,
+} from "../../utilities/instrument_settings";
 import {Instrument} from "../../../Interfaces";
 import {verifyAndInstallInstrument} from "../../utilities/processes";
+import { GetInstrumentMode } from "../../utilities/instrument_mode";
 
 export async function validateSelectedInstrumentExists(file: File | undefined, setInstrumentName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundInstrument: (object: Instrument | null) => void): Promise<boolean | null> {
     if (file === undefined) {
@@ -71,4 +78,12 @@ export async function uploadAndInstallFile(instrumentName: string, toStartDate: 
     if (!installed) {
         setUploadStatus(message);
     }
+}
+
+export async function checkInstrumentSettings(instrumentName: string): Promise<void> {
+    const instrumentSettingsList = await getInstrumentSettings(instrumentName);
+    const instrumentModes = await getInstrumentModes(instrumentName);
+    const instrumentSettings = GetStrictInterviewingSettings(instrumentSettingsList);
+    const [valid, invalidSettings] = ValidateSettings(instrumentSettings, GetInstrumentMode(instrumentModes));
+    return;
 }

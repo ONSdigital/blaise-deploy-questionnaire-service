@@ -98,37 +98,37 @@ function sendInstallRequest(filename: string): Promise<boolean> {
     });
 }
 
-function getInstrumentModes(instrumentName: string): Promise<string[] | null> {
+function getInstrumentModes(instrumentName: string): Promise<string[]> {
     console.log("Sending request get instrument modes");
     const url = `/api/instruments/${instrumentName}/modes`;
 
-    return requestPromiseJson("GET", url).then(([status, data]): string[] | null => {
+    return requestPromiseJson("GET", url).then(([status, data]): string[] => {
         console.log(`Response from get instrument modes: Status ${status}, data ${data}`);
         if (status === 200) {
             return data;
         } else {
-            return null;
+            return [];
         }
     }).catch((error: Error) => {
         console.error(`Failed to get instrument modes, Error ${error}`);
-        return null;
+        return [];
     });
 }
 
-function getInstrumentSettings(instrumentName: string): Promise<InstrumentSettings[] | null> {
+function getInstrumentSettings(instrumentName: string): Promise<InstrumentSettings[]> {
     console.log("Sending request get instrument settings");
     const url = `/api/instruments/${instrumentName}/settings`;
 
-    return requestPromiseJson("GET", url).then(([status, data]): InstrumentSettings[] | null => {
+    return requestPromiseJson("GET", url).then(([status, data]): InstrumentSettings[] => {
         console.log(`Response from get instrument settings: Status ${status}, data ${data}`);
         if (status === 200) {
             return data;
         } else {
-            return null;
+            return [];
         }
     }).catch((error: Error) => {
         console.error(`Failed to get instrument settings, Error ${error}`);
-        return null;
+        return [];
     });
 }
 

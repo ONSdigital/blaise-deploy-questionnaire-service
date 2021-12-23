@@ -282,16 +282,16 @@ describe("Function getInstrumentModes(instrumentName: string)", () => {
         expect(success).toBeTruthy();
     });
 
-    it("It should return false if a 404 is returned from the server", async () => {
+    it("It should return null if a 404 is returned from the server", async () => {
         mock_server_request_Return_JSON(404, {});
         const success = await getInstrumentModes("OPN2004A");
-        expect(success).toBeFalsy();
+        expect(success).toEqual([]);
     });
 
     it("It should return null if request returns an error code", async () => {
         mock_server_request_Return_JSON(500, {});
         const success = await getInstrumentModes("OPN2004A");
-        expect(success).toEqual(null);
+        expect(success).toEqual([]);
     });
 
     it("It should return null object if request call fails", async () => {
@@ -301,7 +301,7 @@ describe("Function getInstrumentModes(instrumentName: string)", () => {
             })
         );
         const success = await getInstrumentModes("OPN2004A");
-        expect(success).toEqual(null);
+        expect(success).toEqual([]);
     });
 
     afterAll(() => {

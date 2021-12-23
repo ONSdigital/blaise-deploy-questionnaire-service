@@ -1,4 +1,5 @@
 import { InstrumentSettings } from "blaise-api-node-client";
+import { InstrumentMode } from "./instrument_mode";
 import {
   GetStrictInterviewingSettings,
   ValidateCATIModeSettings,
@@ -141,7 +142,7 @@ describe("Function ValidateSettings()", () => {
 
   describe("when the mode is CATI", () => {
     it("uses cati validation rules and returns true", () => {
-      const [valid, invalidSettings] = ValidateSettings(instrumentSettings, "CATI");
+      const [valid, invalidSettings] = ValidateSettings(instrumentSettings, InstrumentMode.Cati);
       expect(valid).toBeTruthy();
       expect(invalidSettings).toEqual({});
     });
@@ -149,7 +150,7 @@ describe("Function ValidateSettings()", () => {
 
   describe("when the mode is MIXED", () => {
     it("uses cawi validation rules and returns false", () => {
-      const [valid, invalidSettings] = ValidateSettings(instrumentSettings, "MIXED");
+      const [valid, invalidSettings] = ValidateSettings(instrumentSettings, InstrumentMode.Mixed);
       expect(valid).toBeFalsy();
       expect(invalidSettings.deleteSessionOnTimeout).toBeTruthy();
       expect(invalidSettings.deleteSessionOnQuit).toBeTruthy();
