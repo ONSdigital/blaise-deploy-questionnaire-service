@@ -1,10 +1,10 @@
 // Test modules
-import {defineFeature, loadFeature} from "jest-cucumber";
-import {cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
+import { defineFeature, loadFeature } from "jest-cucumber";
+import { cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 // Mock elements
-import {instrumentList} from "./API_Mock_Objects";
+import { instrumentList } from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
@@ -14,7 +14,7 @@ import navigateToDeployPageAndSelectFile, {
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/failing_to_deploy_a_questionnaire.feature",
-    {tagFilter: "not @server and not @integration"}
+    { tagFilter: "not @server and not @integration" }
 );
 
 const mock_server_responses = (url: string) => {
@@ -22,7 +22,7 @@ const mock_server_responses = (url: string) => {
     if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+            json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
         });
     } else if (url.includes("/upload")) {
         return Promise.resolve({
@@ -54,7 +54,7 @@ defineFeature(feature, test => {
         cleanup();
     });
 
-    test("Deployment of selected file failure", ({given, when, then}) => {
+    test("Deployment of selected file failure", ({ given, when, then }) => {
         given("I have selected the questionnaire package I wish to deploy", async () => {
             mock_fetch_requests(mock_server_responses);
             await navigateToDeployPageAndSelectFile();
@@ -73,7 +73,7 @@ defineFeature(feature, test => {
         });
     });
 
-    test("Deploy selected file, retry following failure", ({given, when, then}) => {
+    test("Deploy selected file, retry following failure", ({ given, when, then }) => {
         given("I have selected to deploy a questionnaire package", async () => {
             mock_fetch_requests(mock_server_responses);
             await navigateToDeployPageAndSelectFile();

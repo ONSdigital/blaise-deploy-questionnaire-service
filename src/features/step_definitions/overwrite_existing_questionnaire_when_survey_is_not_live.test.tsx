@@ -1,9 +1,9 @@
 // Test modules
-import {defineFeature, loadFeature} from "jest-cucumber";
-import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
+import { defineFeature, loadFeature } from "jest-cucumber";
+import { act, cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import {instrumentList} from "./API_Mock_Objects";
+import { instrumentList } from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
@@ -13,13 +13,13 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import userEvent from "@testing-library/user-event";
 
-const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/overwrite_existing_questionnaire_when_survey_is_not_live.feature",
-    {tagFilter: "not @server and not @integration"}
+    { tagFilter: "not @server and not @integration" }
 );
 
 const mock_server_responses_not_live = (url: string) => {
@@ -32,22 +32,42 @@ const mock_server_responses_not_live = (url: string) => {
     } else if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+            json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
         });
     } else if (url.includes("/api/install")) {
         return Promise.resolve({
             status: 201,
             json: () => Promise.resolve({}),
         });
+    } else if (url.includes("/api/instruments/OPN2004A/modes")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve(["CATI", "CAWI"]),
+        });
+    } else if (url.includes("/api/instruments/OPN2004A/settings")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve([
+                {
+                    type: "StrictInterviewing",
+                    saveSessionOnTimeout: true,
+                    saveSessionOnQuit: true,
+                    deleteSessionOnTimeout: true,
+                    deleteSessionOnQuit: true,
+                    sessionTimeout: 15,
+                    applyRecordLocking: true
+                }
+            ]),
+        });
     } else if (url.includes("/api/instruments/OPN2004A")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({name: "OPN2004A"}),
+            json: () => Promise.resolve({ name: "OPN2004A" }),
         });
     } else if (url.includes("instruments")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({active: false}),
+            json: () => Promise.resolve({ active: false }),
         });
     } else {
         return Promise.resolve({
@@ -67,17 +87,37 @@ const mock_server_responses_live = (url: string) => {
     } else if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+            json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
         });
     } else if (url.includes("/api/install")) {
         return Promise.resolve({
             status: 201,
             json: () => Promise.resolve({}),
         });
+    } else if (url.includes("/api/instruments/OPN2004A/modes")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve(["CATI", "CAWI"]),
+        });
+    } else if (url.includes("/api/instruments/OPN2004A/settings")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve([
+                {
+                    type: "StrictInterviewing",
+                    saveSessionOnTimeout: true,
+                    saveSessionOnQuit: true,
+                    deleteSessionOnTimeout: true,
+                    deleteSessionOnQuit: true,
+                    sessionTimeout: 15,
+                    applyRecordLocking: true
+                }
+            ]),
+        });
     } else if (url.includes("/api/instruments/OPN2004A")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({name: "OPN2004A", active: true}),
+            json: () => Promise.resolve({ name: "OPN2004A", active: true }),
         });
     } else {
         return Promise.resolve({
@@ -99,7 +139,7 @@ defineFeature(feature, test => {
         cleanup();
     });
 
-    test("Select a new questionnaire package file", ({given, when, then}) => {
+    test("Select a new questionnaire package file", ({ given, when, then }) => {
         given("I have selected the questionnaire package I wish to deploy", async () => {
             mock_fetch_requests(mock_server_responses_not_live);
             mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
@@ -121,7 +161,7 @@ defineFeature(feature, test => {
     });
 
 
-    test("Select to overwrite existing questionnaire when it is live", ({given, when, then, and}) => {
+    test("Select to overwrite existing questionnaire when it is live", ({ given, when, then, and }) => {
         given("I have been presented with the options to cancel or overwrite the questionnaire", async () => {
             mock_fetch_requests(mock_server_responses_live);
             mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
@@ -155,10 +195,10 @@ defineFeature(feature, test => {
 
 
     test("Select to overwrite existing questionnaire where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)", ({
-                                                                                                                                                                     given,
-                                                                                                                                                                     when,
-                                                                                                                                                                     then
-                                                                                                                                                                 }) => {
+        given,
+        when,
+        then
+    }) => {
         given("I have been presented with the options to cancel or overwrite the questionnaire", async () => {
             mock_fetch_requests(mock_server_responses_not_live);
             mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
@@ -185,11 +225,11 @@ defineFeature(feature, test => {
 
 
     test("Confirm overwrite of existing questionnaire package where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)", ({
-                                                                                                                                                                              given,
-                                                                                                                                                                              when,
-                                                                                                                                                                              then,
-                                                                                                                                                                              and
-                                                                                                                                                                          }) => {
+        given,
+        when,
+        then,
+        and
+    }) => {
         given("I have been asked to confirm I want to overwrite an existing questionnaire in Blaise", async () => {
             mock_fetch_requests(mock_server_responses_not_live);
             mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200, {});
@@ -224,7 +264,7 @@ defineFeature(feature, test => {
     });
 
 
-    test("Cancel overwrite of existing questionnaire package", ({given, when, then}) => {
+    test("Cancel overwrite of existing questionnaire package", ({ given, when, then }) => {
         given("I have been presented with an overwrite warning", async () => {
             mock_fetch_requests(mock_server_responses_not_live);
             mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,

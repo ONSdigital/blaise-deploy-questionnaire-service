@@ -1,15 +1,15 @@
 // React
 import React from "react";
 // Test modules
-import {defineFeature, loadFeature} from "jest-cucumber";
-import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
-import {createMemoryHistory} from "history";
+import { defineFeature, loadFeature } from "jest-cucumber";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { createMemoryHistory } from "history";
 import App from "../../App";
-import {Router} from "react-router";
+import { Router } from "react-router";
 import "@testing-library/jest-dom";
 // Mock elements
 import flushPromises from "../../tests/utils";
-import {instrumentList} from "./API_Mock_Objects";
+import { instrumentList } from "./API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
@@ -18,12 +18,12 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import userEvent from "@testing-library/user-event";
 
-const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/successfully_deploy_a_questionnaire.feature",
-    {tagFilter: "not @server and not @integration"}
+    { tagFilter: "not @server and not @integration" }
 );
 
 const mock_server_responses = (url: string) => {
@@ -36,7 +36,27 @@ const mock_server_responses = (url: string) => {
     } else if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+            json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
+        });
+    } else if (url.includes("/api/instruments/OPN2004A/modes")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve(["CATI", "CAWI"]),
+        });
+    } else if (url.includes("/api/instruments/OPN2004A/settings")) {
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve([
+                {
+                    type: "StrictInterviewing",
+                    saveSessionOnTimeout: true,
+                    saveSessionOnQuit: true,
+                    deleteSessionOnTimeout: true,
+                    deleteSessionOnQuit: true,
+                    sessionTimeout: 15,
+                    applyRecordLocking: true
+                }
+            ]),
         });
     } else if (url.includes("/api/instruments/OPN2004A")) {
         return Promise.resolve({
@@ -69,12 +89,12 @@ defineFeature(feature, test => {
         mock_fetch_requests(mock_server_responses);
     });
 
-    test("Successful log in to Questionnaire Deployment Service", ({given, when, then}) => {
+    test("Successful log in to Questionnaire Deployment Service", ({ given, when, then }) => {
         given("I have launched the Questionnaire Deployment Service", () => {
             const history = createMemoryHistory();
             render(
                 <Router history={history}>
-                    <App/>
+                    <App />
                 </Router>
             );
         });
@@ -90,12 +110,12 @@ defineFeature(feature, test => {
         });
     });
 
-    test("Select to deploy a new questionnaire", ({given, when, then}) => {
+    test("Select to deploy a new questionnaire", ({ given, when, then }) => {
         given("I have selected to deploy a new questionnaire", async () => {
             const history = createMemoryHistory();
             render(
                 <Router history={history}>
-                    <App/>
+                    <App />
                 </Router>
             );
             await act(async () => {
@@ -113,14 +133,14 @@ defineFeature(feature, test => {
         then("I am able to select a pre-prepared questionnaire package from a folder/file share", async () => {
             const input = screen.getByLabelText(/Select survey package/i);
 
-            const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", {type: "application/zip"});
+            const file = new File(["(⌐□_□)"], "OPN2004A.bpkg", { type: "application/zip" });
 
             userEvent.upload(input, file);
         });
     });
 
 
-    test("Deploy questionnaire functions disabled", ({given, when, then}) => {
+    test("Deploy questionnaire functions disabled", ({ given, when, then }) => {
         given("I have selected the questionnaire package I wish to deploy", async () => {
             await navigateToDeployPageAndSelectFile();
         });
@@ -137,7 +157,7 @@ defineFeature(feature, test => {
     });
 
 
-    test("Deploy selected file", ({given, when, then, and}) => {
+    test("Deploy selected file", ({ given, when, then, and }) => {
         given("I have selected the questionnaire package I wish to deploy", async () => {
             await navigateToDeployPageAndSelectFile();
         });

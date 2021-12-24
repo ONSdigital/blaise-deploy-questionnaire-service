@@ -1,11 +1,11 @@
 import React from "react";
-import {cleanup, render, screen, waitFor} from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import flushPromises, {mock_server_request_Return_JSON} from "../../tests/utils";
-import {act} from "react-dom/test-utils";
-import {createMemoryHistory} from "history";
-import {Router} from "react-router";
-import {instrumentList} from "../../features/step_definitions/API_Mock_Objects";
+import flushPromises, { mock_server_request_Return_JSON } from "../../tests/utils";
+import { act } from "react-dom/test-utils";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router";
+import { instrumentList } from "../../features/step_definitions/API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
@@ -15,7 +15,7 @@ import axios from "axios";
 import UploadPage from "./UploadPage";
 import userEvent from "@testing-library/user-event";
 
-const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Upload Page", () => {
 
@@ -27,7 +27,7 @@ describe("Upload Page", () => {
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
-                <UploadPage/>
+                <UploadPage />
             </Router>
         );
 
@@ -42,9 +42,9 @@ describe("Upload Page", () => {
 
     it("should render correctly", async () => {
         const history = createMemoryHistory();
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Router history={history}>
-                <UploadPage/>
+                <UploadPage />
             </Router>
         );
 
@@ -59,7 +59,7 @@ describe("Upload Page", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <UploadPage/>
+                <UploadPage />
             </Router>
         );
 
@@ -74,13 +74,13 @@ describe("Upload Page", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <UploadPage/>
+                <UploadPage />
             </Router>
         );
 
         const input = screen.getByLabelText(/Select survey package/i);
 
-        const file = new File(["(⌐□_□)"], "OPN2004A.pdf", {type: "application/pdf"});
+        const file = new File(["(⌐□_□)"], "OPN2004A.pdf", { type: "application/pdf" });
 
         userEvent.upload(input, file);
 
@@ -107,7 +107,7 @@ const mock_server_responses = (url: string, config: any) => {
     } else if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+            json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
         });
     } else {
         return Promise.resolve({

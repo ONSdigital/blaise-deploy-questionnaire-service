@@ -8,29 +8,36 @@ import DeployFormSummary from "./Sections/DeployFormSummary";
 import { Instrument } from "../../../Interfaces";
 import AlreadyExists from "./Sections/AlreadyExists";
 import ConfirmOverride from "./Sections/ConfirmOverride";
-import { uploadAndInstallFile, validateSelectedInstrumentExists } from "./UploadProcess";
+import InvalidSettings from "./Sections/InvalidSettings";
+import { uploadAndInstallFile, validateSelectedInstrumentExists, checkInstrumentSettings } from "./UploadProcess";
 import { roundUp } from "../../utilities";
 import Breadcrumbs from "../Breadcrumbs";
+import { activateInstrument, deleteInstrument } from "../../utilities/http";
+import { InstrumentSettings } from "blaise-api-node-client";
 
-const steps = [
-    "Select file",
-    "Already exits prompt",
-    "Confirm Override",
-    "Want to set a live date",
-    "Summary"
-];
+enum Step {
+    SelectFile,
+    AlreadyExists,
+    ConfirmOverride,
+    SetLiveDate,
+    Summary,
+    InvalidSettings
+}
 
 
 function UploadPage(): ReactElement {
     const [file, setFile] = useState<File>();
     const [instrumentName, setInstrumentName] = useState<string>("");
     const [foundInstrument, setFoundInstrument] = useState<Instrument | null>(null);
-    const [activeStep, setActiveStep] = useState(0);
-    const isLastStep = activeStep === steps.length - 1;
+    const [activeStep, setActiveStep] = useState<Step>(Step.SelectFile);
 
     const [uploading, setUploading] = useState<boolean>(false);
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [uploadStatus, setUploadStatus] = useState<string>("");
+
+    const [instrumentSettings, setInstrumentSettings] = useState<InstrumentSettings>();
+    const [invalidSettings, setInvalidSettings] = useState<Partial<InstrumentSettings>>({});
+    const [errored, setErrored] = useState<boolean>(false);
 
     const history = useHistory();
 
@@ -40,81 +47,135 @@ function UploadPage(): ReactElement {
         setUploadPercentage(percentage);
     };
 
-    function _renderStepContent(step: number) {
+    function submitButton(): string {
+        switch (activeStep) {
+            case Step.Summary:
+                return "Deploy questionnaire";
+            case Step.InvalidSettings:
+                return "Deploy anyway";
+            default:
+                return "Continue";
+        }
+    }
+
+    function cancelButton(): string {
+        switch (activeStep) {
+            case Step.InvalidSettings:
+                return "Reinstall";
+            default:
+                return "Cancel";
+        }
+    }
+
+    async function cancelButtonAction(): Promise<void> {
+        if (activeStep == Step.InvalidSettings) {
+            console.log(`Cancelling partial install, uninstalling questionnaire ${instrumentName}`);
+            await deleteInstrument(instrumentName);
+        }
+        history.push("/");
+    }
+
+    function _renderStepContent(step: Step) {
         switch (step) {
-            case 0:
+            case Step.SelectFile:
                 return (
                     <SelectFile file={file}
                         setFile={setFile}
                         loading={false} />
                 );
-            case 1:
+            case Step.AlreadyExists:
                 return <AlreadyExists instrumentName={instrumentName} />;
-            case 2:
+            case Step.ConfirmOverride:
                 return <ConfirmOverride instrumentName={instrumentName} />;
-            case 3:
+            case Step.SetLiveDate:
                 return <AskToSetTOStartDate instrumentName={instrumentName} />;
-            case 4:
+            case Step.Summary:
                 return <DeployFormSummary file={file} foundInstrument={foundInstrument} />;
+            case Step.InvalidSettings:
+                return <InvalidSettings
+                    instrumentName={instrumentName}
+                    instrumentSettings={instrumentSettings}
+                    invalidSettings={invalidSettings}
+                    errored={errored}
+                />;
         }
     }
 
     async function _uploadAndInstallInstrument(values: any, actions: any) {
-        await uploadAndInstallFile(instrumentName, values["set TO start date"], file, setUploading, setUploadStatus, onFileUploadProgress);
+        const installed = await uploadAndInstallFile(instrumentName, values["set TO start date"], file, setUploading, setUploadStatus, onFileUploadProgress);
         actions.setSubmitting(false);
+        if (!installed) {
+            setActiveStep(Object.keys(Step).length);
+            return;
+        }
 
-        setActiveStep(activeStep + 1);
+        await _checkInstrumentSettings();
+    }
+
+    async function _checkInstrumentSettings() {
+        const valid = await checkInstrumentSettings(instrumentName, setInstrumentSettings, setInvalidSettings, setErrored);
+
+        if (!valid) {
+            setActiveStep(5);
+            return;
+        }
+        setActiveStep(Object.keys(Step).length);
     }
 
     async function _handleSubmit(values: any, actions: any) {
         let result;
-        if (isLastStep) {
-            await _uploadAndInstallInstrument(values, actions);
-        } else {
-            switch (activeStep) {
-                case 0:
-                    result = await validateSelectedInstrumentExists(file, setInstrumentName, setUploadStatus, setFoundInstrument);
-                    if (result === null) {
-                        actions.setTouched({});
-                        actions.setSubmitting(false);
-                        setActiveStep(steps.length);
-                        return;
-                    }
-                    if (result === false) {
-                        setActiveStep(3);
-                        actions.setTouched({});
-                        actions.setSubmitting(false);
-                        return;
-                    }
-                    break;
-                case 1:
-                    if (values.override === "cancel") {
-                        actions.setSubmitting(false);
-                        history.push("/");
-                        return;
-                    }
-                    if (foundInstrument?.active) {
-                        actions.setSubmitting(false);
-                        history.push(`/upload/survey-live/${instrumentName}`);
-                    }
-                    break;
-                case 2:
-                    if (values.override === "cancel") {
-                        actions.setSubmitting(false);
-                        history.push("/");
-                        return;
-                    }
-                    break;
-                case 3:
-                    if (values.askToSetTOStartDate === "no") {
-                        values["set TO start date"] = "";
-                    }
-                    break;
-            }
-            setActiveStep(activeStep + 1);
-            actions.setTouched({});
-            actions.setSubmitting(false);
+        switch (activeStep) {
+            case 0:
+                result = await validateSelectedInstrumentExists(file, setInstrumentName, setUploadStatus, setFoundInstrument);
+                if (result === null) {
+                    actions.setTouched({});
+                    actions.setSubmitting(false);
+                    setActiveStep(Object.keys(Step).length);
+                    return;
+                }
+                if (result === false) {
+                    setActiveStep(3);
+                    actions.setTouched({});
+                    actions.setSubmitting(false);
+                    return;
+                }
+                break;
+            case 1:
+                if (values.override === "cancel") {
+                    actions.setSubmitting(false);
+                    history.push("/");
+                    return;
+                }
+                if (foundInstrument?.active) {
+                    actions.setSubmitting(false);
+                    history.push(`/upload/survey-live/${instrumentName}`);
+                }
+                break;
+            case 2:
+                if (values.override === "cancel") {
+                    actions.setSubmitting(false);
+                    history.push("/");
+                    return;
+                }
+                break;
+            case 3:
+                if (values.askToSetTOStartDate === "no") {
+                    values["set TO start date"] = "";
+                }
+                break;
+            case 4:
+                await _uploadAndInstallInstrument(values, actions);
+                break;
+            case 5:
+                await activateInstrument(instrumentName);
+                break;
         }
+        // Step 4 has custom handling for steps
+        if (activeStep != 4) {
+            setActiveStep(activeStep + 1);
+        }
+        actions.setTouched({});
+        actions.setSubmitting(false);
     }
 
     return (
@@ -126,7 +187,7 @@ function UploadPage(): ReactElement {
             } />
 
             <main id="main-content" className="page__main u-mt-no">
-                {activeStep === steps.length ? (
+                {activeStep === Object.keys(Step).length ? (
                     <Redirect
                         to={{
                             pathname: "/UploadSummary",
@@ -148,12 +209,12 @@ function UploadPage(): ReactElement {
                                         id={"continue-deploy-button"}
                                         submit={true}
                                         loading={isSubmitting}
-                                        primary={true} label={isLastStep ? "Deploy questionnaire" : "Continue"} />
+                                        primary={true} label={submitButton()} />
                                     {!uploading && !isSubmitting && (
                                         <ONSButton
                                             id={"cancel-deploy-button"}
-                                            onClick={() => history.push("/")}
-                                            primary={false} label={"Cancel"} />
+                                            onClick={cancelButtonAction}
+                                            primary={false} label={cancelButton()} />
                                     )}
                                 </div>
                             </Form>

@@ -1,6 +1,6 @@
-import {requestPromiseJson, requestPromiseJsonList} from "./requestPromise";
-import {Instrument} from "../../../Interfaces";
-import {InstrumentSettings} from "blaise-api-node-client";
+import { requestPromiseJson, requestPromiseJsonList, requestPromiseNoResponse } from "./requestPromise";
+import { Instrument } from "../../../Interfaces";
+import { InstrumentSettings } from "blaise-api-node-client";
 
 type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];
@@ -45,8 +45,8 @@ function deleteInstrument(instrumentName: string): Promise<deleteInstrumentRespo
     console.log("Call to deleteInstrument");
     const url = `/api/instruments/${instrumentName}`;
 
-    return requestPromiseJson("DELETE", url).then(([status, data]): deleteInstrumentResponse => {
-        console.log(`Response from deleteInstrument: Status ${status}, data ${data}`);
+    return requestPromiseNoResponse("DELETE", url).then((status): deleteInstrumentResponse => {
+        console.log(`Response from deleteInstrument: Status ${status}`);
         if (status === 204) {
             return [true, ""];
         } else {
@@ -62,8 +62,8 @@ function activateInstrument(instrumentName: string): Promise<boolean> {
     console.log("Call to activateInstrument");
     const url = `/api/instruments/${instrumentName}/activate`;
 
-    return requestPromiseJson("PATCH", url).then(([status, data]): boolean => {
-        console.log(`Response from activateInstrument: Status ${status}, data ${data}`);
+    return requestPromiseNoResponse("PATCH", url).then((status): boolean => {
+        console.log(`Response from activateInstrument: Status ${status}`);
         return status === 204;
     }).catch((error: Error) => {
         console.error(`Response from activateInstrument: Error ${error}`);
@@ -76,8 +76,8 @@ function deactivateInstrument(instrumentName: string): Promise<boolean> {
     console.log("Call to deactivateInstrument");
     const url = `/api/instruments/${instrumentName}/deactivate`;
 
-    return requestPromiseJson("PATCH", url).then(([status, data]): boolean => {
-        console.log(`Response from deactivateInstrument: Status ${status}, data ${data}`);
+    return requestPromiseNoResponse("PATCH", url).then((status): boolean => {
+        console.log(`Response from deactivateInstrument: Status ${status}`);
         return status === 204;
     }).catch((error: Error) => {
         console.error(`Response from deactivateInstrument: Error ${error}`);
