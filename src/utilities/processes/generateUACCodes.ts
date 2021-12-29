@@ -17,7 +17,8 @@ function mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails): 
             serial_number: caseID,
             UAC1: foundCase.uac_chunks.uac1,
             UAC2: foundCase.uac_chunks.uac2,
-            UAC3: foundCase.uac_chunks.uac3
+            UAC3: foundCase.uac_chunks.uac3,
+            UAC: [foundCase.uac_chunks.uac1, foundCase.uac_chunks.uac2, foundCase.uac_chunks.uac3].join("")
         };
         if (foundCase.uac_chunks.uac4) {
             uacInfo.UAC4 = foundCase.uac_chunks.uac4;
