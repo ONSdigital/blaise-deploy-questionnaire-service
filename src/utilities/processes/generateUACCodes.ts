@@ -22,6 +22,8 @@ function mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails): 
         };
         if (foundCase.uac_chunks.uac4) {
             uacInfo.UAC4 = foundCase.uac_chunks.uac4;
+            uacInfo.UAC = [foundCase.uac_chunks.uac1, foundCase.uac_chunks.uac2,
+                foundCase.uac_chunks.uac3, foundCase.uac_chunks.uac4].join("");
         }
         array.push(uacInfo);
     });
