@@ -1,6 +1,6 @@
 import { generateUACCodes, getInstrumentCaseIds, getUACCodesByCaseID, } from "../http";
 import { Datas } from "react-csv-downloader/dist/esm/lib/csv";
-import { InstrumentUacDetails } from "../../../server/BusAPI/interfaces/instrument-uac-details";
+import { InstrumentUacDetails } from "bus-api-node-client";
 
 function mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails): Datas {
     if (caseIDs.length === 0 || Object.keys(uacCodes).length === 0) {
@@ -18,12 +18,10 @@ function mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails): 
             UAC1: foundCase.uac_chunks.uac1,
             UAC2: foundCase.uac_chunks.uac2,
             UAC3: foundCase.uac_chunks.uac3,
-            UAC: [foundCase.uac_chunks.uac1, foundCase.uac_chunks.uac2, foundCase.uac_chunks.uac3].join("")
+            UAC: foundCase.full_uac
         };
         if (foundCase.uac_chunks.uac4) {
             uacInfo.UAC4 = foundCase.uac_chunks.uac4;
-            uacInfo.UAC = [foundCase.uac_chunks.uac1, foundCase.uac_chunks.uac2,
-                foundCase.uac_chunks.uac3, foundCase.uac_chunks.uac4].join("");
         }
         array.push(uacInfo);
     });
