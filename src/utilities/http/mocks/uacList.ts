@@ -1,10 +1,9 @@
-import {InstrumentUacDetails} from "../../../../server/BusAPI/interfaces/instrument-uac-details";
+import { InstrumentUacDetailsByCaseId } from "bus-api-node-client";
 
-export const uacDetails: InstrumentUacDetails = {
+export const uacDetails: InstrumentUacDetailsByCaseId = {
     "100000001": {
         instrument_name: "dst2106a",
-        postcode_attempts: 0,
-        postcode_attempt_timestamp: "",
+        case_id: "100000001",
         uac_chunks: {
             uac1: "0009",
             uac2: "7565",
@@ -13,8 +12,7 @@ export const uacDetails: InstrumentUacDetails = {
     },
     "100000002": {
         instrument_name: "dst2106a",
-        postcode_attempts: 0,
-        postcode_attempt_timestamp: "",
+        case_id: "100000002",
         uac_chunks: {
             uac1: "3453",
             uac2: "6545",
@@ -23,8 +21,7 @@ export const uacDetails: InstrumentUacDetails = {
     },
     "100000003": {
         instrument_name: "dst2106a",
-        postcode_attempts: 0,
-        postcode_attempt_timestamp: "",
+        case_id: "100000003",
         uac_chunks: {
             uac1: "9789",
             uac2: "7578",
