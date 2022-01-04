@@ -3,35 +3,34 @@
  */
 import app from "./server"; // Link to your server file
 import supertest from "supertest";
-import MockAdapter from "axios-mock-adapter";
-import axios from "axios";
+
+jest.mock("blaise-api-node-client");
+import BlaiseApiRest from "blaise-api-node-client";
 
 const request = supertest(app);
-
-// This sets the mock adapter on the default instance
-const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
-
 
 describe("Test Heath Endpoint", () => {
     it("should return a 200 status and json message", async done => {
         const response = await request.get("/dqs-ui/version/health");
 
         expect(response.statusCode).toEqual(200);
-        expect(response.body).toStrictEqual({healthy: true});
+        expect(response.body).toStrictEqual({ healthy: true });
         done();
     });
 });
 
 
-// Mock any GET request to /api/instruments
-// arguments for reply are (status, data, headers)
-
-
 describe("Given the API returns 2 instruments", () => {
     beforeAll(() => {
-        mock.onGet("http://" + process.env.BLAISE_API_URL + "/api/v1/cati/serverparks/server-park/instruments").reply(200,
-            apiInstrumentList,
-        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        BlaiseApiRest.mockImplementation(() => {
+            return {
+                getInstrumentsWithCatiData: () => {
+                    return Promise.resolve(apiInstrumentList);
+                },
+            };
+        });
     });
 
     const apiInstrumentList = [
@@ -79,13 +78,22 @@ describe("Given the API returns 2 instruments", () => {
     });
 
     afterAll(() => {
-        mock.reset();
+        jest.clearAllMocks();
+        jest.resetModules();
     });
 });
 
 describe("Get list of instruments endpoint fails", () => {
     beforeAll(() => {
-        mock.onGet("http://" + process.env.BLAISE_API_URL + "/api/v1/cati/serverparks/server-park/instruments").networkError();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        BlaiseApiRest.mockImplementation(() => {
+            return {
+                getInstrumentsWithCatiData: () => {
+                    return Promise.reject("Network error");
+                },
+            };
+        });
     });
 
     it("should return a 500 status and an error message", async () => {
@@ -94,6 +102,7 @@ describe("Get list of instruments endpoint fails", () => {
     });
 
     afterAll(() => {
-        mock.reset();
+        jest.clearAllMocks();
+        jest.resetModules();
     });
 });
