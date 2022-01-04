@@ -1,4 +1,4 @@
-import {Instrument} from "../../../Interfaces";
+import { Instrument } from "../../../../Interfaces";
 
 export const instrumentList: Instrument[] = [{
     name: "OPN2101A",
@@ -38,4 +38,17 @@ export const opnInstrument: Instrument = {
     hasData: false,
     active: false,
     fieldPeriod: "April 2020"
+};
+
+export const instrumentWithName = (instrumentName: string): Instrument => {
+    return {
+        name: instrumentName,
+        serverParkName: "gusty",
+        installDate: "2021-01-15T15:26:43.4233454+00:00",
+        status: "Active",
+        dataRecordCount: 0,
+        hasData: false,
+        active: false,
+        fieldPeriod: "April 2020"
+    };
 };

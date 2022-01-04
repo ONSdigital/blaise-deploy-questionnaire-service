@@ -1,6 +1,6 @@
 import { InstrumentUacDetails } from "../../../server/BusAPI/interfaces/instrument-uac-details";
 import { generateUACCodesAndCSVFileData, mapCasesToUACCodes } from "./generateUACCodes";
-import { mock_fetch_requests } from "../../features/step_definitions/functions";
+import { mock_fetch_requests } from "../../features/step_definitions/helpers/functions";
 import { cleanup } from "@testing-library/react";
 
 

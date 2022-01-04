@@ -1,20 +1,20 @@
 // React
 import React from "react";
 // Test modules
-import {defineFeature, loadFeature} from "jest-cucumber";
-import {act, cleanup, fireEvent, render, screen} from "@testing-library/react";
-import {createMemoryHistory} from "history";
+import { defineFeature, loadFeature } from "jest-cucumber";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { createMemoryHistory } from "history";
 import App from "../../App";
-import {Router} from "react-router";
+import { Router } from "react-router";
 import "@testing-library/jest-dom";
 // Mock elements
-import flushPromises, {mock_server_request_Return_JSON} from "../../tests/utils";
-import {instrumentList} from "./API_Mock_Objects";
+import flushPromises, { mock_server_request_Return_JSON } from "../../tests/utils";
+import { instrumentList } from "./helpers/API_Mock_Objects";
 
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/questionnaire_search_filter.feature",
-    {tagFilter: "not @server and not @integration"}
+    { tagFilter: "not @server and not @integration" }
 );
 
 defineFeature(feature, test => {
@@ -29,12 +29,12 @@ defineFeature(feature, test => {
         mock_server_request_Return_JSON(200, instrumentList);
     });
 
-    test("Search for a questionnaire", ({given, when, then}) => {
+    test("Search for a questionnaire", ({ given, when, then }) => {
         given("I have launched the DQS", async () => {
             const history = createMemoryHistory();
             render(
                 <Router history={history}>
-                    <App/>
+                    <App />
                 </Router>
             );
 
@@ -48,7 +48,7 @@ defineFeature(feature, test => {
         });
 
         when("I enter the name of the survey I need to work on", async () => {
-            fireEvent.change(screen.getByLabelText(/Filter by questionnaire name/i), {target: {value: "OPN2004A"}});
+            fireEvent.change(screen.getByLabelText(/Filter by questionnaire name/i), { target: { value: "OPN2004A" } });
             await act(async () => {
                 await flushPromises();
             });
@@ -62,12 +62,12 @@ defineFeature(feature, test => {
         });
     });
 
-    test("Questionnaire not found", ({given, when, then}) => {
+    test("Questionnaire not found", ({ given, when, then }) => {
         given("I have entered a questionnaire name and asked to search", async () => {
             const history = createMemoryHistory();
             render(
                 <Router history={history}>
-                    <App/>
+                    <App />
                 </Router>
             );
 
@@ -77,7 +77,7 @@ defineFeature(feature, test => {
         });
 
         when("that questionnaire is not found", async () => {
-            fireEvent.change(screen.getByLabelText(/Filter by questionnaire name/i), {target: {value: "IPS2000"}});
+            fireEvent.change(screen.getByLabelText(/Filter by questionnaire name/i), { target: { value: "IPS2000" } });
             await act(async () => {
                 await flushPromises();
             });

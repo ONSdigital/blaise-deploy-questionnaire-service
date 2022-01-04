@@ -1,13 +1,13 @@
-import {defineFeature, loadFeature} from "jest-cucumber";
-import {mock_fetch_requests, renderHomepage} from "./functions";
-import {instrumentList} from "./API_Mock_Objects";
-import {act, cleanup, screen, waitFor} from "@testing-library/react";
+import { defineFeature, loadFeature } from "jest-cucumber";
+import { mock_fetch_requests, renderHomepage } from "./helpers/functions";
+import { instrumentList } from "./helpers/API_Mock_Objects";
+import { act, cleanup, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import flushPromises from "../../tests/utils";
 
 const feature = loadFeature(
     "./src/features/edit_to_start_date.feature",
-    {tagFilter: "not @server and not @integration"}
+    { tagFilter: "not @server and not @integration" }
 );
 
 
@@ -29,7 +29,7 @@ defineFeature(feature, test => {
         if (url.includes(`/api/tostartdate/${instrumentThatHasStartDate}`)) {
             return Promise.resolve({
                 status: 200,
-                json: () => Promise.resolve({tostartdate: toStartDate}),
+                json: () => Promise.resolve({ tostartdate: toStartDate }),
             });
         } else if (url.includes(`/api/tostartdate/${instrumentThatDoesNotHaveStartDate}`) && (config !== undefined && config.method === "POST")) {
             return Promise.resolve({
@@ -64,10 +64,10 @@ defineFeature(feature, test => {
             expect(instrumentList).toHaveLength(3);
 
             expect(instrumentList).toEqual(expect.arrayContaining(
-                [expect.objectContaining({"name": instrumentThatHasStartDate})]
+                [expect.objectContaining({ "name": instrumentThatHasStartDate })]
             ));
             expect(instrumentList).toEqual(expect.arrayContaining(
-                [expect.objectContaining({"name": instrumentThatDoesNotHaveStartDate})]
+                [expect.objectContaining({ "name": instrumentThatDoesNotHaveStartDate })]
             ));
         });
     };
@@ -75,7 +75,7 @@ defineFeature(feature, test => {
     const aToStartDateHasBeenSpecified = (given, instrumentName) => {
         given("a TO Start date has been specified", async () => {
             expect(await mock_server_responses(`/api/tostartdate/${instrumentName}`)).toEqual(expect.objectContaining(
-                {status: 200}
+                { status: 200 }
             ));
         });
     };
@@ -83,7 +83,7 @@ defineFeature(feature, test => {
     const noToStartDateHasBeenSpecified = (given, instrumentName) => {
         given("no TO Start date has been specified", async () => {
             expect(await mock_server_responses(`/api/tostartdate/${instrumentName}`)).toEqual(expect.objectContaining(
-                {status: 404}
+                { status: 404 }
             ));
         });
     };
@@ -178,9 +178,9 @@ defineFeature(feature, test => {
             await waitFor(() => {
                 expect(screen.getByText(/Questionnaire details/i)).toBeDefined();
                 expect(global.fetch).toHaveBeenCalledWith(`/api/tostartdate/${instrumentName}`, {
-                    "body": JSON.stringify({"tostartdate": newToStartDateValue}),
+                    "body": JSON.stringify({ "tostartdate": newToStartDateValue }),
                     "method": "POST",
-                    "headers": {"Content-Type": "application/json"}
+                    "headers": { "Content-Type": "application/json" }
                 });
             });
         });
@@ -191,51 +191,51 @@ defineFeature(feature, test => {
             await waitFor(() => {
                 expect(screen.getByText(/Questionnaire details/i)).toBeDefined();
                 expect(global.fetch).toHaveBeenCalledWith(`/api/tostartdate/${instrumentName}`, {
-                    "body": JSON.stringify({"tostartdate": ""}),
+                    "body": JSON.stringify({ "tostartdate": "" }),
                     "method": "POST",
-                    "headers": {"Content-Type": "application/json"}
+                    "headers": { "Content-Type": "application/json" }
                 });
             });
         });
     };
 
 
-    test("View TO Start Date if specified", ({given, and, when, then}) => {
+    test("View TO Start Date if specified", ({ given, and, when, then }) => {
         aQuestionnaireThatHasBeenDeployed(given);
         aToStartDateHasBeenSpecified(and, instrumentThatHasStartDate);
         iSelectAQuestionnaire(when, instrumentThatHasStartDate);
         iCanViewTheToStartDateThatWasSpecified(then);
     });
 
-    test("Change TO Start Date if specified", ({given, and, when, then}) => {
+    test("Change TO Start Date if specified", ({ given, and, when, then }) => {
         aQuestionnaireThatHasBeenDeployed(given);
         aToStartDateHasBeenSpecified(and, instrumentThatHasStartDate);
         iSelectAQuestionnaire(when, instrumentThatHasStartDate);
         iHaveTheOptionToChangeOrDeleteTheToStartDate(then);
     });
 
-    test("Add TO Start Date if not previously specified", ({given, and, when, then}) => {
+    test("Add TO Start Date if not previously specified", ({ given, and, when, then }) => {
         aQuestionnaireThatHasBeenDeployed(given);
         noToStartDateHasBeenSpecified(and, instrumentThatDoesNotHaveStartDate);
         iSelectAQuestionnaire(when, instrumentThatDoesNotHaveStartDate);
         iHaveTheOptionToAddAToStartDate(then);
     });
 
-    test("Change an existing TO Start Date for a deployed questionnaire", ({given, and, when, then}) => {
+    test("Change an existing TO Start Date for a deployed questionnaire", ({ given, and, when, then }) => {
         iHaveSelectedToChangeOrDeleteAToStartDateForADeployedQuestionnaire(given, instrumentThatHasStartDate);
         iSpecifyAToStartDate(and);
         iSelectTheContinueButton(when);
         theToStartDateIsStoredAgainstTheQuestionnaire(then, instrumentThatHasStartDate);
     });
 
-    test("Delete a TO start date from a deployed questionnaire", ({given, and, when, then}) => {
+    test("Delete a TO start date from a deployed questionnaire", ({ given, and, when, then }) => {
         iHaveSelectedToChangeOrDeleteAToStartDateForADeployedQuestionnaire(given, instrumentThatHasStartDate);
         iDeleteTheToStartDate(and);
         iSelectTheContinueButton(when);
         theToStartDateIsDeletedFromTheQuestionnaire(then, instrumentThatHasStartDate);
     });
 
-    test("Add a TO Start Date to a deployed questionnaire", ({given, and, when, then}) => {
+    test("Add a TO Start Date to a deployed questionnaire", ({ given, and, when, then }) => {
         iHaveSelectedToAddAToStartDateForADeployedQuestionnaire(given, instrumentThatDoesNotHaveStartDate);
         iSpecifyAToStartDate(and);
         iSelectTheContinueButton(when);

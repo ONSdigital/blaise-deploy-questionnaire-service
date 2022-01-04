@@ -1,23 +1,23 @@
 // React
 import React from "react";
 // Test modules
-import {defineFeature, loadFeature} from "jest-cucumber";
-import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
+import { defineFeature, loadFeature } from "jest-cucumber";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 // Mock elements
-import {mock_fetch_requests} from "./functions";
-import {createMemoryHistory} from "history";
-import {Router} from "react-router";
+import { mock_fetch_requests } from "./helpers/functions";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router";
 import App from "../../App";
-import {instrumentList} from "./API_Mock_Objects";
+import { instrumentList } from "./helpers/API_Mock_Objects";
 import flushPromises from "../../tests/utils";
 
 
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/erroneous_delete_questionnaire.feature",
-    {tagFilter: "not @server and not @integration"}
+    { tagFilter: "not @server and not @integration" }
 );
 
 const mock_server_responses = (url: string) => {
@@ -30,7 +30,7 @@ const mock_server_responses = (url: string) => {
     } else if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+            json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
         });
     } else if (url.includes("/api/install")) {
         return Promise.resolve({
@@ -69,13 +69,13 @@ defineFeature(feature, test => {
         cleanup();
     });
 
-    test("Attempt to delete an questionnaire with an erroneous status", ({given, when, then, and}) => {
+    test("Attempt to delete an questionnaire with an erroneous status", ({ given, when, then, and }) => {
         given("I can see the questionnaire I want to delete in the questionnaire list", async () => {
             mock_fetch_requests(mock_server_responses);
             const history = createMemoryHistory();
             render(
                 <Router history={history}>
-                    <App/>
+                    <App />
                 </Router>
             );
             await act(async () => {
@@ -108,13 +108,13 @@ defineFeature(feature, test => {
     });
 
 
-    test("Select to deploy a new questionnaire", ({given, when, and, then}) => {
+    test("Select to deploy a new questionnaire", ({ given, when, and, then }) => {
         given("I have been presented with a warning that I am about to delete a questionnaire from Blaise", async () => {
             mock_fetch_requests(mock_server_responses);
             const history = createMemoryHistory();
             render(
                 <Router history={history}>
-                    <App/>
+                    <App />
                 </Router>
             );
             await act(async () => {

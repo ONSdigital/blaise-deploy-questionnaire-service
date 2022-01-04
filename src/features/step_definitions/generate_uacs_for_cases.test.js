@@ -1,15 +1,15 @@
-import {defineFeature, loadFeature} from "jest-cucumber";
-import {mock_fetch_requests} from "./functions";
-import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
+import { defineFeature, loadFeature } from "jest-cucumber";
+import { mock_fetch_requests } from "./helpers/functions";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import flushPromises from "../../tests/utils";
-import {createMemoryHistory} from "history";
-import {Router} from "react-router";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router";
 import React from "react";
 import InstrumentDetails from "../../Components/InstrumentDetails/InstrumentDetails";
 
 const feature = loadFeature(
     "./src/features/generate_uacs_for_cases.feature",
-    {tagFilter: "not @server and not @integration"}
+    { tagFilter: "not @server and not @integration" }
 );
 
 
@@ -34,7 +34,7 @@ defineFeature(feature, test => {
         if (url.includes("/api/tostartdate/")) {
             return Promise.resolve({
                 status: 200,
-                json: () => Promise.resolve({tostartdate: toStartDate}),
+                json: () => Promise.resolve({ tostartdate: toStartDate }),
             });
         } else if (url.includes(`/api/uacs/instrument/${instrumentNameWithCAWIMode}`) && (config !== undefined && config.method === "POST")) {
             return Promise.resolve({
@@ -69,12 +69,12 @@ defineFeature(feature, test => {
         } else if (url.includes(`/api/uacs/instrument/${instrumentNameWithCAWIModeAndUACs}/count`)) {
             return Promise.resolve({
                 status: 200,
-                json: () => Promise.resolve({count: fiveThousandCases}),
+                json: () => Promise.resolve({ count: fiveThousandCases }),
             });
         } else if (url.includes(`/api/uacs/instrument/${instrumentNameWithCAWIMode}/count`)) {
             return Promise.resolve({
                 status: 200,
-                json: () => Promise.resolve({count: 0}),
+                json: () => Promise.resolve({ count: 0 }),
             });
         } else {
             return Promise.resolve({
@@ -98,10 +98,10 @@ defineFeature(feature, test => {
     const whenIGoToTheQuestionnaireDetailsPage = (when, instrument) => {
         when("I go to the questionnaire details page", async () => {
             const history = createMemoryHistory();
-            history.push("/questionnaire", {instrument: instrument});
+            history.push("/questionnaire", { instrument: instrument });
             render(
                 <Router history={history}>
-                    <InstrumentDetails/>
+                    <InstrumentDetails />
                 </Router>
             );
             await act(async () => {
@@ -171,7 +171,7 @@ defineFeature(feature, test => {
             const response = await mock_server_responses(`/api/uacs/instrument/${instrumentName}/count`);
 
             expect(await response.json()).toEqual(
-                {count: 5000}
+                { count: 5000 }
             );
         });
     };
@@ -187,7 +187,7 @@ defineFeature(feature, test => {
     };
 
 
-    test("Generate button exists for questionnaires with CAWI mode and cases", ({given, and, when, then}) => {
+    test("Generate button exists for questionnaires with CAWI mode and cases", ({ given, and, when, then }) => {
         const instrumentInCAWIModeWithCases = {
             name: instrumentNameWithCAWIMode,
             serverParkName: "gusty",
@@ -207,7 +207,7 @@ defineFeature(feature, test => {
     });
 
 
-    test("Generate button does not exist for questionnaires in CAWI mode without cases", ({given, and, when, then}) => {
+    test("Generate button does not exist for questionnaires in CAWI mode without cases", ({ given, and, when, then }) => {
         const instrumentInCAWIModeWithoutCases = {
             name: instrumentNameWithCAWIMode,
             serverParkName: "gusty",
@@ -227,7 +227,7 @@ defineFeature(feature, test => {
     });
 
 
-    test("Generate button does not exist for questionnaires in CATI mode without cases", ({given, and, when, then}) => {
+    test("Generate button does not exist for questionnaires in CATI mode without cases", ({ given, and, when, then }) => {
         const instrumentInCATIModeWithoutCases = {
             name: instrumentNameWithoutCAWIMode,
             serverParkName: "gusty",
@@ -247,7 +247,7 @@ defineFeature(feature, test => {
     });
 
 
-    test("Generate button does not exist for questionnaires in CATI mode with cases", ({given, and, when, then}) => {
+    test("Generate button does not exist for questionnaires in CATI mode with cases", ({ given, and, when, then }) => {
         const instrumentInCATIModeWithCases = {
             name: instrumentNameWithoutCAWIMode,
             serverParkName: "gusty",
@@ -267,7 +267,7 @@ defineFeature(feature, test => {
     });
 
 
-    test("I get a confirmation message when generating UACs", ({given, and, when, then}) => {
+    test("I get a confirmation message when generating UACs", ({ given, and, when, then }) => {
         const instrumentInCAWIModeWithCases = {
             name: instrumentNameWithCAWIMode,
             serverParkName: "gusty",
@@ -294,13 +294,13 @@ defineFeature(feature, test => {
             expect(global.fetch).toHaveBeenCalledWith(`/api/uacs/instrument/${instrumentNameWithCAWIMode}`, {
                 "method": "POST",
                 "body": null,
-                "headers": {"Content-Type": "application/json"}
+                "headers": { "Content-Type": "application/json" }
             });
         });
     });
 
 
-    test("I get a error message when generating UACs", ({given, and, when, then}) => {
+    test("I get a error message when generating UACs", ({ given, and, when, then }) => {
         const instrumentInCAWIModeWithCases = {
             name: instrumentNameWithCAWIModeThatFailsUACGeneration,
             serverParkName: "gusty",
@@ -329,7 +329,7 @@ defineFeature(feature, test => {
 
 
     test("I can see how many UACs have been generated for a particular questionnaire in the details page", (
-        {given, and, when, then}) => {
+        { given, and, when, then }) => {
         const instrumentInCAWIModeWithCases = {
             name: instrumentNameWithCAWIModeAndUACs,
             serverParkName: "gusty",

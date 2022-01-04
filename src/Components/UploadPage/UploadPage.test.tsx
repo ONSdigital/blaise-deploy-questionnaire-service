@@ -5,11 +5,11 @@ import flushPromises, { mock_server_request_Return_JSON } from "../../tests/util
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
-import { instrumentList } from "../../features/step_definitions/API_Mock_Objects";
+import { instrumentList } from "../../features/step_definitions/helpers/API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
-} from "../../features/step_definitions/functions";
+} from "../../features/step_definitions/helpers/functions";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import UploadPage from "./UploadPage";

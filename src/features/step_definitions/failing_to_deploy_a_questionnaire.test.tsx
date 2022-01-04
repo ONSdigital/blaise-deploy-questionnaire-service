@@ -4,11 +4,11 @@ import { cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 // Mock elements
-import { instrumentList } from "./API_Mock_Objects";
+import { instrumentList } from "./helpers/API_Mock_Objects";
 import navigateToDeployPageAndSelectFile, {
     mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
-} from "./functions";
+} from "./helpers/functions";
 
 
 // Load in feature details from .feature file

@@ -1,6 +1,6 @@
-import {cleanup} from "@testing-library/react";
-import {mock_server_request_function, mock_server_request_Return_JSON} from "../../tests/utils";
-import {instrumentList, opnInstrument} from "../../features/step_definitions/API_Mock_Objects";
+import { cleanup } from "@testing-library/react";
+import { mock_server_request_function, mock_server_request_Return_JSON } from "../../tests/utils";
+import { instrumentList, opnInstrument } from "../../features/step_definitions/helpers/API_Mock_Objects";
 import {
     checkInstrumentAlreadyExists,
     deleteInstrument,
@@ -21,7 +21,7 @@ describe("Function checkInstrumentAlreadyExists(instrumentName: string) ", () =>
     });
 
     it("It should return false and a null object if object with an incorrect name returned", async () => {
-        mock_server_request_Return_JSON(200, {name: "BACON"});
+        mock_server_request_Return_JSON(200, { name: "BACON" });
         const [alreadyExists, instrument] = await checkInstrumentAlreadyExists("OPN2004A");
         expect(alreadyExists).toBeFalsy();
         expect(instrument).toEqual(null);
@@ -107,7 +107,7 @@ describe("Function getAllInstruments(filename: string) ", () => {
     });
 
     it("It should return false with an empty list if request JSON is invalid", async () => {
-        mock_server_request_Return_JSON(200, {name: "NAME"});
+        mock_server_request_Return_JSON(200, { name: "NAME" });
         const [success, instruments] = await getAllInstruments();
         expect(success).toBeFalsy();
         expect(instruments).toEqual([]);

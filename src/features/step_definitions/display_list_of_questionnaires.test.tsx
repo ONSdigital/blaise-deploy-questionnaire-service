@@ -1,22 +1,22 @@
 // React
 import React from "react";
 // Test modules
-import {defineFeature, loadFeature} from "jest-cucumber";
-import {act, cleanup, render, screen} from "@testing-library/react";
-import {createMemoryHistory} from "history";
+import { defineFeature, loadFeature } from "jest-cucumber";
+import { act, cleanup, render, screen } from "@testing-library/react";
+import { createMemoryHistory } from "history";
 import App from "../../App";
-import {Router} from "react-router";
+import { Router } from "react-router";
 import "@testing-library/jest-dom";
 // Mock elements
 import flushPromises from "../../tests/utils";
-import {instrumentList} from "./API_Mock_Objects";
-import {mock_fetch_requests} from "./functions";
+import { instrumentList } from "./helpers/API_Mock_Objects";
+import { mock_fetch_requests } from "./helpers/functions";
 
 
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/display_list_of_questionnaires.feature",
-    {tagFilter: "not @server and not @integration"}
+    { tagFilter: "not @server and not @integration" }
 );
 
 const mock_server_responses = (url: string) => {
@@ -24,7 +24,7 @@ const mock_server_responses = (url: string) => {
     if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+            json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
         });
     } else if (url.includes("/api/install")) {
         return Promise.resolve({
@@ -51,12 +51,12 @@ defineFeature(feature, test => {
         mock_fetch_requests(mock_server_responses);
     });
 
-    test("List all questionnaires in Blaise", ({given, when, then, and}) => {
+    test("List all questionnaires in Blaise", ({ given, when, then, and }) => {
         given("I have launched the Questionnaire Deployment Service", () => {
             const history = createMemoryHistory();
             render(
                 <Router history={history}>
-                    <App/>
+                    <App />
                 </Router>
             );
 
