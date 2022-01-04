@@ -1,5 +1,5 @@
-import {requestPromiseJson} from "./requestPromise";
-import {InstrumentUacDetails} from "../../../server/BusAPI/interfaces/instrument-uac-details";
+import { requestPromiseJson } from "./requestPromise";
+import { InstrumentUacDetails } from "bus-api-node-client";
 
 
 function generateUACCodes(instrumentName: string): Promise<boolean> {
@@ -49,4 +49,4 @@ function getUACCodesByCaseID(instrumentName: string): Promise<InstrumentUacDetai
 }
 
 
-export {generateUACCodes, getCountOfUACs, getUACCodesByCaseID};
+export { generateUACCodes, getCountOfUACs, getUACCodesByCaseID };
