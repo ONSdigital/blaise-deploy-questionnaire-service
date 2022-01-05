@@ -2,6 +2,7 @@
 import { screen, waitFor, act } from "@testing-library/react";
 import { DefineStepFunction } from "jest-cucumber";
 import flushPromises from "../../tests/utils";
+import { format_date_string } from "./helpers/functions";
 
 export const thenIAmPresentedWithTheOptionsToCancelOrOverwrite = (then: DefineStepFunction): void => {
   then("I am presented with the options to cancel or overwrite the questionnaire", async () => {
@@ -78,6 +79,72 @@ export const thenIGetTheDeleteSuccessBanner = (then: DefineStepFunction): void =
   then(/I am presented a success banner on the launch page for deleting '(.*)'/, async (questionnaire: string) => {
     await waitFor(() => {
       expect(screen.getByText(new RegExp(`questionnaire: ${questionnaire} successfully deleted`, "i"))).toBeDefined();
+    });
+  });
+};
+
+export const thenIAmPresentedWithAListOfDeployedQuestionnaires = (then: DefineStepFunction): void => {
+  then("I am presented with a list of the deployed questionnaires:", (table: any[]) => {
+    expect(screen.getByText(/table of questionnaires/i)).toBeDefined();
+    const list = screen.queryAllByTestId(/instrument-table-row/i);
+    table.forEach((row: any, index: number) => {
+      const rowData = list[index];
+      if (rowData.firstChild === null) {
+        expect(rowData.firstChild).not.toBeNull();
+        return;
+      }
+      expect(rowData.firstChild.textContent).toEqual(row.Questionnaire);
+    });
+  });
+};
+
+export const thenIHaveTheOptionToChangeOrDeleteTheToStartDate = (then: DefineStepFunction): void => {
+  then("I have the option to change or delete the TO Start date", async () => {
+    await waitFor(() => {
+      expect(screen.getByText(/Change or delete start date/i)).toBeDefined();
+    });
+  });
+};
+
+export const thenIHaveTheOptionToAddAToStartDate = (then: DefineStepFunction): void => {
+  then("I have the option to add a TO Start date", async () => {
+    await waitFor(() => {
+
+      expect(screen.getByText(/Add start date/i)).toBeDefined();
+    });
+  });
+};
+
+export const thenICanViewTheTOStartDateSetToo = (then: DefineStepFunction): void => {
+  then(/I can view the TO Start Date set too '(.*)'/, async (toStartDate: string) => {
+    await waitFor(() => {
+      expect(screen.getByText(new RegExp(toStartDate, "i"))).toBeDefined();
+    });
+  });
+};
+
+export const thenTheToStartDateIsStored = (then: DefineStepFunction): void => {
+  then(/the TO start date of '(.*)' is stored against '(.*)'/, async (toStartDate: string, questionnaire: string) => {
+    await waitFor(() => {
+      expect(screen.getByText(/Questionnaire details/i)).toBeDefined();
+      expect(global.fetch).toHaveBeenCalledWith(`/api/tostartdate/${questionnaire}`, {
+        "body": JSON.stringify({ "tostartdate": format_date_string(toStartDate) }),
+        "method": "POST",
+        "headers": { "Content-Type": "application/json" }
+      });
+    });
+  });
+};
+
+export const thenTheToStartDateIsDeleted = (then: DefineStepFunction): void => {
+  then(/the TO Start Date is deleted from '(.*)'/, async (questionnaire: string) => {
+    await waitFor(() => {
+      expect(screen.getByText(/Questionnaire details/i)).toBeDefined();
+      expect(global.fetch).toHaveBeenCalledWith(`/api/tostartdate/${questionnaire}`, {
+        "body": JSON.stringify({ "tostartdate": "" }),
+        "method": "POST",
+        "headers": { "Content-Type": "application/json" }
+      });
     });
   });
 };

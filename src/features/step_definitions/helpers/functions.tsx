@@ -71,6 +71,7 @@ export function mock_builder(mock_list: Record<string, Promise<any>>): (url: str
     console.log(mock_list);
     return (url: string, config?: any): Promise<any> => {
         console.log(url);
+        console.log(config);
         if (config && config.method) {
             console.log(config.method);
             if (`${url}:${config.method}` in mock_list) {
@@ -82,4 +83,9 @@ export function mock_builder(mock_list: Record<string, Promise<any>>): (url: str
         }
         return Promise.reject("No matching mock");
     };
+}
+
+export function format_date_string(date: string): string {
+    const splitDate = date.split("/");
+    return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`;
 }
