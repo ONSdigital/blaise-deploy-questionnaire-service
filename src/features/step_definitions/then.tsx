@@ -175,3 +175,20 @@ export const thenICanReturnToTheQuestionnaireList = (then: DefineStepFunction): 
     expect(screen.getByText(/Table of questionnaires/i)).toBeDefined();
   });
 };
+
+export const thenIGetAnErrorBanner = (then: DefineStepFunction): void => {
+  then("I am presented with an information banner with an error message", async () => {
+    await waitFor(() => {
+      expect(screen.getByText("File deploy failed")).toBeDefined();
+    });
+  });
+};
+
+export const thenICanRetryAnInstall = (then: DefineStepFunction): void => {
+  then("I am able to return to the select survey package screen", async () => {
+    userEvent.click(screen.getByText(/return to select survey package page/i));
+    await waitFor(() => {
+      expect(screen.getByText(/deploy a questionnaire file/i)).toBeDefined();
+    });
+  });
+};

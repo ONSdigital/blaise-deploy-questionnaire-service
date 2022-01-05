@@ -84,6 +84,15 @@ export const givenTheQuestionnaireHasNoTOStartDate = (given: DefineStepFunction,
   });
 };
 
+export const givenAllInstallsWillFail = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
+  given("All Questionnaire installs will fail", () => {
+    mockList["/api/install"] = Promise.resolve({
+      status: 500,
+      json: () => Promise.resolve({}),
+    });
+  });
+};
+
 export const givenIHaveSelectedTheQuestionnairePacakgeToDeploy = (given: DefineStepFunction): void => {
   given(/I have selected the questionnaire package for '(.*)' to deploy/, async (questionnaire: string) => {
     await navigateToDeployPageAndSelectFile(questionnaire);
