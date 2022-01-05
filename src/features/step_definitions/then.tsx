@@ -1,5 +1,6 @@
 
 import { screen, waitFor, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { DefineStepFunction } from "jest-cucumber";
 import flushPromises from "../../tests/utils";
 import { format_date_string } from "./helpers/functions";
@@ -146,5 +147,31 @@ export const thenTheToStartDateIsDeleted = (then: DefineStepFunction): void => {
         "headers": { "Content-Type": "application/json" }
       });
     });
+  });
+};
+
+export const thenIAmPresentedWithAUnableDeleteWarning = (then: DefineStepFunction): void => {
+  then("I am presented with a warning banner that I cannot delete the questionnaire and a service desk must be raised", () => {
+    expect(screen.getByText(/Unable to delete questionnaire/i)).toBeDefined();
+  });
+};
+
+export const thenIAmPresentedWithACannotDeleteWarning = (then: DefineStepFunction): void => {
+  then("I am presented with a warning banner informing me that the questionnaire cannot be deleted", () => {
+    expect(screen.getByText(/Failed to delete the questionnaire/i)).toBeDefined();
+  });
+};
+
+export const thenIAmUnableToDeleteTheQuestionnaire = (then: DefineStepFunction): void => {
+  then("I am unable to delete the questionnaire", () => {
+    expect(screen.queryByTestId(/confirm-delete/i)).toBeNull();
+  });
+};
+
+export const thenICanReturnToTheQuestionnaireList = (then: DefineStepFunction): void => {
+  then("I can return to the questionnaire list", () => {
+    expect(screen.getByText(/Return to table of questionnaires/i)).toBeDefined();
+    userEvent.click(screen.getByText(/Return to table of questionnaires/i));
+    expect(screen.getByText(/Table of questionnaires/i)).toBeDefined();
   });
 };

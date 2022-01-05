@@ -35,6 +35,36 @@ export const givenTheQuestionnaireIsInstalled = (
   });
 };
 
+export const givenTheQuestionnaireIsErroneous = (
+  given: DefineStepFunction,
+  instrumentList: Instrument[],
+): void => {
+  given(/'(.*)' is erroneous/, (questionnaire: string) => {
+    for (const instrument of instrumentList) {
+      if (instrument.name === questionnaire) {
+        instrument.status = "Failed";
+      }
+    }
+  });
+};
+
+export const givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous = (
+  given: DefineStepFunction,
+  mockList: Record<string, Promise<any>>
+): void => {
+  given(/'(.*)' cannot be deleted because it would go erroneous/, (questionnaire: string) => {
+    mockList[`/api/instruments/${questionnaire}:DELETE`] = Promise.resolve({
+      status: 420,
+      json: () => Promise.resolve({}),
+    });
+    mockList[`/api/instruments/${questionnaire}`] = Promise.resolve({
+      status: 420,
+      json: () => Promise.resolve({}),
+    });
+  });
+};
+
+
 export const givenTheQuestionnaireHasATOStartDate = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
   given(/'(.*)' has a TO start date of '(.*)'/, async (questionnaire: string, toStartDate: string) => {
     mockList[`/api/tostartdate/${questionnaire}`] = Promise.resolve({

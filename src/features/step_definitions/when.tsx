@@ -9,6 +9,7 @@ import { Router } from "react-router";
 import { createMemoryHistory } from "history";
 import App from "../../App";
 import { format_date_string } from "./helpers/functions";
+import { Instrument } from "../../../Interfaces";
 
 export const whenIConfirmMySelection = (when: DefineStepFunction): void => {
   when("I confirm my selection", async () => {
@@ -51,12 +52,18 @@ export const whenIDeleteAQuestionnaire = (when: DefineStepFunction): void => {
 export const whenIConfirmDelete = (when: DefineStepFunction): void => {
   when("I confirm that I want to proceed", async () => {
     userEvent.click(screen.getByTestId(/confirm-delete/i));
+    await act(async () => {
+      await flushPromises();
+    });
   });
 };
 
 export const whenICancelDelete = (when: DefineStepFunction): void => {
   when("I click cancel", async () => {
     userEvent.click(screen.getByTestId(/cancel-delete/i));
+    await act(async () => {
+      await flushPromises();
+    });
   });
 };
 
