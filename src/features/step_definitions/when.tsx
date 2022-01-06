@@ -9,8 +9,6 @@ import { Router } from "react-router";
 import { createMemoryHistory } from "history";
 import App from "../../App";
 import { format_date_string, navigatePastSettingTOStartDateAndStartDeployment } from "./helpers/functions";
-import { Instrument } from "../../../Interfaces";
-import InstrumentDetails from "../../Components/InstrumentDetails/InstrumentDetails";
 
 export const whenIConfirmMySelection = (when: DefineStepFunction): void => {
   when("I confirm my selection", async () => {
@@ -20,6 +18,13 @@ export const whenIConfirmMySelection = (when: DefineStepFunction): void => {
     });
   });
 };
+
+export const whenIConfirmMySelectionNoWait = (when: DefineStepFunction): void => {
+  when("I confirm my selection", () => {
+    userEvent.click(screen.getByText(/Continue/));
+  });
+};
+
 
 export const whenISelectTo = (when: DefineStepFunction): void => {
   when(/I select to '(.*)'/, async (button: string) => {
@@ -130,6 +135,16 @@ export const whenIDeleteTheToStartDate = (when: DefineStepFunction): void => {
   });
 };
 
+export const whenISelectToInstallWithNoStartDate = (when: DefineStepFunction): void => {
+  when("I select to not provide a TO Start Date", async () => {
+    userEvent.click(screen.getByText(/No start date/i));
+    userEvent.click(screen.getByText(/Continue/));
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};
+
 export const whenISelectTheContinueButton = (when: DefineStepFunction): void => {
   when("I select the continue button", async () => {
     await act(async () => {
@@ -189,5 +204,37 @@ export const whenISearchForAQuestionnaire = (when: DefineStepFunction): void => 
     await act(async () => {
       await flushPromises();
     });
+  });
+};
+
+export const whenIDeployTheQuestionnaire = (when: DefineStepFunction): void => {
+  when("I deploy the questionnaire", async () => {
+    userEvent.click(screen.getByText(/Deploy questionnaire/));
+
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};
+
+export const whenIClickDeployNewQuestionnaire = (when: DefineStepFunction): void => {
+  when("I click deploy a questionnaire", async () => {
+    await act(async () => {
+      await flushPromises();
+    });
+    userEvent.click(screen.getByText(/Deploy a questionnaire/i));
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};
+
+export const whenIHaveSelectedADeployPackage = (then: DefineStepFunction): void => {
+  then(/I have selected a deploy package for '(.*)'/, async (questionnaire: string) => {
+    const input = screen.getByLabelText(/Select survey package/i);
+
+    const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, { type: "application/zip" });
+
+    userEvent.upload(input, file);
   });
 };

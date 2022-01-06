@@ -20,7 +20,6 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const instrumentList: Instrument[] = [];
 const mockList: Record<string, Promise<any>> = {};
 
 defineFeature(feature, test => {

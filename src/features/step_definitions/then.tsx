@@ -215,6 +215,15 @@ export const thenIGetAnErrorBanner = (then: DefineStepFunction): void => {
   });
 };
 
+export const thenIGetAnErrorBannerWithMessage = (then: DefineStepFunction): void => {
+  then("I am presented with an information banner with an error message:", async (message: string) => {
+    await waitFor(() => {
+      expect(screen.getByText("File deploy failed")).toBeDefined();
+      expect(screen.getByText(new RegExp(message, "i"))).toBeDefined();
+    });
+  });
+};
+
 export const thenICanRetryAnInstall = (then: DefineStepFunction): void => {
   then("I am able to return to the select survey package screen", async () => {
     userEvent.click(screen.getByText(/return to select survey package page/i));
@@ -288,5 +297,55 @@ export const thenIAmPresentedWithQuestionnaireNotFound = (then: DefineStepFuncti
       expect(screen.getByText(/0 results/i)).toBeDefined();
       expect(screen.getByText(new RegExp(message, "i"))).toBeDefined();
     }));
+  });
+};
+
+export const thenIAmPresentedWithAnOptionToSpecifyATOStartDate = (then: DefineStepFunction): void => {
+  then("I am presented with an option to specify a TO Start Date", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/Would you like to set a telephone operations start date/i)).toBeDefined();
+    }));
+  });
+};
+
+export const thenTheSummaryPageHasNoTOStartDate = (then: DefineStepFunction): void => {
+  then("the questionnaire is deployed without a TO Start Date", async () => {
+    await waitFor(() => {
+      expect(screen.getByText(/Deployment summary/i)).toBeDefined();
+      expect(screen.getByText(/Start date not specified/i)).toBeDefined();
+    });
+  });
+};
+
+export const thenIAmPresentedWithAnOptionToDeployAQuestionnaire = (then: DefineStepFunction): void => {
+  then("I am presented with an option to deploy a new questionnaire", async () => {
+    await waitFor(() => {
+      expect(screen.getByText(/Deploy a questionnaire/i)).toBeDefined();
+    });
+  });
+};
+
+export const thenIAmPresentedWithAnOptionToDeployAQuestionnaireFile = (then: DefineStepFunction): void => {
+  then("I am presented with an option to choose a file containing the questionnaire", async () => {
+    await waitFor(() => {
+      expect(screen.getByText(/Deploy a questionnaire file/i)).toBeDefined();
+    });
+  });
+};
+
+export const thenICanSelectAQuestionnairePackageToInstall = (then: DefineStepFunction): void => {
+  then(/I can select a questionnaire package for '(.*)' to install/, async (questionnaire: string) => {
+    const input = screen.getByLabelText(/Select survey package/i);
+
+    const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, { type: "application/zip" });
+
+    userEvent.upload(input, file);
+  });
+};
+
+export const thenUploadIsDisabled = (then: DefineStepFunction): void => {
+  then("I am unable to select another file or continue again until the deployment has finished", () => {
+    expect(screen.getByLabelText(/Select survey package/i).closest("input")).toBeDisabled();
+    expect(screen.getByTestId("button")).toBeDisabled();
   });
 };

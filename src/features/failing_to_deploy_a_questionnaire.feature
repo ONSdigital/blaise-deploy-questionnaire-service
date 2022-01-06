@@ -4,7 +4,7 @@ Feature: DQS - Handling of a failure to deploy a questionnaire
   So that I can take steps to resolve the issue
 
   Background:
-    Given All Questionnaire installs will fail
+    Given All Questionnaire installs will fail for 'DST2105'
 
   # Scenario 1:
   Scenario: Deployment of selected file failure

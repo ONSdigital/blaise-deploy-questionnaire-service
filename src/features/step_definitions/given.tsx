@@ -25,12 +25,12 @@ export const givenTheQuestionnaireIsInstalled = (
       status: 204,
       json: () => Promise.resolve({}),
     });
-    mockList[`/api/tostartdate/${questionnaire}`] = Promise.resolve({
-      status: 204,
-      json: () => Promise.resolve({}),
-    });
     mockList[`/api/tostartdate/${questionnaire}:POST`] = Promise.resolve({
       status: 200,
+      json: () => Promise.resolve({}),
+    });
+    mockList[`/api/tostartdate/${questionnaire}`] = Promise.resolve({
+      status: 204,
       json: () => Promise.resolve({}),
     });
     mockList[`/upload/init?filename=${questionnaire}.bpkg`] = Promise.resolve({
@@ -44,6 +44,88 @@ export const givenTheQuestionnaireIsInstalled = (
     mockList[`/api/install?filename=${questionnaire}.bpkg`] = Promise.resolve({
       status: 201,
       json: () => Promise.resolve(),
+    });
+    mockList[`/api/instruments/${questionnaire}/settings`] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve([
+        {
+          type: "StrictInterviewing",
+          saveSessionOnTimeout: true,
+          saveSessionOnQuit: true,
+          deleteSessionOnTimeout: true,
+          deleteSessionOnQuit: true,
+          sessionTimeout: 15,
+          applyRecordLocking: true
+        }
+      ]),
+    });
+    mockList[`/api/instruments/${questionnaire}/modes`] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve(["CAWI", "CATI"]),
+    });
+  });
+};
+
+// Just a bunch of default mocks to stop things falling over
+export const givenNoQuestionnairesAreInstalled = (
+  given: DefineStepFunction,
+  mockList: Record<string, Promise<any>>
+): void => {
+  given("no questionnaires are installed", () => {
+    mockList["/api/instruments/"] = Promise.resolve({
+      status: 404,
+      json: () => Promise.resolve({}),
+    });
+    mockList["/api/instruments"] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve([]),
+    });
+    mockList["/api/tostartdate/:POST"] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve({}),
+    });
+    mockList["/api/tostartdate/"] = Promise.resolve({
+      status: 204,
+      json: () => Promise.resolve({}),
+    });
+    mockList["/upload/init"] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve("https://storage.googleapis.com/"),
+    });
+    mockList["/upload/verify"] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve({}),
+    });
+    mockList["/api/install"] = Promise.resolve({
+      status: 201,
+      json: () => Promise.resolve(),
+    });
+    mockList["/settings"] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve([
+        {
+          type: "StrictInterviewing",
+          saveSessionOnTimeout: true,
+          saveSessionOnQuit: true,
+          deleteSessionOnTimeout: true,
+          deleteSessionOnQuit: true,
+          sessionTimeout: 15,
+          applyRecordLocking: true
+        }
+      ]),
+    });
+    mockList["/modes"] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve(["CAWI", "CATI"]),
+    });
+  });
+};
+
+export const givenInstallsSuccessfully = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
+  given(/'(.*)' installs successfully/, (questionnaire: string) => {
+    mockList[`/upload/verify?filename=${questionnaire}.bpkg`] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve({ name: `${questionnaire}.bpkg` }),
     });
     mockList[`/api/instruments/${questionnaire}/settings`] = Promise.resolve({
       status: 200,
@@ -134,6 +216,15 @@ export const givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous = (
   });
 };
 
+export const givenTOStartDateFails = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
+  given(/setting a TO start date for '(.*)' fails/, (questionnaire: string) => {
+    mockList[`/api/tostartdate/${questionnaire}`] = Promise.resolve({
+      status: 500,
+      json: () => Promise.resolve({}),
+    });
+  });
+};
+
 export const givenUACGenerationIsBroken = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
   given(/UAC generation is broken for '(.*)'/, (questionnaire: string) => {
     mockList[` /api/uacs/instrument/${questionnaire}`] = Promise.resolve({
@@ -164,8 +255,8 @@ export const givenTheQuestionnaireHasNoTOStartDate = (given: DefineStepFunction,
 };
 
 export const givenAllInstallsWillFail = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
-  given("All Questionnaire installs will fail", () => {
-    mockList["/api/install"] = Promise.resolve({
+  given(/All Questionnaire installs will fail for '(.*)'/, (questionnaire_matcher: string) => {
+    mockList[`/api/install?filename=${questionnaire_matcher}`] = Promise.resolve({
       status: 500,
       json: () => Promise.resolve({}),
     });
