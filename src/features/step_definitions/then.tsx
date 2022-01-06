@@ -192,3 +192,44 @@ export const thenICanRetryAnInstall = (then: DefineStepFunction): void => {
     });
   });
 };
+
+export const thenAGenerateUacButtonIsAvailable = (then: DefineStepFunction): void => {
+  then("A generate UAC button is available", () => {
+    expect(screen.getByText(/Generate and download Unique Access Codes/i)).toBeDefined();
+  });
+};
+
+export const thenAGenerateUacButtonIsNotAvailable = (then: DefineStepFunction): void => {
+  then("A generate UAC button is not available", async () => {
+    await waitFor(() => {
+      expect(screen.queryAllByText(/Generate and download Unique Access Codes/i)).toHaveLength(0);
+    });
+  });
+};
+
+export const thenUACsAreGenerated = (then: DefineStepFunction): void => {
+  then(/UACs are generated for '(.*)'/, (questionnaire: string) => {
+    expect(global.fetch).toHaveBeenCalledWith(`/api/uacs/instrument/${questionnaire}`, {
+      "method": "POST",
+      "body": null,
+      "headers": { "Content-Type": "application/json" }
+    });
+  });
+};
+
+export const thenIReceiveAUACError = (then: DefineStepFunction): void => {
+  then("I receive an appropriate error describing suitable user actions", () => {
+    // In what world is this an appropriate error???
+    expect(screen.getByText(/I receive an appropriate error describing suitable user actions/i)).toBeDefined();
+  });
+};
+
+export const thenICanSeeThatThatTheQuestionnaireHasCases = (then: DefineStepFunction): void => {
+  then(/I can see that that the questionnaire has (\d+) cases/, async (cases: string) => {
+    await waitFor(() => {
+      // Should appear twice as the number 500 should show for number of cases
+      // as well as number of Unique Access Codes generated
+      expect(screen.queryAllByText(cases)).toHaveLength(2);
+    });
+  });
+};

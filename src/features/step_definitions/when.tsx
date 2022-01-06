@@ -10,6 +10,7 @@ import { createMemoryHistory } from "history";
 import App from "../../App";
 import { format_date_string } from "./helpers/functions";
 import { Instrument } from "../../../Interfaces";
+import InstrumentDetails from "../../Components/InstrumentDetails/InstrumentDetails";
 
 export const whenIConfirmMySelection = (when: DefineStepFunction): void => {
   when("I confirm my selection", async () => {
@@ -37,6 +38,25 @@ export const whenILoadTheHomepage = (when: DefineStepFunction): void => {
         <App />
       </Router>
     );
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};
+
+export const whenIGoToTheQuestionnaireDetailsPage = (when: DefineStepFunction): void => {
+  when(/I go to the questionnaire details page for '(.*)'/, async (questionnaire: string) => {
+    const history = createMemoryHistory();
+    render(
+      <Router history={history} >
+        <App />
+      </Router>
+    );
+    await act(async () => {
+      await flushPromises();
+    });
+
+    userEvent.click(screen.getByText(questionnaire));
     await act(async () => {
       await flushPromises();
     });
@@ -116,6 +136,18 @@ export const whenISelectTheContinueButton = (when: DefineStepFunction): void => 
       await flushPromises();
     });
     userEvent.click(screen.getByText(/continue/i));
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};
+
+export const whenIClickGenerateCases = (when: DefineStepFunction): void => {
+  when("I click generate cases", async () => {
+    await act(async () => {
+      await flushPromises();
+    });
+    userEvent.click(screen.getByText(/Generate and download Unique Access Codes/i));
     await act(async () => {
       await flushPromises();
     });
