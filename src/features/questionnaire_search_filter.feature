@@ -5,12 +5,21 @@ Feature: DQS - Questionnaire search
 
   # Scenario 1
   Scenario: Search for a questionnaire
-    Given I have launched the DQS
-    When I enter the name of the survey I need to work on
-    Then I am presented with that survey at the top of the list
+    Given the questionnaire 'DST2108A' is installed
+    And the questionnaire 'DST2108B' is installed
+    And the questionnaire 'DST2108C' is installed
+    And the questionnaire 'TST9999A' is installed
+    And the questionnaire 'TST8888B' is installed
+    And the questionnaire 'FOO1234Z' is installed
+    When I load the homepage
+    And I enter the 'DST2108C' in the search box
+    Then I am presented with a list of the deployed questionnaires:
+      | Questionnaire |
+      | DST2108C      |
 
   # Scenario 2
   Scenario: Questionnaire not found
-    Given I have entered a questionnaire name and asked to search
-    When that questionnaire is not found
-    Then I am presented with the following message: Questionnaire not found
+    And the questionnaire 'DST2108D' is installed
+    When I load the homepage
+    And I enter the 'BAR1234K' in the search box
+    Then I am presented with the following message: 'No questionnaires containing BAR1234K found'

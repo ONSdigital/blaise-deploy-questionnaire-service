@@ -182,3 +182,12 @@ export const whenIConfirmNotToOverwrite = (when: DefineStepFunction): void => {
     userEvent.click(screen.getByText(/Continue/));
   });
 };
+
+export const whenISearchForAQuestionnaire = (when: DefineStepFunction): void => {
+  when(/I enter the '(.*)' in the search box/, async (questionnaire: string) => {
+    userEvent.type(screen.getByLabelText(/Filter by questionnaire name/i), questionnaire);
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};

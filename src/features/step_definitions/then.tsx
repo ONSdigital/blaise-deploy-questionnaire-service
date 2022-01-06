@@ -118,6 +118,7 @@ export const thenIAmPresentedWithAListOfDeployedQuestionnaires = (then: DefineSt
   then("I am presented with a list of the deployed questionnaires:", (table: any[]) => {
     expect(screen.getByText(/table of questionnaires/i)).toBeDefined();
     const list = screen.queryAllByTestId(/instrument-table-row/i);
+    expect(list).toHaveLength(table.length);
     table.forEach((row: any, index: number) => {
       const rowData = list[index];
       if (rowData.firstChild === null) {
@@ -277,6 +278,15 @@ export const thenICanOnlyReturnToTheLandingPage = (then: DefineStepFunction): vo
     await waitFor((() => {
       expect(screen.getByText(/accept and go to table of questionnaires/i));
       userEvent.click(screen.getByText(/accept and go to table of questionnaires/i));
+    }));
+  });
+};
+
+export const thenIAmPresentedWithQuestionnaireNotFound = (then: DefineStepFunction): void => {
+  then(/I am presented with the following message: '(.*)'/, async (message: string) => {
+    await waitFor((() => {
+      expect(screen.getByText(/0 results/i)).toBeDefined();
+      expect(screen.getByText(new RegExp(message, "i"))).toBeDefined();
     }));
   });
 };
