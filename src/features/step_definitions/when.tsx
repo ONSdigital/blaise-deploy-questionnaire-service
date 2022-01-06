@@ -8,7 +8,7 @@ import { DefineStepFunction } from "jest-cucumber";
 import { Router } from "react-router";
 import { createMemoryHistory } from "history";
 import App from "../../App";
-import { format_date_string } from "./helpers/functions";
+import { format_date_string, navigatePastSettingTOStartDateAndStartDeployment } from "./helpers/functions";
 import { Instrument } from "../../../Interfaces";
 import InstrumentDetails from "../../Components/InstrumentDetails/InstrumentDetails";
 
@@ -151,5 +151,34 @@ export const whenIClickGenerateCases = (when: DefineStepFunction): void => {
     await act(async () => {
       await flushPromises();
     });
+  });
+};
+
+export const whenISelectToOverwrite = (when: DefineStepFunction): void => {
+  when("I select to 'overwrite'", async () => {
+    userEvent.click(screen.getByText(/overwrite the entire questionnaire/i));
+    userEvent.click(screen.getByText(/Continue/));
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};
+
+export const whenIConfirmToOverwrite = (when: DefineStepFunction): void => {
+  when("I confirm 'overwrite'", async () => {
+    userEvent.click(screen.getByText(/yes, overwrite questionnaire/i));
+    userEvent.click(screen.getByText(/Continue/));
+
+    await navigatePastSettingTOStartDateAndStartDeployment();
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};
+
+export const whenIConfirmNotToOverwrite = (when: DefineStepFunction): void => {
+  when("I confirm that I do NOT want to continue", async () => {
+    userEvent.click(screen.getByText(/no, do not overwrite questionnaire/i));
+    userEvent.click(screen.getByText(/Continue/));
   });
 };

@@ -50,7 +50,7 @@ defineFeature(feature, test => {
 
     test("Delete questionnaire not available from the list, when survey is live", ({ given, when, then, }) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        givenTheQuestionnaireIsLive(given, instrumentList);
+        givenTheQuestionnaireIsLive(given, instrumentList, mockList);
         mock_fetch_requests(mock_builder(mockList));
         whenILoadTheHomepage(when);
         thenIWillNotHaveTheOptionToDelete(then);

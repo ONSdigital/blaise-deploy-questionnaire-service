@@ -1,11 +1,6 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { mock_builder, mock_fetch_requests } from "../step_definitions/helpers/functions";
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import flushPromises from "../../tests/utils";
-import { createMemoryHistory } from "history";
-import { Router } from "react-router";
-import React from "react";
-import InstrumentDetails from "../../Components/InstrumentDetails/InstrumentDetails";
+import { cleanup, } from "@testing-library/react";
 import { givenTheQuestionnaireHasCases, givenTheQuestionnaireHasModes, givenTheQuestionnaireHasUACs, givenTheQuestionnaireIsInstalled, givenUACGenerationIsBroken } from "../step_definitions/given";
 import { whenIClickGenerateCases, whenIGoToTheQuestionnaireDetailsPage } from "../step_definitions/when";
 import { thenAGenerateUacButtonIsAvailable, thenAGenerateUacButtonIsNotAvailable, thenICanSeeThatThatTheQuestionnaireHasCases, thenIReceiveAUACError, thenUACsAreGenerated } from "../step_definitions/then";

@@ -1,4 +1,4 @@
-import navigateToDeployPageAndSelectFile, { format_date_string, mock_fetch_requests } from "./helpers/functions";
+import navigateToDeployPageAndSelectFile, { format_date_string } from "./helpers/functions";
 import { DefineStepFunction } from "jest-cucumber";
 import { Instrument } from "../../../Interfaces";
 import { instrumentWithName } from "./helpers/API_Mock_Objects";
@@ -9,8 +9,9 @@ export const givenTheQuestionnaireIsInstalled = (
   mockList: Record<string, Promise<any>>
 ): void => {
   given(/the questionnaire '(.*)' is installed/, (questionnaire: string) => {
+    const newInstrument = instrumentWithName(questionnaire);
     if (!instrumentList.some(instrument => instrument.name === questionnaire)) {
-      instrumentList.push(instrumentWithName(questionnaire));
+      instrumentList.push(newInstrument);
     }
     mockList["/api/instruments"] = Promise.resolve({
       status: 200,
@@ -18,7 +19,7 @@ export const givenTheQuestionnaireIsInstalled = (
     });
     mockList[`/api/instruments/${questionnaire}`] = Promise.resolve({
       status: 200,
-      json: () => Promise.resolve({ name: questionnaire, active: true }),
+      json: () => Promise.resolve(newInstrument),
     });
     mockList[`/api/instruments/${questionnaire}:DELETE`] = Promise.resolve({
       status: 204,
@@ -31,6 +32,36 @@ export const givenTheQuestionnaireIsInstalled = (
     mockList[`/api/tostartdate/${questionnaire}:POST`] = Promise.resolve({
       status: 200,
       json: () => Promise.resolve({}),
+    });
+    mockList[`/upload/init?filename=${questionnaire}.bpkg`] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve("https://storage.googleapis.com/"),
+    });
+    mockList[`/upload/verify?filename=${questionnaire}.bpkg`] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve({ name: `${questionnaire}.bpkg` }),
+    });
+    mockList[`/api/install?filename=${questionnaire}.bpkg`] = Promise.resolve({
+      status: 201,
+      json: () => Promise.resolve(),
+    });
+    mockList[`/api/instruments/${questionnaire}/settings`] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve([
+        {
+          type: "StrictInterviewing",
+          saveSessionOnTimeout: true,
+          saveSessionOnQuit: true,
+          deleteSessionOnTimeout: true,
+          deleteSessionOnQuit: true,
+          sessionTimeout: 15,
+          applyRecordLocking: true
+        }
+      ]),
+    });
+    mockList[`/api/instruments/${questionnaire}/modes`] = Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve(["CAWI", "CATI"]),
     });
   });
 };
@@ -150,12 +181,19 @@ export const givenIHaveSelectedTheQuestionnairePacakgeToDeploy = (given: DefineS
 export const givenTheQuestionnaireIsLive = (
   given: DefineStepFunction,
   instrumentList: Instrument[],
+  mockList: Record<string, Promise<any>>
 ): void => {
   given(/'(.*)' is live/, (questionnaire: string) => {
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
+        console.log(questionnaire);
         instrument.hasData = true;
         instrument.active = true;
+
+        mockList[`/api/instruments/${questionnaire}`] = Promise.resolve({
+          status: 200,
+          json: () => Promise.resolve(instrument),
+        });
       }
     }
   });

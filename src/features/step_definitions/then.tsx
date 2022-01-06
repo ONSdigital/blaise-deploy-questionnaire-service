@@ -41,10 +41,26 @@ export const thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted 
   });
 };
 
+export const thenIGetTheQuestionnaireIsLiveWarningBanner = (then: DefineStepFunction): void => {
+  then("I am presented with a warning banner that I cannot overwrite the survey", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/you cannot overwrite questionnaire that are currently live/i));
+    }));
+  });
+};
+
 export const thenIAmPresentedWithAWarning = (then: DefineStepFunction): void => {
   then("I am presented with a warning", async () => {
     await waitFor((() => {
       expect(screen.getByText(/are you sure you want to delete the questionnaire/i)).toBeDefined();
+    }));
+  });
+};
+
+export const thenIAmPresentedWithAConfirmOverwriteWarning = (then: DefineStepFunction): void => {
+  then("I am presented with a warning, to confirm overwrite", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/are you sure you want to overwrite the entire questionnaire/i));
     }));
   });
 };
@@ -72,6 +88,20 @@ export const thenTheQuestionnaireDataIsNotDeleted = (then: DefineStepFunction): 
     expect(global.fetch).not.toBeCalledWith(`/api/instruments/${questionnaire}`, {
       "body": null,
       "method": "DELETE"
+    });
+  });
+};
+
+export const thenTheQuestionnaireIsInstalled = (then: DefineStepFunction): void => {
+  then(/the questionnaire package '(.*)' is deployed/, async (questionnaire: string) => {
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(`/api/install?filename=${questionnaire}.bpkg`, {
+      "body": null,
+      "method": "GET",
+      "headers": { "Content-Type": "application/json" }
     });
   });
 };
@@ -231,5 +261,22 @@ export const thenICanSeeThatThatTheQuestionnaireHasCases = (then: DefineStepFunc
       // as well as number of Unique Access Codes generated
       expect(screen.queryAllByText(cases)).toHaveLength(2);
     });
+  });
+};
+
+export const thenIAmPresentedWithASuccessfullyDeployedBanner = (then: DefineStepFunction): void => {
+  then("I am presented with a successful deployment banner on the landing page", async () => {
+    await waitFor(() => {
+      expect(screen.getByText(/The questionnaire file has been successfully deployed and will be displayed within the table of questionnaires./i)).toBeDefined();
+    });
+  });
+};
+
+export const thenICanOnlyReturnToTheLandingPage = (then: DefineStepFunction): void => {
+  then("I can only return to the landing page", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/accept and go to table of questionnaires/i));
+      userEvent.click(screen.getByText(/accept and go to table of questionnaires/i));
+    }));
   });
 };
