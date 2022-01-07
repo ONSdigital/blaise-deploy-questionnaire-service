@@ -5,12 +5,12 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import { mock_builder, mock_fetch_requests } from "../step_definitions/helpers/functions";
 import { Instrument } from "../../../Interfaces";
 
 import { givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous, givenTheQuestionnaireIsErroneous, givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenIConfirmDelete, whenIDeleteAQuestionnaire, whenILoadTheHomepage } from "../step_definitions/when";
 import { thenIAmPresentedWithACannotDeleteWarning, thenIAmPresentedWithAUnableDeleteWarning, thenIAmUnableToDeleteTheQuestionnaire, thenICanReturnToTheQuestionnaireList } from "../step_definitions/then";
+import { Mocker } from "../step_definitions/helpers/mocker";
 
 
 // Load in feature details from .feature file
@@ -20,7 +20,7 @@ const feature = loadFeature(
 );
 
 const instrumentList: Instrument[] = [];
-const mockList: Record<string, Promise<any>> = {};
+const mocker = new Mocker();
 
 defineFeature(feature, test => {
     afterEach(() => {
@@ -35,10 +35,8 @@ defineFeature(feature, test => {
     });
 
     test("Attempt to delete an questionnaire with an erroneous status", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenTheQuestionnaireIsErroneous(given, instrumentList);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);
@@ -49,10 +47,8 @@ defineFeature(feature, test => {
 
 
     test("Select to deploy a new questionnaire", ({ given, when, and, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(when, mockList);
-
-        mock_fetch_requests(mock_builder(mockList));
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(when, mocker);
 
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);

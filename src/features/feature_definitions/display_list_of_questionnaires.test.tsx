@@ -11,6 +11,7 @@ import { Instrument } from "../../../Interfaces";
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenILoadTheHomepage } from "../step_definitions/when";
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires } from "../step_definitions/then";
+import { Mocker } from "../step_definitions/helpers/mocker";
 
 
 // Load in feature details from .feature file
@@ -20,7 +21,7 @@ const feature = loadFeature(
 );
 
 const instrumentList: Instrument[] = [];
-const mockList: Record<string, Promise<any>> = {};
+const mocker = new Mocker();
 
 
 defineFeature(feature, test => {
@@ -35,10 +36,9 @@ defineFeature(feature, test => {
     });
 
     test("List all questionnaires in Blaise", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        mock_fetch_requests(mock_builder(mockList));
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
         thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
     });

@@ -5,13 +5,9 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { Instrument } from "../../../Interfaces";
-// Mock elements
-import {
-    mock_builder,
-    mock_fetch_requests
-} from "../step_definitions/helpers/functions";
 
 import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenTheQuestionnaireIsInstalled, givenTheQuestionnaireIsLive } from "../step_definitions/given";
+import { Mocker } from "../step_definitions/helpers/mocker";
 import { thenIAmPresentedWithAConfirmOverwriteWarning, thenIAmPresentedWithASuccessfullyDeployedBanner, thenIAmPresentedWithTheOptionsToCancelOrOverwrite, thenIAmReturnedToTheLandingPage, thenICanOnlyReturnToTheLandingPage, thenICanRetryAnInstall, thenIGetTheQuestionnaireIsLiveWarningBanner, thenTheQuestionnaireIsInstalled } from "../step_definitions/then";
 import { whenIConfirmMySelection, whenIConfirmNotToOverwrite, whenIConfirmToOverwrite, whenISelectToOverwrite } from "../step_definitions/when";
 
@@ -27,7 +23,7 @@ const feature = loadFeature(
 
 
 const instrumentList: Instrument[] = [];
-const mockList: Record<string, Promise<any>> = {};
+const mocker = new Mocker();
 
 defineFeature(feature, test => {
     afterEach(() => {
@@ -45,10 +41,8 @@ defineFeature(feature, test => {
     });
 
     test("Select a new questionnaire package file", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         thenIAmPresentedWithTheOptionsToCancelOrOverwrite(then);
@@ -56,11 +50,9 @@ defineFeature(feature, test => {
 
 
     test("Select to overwrite existing questionnaire when it is live", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-        givenTheQuestionnaireIsLive(given, instrumentList, mockList);
-
-        mock_fetch_requests(mock_builder(mockList));
+        givenTheQuestionnaireIsLive(given, instrumentList, mocker);
 
         whenIConfirmMySelection(when);
         whenISelectToOverwrite(when);
@@ -75,10 +67,8 @@ defineFeature(feature, test => {
         when,
         then
     }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         whenISelectToOverwrite(when);
@@ -92,10 +82,8 @@ defineFeature(feature, test => {
         when,
         then,
     }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         whenISelectToOverwrite(when);
@@ -107,10 +95,8 @@ defineFeature(feature, test => {
 
 
     test("Cancel overwrite of existing questionnaire package", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         whenISelectToOverwrite(when);

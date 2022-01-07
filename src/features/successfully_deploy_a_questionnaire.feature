@@ -5,11 +5,13 @@ Feature: DQS - Successfully deploy a questionnaire
 
   # Scenario 1:
   Scenario: Successful log in to Questionnaire Deployment Service
+    Given no questionnaires are installed
     When I load the homepage
     Then I am presented with an option to deploy a new questionnaire
 
   # Scenario 2:
   Scenario: Select to deploy a new questionnaire
+    Given no questionnaires are installed
     When I load the homepage
     And I click deploy a questionnaire
     Then I am presented with an option to choose a file containing the questionnaire
@@ -17,6 +19,7 @@ Feature: DQS - Successfully deploy a questionnaire
 
   # Scenario 3:
   Scenario: Deploy questionnaire functions disabled
+    Given no questionnaires are installed
     When I load the homepage
     And I click deploy a questionnaire
     And I have selected a deploy package for '(.*)'

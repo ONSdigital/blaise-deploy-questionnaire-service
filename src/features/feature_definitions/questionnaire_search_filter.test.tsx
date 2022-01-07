@@ -2,12 +2,12 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
-// Mock elements
+
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenILoadTheHomepage, whenISearchForAQuestionnaire } from "../step_definitions/when";
-import { mock_builder, mock_fetch_requests } from "../step_definitions/helpers/functions";
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires, thenIAmPresentedWithQuestionnaireNotFound } from "../step_definitions/then";
 import { Instrument } from "../../../Interfaces";
+import { Mocker } from "../step_definitions/helpers/mocker";
 
 // Load in feature details from .feature file
 const feature = loadFeature(
@@ -17,7 +17,7 @@ const feature = loadFeature(
 
 
 const instrumentList: Instrument[] = [];
-const mockList: Record<string, Promise<any>> = {};
+const mocker = new Mocker();
 
 defineFeature(feature, test => {
     afterEach(() => {
@@ -31,14 +31,12 @@ defineFeature(feature, test => {
     });
 
     test("Search for a questionnaire", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-
-        mock_fetch_requests(mock_builder(mockList));
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
 
         whenILoadTheHomepage(when);
         whenISearchForAQuestionnaire(when);
@@ -47,9 +45,7 @@ defineFeature(feature, test => {
     });
 
     test("Questionnaire not found", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-
-        mock_fetch_requests(mock_builder(mockList));
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
 
         whenILoadTheHomepage(when);
         whenISearchForAQuestionnaire(when);

@@ -2,12 +2,11 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
-// Mock elements
-import { mock_builder, mock_fetch_requests } from "../step_definitions/helpers/functions";
 
 import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenNoQuestionnairesAreInstalled, givenTOStartDateFails } from "../step_definitions/given";
 import { thenIAmPresentedWithAnOptionToSpecifyATOStartDate, thenICanViewTheTOStartDateSetToo, thenIGetAnErrorBannerWithMessage, thenTheSummaryPageHasNoTOStartDate } from "../step_definitions/then";
 import { whenIConfirmMySelection, whenIDeployTheQuestionnaire, whenISelectTheContinueButton, whenISelectToInstallWithNoStartDate, whenISpecifyAToStartDateOf } from "../step_definitions/when";
+import { Mocker } from "../step_definitions/helpers/mocker";
 
 
 // Load in feature details from .feature file
@@ -17,7 +16,7 @@ const feature = loadFeature(
 );
 
 
-const mockList: Record<string, Promise<any>> = {};
+const mocker = new Mocker();
 
 
 defineFeature(feature, test => {
@@ -33,10 +32,8 @@ defineFeature(feature, test => {
     });
 
     test("Present TO Start Date option", ({ given, when, then }) => {
-        givenNoQuestionnairesAreInstalled(given, mockList);
+        givenNoQuestionnairesAreInstalled(given, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
 
@@ -45,10 +42,8 @@ defineFeature(feature, test => {
 
 
     test("Enter TO Start Date", ({ given, when, then }) => {
-        givenNoQuestionnairesAreInstalled(given, mockList);
+        givenNoQuestionnairesAreInstalled(given, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         whenISpecifyAToStartDateOf(when);
@@ -59,10 +54,8 @@ defineFeature(feature, test => {
 
 
     test("Do not enter TO Start Date", ({ given, when, then }) => {
-        givenNoQuestionnairesAreInstalled(given, mockList);
+        givenNoQuestionnairesAreInstalled(given, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         whenISelectToInstallWithNoStartDate(when);
@@ -72,11 +65,9 @@ defineFeature(feature, test => {
 
 
     test("Setting the TO Start Date fails during deployment", ({ given, when, then }) => {
-        givenNoQuestionnairesAreInstalled(given, mockList);
-        givenTOStartDateFails(given, mockList);
+        givenNoQuestionnairesAreInstalled(given, mocker);
+        givenTOStartDateFails(given, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         whenISpecifyAToStartDateOf(when);

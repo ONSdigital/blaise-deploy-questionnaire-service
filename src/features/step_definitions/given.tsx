@@ -2,52 +2,61 @@ import navigateToDeployPageAndSelectFile, { format_date_string } from "./helpers
 import { DefineStepFunction } from "jest-cucumber";
 import { Instrument } from "../../../Interfaces";
 import { instrumentWithName } from "./helpers/API_Mock_Objects";
+import { Mocker } from "./helpers/mocker";
 
 export const givenTheQuestionnaireIsInstalled = (
   given: DefineStepFunction,
   instrumentList: Instrument[],
-  mockList: Record<string, Promise<any>>
+  mocker: Mocker
 ): void => {
   given(/the questionnaire '(.*)' is installed/, (questionnaire: string) => {
     const newInstrument = instrumentWithName(questionnaire);
     if (!instrumentList.some(instrument => instrument.name === questionnaire)) {
       instrumentList.push(newInstrument);
     }
-    mockList["/api/instruments"] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve(instrumentList),
+    mocker.set({
+      Path: "/api/instruments",
+      Status: 200,
+      JSON: instrumentList
     });
-    mockList[`/api/instruments/${questionnaire}`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve(newInstrument),
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}`,
+      Status: 200,
+      JSON: newInstrument
     });
-    mockList[`/api/instruments/${questionnaire}:DELETE`] = Promise.resolve({
-      status: 204,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}`,
+      Method: "DELETE",
+      Status: 204
     });
-    mockList[`/api/tostartdate/${questionnaire}:POST`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: `/api/tostartdate/${questionnaire}`,
+      Method: "POST",
+      Status: 200
     });
-    mockList[`/api/tostartdate/${questionnaire}`] = Promise.resolve({
-      status: 204,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: `/api/tostartdate/${questionnaire}`,
+      Status: 204
     });
-    mockList[`/upload/init?filename=${questionnaire}.bpkg`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve("https://storage.googleapis.com/"),
+    mocker.set({
+      Path: `/upload/init?filename=${questionnaire}.bpkg`,
+      Status: 200,
+      JSON: "https://storage.googleapis.com/"
     });
-    mockList[`/upload/verify?filename=${questionnaire}.bpkg`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve({ name: `${questionnaire}.bpkg` }),
+    mocker.set({
+      Path: `/upload/verify?filename=${questionnaire}.bpkg`,
+      Status: 200,
+      JSON: { name: `${questionnaire}.bpkg` }
     });
-    mockList[`/api/install?filename=${questionnaire}.bpkg`] = Promise.resolve({
-      status: 201,
-      json: () => Promise.resolve(),
+    mocker.set({
+      Path: `/api/install?filename=${questionnaire}.bpkg`,
+      Status: 201,
+      JSON: ""
     });
-    mockList[`/api/instruments/${questionnaire}/settings`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve([
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}/settings`,
+      Status: 200,
+      JSON: [
         {
           type: "StrictInterviewing",
           saveSessionOnTimeout: true,
@@ -57,52 +66,58 @@ export const givenTheQuestionnaireIsInstalled = (
           sessionTimeout: 15,
           applyRecordLocking: true
         }
-      ]),
+      ]
     });
-    mockList[`/api/instruments/${questionnaire}/modes`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve(["CAWI", "CATI"]),
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}/modes`,
+      Status: 200,
+      JSON: ["CAWI", "CATI"]
     });
+    mocker.applyMocks();
   });
 };
 
 // Just a bunch of default mocks to stop things falling over
 export const givenNoQuestionnairesAreInstalled = (
   given: DefineStepFunction,
-  mockList: Record<string, Promise<any>>
+  mocker: Mocker
 ): void => {
   given("no questionnaires are installed", () => {
-    mockList["/api/instruments/"] = Promise.resolve({
-      status: 404,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: "/api/instruments/",
+      Status: 404
     });
-    mockList["/api/instruments"] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve([]),
+    mocker.set({
+      Path: "/api/instruments",
+      Status: 200,
+      JSON: []
     });
-    mockList["/api/tostartdate/:POST"] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: "/api/tostartdate/",
+      Status: 204
     });
-    mockList["/api/tostartdate/"] = Promise.resolve({
-      status: 204,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: "/api/tostartdate/",
+      Method: "POST",
+      Status: 200
     });
-    mockList["/upload/init"] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve("https://storage.googleapis.com/"),
+    mocker.set({
+      Path: "/upload/init",
+      Status: 200,
+      JSON: "https://storage.googleapis.com/"
     });
-    mockList["/upload/verify"] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: "/upload/verify",
+      Status: 200
     });
-    mockList["/api/install"] = Promise.resolve({
-      status: 201,
-      json: () => Promise.resolve(),
+    mocker.set({
+      Path: "/api/install",
+      Status: 201
     });
-    mockList["/settings"] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve([
+    mocker.set({
+      Path: "/settings",
+      Status: 200,
+      JSON: [
         {
           type: "StrictInterviewing",
           saveSessionOnTimeout: true,
@@ -112,51 +127,59 @@ export const givenNoQuestionnairesAreInstalled = (
           sessionTimeout: 15,
           applyRecordLocking: true
         }
-      ]),
+      ]
     });
-    mockList["/modes"] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve(["CAWI", "CATI"]),
+    mocker.set({
+      Path: "/modes",
+      Status: 200,
+      JSON: ["CAWI", "CATI"]
     });
+    mocker.applyMocks();
   });
 };
 
-export const givenInstallsSuccessfully = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
+export const givenInstallsSuccessfully = (given: DefineStepFunction, mocker: Mocker): void => {
   given(/'(.*)' installs successfully/, (questionnaire: string) => {
-    mockList[`/upload/verify?filename=${questionnaire}.bpkg`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve({ name: `${questionnaire}.bpkg` }),
-    });
-    mockList[`/api/instruments/${questionnaire}/settings`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve([
-        {
-          type: "StrictInterviewing",
-          saveSessionOnTimeout: true,
-          saveSessionOnQuit: true,
-          deleteSessionOnTimeout: true,
-          deleteSessionOnQuit: true,
-          sessionTimeout: 15,
-          applyRecordLocking: true
-        }
-      ]),
-    });
-    mockList[`/api/instruments/${questionnaire}/modes`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve(["CAWI", "CATI"]),
-    });
+    mocker.set({
+      Path: `/upload/verify?filename=${questionnaire}.bpkg`,
+      Status: 200,
+      JSON: { name: `${questionnaire}.bpkg` }
+    }),
+      mocker.set({
+        Path: `/api/instruments/${questionnaire}/settings`,
+        Status: 200,
+        JSON: [
+          {
+            type: "StrictInterviewing",
+            saveSessionOnTimeout: true,
+            saveSessionOnQuit: true,
+            deleteSessionOnTimeout: true,
+            deleteSessionOnQuit: true,
+            sessionTimeout: 15,
+            applyRecordLocking: true
+          }
+        ]
+      }),
+      mocker.set({
+        Path: `/api/instruments/${questionnaire}/modes`,
+        Status: 200,
+        JSON: ["CAWI", "CATI"]
+      }),
+      mocker.applyMocks();
   });
 };
 
 export const givenTheQuestionnaireHasModes = (
   given: DefineStepFunction,
-  mockList: Record<string, Promise<any>>
+  mocker: Mocker
 ): void => {
   given(/'(.*)' has the modes '(.*)'/, (questionnaire: string, modes: string) => {
-    mockList[`/api/instruments/${questionnaire}/modes`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve(modes.split(",")),
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}/modes`,
+      Status: 200,
+      JSON: modes.split(",")
     });
+    mocker.applyMocks();
   });
 };
 
@@ -176,14 +199,15 @@ export const givenTheQuestionnaireHasCases = (
 
 export const givenTheQuestionnaireHasUACs = (
   given: DefineStepFunction,
-  mockList: Record<string, Promise<any>>
+  mocker: Mocker
 ): void => {
   given(/'(.*)' has (\d+) UACs/, (questionnaire: string, cases: string) => {
-    const caseCount: number = +cases;
-    mockList[`/api/uacs/instrument/${questionnaire}/count`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve({ count: caseCount }),
+    mocker.set({
+      Path: `/api/uacs/instrument/${questionnaire}/count`,
+      Status: 200,
+      JSON: { count: +cases }
     });
+    mocker.applyMocks();
   });
 };
 
@@ -202,64 +226,72 @@ export const givenTheQuestionnaireIsErroneous = (
 
 export const givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous = (
   given: DefineStepFunction,
-  mockList: Record<string, Promise<any>>
+  mocker: Mocker
 ): void => {
   given(/'(.*)' cannot be deleted because it would go erroneous/, (questionnaire: string) => {
-    mockList[`/api/instruments/${questionnaire}:DELETE`] = Promise.resolve({
-      status: 420,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}`,
+      Method: "DELETE",
+      Status: 420
     });
-    mockList[`/api/instruments/${questionnaire}`] = Promise.resolve({
-      status: 420,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}`,
+      Status: 420
     });
+    mocker.applyMocks();
   });
 };
 
-export const givenTOStartDateFails = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
+export const givenTOStartDateFails = (given: DefineStepFunction, mocker: Mocker): void => {
   given(/setting a TO start date for '(.*)' fails/, (questionnaire: string) => {
-    mockList[`/api/tostartdate/${questionnaire}`] = Promise.resolve({
-      status: 500,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: `/api/tostartdate/${questionnaire}`,
+      Status: 500
     });
+    mocker.applyMocks();
   });
 };
 
-export const givenUACGenerationIsBroken = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
+export const givenUACGenerationIsBroken = (given: DefineStepFunction, mocker: Mocker): void => {
   given(/UAC generation is broken for '(.*)'/, (questionnaire: string) => {
-    mockList[` /api/uacs/instrument/${questionnaire}`] = Promise.resolve({
-      status: 500,
-      json: () => Promise.resolve(),
+    mocker.set({
+      Path: `/api/uacs/instrument/${questionnaire}`,
+      Status: 500
     });
+    mocker.applyMocks();
   });
 };
 
 
-export const givenTheQuestionnaireHasATOStartDate = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
+export const givenTheQuestionnaireHasATOStartDate = (given: DefineStepFunction, mocker: Mocker): void => {
   given(/'(.*)' has a TO start date of '(.*)'/, async (questionnaire: string, toStartDate: string) => {
-    mockList[`/api/tostartdate/${questionnaire}`] = Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve({ tostartdate: format_date_string(toStartDate) }),
+    mocker.set({
+      Path: `/api/tostartdate/${questionnaire}`,
+      Status: 200,
+      JSON: { tostartdate: format_date_string(toStartDate) }
     });
+    mocker.applyMocks();
   });
 };
 
 
-export const givenTheQuestionnaireHasNoTOStartDate = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
+export const givenTheQuestionnaireHasNoTOStartDate = (given: DefineStepFunction, mocker: Mocker): void => {
   given(/'(.*)' has no TO start date/, async (questionnaire: string) => {
-    mockList[`/api/tostartdate/${questionnaire}`] = Promise.resolve({
-      status: 404,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: `/api/tostartdate/${questionnaire}`,
+      Status: 404,
     });
+    mocker.applyMocks();
   });
 };
 
-export const givenAllInstallsWillFail = (given: DefineStepFunction, mockList: Record<string, Promise<any>>): void => {
+export const givenAllInstallsWillFail = (given: DefineStepFunction, mocker: Mocker): void => {
   given(/All Questionnaire installs will fail for '(.*)'/, (questionnaire_matcher: string) => {
-    mockList[`/api/install?filename=${questionnaire_matcher}`] = Promise.resolve({
-      status: 500,
-      json: () => Promise.resolve({}),
+    mocker.set({
+      Path: `/api/install?filename=${questionnaire_matcher}`,
+      Status: 500,
     });
+    mocker.applyMocks();
   });
 };
 
@@ -272,7 +304,7 @@ export const givenIHaveSelectedTheQuestionnairePacakgeToDeploy = (given: DefineS
 export const givenTheQuestionnaireIsLive = (
   given: DefineStepFunction,
   instrumentList: Instrument[],
-  mockList: Record<string, Promise<any>>
+  mocker: Mocker
 ): void => {
   given(/'(.*)' is live/, (questionnaire: string) => {
     for (const instrument of instrumentList) {
@@ -281,11 +313,13 @@ export const givenTheQuestionnaireIsLive = (
         instrument.hasData = true;
         instrument.active = true;
 
-        mockList[`/api/instruments/${questionnaire}`] = Promise.resolve({
-          status: 200,
-          json: () => Promise.resolve(instrument),
+        mocker.set({
+          Path: `/api/instruments/${questionnaire}`,
+          Status: 200,
+          JSON: instrument
         });
       }
     }
+    mocker.applyMocks();
   });
 };

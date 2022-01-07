@@ -2,8 +2,6 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
-// Mock elements
-import { mock_fetch_requests, mock_builder } from "../step_definitions/helpers/functions";
 import { Instrument } from "../../../Interfaces";
 
 import {
@@ -20,6 +18,7 @@ import {
     thenIAmPresentedWithTheOptionsToCancelOrOverwrite,
     thenIAmReturnedToTheLandingPage
 } from "../step_definitions/then";
+import { Mocker } from "../step_definitions/helpers/mocker";
 
 
 // Load in feature details from .feature file
@@ -29,7 +28,7 @@ const feature = loadFeature(
 );
 
 const instrumentList: Instrument[] = [];
-const mockList: Record<string, Promise<any>> = {};
+const mocker = new Mocker();
 
 
 defineFeature(feature, test => {
@@ -45,9 +44,8 @@ defineFeature(feature, test => {
     });
 
     test("Questionnaire package already in Blaise", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         thenIAmPresentedWithTheOptionsToCancelOrOverwrite(then);
@@ -55,9 +53,8 @@ defineFeature(feature, test => {
 
 
     test("Back-out of deploying a questionnaire", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         whenISelectTo(when);

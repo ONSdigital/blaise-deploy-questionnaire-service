@@ -2,16 +2,11 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
-// Mock elements
-import {
-    mock_builder,
-    mock_fetch_requests,
-} from "../step_definitions/helpers/functions";
-import { Instrument } from "../../../Interfaces";
 
 import { givenAllInstallsWillFail, givenIHaveSelectedTheQuestionnairePacakgeToDeploy } from "../step_definitions/given";
 import { whenIConfirmMySelection } from "../step_definitions/when";
 import { thenICanRetryAnInstall, thenIGetAnErrorBanner } from "../step_definitions/then";
+import { Mocker } from "../step_definitions/helpers/mocker";
 
 
 // Load in feature details from .feature file
@@ -20,7 +15,7 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const mockList: Record<string, Promise<any>> = {};
+const mocker = new Mocker();
 
 defineFeature(feature, test => {
     afterEach(() => {
@@ -35,20 +30,16 @@ defineFeature(feature, test => {
     });
 
     test("Deployment of selected file failure", ({ given, when, then }) => {
-        givenAllInstallsWillFail(given, mockList);
+        givenAllInstallsWillFail(given, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         thenIGetAnErrorBanner(then);
     });
 
     test("Deploy selected file, retry following failure", ({ given, when, then }) => {
-        givenAllInstallsWillFail(given, mockList);
+        givenAllInstallsWillFail(given, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-
-        mock_fetch_requests(mock_builder(mockList));
 
         whenIConfirmMySelection(when);
         thenIGetAnErrorBanner(then);

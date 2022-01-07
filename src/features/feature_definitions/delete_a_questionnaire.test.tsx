@@ -4,8 +4,6 @@ import React from "react";
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup, } from "@testing-library/react";
 import "@testing-library/jest-dom";
-// Mock elements
-import { mock_fetch_requests, mock_builder } from "../step_definitions/helpers/functions";
 import { Instrument } from "../../../Interfaces";
 
 import {
@@ -24,6 +22,7 @@ import {
     thenTheQuestionnaireDataIsNotDeleted
 } from "../step_definitions/then";
 import { whenICancelDelete, whenIConfirmDelete, whenIDeleteAQuestionnaire, whenILoadTheHomepage } from "../step_definitions/when";
+import { Mocker } from "../step_definitions/helpers/mocker";
 
 
 // Load in feature details from .feature file
@@ -34,7 +33,7 @@ const feature = loadFeature(
 
 
 const instrumentList: Instrument[] = [];
-const mockList: Record<string, Promise<any>> = {};
+const mocker = new Mocker();
 
 
 defineFeature(feature, test => {
@@ -49,9 +48,8 @@ defineFeature(feature, test => {
     });
 
     test("Delete questionnaire not available from the list, when survey is live", ({ given, when, then, }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        givenTheQuestionnaireIsLive(given, instrumentList, mockList);
-        mock_fetch_requests(mock_builder(mockList));
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsLive(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
         thenIWillNotHaveTheOptionToDelete(then);
         thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted(then);
@@ -59,16 +57,14 @@ defineFeature(feature, test => {
 
 
     test("Select to delete a questionnaire from the list, when survey is NOT live", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        mock_fetch_requests(mock_builder(mockList));
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);
         thenIAmPresentedWithAWarning(then);
     });
 
     test("Confirm deletion", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        mock_fetch_requests(mock_builder(mockList));
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);
@@ -77,8 +73,7 @@ defineFeature(feature, test => {
     });
 
     test("Cancel deletion", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mockList);
-        mock_fetch_requests(mock_builder(mockList));
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);
         whenICancelDelete(when);
