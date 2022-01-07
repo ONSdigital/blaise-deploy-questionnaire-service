@@ -67,6 +67,10 @@ function UploadPage(): ReactElement {
         }
     }
 
+    function stepLength(): number {
+        return Object.keys(Step).filter(key => isNaN(+key)).length;
+    }
+
     async function cancelButtonAction(): Promise<void> {
         if (activeStep == Step.InvalidSettings) {
             console.log(`Cancelling partial install, uninstalling questionnaire ${instrumentName}`);
@@ -105,7 +109,7 @@ function UploadPage(): ReactElement {
         const installed = await uploadAndInstallFile(instrumentName, values["set TO start date"], file, setUploading, setUploadStatus, onFileUploadProgress);
         actions.setSubmitting(false);
         if (!installed) {
-            setActiveStep(Object.keys(Step).length);
+            setActiveStep(stepLength());
             return;
         }
 
@@ -116,31 +120,31 @@ function UploadPage(): ReactElement {
         const valid = await checkInstrumentSettings(instrumentName, setInstrumentSettings, setInvalidSettings, setErrored);
 
         if (!valid) {
-            setActiveStep(5);
+            setActiveStep(Step.InvalidSettings);
             return;
         }
-        setActiveStep(Object.keys(Step).length);
+        setActiveStep(stepLength());
     }
 
     async function _handleSubmit(values: any, actions: any) {
         let result;
         switch (activeStep) {
-            case 0:
+            case Step.SelectFile:
                 result = await validateSelectedInstrumentExists(file, setInstrumentName, setUploadStatus, setFoundInstrument);
                 if (result === null) {
                     actions.setTouched({});
                     actions.setSubmitting(false);
-                    setActiveStep(Object.keys(Step).length);
+                    setActiveStep(stepLength());
                     return;
                 }
                 if (result === false) {
-                    setActiveStep(3);
+                    setActiveStep(Step.SetLiveDate);
                     actions.setTouched({});
                     actions.setSubmitting(false);
                     return;
                 }
                 break;
-            case 1:
+            case Step.AlreadyExists:
                 if (values.override === "cancel") {
                     actions.setSubmitting(false);
                     history.push("/");
@@ -151,32 +155,36 @@ function UploadPage(): ReactElement {
                     history.push(`/upload/survey-live/${instrumentName}`);
                 }
                 break;
-            case 2:
+            case Step.ConfirmOverride:
                 if (values.override === "cancel") {
                     actions.setSubmitting(false);
                     history.push("/");
                     return;
                 }
                 break;
-            case 3:
+            case Step.SetLiveDate:
                 if (values.askToSetTOStartDate === "no") {
                     values["set TO start date"] = "";
                 }
                 break;
-            case 4:
+            case Step.Summary:
                 await _uploadAndInstallInstrument(values, actions);
                 break;
-            case 5:
+            case Step.InvalidSettings:
                 await activateInstrument(instrumentName);
                 break;
         }
-        // Step 4 has custom handling for steps
-        if (activeStep != 4) {
+        // Summary has custom handling for steps
+        if (activeStep != Step.Summary) {
             setActiveStep(activeStep + 1);
         }
         actions.setTouched({});
         actions.setSubmitting(false);
     }
+
+    console.log("$$$$$$$$$$$$ DEBUG $$$$$$$$$$$");
+    console.log(activeStep);
+    console.log(stepLength());
 
     return (
         <>
@@ -187,7 +195,7 @@ function UploadPage(): ReactElement {
             } />
 
             <main id="main-content" className="page__main u-mt-no">
-                {activeStep === Object.keys(Step).length ? (
+                {activeStep >= stepLength() ? (
                     <Redirect
                         to={{
                             pathname: "/UploadSummary",

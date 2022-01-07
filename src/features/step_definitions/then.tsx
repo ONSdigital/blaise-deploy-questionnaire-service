@@ -106,6 +106,34 @@ export const thenTheQuestionnaireIsInstalled = (then: DefineStepFunction): void 
   });
 };
 
+export const thenTheQuestionnaireIsActivated = (then: DefineStepFunction): void => {
+  then(/the questionnaire package '(.*)' is activated/, async (questionnaire: string) => {
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(`/api/instruments/${questionnaire}/activate`, {
+      "body": null,
+      "method": "PATCH",
+      "headers": { "Content-Type": "application/json" }
+    });
+  });
+};
+
+export const thenTheQuestionnaireIsDeactivated = (then: DefineStepFunction): void => {
+  then(/the questionnaire package '(.*)' is deactivated/, async (questionnaire: string) => {
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(`/api/instruments/${questionnaire}/deactivate`, {
+      "body": null,
+      "method": "PATCH",
+      "headers": { "Content-Type": "application/json" }
+    });
+  });
+};
+
 export const thenIGetTheDeleteSuccessBanner = (then: DefineStepFunction): void => {
   then(/I am presented a success banner on the launch page for deleting '(.*)'/, async (questionnaire: string) => {
     await waitFor(() => {
@@ -347,5 +375,27 @@ export const thenUploadIsDisabled = (then: DefineStepFunction): void => {
   then("I am unable to select another file or continue again until the deployment has finished", () => {
     expect(screen.getByLabelText(/Select survey package/i).closest("input")).toBeDisabled();
     expect(screen.getByTestId("button")).toBeDisabled();
+  });
+};
+
+export const thenAWarningIsDisplayedWithTheMessage = (then: DefineStepFunction): void => {
+  then("a warning is displayed with the message", async (message: string) => {
+    message = message.replace(/\s/g, " ");
+    await waitFor((() => {
+      expect(screen.getByText(message, { exact: false })).toBeDefined();
+    }));
+  });
+};
+
+export const thenIGetTheOptionToContinueOrCancel = (then: DefineStepFunction): void => {
+  then("I get the option to continue loading or cancel the deployment", async () => {
+    await waitFor(() => {
+      const deployButton: any = document.querySelector("#continue-deploy-button");
+      expect(deployButton).not.toBeNull();
+      expect(deployButton.textContent).toEqual("Deploy anyway");
+      const reinstallButton: any = document.querySelector("#cancel-deploy-button");
+      expect(reinstallButton).not.toBeNull();
+      expect(reinstallButton.textContent).toEqual("Reinstall");
+    });
   });
 };

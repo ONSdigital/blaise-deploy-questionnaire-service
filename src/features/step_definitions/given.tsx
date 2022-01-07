@@ -3,6 +3,7 @@ import { DefineStepFunction } from "jest-cucumber";
 import { Instrument } from "../../../Interfaces";
 import { instrumentWithName } from "./helpers/API_Mock_Objects";
 import { Mocker } from "./helpers/mocker";
+import { InstrumentSettings } from "blaise-api-node-client";
 
 export const givenTheQuestionnaireIsInstalled = (
   given: DefineStepFunction,
@@ -144,28 +145,36 @@ export const givenInstallsSuccessfully = (given: DefineStepFunction, mocker: Moc
       Path: `/upload/verify?filename=${questionnaire}.bpkg`,
       Status: 200,
       JSON: { name: `${questionnaire}.bpkg` }
-    }),
-      mocker.set({
-        Path: `/api/instruments/${questionnaire}/settings`,
-        Status: 200,
-        JSON: [
-          {
-            type: "StrictInterviewing",
-            saveSessionOnTimeout: true,
-            saveSessionOnQuit: true,
-            deleteSessionOnTimeout: true,
-            deleteSessionOnQuit: true,
-            sessionTimeout: 15,
-            applyRecordLocking: true
-          }
-        ]
-      }),
-      mocker.set({
-        Path: `/api/instruments/${questionnaire}/modes`,
-        Status: 200,
-        JSON: ["CAWI", "CATI"]
-      }),
-      mocker.applyMocks();
+    });
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}/settings`,
+      Status: 200,
+      JSON: [
+        {
+          type: "StrictInterviewing",
+          saveSessionOnTimeout: true,
+          saveSessionOnQuit: true,
+          deleteSessionOnTimeout: true,
+          deleteSessionOnQuit: true,
+          sessionTimeout: 15,
+          applyRecordLocking: true
+        }
+      ]
+    });
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}/modes`,
+      Status: 200,
+      JSON: ["CAWI", "CATI"]
+    });
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}/activate`,
+      Status: 204
+    });
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}/deactivate`,
+      Status: 204
+    });
+    mocker.applyMocks();
   });
 };
 
@@ -320,6 +329,29 @@ export const givenTheQuestionnaireIsLive = (
         });
       }
     }
+    mocker.applyMocks();
+  });
+};
+
+export const givenTheQuestionnareHasTheSettings = (given: DefineStepFunction, mocker: Mocker): void => {
+  given(/'(.*)' has the settings:/, (questionnaire: string, table: any[]) => {
+    const settings: InstrumentSettings[] = [];
+    table.forEach((row: any) => {
+      settings.push({
+        type: row.type,
+        saveSessionOnTimeout: row.saveSessionOnTimeout === "true",
+        saveSessionOnQuit: row.saveSessionOnQuit === "true",
+        deleteSessionOnTimeout: row.deleteSessionOnTimeout === "true",
+        deleteSessionOnQuit: row.deleteSessionOnQuit === "true",
+        sessionTimeout: row.sessionTimeout,
+        applyRecordLocking: row.applyRecordLocking === "true",
+      });
+    });
+    mocker.set({
+      Path: `/api/instruments/${questionnaire}/settings`,
+      Status: 200,
+      JSON: settings
+    });
     mocker.applyMocks();
   });
 };

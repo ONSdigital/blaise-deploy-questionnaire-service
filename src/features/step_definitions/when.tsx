@@ -238,3 +238,26 @@ export const whenIHaveSelectedADeployPackage = (then: DefineStepFunction): void 
     userEvent.upload(input, file);
   });
 };
+
+
+export const whenIChooseToDeployAnyway = (when: DefineStepFunction): void => {
+  when("I choose to deploy anyway", async () => {
+    const elements = await screen.findAllByText(/Deploy anyway/i);
+    // The second time we see "Deploy anyway" is actually our button
+    userEvent.click(elements[1]);
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};
+
+export const whenIChooseToReinstall = (when: DefineStepFunction): void => {
+  when("I choose to reinstall", async () => {
+    const elements = await screen.findAllByText(/reinstall/i);
+    // The second time we see "reinstall" is actually our button
+    userEvent.click(elements[1]);
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};
