@@ -16,7 +16,8 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
                 uac1: "0008",
                 uac2: "4545",
                 uac3: "9373"
-            }
+            },
+            full_uac: "000845459373"
         },
         "0009": {
             instrument_name: "dst2106a",
@@ -26,7 +27,8 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
                 uac1: "0009",
                 uac2: "3454",
                 uac3: "4521"
-            }
+            },
+            full_uac: "000934544521"
         },
     };
 
@@ -66,8 +68,8 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
 
         expect(Object.keys(mergedCases).length).toEqual(2);
         expect(mergedCases).toEqual([
-            { "UAC1": "0008", "UAC2": "4545", "UAC3": "9373", "serial_number": "0008" },
-            { "UAC1": "0009", "UAC2": "3454", "UAC3": "4521", "serial_number": "0009" }
+            { "UAC1": "0008", "UAC2": "4545", "UAC3": "9373", "UAC": "000845459373", "serial_number": "0008" },
+            { "UAC1": "0009", "UAC2": "3454", "UAC3": "4521", "UAC": "000934544521", "serial_number": "0009" }
         ]
         );
     });

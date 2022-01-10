@@ -4717,9 +4717,9 @@ big.js@^5.2.2:
   integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
 
 bignumber.js@^9.0.0:
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.1.tgz#8d7ba124c882bfd8e43260c67475518d0689e4e5"
-  integrity sha512-IdZR9mh6ahOBv/hYGiXyVuyCetmGJhtYkqLBpTStdhEGjegpPlUawydyaF3pbIOFynJTpllEs+NP+CS9jKFLjA==
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.2.tgz#71c6c6bed38de64e24a65ebe16cfcf23ae693673"
+  integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
 
 binary-extensions@^1.0.0:
   version "1.13.1"
@@ -4985,7 +4985,7 @@ builtin-status-codes@^3.0.0:
 
 "bus-api-node-client@git+https://github.com/ONSdigital/blaise-uac-service-node-client":
   version "1.0.0"
-  resolved "git+https://github.com/ONSdigital/blaise-uac-service-node-client#ba83d68197dd21fe68ae2d76c3db326ef1b64171"
+  resolved "git+https://github.com/ONSdigital/blaise-uac-service-node-client#1ccd9857ca60a09b4e5a9ab050392dfe2e094693"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     "@types/jsonwebtoken" "^8.5.5"
@@ -7575,20 +7575,28 @@ gauge@~2.7.3:
     wide-align "^1.1.0"
 
 gaxios@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/gaxios/-/gaxios-4.1.0.tgz#e8ad466db5a4383c70b9d63bfd14dfaa87eb0099"
-  integrity sha512-vb0to8xzGnA2qcgywAjtshOKKVDf2eQhJoiL6fHhgW5tVN7wNk7egnYIO9zotfn3lQ3De1VPdf7V5/BWfCtCmg==
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/gaxios/-/gaxios-4.3.2.tgz#845827c2dc25a0213c8ab4155c7a28910f5be83f"
+  integrity sha512-T+ap6GM6UZ0c4E6yb1y/hy2UB6hTrqhglp3XfmU9qbLCGRYhLVV5aRPpC4EmoG8N8zOnkYCgoBz+ScvGAARY6Q==
   dependencies:
     abort-controller "^3.0.0"
     extend "^3.0.2"
     https-proxy-agent "^5.0.0"
     is-stream "^2.0.0"
-    node-fetch "^2.3.0"
+    node-fetch "^2.6.1"
 
-gcp-metadata@^4.0.0, gcp-metadata@^4.2.0:
+gcp-metadata@^4.0.0:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-4.2.1.tgz#31849fbcf9025ef34c2297c32a89a1e7e9f2cd62"
   integrity sha512-tSk+REe5iq/N+K+SK1XjZJUrFPuDqGZVzCy2vocIHIGmPlTGsa8owXMJwGkrXr73NO0AzhPW4MF2DEHz7P2AVw==
+  dependencies:
+    gaxios "^4.0.0"
+    json-bigint "^1.0.0"
+
+gcp-metadata@^4.2.0:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-4.3.1.tgz#fb205fe6a90fef2fd9c85e6ba06e5559ee1eefa9"
+  integrity sha512-x850LS5N7V1F3UcV7PoupzGsyD6iVwTVvsh3tbXfkctZnBnjW5yu5z1/3k3SehF7TyoTIe78rJs02GMMy+LF+A==
   dependencies:
     gaxios "^4.0.0"
     json-bigint "^1.0.0"
@@ -7781,9 +7789,9 @@ google-auth-library@^7.0.0, google-auth-library@^7.0.2, google-auth-library@^7.6
     lru-cache "^6.0.0"
 
 google-auth-library@^7.9.1:
-  version "7.9.1"
-  resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-7.9.1.tgz#b90a3a0fa67d6ba78c43ffdeeb0a66fcebe6fb91"
-  integrity sha512-cWGykH2WBR+UuYPGRnGVZ6Cjq2ftQiEIFjQWNIRIauZH7hUWoYTr/lkKUqLTYt5dex77nlWWVQ8aPV80mhfp5w==
+  version "7.11.0"
+  resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-7.11.0.tgz#b63699c65037310a424128a854ba7e736704cbdb"
+  integrity sha512-3S5jn2quRumvh9F/Ubf7GFrIq71HZ5a6vqosgdIu105kkk0WtSqc2jGCRqtWWOLRS8SX3AHACMOEDxhyWAQIcg==
   dependencies:
     arrify "^2.0.0"
     base64-js "^1.3.0"
@@ -7815,9 +7823,9 @@ google-gax@^2.24.1:
     retry-request "^4.0.0"
 
 google-p12-pem@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/google-p12-pem/-/google-p12-pem-3.0.3.tgz#673ac3a75d3903a87f05878f3c75e06fc151669e"
-  integrity sha512-wS0ek4ZtFx/ACKYF3JhyGe5kzH7pgiQ7J5otlumqR9psmWMYc+U9cErKlCYVYHoUaidXHdZ2xbo34kB+S+24hA==
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/google-p12-pem/-/google-p12-pem-3.1.2.tgz#c3d61c2da8e10843ff830fdb0d2059046238c1d4"
+  integrity sha512-tjf3IQIt7tWCDsa0ofDQ1qqSCNzahXDxdAGJDbruWqu3eCg5CKLYKN+hi0s6lfvzYZ1GDVr+oDF9OOWlDSdf0A==
   dependencies:
     node-forge "^0.10.0"
 
@@ -7832,14 +7840,13 @@ growly@^1.3.0:
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
 gtoken@^5.0.4:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/gtoken/-/gtoken-5.1.0.tgz#4ba8d2fc9a8459098f76e7e8fd7beaa39fda9fe4"
-  integrity sha512-4d8N6Lk8TEAHl9vVoRVMh9BNOKWVgl2DdNtr3428O75r3QFrF/a5MMu851VmK0AA8+iSvbwRv69k5XnMLURGhg==
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/gtoken/-/gtoken-5.3.1.tgz#c1c2598a826f2b5df7c6bb53d7be6cf6d50c3c78"
+  integrity sha512-yqOREjzLHcbzz1UrQoxhBtpk8KjrVhuqPE7od1K2uhyxG2BHjKZetlbLw/SPZak/QqTIQW+addS+EcjqQsZbwQ==
   dependencies:
     gaxios "^4.0.0"
     google-p12-pem "^3.0.3"
     jws "^4.0.0"
-    mime "^2.2.0"
 
 gzip-size@5.1.1:
   version "5.1.1"
@@ -8701,9 +8708,9 @@ is-stream@^1.1.0:
   integrity sha1-EtSj3U5o4Lec6428hBc66A2RykQ=
 
 is-stream@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-2.0.0.tgz#bde9c32680d6fae04129d6ac9d921ce7815f78e3"
-  integrity sha512-XCoy+WlUr7d1+Z8GgSuXmpuUFC9fOhRXglJMx+dwLKTkL44Cjd4W1Z5P+BQZpr+cR93aGP4S/s7Ftw6Nd/kiEw==
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-2.0.1.tgz#fac1e3d53b97ad5a9d0ae9cef2389f5810a5c077"
+  integrity sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==
 
 is-string@^1.0.5:
   version "1.0.5"
@@ -9971,7 +9978,12 @@ mime@1.6.0:
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
   integrity sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==
 
-mime@^2.2.0, mime@^2.4.4, mime@^2.4.6:
+mime@^2.2.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-2.6.0.tgz#a2a682a95cd4d0cb1d6257e28f83da7e35800367"
+  integrity sha512-USPkMeET31rOMiarsBNIHZKLGgvKc/LrjofAnBlOttf5ajRvqiRA8QsenbcooctK6d6Ts6aqZXBA+XbkKthiQg==
+
+mime@^2.4.4, mime@^2.4.6:
   version "2.4.7"
   resolved "https://registry.yarnpkg.com/mime/-/mime-2.4.7.tgz#962aed9be0ed19c91fd7dc2ece5d7f4e89a90d74"
   integrity sha512-dhNd1uA2u397uQk3Nv5LM4lm93WYDUXFn3Fu291FJerns4jyTudqhIWe4W04YLy7Uk1tm1Ore04NpjRvQp/NPA==
@@ -10215,7 +10227,7 @@ no-case@^3.0.3:
     lower-case "^2.0.1"
     tslib "^1.10.0"
 
-node-fetch@^2.3.0, node-fetch@^2.6.1:
+node-fetch@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
