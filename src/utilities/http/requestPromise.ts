@@ -58,5 +58,23 @@ function requestPromiseJsonList(method: string, url: string, body: any = null): 
     });
 }
 
-export {requestPromiseJson, requestPromiseJsonList};
+function requestPromiseNoResponse(method: string, url: string, body: any = null): Promise<number> {
+    return new Promise((resolve: (object: number) => void, reject: (error: string) => void) => {
+        fetch(url, {
+            "method": method,
+            "body": (body !== null ? JSON.stringify(body) : null),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+            .then(async response => {
+                resolve(response.status);
+            })
+            .catch(err => {
+                console.log(err);
+                reject(err);
+            });
+    });
+}
 
+export { requestPromiseJson, requestPromiseJsonList, requestPromiseNoResponse };

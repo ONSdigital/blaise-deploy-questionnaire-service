@@ -278,6 +278,120 @@ describe("BlaiseAPI Delete a specific instrument", () => {
     });
 });
 
+describe("BlaiseAPI Activate a specific instrument", () => {
+    it("should return a 204 status when API activates a instrument successfuly", async done => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        BlaiseApiRest.mockImplementation(() => {
+            return {
+                activateInstrument: () => {
+                    return Promise.resolve(true);
+                }
+            };
+        });
+        const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
+
+        expect(response.status).toEqual(204);
+        done();
+    });
+
+    it("should return a 404 status direct from the API", async done => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        BlaiseApiRest.mockImplementation(() => {
+            return {
+                activateInstrument: () => {
+                    return Promise.reject({ status: 404 });
+                }
+            };
+        });
+
+        const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
+
+        expect(response.status).toEqual(404);
+        done();
+    });
+
+    it("should return a 500 status direct from the API", async done => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        BlaiseApiRest.mockImplementation(() => {
+            return {
+                activateInstrument: () => {
+                    return Promise.reject({ status: 500 });
+                }
+            };
+        });
+
+        const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
+
+        expect(response.status).toEqual(500);
+        done();
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+    });
+});
+
+describe("BlaiseAPI Deactivate a specific instrument", () => {
+    it("should return a 204 status when API activates a instrument successfuly", async done => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        BlaiseApiRest.mockImplementation(() => {
+            return {
+                deactivateInstrument: () => {
+                    return Promise.resolve(true);
+                }
+            };
+        });
+        const response: Response = await request.patch("/api/instruments/OPN2101A/deactivate");
+
+        expect(response.status).toEqual(204);
+        done();
+    });
+
+    it("should return a 404 status direct from the API", async done => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        BlaiseApiRest.mockImplementation(() => {
+            return {
+                deactivateInstrument: () => {
+                    return Promise.reject({ status: 404 });
+                }
+            };
+        });
+
+        const response: Response = await request.patch("/api/instruments/OPN2101A/deactivate");
+
+        expect(response.status).toEqual(404);
+        done();
+    });
+
+    it("should return a 500 status direct from the API", async done => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        BlaiseApiRest.mockImplementation(() => {
+            return {
+                deactivateInstrument: () => {
+                    return Promise.reject({ status: 500 });
+                }
+            };
+        });
+
+        const response: Response = await request.patch("/api/instruments/OPN2101A/deactivate");
+
+        expect(response.status).toEqual(500);
+        done();
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+    });
+});
+
 describe("BlaiseAPI does instrument have a specific mode API", () => {
     it("should return a 200 status and a json boolean when API returns a boolean", async done => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -1,10 +1,10 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
-import {filter} from "lodash";
-import {Instrument} from "../../Interfaces";
-import ONSTable, {TableColumns} from "./ONSTable";
+import React, { ReactElement, useEffect, useState } from "react";
+import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
+import { filter } from "lodash";
+import { Instrument } from "../../Interfaces";
+import ONSTable, { TableColumns } from "./ONSTable";
 import dateFormatter from "dayjs";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import InstrumentStatus from "./InstrumentStatus";
 
 interface Props {
@@ -13,45 +13,45 @@ interface Props {
     listMessage: string;
 }
 
-function instrumentTableRow(item: Instrument) {
+function instrumentTableRow(instrument: Instrument) {
     return (
-        <tr className="table__row" key={item.name} data-testid={"instrument-table-row"}>
+        <tr className="table__row" key={instrument.name} data-testid={"instrument-table-row"}>
             <td className="table__cell ">
                 <Link
-                    id={`info-${item.name}`}
-                    data-testid={`info-${item.name}`}
-                    aria-label={`View more information for questionnaire ${item.name}`}
+                    id={`info-${instrument.name}`}
+                    data-testid={`info-${instrument.name}`}
+                    aria-label={`View more information for questionnaire ${instrument.name}`}
                     to={{
                         pathname: "/questionnaire",
-                        state: {instrument: item}
+                        state: { instrument: instrument }
                     }}>
-                    {item.name}
+                    {instrument.name}
                 </Link>
             </td>
             <td className="table__cell ">
-                {item.fieldPeriod}
+                {instrument.fieldPeriod}
             </td>
             <td className="table__cell ">
-                <InstrumentStatus status={item.status ? item.status : ""}/>
+                <InstrumentStatus status={instrument.status ? instrument.status : ""} />
             </td>
             <td className="table__cell ">
-                {dateFormatter(item.installDate).format("DD/MM/YYYY HH:mm")}
+                {dateFormatter(instrument.installDate).format("DD/MM/YYYY HH:mm")}
             </td>
             <td className="table__cell ">
-                {item.dataRecordCount}
+                {instrument.dataRecordCount}
             </td>
-            <td className={"table__cell "} id={`delete-${item.name}`}>
+            <td className={"table__cell "} id={`delete-${instrument.name}`}>
                 {
-                    item.active ?
+                    instrument.active ?
                         "Questionnaire is live"
                         :
-                        <Link id={`delete-button-${item.name}`}
-                              data-testid={`delete-${item.name}`}
-                              aria-label={`Delete questionnaire ${item.name}`}
-                              to={{
-                                  pathname: "/delete",
-                                  state: {instrument: item}
-                              }}>
+                        <Link id={`delete-button-${instrument.name}`}
+                            data-testid={`delete-${instrument.name}`}
+                            aria-label={`Delete questionnaire ${instrument.name}`}
+                            to={{
+                                pathname: "/delete",
+                                state: { instrument: instrument }
+                            }}>
                             Delete
                         </Link>
                 }
@@ -61,7 +61,7 @@ function instrumentTableRow(item: Instrument) {
 }
 
 export const InstrumentList = (props: Props): ReactElement => {
-    const {instrumentList, loading, listMessage} = props;
+    const { instrumentList, loading, listMessage } = props;
 
     const [message, setMessage] = useState<string>("");
     const [filterValue, setFilterValue] = useState<string>("");
@@ -69,7 +69,7 @@ export const InstrumentList = (props: Props): ReactElement => {
 
     const filterList = () => {
         // Filter by the search field
-        const newFilteredList = filter(instrumentList, (listItem) => listItem.name.includes(filterValue.toUpperCase()));
+        const newFilteredList = filter(instrumentList, (instrument) => instrument.name.includes(filterValue.toUpperCase()));
         // Order by date
         newFilteredList.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
 
@@ -110,7 +110,7 @@ export const InstrumentList = (props: Props): ReactElement => {
 
 
     if (loading) {
-        return <ONSLoadingPanel/>;
+        return <ONSLoadingPanel />;
     } else {
         return (
             <>
@@ -119,7 +119,7 @@ export const InstrumentList = (props: Props): ReactElement => {
                         <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
                         </label>
                         <input type="text" id="filter-by-name" className="input input--text input-type__input"
-                               onChange={(e) => setFilterValue(e.target.value)}/>
+                            onChange={(e) => setFilterValue(e.target.value)} />
                     </div>
 
 
@@ -132,7 +132,7 @@ export const InstrumentList = (props: Props): ReactElement => {
                         {
                             filteredList && filteredList.length > 0 ?
                                 <ONSTable columns={tableColumns}
-                                          tableID={"instrument-table"}
+                                    tableID={"instrument-table"}
                                 >
                                     {
                                         filteredList.map((item: Instrument) => {
@@ -142,7 +142,7 @@ export const InstrumentList = (props: Props): ReactElement => {
                                 </ONSTable>
                                 :
                                 <ONSPanel spacious={true}
-                                          status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>
+                                    status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>
                         }
                     </div>
                 </div>
