@@ -1,12 +1,9 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { getInstrumentModes, getInstrumentSettings } from "../../../utilities/http";
 import { Instrument } from "../../../../Interfaces";
-import { ONSPanel, ONSLoadingPanel } from "blaise-design-system-react-components";
 import { InstrumentSettings } from "blaise-api-node-client";
-import { formatText } from "../../../utilities/TextFormatting/TextFormatting";
 import { GetStrictInterviewingSettings, ValidateSettings } from "../../../utilities/instrument_settings";
 import { GetInstrumentMode, InstrumentMode } from "../../../utilities/instrument_mode";
-import { transform, isEqual, isObject } from "lodash";
 import InstrumentSettingsTable from "../../InstrumentSettings/InstrumentSettingsTable";
 
 interface Props {

@@ -1,5 +1,3 @@
-// React
-import React from "react";
 // Test modules
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup, } from "@testing-library/react";

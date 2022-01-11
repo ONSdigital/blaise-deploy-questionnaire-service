@@ -1,11 +1,8 @@
-// React
-import React from "react";
 // Test modules
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import { mock_fetch_requests, mock_builder } from "../step_definitions/helpers/functions";
 import { Instrument } from "../../../Interfaces";
 
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
