@@ -1,10 +1,10 @@
-import flushPromises, {mock_server_request_Return_JSON} from "../../tests/utils";
-import {instrumentList} from "../../features/step_definitions/API_Mock_Objects";
-import {createMemoryHistory} from "history";
-import {render, waitFor, screen} from "@testing-library/react";
-import {Router} from "react-router";
+import flushPromises, { mock_server_request_Return_JSON } from "../../tests/utils";
+import { instrumentList } from "../../features/step_definitions/helpers/API_Mock_Objects";
+import { createMemoryHistory } from "history";
+import { render, waitFor, screen } from "@testing-library/react";
+import { Router } from "react-router";
 import App from "../../App";
-import {act} from "react-dom/test-utils";
+import { act } from "react-dom/test-utils";
 import React from "react";
 
 
@@ -20,7 +20,7 @@ describe("Instrument Details page ", () => {
         history.push("/questionnaire");
         render(
             <Router history={history}>
-                <App/>
+                <App />
             </Router>
         );
 

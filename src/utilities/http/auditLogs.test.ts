@@ -1,7 +1,7 @@
-import {cleanup} from "@testing-library/react";
-import {mock_server_request_function, mock_server_request_Return_JSON} from "../../tests/utils";
-import {instrumentList} from "../../features/step_definitions/API_Mock_Objects";
-import {getAuditLogs} from "./auditLogs";
+import { cleanup } from "@testing-library/react";
+import { mock_server_request_function, mock_server_request_Return_JSON } from "../../tests/utils";
+import { instrumentList } from "../../features/step_definitions/helpers/API_Mock_Objects";
+import { getAuditLogs } from "./auditLogs";
 
 describe("Function getAuditLogs(filename: string) ", () => {
 
@@ -39,7 +39,7 @@ describe("Function getAuditLogs(filename: string) ", () => {
     });
 
     it("It should return false with an empty list if request JSON is invalid", async () => {
-        mock_server_request_Return_JSON(200, {name: "NAME"});
+        mock_server_request_Return_JSON(200, { name: "NAME" });
         const [success, instruments] = await getAuditLogs();
         expect(success).toBeFalsy();
         expect(instruments).toEqual([]);

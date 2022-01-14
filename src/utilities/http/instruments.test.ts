@@ -1,9 +1,11 @@
-import {cleanup} from "@testing-library/react";
-import {mock_server_request_function, mock_server_request_Return_JSON} from "../../tests/utils";
-import {instrumentList, opnInstrument} from "../../features/step_definitions/API_Mock_Objects";
+import { cleanup } from "@testing-library/react";
+import { mock_server_request_function, mock_server_request_Return_JSON } from "../../tests/utils";
+import { instrumentList, opnInstrument } from "../../features/step_definitions/helpers/API_Mock_Objects";
 import {
     checkInstrumentAlreadyExists,
     deleteInstrument,
+    activateInstrument,
+    deactivateInstrument,
     getAllInstruments,
     getInstrumentModes,
     sendInstallRequest
@@ -19,7 +21,7 @@ describe("Function checkInstrumentAlreadyExists(instrumentName: string) ", () =>
     });
 
     it("It should return false and a null object if object with an incorrect name returned", async () => {
-        mock_server_request_Return_JSON(200, {name: "BACON"});
+        mock_server_request_Return_JSON(200, { name: "BACON" });
         const [alreadyExists, instrument] = await checkInstrumentAlreadyExists("OPN2004A");
         expect(alreadyExists).toBeFalsy();
         expect(instrument).toEqual(null);
@@ -105,7 +107,7 @@ describe("Function getAllInstruments(filename: string) ", () => {
     });
 
     it("It should return false with an empty list if request JSON is invalid", async () => {
-        mock_server_request_Return_JSON(200, {name: "NAME"});
+        mock_server_request_Return_JSON(200, { name: "NAME" });
         const [success, instruments] = await getAllInstruments();
         expect(success).toBeFalsy();
         expect(instruments).toEqual([]);
@@ -164,6 +166,78 @@ describe("Function deleteInstrument(instrumentName: string) ", () => {
     });
 });
 
+describe("Function activateInstrument(instrumentName: string) ", () => {
+
+    it("It should return true if created 204 response is returned", async () => {
+        mock_server_request_Return_JSON(204, {});
+        const success = await activateInstrument("OPN2004A");
+        expect(success).toBeTruthy();
+    });
+
+    it("It should return false if a 404 is returned from the server", async () => {
+        mock_server_request_Return_JSON(404, {});
+        const success = await activateInstrument("OPN2004A");
+        expect(success).toBeFalsy();
+    });
+
+    it("It should return false if request returns an error code", async () => {
+        mock_server_request_Return_JSON(500, {});
+        const success = await activateInstrument("OPN2004A");
+        expect(success).toBeFalsy();
+    });
+
+    it("It should return false object if request call fails", async () => {
+        mock_server_request_function(() =>
+            Promise.resolve(() => {
+                throw "error";
+            })
+        );
+        const success = await activateInstrument("OPN2004A");
+        expect(success).toBeFalsy();
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+        cleanup();
+    });
+});
+
+describe("Function deactivateInstrument(instrumentName: string) ", () => {
+
+    it("It should return true if created 204 response is returned", async () => {
+        mock_server_request_Return_JSON(204, {});
+        const success = await deactivateInstrument("OPN2004A");
+        expect(success).toBeTruthy();
+    });
+
+    it("It should return false if a 404 is returned from the server", async () => {
+        mock_server_request_Return_JSON(404, {});
+        const success = await deactivateInstrument("OPN2004A");
+        expect(success).toBeFalsy();
+    });
+
+    it("It should return false if request returns an error code", async () => {
+        mock_server_request_Return_JSON(500, {});
+        const success = await deactivateInstrument("OPN2004A");
+        expect(success).toBeFalsy();
+    });
+
+    it("It should return false object if request call fails", async () => {
+        mock_server_request_function(() =>
+            Promise.resolve(() => {
+                throw "error";
+            })
+        );
+        const success = await deactivateInstrument("OPN2004A");
+        expect(success).toBeFalsy();
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+        cleanup();
+    });
+});
+
 describe("Function sendInstallRequest(instrumentName: string) ", () => {
 
     it("It should return true if created 201 response is returned", async () => {
@@ -208,16 +282,16 @@ describe("Function getInstrumentModes(instrumentName: string)", () => {
         expect(success).toBeTruthy();
     });
 
-    it("It should return false if a 404 is returned from the server", async () => {
+    it("It should return null if a 404 is returned from the server", async () => {
         mock_server_request_Return_JSON(404, {});
         const success = await getInstrumentModes("OPN2004A");
-        expect(success).toBeFalsy();
+        expect(success).toEqual([]);
     });
 
     it("It should return null if request returns an error code", async () => {
         mock_server_request_Return_JSON(500, {});
         const success = await getInstrumentModes("OPN2004A");
-        expect(success).toEqual(null);
+        expect(success).toEqual([]);
     });
 
     it("It should return null object if request call fails", async () => {
@@ -227,7 +301,7 @@ describe("Function getInstrumentModes(instrumentName: string)", () => {
             })
         );
         const success = await getInstrumentModes("OPN2004A");
-        expect(success).toEqual(null);
+        expect(success).toEqual([]);
     });
 
     afterAll(() => {

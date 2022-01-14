@@ -4,24 +4,30 @@ Feature: delete a questionnaire
   So that the system can be cleared of completed surveys
 
   Scenario: Delete questionnaire not available from the list, when survey is live
-    Given I have the name of a questionnaire I want to delete and that survey is live
-    When I locate that questionnaire in the list
-    Then I will not have the option to 'delete' displayed
+    Given the questionnaire 'DST2101B' is installed
+    And 'DST2101B' is live
+    When I load the homepage
+    Then I will not have the option to 'delete' displayed for 'DST2101B'
     And the landing screen displays a warning that live surveys cannot be deleted
 
   Scenario: Select to delete a questionnaire from the list, when survey is NOT live
-    Given I can see the questionnaire I want to delete in the questionnaire list
-    When I select a link to delete that questionnaire
+    Given the questionnaire 'DST2101C' is installed
+    When I load the homepage
+    And I select a link to delete the 'DST2101C' questionnaire
     Then I am presented with a warning
 
   Scenario: Confirm deletion
-    Given I have been presented with a warning that I am about to delete a questionnaire from Blaise
-    When I confirm that I want to proceed
-    Then the questionnaire and data is deleted from Blaise
-    And I'm presented with a successful deletion banner on the launch page
+    Given the questionnaire 'DST2101D' is installed
+    When I load the homepage
+    And I select a link to delete the 'DST2101D' questionnaire
+    And I confirm that I want to proceed
+    Then the questionnaire and data is deleted from Blaise for 'DST2101D'
+    And I am presented a success banner on the launch page for deleting 'DST2101D'
 
   Scenario: Cancel deletion
-    Given I have been presented with a warning that I am about to delete a questionnaire from Blaise
-    When I click cancel
-    Then the questionnaire and data is not deleted from Blaise
+    Given the questionnaire 'DST2101F' is installed
+    When I load the homepage
+    And I select a link to delete the 'DST2101F' questionnaire
+    And I click cancel
+    Then the questionnaire and data is not deleted from Blaise for 'DST2101F'
     And I am returned to the landing page

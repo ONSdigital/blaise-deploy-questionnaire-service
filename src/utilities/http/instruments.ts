@@ -1,6 +1,6 @@
-import {requestPromiseJson, requestPromiseJsonList} from "./requestPromise";
-import {Instrument} from "../../../Interfaces";
-import {InstrumentSettings} from "blaise-api-node-client";
+import { requestPromiseJson, requestPromiseJsonList, requestPromiseNoResponse } from "./requestPromise";
+import { Instrument } from "../../../Interfaces";
+import { InstrumentSettings } from "blaise-api-node-client";
 
 type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];
@@ -45,8 +45,8 @@ function deleteInstrument(instrumentName: string): Promise<deleteInstrumentRespo
     console.log("Call to deleteInstrument");
     const url = `/api/instruments/${instrumentName}`;
 
-    return requestPromiseJson("DELETE", url).then(([status, data]): deleteInstrumentResponse => {
-        console.log(`Response from deleteInstrument: Status ${status}, data ${data}`);
+    return requestPromiseNoResponse("DELETE", url).then((status): deleteInstrumentResponse => {
+        console.log(`Response from deleteInstrument: Status ${status}`);
         if (status === 204) {
             return [true, ""];
         } else {
@@ -55,6 +55,33 @@ function deleteInstrument(instrumentName: string): Promise<deleteInstrumentRespo
     }).catch((error: Error) => {
         console.error(`Response from deleteInstrument: Error ${error}`);
         return [false, ""];
+    });
+}
+
+function activateInstrument(instrumentName: string): Promise<boolean> {
+    console.log("Call to activateInstrument");
+    const url = `/api/instruments/${instrumentName}/activate`;
+
+    return requestPromiseNoResponse("PATCH", url).then((status): boolean => {
+        console.log(`Response from activateInstrument: Status ${status}`);
+        return status === 204;
+    }).catch((error: Error) => {
+        console.error(`Response from activateInstrument: Error ${error}`);
+        return false;
+    });
+}
+
+
+function deactivateInstrument(instrumentName: string): Promise<boolean> {
+    console.log("Call to deactivateInstrument");
+    const url = `/api/instruments/${instrumentName}/deactivate`;
+
+    return requestPromiseNoResponse("PATCH", url).then((status): boolean => {
+        console.log(`Response from deactivateInstrument: Status ${status}`);
+        return status === 204;
+    }).catch((error: Error) => {
+        console.error(`Response from deactivateInstrument: Error ${error}`);
+        return false;
     });
 }
 
@@ -71,37 +98,37 @@ function sendInstallRequest(filename: string): Promise<boolean> {
     });
 }
 
-function getInstrumentModes(instrumentName: string): Promise<string[] | null> {
+function getInstrumentModes(instrumentName: string): Promise<string[]> {
     console.log("Sending request get instrument modes");
     const url = `/api/instruments/${instrumentName}/modes`;
 
-    return requestPromiseJson("GET", url).then(([status, data]): string[] | null => {
+    return requestPromiseJson("GET", url).then(([status, data]): string[] => {
         console.log(`Response from get instrument modes: Status ${status}, data ${data}`);
         if (status === 200) {
             return data;
         } else {
-            return null;
+            return [];
         }
     }).catch((error: Error) => {
         console.error(`Failed to get instrument modes, Error ${error}`);
-        return null;
+        return [];
     });
 }
 
-function getInstrumentSettings(instrumentName: string): Promise<InstrumentSettings[] | null> {
+function getInstrumentSettings(instrumentName: string): Promise<InstrumentSettings[]> {
     console.log("Sending request get instrument settings");
     const url = `/api/instruments/${instrumentName}/settings`;
 
-    return requestPromiseJson("GET", url).then(([status, data]): InstrumentSettings[] | null => {
+    return requestPromiseJson("GET", url).then(([status, data]): InstrumentSettings[] => {
         console.log(`Response from get instrument settings: Status ${status}, data ${data}`);
         if (status === 200) {
             return data;
         } else {
-            return null;
+            return [];
         }
     }).catch((error: Error) => {
         console.error(`Failed to get instrument settings, Error ${error}`);
-        return null;
+        return [];
     });
 }
 
@@ -118,6 +145,8 @@ export {
     checkInstrumentAlreadyExists,
     getAllInstruments,
     deleteInstrument,
+    activateInstrument,
+    deactivateInstrument,
     sendInstallRequest,
     getInstrumentModes,
     getInstrumentSettings,

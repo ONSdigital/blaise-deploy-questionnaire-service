@@ -5,15 +5,19 @@ Feature: DQS - Attempt to delete a survey and the survey becomes erroneous
 
   # Scenario 1:
   Scenario: Attempt to delete an questionnaire with an erroneous status
-    Given I can see the questionnaire I want to delete in the questionnaire list
-    When I select a link to delete that questionnaire
+    Given the questionnaire 'DST2103A' is installed
+    And 'DST2103A' is erroneous
+    When I load the homepage
+    And I select a link to delete the 'DST2103A' questionnaire
     Then I am presented with a warning banner that I cannot delete the questionnaire and a service desk must be raised
     And I am unable to delete the questionnaire
     And I can return to the questionnaire list
 
   # Scenario 2:
   Scenario: Select to deploy a new questionnaire
-    Given I have been presented with a warning that I am about to delete a questionnaire from Blaise
-    When I confirm that I want to proceed
-    And it failed to delete and becomes erroneous
+    Given the questionnaire 'DST2103B' is installed
+    And 'DST2103B' cannot be deleted because it would go erroneous
+    When I load the homepage
+    And I select a link to delete the 'DST2103B' questionnaire
+    And I confirm that I want to proceed
     Then I am presented with a warning banner informing me that the questionnaire cannot be deleted
