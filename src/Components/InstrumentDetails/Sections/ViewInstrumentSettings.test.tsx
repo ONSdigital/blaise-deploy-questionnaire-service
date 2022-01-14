@@ -1,12 +1,12 @@
 import flushPromises from "../../../tests/utils";
-import {cleanup, render, screen, waitFor} from "@testing-library/react";
-import {act} from "react-dom/test-utils";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import React from "react";
 import ViewInstrumentSettings from "./ViewInstrumentSettings";
-import {opnInstrument} from "../../../features/step_definitions/API_Mock_Objects";
-import {createMemoryHistory} from "history";
-import {Router} from "react-router";
-import {mock_fetch_requests} from "../../../features/step_definitions/functions";
+import { opnInstrument } from "../../../features/step_definitions/helpers/API_Mock_Objects";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router";
+import { mock_fetch_requests } from "../../../features/step_definitions/helpers/functions";
 
 const viewInstrumentSettingsFailedMessage = /Failed to get questionnaire settings/i;
 const InstrumentSettingsMockList = [
@@ -52,7 +52,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument}/>
+                <ViewInstrumentSettings instrument={opnInstrument} />
             </Router>
         );
 
@@ -69,7 +69,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument}/>
+                <ViewInstrumentSettings instrument={opnInstrument} />
             </Router>
         );
 
@@ -89,7 +89,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument}/>
+                <ViewInstrumentSettings instrument={opnInstrument} />
             </Router>
         );
 
@@ -138,7 +138,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument}/>
+                <ViewInstrumentSettings instrument={opnInstrument} />
             </Router>
         );
 
@@ -155,7 +155,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument}/>
+                <ViewInstrumentSettings instrument={opnInstrument} />
             </Router>
         );
 
@@ -175,7 +175,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument}/>
+                <ViewInstrumentSettings instrument={opnInstrument} />
             </Router>
         );
 
@@ -225,7 +225,7 @@ describe("Given the API fails to load the instrument mode or settings", () => {
 
     it("should display an error message when it fails to load the Instrument Modes", async () => {
         render(
-            <ViewInstrumentSettings instrument={opnInstrument}/>
+            <ViewInstrumentSettings instrument={opnInstrument} />
         );
 
         await act(async () => {
@@ -283,7 +283,7 @@ describe("Given the API returns an empty list for instrument mode or settings", 
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument}/>
+                <ViewInstrumentSettings instrument={opnInstrument} />
             </Router>
         );
 

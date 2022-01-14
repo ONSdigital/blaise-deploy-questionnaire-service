@@ -1,6 +1,6 @@
-import navigateToDeployPageAndSelectFile, {mock_fetch_requests} from "../../../features/step_definitions/functions";
-import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
-import {instrumentList} from "../../../features/step_definitions/API_Mock_Objects";
+import navigateToDeployPageAndSelectFile, { mock_fetch_requests } from "../../../features/step_definitions/helpers/functions";
+import { act, cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
+import { instrumentList } from "../../../features/step_definitions/helpers/API_Mock_Objects";
 import flushPromises from "../../../tests/utils";
 import userEvent from "@testing-library/user-event";
 
@@ -14,7 +14,7 @@ const mock_server_responses = (url: string) => {
     } else if (url.includes("/upload/verify")) {
         return Promise.resolve({
             status: 200,
-            json: () => Promise.resolve({name: "OPN2004A.bpkg"}),
+            json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
         });
     } else {
         return Promise.resolve({
@@ -82,7 +82,7 @@ describe("Ask to set TO start date page", () => {
 
         userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
 
-        fireEvent.change(screen.getByLabelText(/Please specify date/i), {target: {value: "2030-06-05"}});
+        fireEvent.change(screen.getByLabelText(/Please specify date/i), { target: { value: "2030-06-05" } });
 
         userEvent.click(screen.getByText(/Continue/i));
 

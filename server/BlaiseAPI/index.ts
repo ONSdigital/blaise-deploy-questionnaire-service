@@ -92,6 +92,48 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
             });
     });
 
+    // Activate an instrument
+    router.patch("/api/instruments/:instrumentName/activate", function (req: ResponseQuery, res: Response) {
+        const { instrumentName } = req.params;
+        const blaiseApiClient = new BlaiseApiRest(`http://${BLAISE_API_URL}`);
+
+        blaiseApiClient.activateInstrument(SERVER_PARK, instrumentName)
+            .then((response) => {
+                auditLogInfo(req.log, `Successfully activated questionnaire ${instrumentName}`);
+                res.status(204).json(response);
+            })
+            .catch((error) => {
+                if (error.status === 404) {
+                    auditLogError(req.log, `Attempted to activate questionnaire ${instrumentName} that doesn't exist`);
+                    res.status(404).json(null);
+                } else {
+                    auditLogError(req.log, `Failed to activate questionnaire ${instrumentName}`);
+                    res.status(500).json(null);
+                }
+            });
+    });
+
+    // Deactivate an instrument
+    router.patch("/api/instruments/:instrumentName/deactivate", function (req: ResponseQuery, res: Response) {
+        const { instrumentName } = req.params;
+        const blaiseApiClient = new BlaiseApiRest(`http://${BLAISE_API_URL}`);
+
+        blaiseApiClient.deactivateInstrument(SERVER_PARK, instrumentName)
+            .then((response) => {
+                auditLogInfo(req.log, `Successfully deactivated questionnaire ${instrumentName}`);
+                res.status(204).json(response);
+            })
+            .catch((error) => {
+                if (error.status === 404) {
+                    auditLogError(req.log, `Attempted to deactivate questionnaire ${instrumentName} that doesn't exist`);
+                    res.status(404).json(null);
+                } else {
+                    auditLogError(req.log, `Failed to deactivate questionnaire ${instrumentName}`);
+                    res.status(500).json(null);
+                }
+            });
+    });
+
     // Check if instrument has a mode
     router.get("/api/instruments/:instrumentName/modes/:mode", function (req: ResponseQuery, res: Response) {
         const {instrumentName, mode} = req.params;
@@ -179,4 +221,3 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
 
     return router;
 }
-

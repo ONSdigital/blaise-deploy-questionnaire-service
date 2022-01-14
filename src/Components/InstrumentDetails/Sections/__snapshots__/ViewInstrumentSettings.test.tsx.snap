@@ -169,8 +169,20 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item "
+              class="summary__item summary__item--error"
             >
+              <tr
+                class="summary__row"
+              >
+                <th
+                  class="summary__row-title u-fs-r"
+                  colspan="3"
+                >
+                  ApplyRecordLocking
+                   should be 
+                  True
+                </th>
+              </tr>
               <tr
                 class="summary__row summary__row--has-values"
               >
@@ -361,8 +373,20 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item "
+            class="summary__item summary__item--error"
           >
+            <tr
+              class="summary__row"
+            >
+              <th
+                class="summary__row-title u-fs-r"
+                colspan="3"
+              >
+                ApplyRecordLocking
+                 should be 
+                True
+              </th>
+            </tr>
             <tr
               class="summary__row summary__row--has-values"
             >

@@ -5,7 +5,12 @@ Feature: Display list of questionnaires
 
   # Scenario 1
   Scenario: List all questionnaires in Blaise
-    Given I have launched the Questionnaire Deployment Service
-    When I view the landing page
-    Then I am presented with a list of the questionnaires already deployed to Blaise
-    And it is ordered with the most recently deployed at the top
+    Given the questionnaire 'DST2101G' is installed
+    And the questionnaire 'DST2101H' is installed
+    And the questionnaire 'DST2101I' is installed
+    When I load the homepage
+    Then I am presented with a list of the deployed questionnaires:
+      | Questionnaire |
+      | DST2101G      |
+      | DST2101H      |
+      | DST2101I      |

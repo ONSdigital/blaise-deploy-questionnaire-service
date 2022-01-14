@@ -1,7 +1,7 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {Route, Switch, useLocation} from "react-router-dom";
+import React, { ReactElement, useEffect, useState } from "react";
+import { Route, Switch, useLocation } from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
-import {Instrument} from "../Interfaces";
+import { Instrument } from "../Interfaces";
 import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
 import DeleteConfirmation from "./Components/DeletePage/DeleteConfirmation";
@@ -16,14 +16,14 @@ import {
     ONSErrorPanel,
     ONSPanel
 } from "blaise-design-system-react-components";
-import {getAllInstruments} from "./utilities/http";
+import { getAllInstruments } from "./utilities/http";
 import AuditPage from "./Components/AuditPage";
 import ReinstallInstruments from "./Components/ReinstallInstruments";
 import LiveSurveyWarning from "./Components/UploadPage/LiveSurveyWarning";
 import InstrumentDetails from "./Components/InstrumentDetails/InstrumentDetails";
 import ChangeToStartDate from "./Components/InstrumentDetails/ChangeToStartDate";
 import "./style.css";
-import {NavigationLinks} from "./Components/NavigationLinks";
+import { NavigationLinks } from "./Components/NavigationLinks";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -39,7 +39,7 @@ function App(): ReactElement {
     const [listMessage, setListMessage] = useState<string>("");
 
     const location = useLocation();
-    const {status} = (location as Location).state || {status: ""};
+    const { status } = (location as Location).state || { status: "" };
 
     useEffect(() => {
         getInstrumentList().then(() => console.log("getInstrumentList complete"));
@@ -51,6 +51,7 @@ function App(): ReactElement {
 
         const [success, instrumentList] = await getAllInstruments();
         console.log(`Response from get all instruments ${(status ? "successful" : "failed")}, data list length ${instrumentList.length}`);
+        console.log(instrumentList);
 
         if (!success) {
             setListMessage("Unable to load questionnaires");
@@ -70,46 +71,46 @@ function App(): ReactElement {
         <>
             <a className="skip__link" href="#main-content">Skip to content</a>
             {
-                (window.location.hostname.includes("dev")) && <NotProductionWarning/>
+                (window.location.hostname.includes("dev")) && <NotProductionWarning />
             }
-            <BetaBanner/>
-            <Header title={"Deploy Questionnaire Service"}/>
-            <NavigationLinks/>
+            <BetaBanner />
+            <Header title={"Deploy Questionnaire Service"} />
+            <NavigationLinks />
             <div style={divStyle} className="page__container container">
                 <DefaultErrorBoundary>
                     <Switch>
                         <Route path="/status">
-                            <StatusPage/>
+                            <StatusPage />
                         </Route>
                         <Route path="/reinstall">
-                            <ReinstallInstruments installedInstruments={instruments} listLoading={listLoading}/>
+                            <ReinstallInstruments installedInstruments={instruments} listLoading={listLoading} />
                         </Route>
                         <Route path="/audit">
-                            <AuditPage/>
+                            <AuditPage />
                         </Route>
                         <Route path="/UploadSummary">
-                            <DeploymentSummary getList={getInstrumentList}/>
+                            <DeploymentSummary getList={getInstrumentList} />
                         </Route>
                         <Route path={"/upload/survey-live/:instrumentName"}>
-                            <LiveSurveyWarning/>
+                            <LiveSurveyWarning />
                         </Route>
                         <Route path="/questionnaire/start-date">
-                            <ChangeToStartDate/>
+                            <ChangeToStartDate />
                         </Route>
                         <Route path="/questionnaire">
-                            <InstrumentDetails/>
+                            <InstrumentDetails />
                         </Route>
                         <Route path="/upload">
-                            <UploadPage/>
+                            <UploadPage />
                         </Route>
                         <Route path="/delete">
-                            <DeleteConfirmation getList={getInstrumentList}/>
+                            <DeleteConfirmation getList={getInstrumentList} />
                         </Route>
                         <Route path="/">
                             <main id="main-content" className="page__main u-mt-no">
 
                                 {status !== "" && <ONSPanel status="success">{status}</ONSPanel>}
-                                {listMessage.includes("Unable") && <ONSErrorPanel/>}
+                                {listMessage.includes("Unable") && <ONSErrorPanel />}
 
                                 <ONSPanel>
                                     <p>
@@ -123,14 +124,14 @@ function App(): ReactElement {
                                 <h2 className="u-mt-m">Table of questionnaires</h2>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
                                     <InstrumentList instrumentList={instruments} listMessage={listMessage}
-                                                    loading={listLoading}/>
+                                        loading={listLoading} />
                                 </ErrorBoundary>
                             </main>
                         </Route>
                     </Switch>
                 </DefaultErrorBoundary>
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
 }

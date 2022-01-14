@@ -5,13 +5,15 @@ Feature: Abandon deployment if the questionnaire already exists
 
   # Scenario 1:
   Scenario: Questionnaire package already in Blaise
-    Given I have selected the questionnaire package I wish to deploy
-    When I confirm my selection and the name/ref of the questionnaire package is the same as one already deployed in Blaise
+    Given the questionnaire 'DST2101A' is installed
+    And I have selected the questionnaire package for 'DST2101A' to deploy
+    When I confirm my selection
     Then I am presented with the options to cancel or overwrite the questionnaire
 
-  # Scenario 2
+  # Scenario 2:
   Scenario: Back-out of deploying a questionnaire
-    Given I have been presented with the options: Cancel or Overwrite
-    When I select to 'cancel'
+    Given the questionnaire 'DST2101A' is installed
+    And I have selected the questionnaire package for 'DST2101A' to deploy
+    When I confirm my selection
+    And I select to 'cancel'
     Then I am returned to the landing page
-

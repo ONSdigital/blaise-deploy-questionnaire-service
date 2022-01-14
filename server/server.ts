@@ -62,7 +62,7 @@ server.get("/upload/init", function (req: Request, res: Response) {
 
 server.get("/bucket/files", function (req: Request, res: Response) {
     logger(req, res);
-    req.log.info(`//bucket/files endpoint called`);
+    req.log.info("//bucket/files endpoint called");
     getBucketItems()
         .then((url) => {
             req.log.info(`Obtained list of files in Bucket ${BUCKET_NAME}`);
