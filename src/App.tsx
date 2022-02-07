@@ -71,7 +71,7 @@ function App(): ReactElement {
         <>
             <a className="skip__link" href="#main-content">Skip to content</a>
             {
-                (!window.location.hostname.includes(".blaise.gcp.onsdigital.uk")) && <NotProductionWarning />
+                (!window.location.hostname.endsWith(".blaise.gcp.onsdigital.uk")) && <NotProductionWarning />
             }
             <BetaBanner />
             <Header title={"Deploy Questionnaire Service"} />
