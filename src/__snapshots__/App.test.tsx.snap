@@ -12,6 +12,36 @@ Object {
         Skip to content
       </a>
       <div
+        class="census-warning"
+        style="background: rgb(34, 34, 34); color: rgb(34, 34, 34);"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="panel panel--warn-branded panel--no-title"
+            style="background: rgb(34, 34, 34);"
+          >
+            <span
+              aria-hidden="true"
+              class="panel__icon"
+              style="color: rgb(34, 34, 34);"
+            >
+              !
+            </span>
+            <div
+              class="panel__body"
+            >
+              <p
+                class="u-mb-no"
+              >
+                This environment is not a production environment. Do not upload any live data to this service.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
         class="phase-banner"
       >
         <div
@@ -482,6 +512,36 @@ Object {
     >
       Skip to content
     </a>
+    <div
+      class="census-warning"
+      style="background: rgb(34, 34, 34); color: rgb(34, 34, 34);"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="panel panel--warn-branded panel--no-title"
+          style="background: rgb(34, 34, 34);"
+        >
+          <span
+            aria-hidden="true"
+            class="panel__icon"
+            style="color: rgb(34, 34, 34);"
+          >
+            !
+          </span>
+          <div
+            class="panel__body"
+          >
+            <p
+              class="u-mb-no"
+            >
+              This environment is not a production environment. Do not upload any live data to this service.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div
       class="phase-banner"
     >
