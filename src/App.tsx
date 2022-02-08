@@ -24,6 +24,7 @@ import InstrumentDetails from "./Components/InstrumentDetails/InstrumentDetails"
 import ChangeToStartDate from "./Components/InstrumentDetails/ChangeToStartDate";
 import "./style.css";
 import { NavigationLinks } from "./Components/NavigationLinks";
+import { isProduction } from "./utilities/env";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -65,13 +66,13 @@ function App(): ReactElement {
 
         setInstruments(instrumentList);
         setListLoading(false);
-    }
+    }    
 
     return (
         <>
             <a className="skip__link" href="#main-content">Skip to content</a>
             {
-                (!window.location.hostname.endsWith(".blaise.gcp.onsdigital.uk")) && <NotProductionWarning />
+                isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
             }
             <BetaBanner />
             <Header title={"Deploy Questionnaire Service"} />
