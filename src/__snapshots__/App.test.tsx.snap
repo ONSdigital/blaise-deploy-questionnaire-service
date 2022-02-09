@@ -1,6 +1,1065 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`React homepage view instrument page matches Snapshot 1`] = `
+exports[`React homepage view instrument page matches Snapshot in non-production environments 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <a
+        class="skip__link"
+        href="#main-content"
+      >
+        Skip to content
+      </a>
+      <div
+        class="census-warning"
+        style="background: rgb(34, 34, 34); color: rgb(34, 34, 34);"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="panel panel--warn-branded panel--no-title"
+            style="background: rgb(34, 34, 34);"
+          >
+            <span
+              aria-hidden="true"
+              class="panel__icon"
+              style="color: rgb(34, 34, 34);"
+            >
+              !
+            </span>
+            <div
+              class="panel__body"
+            >
+              <p
+                class="u-mb-no"
+              >
+                This environment is not a production environment. Do not upload any live data to this service.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="phase-banner"
+      >
+        <div
+          class="container "
+        >
+          <div
+            class="grid grid--flex grid--gutterless grid--vertical-center grid--no-wrap"
+          >
+            <div
+              class="grid__col col-auto u-flex-no-grow"
+            >
+              <h3
+                class="phase-banner__badge"
+              >
+                BETA
+              </h3>
+            </div>
+            <div
+              class="grid__col col-auto u-flex-shrink"
+            >
+              <p
+                class="phase-banner__desc u-fs-s u-mb-no"
+              >
+                This is a new service – your 
+                <a
+                  href="https://ons.service-now.com/"
+                >
+                  feedback
+                </a>
+                 will help us improve it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <header
+        class="header header--internal"
+      >
+        <div
+          class="header__top"
+          role="banner"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="header__grid-top grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap "
+            >
+              <div
+                class="grid__col col-auto"
+              >
+                <a
+                  class="header__logo-link"
+                  href="/"
+                >
+                  <picture>
+                    <img
+                      alt="Office for National Statistics logo"
+                      class="header__logo"
+                      src="https://cdn.ons.gov.uk/sdc/design-system/31.4.0/img/ons-logo-neg-en.svg"
+                    />
+                  </picture>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="header__main"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap"
+            >
+              <div
+                class="grid__col col-auto u-flex-shrink"
+              >
+                <div
+                  class="header__title"
+                >
+                  Deploy Questionnaire Service
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div
+        class="header__bottom"
+      >
+        <div
+          class="container container--gutterless@xxs@m"
+        >
+          <nav
+            aria-label="Main menu"
+            class="header-nav js-header-nav"
+            data-analytics="header-navigation"
+            id="main-nav"
+          >
+            <ul
+              class="header-nav__list"
+            >
+              <li
+                class="header-nav__item  header-nav__item--active"
+              >
+                <a
+                  class="header-nav__link"
+                  href="/"
+                  id="home-link"
+                >
+                  Home
+                </a>
+              </li>
+              <li
+                class="header-nav__item  "
+              >
+                <a
+                  class="header-nav__link"
+                  href="/upload"
+                  id="deploy-questionnaire-link"
+                >
+                  Deploy a questionnaire
+                </a>
+              </li>
+              <li
+                class="header-nav__item  "
+              >
+                <a
+                  class="header-nav__link"
+                  href="/audit"
+                  id="audit-logs-link"
+                >
+                  View deployment history
+                </a>
+              </li>
+              <li
+                class="header-nav__item  "
+              >
+                <a
+                  class="header-nav__link"
+                  href="/status"
+                  id="blaise-status-link"
+                >
+                  Check Blaise status
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div
+        class="page__container container"
+        style="min-height: calc(67vh);"
+      >
+        <main
+          class="page__main u-mt-no"
+          id="main-content"
+        >
+          <div
+            class="panel panel--info panel--no-title  u-mt-m"
+          >
+            <div
+              class="panel__body "
+            >
+              <p>
+                Any 
+                <b>
+                  live
+                </b>
+                 questionnaire within the table below 
+                <b>
+                  does not
+                </b>
+                 have the option to delete and 
+                <b>
+                  cannot be deleted
+                </b>
+                . If a 
+                <b>
+                  live
+                </b>
+                 questionnaire requires deletion, raise a Service Desk ticket to complete this request.
+              </p>
+            </div>
+          </div>
+          <h2
+            class="u-mt-m"
+          >
+            Table of questionnaires
+          </h2>
+          <div
+            class="elementToFadeIn"
+          >
+            <div
+              class="field"
+            >
+              <label
+                class="label"
+                for="filter-by-name"
+              >
+                Filter by questionnaire name
+              </label>
+              <input
+                class="input input--text input-type__input"
+                id="filter-by-name"
+                type="text"
+              />
+            </div>
+            <div
+              class="u-mt-s"
+            >
+              <h3
+                aria-live="polite"
+              >
+                3
+                 results of 
+                3
+              </h3>
+              <table
+                class="table"
+                id="instrument-table"
+              >
+                <thead
+                  class="table__head"
+                >
+                  <tr
+                    class="table__row"
+                  >
+                    <th
+                      class="table__header"
+                      scope="col"
+                    >
+                      Questionnaire
+                    </th>
+                    <th
+                      class="table__header"
+                      scope="col"
+                    >
+                      Field period
+                    </th>
+                    <th
+                      class="table__header"
+                      scope="col"
+                    >
+                      Status
+                    </th>
+                    <th
+                      class="table__header"
+                      scope="col"
+                    >
+                      Install date
+                    </th>
+                    <th
+                      class="table__header"
+                      scope="col"
+                    >
+                      Cases
+                    </th>
+                    <th
+                      class="table__header"
+                      scope="col"
+                    >
+                      Delete questionnaire
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="table__body"
+                >
+                  <tr
+                    class="table__row"
+                    data-testid="instrument-table-row"
+                  >
+                    <td
+                      class="table__cell "
+                    >
+                      <a
+                        aria-label="View more information for questionnaire OPN2004A"
+                        data-testid="info-OPN2004A"
+                        href="/questionnaire"
+                        id="info-OPN2004A"
+                      >
+                        OPN2004A
+                      </a>
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      April 2020
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      <span
+                        class="status status--error"
+                      >
+                        Failed
+                      </span>
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      15/01/2021 15:26
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      0
+                    </td>
+                    <td
+                      class="table__cell "
+                      id="delete-OPN2004A"
+                    >
+                      <a
+                        aria-label="Delete questionnaire OPN2004A"
+                        data-testid="delete-OPN2004A"
+                        href="/delete"
+                        id="delete-button-OPN2004A"
+                      >
+                        Delete
+                      </a>
+                    </td>
+                  </tr>
+                  <tr
+                    class="table__row"
+                    data-testid="instrument-table-row"
+                  >
+                    <td
+                      class="table__cell "
+                    >
+                      <a
+                        aria-label="View more information for questionnaire OPN2007T"
+                        data-testid="info-OPN2007T"
+                        href="/questionnaire"
+                        id="info-OPN2007T"
+                      >
+                        OPN2007T
+                      </a>
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      July 2020
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      <span
+                        class="status status--success"
+                      >
+                        Active
+                      </span>
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      15/01/2021 15:18
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      10
+                    </td>
+                    <td
+                      class="table__cell "
+                      id="delete-OPN2007T"
+                    >
+                      Questionnaire is live
+                    </td>
+                  </tr>
+                  <tr
+                    class="table__row"
+                    data-testid="instrument-table-row"
+                  >
+                    <td
+                      class="table__cell "
+                    >
+                      <a
+                        aria-label="View more information for questionnaire OPN2101A"
+                        data-testid="info-OPN2101A"
+                        href="/questionnaire"
+                        id="info-OPN2101A"
+                      >
+                        OPN2101A
+                      </a>
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      January 2021
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      <span
+                        class="status status--success"
+                      >
+                        Active
+                      </span>
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      15/01/2021 14:41
+                    </td>
+                    <td
+                      class="table__cell "
+                    >
+                      0
+                    </td>
+                    <td
+                      class="table__cell "
+                      id="delete-OPN2101A"
+                    >
+                      <a
+                        aria-label="Delete questionnaire OPN2101A"
+                        data-testid="delete-OPN2101A"
+                        href="/delete"
+                        id="delete-button-OPN2101A"
+                      >
+                        Delete
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+      <footer
+        class="footer"
+      >
+        <div
+          class="footer__body"
+          data-analytics="footer"
+        >
+          <div
+            class="container "
+          >
+            <div
+              class="grid grid--flex grid--between"
+            >
+              <div
+                class="grid__col"
+              >
+                <div
+                  class="u-mt-m u-mb-s"
+                >
+                  <img
+                    alt="Office for National Statistics"
+                    src="https://ons-design-system.netlify.app/img/ons-logo-black-en.svg"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>,
+  "container": <div>
+    <a
+      class="skip__link"
+      href="#main-content"
+    >
+      Skip to content
+    </a>
+    <div
+      class="census-warning"
+      style="background: rgb(34, 34, 34); color: rgb(34, 34, 34);"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="panel panel--warn-branded panel--no-title"
+          style="background: rgb(34, 34, 34);"
+        >
+          <span
+            aria-hidden="true"
+            class="panel__icon"
+            style="color: rgb(34, 34, 34);"
+          >
+            !
+          </span>
+          <div
+            class="panel__body"
+          >
+            <p
+              class="u-mb-no"
+            >
+              This environment is not a production environment. Do not upload any live data to this service.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="phase-banner"
+    >
+      <div
+        class="container "
+      >
+        <div
+          class="grid grid--flex grid--gutterless grid--vertical-center grid--no-wrap"
+        >
+          <div
+            class="grid__col col-auto u-flex-no-grow"
+          >
+            <h3
+              class="phase-banner__badge"
+            >
+              BETA
+            </h3>
+          </div>
+          <div
+            class="grid__col col-auto u-flex-shrink"
+          >
+            <p
+              class="phase-banner__desc u-fs-s u-mb-no"
+            >
+              This is a new service – your 
+              <a
+                href="https://ons.service-now.com/"
+              >
+                feedback
+              </a>
+               will help us improve it.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <header
+      class="header header--internal"
+    >
+      <div
+        class="header__top"
+        role="banner"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="header__grid-top grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap "
+          >
+            <div
+              class="grid__col col-auto"
+            >
+              <a
+                class="header__logo-link"
+                href="/"
+              >
+                <picture>
+                  <img
+                    alt="Office for National Statistics logo"
+                    class="header__logo"
+                    src="https://cdn.ons.gov.uk/sdc/design-system/31.4.0/img/ons-logo-neg-en.svg"
+                  />
+                </picture>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="header__main"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap"
+          >
+            <div
+              class="grid__col col-auto u-flex-shrink"
+            >
+              <div
+                class="header__title"
+              >
+                Deploy Questionnaire Service
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div
+      class="header__bottom"
+    >
+      <div
+        class="container container--gutterless@xxs@m"
+      >
+        <nav
+          aria-label="Main menu"
+          class="header-nav js-header-nav"
+          data-analytics="header-navigation"
+          id="main-nav"
+        >
+          <ul
+            class="header-nav__list"
+          >
+            <li
+              class="header-nav__item  header-nav__item--active"
+            >
+              <a
+                class="header-nav__link"
+                href="/"
+                id="home-link"
+              >
+                Home
+              </a>
+            </li>
+            <li
+              class="header-nav__item  "
+            >
+              <a
+                class="header-nav__link"
+                href="/upload"
+                id="deploy-questionnaire-link"
+              >
+                Deploy a questionnaire
+              </a>
+            </li>
+            <li
+              class="header-nav__item  "
+            >
+              <a
+                class="header-nav__link"
+                href="/audit"
+                id="audit-logs-link"
+              >
+                View deployment history
+              </a>
+            </li>
+            <li
+              class="header-nav__item  "
+            >
+              <a
+                class="header-nav__link"
+                href="/status"
+                id="blaise-status-link"
+              >
+                Check Blaise status
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div
+      class="page__container container"
+      style="min-height: calc(67vh);"
+    >
+      <main
+        class="page__main u-mt-no"
+        id="main-content"
+      >
+        <div
+          class="panel panel--info panel--no-title  u-mt-m"
+        >
+          <div
+            class="panel__body "
+          >
+            <p>
+              Any 
+              <b>
+                live
+              </b>
+               questionnaire within the table below 
+              <b>
+                does not
+              </b>
+               have the option to delete and 
+              <b>
+                cannot be deleted
+              </b>
+              . If a 
+              <b>
+                live
+              </b>
+               questionnaire requires deletion, raise a Service Desk ticket to complete this request.
+            </p>
+          </div>
+        </div>
+        <h2
+          class="u-mt-m"
+        >
+          Table of questionnaires
+        </h2>
+        <div
+          class="elementToFadeIn"
+        >
+          <div
+            class="field"
+          >
+            <label
+              class="label"
+              for="filter-by-name"
+            >
+              Filter by questionnaire name
+            </label>
+            <input
+              class="input input--text input-type__input"
+              id="filter-by-name"
+              type="text"
+            />
+          </div>
+          <div
+            class="u-mt-s"
+          >
+            <h3
+              aria-live="polite"
+            >
+              3
+               results of 
+              3
+            </h3>
+            <table
+              class="table"
+              id="instrument-table"
+            >
+              <thead
+                class="table__head"
+              >
+                <tr
+                  class="table__row"
+                >
+                  <th
+                    class="table__header"
+                    scope="col"
+                  >
+                    Questionnaire
+                  </th>
+                  <th
+                    class="table__header"
+                    scope="col"
+                  >
+                    Field period
+                  </th>
+                  <th
+                    class="table__header"
+                    scope="col"
+                  >
+                    Status
+                  </th>
+                  <th
+                    class="table__header"
+                    scope="col"
+                  >
+                    Install date
+                  </th>
+                  <th
+                    class="table__header"
+                    scope="col"
+                  >
+                    Cases
+                  </th>
+                  <th
+                    class="table__header"
+                    scope="col"
+                  >
+                    Delete questionnaire
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                class="table__body"
+              >
+                <tr
+                  class="table__row"
+                  data-testid="instrument-table-row"
+                >
+                  <td
+                    class="table__cell "
+                  >
+                    <a
+                      aria-label="View more information for questionnaire OPN2004A"
+                      data-testid="info-OPN2004A"
+                      href="/questionnaire"
+                      id="info-OPN2004A"
+                    >
+                      OPN2004A
+                    </a>
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    April 2020
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    <span
+                      class="status status--error"
+                    >
+                      Failed
+                    </span>
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    15/01/2021 15:26
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    0
+                  </td>
+                  <td
+                    class="table__cell "
+                    id="delete-OPN2004A"
+                  >
+                    <a
+                      aria-label="Delete questionnaire OPN2004A"
+                      data-testid="delete-OPN2004A"
+                      href="/delete"
+                      id="delete-button-OPN2004A"
+                    >
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+                <tr
+                  class="table__row"
+                  data-testid="instrument-table-row"
+                >
+                  <td
+                    class="table__cell "
+                  >
+                    <a
+                      aria-label="View more information for questionnaire OPN2007T"
+                      data-testid="info-OPN2007T"
+                      href="/questionnaire"
+                      id="info-OPN2007T"
+                    >
+                      OPN2007T
+                    </a>
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    July 2020
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    <span
+                      class="status status--success"
+                    >
+                      Active
+                    </span>
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    15/01/2021 15:18
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    10
+                  </td>
+                  <td
+                    class="table__cell "
+                    id="delete-OPN2007T"
+                  >
+                    Questionnaire is live
+                  </td>
+                </tr>
+                <tr
+                  class="table__row"
+                  data-testid="instrument-table-row"
+                >
+                  <td
+                    class="table__cell "
+                  >
+                    <a
+                      aria-label="View more information for questionnaire OPN2101A"
+                      data-testid="info-OPN2101A"
+                      href="/questionnaire"
+                      id="info-OPN2101A"
+                    >
+                      OPN2101A
+                    </a>
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    January 2021
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    <span
+                      class="status status--success"
+                    >
+                      Active
+                    </span>
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    15/01/2021 14:41
+                  </td>
+                  <td
+                    class="table__cell "
+                  >
+                    0
+                  </td>
+                  <td
+                    class="table__cell "
+                    id="delete-OPN2101A"
+                  >
+                    <a
+                      aria-label="Delete questionnaire OPN2101A"
+                      data-testid="delete-OPN2101A"
+                      href="/delete"
+                      id="delete-button-OPN2101A"
+                    >
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+    <footer
+      class="footer"
+    >
+      <div
+        class="footer__body"
+        data-analytics="footer"
+      >
+        <div
+          class="container "
+        >
+          <div
+            class="grid grid--flex grid--between"
+          >
+            <div
+              class="grid__col"
+            >
+              <div
+                class="u-mt-m u-mb-s"
+              >
+                <img
+                  alt="Office for National Statistics"
+                  src="https://ons-design-system.netlify.app/img/ons-logo-black-en.svg"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`React homepage view instrument page matches Snapshot in production 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
