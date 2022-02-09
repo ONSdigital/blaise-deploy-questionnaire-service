@@ -1,7 +1,7 @@
 import * as PinoHttp from "pino-http";
 import AuthProvider from "../AuthProvider";
-import {Request, Response} from "express";
-import {SendAPIRequest} from "../SendRequest";
+import { Request, Response } from "express";
+import { SendAPIRequest } from "../SendRequest";
 
 export class BimsAPI {
     private readonly BIMS_API_URL: string;
