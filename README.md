@@ -67,18 +67,23 @@ Create a new .env file and add the following variables.
 | SERVER_PARK    | Name of Blaise Server Park                                                                                                                                                                                                                                                             | gusty                     |
 | BIMS_API_URL   | Url that the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service) is running on to send calls to set and get the live date.                                                                                                                                | localhost:5011            |
 | BIMS_CLIENT_ID | GCP IAP ID for the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service)                                                                                                                                                                                    | randomKey0112             |
-|GOOGLE_APPLICATION_CREDENTIALS| The name of your key file |keys.json|
 
 The .env file should be setup as below
 
 ```.env
 BLAISE_API_URL='localhost:90'
-PROJECT_ID='ons-blaise-dev-matt55'             
-BUCKET_NAME='ons-blaise-dev-matt55-dqs'
+PROJECT_ID='ons-blaise-v2-dev-<env>'             
+BUCKET_NAME='ons-blaise-v2-dev-<env>-dqs'
 SERVER_PARK=gusty
 BIMS_API_URL=localhost:5011
 BIMS_CLIENT_ID=randomKey0778
-GOOGLE_APPLICATION_CREDENTIALS=keys.json
+BUS_API_URL=FOO
+BUS_CLIENT_ID=FOO
+```
+
+Run this command to export your .env VARS
+```
+export GOOGLE_APPLICATION_CREDENTIALS=keys.json
 ```
 
 Install required modules
@@ -97,8 +102,9 @@ config (Found at `server/storage/config.js`) will attempt to use this file.  **D
 
 
 Run this command in your terminal:
-`gcloud iam service-accounts keys create keys.json --iam-account ons-blaise-v2-dev-<sandbox>@appspot.gserviceaccount.com`
-
+```
+gcloud iam service-accounts keys create keys.json --iam-account ons-blaise-v2-dev-<sandbox>@appspot.gserviceaccount.com`
+```
 ##### Run commands
 
 The following run commands are available, these are all setup in the `package.json` under `scripts`.
