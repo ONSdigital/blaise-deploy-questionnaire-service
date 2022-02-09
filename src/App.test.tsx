@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor, cleanup } from "@testing-library/react";
+import { render, waitFor, cleanup, screen } from "@testing-library/react";
 import App from "./App";
 import "@testing-library/jest-dom";
 import flushPromises, { mock_server_request_Return_JSON } from "./tests/utils";
@@ -24,7 +24,8 @@ describe("React homepage", () => {
         mock_server_request_Return_JSON(200, instrumentList);
     });
 
-    it("view instrument page matches Snapshot", async () => {
+    it("view instrument page matches Snapshot in production", async () => {
+        mockIsProduction.mockReturnValue(true);
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
@@ -37,6 +38,27 @@ describe("React homepage", () => {
         });
 
         await waitFor(() => {
+            expect(screen.queryByText(/This environment is not a production environment. Do not upload any live data to this service./i)).not.toBeInTheDocument();
+
+            expect(wrapper).toMatchSnapshot();
+        });
+    });
+
+    it("view instrument page matches Snapshot in non-production environments", async () => {
+        const history = createMemoryHistory();
+        const wrapper = render(
+            <Router history={history}>
+                <App />
+            </Router>
+        );
+
+        await act(async () => {
+            await flushPromises();
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText(/This environment is not a production environment. Do not upload any live data to this service./i)).toBeDefined();
+
             expect(wrapper).toMatchSnapshot();
         });
     });
