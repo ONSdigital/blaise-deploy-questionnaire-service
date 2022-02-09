@@ -182,10 +182,6 @@ function UploadPage(): ReactElement {
         actions.setSubmitting(false);
     }
 
-    console.log("$$$$$$$$$$$$ DEBUG $$$$$$$$$$$");
-    console.log(activeStep);
-    console.log(stepLength());
-
     return (
         <>
             <Breadcrumbs BreadcrumbList={

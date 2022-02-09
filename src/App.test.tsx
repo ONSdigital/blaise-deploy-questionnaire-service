@@ -7,8 +7,18 @@ import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
 import { instrumentList } from "./features/step_definitions/helpers/API_Mock_Objects";
+import _ from "lodash";
+
+const mockIsProduction = jest.fn();
+
+jest.mock("./utilities/env", () => ({
+    isProduction: () => mockIsProduction()
+}));
 
 describe("React homepage", () => {
+    beforeEach(() => {
+        mockIsProduction.mockReturnValue(false);
+    });
 
     beforeAll(() => {
         mock_server_request_Return_JSON(200, instrumentList);
