@@ -21,6 +21,10 @@ function ConfirmOverride({ instrumentName, instrumentSettings, invalidSettings, 
 
       <p>
         This questionnaire does not conform to the standard settings.
+
+        If this is intended, please click the &quotDeploy anyway&quot button. If it was not intended, please select the &quotCancel&quot button, and start again.
+
+        Do not navigate away from this page without selecting an option.
       </p>
     </>
   );
