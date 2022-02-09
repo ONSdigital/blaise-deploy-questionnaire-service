@@ -20,9 +20,7 @@ function ConfirmOverride({ instrumentName, instrumentSettings, invalidSettings, 
       <InstrumentSettingsTable instrumentSettings={instrumentSettings} invalidSettings={invalidSettings} errored={errored} />
 
       <p>
-        You have loaded a questionnaire that does not conform to the standard default settings in the BLAX file,
-        if this is intended please click the {"\"Deploy anyway\""} button. If it was not your intention please
-        correct the settings and reinstall the questionnaire
+        This questionnaire does not conform to the standard settings.
       </p>
     </>
   );
