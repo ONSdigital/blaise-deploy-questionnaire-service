@@ -67,6 +67,7 @@ Create a new .env file and add the following variables.
 | SERVER_PARK    | Name of Blaise Server Park                                                                                                                                                                                                                                                             | gusty                     |
 | BIMS_API_URL   | Url that the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service) is running on to send calls to set and get the live date.                                                                                                                                | localhost:5011            |
 | BIMS_CLIENT_ID | GCP IAP ID for the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service)                                                                                                                                                                                    | randomKey0112             |
+|GOOGLE_APPLICATION_CREDENTIALS| The name of your key file |keys.json|
 
 The .env file should be setup as below
 
@@ -77,6 +78,7 @@ BUCKET_NAME='ons-blaise-dev-matt55-dqs'
 SERVER_PARK=gusty
 BIMS_API_URL=localhost:5011
 BIMS_CLIENT_ID=randomKey0778
+GOOGLE_APPLICATION_CREDENTIALS=keys.json
 ```
 
 Install required modules
@@ -92,6 +94,10 @@ to [obtain a JSON service account key](https://cloud.google.com/iam/docs/creatin
 will need to be a service account with create and list permissions to the specified bucket. Save the service account key
 as  `keys.json` and place in the root of the project. Providing the NODE_ENV is not production, then the GCP storage
 config (Found at `server/storage/config.js`) will attempt to use this file.  **DO NOT COMMIT THIS FILE**
+
+
+Run this command in your terminal:
+`gcloud iam service-accounts keys create keys.json --iam-account ons-blaise-v2-dev-<sandbox>@appspot.gserviceaccount.com`
 
 ##### Run commands
 
