@@ -1,4 +1,3 @@
-
 import React from "react";
 import "@testing-library/jest-dom";
 import { act, screen, render } from "@testing-library/react";
@@ -239,7 +238,6 @@ export const whenIHaveSelectedADeployPackage = (then: DefineStepFunction): void 
   });
 };
 
-
 export const whenIChooseToDeployAnyway = (when: DefineStepFunction): void => {
   when("I choose to deploy anyway", async () => {
     const elements = await screen.findAllByText(/Deploy anyway/i);
@@ -251,9 +249,9 @@ export const whenIChooseToDeployAnyway = (when: DefineStepFunction): void => {
   });
 };
 
-export const whenIChooseToReinstall = (when: DefineStepFunction): void => {
-  when("I choose to reinstall", async () => {
-    const elements = await screen.findAllByText(/reinstall/i);
+export const whenIChooseToCancel = (when: DefineStepFunction): void => {
+  when("I choose to cancel", async () => {
+    const elements = await screen.findAllByText(/Cancel/i);
     // The second time we see "reinstall" is actually our button
     userEvent.click(elements[1]);
     await act(async () => {
