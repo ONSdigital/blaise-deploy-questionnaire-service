@@ -1,14 +1,14 @@
 // Generic function to make requests to the API
-import {Request} from "express";
-import axios, {AxiosRequestConfig} from "axios";
+import { Request } from "express";
+import axios, { AxiosRequestConfig } from "axios";
 import * as PinoHttp from "pino-http";
 type PromiseResponse = [number, any, string];
 
-export function SendAPIRequest(logger: PinoHttp.HttpLogger, req: Request, res: any, url: string, method: AxiosRequestConfig["method"], data: any = null, headers: any = null): Promise<PromiseResponse>  {
+export async function SendAPIRequest(logger: PinoHttp.HttpLogger, req: Request, res: any, url: string, method: AxiosRequestConfig["method"], data: any = null, headers: any = null): Promise<PromiseResponse> {
     logger(req, res);
 
-    return new Promise((resolve: (object: PromiseResponse) => void) => {
-        axios({
+    try {
+        const response = await axios({
             url: url,
             method: method,
             data: data,
@@ -16,23 +16,21 @@ export function SendAPIRequest(logger: PinoHttp.HttpLogger, req: Request, res: a
             validateStatus: function (status) {
                 return status >= 200;
             },
-        }).then((response) => {
-            if (response.status >= 200 && response.status < 300) {
-                req.log.info(`Status ${response.status} from ${method} ${url}`);
-            } else if (response.status === 404) {
-                req.log.info(`Status ${response.status} from ${method} ${url}`);
-            } else {
-                req.log.warn(`Status ${response.status} from ${method} ${url}`);
-            }
-            let contentType = "";
-            try {
-                contentType = response.headers["content-type"];
-            } finally {
-                resolve([response.status, response.data, contentType]);
-            }
-        }).catch((error) => {
-            req.log.error(error, `${method} ${url} endpoint failed`);
-            resolve([500, null, ""]);
         });
-    });
+        if (response.status >= 200 && response.status < 300) {
+            req.log.info(`Status ${response.status} from ${method} ${url}`);
+        } else if (response.status === 404) {
+            req.log.info(`Status ${response.status} from ${method} ${url}`);
+        } else {
+            req.log.warn(`Status ${response.status} from ${method} ${url}`);
+        }
+        let contentType = "";
+        if (response.headers && "content-type" in response.headers) {
+            contentType = response.headers["content-type"];
+        }
+        return [response.status, response.data, contentType];
+    } catch (error: any) {
+        req.log.error(error, `${method} ${url} endpoint failed`);
+        return [500, null, ""];
+    }
 }

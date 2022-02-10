@@ -1,6 +1,10 @@
-import flushPromises, {mock_server_request_Return_JSON} from "../../../tests/utils";
-import {render, waitFor, screen} from "@testing-library/react";
-import {act} from "react-dom/test-utils";
+/**
+ * @jest-environment jsdom
+ */
+
+import flushPromises, { mock_server_request_Return_JSON } from "../../../tests/utils";
+import { render, waitFor, screen } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import React from "react";
 import ViewToStartDate from "./ViewToStartDate";
 
@@ -14,7 +18,7 @@ describe("View TO Start Date section", () => {
 
     it("should display an error message when it fails to load the TO Start Date", async () => {
         render(
-            <ViewToStartDate instrumentName={"OPN2101A"}/>
+            <ViewToStartDate instrumentName={"OPN2101A"} />
         );
 
         await act(async () => {
