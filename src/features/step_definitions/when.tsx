@@ -244,9 +244,7 @@ export const whenIHaveSelectedADeployPackage = (then: DefineStepFunction): void 
 
 export const whenIChooseToDeployAnyway = (when: DefineStepFunction): void => {
   when("I choose to deploy anyway", async () => {
-    const elements = await screen.findAllByText(/Deploy anyway/i);
-    // The second time we see "Deploy anyway" is actually our button
-    userEvent.click(elements[0]);
+    userEvent.click(await screen.getByRole("button", {name: /Deploy anyway/i}));
     await act(async () => {
       await flushPromises();
     });
@@ -255,9 +253,7 @@ export const whenIChooseToDeployAnyway = (when: DefineStepFunction): void => {
 
 export const whenIChooseToCancel = (when: DefineStepFunction): void => {
   when("I choose to cancel", async () => {
-    const elements = await screen.findAllByText(/Cancel/i);
-    // The second time we see "reinstall" is actually our button
-    userEvent.click(elements[0]);
+    userEvent.click(await screen.getByRole("button", {name: /Cancel/i}));
     await act(async () => {
       await flushPromises();
     });
