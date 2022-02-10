@@ -1,8 +1,12 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import flushPromises from "../../../tests/utils";
-import {render, screen, waitFor} from "@testing-library/react";
-import {act} from "react-dom/test-utils";
+import { render, screen, waitFor } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import React from "react";
-import {Instrument} from "../../../../Interfaces";
+import { Instrument } from "../../../../Interfaces";
 import BlaiseNodeInfo from "./BlaiseNodeInfo";
 
 const instrumentWithNodeInfo: Instrument = {
@@ -37,7 +41,7 @@ describe("Blaise Node Info Collapsible", () => {
 
     it("should display every node and its status", async () => {
         render(
-            <BlaiseNodeInfo instrument={instrumentWithNodeInfo}/>
+            <BlaiseNodeInfo instrument={instrumentWithNodeInfo} />
         );
 
         await act(async () => {

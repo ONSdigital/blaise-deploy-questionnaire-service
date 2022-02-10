@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup, } from "@testing-library/react";
 import { givenTheQuestionnaireHasCases, givenTheQuestionnaireHasModes, givenTheQuestionnaireHasUACs, givenTheQuestionnaireIsInstalled, givenUACGenerationIsBroken } from "../step_definitions/given";

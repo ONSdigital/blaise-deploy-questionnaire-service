@@ -4,12 +4,13 @@ import ejs from "ejs";
 import dotenv from "dotenv";
 import { getEnvironmentVariables } from "./Config";
 import createLogger from "./pino";
-import * as profiler from "@google-cloud/profiler";
 import bodyParser from "body-parser";
 
 if (process.env.NODE_ENV === "production") {
-    profiler.start({ logLevel: 4 }).catch((err: unknown) => {
-        console.log(`Failed to start profiler: ${err}`);
+    import("@google-cloud/profiler").then((profiler) => {
+        profiler.start({ logLevel: 4 }).catch((err: unknown) => {
+            console.log(`Failed to start profiler: ${err}`);
+        });
     });
 } else {
     dotenv.config({ path: __dirname + "/../../.env" });

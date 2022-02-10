@@ -1,8 +1,8 @@
-import {getEnvironmentVariables} from "../Config";
+import { getEnvironmentVariables } from "../Config";
 import path from "path";
-import {Logging, LoggingOptions} from "@google-cloud/logging";
+import { Logging, LoggingOptions } from "@google-cloud/logging";
 
-const {PROJECT_ID} = getEnvironmentVariables();
+const { PROJECT_ID } = getEnvironmentVariables();
 
 let loggingConfig: LoggingOptions = {
     projectId: PROJECT_ID,
@@ -19,5 +19,4 @@ if (process.env.NODE_ENV !== "production") {
 
 const logging = new Logging(loggingConfig);
 
-// module.exports = logging;
 export default logging;

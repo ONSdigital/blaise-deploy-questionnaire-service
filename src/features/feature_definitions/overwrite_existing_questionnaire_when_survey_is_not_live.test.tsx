@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 // Test modules
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";

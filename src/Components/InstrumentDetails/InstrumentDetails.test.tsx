@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import flushPromises, { mock_server_request_Return_JSON } from "../../tests/utils";
 import { instrumentList } from "../../features/step_definitions/helpers/API_Mock_Objects";
 import { createMemoryHistory } from "history";

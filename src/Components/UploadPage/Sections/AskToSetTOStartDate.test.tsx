@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import navigateToDeployPageAndSelectFile, { mock_fetch_requests } from "../../../features/step_definitions/helpers/functions";
 import { act, cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
 import { instrumentList } from "../../../features/step_definitions/helpers/API_Mock_Objects";
