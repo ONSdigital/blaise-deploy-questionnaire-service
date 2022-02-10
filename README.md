@@ -76,8 +76,8 @@ The .env file should be setup as below
 
 ```.env
 BLAISE_API_URL=localhost:5011
-PROJECT_ID=ons-blaise-v2-dev-<env>         
-BUCKET_NAME=ons-blaise-v2-dev-<env>-dqs
+PROJECT_ID=ons-blaise-v2-dev-<sandbox>         
+BUCKET_NAME=ons-blaise-v2-dev-<sandbox>-dqs
 SERVER_PARK=gusty
 BIMS_API_URL=localhost:5000
 BIMS_CLIENT_ID=randomKey0778
