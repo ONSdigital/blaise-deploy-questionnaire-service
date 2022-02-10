@@ -10,12 +10,12 @@ import BlaiseApiRest from "blaise-api-node-client";
 const request = supertest(app);
 
 describe("Test Heath Endpoint", () => {
-    it("should return a 200 status and json message", async done => {
+    it("should return a 200 status and json message", async () => {
         const response = await request.get("/dqs-ui/version/health");
 
         expect(response.statusCode).toEqual(200);
         expect(response.body).toStrictEqual({ healthy: true });
-        done();
+
     });
 });
 

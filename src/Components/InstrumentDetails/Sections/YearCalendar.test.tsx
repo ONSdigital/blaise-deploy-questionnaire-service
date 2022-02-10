@@ -1,6 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from "react";
-import {cleanup, render, screen, waitFor} from "@testing-library/react";
-import {act} from "react-dom/test-utils";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import flushPromises from "../../../tests/utils";
 import YearCalendar from "./YearCalendar";
 import userEvent from "@testing-library/user-event";
@@ -13,7 +17,7 @@ describe("Year calendar", () => {
 
     it("should render calendar with the year set as the newest date in survey list specified ", async () => {
         render(
-            <YearCalendar surveyDays={surveyDays}/>
+            <YearCalendar surveyDays={surveyDays} />
         );
 
         await act(async () => {
@@ -27,7 +31,7 @@ describe("Year calendar", () => {
 
     it("should go back a year when you press the back button («)", async () => {
         render(
-            <YearCalendar surveyDays={surveyDays}/>
+            <YearCalendar surveyDays={surveyDays} />
         );
 
         await act(async () => {
@@ -43,7 +47,7 @@ describe("Year calendar", () => {
 
     it("should go forward a year when you press the forward button (»)", async () => {
         render(
-            <YearCalendar surveyDays={surveyDays}/>
+            <YearCalendar surveyDays={surveyDays} />
         );
 
         await act(async () => {

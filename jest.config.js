@@ -1,7 +1,10 @@
 module.exports = {
     "moduleNameMapper": {
         "\\.(css|less|scss)$": "identity-obj-proxy"
-    }
+    },
+    "coveragePathIgnorePatterns": [
+        "/node_modules/"
+    ]
 };
 
 process.env = Object.assign(process.env, {

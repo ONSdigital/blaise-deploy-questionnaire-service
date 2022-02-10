@@ -1,11 +1,15 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from "react";
-import {render, waitFor, cleanup} from "@testing-library/react";
+import { render, waitFor, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import flushPromises, {mock_server_request_Return_JSON} from "../tests/utils";
-import {act} from "react-dom/test-utils";
-import {createMemoryHistory} from "history";
+import flushPromises, { mock_server_request_Return_JSON } from "../tests/utils";
+import { act } from "react-dom/test-utils";
+import { createMemoryHistory } from "history";
 import StatusPage from "./StatusPage";
-import {Router} from "react-router";
+import { Router } from "react-router";
 
 
 const status_list = [
@@ -37,7 +41,7 @@ describe("Blaise Status page", () => {
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
-                <StatusPage/>
+                <StatusPage />
             </Router>
         );
 
@@ -52,9 +56,9 @@ describe("Blaise Status page", () => {
 
     it("should render correctly", async () => {
         const history = createMemoryHistory();
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Router history={history}>
-                <StatusPage/>
+                <StatusPage />
             </Router>
         );
 
@@ -88,9 +92,9 @@ describe("Given the API returns a 500 status", () => {
 
     it("it should render with the error message displayed", async () => {
         const history = createMemoryHistory();
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Router history={history}>
-                <StatusPage/>
+                <StatusPage />
             </Router>
         );
 
@@ -113,14 +117,14 @@ describe("Given the API returns a 500 status", () => {
 describe("Given the API returns malformed json", () => {
 
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, {text: "Hello"});
+        mock_server_request_Return_JSON(200, { text: "Hello" });
     });
 
     it("it should render with the error message displayed", async () => {
         const history = createMemoryHistory();
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Router history={history}>
-                <StatusPage/>
+                <StatusPage />
             </Router>
         );
 
@@ -148,9 +152,9 @@ describe("Given the API returns an empty list", () => {
 
     it("it should render with a message to inform the user in the list", async () => {
         const history = createMemoryHistory();
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Router history={history}>
-                <StatusPage/>
+                <StatusPage />
             </Router>
         );
 

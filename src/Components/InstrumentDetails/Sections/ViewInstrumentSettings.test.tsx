@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import flushPromises from "../../../tests/utils";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";

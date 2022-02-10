@@ -1,4 +1,4 @@
-import {isProduction} from "./env"
+import {isProduction} from "./env";
 
 const isProductionTestCases = [
     {
@@ -17,10 +17,10 @@ const isProductionTestCases = [
         hostname: "dqs.blaise.gcp.onsdigital.uk",
         expected: true
     }
-]
+];
 
 describe("isProduction", () => {
     it.each(isProductionTestCases)("check whether a hostname is production", ({hostname, expected}) => {
-        expect(isProduction(hostname)).toEqual(expected as boolean)
-    })
-})
+        expect(isProduction(hostname)).toEqual(expected as boolean);
+    });
+});
