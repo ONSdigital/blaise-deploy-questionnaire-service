@@ -60,30 +60,29 @@ Create a new .env file and add the following variables.
 
 | Variable       | Description                                                                                                                                                                                                                                                                            | Var Example               |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
-| PORT           | **Optional variable**, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default, React project locally runs on port 3000. | 5009                      |
-| BLAISE_API_URL | Url that the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) is running on to send calls to.                                                                                                                                                                          | localhost:90              |
+| PORT           | **Optional variable**, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default, React project locally runs on port 3000  | 5009                      |
+| BLAISE_API_URL | Url that the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) is running on to send calls to                                                                                                                                                                           | localhost:90              |
 | PROJECT_ID     | GCP Project ID                                                                                                                                                                                                                                                                         | ons-blaise-dev-matt55     |
 | BUCKET_NAME    | GCP Bucket name for the instrument file to be put in                                                                                                                                                                                                                                   | ons-blaise-dev-matt55-dqs |
 | SERVER_PARK    | Name of Blaise Server Park                                                                                                                                                                                                                                                             | gusty                     |
-| BIMS_API_URL   | Url that the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service) is running on to send calls to set and get the live date.                                                                                                                                | localhost:5011            |
+| BIMS_API_URL   | Url that the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service) is running on to send calls to set and get the live date                                                                                                                                 | localhost:5011            |
 | BIMS_CLIENT_ID | GCP IAP ID for the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service)                                                                                                                                                                                    | randomKey0112             |
+| BUS_API_CLIENT | Not needed for local development but the config will look for this variables in the .env file and throw an error if it is not found. Hence, give them a random string                                                                                                                  | FOO                       |
+| BUS_CLIENT_ID  | Not needed for local development but the config will look for this variables in the .env file and throw an error if it is not found. Hence, give them a random string                                                                                                                  | FOO                       |
+
+To find the `X_CLIENT_ID`, navigate to the GCP console, search for `IAP`, click the three dots on right of the service and select `OAuth`. `Client Id` will be on the right. 
 
 The .env file should be setup as below
 
 ```.env
-BLAISE_API_URL='localhost:90'
-PROJECT_ID='ons-blaise-v2-dev-<env>'             
-BUCKET_NAME='ons-blaise-v2-dev-<env>-dqs'
+BLAISE_API_URL=localhost:5011
+PROJECT_ID=ons-blaise-v2-dev-<env>         
+BUCKET_NAME=ons-blaise-v2-dev-<env>-dqs
 SERVER_PARK=gusty
-BIMS_API_URL=localhost:5011
+BIMS_API_URL=localhost:5000
 BIMS_CLIENT_ID=randomKey0778
 BUS_API_URL=FOO
 BUS_CLIENT_ID=FOO
-```
-
-Run this command to export your .env VARS
-```
-export GOOGLE_APPLICATION_CREDENTIALS=keys.json
 ```
 
 Install required modules
@@ -101,10 +100,16 @@ as  `keys.json` and place in the root of the project. Providing the NODE_ENV is 
 config (Found at `server/storage/config.js`) will attempt to use this file.  **DO NOT COMMIT THIS FILE**
 
 
-Run this command in your terminal:
-```
+To create a keys.json file:
+```shell
 gcloud iam service-accounts keys create keys.json --iam-account ons-blaise-v2-dev-<sandbox>@appspot.gserviceaccount.com`
 ```
+
+To export the `Google application credentials` as a runtime variable:
+```shell
+export GOOGLE_APPLICATION_CREDENTIALS=keys.json
+```
+
 ##### Run commands
 
 The following run commands are available, these are all setup in the `package.json` under `scripts`.
