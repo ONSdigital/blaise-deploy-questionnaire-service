@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from "react";
 import "@testing-library/jest-dom";
 import { act, screen, render } from "@testing-library/react";

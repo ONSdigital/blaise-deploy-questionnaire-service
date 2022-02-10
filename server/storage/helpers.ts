@@ -39,9 +39,9 @@ const getBucketItems = (): Promise<string[]> => new Promise((resolve, reject) =>
 
         files.map(({name}) => {
             if (name.endsWith(".bpkg")) {
-                fileList.push(name)
+                fileList.push(name);
             }
-        })
+        });
         return fileList;
     }
 

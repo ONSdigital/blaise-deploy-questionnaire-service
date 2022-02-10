@@ -1,23 +1,24 @@
-import express, {NextFunction, Request, RequestHandler, Response} from "express";
+import express, { NextFunction, Request, RequestHandler, Response } from "express";
 import path from "path";
 import ejs from "ejs";
 import dotenv from "dotenv";
-import {getEnvironmentVariables} from "./Config";
+import { getEnvironmentVariables } from "./Config";
 import createLogger from "./pino";
-import * as profiler from "@google-cloud/profiler";
 import bodyParser from "body-parser";
 
-profiler.start({logLevel: 4}).catch((err: unknown) => {
-    console.log(`Failed to start profiler: ${err}`);
-});
-
-if (process.env.NODE_ENV !== "production") {
-    dotenv.config({path: __dirname + "/../../.env"});
+if (process.env.NODE_ENV === "production") {
+    import("@google-cloud/profiler").then((profiler) => {
+        profiler.start({ logLevel: 4 }).catch((err: unknown) => {
+            console.log(`Failed to start profiler: ${err}`);
+        });
+    });
+} else {
+    dotenv.config({ path: __dirname + "/../../.env" });
 }
 
-import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
+import { checkFile, getBucketItems, getSignedUrl } from "./storage/helpers";
 import BlaiseAPIRouter from "./BlaiseAPI";
-import {auditLogError, auditLogInfo, getAuditLogs} from "./audit_logging";
+import { auditLogError, auditLogInfo, getAuditLogs } from "./audit_logging";
 import BimsAPIRouter from "./BimsAPI";
 import BusAPIRouter from "./BusAPI";
 
@@ -34,7 +35,7 @@ const buildFolder = "../../build";
 
 // load the .env variables in the server
 const environmentVariables = getEnvironmentVariables();
-const {BUCKET_NAME} = environmentVariables;
+const { BUCKET_NAME } = environmentVariables;
 
 // treat the index.html as a template and substitute the values at runtime
 server.set("views", path.join(__dirname, buildFolder));
@@ -43,7 +44,7 @@ server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static
 
 server.get("/upload/init", function (req: Request, res: Response) {
     logger(req, res);
-    const {filename} = req.query;
+    const { filename } = req.query;
     if (typeof filename !== "string") {
         res.status(500).json("No filename provided");
         return;
@@ -51,7 +52,7 @@ server.get("/upload/init", function (req: Request, res: Response) {
 
     getSignedUrl(filename)
         .then((url) => {
-            req.log.info({url}, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
+            req.log.info({ url }, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
             res.status(200).json(url);
         })
         .catch((error) => {
@@ -77,7 +78,7 @@ server.get("/bucket/files", function (req: Request, res: Response) {
 
 server.get("/upload/verify", function (req: Request, res: Response) {
     logger(req, res);
-    const {filename} = req.query;
+    const { filename } = req.query;
     if (typeof filename !== "string") {
         res.status(500).json("No filename provided");
         return;
@@ -123,7 +124,7 @@ server.use("/", BusAPIRouter(environmentVariables, logger));
 // Health Check endpoint
 server.get("/dqs-ui/:version/health", async function (req: Request, res: Response) {
     console.log("Heath Check endpoint called");
-    res.status(200).json({healthy: true});
+    res.status(200).json({ healthy: true });
 });
 
 server.get("*", function (req: Request, res: Response) {
