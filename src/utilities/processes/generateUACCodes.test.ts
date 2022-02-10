@@ -9,9 +9,8 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
     const caseIDs = ["0008", "0009"];
     const uacCodes: InstrumentUacDetails = {
         "0008": {
+            case_id: "0008",
             instrument_name: "dst2106a",
-            postcode_attempts: 0,
-            postcode_attempt_timestamp: "",
             uac_chunks: {
                 uac1: "0008",
                 uac2: "4545",
@@ -20,9 +19,8 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
             full_uac: "000845459373"
         },
         "0009": {
+            case_id: "0009",
             instrument_name: "dst2106a",
-            postcode_attempts: 0,
-            postcode_attempt_timestamp: "",
             uac_chunks: {
                 uac1: "0009",
                 uac2: "3454",
@@ -109,9 +107,8 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
         const caseIDs = ["0008", "0009"];
         const uacCodes: InstrumentUacDetails = {
             "0008": {
+                case_id: "0008",
                 instrument_name: "dst2106a",
-                postcode_attempts: 0,
-                postcode_attempt_timestamp: "",
                 uac_chunks: {
                     uac1: "0008",
                     uac2: "4545",
@@ -119,9 +116,8 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
                 }
             },
             "0009": {
+                case_id: "0009",
                 instrument_name: "dst2106a",
-                postcode_attempts: 0,
-                postcode_attempt_timestamp: "",
                 uac_chunks: {
                     uac1: "0009",
                     uac2: "3454",
@@ -147,9 +143,8 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
         const caseIDs = ["0008", "0009"];
         const uacCodes: InstrumentUacDetails = {
             "0008": {
+                case_id: "0008",
                 instrument_name: "dst2106a",
-                postcode_attempts: 0,
-                postcode_attempt_timestamp: "",
                 uac_chunks: {
                     uac1: "0008",
                     uac2: "4545",
@@ -158,9 +153,8 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
                 }
             },
             "0009": {
+                case_id: "0009",
                 instrument_name: "dst2106a",
-                postcode_attempts: 0,
-                postcode_attempt_timestamp: "",
                 uac_chunks: {
                     uac1: "0009",
                     uac2: "3454",
@@ -189,9 +183,8 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
         const caseIDs = ["0001", "0002"];
         const uacCodes: InstrumentUacDetails = {
             "0008": {
+                case_id: "0008",
                 instrument_name: "dst2106a",
-                postcode_attempts: 0,
-                postcode_attempt_timestamp: "",
                 uac_chunks: {
                     uac1: "0008",
                     uac2: "4545",
@@ -199,9 +192,8 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
                 }
             },
             "0009": {
+                case_id: "0009",
                 instrument_name: "dst2106a",
-                postcode_attempts: 0,
-                postcode_attempt_timestamp: "",
                 uac_chunks: {
                     uac1: "0009",
                     uac2: "3454",
@@ -219,9 +211,8 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
         const caseIDs = ["0001", "0002", "0003"];
         const uacCodes: InstrumentUacDetails = {
             "0008": {
+                case_id: "0008",
                 instrument_name: "dst2106a",
-                postcode_attempts: 0,
-                postcode_attempt_timestamp: "",
                 uac_chunks: {
                     uac1: "0008",
                     uac2: "4545",
@@ -229,9 +220,8 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
                 }
             },
             "0009": {
+                case_id: "0009",
                 instrument_name: "dst2106a",
-                postcode_attempts: 0,
-                postcode_attempt_timestamp: "",
                 uac_chunks: {
                     uac1: "0009",
                     uac2: "3454",
