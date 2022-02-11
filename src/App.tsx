@@ -25,6 +25,9 @@ import ChangeToStartDate from "./Components/InstrumentDetails/ChangeToStartDate"
 import "./style.css";
 import { NavigationLinks } from "./Components/NavigationLinks";
 import { isProduction } from "./utilities/env";
+import { LoginForm, AuthManager } from "blaise-login-react-client";
+import "./style.css";
+
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -42,9 +45,31 @@ function App(): ReactElement {
     const location = useLocation();
     const { status } = (location as Location).state || { status: "" };
 
+    const authManager = new AuthManager();
+
+    const [loaded, setLoaded] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
+
     useEffect(() => {
+        authManager.loggedIn().then(async (isLoggedIn: boolean) => {
+            setLoggedIn(isLoggedIn);
+            setLoaded(true);
+        });
         getInstrumentList().then(() => console.log("getInstrumentList complete"));
     }, []);
+
+    function loginPage(): ReactElement {
+        if (loaded && loggedIn) {
+          return <></>;
+        }
+        return <LoginForm authManager={authManager} setLoggedIn={setLoggedIn} />;
+      }
+
+    function signOut(): void {
+        authManager.clearToken();
+        setLoggedIn(false);
+      }
+
 
     async function getInstrumentList() {
         setListLoading(true);
@@ -68,6 +93,13 @@ function App(): ReactElement {
         setListLoading(false);
     }    
 
+    function appContent(): ReactElement {
+        if (loaded && loggedIn) {
+            return <h2 className="u-mt-m">This is my app</h2>;
+        }
+        return <></>;
+    }
+
     return (
         <>
             <a className="skip__link" href="#main-content">Skip to content</a>
@@ -78,6 +110,8 @@ function App(): ReactElement {
             <Header title={"Deploy Questionnaire Service"} />
             <NavigationLinks />
             <div style={divStyle} className="page__container container">
+                {loginPage()}
+                {appContent()}
                 <DefaultErrorBoundary>
                     <Switch>
                         <Route path="/status">

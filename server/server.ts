@@ -5,6 +5,26 @@ import dotenv from "dotenv";
 import { getEnvironmentVariables } from "./Config";
 import createLogger from "./pino";
 import bodyParser from "body-parser";
+import { newLoginHandler, AuthConfig, Auth} from "blaise-login-react-server";
+import { checkFile, getBucketItems, getSignedUrl } from "./storage/helpers";
+import BlaiseAPIRouter from "./BlaiseAPI";
+import { auditLogError, auditLogInfo, getAuditLogs } from "./audit_logging";
+import BimsAPIRouter from "./BimsAPI";
+import BusAPIRouter from "./BusAPI";
+import BlaiseApiClient from "blaise-api-node-client";
+
+const config: AuthConfig = {
+    SessionSecret: "example-secret",
+    SessionTimeout: "6h",
+    Roles: ["DST"],
+    BlaiseApiUrl: "http://localhost:8081",
+}
+const auth = new Auth(config);
+const blaiseApiClient = new BlaiseApiClient("http://localhost:8081");
+const loginHandler = newLoginHandler(auth, blaiseApiClient);
+const server = express();
+
+server.use("/", loginHandler);
 
 if (process.env.NODE_ENV === "production") {
     import("@google-cloud/profiler").then((profiler) => {
@@ -16,13 +36,6 @@ if (process.env.NODE_ENV === "production") {
     dotenv.config({ path: __dirname + "/../../.env" });
 }
 
-import { checkFile, getBucketItems, getSignedUrl } from "./storage/helpers";
-import BlaiseAPIRouter from "./BlaiseAPI";
-import { auditLogError, auditLogInfo, getAuditLogs } from "./audit_logging";
-import BimsAPIRouter from "./BimsAPI";
-import BusAPIRouter from "./BusAPI";
-
-const server = express();
 server.use(bodyParser.json() as RequestHandler);
 
 const logger: any = createLogger();
