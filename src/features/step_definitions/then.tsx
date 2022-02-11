@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 
 import { screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -393,9 +396,9 @@ export const thenIGetTheOptionToContinueOrCancel = (then: DefineStepFunction): v
       const deployButton: any = document.querySelector("#continue-deploy-button");
       expect(deployButton).not.toBeNull();
       expect(deployButton.textContent).toEqual("Deploy anyway");
-      const reinstallButton: any = document.querySelector("#cancel-deploy-button");
-      expect(reinstallButton).not.toBeNull();
-      expect(reinstallButton.textContent).toEqual("Reinstall");
+      const cancelButton: any = document.querySelector("#cancel-deploy-button");
+      expect(cancelButton).not.toBeNull();
+      expect(cancelButton.textContent).toEqual("Cancel");
     });
   });
 };

@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 // Test modules
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup, } from "@testing-library/react";
@@ -5,7 +9,7 @@ import "@testing-library/jest-dom";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 
-import { whenIChooseToDeployAnyway, whenIChooseToReinstall, whenIConfirmMySelection, whenIDeployTheQuestionnaire, whenISelectToInstallWithNoStartDate, } from "../step_definitions/when";
+import { whenIChooseToDeployAnyway, whenIChooseToCancel, whenIConfirmMySelection, whenIDeployTheQuestionnaire, whenISelectToInstallWithNoStartDate, } from "../step_definitions/when";
 import { thenAWarningIsDisplayedWithTheMessage, thenIAmPresentedWithASuccessfullyDeployedBanner, thenIAmReturnedToTheLandingPage, thenIGetTheOptionToContinueOrCancel, thenTheQuestionnaireDataIsDeleted, thenTheQuestionnaireIsActivated, thenTheQuestionnaireIsDeactivated, thenTheQuestionnaireIsInstalled } from "../step_definitions/then";
 import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenInstallsSuccessfully, givenNoQuestionnairesAreInstalled, givenTheQuestionnaireHasModes, givenTheQuestionnareHasTheSettings } from "../step_definitions/given";
 import { Mocker } from "../step_definitions/helpers/mocker";
@@ -65,7 +69,7 @@ defineFeature(feature, test => {
     thenIAmPresentedWithASuccessfullyDeployedBanner(then);
   });
 
-  test("Choose uninstall and rectify settings issue", ({ given, when, then }) => {
+  test("Choose cancel and rectify settings issue", ({ given, when, then }) => {
     givenNoQuestionnairesAreInstalled(given, mocker);
     givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
     givenInstallsSuccessfully(given, mocker);
@@ -75,7 +79,7 @@ defineFeature(feature, test => {
     whenIConfirmMySelection(when);
     whenISelectToInstallWithNoStartDate(when);
     whenIDeployTheQuestionnaire(when);
-    whenIChooseToReinstall(when);
+    whenIChooseToCancel(when);
 
     thenTheQuestionnaireDataIsDeleted(then);
     thenIAmReturnedToTheLandingPage(then);

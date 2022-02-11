@@ -18,9 +18,7 @@ Feature: DQS - Provide a warning and option to override OR de-activate the quest
     Then the questionnaire package 'DST2301A' is deactivated
     And a warning is displayed with the message
       """
-      You have loaded a questionnaire that does not conform to the standard default settings in the BLAX file,
-      if this is intended please click the "Deploy anyway" button.
-      If it was not your intention please correct the settings and reinstall the questionnaire
+      This questionnaire does not conform to the standard settings.
       """
     And I get the option to continue loading or cancel the deployment
 
@@ -42,7 +40,7 @@ Feature: DQS - Provide a warning and option to override OR de-activate the quest
     And I am presented with a successful deployment banner on the landing page
 
   # Scenario 3
-  Scenario: Choose uninstall and rectify settings issue
+  Scenario: Choose cancel and rectify settings issue
     Given no questionnaires are installed
     And I have selected the questionnaire package for 'DST2301C' to deploy
     And 'DST2301C' installs successfully
@@ -53,7 +51,7 @@ Feature: DQS - Provide a warning and option to override OR de-activate the quest
     When I confirm my selection
     And I select to not provide a TO Start Date
     And I deploy the questionnaire
-    And I choose to reinstall
+    And I choose to cancel
     Then the questionnaire and data is deleted from Blaise for 'DST2301C'
     And I am returned to the landing page
 

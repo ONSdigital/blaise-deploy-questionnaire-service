@@ -1,10 +1,10 @@
 import logging from "./config";
-import {IncomingMessage} from "http";
+import { IncomingMessage } from "http";
 
-import {getEnvironmentVariables} from "../Config";
-import {AuditLog} from "../../Interfaces";
+import { getEnvironmentVariables } from "../Config";
+import { AuditLog } from "../../Interfaces";
 
-const {PROJECT_ID} = getEnvironmentVariables();
+const { PROJECT_ID } = getEnvironmentVariables();
 
 const logName = `projects/${PROJECT_ID}/logs/stdout`; // The name of the log to write to
 
@@ -19,7 +19,7 @@ export const auditLogError = (logger: IncomingMessage["log"], message: string): 
 export const getAuditLogs = (): Promise<AuditLog[]> => {
     return new Promise((resolve: (object: AuditLog[]) => void, reject: (error: string) => void) => {
         const log = logging.log(logName);
-        log.getEntries({filter: "jsonPayload.message=~\"^AUDIT_LOG: \"", maxResults: 50})
+        log.getEntries({ filter: "jsonPayload.message=~\"^AUDIT_LOG: \"", maxResults: 50 })
             .then(([entries]) => {
                 const auditLogs: AuditLog[] = [];
                 entries.map((entry) => {
@@ -48,4 +48,4 @@ export const getAuditLogs = (): Promise<AuditLog[]> => {
     });
 };
 
-module.exports = {getAuditLogs, auditLogInfo, auditLogError};
+module.exports = { getAuditLogs, auditLogInfo, auditLogError };

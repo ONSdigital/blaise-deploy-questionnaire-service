@@ -1,10 +1,14 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from "react";
-import {cleanup, render, screen, waitFor} from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import flushPromises, {mock_server_request_Return_JSON} from "../tests/utils";
-import {act} from "react-dom/test-utils";
-import {createMemoryHistory} from "history";
-import {Router} from "react-router";
+import flushPromises, { mock_server_request_Return_JSON } from "../tests/utils";
+import { act } from "react-dom/test-utils";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router";
 import AuditPage from "./AuditPage";
 import userEvent from "@testing-library/user-event";
 
@@ -36,7 +40,7 @@ describe("Audit Logs page", () => {
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
-                <AuditPage/>
+                <AuditPage />
             </Router>
         );
 
@@ -51,9 +55,9 @@ describe("Audit Logs page", () => {
 
     it("should render correctly", async () => {
         const history = createMemoryHistory();
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Router history={history}>
-                <AuditPage/>
+                <AuditPage />
             </Router>
         );
 
@@ -74,9 +78,9 @@ describe("Audit Logs page", () => {
 
     it("should refresh the list when you press the Reload logs button", async () => {
         const history = createMemoryHistory();
-        const {getByText} = render(
+        const { getByText } = render(
             <Router history={history}>
-                <AuditPage/>
+                <AuditPage />
             </Router>
         );
 
@@ -117,9 +121,9 @@ describe("Given the API returns a 500 status", () => {
 
     it("it should render with the error message displayed", async () => {
         const history = createMemoryHistory();
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Router history={history}>
-                <AuditPage/>
+                <AuditPage />
             </Router>
         );
 
@@ -142,14 +146,14 @@ describe("Given the API returns a 500 status", () => {
 describe("Given the API returns malformed json", () => {
 
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, {text: "Hello"});
+        mock_server_request_Return_JSON(200, { text: "Hello" });
     });
 
     it("it should render with the error message displayed", async () => {
         const history = createMemoryHistory();
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Router history={history}>
-                <AuditPage/>
+                <AuditPage />
             </Router>
         );
 
@@ -177,9 +181,9 @@ describe("Given the API returns an empty list", () => {
 
     it("it should render with a message to inform the user in the list", async () => {
         const history = createMemoryHistory();
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Router history={history}>
-                <AuditPage/>
+                <AuditPage />
             </Router>
         );
 

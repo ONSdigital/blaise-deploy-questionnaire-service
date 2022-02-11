@@ -61,7 +61,7 @@ function UploadPage(): ReactElement {
     function cancelButton(): string {
         switch (activeStep) {
             case Step.InvalidSettings:
-                return "Reinstall";
+                return "Cancel";
             default:
                 return "Cancel";
         }
@@ -181,10 +181,6 @@ function UploadPage(): ReactElement {
         actions.setTouched({});
         actions.setSubmitting(false);
     }
-
-    console.log("$$$$$$$$$$$$ DEBUG $$$$$$$$$$$");
-    console.log(activeStep);
-    console.log(stepLength());
 
     return (
         <>

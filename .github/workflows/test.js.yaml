@@ -1,4 +1,4 @@
-name: Test coverage report 
+name: Test coverage report
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 15.x ]
+        node-version: [ 16.x ]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
-      - run: yarn run test
+      - run: yarn run test --silent --runInBand
       - name: Codecov
         uses: codecov/codecov-action@v1
         with:
