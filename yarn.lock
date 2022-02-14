@@ -3380,11 +3380,12 @@ blaise-design-system-react-components@ONSDigital/blaise-design-system-react-comp
     path-parse "^1.0.7"
     typescript "~4.2.2"
 
-"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?main":
+"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?204cc6430a136990318f981eecd583b25e9109b8":
   version "1.0.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?main#3bfc797c93f63392f334c55d8a5058a344253973"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?204cc6430a136990318f981eecd583b25e9109b8#fb09e2d1845cbedc65b73a36d4bf5ba96c4e1f5d"
   dependencies:
     axios "~0.21.0"
+    blaise-api-node-client ONSDigital/blaise-api-node-client
     blaise-design-system-react-components ONSDigital/blaise-design-system-react-components
     formik "^2.2.9"
     react "^17.0.1"

@@ -31,7 +31,7 @@
     "axios": "^0.21.2",
     "blaise-api-node-client": "git+https://github.com/ONSdigital/blaise-api-node-client",
     "blaise-design-system-react-components": "git+https://github.com/ONSdigital/blaise-design-system-react-components#v0.9.7",
-    "blaise-login-react-client": "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?main",
+    "blaise-login-react-client": "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?204cc6430a136990318f981eecd583b25e9109b8",
     "blaise-login-react-server": "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?main",
     "bus-api-node-client": "git+https://github.com/ONSdigital/blaise-uac-service-node-client",
     "dayjs": "^1.10.7",
