@@ -10,7 +10,8 @@ import { Instrument } from "../../../Interfaces";
 
 import {
     givenTheQuestionnaireIsInstalled,
-    givenTheQuestionnaireIsLive
+    givenTheQuestionnaireIsLive,
+    givenTheQuestionnaireIsInactive
 } from "../step_definitions/given";
 
 
@@ -47,6 +48,15 @@ defineFeature(feature, test => {
 
     beforeEach(() => {
         cleanup();
+    });
+
+    test("Delete an 'inactive' survey at any time", ({ given, when, then, }) => {
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInactive(given, instrumentList, mocker);
+        whenILoadTheHomepage(when);
+        whenIDeleteAQuestionnaire(when);
+        whenIConfirmDelete(when);
+        thenTheQuestionnaireDataIsDeleted(then);
     });
 
     test("Delete questionnaire not available from the list, when survey is live", ({ given, when, then, }) => {

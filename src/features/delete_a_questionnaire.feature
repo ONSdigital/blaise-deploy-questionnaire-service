@@ -3,6 +3,14 @@ Feature: delete a questionnaire
   I want to be able to delete a questionnaire from Blaise via the questionnaire list
   So that the system can be cleared of completed surveys
 
+  Scenario: Delete an 'inactive' survey at any time
+    Given the questionnaire 'DST2101X' is installed
+    And 'DST2101X' is inactive
+    When I load the homepage
+    And I select a link to delete the 'DST2101X' questionnaire
+    And I confirm that I want to proceed
+    Then the questionnaire and data is deleted from Blaise for 'DST2101X'
+
   Scenario: Delete questionnaire not available from the list, when survey is live
     Given the questionnaire 'DST2101B' is installed
     And 'DST2101B' is live

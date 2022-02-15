@@ -333,6 +333,29 @@ export const givenTheQuestionnaireIsLive = (
   });
 };
 
+export const givenTheQuestionnaireIsInactive = (
+  given: DefineStepFunction,
+  instrumentList: Instrument[],
+  mocker: Mocker
+): void => {
+  given(/'(.*)' is inactive/, (questionnaire: string) => {
+    for (const instrument of instrumentList) {
+      if (instrument.name === questionnaire) {
+        console.log(questionnaire);
+        instrument.hasData = false;
+        instrument.status = "inactive";
+
+        mocker.set({
+          Path: `/api/instruments/${questionnaire}`,
+          Status: 200,
+          JSON: instrument
+        });
+      }
+    }
+    mocker.applyMocks();
+  });
+};
+
 export const givenTheQuestionnareHasTheSettings = (given: DefineStepFunction, mocker: Mocker): void => {
   given(/'(.*)' has the settings:/, (questionnaire: string, table: any[]) => {
     const settings: InstrumentSettings[] = [];
