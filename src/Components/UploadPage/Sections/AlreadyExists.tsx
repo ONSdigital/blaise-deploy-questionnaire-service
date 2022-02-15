@@ -24,7 +24,8 @@ function AlreadyExists({instrumentName}: SelectFilePageProps): ReactElement {
         radioOptions: [
             {id: "cancel", label: "Cancel and keep original questionnaire", value: "cancel"},
             {id: "continue", label: "Overwrite the entire questionnaire", value: "continue"},
-        ]
+        ],
+        props: {}
     };
 
     return (
