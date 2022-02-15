@@ -66,7 +66,7 @@ function App(): ReactElement {
 
         setInstruments(instrumentList);
         setListLoading(false);
-    }    
+    }
 
     return (
         <>
