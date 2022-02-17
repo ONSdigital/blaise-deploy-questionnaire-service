@@ -6,6 +6,7 @@ Feature: delete a questionnaire
   Scenario: Delete an 'inactive' survey at any time
     Given the questionnaire 'DST2101X' is installed
     And 'DST2101X' is inactive
+    And 'DST2101X' has active survey days
     When I load the homepage
     And I select a link to delete the 'DST2101X' questionnaire
     And I confirm that I want to proceed

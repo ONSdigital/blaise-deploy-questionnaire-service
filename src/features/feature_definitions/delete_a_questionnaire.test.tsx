@@ -11,7 +11,7 @@ import { Instrument } from "../../../Interfaces";
 import {
     givenTheQuestionnaireIsInstalled,
     givenTheQuestionnaireIsLive,
-    givenTheQuestionnaireIsInactive
+    givenTheQuestionnaireIsInactive, givenTheQuestionnaireHasActiveSurveyDays
 } from "../step_definitions/given";
 
 
@@ -53,6 +53,7 @@ defineFeature(feature, test => {
     test("Delete an 'inactive' survey at any time", ({ given, when, then, }) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenTheQuestionnaireIsInactive(given, instrumentList, mocker);
+        givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);

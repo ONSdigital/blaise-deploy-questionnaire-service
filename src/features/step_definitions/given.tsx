@@ -342,8 +342,29 @@ export const givenTheQuestionnaireIsInactive = (
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
         console.log(questionnaire);
-        instrument.hasData = false;
         instrument.status = "inactive";
+
+        mocker.set({
+          Path: `/api/instruments/${questionnaire}`,
+          Status: 200,
+          JSON: instrument
+        });
+      }
+    }
+    mocker.applyMocks();
+  });
+};
+
+export const givenTheQuestionnaireHasActiveSurveyDays = (
+  given: DefineStepFunction,
+  instrumentList: Instrument[],
+  mocker: Mocker
+): void => {
+  given(/'(.*)' has active survey days/, (questionnaire: string) => {
+    for (const instrument of instrumentList) {
+      if (instrument.name === questionnaire) {
+        console.log(questionnaire);
+        instrument.active = true;
 
         mocker.set({
           Path: `/api/instruments/${questionnaire}`,
