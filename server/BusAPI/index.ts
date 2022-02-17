@@ -1,8 +1,9 @@
 import {EnvironmentVariables} from "../Config";
 import express, {NextFunction, Request, Response, Router} from "express";
 import BusApiClient from "bus-api-node-client";
+import { Auth } from "blaise-login-react-server";
 
-export default function BusAPIRouter(environmentVariables: EnvironmentVariables, logger: any): Router {
+export default function BusAPIRouter(environmentVariables: EnvironmentVariables, logger: any, auth: Auth): Router {
     const {BusApiUrl, BusClientId}: EnvironmentVariables = environmentVariables;
     const router = express.Router();
 
@@ -15,7 +16,7 @@ export default function BusAPIRouter(environmentVariables: EnvironmentVariables,
         };
     };
 
-    router.post("/api/uacs/instrument/:instrumentName", catchAsync(async function (req: Request, res: Response) {
+    router.post("/api/uacs/instrument/:instrumentName", auth.Middleware, catchAsync(async function (req: Request, res: Response) {
         const {instrumentName} = req.params;
         const uacCodes = await busApiClient.generateUacCodesForInstrument(instrumentName);
 
@@ -29,7 +30,7 @@ export default function BusAPIRouter(environmentVariables: EnvironmentVariables,
         res.status(200).json(uacCodes);
     }));
 
-    router.get("/api/uacs/instrument/:instrumentName/bycaseid", catchAsync(async function (req: Request, res: Response) {
+    router.get("/api/uacs/instrument/:instrumentName/bycaseid", auth.Middleware, catchAsync(async function (req: Request, res: Response) {
         const {instrumentName} = req.params;
         const uacCodes = await busApiClient.getUacCodesByCaseId(instrumentName);
 
@@ -43,7 +44,7 @@ export default function BusAPIRouter(environmentVariables: EnvironmentVariables,
         res.status(200).json(uacCodes);
     }));
 
-    router.get("/api/uacs/instrument/:instrumentName/count", catchAsync(async function (req: Request, res: Response) {
+    router.get("/api/uacs/instrument/:instrumentName/count", auth.Middleware, catchAsync(async function (req: Request, res: Response) {
         const {instrumentName} = req.params;
         const uacCount = await busApiClient.getUacCodeCount(instrumentName);
 
