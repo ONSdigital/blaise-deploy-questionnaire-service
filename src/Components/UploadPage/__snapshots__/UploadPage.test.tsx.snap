@@ -100,6 +100,7 @@ Object {
               class="input input--text input-type__input input--upload"
               id="survey-selector"
               name="Select survey package"
+              props="[object Object]"
               type="file"
               value=""
             />
@@ -232,6 +233,7 @@ Object {
             class="input input--text input-type__input input--upload"
             id="survey-selector"
             name="Select survey package"
+            props="[object Object]"
             type="file"
             value=""
           />

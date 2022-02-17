@@ -14,7 +14,8 @@ import {
     Header,
     NotProductionWarning,
     ONSErrorPanel,
-    ONSPanel
+    ONSPanel,
+    ONSLoadingPanel
 } from "blaise-design-system-react-components";
 import { getAllInstruments } from "./utilities/http";
 import AuditPage from "./Components/AuditPage";
@@ -68,6 +69,13 @@ function App(): ReactElement {
         }
         return <LoginForm authManager={authManager} setLoggedIn={setLoggedIn} />;
       }
+
+    function loading(): ReactElement {
+        if (loaded) {
+            return <></>;
+        }
+        return <ONSLoadingPanel />;
+    }
 
     function signOut(): void {
         authManager.clearToken();
@@ -167,6 +175,7 @@ function App(): ReactElement {
             <Header title={"Deploy Questionnaire Service"} signOutButton={loggedIn} noSave={true} signOutFunction={signOut}/>
             <NavigationLinks />
             <div style={divStyle} className="page__container container">
+                {loading()}
                 {loginPage()}
                 {appContent()}
 

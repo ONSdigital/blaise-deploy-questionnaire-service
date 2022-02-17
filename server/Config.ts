@@ -76,7 +76,7 @@ export function getEnvironmentVariables(): EnvironmentVariables {
     }
 
     return {
-        BlaiseApiUrl: BLAISE_API_URL,
+        BlaiseApiUrl: fixURL(BLAISE_API_URL),
         ProjectId: PROJECT_ID,
         BucketName: BUCKET_NAME,
         ServerPark: SERVER_PARK,
@@ -88,6 +88,13 @@ export function getEnvironmentVariables(): EnvironmentVariables {
         SessionSecret: sessionSecret(SESSION_SECRET),
         Roles: loadRoles(ROLES)
     };
+}
+
+function fixURL(url: string): string {
+    if (url.startsWith("http")) {
+        return url;
+    }
+    return `http://${url}`;
 }
 
 function loadRoles(roles: string | undefined): string[] {

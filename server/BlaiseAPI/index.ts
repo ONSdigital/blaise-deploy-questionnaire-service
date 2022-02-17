@@ -14,7 +14,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
 
     // Get health status for Blaise connections
     router.get("/api/health/diagnosis", function (req: ResponseQuery, res: Response) {
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
         blaiseApiClient.getDiagnostics()
             .then((response) => {
                 req.log.info({response}, "Successfully called health check endpoint");
@@ -33,7 +33,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
         const installInstrument: InstallInstrument = {
             "instrumentFile": filename
         };
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
         blaiseApiClient.installInstrument(ServerPark, installInstrument)
             .then((response) => {
                 auditLogInfo(req.log, `Successfully installed questionnaire ${instrumentName}`);
@@ -49,7 +49,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     // Get a specific instrument information
     router.get("/api/instruments/:instrumentName", async function (req: ResponseQuery, res: Response) {
         const {instrumentName} = req.params;
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
         const instrumentExists = await blaiseApiClient.instrumentExists(ServerPark, instrumentName);
 
         if (!instrumentExists) {
@@ -74,7 +74,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     // Delete an instrument
     router.delete("/api/instruments/:instrumentName", function (req: ResponseQuery, res: Response) {
         const {instrumentName} = req.params;
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
 
         blaiseApiClient.deleteInstrument(ServerPark, instrumentName)
             .then((response) => {
@@ -95,7 +95,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     // Activate an instrument
     router.patch("/api/instruments/:instrumentName/activate", function (req: ResponseQuery, res: Response) {
         const { instrumentName } = req.params;
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
 
         blaiseApiClient.activateInstrument(ServerPark, instrumentName)
             .then((response) => {
@@ -116,7 +116,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     // Deactivate an instrument
     router.patch("/api/instruments/:instrumentName/deactivate", function (req: ResponseQuery, res: Response) {
         const { instrumentName } = req.params;
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
 
         blaiseApiClient.deactivateInstrument(ServerPark, instrumentName)
             .then((response) => {
@@ -137,7 +137,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     // Check if instrument has a mode
     router.get("/api/instruments/:instrumentName/modes/:mode", function (req: ResponseQuery, res: Response) {
         const {instrumentName, mode} = req.params;
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
         blaiseApiClient.doesInstrumentHaveMode(ServerPark, instrumentName, mode)
             .then((response) => {
                 req.log.info({response}, `Successfully called does instrument have mode endpoint for ${instrumentName}`);
@@ -152,7 +152,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     // Get list of all instruments installed in a specified server park
     router.get("/api/instruments", function (req: ResponseQuery, res: Response) {
         logger(req, res);
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
 
         blaiseApiClient.getInstrumentsWithCatiData(ServerPark)
             .then((response) => {
@@ -174,7 +174,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     router.get("/api/instruments/:instrumentName/cases/ids", function (req: ResponseQuery, res: Response) {
         const {instrumentName} = req.params;
         logger(req, res);
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
 
         blaiseApiClient.getInstrumentCaseIds(ServerPark, instrumentName)
             .then((response) => {
@@ -190,7 +190,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     router.get("/api/instruments/:instrumentName/modes", function (req: ResponseQuery, res: Response) {
         const {instrumentName} = req.params;
         logger(req, res);
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
 
         blaiseApiClient.getInstrumentModes(ServerPark, instrumentName)
             .then((response) => {
@@ -206,7 +206,7 @@ export default function BlaiseAPIRouter(environmentVariables: EnvironmentVariabl
     router.get("/api/instruments/:instrumentName/settings", function (req: ResponseQuery, res: Response) {
         const {instrumentName} = req.params;
         logger(req, res);
-        const blaiseApiClient = new BlaiseApiRest(`http://${BlaiseApiUrl}`);
+        const blaiseApiClient = new BlaiseApiRest(`${BlaiseApiUrl}`);
 
         blaiseApiClient.getInstrumentSettings(ServerPark, instrumentName)
             .then((response) => {

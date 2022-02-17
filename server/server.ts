@@ -13,8 +13,14 @@ import BimsAPIRouter from "./BimsAPI";
 import BusAPIRouter from "./BusAPI";
 import BlaiseApiClient from "blaise-api-node-client";
 
-if (process.env.NODE_ENV !== "production") {
-    dotenv.config({ path: __dirname + "/../.env" });
+if (process.env.NODE_ENV === "production") {
+    import("@google-cloud/profiler").then((profiler) => {
+        profiler.start({ logLevel: 4 }).catch((err: unknown) => {
+            console.log(`Failed to start profiler: ${err}`);
+        });
+    });
+} else {
+    dotenv.config();
 }
 
 const config = getEnvironmentVariables();
@@ -24,17 +30,6 @@ const loginHandler = newLoginHandler(auth, blaiseApiClient);
 const server = express();
 
 server.use("/", loginHandler);
-
-if (process.env.NODE_ENV === "production") {
-    import("@google-cloud/profiler").then((profiler) => {
-        profiler.start({ logLevel: 4 }).catch((err: unknown) => {
-            console.log(`Failed to start profiler: ${err}`);
-        });
-    });
-} else {
-    dotenv.config({ path: __dirname + "/../../.env" });
-}
-
 server.use(bodyParser.json() as RequestHandler);
 
 const logger: any = createLogger();

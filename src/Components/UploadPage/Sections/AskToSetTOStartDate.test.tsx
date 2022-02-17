@@ -8,6 +8,14 @@ import { instrumentList } from "../../../features/step_definitions/helpers/API_M
 import flushPromises from "../../../tests/utils";
 import userEvent from "@testing-library/user-event";
 
+
+import { AuthManager } from "blaise-login-react-client";
+
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
+
 const mock_server_responses = (url: string) => {
     console.log(url);
     if (url.includes("/api/instruments")) {
