@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import { getEnvironmentVariables } from "./Config";
 import createLogger from "./pino";
 import bodyParser from "body-parser";
-import { newLoginHandler, AuthConfig, Auth} from "blaise-login-react-server";
+import { newLoginHandler, Auth} from "blaise-login-react-server";
 import { checkFile, getBucketItems, getSignedUrl } from "./storage/helpers";
 import BlaiseAPIRouter from "./BlaiseAPI";
 import { auditLogError, auditLogInfo, getAuditLogs } from "./audit_logging";
@@ -13,14 +13,13 @@ import BimsAPIRouter from "./BimsAPI";
 import BusAPIRouter from "./BusAPI";
 import BlaiseApiClient from "blaise-api-node-client";
 
-const config: AuthConfig = {
-    SessionSecret: "example-secret",
-    SessionTimeout: "6h",
-    Roles: ["DST"],
-    BlaiseApiUrl: "http://localhost:8081",
+if (process.env.NODE_ENV !== "production") {
+    dotenv.config({ path: __dirname + "/../.env" });
 }
+
+const config = getEnvironmentVariables();
+const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
 const auth = new Auth(config);
-const blaiseApiClient = new BlaiseApiClient("http://localhost:8081");
 const loginHandler = newLoginHandler(auth, blaiseApiClient);
 const server = express();
 
@@ -47,8 +46,8 @@ server.use(logger);
 const buildFolder = "../../build";
 
 // load the .env variables in the server
-const environmentVariables = getEnvironmentVariables();
-const { BUCKET_NAME } = environmentVariables;
+//const environmentVariables = getEnvironmentVariables();
+//const { BucketName } = environmentVariables;
 
 // treat the index.html as a template and substitute the values at runtime
 server.set("views", path.join(__dirname, buildFolder));
@@ -65,7 +64,7 @@ server.get("/upload/init", function (req: Request, res: Response) {
 
     getSignedUrl(filename)
         .then((url) => {
-            req.log.info({ url }, `Signed url for ${filename} created in Bucket ${BUCKET_NAME}`);
+            req.log.info({ url }, `Signed url for ${filename} created in Bucket ${config.BucketName}`);
             res.status(200).json(url);
         })
         .catch((error) => {
@@ -79,7 +78,7 @@ server.get("/bucket/files", function (req: Request, res: Response) {
     req.log.info("//bucket/files endpoint called");
     getBucketItems()
         .then((url) => {
-            req.log.info(`Obtained list of files in Bucket ${BUCKET_NAME}`);
+            req.log.info(`Obtained list of files in Bucket ${config.BucketName}`);
             res.status(200).json(url);
         })
         .catch((error) => {
@@ -100,12 +99,12 @@ server.get("/upload/verify", function (req: Request, res: Response) {
     checkFile(filename)
         .then((file) => {
             if (!file.found) {
-                req.log.warn(`File ${filename} not found in Bucket ${BUCKET_NAME}`);
+                req.log.warn(`File ${filename} not found in Bucket ${config.BucketName}`);
                 auditLogError(req.log, `Failed to install questionnaire ${filename}, file upload failed`);
                 res.status(404).json("Not found");
                 return;
             }
-            req.log.info(`File ${filename} found in Bucket ${BUCKET_NAME}`);
+            req.log.info(`File ${filename} found in Bucket ${config.BucketName}`);
             auditLogInfo(req.log, `Successfully uploaded questionnaire file ${filename}`);
             res.status(200).json(file);
         })
@@ -130,9 +129,9 @@ server.get("/api/audit", function (req: Request, res: Response) {
 });
 
 // All Endpoints calling the Blaise API
-server.use("/", BlaiseAPIRouter(environmentVariables, logger));
-server.use("/", BimsAPIRouter(environmentVariables, logger));
-server.use("/", BusAPIRouter(environmentVariables, logger));
+server.use("/", BlaiseAPIRouter(config, logger));
+server.use("/", BimsAPIRouter(config, logger));
+server.use("/", BusAPIRouter(config, logger));
 
 // Health Check endpoint
 server.get("/dqs-ui/:version/health", async function (req: Request, res: Response) {

@@ -51,11 +51,15 @@ function App(): ReactElement {
     const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
-        authManager.loggedIn().then(async (isLoggedIn: boolean) => {
-            setLoggedIn(isLoggedIn);
-            setLoaded(true);
-        });
-        getInstrumentList().then(() => console.log("getInstrumentList complete"));
+        authManager.loggedIn()
+            .then(async (isLoggedIn: boolean) => {
+                setLoggedIn(isLoggedIn);
+                setLoaded(true);
+                if (isLoggedIn) {
+                    await getInstrumentList();
+                    console.log("getInstrumentList complete");
+                }
+            });
     }, []);
 
     function loginPage(): ReactElement {
@@ -95,23 +99,7 @@ function App(): ReactElement {
 
     function appContent(): ReactElement {
         if (loaded && loggedIn) {
-            return <h2 className="u-mt-m">This is my app</h2>;
-        }
-        return <></>;
-    }
-
-    return (
-        <>
-            <a className="skip__link" href="#main-content">Skip to content</a>
-            {
-                isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
-            }
-            <BetaBanner />
-            <Header title={"Deploy Questionnaire Service"} />
-            <NavigationLinks />
-            <div style={divStyle} className="page__container container">
-                {loginPage()}
-                {appContent()}
+            return (
                 <DefaultErrorBoundary>
                     <Switch>
                         <Route path="/status">
@@ -164,7 +152,24 @@ function App(): ReactElement {
                             </main>
                         </Route>
                     </Switch>
-                </DefaultErrorBoundary>
+                </DefaultErrorBoundary>);
+        }
+        return <></>;
+    }
+
+    return (
+        <>
+            <a className="skip__link" href="#main-content">Skip to content</a>
+            {
+                isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
+            }
+            <BetaBanner />
+            <Header title={"Deploy Questionnaire Service"} signOutButton={loggedIn} noSave={true} signOutFunction={signOut}/>
+            <NavigationLinks />
+            <div style={divStyle} className="page__container container">
+                {loginPage()}
+                {appContent()}
+
             </div>
             <Footer />
         </>

@@ -3,10 +3,10 @@ import express, {NextFunction, Request, Response, Router} from "express";
 import BusApiClient from "bus-api-node-client";
 
 export default function BusAPIRouter(environmentVariables: EnvironmentVariables, logger: any): Router {
-    const {BUS_API_URL, BUS_CLIENT_ID}: EnvironmentVariables = environmentVariables;
+    const {BusApiUrl, BusClientId}: EnvironmentVariables = environmentVariables;
     const router = express.Router();
 
-    const busApiClient = new BusApiClient(BUS_API_URL, BUS_CLIENT_ID);
+    const busApiClient = new BusApiClient(BusApiUrl, BusClientId);
 
     // Handle Errors from async functions.
     const catchAsync = (fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) => {

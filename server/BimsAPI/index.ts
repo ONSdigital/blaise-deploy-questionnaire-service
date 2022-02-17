@@ -4,10 +4,10 @@ import { auditLogError, auditLogInfo } from "../audit_logging";
 import { BimsAPI } from "./BimsAPI";
 
 export default function BimsAPIRouter(environmentVariables: EnvironmentVariables, logger: any): Router {
-    const { BIMS_API_URL, BIMS_CLIENT_ID }: EnvironmentVariables = environmentVariables;
+    const { BimsApiUrl, BimsClientId }: EnvironmentVariables = environmentVariables;
     const router = express.Router();
 
-    const bimsAPI = new BimsAPI(BIMS_API_URL, BIMS_CLIENT_ID, logger);
+    const bimsAPI = new BimsAPI(BimsApiUrl, BimsClientId, logger);
 
     router.post("/api/tostartdate/:instrumentName", async function (req: Request, res: Response) {
         const { instrumentName } = req.params;

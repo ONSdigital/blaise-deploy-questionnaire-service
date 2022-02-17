@@ -3359,9 +3359,9 @@ blaise-design-system-react-components@ONSDigital/blaise-design-system-react-comp
     react-dom "^17.0.0"
     react-loader-spinner "^4.0.0"
 
-"blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components#v0.9.7":
+"blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components":
   version "1.0.0"
-  resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#0a018bb81710af7655f92b924658f7da50ca1726"
+  resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#71883e9973f84bb3d42d2280ee0817a6fd792b8e"
   dependencies:
     formik "^2.2.9"
     react "^17.0.1"
@@ -3394,9 +3394,9 @@ blaise-design-system-react-components@ONSDigital/blaise-design-system-react-comp
     react-router-dom "^6.2.1"
     universal-cookie "^4.0.4"
 
-"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?main":
+"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?74e88ad500a734ce797df3ed3e2a85bdacb71980":
   version "1.1.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?main#2ca91e04b9181a46b1e6c1157f547b9885691f37"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?74e88ad500a734ce797df3ed3e2a85bdacb71980#6d8f835d20dfa46d47137d0ed40539ed983d709b"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
