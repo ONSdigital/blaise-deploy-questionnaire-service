@@ -1,27 +1,26 @@
-import React, {ReactElement, useState} from "react";
-import {Redirect, useLocation} from "react-router-dom";
-import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
-import {Instrument} from "../../../Interfaces";
+import React, { ReactElement, useState } from "react";
+import { Redirect, useLocation } from "react-router-dom";
+import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
+import { Instrument } from "../../../Interfaces";
 import ErroneousWarning from "./ErroneousWarning";
-import {removeToStartDateAndDeleteInstrument} from "../../utilities/processes";
+import { removeToStartDateAndDeleteInstrument } from "../../utilities/processes";
 import Breadcrumbs from "../Breadcrumbs";
 
-interface Props {
-    getList: () => void;
-}
 
 interface Location {
-    state: {
-        instrument: Instrument
-    };
+    instrument: Instrument
 }
 
-function DeleteConfirmation({getList}: Props): ReactElement {
+type Props = {
+    setStatus: (status: string) => void
+}
+
+function DeleteConfirmation({ setStatus }: Props): ReactElement {
     const [message, setMessage] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [redirect, setRedirect] = useState<boolean>(false);
-    const location = useLocation();
-    const {instrument} = (location as Location).state || {instrument: ""};
+    const location = useLocation<Location>();
+    const { instrument } = location.state || { instrument: "" };
 
     async function confirmDelete() {
         setLoading(true);
@@ -33,8 +32,7 @@ function DeleteConfirmation({getList}: Props): ReactElement {
             return;
         }
 
-        getList();
-        setMessage(`Questionnaire: ${instrument.name} Successfully deleted`);
+        setStatus(`Questionnaire: ${instrument.name} Successfully deleted`);
         setLoading(false);
         setRedirect(true);
     }
@@ -48,26 +46,25 @@ function DeleteConfirmation({getList}: Props): ReactElement {
             {
                 redirect && <Redirect
                     to={{
-                        pathname: "/",
-                        state: {status: message}
-                    }}/>
+                        pathname: "/"
+                    }} />
             }
             <Breadcrumbs BreadcrumbList={
                 [
-                    {link: "/", title: "Home"},
+                    { link: "/", title: "Home" },
                 ]
-            }/>
+            } />
 
             <main id="main-content" className="page__main u-mt-no">
                 {
                     (
                         instrument.status === "Failed" ?
-                            <ErroneousWarning instrumentName={instrument.name} setRedirect={setRedirect}/>
+                            <ErroneousWarning instrumentName={instrument.name} setRedirect={setRedirect} />
                             :
                             <>
                                 <h1 className="u-mb-l">
                                     Are you sure you want to delete the questionnaire <em
-                                    className="highlight">{instrument.name}</em>?
+                                        className="highlight">{instrument.name}</em>?
                                 </h1>
                                 <ONSPanel status={"warn"}>
                                     The questionnaire and all associated respondent data will be deleted
@@ -78,21 +75,21 @@ function DeleteConfirmation({getList}: Props): ReactElement {
                                 </p>
 
                                 <form>
-                                    <br/>
+                                    <br />
                                     <ONSButton
                                         label={"Delete"}
                                         primary={true}
                                         loading={loading}
                                         id="confirm-delete"
                                         testid="confirm-delete"
-                                        onClick={() => confirmDelete()}/>
+                                        onClick={() => confirmDelete()} />
                                     {!loading &&
-                                    <ONSButton
-                                        label={"Cancel"}
-                                        primary={false}
-                                        id="cancel-delete"
-                                        testid="cancel-delete"
-                                        onClick={() => cancelDelete()}/>
+                                        <ONSButton
+                                            label={"Cancel"}
+                                            primary={false}
+                                            id="cancel-delete"
+                                            testid="cancel-delete"
+                                            onClick={() => cancelDelete()} />
                                     }
                                 </form>
                             </>

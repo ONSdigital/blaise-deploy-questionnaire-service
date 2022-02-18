@@ -1,17 +1,11 @@
-import React, {Fragment, ReactElement, useEffect, useState} from "react";
-import {Redirect} from "react-router-dom";
-import {getAllInstrumentsInBucket} from "../utilities/http";
-import {ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
-import {Instrument} from "../../Interfaces";
-import {verifyAndInstallInstrument} from "../utilities/processes";
+import React, { Fragment, ReactElement, useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
+import { getAllInstruments, getAllInstrumentsInBucket } from "../utilities/http";
+import { ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
+import { verifyAndInstallInstrument } from "../utilities/processes";
 import Breadcrumbs from "./Breadcrumbs";
 
-interface Props {
-    installedInstruments: Instrument[];
-    listLoading: boolean;
-}
-
-function ReinstallInstruments({installedInstruments, listLoading}: Props): ReactElement {
+function ReinstallInstruments(): ReactElement {
     const [instrumentList, setInstrumentList] = useState<string[]>([]);
     const [listError, setListError] = useState<string>("Loading ...");
     const [redirect, setRedirect] = useState<boolean>(false);
@@ -23,13 +17,24 @@ function ReinstallInstruments({installedInstruments, listLoading}: Props): React
 
     useEffect(() => {
         getInstruments().then();
-    }, [installedInstruments]);
+    }, []);
 
-    function getInstalledInstrumentList() {
+    async function getInstalledInstrumentList() {
+        const [success, instrumentList] = await getAllInstruments();
+        console.log(`Response from get all instruments ${(success ? "successful" : "failed")}, data list length ${instrumentList.length}`);
+        console.log(instrumentList);
+
+        if (!success) {
+            setListError("Unable to load questionnaires");
+            setLoading(false);
+            return [];
+        }
+
         const list: string[] = [];
-        installedInstruments.map(({name}) => {
-            list.push(`${name}.bpkg`);
-        });
+        for (const instrument of instrumentList) {
+            list.push(`${instrument.name}.bpkg`);
+        }
+
         return list;
     }
 
@@ -48,7 +53,7 @@ function ReinstallInstruments({installedInstruments, listLoading}: Props): React
             return;
         }
 
-        const installedInstrumentList = getInstalledInstrumentList();
+        const installedInstrumentList = await getInstalledInstrumentList();
 
         bucketInstrumentList.map((instrument) => {
             if (!installedInstrumentList.includes(instrument)) {
@@ -97,37 +102,37 @@ function ReinstallInstruments({installedInstruments, listLoading}: Props): React
                                                     return (
                                                         <Fragment key={item}>
                                                             <p className="radios__item">
-                                                            <span className="radio">
-                                                                <input
-                                                                    type="radio"
-                                                                    id={`install-${item}`}
-                                                                    className="radio__input js-radio "
-                                                                    value={item}
-                                                                    name="select-survey"
-                                                                    aria-label="No"
-                                                                    onChange={() => setInstrumentToInstall(item)}
-                                                                />
-                                                                <label className="radio__label "
-                                                                       htmlFor={`install-${item}`}>
-                                                                    {item}
-                                                                </label>
-                                                            </span>
+                                                                <span className="radio">
+                                                                    <input
+                                                                        type="radio"
+                                                                        id={`install-${item}`}
+                                                                        className="radio__input js-radio "
+                                                                        value={item}
+                                                                        name="select-survey"
+                                                                        aria-label="No"
+                                                                        onChange={() => setInstrumentToInstall(item)}
+                                                                    />
+                                                                    <label className="radio__label "
+                                                                        htmlFor={`install-${item}`}>
+                                                                        {item}
+                                                                    </label>
+                                                                </span>
                                                             </p>
-                                                            <br/>
+                                                            <br />
                                                         </Fragment>
                                                     );
                                                 })
                                             }
                                         </div>
                                     </fieldset>
-                                    <br/>
+                                    <br />
 
                                     <ONSButton
                                         label={"Install selected questionnaire"}
                                         primary={true}
                                         loading={installing}
                                         id="confirm-install"
-                                        onClick={() => installInstrumentFromBucket()}/>
+                                        onClick={() => installInstrumentFromBucket()} />
                                 </>
                         }
                     </form>
@@ -142,25 +147,25 @@ function ReinstallInstruments({installedInstruments, listLoading}: Props): React
                 redirect && <Redirect
                     to={{
                         pathname: "/UploadSummary",
-                        state: {questionnaireName: instrumentName, status: uploadStatus}
-                    }}/>
+                        state: { questionnaireName: instrumentName, status: uploadStatus }
+                    }} />
             }
             <Breadcrumbs BreadcrumbList={
                 [
-                    {link: "/", title: "Home"}, {link: "/upload", title: "Deploy a questionnaire"}
+                    { link: "/", title: "Home" }, { link: "/upload", title: "Deploy a questionnaire" }
                 ]
-            }/>
+            } />
 
             <main id="main-content" className="page__main u-mt-no">
                 <h1 className="u-mb-l">Reinstall questionnaire</h1>
                 <p>
                     Reinstall a previously uploaded questionnaire.
-                    <br/>
+                    <br />
                     This will always deploy the last uploaded version of the questionnaire.
                 </p>
                 {
-                    (listLoading || loading) ?
-                        <ONSLoadingPanel/>
+                    (loading) ?
+                        <ONSLoadingPanel />
                         :
                         DisplayInstrumentsToInstallList()
                 }

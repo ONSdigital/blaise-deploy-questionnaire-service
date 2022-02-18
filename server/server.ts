@@ -1,14 +1,14 @@
-import express, {NextFunction, Request, RequestHandler, Response, Express} from "express";
+import express, { NextFunction, Request, RequestHandler, Response, Express } from "express";
 import path from "path";
 import ejs from "ejs";
 import dotenv from "dotenv";
-import {getEnvironmentVariables} from "./Config";
+import { getEnvironmentVariables } from "./Config";
 import createLogger from "./pino";
 import bodyParser from "body-parser";
-import {newLoginHandler, Auth} from "blaise-login-react-server";
-import {checkFile, getBucketItems, getSignedUrl} from "./storage/helpers";
+import { newLoginHandler, Auth } from "blaise-login-react-server";
+import { checkFile, getBucketItems, getSignedUrl } from "./storage/helpers";
 import BlaiseAPIRouter from "./BlaiseAPI";
-import {auditLogError, auditLogInfo, getAuditLogs} from "./audit_logging";
+import { auditLogError, auditLogInfo, getAuditLogs } from "./audit_logging";
 import BimsAPIRouter from "./BimsAPI";
 import BusAPIRouter from "./BusAPI";
 import BlaiseApiClient from "blaise-api-node-client";
@@ -16,7 +16,7 @@ import BlaiseApiClient from "blaise-api-node-client";
 
 if (process.env.NODE_ENV === "production") {
     import("@google-cloud/profiler").then((profiler) => {
-        profiler.start({logLevel: 4}).catch((err: unknown) => {
+        profiler.start({ logLevel: 4 }).catch((err: unknown) => {
             console.log(`Failed to start profiler: ${err}`);
         });
     });
@@ -25,8 +25,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 export function newServer(): Express {
-
-
     const config = getEnvironmentVariables();
     const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
     const auth = new Auth(config);
@@ -39,23 +37,23 @@ export function newServer(): Express {
     const logger: any = createLogger();
     server.use(logger);
 
-//axios.defaults.timeout = 10000;
+    //axios.defaults.timeout = 10000;
 
-// where ever the react built package is
+    // where ever the react built package is
     const buildFolder = "../../build";
 
-// load the .env variables in the server
-//const environmentVariables = getEnvironmentVariables();
-//const { BucketName } = environmentVariables;
+    // load the .env variables in the server
+    //const environmentVariables = getEnvironmentVariables();
+    //const { BucketName } = environmentVariables;
 
-// treat the index.html as a template and substitute the values at runtime
+    // treat the index.html as a template and substitute the values at runtime
     server.set("views", path.join(__dirname, buildFolder));
     server.engine("html", ejs.renderFile);
     server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static`)));
 
     server.get("/upload/init", auth.Middleware, function (req: Request, res: Response) {
         logger(req, res);
-        const {filename} = req.query;
+        const { filename } = req.query;
         if (typeof filename !== "string") {
             res.status(500).json("No filename provided");
             return;
@@ -63,7 +61,7 @@ export function newServer(): Express {
 
         getSignedUrl(filename)
             .then((url) => {
-                req.log.info({url}, `Signed url for ${filename} created in Bucket ${config.BucketName}`);
+                req.log.info({ url }, `Signed url for ${filename} created in Bucket ${config.BucketName}`);
                 res.status(200).json(url);
             })
             .catch((error) => {
@@ -89,7 +87,7 @@ export function newServer(): Express {
 
     server.get("/upload/verify", auth.Middleware, function (req: Request, res: Response) {
         logger(req, res);
-        const {filename} = req.query;
+        const { filename } = req.query;
         if (typeof filename !== "string") {
             res.status(500).json("No filename provided");
             return;
@@ -127,15 +125,15 @@ export function newServer(): Express {
             });
     });
 
-// All Endpoints calling the Blaise API
+    // All Endpoints calling the Blaise API
     server.use("/", BlaiseAPIRouter(config, logger, auth));
     server.use("/", BimsAPIRouter(config, logger, auth));
     server.use("/", BusAPIRouter(config, logger, auth));
 
-// Health Check endpoint
+    // Health Check endpoint
     server.get("/dqs-ui/:version/health", async function (req: Request, res: Response) {
         console.log("Heath Check endpoint called");
-        res.status(200).json({healthy: true});
+        res.status(200).json({ healthy: true });
     });
 
     server.get("*", function (req: Request, res: Response) {
@@ -147,5 +145,5 @@ export function newServer(): Express {
         req.log.error(err, err.message);
         res.render("../views/500.html", {});
     });
-    return server
+    return server;
 }

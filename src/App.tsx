@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
-import { Instrument } from "../Interfaces";
 import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
 import DeleteConfirmation from "./Components/DeletePage/DeleteConfirmation";
@@ -13,11 +12,10 @@ import {
     Footer,
     Header,
     NotProductionWarning,
-    ONSErrorPanel,
     ONSPanel,
-    ONSLoadingPanel
+    ONSLoadingPanel,
+    ONSErrorPanel
 } from "blaise-design-system-react-components";
-import { getAllInstruments } from "./utilities/http";
 import AuditPage from "./Components/AuditPage";
 import ReinstallInstruments from "./Components/ReinstallInstruments";
 import LiveSurveyWarning from "./Components/UploadPage/LiveSurveyWarning";
@@ -34,41 +32,31 @@ const divStyle = {
     minHeight: "calc(67vh)"
 };
 
-interface Location {
-    state: any;
-}
 
 function App(): ReactElement {
-    const [instruments, setInstruments] = useState<Instrument[]>([]);
-    const [listLoading, setListLoading] = useState<boolean>(true);
-    const [listMessage, setListMessage] = useState<string>("");
-
     const location = useLocation();
-    const { status } = (location as Location).state || { status: "" };
 
     const authManager = new AuthManager();
 
     const [loaded, setLoaded] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [errored, setErrored] = useState(false);
+    const [status, setStatus] = useState("");
 
     useEffect(() => {
-        authManager.loggedIn()
-            .then(async (isLoggedIn: boolean) => {
-                setLoggedIn(isLoggedIn);
-                setLoaded(true);
-                if (isLoggedIn) {
-                    await getInstrumentList();
-                    console.log("getInstrumentList complete");
-                }
-            });
+        console.log(location);
+        authManager.loggedIn().then((isLoggedIn: boolean) => {
+            setLoggedIn(isLoggedIn);
+            setLoaded(true);
+        });
     }, []);
 
     function loginPage(): ReactElement {
         if (loaded && loggedIn) {
-          return <></>;
+            return <></>;
         }
         return <LoginForm authManager={authManager} setLoggedIn={setLoggedIn} />;
-      }
+    }
 
     function loading(): ReactElement {
         if (loaded) {
@@ -80,30 +68,14 @@ function App(): ReactElement {
     function signOut(): void {
         authManager.clearToken();
         setLoggedIn(false);
-      }
+    }
 
-
-    async function getInstrumentList() {
-        setListLoading(true);
-        setInstruments([]);
-
-        const [success, instrumentList] = await getAllInstruments();
-        console.log(`Response from get all instruments ${(status ? "successful" : "failed")}, data list length ${instrumentList.length}`);
-        console.log(instrumentList);
-
-        if (!success) {
-            setListMessage("Unable to load questionnaires");
-            setListLoading(false);
-            return;
+    function successBanner(): ReactElement {
+        if (status !== "") {
+            return <ONSPanel status="success">{status}</ONSPanel>;
         }
-
-        if (instrumentList.length === 0) {
-            setListMessage("No installed questionnaires found.");
-        }
-
-        setInstruments(instrumentList);
-        setListLoading(false);
-    }    
+        return <></>;
+    }
 
     function appContent(): ReactElement {
         if (loaded && loggedIn) {
@@ -114,13 +86,13 @@ function App(): ReactElement {
                             <StatusPage />
                         </Route>
                         <Route path="/reinstall">
-                            <ReinstallInstruments installedInstruments={instruments} listLoading={listLoading} />
+                            <ReinstallInstruments />
                         </Route>
                         <Route path="/audit">
                             <AuditPage />
                         </Route>
                         <Route path="/UploadSummary">
-                            <DeploymentSummary getList={getInstrumentList} />
+                            <DeploymentSummary />
                         </Route>
                         <Route path={"/upload/survey-live/:instrumentName"}>
                             <LiveSurveyWarning />
@@ -135,13 +107,12 @@ function App(): ReactElement {
                             <UploadPage />
                         </Route>
                         <Route path="/delete">
-                            <DeleteConfirmation getList={getInstrumentList} />
+                            <DeleteConfirmation setStatus={setStatus} />
                         </Route>
                         <Route path="/">
                             <main id="main-content" className="page__main u-mt-no">
-
-                                {status !== "" && <ONSPanel status="success">{status}</ONSPanel>}
-                                {listMessage.includes("Unable") && <ONSErrorPanel />}
+                                {successBanner()}
+                                {errored && <ONSErrorPanel />}
 
                                 <ONSPanel>
                                     <p>
@@ -154,8 +125,7 @@ function App(): ReactElement {
                                 </ONSPanel>
                                 <h2 className="u-mt-m">Table of questionnaires</h2>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList instrumentList={instruments} listMessage={listMessage}
-                                        loading={listLoading} />
+                                    <InstrumentList setErrored={setErrored} />
                                 </ErrorBoundary>
                             </main>
                         </Route>
@@ -172,7 +142,7 @@ function App(): ReactElement {
                 isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
             }
             <BetaBanner />
-            <Header title={"Deploy Questionnaire Service"} signOutButton={loggedIn} noSave={true} signOutFunction={signOut}/>
+            <Header title={"Deploy Questionnaire Service"} signOutButton={loggedIn} noSave={true} signOutFunction={signOut} />
             <NavigationLinks />
             <div style={divStyle} className="page__container container">
                 {loading()}
