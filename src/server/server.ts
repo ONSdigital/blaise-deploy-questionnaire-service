@@ -9,9 +9,10 @@ import { newLoginHandler, Auth } from "blaise-login-react-server";
 import { checkFile, getBucketItems, getSignedUrl } from "./storage/helpers";
 import BlaiseAPIRouter from "./blaiseAPI";
 import { auditLogError, auditLogInfo, getAuditLogs } from "./auditLogging";
-import BimsAPIRouter from "./bimsAPI";
 import BusAPIRouter from "./busAPI";
 import BlaiseApiClient from "blaise-api-node-client";
+import NewBimsHandler from "./handlers/bimsHandler";
+import { BimsApi } from "./bimsAPI/bimsApi";
 
 
 if (process.env.NODE_ENV === "production") {
@@ -29,6 +30,10 @@ export function newServer(): Express {
     const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
     const auth = new Auth(config);
     const loginHandler = newLoginHandler(auth, blaiseApiClient);
+
+    const bimsAPI = new BimsApi(config.BimsApiUrl, config.BimsClientId);
+    const bimsHandler = NewBimsHandler(bimsAPI, auth);
+
     const server = express();
 
     server.use("/", loginHandler);
@@ -41,10 +46,6 @@ export function newServer(): Express {
 
     // where ever the react built package is
     const buildFolder = "../../build";
-
-    // load the .env variables in the server
-    //const environmentVariables = getEnvironmentVariables();
-    //const { BucketName } = environmentVariables;
 
     // treat the index.html as a template and substitute the values at runtime
     server.set("views", path.join(__dirname, buildFolder));
@@ -127,7 +128,7 @@ export function newServer(): Express {
 
     // All Endpoints calling the Blaise API
     server.use("/", BlaiseAPIRouter(config, logger, auth));
-    server.use("/", BimsAPIRouter(config, logger, auth));
+    server.use("/", bimsHandler);
     server.use("/", BusAPIRouter(config, logger, auth));
 
     // Health Check endpoint

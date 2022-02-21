@@ -1,10 +1,10 @@
 // Generic function to make requests to the API
 import { Request } from "express";
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { Method } from "axios";
 import * as PinoHttp from "pino-http";
 type PromiseResponse = [number, any, string];
 
-export async function SendAPIRequest(logger: PinoHttp.HttpLogger, req: Request, res: any, url: string, method: AxiosRequestConfig["method"], data: any = null, headers: any = null): Promise<PromiseResponse> {
+export async function SendAPIRequest(logger: PinoHttp.HttpLogger, req: Request, res: any, url: string, method: Method, data: any = null, headers: any = null): Promise<PromiseResponse> {
     logger(req, res);
 
     try {
