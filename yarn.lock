@@ -3397,6 +3397,19 @@ blaise-design-system-react-components@ONSDigital/blaise-design-system-react-comp
     react-dom "^17.0.0"
     react-loader-spinner "^4.0.0"
 
+blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
+  version "1.0.0"
+  uid "16c9937771369c6cf51dd23af24f0e8755e58e26"
+  resolved "https://codeload.github.com/ONSdigital/blaise-iap-node-provider/tar.gz/16c9937771369c6cf51dd23af24f0e8755e58e26"
+  dependencies:
+    "@babel/preset-env" "^7.14.7"
+    "@types/jsonwebtoken" "^8.5.5"
+    axios "^0.21.1"
+    google-auth-library "^7.9.1"
+    jsonwebtoken "^8.5.1"
+    path-parse "^1.0.7"
+    typescript "~4.2.2"
+
 "blaise-iap-node-provider@https://github.com/ONSdigital/blaise-iap-node-provider.git":
   version "1.0.0"
   resolved "https://github.com/ONSdigital/blaise-iap-node-provider.git#16c9937771369c6cf51dd23af24f0e8755e58e26"

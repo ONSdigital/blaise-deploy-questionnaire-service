@@ -1,5 +1,5 @@
 import * as PinoHttp from "pino-http";
-import AuthProvider from "../authProvider";
+import BlaiseIapNodeProvider from "blaise-iap-node-provider";
 import { Request, Response } from "express";
 import { SendAPIRequest } from "../sendRequest";
 
@@ -7,13 +7,13 @@ export class BimsAPI {
     private readonly BIMS_API_URL: string;
     private readonly BIMS_CLIENT_ID: string;
     private readonly logger: PinoHttp.HttpLogger;
-    private authProvider: AuthProvider;
+    private authProvider: BlaiseIapNodeProvider;
 
     constructor(BIMS_API_URL: string, BIMS_CLIENT_ID: string, logger: PinoHttp.HttpLogger) {
         this.BIMS_API_URL = BIMS_API_URL;
         this.BIMS_CLIENT_ID = BIMS_CLIENT_ID;
         this.logger = logger;
-        this.authProvider = new AuthProvider(BIMS_CLIENT_ID);
+        this.authProvider = new BlaiseIapNodeProvider(BIMS_CLIENT_ID);
     }
 
     async getStartDate(req: Request, res: Response, instrumentName: string): Promise<[number, any, string]> {
