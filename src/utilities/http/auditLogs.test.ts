@@ -1,6 +1,6 @@
 import { cleanup } from "@testing-library/react";
 import { mock_server_request_function, mock_server_request_Return_JSON } from "../../tests/utils";
-import { instrumentList } from "../../features/step_definitions/helpers/API_Mock_Objects";
+import { instrumentList } from "../../features/step_definitions/helpers/apiMockObjects";
 import { getAuditLogs } from "./auditLogs";
 
 describe("Function getAuditLogs(filename: string) ", () => {

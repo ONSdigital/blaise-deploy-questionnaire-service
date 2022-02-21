@@ -10,7 +10,7 @@ import userEvent from "@testing-library/user-event";
 import { DefineStepFunction } from "jest-cucumber";
 import { Router } from "react-router";
 import { createMemoryHistory } from "history";
-import App from "../../App";
+import App from "../../app";
 import { format_date_string, navigatePastSettingTOStartDateAndStartDeployment } from "./helpers/functions";
 
 export const whenIConfirmMySelection = (when: DefineStepFunction): void => {
@@ -244,7 +244,7 @@ export const whenIHaveSelectedADeployPackage = (then: DefineStepFunction): void 
 
 export const whenIChooseToDeployAnyway = (when: DefineStepFunction): void => {
   when("I choose to deploy anyway", async () => {
-    userEvent.click(await screen.getByRole("button", {name: /Deploy anyway/i}));
+    userEvent.click(await screen.getByRole("button", { name: /Deploy anyway/i }));
     await act(async () => {
       await flushPromises();
     });
@@ -253,7 +253,7 @@ export const whenIChooseToDeployAnyway = (when: DefineStepFunction): void => {
 
 export const whenIChooseToCancel = (when: DefineStepFunction): void => {
   when("I choose to cancel", async () => {
-    userEvent.click(await screen.getByRole("button", {name: /Cancel/i}));
+    userEvent.click(await screen.getByRole("button", { name: /Cancel/i }));
     await act(async () => {
       await flushPromises();
     });

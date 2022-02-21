@@ -1,9 +1,8 @@
 import navigateToDeployPageAndSelectFile, { format_date_string } from "./helpers/functions";
 import { DefineStepFunction } from "jest-cucumber";
-import { Instrument } from "../../../Interfaces";
-import { instrumentWithName } from "./helpers/API_Mock_Objects";
+import { instrumentWithName } from "./helpers/apiMockObjects";
 import { Mocker } from "./helpers/mocker";
-import { InstrumentSettings } from "blaise-api-node-client";
+import { InstrumentSettings, Instrument } from "blaise-api-node-client";
 
 export const givenTheQuestionnaireIsInstalled = (
   given: DefineStepFunction,

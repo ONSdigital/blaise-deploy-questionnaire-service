@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { act, render, screen } from "@testing-library/react";
 import { Router } from "react-router";
-import App from "../../../App";
+import App from "../../../app";
 import flushPromises from "../../../tests/utils";
 import React from "react";
 import userEvent from "@testing-library/user-event";

@@ -1,6 +1,5 @@
 import { requestPromiseJson, requestPromiseJsonList, requestPromiseNoResponse } from "./requestPromise";
-import { Instrument } from "../../../Interfaces";
-import { InstrumentSettings } from "blaise-api-node-client";
+import { InstrumentSettings, Instrument } from "blaise-api-node-client";
 
 type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];

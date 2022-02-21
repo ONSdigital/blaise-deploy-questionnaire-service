@@ -6,7 +6,7 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { Instrument } from "../../../Interfaces";
+import { Instrument } from "blaise-api-node-client";
 
 import {
     givenIHaveSelectedTheQuestionnairePacakgeToDeploy,
@@ -23,7 +23,7 @@ import {
     thenIAmReturnedToTheLandingPage
 } from "../step_definitions/then";
 import { Mocker } from "../step_definitions/helpers/mocker";
-import {AuthManager} from "blaise-login-react-client";
+import { AuthManager } from "blaise-login-react-client";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
