@@ -57,18 +57,15 @@ export class BlaiseHandler {
 
   async GetInstrument(req: Request, res: Response): Promise<Response> {
     const { instrumentName } = req.params;
-    const instrumentExists = await this.blaiseApiClient.instrumentExists(this.serverPark, instrumentName);
 
-    if (!instrumentExists) {
-      return res.status(404).json(null);
-    }
-
-    auditLogInfo(req.log, `Attempting to install existing questionnaire ${instrumentName}`);
     try {
       const instrument = await this.blaiseApiClient.getInstrumentWithCatiData(this.serverPark, instrumentName);
       req.log.info({ instrument }, `Get instrument with CATI data ${instrumentName} endpoint`);
       return res.status(200).json(instrument);
-    } catch (error) {
+    } catch (error: any) {
+      if (this.errorNotFound(error)) {
+        return res.status(404).json(null);
+      }
       console.log(error);
       req.log.error(error, "Get instrument with CATI data endpoint failed");
       return res.status(500).json();
@@ -100,7 +97,7 @@ export class BlaiseHandler {
       auditLogInfo(req.log, `Successfully uninstalled questionnaire ${instrumentName}`);
       return res.status(204).json(response);
     } catch (error: any) {
-      if (error.status === 404) {
+      if (this.errorNotFound(error)) {
         auditLogError(req.log, `Attempted to uninstall questionnaire ${instrumentName} that doesn't exist`);
         return res.status(404).json();
       }
@@ -117,7 +114,7 @@ export class BlaiseHandler {
       auditLogInfo(req.log, `Successfully activated questionnaire ${instrumentName}`);
       return res.status(204).json(response);
     } catch (error: any) {
-      if (error.status === 404) {
+      if (this.errorNotFound(error)) {
         auditLogError(req.log, `Attempted to activate questionnaire ${instrumentName} that doesn't exist`);
         return res.status(404).json();
       }
@@ -134,7 +131,7 @@ export class BlaiseHandler {
       auditLogInfo(req.log, `Successfully deactivated questionnaire ${instrumentName}`);
       return res.status(204).json(response);
     } catch (error: any) {
-      if (error.status === 404) {
+      if (this.errorNotFound(error)) {
         auditLogError(req.log, `Attempted to deactivate questionnaire ${instrumentName} that doesn't exist`);
         return res.status(404).json();
       }
@@ -208,5 +205,9 @@ export class BlaiseHandler {
       req.log.error(error, `Get instrument settings for ${instrumentName}`);
       return res.status(500).json();
     }
+  }
+
+  errorNotFound(error: any): boolean {
+    return (error && "status" in error && error.status === 404);
   }
 }
