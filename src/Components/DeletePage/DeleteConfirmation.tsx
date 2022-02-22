@@ -1,10 +1,11 @@
 import React, { ReactElement, useState } from "react";
 import { Redirect, useLocation } from "react-router-dom";
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
-import { Instrument } from "../../../Interfaces";
+import { Instrument } from "blaise-api-node-client";
 import ErroneousWarning from "./ErroneousWarning";
 import { removeToStartDateAndDeleteInstrument } from "../../utilities/processes";
 import Breadcrumbs from "../Breadcrumbs";
+
 
 interface Location {
     instrument: Instrument
@@ -45,7 +46,6 @@ function DeleteConfirmation({ setStatus }: Props): ReactElement {
             {
                 redirect && <Redirect
                     to={{
-<<<<<<< HEAD
                         pathname: "/"
                     }} />
             }

@@ -18,7 +18,7 @@ async function removeToStartDateAndDeleteInstrument(instrumentName: string): Pro
         return Promise.resolve([false, "Failed to delete the questionnaire"]);
     }
 
-    return Promise.resolve([true, "Installed successfully"]);
+    return Promise.resolve([true, "Deleted successfully"]);
 }
 
 export {removeToStartDateAndDeleteInstrument};
