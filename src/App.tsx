@@ -1,9 +1,9 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import InstrumentList from "./Components/InstrumentList";
-import UploadPage from "./Components/uploadPage/UploadPage";
+import UploadPage from "./Components/UploadPage/UploadPage";
 import DeploymentSummary from "./Components/DeploymentSummary";
-import DeleteConfirmation from "./Components/deletePage/DeleteConfirmation";
+import DeleteConfirmation from "./Components/DeletePage/DeleteConfirmation";
 import StatusPage from "./Components/StatusPage";
 import {
     BetaBanner,
@@ -18,9 +18,9 @@ import {
 } from "blaise-design-system-react-components";
 import AuditPage from "./Components/AuditPage";
 import ReinstallInstruments from "./Components/ReinstallInstruments";
-import LiveSurveyWarning from "./Components/uploadPage/LiveSurveyWarning";
-import InstrumentDetails from "./Components/instrumentDetails/InstrumentDetails";
-import ChangeToStartDate from "./Components/instrumentDetails/ChangeToStartDate";
+import LiveSurveyWarning from "./Components/UploadPage/LiveSurveyWarning";
+import InstrumentDetails from "./Components/InstrumentDetails/InstrumentDetails";
+import ChangeToStartDate from "./Components/InstrumentDetails/ChangeToStartDate";
 import "./style.css";
 import { NavigationLinks } from "./Components/NavigationLinks";
 import { isProduction } from "./utilities/env";
