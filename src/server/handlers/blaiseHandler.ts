@@ -1,13 +1,13 @@
 import express, { Request, Response, Router } from "express";
 import { Auth } from "blaise-login-react-server";
-import { auditLogError, auditLogInfo } from "../auditLogging";
 import BlaiseApiClient, { InstallInstrument, Instrument } from "blaise-api-node-client";
 import { field_period_to_text } from "../functions";
+import AuditLogger from "../auditLogging/logger";
 
-export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serverPark: string, auth: Auth): Router {
+export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serverPark: string, auth: Auth, auditLogger: AuditLogger): Router {
   const router = express.Router();
 
-  const blaiseHandler = new BlaiseHandler(blaiseApiClient, serverPark);
+  const blaiseHandler = new BlaiseHandler(blaiseApiClient, serverPark, auditLogger);
   router.get("/api/health/diagnosis", auth.Middleware, blaiseHandler.GetHealth);
   router.get("/api/instruments/:instrumentName", auth.Middleware, blaiseHandler.GetInstrument);
   router.get("/api/install", auth.Middleware, blaiseHandler.InstallInstrument);
@@ -26,10 +26,12 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
 export class BlaiseHandler {
   blaiseApiClient: BlaiseApiClient;
   serverPark: string;
+  auditLogger: AuditLogger;
 
-  constructor(blaiseApiClient: BlaiseApiClient, serverPark: string) {
+  constructor(blaiseApiClient: BlaiseApiClient, serverPark: string, auditLogger: AuditLogger) {
     this.blaiseApiClient = blaiseApiClient;
     this.serverPark = serverPark;
+    this.auditLogger = auditLogger;
 
     this.GetHealth = this.GetHealth.bind(this);
     this.GetInstrument = this.GetInstrument.bind(this);
@@ -80,11 +82,11 @@ export class BlaiseHandler {
     };
     try {
       const response = await this.blaiseApiClient.installInstrument(this.serverPark, installInstrument);
-      auditLogInfo(req.log, `Successfully installed questionnaire ${instrumentName}`);
+      this.auditLogger.info(req.log, `Successfully installed questionnaire ${instrumentName}`);
       return res.status(201).json(response);
     } catch (error: any) {
       req.log.error(error, "Install instrument endpoint failed");
-      auditLogError(req.log, `Failed to install questionnaire ${instrumentName}`);
+      this.auditLogger.error(req.log, `Failed to install questionnaire ${instrumentName}`);
       return res.status(500).json();
     }
   }
@@ -94,14 +96,14 @@ export class BlaiseHandler {
 
     try {
       const response = await this.blaiseApiClient.deleteInstrument(this.serverPark, instrumentName);
-      auditLogInfo(req.log, `Successfully uninstalled questionnaire ${instrumentName}`);
+      this.auditLogger.info(req.log, `Successfully uninstalled questionnaire ${instrumentName}`);
       return res.status(204).json(response);
     } catch (error: any) {
       if (this.errorNotFound(error)) {
-        auditLogError(req.log, `Attempted to uninstall questionnaire ${instrumentName} that doesn't exist`);
+        this.auditLogger.error(req.log, `Attempted to uninstall questionnaire ${instrumentName} that doesn't exist`);
         return res.status(404).json();
       }
-      auditLogError(req.log, `Failed to uninstall questionnaire ${instrumentName}`);
+      this.auditLogger.error(req.log, `Failed to uninstall questionnaire ${instrumentName}`);
       return res.status(500).json();
     }
   }
@@ -111,14 +113,14 @@ export class BlaiseHandler {
 
     try {
       const response = await this.blaiseApiClient.activateInstrument(this.serverPark, instrumentName);
-      auditLogInfo(req.log, `Successfully activated questionnaire ${instrumentName}`);
+      this.auditLogger.info(req.log, `Successfully activated questionnaire ${instrumentName}`);
       return res.status(204).json(response);
     } catch (error: any) {
       if (this.errorNotFound(error)) {
-        auditLogError(req.log, `Attempted to activate questionnaire ${instrumentName} that doesn't exist`);
+        this.auditLogger.error(req.log, `Attempted to activate questionnaire ${instrumentName} that doesn't exist`);
         return res.status(404).json();
       }
-      auditLogError(req.log, `Failed to activate questionnaire ${instrumentName}`);
+      this.auditLogger.error(req.log, `Failed to activate questionnaire ${instrumentName}`);
       return res.status(500).json();
     }
   }
@@ -128,14 +130,14 @@ export class BlaiseHandler {
 
     try {
       const response = await this.blaiseApiClient.deactivateInstrument(this.serverPark, instrumentName);
-      auditLogInfo(req.log, `Successfully deactivated questionnaire ${instrumentName}`);
+      this.auditLogger.info(req.log, `Successfully deactivated questionnaire ${instrumentName}`);
       return res.status(204).json(response);
     } catch (error: any) {
       if (this.errorNotFound(error)) {
-        auditLogError(req.log, `Attempted to deactivate questionnaire ${instrumentName} that doesn't exist`);
+        this.auditLogger.error(req.log, `Attempted to deactivate questionnaire ${instrumentName} that doesn't exist`);
         return res.status(404).json();
       }
-      auditLogError(req.log, `Failed to deactivate questionnaire ${instrumentName}`);
+      this.auditLogger.error(req.log, `Failed to deactivate questionnaire ${instrumentName}`);
       return res.status(500).json();
     }
   }

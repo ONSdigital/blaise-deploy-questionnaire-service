@@ -1,4 +1,4 @@
-import logger from "pino-http";
+import logger, { HttpLogger } from "pino-http";
 
 // https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity
 const PinoLevelToSeverityLookup = {
@@ -22,7 +22,7 @@ const defaultPinoConf = {
             };
         },
         log(info: never) {
-            return {info};
+            return { info };
         },
     },
     serializers: {
@@ -35,7 +35,7 @@ const defaultPinoConf = {
 };
 
 
-export default function createLogger(options: any = {autoLogging: false})  {
+export default function createLogger(options: any = { autoLogging: false }): HttpLogger {
     let pinoConfig = {};
     if (process.env.NODE_ENV === "production") {
         pinoConfig = defaultPinoConf;

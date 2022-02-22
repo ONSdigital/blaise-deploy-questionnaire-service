@@ -4,7 +4,7 @@ import supertest, { Response } from "supertest";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import { Auth } from "blaise-login-react-server";
-import { getEnvironmentVariables } from "../config";
+import { getConfigFromEnv } from "../config";
 
 jest.mock("blaise-login-react-server", () => {
     const loginReact = jest.requireActual("blaise-login-react-server");
@@ -21,7 +21,7 @@ jest.mock("blaise-iap-node-provider");
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 const jsonHeaders = { "content-type": "application/json" };
 
-const { BimsApiUrl } = getEnvironmentVariables();
+const { BimsApiUrl } = getConfigFromEnv();
 
 // Mock Express Server
 const request = supertest(newServer());

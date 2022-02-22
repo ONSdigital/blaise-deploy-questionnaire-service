@@ -1,5 +1,4 @@
-import { getEnvironmentVariables } from "./config";
-import { AuthManager } from "blaise-login-react-client";
+import { getConfigFromEnv } from "./config";
 
 describe("Config setup", () => {
     afterEach(() => {
@@ -7,11 +6,8 @@ describe("Config setup", () => {
         jest.resetModules();
     });
 
-
-
-
     it("should return the correct environment variables", () => {
-        const { BlaiseApiUrl, ProjectId, BucketName, BimsApiUrl, BimsClientId } = getEnvironmentVariables();
+        const { BlaiseApiUrl, ProjectId, BucketName, BimsApiUrl, BimsClientId } = getConfigFromEnv();
 
 
         expect(BlaiseApiUrl).toBe("http://mock-api");
@@ -28,8 +24,7 @@ describe("Config setup", () => {
             BUCKET_NAME: undefined
         });
 
-        const { BlaiseApiUrl, ProjectId, BucketName, BimsApiUrl, BimsClientId } = getEnvironmentVariables();
-
+        const { BlaiseApiUrl, ProjectId, BucketName, BimsApiUrl, BimsClientId } = getConfigFromEnv();
 
         expect(BlaiseApiUrl).toBe("http://ENV_VAR_NOT_SET");
         expect(ProjectId).toBe("ENV_VAR_NOT_SET");

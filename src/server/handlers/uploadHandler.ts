@@ -1,12 +1,12 @@
 import { Auth } from "blaise-login-react-server";
 import express, { Router, Request, Response } from "express";
-import { auditLogError, auditLogInfo } from "../auditLogging";
+import AuditLogger from "../auditLogging/logger";
 import StorageManager from "../storage/storage";
 
-export default function newUploadHandler(storageManager: StorageManager, auth: Auth): Router {
+export default function newUploadHandler(storageManager: StorageManager, auth: Auth, auditLogger: AuditLogger): Router {
   const router = express.Router();
 
-  const uploadHandler = new UploadHandler(storageManager);
+  const uploadHandler = new UploadHandler(storageManager, auditLogger);
 
   router.get("/upload/init", auth.Middleware, uploadHandler.InitialiseUpload);
   router.get("/bucket/files", auth.Middleware, uploadHandler.ListFiles);
@@ -16,9 +16,11 @@ export default function newUploadHandler(storageManager: StorageManager, auth: A
 
 export class UploadHandler {
   storageManager: StorageManager;
+  auditLogger: AuditLogger;
 
-  constructor(storageManager: StorageManager) {
+  constructor(storageManager: StorageManager, auditLogger: AuditLogger) {
     this.storageManager = storageManager;
+    this.auditLogger = auditLogger;
 
     this.InitialiseUpload = this.InitialiseUpload.bind(this);
     this.ListFiles = this.ListFiles.bind(this);
@@ -63,15 +65,15 @@ export class UploadHandler {
       const file = await this.storageManager.CheckFile(filename);
       if (!file.found) {
         req.log.warn(`File ${filename} not found in Bucket ${this.storageManager.bucketName}`);
-        auditLogError(req.log, `Failed to install questionnaire ${filename}, file upload failed`);
+        this.auditLogger.error(req.log, `Failed to install questionnaire ${filename}, file upload failed`);
         return res.status(404).json("Not found");
       }
       req.log.info(`File ${filename} found in Bucket ${this.storageManager.bucketName}`);
-      auditLogInfo(req.log, `Successfully uploaded questionnaire file ${filename}`);
+      this.auditLogger.info(req.log, `Successfully uploaded questionnaire file ${filename}`);
       return res.status(200).json(file);
     } catch (error: any) {
       req.log.error(error, "Failed calling checkFile");
-      auditLogError(req.log, `Failed to install questionnaire ${filename}, unable to verify if file had been uploaded`);
+      this.auditLogger.error(req.log, `Failed to install questionnaire ${filename}, unable to verify if file had been uploaded`);
       return res.status(500).json(error);
     }
   }

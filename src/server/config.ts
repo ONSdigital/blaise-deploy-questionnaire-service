@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { AuthConfig } from "blaise-login-react-server";
 
-export interface EnvironmentVariables extends AuthConfig {
+export interface Config extends AuthConfig {
     BlaiseApiUrl: string;
     ProjectId: string;
     BucketName: string;
@@ -12,7 +12,7 @@ export interface EnvironmentVariables extends AuthConfig {
     BusClientId: string;
 }
 
-export function getEnvironmentVariables(): EnvironmentVariables {
+export function getConfigFromEnv(): Config {
     let {
         PROJECT_ID,
         BUCKET_NAME,
@@ -28,7 +28,7 @@ export function getEnvironmentVariables(): EnvironmentVariables {
     const {
         SESSION_SECRET,
         ROLES
-    } = process.env
+    } = process.env;
 
     if (BLAISE_API_URL === undefined) {
         console.error("BLAISE_API_URL environment variable has not been set");

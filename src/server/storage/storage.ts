@@ -1,5 +1,5 @@
-import { Storage, Bucket, GetSignedUrlConfig } from "@google-cloud/storage";
-import { EnvironmentVariables } from "../config";
+import { Storage, Bucket, GetSignedUrlConfig, File } from "@google-cloud/storage";
+import { Config } from "../config";
 
 export type file = {
   name?: string
@@ -12,7 +12,7 @@ export default class StorageManager {
   storage: Storage;
   bucketName: string;
 
-  constructor(config: EnvironmentVariables) {
+  constructor(config: Config) {
     this.bucketName = config.BucketName;
     this.storage = new Storage({ projectId: config.ProjectId });
     this.bucket = this.storage.bucket(config.BucketName);
@@ -39,13 +39,14 @@ export default class StorageManager {
     let files: File[];
 
     try {
-      files = await this.bucket.getFiles();
+      [files] = await this.bucket.getFiles();
     } catch (error: unknown) {
       console.error(error, "getBucketItems Failed");
       throw "getBucketItems Failed";
     }
 
     for (const file of files) {
+      console.log(file);
       if (file.name.endsWith(".bpkg")) {
         fileList.push(file.name);
       }
