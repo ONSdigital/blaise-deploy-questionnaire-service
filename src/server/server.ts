@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import { getEnvironmentVariables } from "./config";
 import createLogger from "./pino";
 import { newLoginHandler, Auth } from "blaise-login-react-server";
-import { auditLogError, auditLogInfo, getAuditLogs } from "./auditLogging";
 import BlaiseApiClient from "blaise-api-node-client";
 import newBimsHandler from "./handlers/bimsHandler";
 import { BimsApi } from "./bimsAPI/bimsApi";
@@ -15,6 +14,7 @@ import BusApiClient from "bus-api-node-client";
 import HealthCheckHandler from "./handlers/healthCheckHandler";
 import StorageManager from "./storage/storage";
 import newUploadHandler from "./handlers/uploadHandler";
+import AuditHandler from "./handlers/auditHandler";
 
 
 if (process.env.NODE_ENV === "production") {
@@ -58,24 +58,12 @@ export function newServer(): Express {
     server.engine("html", ejs.renderFile);
     server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static`)));
 
-    server.get("/api/audit", auth.Middleware, function (req: Request, res: Response) {
-        logger(req, res);
-        getAuditLogs()
-            .then((logs) => {
-                req.log.info("Retrieved audit logs");
-                res.status(200).json(logs);
-            })
-            .catch((error) => {
-                req.log.error(error, "Failed calling getAuditLogs");
-                res.status(500).json(error);
-            });
-    });
-
     server.use("/", uploadHandler);
     server.use("/", blaiseHandler);
     server.use("/", bimsHandler);
     server.use("/", busHandler);
     server.use("/", HealthCheckHandler());
+    server.use("/", AuditHandler());
 
     server.get("*", function (req: Request, res: Response) {
         res.render("index.html");
