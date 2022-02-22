@@ -8,11 +8,12 @@ import bodyParser from "body-parser";
 import { newLoginHandler, Auth } from "blaise-login-react-server";
 import { checkFile, getBucketItems, getSignedUrl } from "./storage/helpers";
 import { auditLogError, auditLogInfo, getAuditLogs } from "./auditLogging";
-import BusAPIRouter from "./busAPI";
 import BlaiseApiClient from "blaise-api-node-client";
 import NewBimsHandler from "./handlers/bimsHandler";
 import { BimsApi } from "./bimsAPI/bimsApi";
 import NewBlaiseHandler from "./handlers/blaiseHandler";
+import NewBusHandler from "./handlers/busHandler";
+import BusApiClient from "bus-api-node-client";
 
 
 if (process.env.NODE_ENV === "production") {
@@ -32,8 +33,11 @@ export function newServer(): Express {
     const loginHandler = newLoginHandler(auth, blaiseApiClient);
 
     const bimsAPI = new BimsApi(config.BimsApiUrl, config.BimsClientId);
+    const busApiClient = new BusApiClient(config.BusApiUrl, config.BusClientId);
+
     const bimsHandler = NewBimsHandler(bimsAPI, auth);
     const blaiseHandler = NewBlaiseHandler(blaiseApiClient, config.ServerPark, auth);
+    const busHandler = NewBusHandler(busApiClient, auth);
 
     const server = express();
 
@@ -130,7 +134,7 @@ export function newServer(): Express {
     // All Endpoints calling the Blaise API
     server.use("/", blaiseHandler);
     server.use("/", bimsHandler);
-    server.use("/", BusAPIRouter(config, logger, auth));
+    server.use("/", busHandler);
 
     // Health Check endpoint
     server.get("/dqs-ui/:version/health", async function (req: Request, res: Response) {
