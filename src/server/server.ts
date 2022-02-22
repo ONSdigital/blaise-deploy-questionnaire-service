@@ -14,6 +14,7 @@ import { BimsApi } from "./bimsAPI/bimsApi";
 import NewBlaiseHandler from "./handlers/blaiseHandler";
 import NewBusHandler from "./handlers/busHandler";
 import BusApiClient from "bus-api-node-client";
+import HealthCheckHandler from "./handlers/healthCheckHandler";
 
 
 if (process.env.NODE_ENV === "production") {
@@ -135,12 +136,7 @@ export function newServer(): Express {
     server.use("/", blaiseHandler);
     server.use("/", bimsHandler);
     server.use("/", busHandler);
-
-    // Health Check endpoint
-    server.get("/dqs-ui/:version/health", async function (req: Request, res: Response) {
-        console.log("Heath Check endpoint called");
-        res.status(200).json({ healthy: true });
-    });
+    server.use("/", HealthCheckHandler());
 
     server.get("*", function (req: Request, res: Response) {
         res.render("index.html");
