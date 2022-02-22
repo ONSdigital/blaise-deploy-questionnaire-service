@@ -42,7 +42,7 @@ function instrumentTableRow(instrument: Instrument) {
             </td>
             <td className={"table__cell "} id={`delete-${instrument.name}`}>
                 {
-                    instrument.active ?
+                    instrument.active && instrument.status?.toLowerCase() != "inactive" ?
                         "Questionnaire is live"
                         :
                         <Link id={`delete-button-${instrument.name}`}
