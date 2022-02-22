@@ -1,20 +1,20 @@
-import express, { NextFunction, Request, RequestHandler, Response, Express } from "express";
+import express, { NextFunction, Request, Response, Express } from "express";
 import path from "path";
 import ejs from "ejs";
 import dotenv from "dotenv";
 import { getEnvironmentVariables } from "./config";
 import createLogger from "./pino";
-import bodyParser from "body-parser";
 import { newLoginHandler, Auth } from "blaise-login-react-server";
-import { checkFile, getBucketItems, getSignedUrl } from "./storage/helpers";
 import { auditLogError, auditLogInfo, getAuditLogs } from "./auditLogging";
 import BlaiseApiClient from "blaise-api-node-client";
-import NewBimsHandler from "./handlers/bimsHandler";
+import newBimsHandler from "./handlers/bimsHandler";
 import { BimsApi } from "./bimsAPI/bimsApi";
-import NewBlaiseHandler from "./handlers/blaiseHandler";
-import NewBusHandler from "./handlers/busHandler";
+import newBlaiseHandler from "./handlers/blaiseHandler";
+import newBusHandler from "./handlers/busHandler";
 import BusApiClient from "bus-api-node-client";
 import HealthCheckHandler from "./handlers/healthCheckHandler";
+import StorageManager from "./storage/storage";
+import newUploadHandler from "./handlers/uploadHandler";
 
 
 if (process.env.NODE_ENV === "production") {
@@ -31,24 +31,24 @@ export function newServer(): Express {
     const config = getEnvironmentVariables();
     const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
     const auth = new Auth(config);
-    const loginHandler = newLoginHandler(auth, blaiseApiClient);
 
     const bimsAPI = new BimsApi(config.BimsApiUrl, config.BimsClientId);
     const busApiClient = new BusApiClient(config.BusApiUrl, config.BusClientId);
+    const storageManager = new StorageManager(config);
 
-    const bimsHandler = NewBimsHandler(bimsAPI, auth);
-    const blaiseHandler = NewBlaiseHandler(blaiseApiClient, config.ServerPark, auth);
-    const busHandler = NewBusHandler(busApiClient, auth);
+    const loginHandler = newLoginHandler(auth, blaiseApiClient);
+    const bimsHandler = newBimsHandler(bimsAPI, auth);
+    const blaiseHandler = newBlaiseHandler(blaiseApiClient, config.ServerPark, auth);
+    const busHandler = newBusHandler(busApiClient, auth);
+    const uploadHandler = newUploadHandler(storageManager, auth);
 
     const server = express();
 
     server.use("/", loginHandler);
-    server.use(bodyParser.json() as RequestHandler);
+    server.use(express.json());
 
     const logger: any = createLogger();
     server.use(logger);
-
-    //axios.defaults.timeout = 10000;
 
     // where ever the react built package is
     const buildFolder = "../../build";
@@ -57,67 +57,6 @@ export function newServer(): Express {
     server.set("views", path.join(__dirname, buildFolder));
     server.engine("html", ejs.renderFile);
     server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static`)));
-
-    server.get("/upload/init", auth.Middleware, function (req: Request, res: Response) {
-        logger(req, res);
-        const { filename } = req.query;
-        if (typeof filename !== "string") {
-            res.status(500).json("No filename provided");
-            return;
-        }
-
-        getSignedUrl(filename)
-            .then((url) => {
-                req.log.info({ url }, `Signed url for ${filename} created in Bucket ${config.BucketName}`);
-                res.status(200).json(url);
-            })
-            .catch((error) => {
-                req.log.error(error, "Failed to obtain Signed Url");
-                res.status(500).json("Failed to obtain Signed Url");
-            });
-    });
-
-    server.get("/bucket/files", auth.Middleware, function (req: Request, res: Response) {
-        logger(req, res);
-        req.log.info("//bucket/files endpoint called");
-        getBucketItems()
-            .then((url) => {
-                req.log.info(`Obtained list of files in Bucket ${config.BucketName}`);
-                res.status(200).json(url);
-            })
-            .catch((error) => {
-                req.log.error(error, "Failed to obtain list of files in bucket");
-                res.status(500).json("Failed to list of files in bucket");
-            });
-    });
-
-
-    server.get("/upload/verify", auth.Middleware, function (req: Request, res: Response) {
-        logger(req, res);
-        const { filename } = req.query;
-        if (typeof filename !== "string") {
-            res.status(500).json("No filename provided");
-            return;
-        }
-
-        checkFile(filename)
-            .then((file) => {
-                if (!file.found) {
-                    req.log.warn(`File ${filename} not found in Bucket ${config.BucketName}`);
-                    auditLogError(req.log, `Failed to install questionnaire ${filename}, file upload failed`);
-                    res.status(404).json("Not found");
-                    return;
-                }
-                req.log.info(`File ${filename} found in Bucket ${config.BucketName}`);
-                auditLogInfo(req.log, `Successfully uploaded questionnaire file ${filename}`);
-                res.status(200).json(file);
-            })
-            .catch((error) => {
-                req.log.error(error, "Failed calling checkFile");
-                auditLogError(req.log, `Failed to install questionnaire ${filename}, unable to verify if file had been uploaded`);
-                res.status(500).json(error);
-            });
-    });
 
     server.get("/api/audit", auth.Middleware, function (req: Request, res: Response) {
         logger(req, res);
@@ -132,7 +71,7 @@ export function newServer(): Express {
             });
     });
 
-    // All Endpoints calling the Blaise API
+    server.use("/", uploadHandler);
     server.use("/", blaiseHandler);
     server.use("/", bimsHandler);
     server.use("/", busHandler);

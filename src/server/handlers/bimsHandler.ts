@@ -3,7 +3,7 @@ import { Auth } from "blaise-login-react-server";
 import { BimsApi, toStartDate } from "../bimsAPI/bimsApi";
 import { auditLogError, auditLogInfo } from "../auditLogging";
 
-export default function NewBimsHandler(bimsApiClient: BimsApi, auth: Auth): Router {
+export default function newBimsHandler(bimsApiClient: BimsApi, auth: Auth): Router {
   const router = express.Router();
 
   const bimsHandler = new BimsHandler(bimsApiClient);
@@ -29,24 +29,23 @@ export class BimsHandler {
     try {
       let startDate = await this.bimsApiClient.getStartDate(instrumentName);
 
-      if (!startDateExists(startDate?.tostartdate) && reqData.tostartdate === "") {
+      if (!startDateExists(startDate) && reqData.tostartdate === "") {
         req.log.info(`No previous TO start date found and none specified for questionnaire ${instrumentName}`);
         return res.status(201).json("");
       }
 
-      if (startDateExists(startDate?.tostartdate) && reqData.tostartdate === "") {
+      if (startDateExists(startDate) && reqData.tostartdate === "") {
         try {
           await this.bimsApiClient.deleteStartDate(instrumentName);
           auditLogInfo(req.log, `Successfully removed TO start date for questionnaire ${instrumentName}`);
-          res.status(201).json();
-          return;
+          return res.status(201).json();
         } catch (error: unknown) {
           auditLogError(req.log, `Failed to remove TO start date for questionnaire ${instrumentName}`);
           throw error;
         }
       }
 
-      startDate = await this.setToStartDate(instrumentName, startDate.tostartdate, reqData.tostartdate, req);
+      startDate = await this.setToStartDate(instrumentName, startDate, reqData.tostartdate, req);
       return res.status(201).json(startDate);
     } catch {
       return res.status(500).json();
@@ -59,7 +58,7 @@ export class BimsHandler {
     try {
       const startDate = await this.bimsApiClient.getStartDate(instrumentName);
 
-      if (!startDateExists(startDate?.tostartdate)) {
+      if (!startDateExists(startDate)) {
         return res.status(204).json();
       }
 
@@ -87,7 +86,7 @@ export class BimsHandler {
     }
   }
 
-  async setToStartDate(instrumentName: string, startDate: string, newStartDate: string, req: Request): Promise<toStartDate> {
+  async setToStartDate(instrumentName: string, startDate: toStartDate | undefined, newStartDate: string, req: Request): Promise<toStartDate> {
     try {
       let configuredToStartDate: toStartDate;
       if (startDateExists(startDate)) {
@@ -104,10 +103,10 @@ export class BimsHandler {
   }
 }
 
-function startDateExists(startDate: string | undefined): boolean {
+function startDateExists(startDate: toStartDate | undefined): boolean {
   if (!startDate) {
     return false;
   }
   const regexp = new RegExp(/^[0-9]{4}-[0-9]{2}-[0-9]{2}(.{1}[0-9]{2}:[0-9]{2}:[0-9]{2})?/);
-  return regexp.test(startDate);
+  return regexp.test(startDate.tostartdate);
 }

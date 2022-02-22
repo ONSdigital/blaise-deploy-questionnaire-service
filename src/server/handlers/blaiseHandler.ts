@@ -74,9 +74,9 @@ export class BlaiseHandler {
 
   async InstallInstrument(req: Request, res: Response): Promise<Response> {
     const { filename } = req.query;
-    const instrumentName = filename.toString().replace(/\.[a-zA-Z]*$/, "");
+    const instrumentName = filename?.toString().replace(/\.[a-zA-Z]*$/, "");
     const installInstrument: InstallInstrument = {
-      instrumentFile: filename.toString()
+      instrumentFile: filename?.toString() || ""
     };
     try {
       const response = await this.blaiseApiClient.installInstrument(this.serverPark, installInstrument);
@@ -149,7 +149,7 @@ export class BlaiseHandler {
       return res.status(200).json(response);
     } catch (error: any) {
       req.log.error(error, `does instrument have mode failed for ${instrumentName}`);
-      res.status(500).json();
+      return res.status(500).json();
     }
   }
 
