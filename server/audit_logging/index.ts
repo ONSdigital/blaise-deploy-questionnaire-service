@@ -4,9 +4,9 @@ import { IncomingMessage } from "http";
 import { getEnvironmentVariables } from "../Config";
 import { AuditLog } from "../../Interfaces";
 
-const { PROJECT_ID } = getEnvironmentVariables();
+const { ProjectId } = getEnvironmentVariables();
 
-const logName = `projects/${PROJECT_ID}/logs/stdout`; // The name of the log to write to
+const logName = `projects/${ProjectId}/logs/stdout`; // The name of the log to write to
 
 export const auditLogInfo = (logger: IncomingMessage["log"], message: string): void => {
     logger.info(`AUDIT_LOG: ${message}`);

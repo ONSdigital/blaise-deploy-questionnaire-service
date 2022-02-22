@@ -6,14 +6,13 @@ import ONSTable, { TableColumns } from "./ONSTable";
 import dateFormatter from "dayjs";
 import { Link } from "react-router-dom";
 import InstrumentStatus from "./InstrumentStatus";
+import { getAllInstruments } from "../utilities/http";
 
-interface Props {
-    instrumentList: Instrument[];
-    loading: boolean;
-    listMessage: string;
+type Props = {
+    setErrored: (errored: boolean) => void
 }
 
-function instrumentTableRow(instrument: Instrument) {
+function instrumentTableRow(instrument: Instrument): ReactElement {
     return (
         <tr className="table__row" key={instrument.name} data-testid={"instrument-table-row"}>
             <td className="table__cell ">
@@ -60,31 +59,55 @@ function instrumentTableRow(instrument: Instrument) {
     );
 }
 
-export const InstrumentList = (props: Props): ReactElement => {
-    const { instrumentList, loading, listMessage } = props;
+export const InstrumentList = ({ setErrored }: Props): ReactElement => {
+    const [instruments, setInstruments] = useState<Instrument[]>([]);
+    const [loaded, setLoaded] = useState<boolean>(false);
 
     const [message, setMessage] = useState<string>("");
-    const [filterValue, setFilterValue] = useState<string>("");
     const [filteredList, setFilteredList] = useState<Instrument[]>([]);
 
-    const filterList = () => {
+    const filterList = (filterValue: string) => {
         // Filter by the search field
-        const newFilteredList = filter(instrumentList, (instrument) => instrument.name.includes(filterValue.toUpperCase()));
+        if (filterValue === "") {
+            setFilteredList(instruments);
+        }
+        const newFilteredList = filter(instruments, (instrument) => instrument.name.includes(filterValue.toUpperCase()));
         // Order by date
         newFilteredList.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
 
         setFilteredList(newFilteredList);
 
-        if (instrumentList.length > 0 && newFilteredList.length === 0) {
+        if (instruments.length > 0 && newFilteredList.length === 0) {
             setMessage(`No questionnaires containing ${filterValue} found`);
-        } else {
-            setMessage(listMessage);
         }
     };
 
+    const getInstrumentsList = async () => {
+        const [success, instrumentList] = await getAllInstruments();
+        console.log(`Response from get all instruments ${(success ? "successful" : "failed")}, data list length ${instrumentList.length}`);
+        console.log(instrumentList);
+
+        if (!success) {
+            setMessage("Unable to load questionnaires");
+            setErrored(true);
+            return [];
+        }
+
+        if (instrumentList.length === 0) {
+            setMessage("No installed questionnaires found.");
+        }
+
+        return instrumentList;
+    };
+
     useEffect(() => {
-        filterList();
-    }, [instrumentList, filterValue, listMessage]);
+        getInstrumentsList().then((instrumentList: Instrument[]) => {
+            setInstruments(instrumentList);
+            setFilteredList(instrumentList);
+            setLoaded(true);
+        });
+    }, []);
+
 
     const tableColumns: TableColumns[] =
         [
@@ -109,47 +132,46 @@ export const InstrumentList = (props: Props): ReactElement => {
         ];
 
 
-    if (loading) {
+    if (!loaded) {
         return <ONSLoadingPanel />;
-    } else {
-        return (
-            <>
-                <div className={"elementToFadeIn"}>
-                    <div className="field">
-                        <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
-                        </label>
-                        <input type="text" id="filter-by-name" className="input input--text input-type__input"
-                            onChange={(e) => setFilterValue(e.target.value)} />
-                    </div>
-
-
-                    <div className="u-mt-s">
-                        {
-                            instrumentList &&
-                            <h3 aria-live="polite">{filteredList.length} results of {instrumentList.length}</h3>
-                        }
-
-                        {
-                            filteredList && filteredList.length > 0 ?
-                                <ONSTable columns={tableColumns}
-                                    tableID={"instrument-table"}
-                                >
-                                    {
-                                        filteredList.map((item: Instrument) => {
-                                            return instrumentTableRow(item);
-                                        })
-                                    }
-                                </ONSTable>
-                                :
-                                <ONSPanel spacious={true}
-                                    status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>
-                        }
-                    </div>
-                </div>
-            </>
-
-        );
     }
+    return (
+        <>
+            <div className={"elementToFadeIn"}>
+                <div className="field">
+                    <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
+                    </label>
+                    <input type="text" id="filter-by-name" className="input input--text input-type__input"
+                        onChange={(e) => filterList(e.target.value)} />
+                </div>
+
+
+                <div className="u-mt-s">
+                    {
+                        instruments &&
+                        <h3 aria-live="polite">{filteredList.length} results of {instruments.length}</h3>
+                    }
+
+                    {
+                        filteredList && filteredList.length > 0 ?
+                            <ONSTable columns={tableColumns}
+                                tableID={"instrument-table"}
+                            >
+                                {
+                                    filteredList.map((item: Instrument) => {
+                                        return instrumentTableRow(item);
+                                    })
+                                }
+                            </ONSTable>
+                            :
+                            <ONSPanel spacious={true}
+                                status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>
+                    }
+                </div>
+            </div>
+        </>
+
+    );
 };
 
 export default InstrumentList;

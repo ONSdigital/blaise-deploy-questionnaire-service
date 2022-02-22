@@ -14,7 +14,12 @@ import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenTheQuestionnair
 import { Mocker } from "../step_definitions/helpers/mocker";
 import { thenIAmPresentedWithAConfirmOverwriteWarning, thenIAmPresentedWithASuccessfullyDeployedBanner, thenIAmPresentedWithTheOptionsToCancelOrOverwrite, thenIAmReturnedToTheLandingPage, thenICanOnlyReturnToTheLandingPage, thenIGetTheQuestionnaireIsLiveWarningBanner, thenTheQuestionnaireIsInstalled } from "../step_definitions/then";
 import { whenIConfirmMySelection, whenIConfirmNotToOverwrite, whenIConfirmToOverwrite, whenISelectToOverwrite } from "../step_definitions/when";
+import {AuthManager} from "blaise-login-react-client";
 
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 

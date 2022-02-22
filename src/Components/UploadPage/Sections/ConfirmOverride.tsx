@@ -24,7 +24,8 @@ function ConfirmOverride({instrumentName}: SelectFilePageProps): ReactElement {
         radioOptions: [
             {id: "yes", label: "Yes, overwrite questionnaire", value: "yes"},
             {id: "cancel", label: "No, do not overwrite questionnaire", value: "cancel"},
-        ]
+        ],
+        props: {}
     };
 
     return (

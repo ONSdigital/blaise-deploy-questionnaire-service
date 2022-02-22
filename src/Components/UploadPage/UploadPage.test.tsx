@@ -19,6 +19,13 @@ import axios from "axios";
 import UploadPage from "./UploadPage";
 import userEvent from "@testing-library/user-event";
 
+import { AuthManager } from "blaise-login-react-client";
+
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
+
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Upload Page", () => {

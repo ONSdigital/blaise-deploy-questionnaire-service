@@ -11,7 +11,12 @@ import { givenAllInstallsWillFail, givenIHaveSelectedTheQuestionnairePacakgeToDe
 import { whenIConfirmMySelection } from "../step_definitions/when";
 import { thenICanRetryAnInstall, thenIGetAnErrorBanner } from "../step_definitions/then";
 import { Mocker } from "../step_definitions/helpers/mocker";
+import {AuthManager} from "blaise-login-react-client";
 
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
 
 // Load in feature details from .feature file
 const feature = loadFeature(

@@ -1,13 +1,23 @@
-import app from "../server"; // Link to your server file
 import supertest, { Response } from "supertest";
 import { expectedInstrumentList } from "./mockObjects";
+import { Auth } from "blaise-login-react-server";
+import BlaiseApiRest from "blaise-api-node-client";
+import {newServer} from "../server";
+
+jest.mock("blaise-login-react-server", () => {
+    const loginReact = jest.requireActual("blaise-login-react-server");
+    return {
+        ...loginReact
+    };
+});
+Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
 
 jest.mock("blaise-api-node-client");
-import BlaiseApiRest from "blaise-api-node-client";
 const { DiagnosticMockObject, InstrumentListMockObject, InstrumentMockObject, InstrumentSettingsMockList } = jest.requireActual("blaise-api-node-client");
 
+
 // Mock Express Server
-const request = supertest(app);
+const request = supertest(newServer());
 
 describe("BlaiseAPI Get health Check from API", () => {
     it("should return a 200 status and a json list of 4 items when API returns a 4 item list", async () => {

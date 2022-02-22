@@ -127,6 +127,34 @@ Object {
                   Deploy Questionnaire Service
                 </div>
               </div>
+              <div
+                class="grid__col col-auto u-flex-no-shrink u-d-no@xxs@m"
+              >
+                <button
+                  class="btn btn--ghost u-d-no@xxs@m btn--exit"
+                >
+                  <span
+                    class="btn__inner"
+                  >
+                    Sign out
+                    <svg
+                      class="svg-icon"
+                      focusable="false"
+                      viewBox="0 0 12 12"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13.85,7.65l-2.5-2.5a.5.5,0,0,0-.71,0,.48.48,0,0,0-.15.36V7h-3a.5.5,0,0,0-.5.5v1a.5.5,0,0,0,.5.5h3v1.5A.49.49,0,0,0,11,11a.48.48,0,0,0,.34-.14l2.51-2.5a.49.49,0,0,0,0-.68Z"
+                        transform="translate(-2 -2)"
+                      />
+                      <path
+                        d="M8.5,14h-6a.5.5,0,0,1-.5-.5V2.5A.5.5,0,0,1,2.5,2h6a.5.5,0,0,1,.5.5V3a.5.5,0,0,1-.5.5h-5v9h5A.5.5,0,0,1,9,13v.5A.5.5,0,0,1,8.5,14Z"
+                        transform="translate(-2 -2)"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -321,32 +349,32 @@ Object {
                       class="table__cell "
                     >
                       <a
-                        aria-label="View more information for questionnaire OPN2004A"
-                        data-testid="info-OPN2004A"
+                        aria-label="View more information for questionnaire OPN2101A"
+                        data-testid="info-OPN2101A"
                         href="/questionnaire"
-                        id="info-OPN2004A"
+                        id="info-OPN2101A"
                       >
-                        OPN2004A
+                        OPN2101A
                       </a>
                     </td>
                     <td
                       class="table__cell "
                     >
-                      April 2020
+                      January 2021
                     </td>
                     <td
                       class="table__cell "
                     >
                       <span
-                        class="status status--error"
+                        class="status status--success"
                       >
-                        Failed
+                        Active
                       </span>
                     </td>
                     <td
                       class="table__cell "
                     >
-                      15/01/2021 15:26
+                      15/01/2021 14:41
                     </td>
                     <td
                       class="table__cell "
@@ -355,13 +383,13 @@ Object {
                     </td>
                     <td
                       class="table__cell "
-                      id="delete-OPN2004A"
+                      id="delete-OPN2101A"
                     >
                       <a
-                        aria-label="Delete questionnaire OPN2004A"
-                        data-testid="delete-OPN2004A"
+                        aria-label="Delete questionnaire OPN2101A"
+                        data-testid="delete-OPN2101A"
                         href="/delete"
-                        id="delete-button-OPN2004A"
+                        id="delete-button-OPN2101A"
                       >
                         Delete
                       </a>
@@ -422,32 +450,32 @@ Object {
                       class="table__cell "
                     >
                       <a
-                        aria-label="View more information for questionnaire OPN2101A"
-                        data-testid="info-OPN2101A"
+                        aria-label="View more information for questionnaire OPN2004A"
+                        data-testid="info-OPN2004A"
                         href="/questionnaire"
-                        id="info-OPN2101A"
+                        id="info-OPN2004A"
                       >
-                        OPN2101A
+                        OPN2004A
                       </a>
                     </td>
                     <td
                       class="table__cell "
                     >
-                      January 2021
+                      April 2020
                     </td>
                     <td
                       class="table__cell "
                     >
                       <span
-                        class="status status--success"
+                        class="status status--error"
                       >
-                        Active
+                        Failed
                       </span>
                     </td>
                     <td
                       class="table__cell "
                     >
-                      15/01/2021 14:41
+                      15/01/2021 15:26
                     </td>
                     <td
                       class="table__cell "
@@ -456,13 +484,13 @@ Object {
                     </td>
                     <td
                       class="table__cell "
-                      id="delete-OPN2101A"
+                      id="delete-OPN2004A"
                     >
                       <a
-                        aria-label="Delete questionnaire OPN2101A"
-                        data-testid="delete-OPN2101A"
+                        aria-label="Delete questionnaire OPN2004A"
+                        data-testid="delete-OPN2004A"
                         href="/delete"
-                        id="delete-button-OPN2101A"
+                        id="delete-button-OPN2004A"
                       >
                         Delete
                       </a>
@@ -627,6 +655,34 @@ Object {
               >
                 Deploy Questionnaire Service
               </div>
+            </div>
+            <div
+              class="grid__col col-auto u-flex-no-shrink u-d-no@xxs@m"
+            >
+              <button
+                class="btn btn--ghost u-d-no@xxs@m btn--exit"
+              >
+                <span
+                  class="btn__inner"
+                >
+                  Sign out
+                  <svg
+                    class="svg-icon"
+                    focusable="false"
+                    viewBox="0 0 12 12"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M13.85,7.65l-2.5-2.5a.5.5,0,0,0-.71,0,.48.48,0,0,0-.15.36V7h-3a.5.5,0,0,0-.5.5v1a.5.5,0,0,0,.5.5h3v1.5A.49.49,0,0,0,11,11a.48.48,0,0,0,.34-.14l2.51-2.5a.49.49,0,0,0,0-.68Z"
+                      transform="translate(-2 -2)"
+                    />
+                    <path
+                      d="M8.5,14h-6a.5.5,0,0,1-.5-.5V2.5A.5.5,0,0,1,2.5,2h6a.5.5,0,0,1,.5.5V3a.5.5,0,0,1-.5.5h-5v9h5A.5.5,0,0,1,9,13v.5A.5.5,0,0,1,8.5,14Z"
+                      transform="translate(-2 -2)"
+                    />
+                  </svg>
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -822,32 +878,32 @@ Object {
                     class="table__cell "
                   >
                     <a
-                      aria-label="View more information for questionnaire OPN2004A"
-                      data-testid="info-OPN2004A"
+                      aria-label="View more information for questionnaire OPN2101A"
+                      data-testid="info-OPN2101A"
                       href="/questionnaire"
-                      id="info-OPN2004A"
+                      id="info-OPN2101A"
                     >
-                      OPN2004A
+                      OPN2101A
                     </a>
                   </td>
                   <td
                     class="table__cell "
                   >
-                    April 2020
+                    January 2021
                   </td>
                   <td
                     class="table__cell "
                   >
                     <span
-                      class="status status--error"
+                      class="status status--success"
                     >
-                      Failed
+                      Active
                     </span>
                   </td>
                   <td
                     class="table__cell "
                   >
-                    15/01/2021 15:26
+                    15/01/2021 14:41
                   </td>
                   <td
                     class="table__cell "
@@ -856,13 +912,13 @@ Object {
                   </td>
                   <td
                     class="table__cell "
-                    id="delete-OPN2004A"
+                    id="delete-OPN2101A"
                   >
                     <a
-                      aria-label="Delete questionnaire OPN2004A"
-                      data-testid="delete-OPN2004A"
+                      aria-label="Delete questionnaire OPN2101A"
+                      data-testid="delete-OPN2101A"
                       href="/delete"
-                      id="delete-button-OPN2004A"
+                      id="delete-button-OPN2101A"
                     >
                       Delete
                     </a>
@@ -923,32 +979,32 @@ Object {
                     class="table__cell "
                   >
                     <a
-                      aria-label="View more information for questionnaire OPN2101A"
-                      data-testid="info-OPN2101A"
+                      aria-label="View more information for questionnaire OPN2004A"
+                      data-testid="info-OPN2004A"
                       href="/questionnaire"
-                      id="info-OPN2101A"
+                      id="info-OPN2004A"
                     >
-                      OPN2101A
+                      OPN2004A
                     </a>
                   </td>
                   <td
                     class="table__cell "
                   >
-                    January 2021
+                    April 2020
                   </td>
                   <td
                     class="table__cell "
                   >
                     <span
-                      class="status status--success"
+                      class="status status--error"
                     >
-                      Active
+                      Failed
                     </span>
                   </td>
                   <td
                     class="table__cell "
                   >
-                    15/01/2021 14:41
+                    15/01/2021 15:26
                   </td>
                   <td
                     class="table__cell "
@@ -957,13 +1013,13 @@ Object {
                   </td>
                   <td
                     class="table__cell "
-                    id="delete-OPN2101A"
+                    id="delete-OPN2004A"
                   >
                     <a
-                      aria-label="Delete questionnaire OPN2101A"
-                      data-testid="delete-OPN2101A"
+                      aria-label="Delete questionnaire OPN2004A"
+                      data-testid="delete-OPN2004A"
                       href="/delete"
-                      id="delete-button-OPN2101A"
+                      id="delete-button-OPN2004A"
                     >
                       Delete
                     </a>
@@ -1156,6 +1212,34 @@ Object {
                   Deploy Questionnaire Service
                 </div>
               </div>
+              <div
+                class="grid__col col-auto u-flex-no-shrink u-d-no@xxs@m"
+              >
+                <button
+                  class="btn btn--ghost u-d-no@xxs@m btn--exit"
+                >
+                  <span
+                    class="btn__inner"
+                  >
+                    Sign out
+                    <svg
+                      class="svg-icon"
+                      focusable="false"
+                      viewBox="0 0 12 12"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13.85,7.65l-2.5-2.5a.5.5,0,0,0-.71,0,.48.48,0,0,0-.15.36V7h-3a.5.5,0,0,0-.5.5v1a.5.5,0,0,0,.5.5h3v1.5A.49.49,0,0,0,11,11a.48.48,0,0,0,.34-.14l2.51-2.5a.49.49,0,0,0,0-.68Z"
+                        transform="translate(-2 -2)"
+                      />
+                      <path
+                        d="M8.5,14h-6a.5.5,0,0,1-.5-.5V2.5A.5.5,0,0,1,2.5,2h6a.5.5,0,0,1,.5.5V3a.5.5,0,0,1-.5.5h-5v9h5A.5.5,0,0,1,9,13v.5A.5.5,0,0,1,8.5,14Z"
+                        transform="translate(-2 -2)"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1350,32 +1434,32 @@ Object {
                       class="table__cell "
                     >
                       <a
-                        aria-label="View more information for questionnaire OPN2004A"
-                        data-testid="info-OPN2004A"
+                        aria-label="View more information for questionnaire OPN2101A"
+                        data-testid="info-OPN2101A"
                         href="/questionnaire"
-                        id="info-OPN2004A"
+                        id="info-OPN2101A"
                       >
-                        OPN2004A
+                        OPN2101A
                       </a>
                     </td>
                     <td
                       class="table__cell "
                     >
-                      April 2020
+                      January 2021
                     </td>
                     <td
                       class="table__cell "
                     >
                       <span
-                        class="status status--error"
+                        class="status status--success"
                       >
-                        Failed
+                        Active
                       </span>
                     </td>
                     <td
                       class="table__cell "
                     >
-                      15/01/2021 15:26
+                      15/01/2021 14:41
                     </td>
                     <td
                       class="table__cell "
@@ -1384,13 +1468,13 @@ Object {
                     </td>
                     <td
                       class="table__cell "
-                      id="delete-OPN2004A"
+                      id="delete-OPN2101A"
                     >
                       <a
-                        aria-label="Delete questionnaire OPN2004A"
-                        data-testid="delete-OPN2004A"
+                        aria-label="Delete questionnaire OPN2101A"
+                        data-testid="delete-OPN2101A"
                         href="/delete"
-                        id="delete-button-OPN2004A"
+                        id="delete-button-OPN2101A"
                       >
                         Delete
                       </a>
@@ -1451,32 +1535,32 @@ Object {
                       class="table__cell "
                     >
                       <a
-                        aria-label="View more information for questionnaire OPN2101A"
-                        data-testid="info-OPN2101A"
+                        aria-label="View more information for questionnaire OPN2004A"
+                        data-testid="info-OPN2004A"
                         href="/questionnaire"
-                        id="info-OPN2101A"
+                        id="info-OPN2004A"
                       >
-                        OPN2101A
+                        OPN2004A
                       </a>
                     </td>
                     <td
                       class="table__cell "
                     >
-                      January 2021
+                      April 2020
                     </td>
                     <td
                       class="table__cell "
                     >
                       <span
-                        class="status status--success"
+                        class="status status--error"
                       >
-                        Active
+                        Failed
                       </span>
                     </td>
                     <td
                       class="table__cell "
                     >
-                      15/01/2021 14:41
+                      15/01/2021 15:26
                     </td>
                     <td
                       class="table__cell "
@@ -1485,13 +1569,13 @@ Object {
                     </td>
                     <td
                       class="table__cell "
-                      id="delete-OPN2101A"
+                      id="delete-OPN2004A"
                     >
                       <a
-                        aria-label="Delete questionnaire OPN2101A"
-                        data-testid="delete-OPN2101A"
+                        aria-label="Delete questionnaire OPN2004A"
+                        data-testid="delete-OPN2004A"
                         href="/delete"
-                        id="delete-button-OPN2101A"
+                        id="delete-button-OPN2004A"
                       >
                         Delete
                       </a>
@@ -1626,6 +1710,34 @@ Object {
               >
                 Deploy Questionnaire Service
               </div>
+            </div>
+            <div
+              class="grid__col col-auto u-flex-no-shrink u-d-no@xxs@m"
+            >
+              <button
+                class="btn btn--ghost u-d-no@xxs@m btn--exit"
+              >
+                <span
+                  class="btn__inner"
+                >
+                  Sign out
+                  <svg
+                    class="svg-icon"
+                    focusable="false"
+                    viewBox="0 0 12 12"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M13.85,7.65l-2.5-2.5a.5.5,0,0,0-.71,0,.48.48,0,0,0-.15.36V7h-3a.5.5,0,0,0-.5.5v1a.5.5,0,0,0,.5.5h3v1.5A.49.49,0,0,0,11,11a.48.48,0,0,0,.34-.14l2.51-2.5a.49.49,0,0,0,0-.68Z"
+                      transform="translate(-2 -2)"
+                    />
+                    <path
+                      d="M8.5,14h-6a.5.5,0,0,1-.5-.5V2.5A.5.5,0,0,1,2.5,2h6a.5.5,0,0,1,.5.5V3a.5.5,0,0,1-.5.5h-5v9h5A.5.5,0,0,1,9,13v.5A.5.5,0,0,1,8.5,14Z"
+                      transform="translate(-2 -2)"
+                    />
+                  </svg>
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -1821,32 +1933,32 @@ Object {
                     class="table__cell "
                   >
                     <a
-                      aria-label="View more information for questionnaire OPN2004A"
-                      data-testid="info-OPN2004A"
+                      aria-label="View more information for questionnaire OPN2101A"
+                      data-testid="info-OPN2101A"
                       href="/questionnaire"
-                      id="info-OPN2004A"
+                      id="info-OPN2101A"
                     >
-                      OPN2004A
+                      OPN2101A
                     </a>
                   </td>
                   <td
                     class="table__cell "
                   >
-                    April 2020
+                    January 2021
                   </td>
                   <td
                     class="table__cell "
                   >
                     <span
-                      class="status status--error"
+                      class="status status--success"
                     >
-                      Failed
+                      Active
                     </span>
                   </td>
                   <td
                     class="table__cell "
                   >
-                    15/01/2021 15:26
+                    15/01/2021 14:41
                   </td>
                   <td
                     class="table__cell "
@@ -1855,13 +1967,13 @@ Object {
                   </td>
                   <td
                     class="table__cell "
-                    id="delete-OPN2004A"
+                    id="delete-OPN2101A"
                   >
                     <a
-                      aria-label="Delete questionnaire OPN2004A"
-                      data-testid="delete-OPN2004A"
+                      aria-label="Delete questionnaire OPN2101A"
+                      data-testid="delete-OPN2101A"
                       href="/delete"
-                      id="delete-button-OPN2004A"
+                      id="delete-button-OPN2101A"
                     >
                       Delete
                     </a>
@@ -1922,32 +2034,32 @@ Object {
                     class="table__cell "
                   >
                     <a
-                      aria-label="View more information for questionnaire OPN2101A"
-                      data-testid="info-OPN2101A"
+                      aria-label="View more information for questionnaire OPN2004A"
+                      data-testid="info-OPN2004A"
                       href="/questionnaire"
-                      id="info-OPN2101A"
+                      id="info-OPN2004A"
                     >
-                      OPN2101A
+                      OPN2004A
                     </a>
                   </td>
                   <td
                     class="table__cell "
                   >
-                    January 2021
+                    April 2020
                   </td>
                   <td
                     class="table__cell "
                   >
                     <span
-                      class="status status--success"
+                      class="status status--error"
                     >
-                      Active
+                      Failed
                     </span>
                   </td>
                   <td
                     class="table__cell "
                   >
-                    15/01/2021 14:41
+                    15/01/2021 15:26
                   </td>
                   <td
                     class="table__cell "
@@ -1956,13 +2068,13 @@ Object {
                   </td>
                   <td
                     class="table__cell "
-                    id="delete-OPN2101A"
+                    id="delete-OPN2004A"
                   >
                     <a
-                      aria-label="Delete questionnaire OPN2101A"
-                      data-testid="delete-OPN2101A"
+                      aria-label="Delete questionnaire OPN2004A"
+                      data-testid="delete-OPN2004A"
                       href="/delete"
-                      id="delete-button-OPN2101A"
+                      id="delete-button-OPN2004A"
                     >
                       Delete
                     </a>

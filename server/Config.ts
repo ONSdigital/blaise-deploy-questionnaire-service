@@ -1,12 +1,15 @@
-export interface EnvironmentVariables {
-    BLAISE_API_URL: string;
-    PROJECT_ID: string;
-    BUCKET_NAME: string;
-    SERVER_PARK: string;
-    BIMS_API_URL: string;
-    BIMS_CLIENT_ID: string;
-    BUS_API_URL: string;
-    BUS_CLIENT_ID: string;
+import crypto from "crypto";
+import { AuthConfig } from "blaise-login-react-server";
+
+export interface EnvironmentVariables extends AuthConfig {
+    BlaiseApiUrl: string;
+    ProjectId: string;
+    BucketName: string;
+    ServerPark: string;
+    BimsApiUrl: string;
+    BimsClientId: string;
+    BusApiUrl: string;
+    BusClientId: string;
 }
 
 export function getEnvironmentVariables(): EnvironmentVariables {
@@ -18,8 +21,14 @@ export function getEnvironmentVariables(): EnvironmentVariables {
         BIMS_API_URL,
         BIMS_CLIENT_ID,
         BUS_API_URL,
-        BUS_CLIENT_ID
+        BUS_CLIENT_ID,
+        SESSION_TIMEOUT,
     } = process.env;
+
+    const {
+        SESSION_SECRET,
+        ROLES
+    } = process.env
 
     if (BLAISE_API_URL === undefined) {
         console.error("BLAISE_API_URL environment variable has not been set");
@@ -60,14 +69,44 @@ export function getEnvironmentVariables(): EnvironmentVariables {
         console.error("BUS_CLIENT_ID environment variable has not been set");
         BUS_CLIENT_ID = "ENV_VAR_NOT_SET";
     }
+
+    if (SESSION_TIMEOUT === undefined || SESSION_TIMEOUT === "_SESSION_TIMEOUT") {
+        console.error("SESSION_TIMEOUT environment variable has not been set");
+        SESSION_TIMEOUT = "12h";
+    }
+
     return {
-        BLAISE_API_URL,
-        PROJECT_ID,
-        BUCKET_NAME,
-        SERVER_PARK,
-        BIMS_API_URL,
-        BIMS_CLIENT_ID,
-        BUS_API_URL,
-        BUS_CLIENT_ID
+        BlaiseApiUrl: fixURL(BLAISE_API_URL),
+        ProjectId: PROJECT_ID,
+        BucketName: BUCKET_NAME,
+        ServerPark: SERVER_PARK,
+        BimsApiUrl: BIMS_API_URL,
+        BimsClientId: BIMS_CLIENT_ID,
+        BusApiUrl: BUS_API_URL,
+        BusClientId: BUS_CLIENT_ID,
+        SessionTimeout: SESSION_TIMEOUT,
+        SessionSecret: sessionSecret(SESSION_SECRET),
+        Roles: loadRoles(ROLES)
     };
+}
+
+function fixURL(url: string): string {
+    if (url.startsWith("http")) {
+        return url;
+    }
+    return `http://${url}`;
+}
+
+function loadRoles(roles: string | undefined): string[] {
+    if (!roles || roles === "" || roles === "_ROLES") {
+        return ["DST", "BDSS", "TO Manager"];
+    }
+    return roles.split(",");
+}
+
+function sessionSecret(secret: string | undefined): string {
+    if (!secret || secret === "" || secret === "_SESSION_SECRET") {
+        return crypto.randomBytes(20).toString("hex");
+    }
+    return secret;
 }

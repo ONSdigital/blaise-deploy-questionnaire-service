@@ -1,24 +1,17 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Redirect, useHistory, useLocation } from "react-router-dom";
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 
 interface Location {
-    state: any;
+    questionnaireName: string
+    status: string
 }
 
-interface Props {
-    getList: () => Promise<void>;
-}
-
-function DeploymentSummary({ getList }: Props): ReactElement {
+function DeploymentSummary(): ReactElement {
     const [redirect, setRedirect] = useState<boolean>(false);
-    const location = useLocation();
+    const location = useLocation<Location>();
     const history = useHistory();
-    const { questionnaireName, status } = (location as Location).state || { questionnaireName: "/", status: "" };
-
-    useEffect(() => {
-        getList().then(() => console.log("getInstrumentList complete"));
-    }, []);
+    const { questionnaireName, status } = location.state || { questionnaireName: "/" };
 
     return (
         <>

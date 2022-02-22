@@ -12,6 +12,12 @@ import { createMemoryHistory } from "history";
 import { Router } from "react-router";
 import { instrumentList } from "./features/step_definitions/helpers/API_Mock_Objects";
 import _ from "lodash";
+import { AuthManager } from "blaise-login-react-client";
+
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
 
 const mockIsProduction = jest.fn();
 

@@ -9,6 +9,12 @@ import { whenIClickGenerateCases, whenIGoToTheQuestionnaireDetailsPage } from ".
 import { thenAGenerateUacButtonIsAvailable, thenAGenerateUacButtonIsNotAvailable, thenICanSeeThatThatTheQuestionnaireHasCases, thenIReceiveAUACError, thenUACsAreGenerated } from "../step_definitions/then";
 import { Instrument } from "../../../Interfaces";
 import { Mocker } from "../step_definitions/helpers/mocker";
+import {AuthManager} from "blaise-login-react-client";
+
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
 
 const feature = loadFeature(
     "./src/features/generate_uacs_for_cases.feature",

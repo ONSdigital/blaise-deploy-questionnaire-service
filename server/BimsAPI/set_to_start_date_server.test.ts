@@ -1,12 +1,24 @@
-import app from "../server";
+import {newServer} from "../server";
 import supertest, {Response} from "supertest";
 
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {defineFeature, loadFeature} from "jest-cucumber";
+import {Auth} from "blaise-login-react-server";
+
+jest.mock("blaise-login-react-server", () => {
+    const loginReact = jest.requireActual("blaise-login-react-server");
+    return {
+        ...loginReact
+    };
+});
+Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
+
+jest.mock("blaise-api-node-client");
+const { DiagnosticMockObject, InstrumentListMockObject, InstrumentMockObject, InstrumentSettingsMockList } = jest.requireActual("blaise-api-node-client");
 
 // Mock Express Server
-const request = supertest(app);
+const request = supertest(newServer());
 // Create Mock adapter for Axios requests
 const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 const jsonHeaders = {"content-type": "application/json"};
