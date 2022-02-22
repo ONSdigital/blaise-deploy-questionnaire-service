@@ -6,7 +6,6 @@ import ErroneousWarning from "./ErroneousWarning";
 import { removeToStartDateAndDeleteInstrument } from "../../utilities/processes";
 import Breadcrumbs from "../Breadcrumbs";
 
-
 interface Location {
     instrument: Instrument
 }
@@ -46,6 +45,7 @@ function DeleteConfirmation({ setStatus }: Props): ReactElement {
             {
                 redirect && <Redirect
                     to={{
+<<<<<<< HEAD
                         pathname: "/"
                     }} />
             }
