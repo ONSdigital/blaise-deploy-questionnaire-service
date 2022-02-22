@@ -31,8 +31,7 @@ export class BimsHandler {
 
       if (!startDateExists(startDate?.tostartdate) && reqData.tostartdate === "") {
         req.log.info(`No previous TO start date found and none specified for questionnaire ${instrumentName}`);
-        res.status(201).json("");
-        return;
+        return res.status(201).json("");
       }
 
       if (startDateExists(startDate?.tostartdate) && reqData.tostartdate === "") {
@@ -48,9 +47,9 @@ export class BimsHandler {
       }
 
       startDate = await this.setToStartDate(instrumentName, startDate.tostartdate, reqData.tostartdate, req);
-      res.status(201).json(startDate);
+      return res.status(201).json(startDate);
     } catch {
-      res.status(500).json();
+      return res.status(500).json();
     }
   }
 
@@ -61,17 +60,16 @@ export class BimsHandler {
       const startDate = await this.bimsApiClient.getStartDate(instrumentName);
 
       if (!startDateExists(startDate?.tostartdate)) {
-        res.status(204).json();
-        return;
+        return res.status(204).json();
       }
 
       await this.bimsApiClient.deleteStartDate(instrumentName);
 
       auditLogInfo(req.log, `Successfully removed TO start date for questionnaire ${instrumentName}`);
-      res.status(204).json();
+      return res.status(204).json();
     } catch {
       auditLogError(req.log, `Failed to remove TO start date for questionnaire ${instrumentName}`);
-      res.status(500).json();
+      return res.status(500).json();
     }
   }
 
@@ -83,9 +81,9 @@ export class BimsHandler {
       if (!startDate) {
         return res.status(404).json();
       }
-      res.status(200).json(await this.bimsApiClient.getStartDate(instrumentName));
+      return res.status(200).json(await this.bimsApiClient.getStartDate(instrumentName));
     } catch {
-      res.status(500).json({});
+      return res.status(500).json({});
     }
   }
 
@@ -107,8 +105,6 @@ export class BimsHandler {
 }
 
 function startDateExists(startDate: string | undefined): boolean {
-  console.log("WTF");
-  console.log(startDate);
   if (!startDate) {
     return false;
   }

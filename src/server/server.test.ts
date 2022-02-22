@@ -1,12 +1,12 @@
 /**
  * @jest-environment node
  */
-import {newServer} from "./server";
+import { newServer } from "./server";
 import supertest from "supertest";
 
 jest.mock("blaise-api-node-client");
 import BlaiseApiRest from "blaise-api-node-client";
-import {Auth} from "blaise-login-react-server";
+import { Auth } from "blaise-login-react-server";
 
 jest.mock("blaise-login-react-server", () => {
     const loginReact = jest.requireActual("blaise-login-react-server");
@@ -15,6 +15,9 @@ jest.mock("blaise-login-react-server", () => {
     };
 });
 Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
+
+const mockGetInstrumentsWithCatiData = jest.fn();
+BlaiseApiRest.prototype.getInstrumentsWithCatiData = mockGetInstrumentsWithCatiData;
 
 
 const request = supertest(newServer());
@@ -32,14 +35,8 @@ describe("Test Heath Endpoint", () => {
 
 describe("Given the API returns 2 instruments", () => {
     beforeAll(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        BlaiseApiRest.mockImplementation(() => {
-            return {
-                getInstrumentsWithCatiData: () => {
-                    return Promise.resolve(apiInstrumentList);
-                },
-            };
+        mockGetInstrumentsWithCatiData.mockImplementation(() => {
+            return Promise.resolve(apiInstrumentList);
         });
     });
 
@@ -95,14 +92,8 @@ describe("Given the API returns 2 instruments", () => {
 
 describe("Get list of instruments endpoint fails", () => {
     beforeAll(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        BlaiseApiRest.mockImplementation(() => {
-            return {
-                getInstrumentsWithCatiData: () => {
-                    return Promise.reject("Network error");
-                },
-            };
+        mockGetInstrumentsWithCatiData.mockImplementation(() => {
+            return Promise.reject("Network error");
         });
     });
 

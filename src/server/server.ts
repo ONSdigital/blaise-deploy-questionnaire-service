@@ -7,12 +7,12 @@ import createLogger from "./pino";
 import bodyParser from "body-parser";
 import { newLoginHandler, Auth } from "blaise-login-react-server";
 import { checkFile, getBucketItems, getSignedUrl } from "./storage/helpers";
-import BlaiseAPIRouter from "./blaiseAPI";
 import { auditLogError, auditLogInfo, getAuditLogs } from "./auditLogging";
 import BusAPIRouter from "./busAPI";
 import BlaiseApiClient from "blaise-api-node-client";
 import NewBimsHandler from "./handlers/bimsHandler";
 import { BimsApi } from "./bimsAPI/bimsApi";
+import NewBlaiseHandler from "./handlers/blaiseHandler";
 
 
 if (process.env.NODE_ENV === "production") {
@@ -33,6 +33,7 @@ export function newServer(): Express {
 
     const bimsAPI = new BimsApi(config.BimsApiUrl, config.BimsClientId);
     const bimsHandler = NewBimsHandler(bimsAPI, auth);
+    const blaiseHandler = NewBlaiseHandler(blaiseApiClient, config.ServerPark, auth);
 
     const server = express();
 
@@ -127,7 +128,7 @@ export function newServer(): Express {
     });
 
     // All Endpoints calling the Blaise API
-    server.use("/", BlaiseAPIRouter(config, logger, auth));
+    server.use("/", blaiseHandler);
     server.use("/", bimsHandler);
     server.use("/", BusAPIRouter(config, logger, auth));
 
