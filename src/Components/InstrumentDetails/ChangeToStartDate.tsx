@@ -1,9 +1,9 @@
-import React, {ReactElement} from "react";
-import {ONSButton} from "blaise-design-system-react-components";
-import {setTOStartDate} from "../../utilities/http";
+import React, { ReactElement } from "react";
+import { ONSButton } from "blaise-design-system-react-components";
+import { setTOStartDate } from "../../utilities/http";
 import dateFormatter from "dayjs";
-import {useHistory, useLocation} from "react-router-dom";
-import {Form, Formik} from "formik";
+import { useHistory, useLocation } from "react-router-dom";
+import { Form, Formik } from "formik";
 import AskToSetTOStartDate from "../UploadPage/Sections/AskToSetTOStartDate";
 import Breadcrumbs from "../Breadcrumbs";
 
@@ -12,14 +12,11 @@ interface LocationState {
     instrumentName: string;
 }
 
-interface Location {
-    state: LocationState;
-}
 
 function ChangeToStartDate(): ReactElement {
     const history = useHistory();
-    const location = useLocation();
-    const {toStartDate, instrumentName} = (location as Location).state || {toStartDate: null, instrumentName: null};
+    const location = useLocation<LocationState>();
+    const { toStartDate, instrumentName } = location.state || { toStartDate: null, instrumentName: null };
 
     async function _handleSubmit(values: any, actions: any) {
         if (values.askToSetTOStartDate === "no") {
@@ -50,9 +47,9 @@ function ChangeToStartDate(): ReactElement {
         <>
             <Breadcrumbs BreadcrumbList={
                 [
-                    {link: "/", title: "Home"}, {link: "/questionnaire", title: instrumentName}
+                    { link: "/", title: "Home" }, { link: "/questionnaire", title: instrumentName }
                 ]
-            }/>
+            } />
 
             <main id="main-content" className="page__main u-mt-no">
                 <Formik
@@ -61,21 +58,21 @@ function ChangeToStartDate(): ReactElement {
                     initialValues={initialValues}
                     onSubmit={_handleSubmit}
                 >
-                    {({isSubmitting}) => (
+                    {({ isSubmitting }) => (
                         <Form id={"formID"}>
-                            <AskToSetTOStartDate instrumentName={instrumentName}/>
+                            <AskToSetTOStartDate instrumentName={instrumentName} />
 
                             <div className="btn-group u-mt-m">
                                 <ONSButton
                                     id={"continue-deploy-button"}
                                     submit={true}
                                     loading={isSubmitting}
-                                    primary={true} label={"Continue"}/>
+                                    primary={true} label={"Continue"} />
                                 {!isSubmitting && (
                                     <ONSButton
                                         id={"cancel-deploy-button"}
                                         onClick={() => history.goBack()}
-                                        primary={false} label={"Cancel"}/>
+                                        primary={false} label={"Cancel"} />
                                 )}
                             </div>
 
@@ -88,4 +85,3 @@ function ChangeToStartDate(): ReactElement {
 }
 
 export default ChangeToStartDate;
-

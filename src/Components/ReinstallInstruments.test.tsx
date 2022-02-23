@@ -28,16 +28,28 @@ const instrumentList: Instrument[] = [{
 const bucketInstrument: string[] = ["OPN2101A.bpkg", "OPN2004A.bpkg", "LMS2101_BK2.bpkg"];
 
 describe("Reinstall instruments list", () => {
+    const mock_server_responses = (url: string) => {
+        if (url.includes("/api/instruments")) {
+            return Promise.resolve({
+                status: 200,
+                json: () => Promise.resolve(instrumentList),
+            });
+        }
+        return Promise.resolve({
+            status: 200,
+            json: () => Promise.resolve(bucketInstrument),
+        });
+    };
 
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, bucketInstrument);
+        mock_fetch_requests(mock_server_responses);
     });
 
     it("view Blaise Status page matches Snapshot", async () => {
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false} />
+                <ReinstallInstruments />
             </Router>
         );
 
@@ -54,7 +66,7 @@ describe("Reinstall instruments list", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false} />
+                <ReinstallInstruments />
             </Router>
         );
 
@@ -73,10 +85,25 @@ describe("Reinstall instruments list", () => {
 
     it("should render a message if all items in bucket are already installed", async () => {
         const instrumentList: any[] = [{ name: "OPN2101A" }, { name: "OPN2004A" }, { name: "LMS2101_BK2" }];
+
+        const mock_server_responses = (url: string) => {
+            if (url.includes("/api/instruments")) {
+                return Promise.resolve({
+                    status: 200,
+                    json: () => Promise.resolve(instrumentList),
+                });
+            }
+            return Promise.resolve({
+                status: 200,
+                json: () => Promise.resolve(bucketInstrument),
+            });
+        };
+        mock_fetch_requests(mock_server_responses);
+
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false} />
+                <ReinstallInstruments />
             </Router>
         );
 
@@ -129,7 +156,7 @@ describe("Reinstall an instruments", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false} />
+                <ReinstallInstruments />
             </Router>
         );
 
@@ -154,10 +181,25 @@ describe("Reinstall an instruments", () => {
 
     it("should render a message if all items in bucket are already installed", async () => {
         const instrumentList: any[] = [{ name: "OPN2101A" }, { name: "OPN2004A" }, { name: "LMS2101_BK2" }];
+
+        const mock_server_responses = (url: string) => {
+            if (url.includes("/api/instruments")) {
+                return Promise.resolve({
+                    status: 200,
+                    json: () => Promise.resolve(instrumentList),
+                });
+            }
+            return Promise.resolve({
+                status: 200,
+                json: () => Promise.resolve(bucketInstrument),
+            });
+        };
+        mock_fetch_requests(mock_server_responses);
+
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false} />
+                <ReinstallInstruments />
             </Router>
         );
 
@@ -187,7 +229,7 @@ describe("Given the API returns a 500 status", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false} />
+                <ReinstallInstruments />
             </Router>
         );
 
@@ -215,7 +257,7 @@ describe("Given the API returns an empty list", () => {
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ReinstallInstruments installedInstruments={instrumentList} listLoading={false} />
+                <ReinstallInstruments />
             </Router>
         );
 

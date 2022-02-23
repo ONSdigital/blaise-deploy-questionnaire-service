@@ -13,6 +13,12 @@ import { whenIChooseToDeployAnyway, whenIChooseToCancel, whenIConfirmMySelection
 import { thenAWarningIsDisplayedWithTheMessage, thenIAmPresentedWithASuccessfullyDeployedBanner, thenIAmReturnedToTheLandingPage, thenIGetTheOptionToContinueOrCancel, thenTheQuestionnaireDataIsDeleted, thenTheQuestionnaireIsActivated, thenTheQuestionnaireIsDeactivated, thenTheQuestionnaireIsInstalled } from "../step_definitions/then";
 import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenInstallsSuccessfully, givenNoQuestionnairesAreInstalled, givenTheQuestionnaireHasModes, givenTheQuestionnareHasTheSettings } from "../step_definitions/given";
 import { Mocker } from "../step_definitions/helpers/mocker";
+import {AuthManager} from "blaise-login-react-client";
+
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 

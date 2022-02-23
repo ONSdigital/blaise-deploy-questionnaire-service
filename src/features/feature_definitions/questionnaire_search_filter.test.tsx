@@ -12,6 +12,12 @@ import { whenILoadTheHomepage, whenISearchForAQuestionnaire } from "../step_defi
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires, thenIAmPresentedWithQuestionnaireNotFound } from "../step_definitions/then";
 import { Instrument } from "../../../Interfaces";
 import { Mocker } from "../step_definitions/helpers/mocker";
+import {AuthManager} from "blaise-login-react-client";
+
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
 
 // Load in feature details from .feature file
 const feature = loadFeature(

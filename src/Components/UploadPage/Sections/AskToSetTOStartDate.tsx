@@ -38,7 +38,8 @@ function AskToSetTOStartDate({instrumentName}: SelectFilePageProps): ReactElemen
                     description: "Please specify date"
                 }
             },
-        ]
+        ],
+        props: {}
     };
 
     return (

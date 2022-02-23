@@ -2,14 +2,15 @@ import { EnvironmentVariables } from "../Config";
 import express, { Request, Response, Router } from "express";
 import { auditLogError, auditLogInfo } from "../audit_logging";
 import { BimsAPI } from "./BimsAPI";
+import {Auth} from "blaise-login-react-server";
 
-export default function BimsAPIRouter(environmentVariables: EnvironmentVariables, logger: any): Router {
-    const { BIMS_API_URL, BIMS_CLIENT_ID }: EnvironmentVariables = environmentVariables;
+export default function BimsAPIRouter(environmentVariables: EnvironmentVariables, logger: any, auth: Auth): Router {
+    const { BimsApiUrl, BimsClientId }: EnvironmentVariables = environmentVariables;
     const router = express.Router();
 
-    const bimsAPI = new BimsAPI(BIMS_API_URL, BIMS_CLIENT_ID, logger);
+    const bimsAPI = new BimsAPI(BimsApiUrl, BimsClientId, logger);
 
-    router.post("/api/tostartdate/:instrumentName", async function (req: Request, res: Response) {
+    router.post("/api/tostartdate/:instrumentName", auth.Middleware, async function (req: Request, res: Response) {
         const { instrumentName } = req.params;
         const data = req.body;
         let contentType: string;
@@ -60,7 +61,7 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
         res.status(status).json(result);
     });
 
-    router.delete("/api/tostartdate/:instrumentName", async function (req: Request, res: Response) {
+    router.delete("/api/tostartdate/:instrumentName", auth.Middleware, async function (req: Request, res: Response) {
         const { instrumentName } = req.params;
 
         let [status, result] = await bimsAPI.getStartDate(req, res, instrumentName);
@@ -81,7 +82,7 @@ export default function BimsAPIRouter(environmentVariables: EnvironmentVariables
         }
     });
 
-    router.get("/api/tostartdate/:instrumentName", async function (req: Request, res: Response) {
+    router.get("/api/tostartdate/:instrumentName", auth.Middleware, async function (req: Request, res: Response) {
         const { instrumentName } = req.params;
 
         const [status, result, contentType] = await bimsAPI.getStartDate(req, res, instrumentName);

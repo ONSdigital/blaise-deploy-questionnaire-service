@@ -10,6 +10,12 @@ import { Router } from "react-router";
 import App from "../../App";
 import { act } from "react-dom/test-utils";
 import React from "react";
+import { AuthManager } from "blaise-login-react-client";
+
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
 
 
 describe("Instrument Details page ", () => {
