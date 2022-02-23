@@ -1,13 +1,23 @@
 /**
  * @jest-environment node
  */
-import app from "./server"; // Link to your server file
+import {newServer} from "./server";
 import supertest from "supertest";
 
 jest.mock("blaise-api-node-client");
 import BlaiseApiRest from "blaise-api-node-client";
+import {Auth} from "blaise-login-react-server";
 
-const request = supertest(app);
+jest.mock("blaise-login-react-server", () => {
+    const loginReact = jest.requireActual("blaise-login-react-server");
+    return {
+        ...loginReact
+    };
+});
+Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
+
+
+const request = supertest(newServer());
 
 describe("Test Heath Endpoint", () => {
     it("should return a 200 status and json message", async () => {

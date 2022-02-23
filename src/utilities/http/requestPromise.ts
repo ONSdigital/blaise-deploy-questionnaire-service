@@ -1,12 +1,16 @@
+import {AuthManager} from "blaise-login-react-client";
+
 type PromiseResponse = [number, any];
 
 function requestPromiseJson(method: string, url: string, body: any = null): Promise<PromiseResponse> {
+    const authManager = new AuthManager();
     return new Promise((resolve: (object: PromiseResponse) => void, reject: (error: string) => void) => {
         fetch(url, {
             "method": method,
             "body": (body !== null ? JSON.stringify(body) : null),
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                ...authManager.authHeader()
             },
         })
             .then(async response => {
@@ -27,10 +31,12 @@ function requestPromiseJson(method: string, url: string, body: any = null): Prom
 type PromiseResponseList = [boolean, []];
 
 function requestPromiseJsonList(method: string, url: string, body: any = null): Promise<PromiseResponseList> {
+    const authManager = new AuthManager();
     return new Promise((resolve: (object: PromiseResponseList) => void) => {
         fetch(url, {
             "method": method,
-            "body": body
+            "body": body,
+            headers: authManager.authHeader()
         })
             .then(async response => {
                 response.json().then(
@@ -59,12 +65,14 @@ function requestPromiseJsonList(method: string, url: string, body: any = null): 
 }
 
 function requestPromiseNoResponse(method: string, url: string, body: any = null): Promise<number> {
+    const authManager = new AuthManager();
     return new Promise((resolve: (object: number) => void, reject: (error: string) => void) => {
         fetch(url, {
             "method": method,
             "body": (body !== null ? JSON.stringify(body) : null),
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                ...authManager.authHeader()
             },
         })
             .then(async response => {

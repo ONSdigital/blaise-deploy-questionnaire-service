@@ -150,7 +150,7 @@ function UploadPage(): ReactElement {
                     history.push("/");
                     return;
                 }
-                if (foundInstrument?.active) {
+                if (foundInstrument?.active && foundInstrument.status?.toLowerCase() !== "inactive") {
                     actions.setSubmitting(false);
                     history.push(`/upload/survey-live/${instrumentName}`);
                 }

@@ -40,7 +40,8 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
         className: "input input--text input-type__input input--upload",
         onChange: (e: ChangeEvent<HTMLInputElement>) => handleFileChange(e.target.files),
         accept: ".bpkg",
-        disabled: isSubmitting
+        disabled: isSubmitting,
+        props: {}
     };
 
     return (

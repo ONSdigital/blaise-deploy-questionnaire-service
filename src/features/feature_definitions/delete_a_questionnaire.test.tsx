@@ -9,6 +9,8 @@ import "@testing-library/jest-dom";
 import { Instrument } from "../../../Interfaces";
 
 import {
+    givenTheQuestionnaireHasActiveSurveyDays,
+    givenTheQuestionnaireIsInactive,
     givenTheQuestionnaireIsInstalled,
     givenTheQuestionnaireIsLive
 } from "../step_definitions/given";
@@ -23,14 +25,24 @@ import {
     thenTheQuestionnaireDataIsDeleted,
     thenTheQuestionnaireDataIsNotDeleted
 } from "../step_definitions/then";
-import { whenICancelDelete, whenIConfirmDelete, whenIDeleteAQuestionnaire, whenILoadTheHomepage } from "../step_definitions/when";
-import { Mocker } from "../step_definitions/helpers/mocker";
+import {
+    whenICancelDelete,
+    whenIConfirmDelete,
+    whenIDeleteAQuestionnaire,
+    whenILoadTheHomepage
+} from "../step_definitions/when";
+import {Mocker} from "../step_definitions/helpers/mocker";
+import {AuthManager} from "blaise-login-react-client";
 
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
 
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/delete_a_questionnaire.feature",
-    { tagFilter: "not @server and not @integration" }
+    {tagFilter: "not @server and not @integration"}
 );
 
 
@@ -49,7 +61,17 @@ defineFeature(feature, test => {
         cleanup();
     });
 
-    test("Delete questionnaire not available from the list, when survey is live", ({ given, when, then, }) => {
+    test("Delete an 'inactive' survey at any time", ({given, when, then,}) => {
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInactive(given, instrumentList, mocker);
+        givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
+        whenILoadTheHomepage(when);
+        whenIDeleteAQuestionnaire(when);
+        whenIConfirmDelete(when);
+        thenTheQuestionnaireDataIsDeleted(then);
+    });
+
+    test("Delete questionnaire not available from the list, when survey is live", ({given, when, then,}) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenTheQuestionnaireIsLive(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
@@ -58,14 +80,14 @@ defineFeature(feature, test => {
     });
 
 
-    test("Select to delete a questionnaire from the list, when survey is NOT live", ({ given, when, then }) => {
+    test("Select to delete a questionnaire from the list, when survey is NOT live", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);
         thenIAmPresentedWithAWarning(then);
     });
 
-    test("Confirm deletion", ({ given, when, then }) => {
+    test("Confirm deletion", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);
@@ -74,7 +96,7 @@ defineFeature(feature, test => {
         thenIGetTheDeleteSuccessBanner(then);
     });
 
-    test("Cancel deletion", ({ given, when, then }) => {
+    test("Cancel deletion", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);

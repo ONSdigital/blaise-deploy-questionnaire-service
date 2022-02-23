@@ -13,7 +13,12 @@ import { givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous, givenTheQ
 import { whenIConfirmDelete, whenIDeleteAQuestionnaire, whenILoadTheHomepage } from "../step_definitions/when";
 import { thenIAmPresentedWithACannotDeleteWarning, thenIAmPresentedWithAUnableDeleteWarning, thenIAmUnableToDeleteTheQuestionnaire, thenICanReturnToTheQuestionnaireList } from "../step_definitions/then";
 import { Mocker } from "../step_definitions/helpers/mocker";
+import {AuthManager} from "blaise-login-react-client";
 
+jest.mock("blaise-login-react-client");
+AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
+    return Promise.resolve(true);
+});
 
 // Load in feature details from .feature file
 const feature = loadFeature(

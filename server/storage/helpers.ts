@@ -3,8 +3,8 @@ import {getEnvironmentVariables} from "../Config";
 import {storage} from "./config";
 import {GetSignedUrlConfig} from "@google-cloud/storage";
 
-const {BUCKET_NAME} = getEnvironmentVariables();
-const bucket = storage.bucket(BUCKET_NAME);
+const {BucketName} = getEnvironmentVariables();
+const bucket = storage.bucket(BucketName);
 
 const getSignedUrl = (filename: string): Promise<string> => new Promise((resolve, reject) => {
     async function getSignedUrl() {
