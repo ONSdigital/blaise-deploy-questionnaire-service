@@ -11,6 +11,7 @@ Feature: delete a questionnaire
     And I select a link to delete the 'TST2101X' questionnaire
     And I confirm that I want to proceed
     Then the questionnaire and data is deleted from Blaise for 'TST2101X'
+    And I am presented a success banner on the launch page for deleting 'TST2101X'
 
   Scenario: Delete questionnaire not available from the list, when survey is live
     Given the questionnaire 'TST2101B' is installed

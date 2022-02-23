@@ -1,16 +1,14 @@
-import {deleteInstrument, deleteTOStartDate} from "../http";
+import { deleteInstrument, deleteTOStartDate } from "../http";
 
 type removeToStartDateAndDeleteInstrumentResponse = [boolean, string];
 
 
 async function removeToStartDateAndDeleteInstrument(instrumentName: string): Promise<removeToStartDateAndDeleteInstrumentResponse> {
-
     const toStartDateDeleted = await deleteTOStartDate(instrumentName);
     if (!toStartDateDeleted) {
-        console.error("Failed to delete TO start data");
-        return Promise.resolve([false, "Failed to delete TO start data"]);
+        console.error("Failed to delete TO start date");
+        return Promise.resolve([false, "Failed to delete TO start date"]);
     }
-
 
     const [deleted] = await deleteInstrument(instrumentName);
     if (!deleted) {
@@ -21,4 +19,4 @@ async function removeToStartDateAndDeleteInstrument(instrumentName: string): Pro
     return Promise.resolve([true, "Deleted successfully"]);
 }
 
-export {removeToStartDateAndDeleteInstrument};
+export { removeToStartDateAndDeleteInstrument };

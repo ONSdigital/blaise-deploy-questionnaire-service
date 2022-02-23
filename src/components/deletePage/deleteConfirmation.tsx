@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import { Redirect, useLocation } from "react-router-dom";
+import { Redirect, useHistory, useLocation } from "react-router-dom";
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 import { Instrument } from "blaise-api-node-client";
 import ErroneousWarning from "./erroneousWarning";
@@ -18,8 +18,8 @@ type Props = {
 function DeleteConfirmation({ setStatus }: Props): ReactElement {
     const [message, setMessage] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
-    const [redirect, setRedirect] = useState<boolean>(false);
     const location = useLocation<Location>();
+    const history = useHistory();
     const { instrument } = location.state || { instrument: "" };
 
     async function confirmDelete() {
@@ -34,21 +34,24 @@ function DeleteConfirmation({ setStatus }: Props): ReactElement {
 
         setStatus(`Questionnaire: ${instrument.name} Successfully deleted`);
         setLoading(false);
-        setRedirect(true);
+        history.push("/");
     }
 
     async function cancelDelete() {
-        setRedirect(true);
+        history.push("/");
+    }
+
+    function ErrorMessage(): ReactElement {
+        if (message !== "") {
+            return <ONSPanel status="error">
+                {message}
+            </ONSPanel>;
+        }
+        return <></>;
     }
 
     return (
         <>
-            {
-                redirect && <Redirect
-                    to={{
-                        pathname: "/"
-                    }} />
-            }
             <Breadcrumbs BreadcrumbList={
                 [
                     { link: "/", title: "Home" },
@@ -59,7 +62,7 @@ function DeleteConfirmation({ setStatus }: Props): ReactElement {
                 {
                     (
                         instrument.status === "Failed" ?
-                            <ErroneousWarning instrumentName={instrument.name} setRedirect={setRedirect} />
+                            <ErroneousWarning instrumentName={instrument.name} />
                             :
                             <>
                                 <h1 className="u-mb-l">
@@ -70,9 +73,7 @@ function DeleteConfirmation({ setStatus }: Props): ReactElement {
                                     The questionnaire and all associated respondent data will be deleted
                                 </ONSPanel>
 
-                                <p>
-                                    {message}
-                                </p>
+                                <ErrorMessage />
 
                                 <form>
                                     <br />

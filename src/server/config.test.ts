@@ -7,14 +7,14 @@ describe("Config setup", () => {
     });
 
     it("should return the correct environment variables", () => {
-        const { BlaiseApiUrl, ProjectId, BucketName, BimsApiUrl, BimsClientId } = getConfigFromEnv();
+        const config = getConfigFromEnv();
 
 
-        expect(BlaiseApiUrl).toBe("http://mock-api");
-        expect(ProjectId).toBe("a-project-name");
-        expect(BucketName).toBe("unique-bucket");
-        expect(BimsApiUrl).toBe("bims-mock-api");
-        expect(BimsClientId).toBe("mock-client-id");
+        expect(config.BlaiseApiUrl).toBe("http://mock-api");
+        expect(config.ProjectId).toBe("a-project-name");
+        expect(config.BucketName).toBe("unique-bucket");
+        expect(config.BimsApiUrl).toBe("bims-mock-api");
+        expect(config.BimsClientId).toBe("mock-client-id");
     });
 
     it("should return variables with default string if variables are not defined", () => {
@@ -24,12 +24,13 @@ describe("Config setup", () => {
             BUCKET_NAME: undefined
         });
 
-        const { BlaiseApiUrl, ProjectId, BucketName, BimsApiUrl, BimsClientId } = getConfigFromEnv();
+        const config = getConfigFromEnv();
 
-        expect(BlaiseApiUrl).toBe("http://ENV_VAR_NOT_SET");
-        expect(ProjectId).toBe("ENV_VAR_NOT_SET");
-        expect(BucketName).toBe("ENV_VAR_NOT_SET");
-        expect(BimsApiUrl).toBe("ENV_VAR_NOT_SET");
-        expect(BimsClientId).toBe("ENV_VAR_NOT_SET");
+        expect(config.BlaiseApiUrl).toBe("http://ENV_VAR_NOT_SET");
+        expect(config.ProjectId).toBe("ENV_VAR_NOT_SET");
+        expect(config.BucketName).toBe("ENV_VAR_NOT_SET");
+        expect(config.BimsApiUrl).toBe("ENV_VAR_NOT_SET");
+        expect(config.BimsClientId).toBe("ENV_VAR_NOT_SET");
+        expect(config.Roles).toStrictEqual(["DST", "BDSS", "Researcher"]);
     });
 });

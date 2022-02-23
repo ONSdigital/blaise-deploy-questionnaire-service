@@ -1,12 +1,14 @@
-import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
-import React, {ReactElement} from "react";
+import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
+import React, { ReactElement } from "react";
+import { useHistory } from "react-router-dom";
 
 interface Props {
     instrumentName: string
-    setRedirect: (string: boolean) => void
 }
 
-function ErroneousWarning({instrumentName, setRedirect}: Props): ReactElement {
+function ErroneousWarning({ instrumentName }: Props): ReactElement {
+    const history = useHistory();
+
     return (
         <>
             <ONSPanel status="error">
@@ -14,10 +16,10 @@ function ErroneousWarning({instrumentName, setRedirect}: Props): ReactElement {
                 <p>An error has occurred with the questionnaire, in this state it cannot be deleted.</p>
                 <p>You can <a href="https://ons.service-now.com/">report this issue</a> to Service Desk.</p>
             </ONSPanel>
-            <br/>
+            <br />
             <ONSButton label="Return to table of questionnaires"
-                       primary={true}
-                       onClick={() => setRedirect(true)}/>
+                primary={true}
+                onClick={() => history.push("/")} />
         </>
     );
 }

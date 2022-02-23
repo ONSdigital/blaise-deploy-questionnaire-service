@@ -69,6 +69,7 @@ defineFeature(feature, test => {
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);
         thenTheQuestionnaireDataIsDeleted(then);
+        thenIGetTheDeleteSuccessBanner(then);
     });
 
     test("Delete questionnaire not available from the list, when survey is live", ({ given, when, then, }) => {

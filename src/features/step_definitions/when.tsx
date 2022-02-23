@@ -79,7 +79,7 @@ export const whenIDeleteAQuestionnaire = (when: DefineStepFunction): void => {
 
 export const whenIConfirmDelete = (when: DefineStepFunction): void => {
   when("I confirm that I want to proceed", async () => {
-    userEvent.click(screen.getByTestId(/confirm-delete/i));
+    userEvent.click(screen.getByTestId(/confirm-delete-button/i));
     await act(async () => {
       await flushPromises();
     });
@@ -88,7 +88,7 @@ export const whenIConfirmDelete = (when: DefineStepFunction): void => {
 
 export const whenICancelDelete = (when: DefineStepFunction): void => {
   when("I click cancel", async () => {
-    userEvent.click(screen.getByTestId(/cancel-delete/i));
+    userEvent.click(screen.getByTestId(/cancel-delete-button/i));
     await act(async () => {
       await flushPromises();
     });

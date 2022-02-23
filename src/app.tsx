@@ -51,14 +51,14 @@ function App(): ReactElement {
         });
     }, []);
 
-    function loginPage(): ReactElement {
+    function LoginPage(): ReactElement {
         if (loaded && loggedIn) {
             return <></>;
         }
         return <LoginForm authManager={authManager} setLoggedIn={setLoggedIn} />;
     }
 
-    function loading(): ReactElement {
+    function Loading(): ReactElement {
         if (loaded) {
             return <></>;
         }
@@ -77,7 +77,7 @@ function App(): ReactElement {
         return <></>;
     }
 
-    function appContent(): ReactElement {
+    function AppContent(): ReactElement {
         if (loaded && loggedIn) {
             return (
                 <DefaultErrorBoundary>
@@ -145,9 +145,9 @@ function App(): ReactElement {
             <Header title={"Deploy Questionnaire Service"} signOutButton={loggedIn} noSave={true} signOutFunction={signOut} />
             <NavigationLinks />
             <div style={divStyle} className="page__container container">
-                {loading()}
-                {loginPage()}
-                {appContent()}
+                <Loading />
+                <LoginPage />
+                <AppContent />
 
             </div>
             <Footer />
