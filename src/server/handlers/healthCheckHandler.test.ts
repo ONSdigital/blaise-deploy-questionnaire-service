@@ -1,8 +1,10 @@
 import { newServer } from "../server";
 import supertest from "supertest";
+import { getConfigFromEnv } from "../config";
 
 
-const request = supertest(newServer());
+const config = getConfigFromEnv();
+const request = supertest(newServer(config));
 
 describe("Test Health Endpoint", () => {
     it("should return a 200 status and json message", async () => {

@@ -1,8 +1,9 @@
+import { getConfigFromEnv } from "./config";
 import { newServer } from "./server";
 
-const port: string = process.env.PORT || "5000";
-const app = newServer();
+const config = getConfigFromEnv();
+const app = newServer(config);
 
-app.listen(port);
+app.listen(config.Port);
 
-console.log("App is listening on port " + port);
+console.log("App is listening on port " + config.Port);

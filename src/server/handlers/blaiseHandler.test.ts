@@ -3,6 +3,7 @@ import { expectedInstrumentList } from "./mockObjects";
 import { Auth } from "blaise-login-react-server";
 import BlaiseApiRest from "blaise-api-node-client";
 import { newServer } from "../server";
+import { getConfigFromEnv } from "../config";
 
 jest.mock("blaise-login-react-server", () => {
   const loginReact = jest.requireActual("blaise-login-react-server");
@@ -39,7 +40,8 @@ BlaiseApiRest.prototype.getInstrumentSettings = mockGetInstrumentSettings;
 
 
 // Mock Express Server
-const request = supertest(newServer());
+const config = getConfigFromEnv();
+const request = supertest(newServer(config));
 
 describe("BlaiseAPI Get health Check from API", () => {
   it("should return a 200 status and a json list of 4 items when API returns a 4 item list", async () => {

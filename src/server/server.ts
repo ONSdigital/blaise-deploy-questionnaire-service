@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response, Express } from "express";
 import path from "path";
 import ejs from "ejs";
 import dotenv from "dotenv";
-import { getConfigFromEnv } from "./config";
+import { Config } from "./config";
 import { newLoginHandler, Auth } from "blaise-login-react-server";
 import BlaiseApiClient from "blaise-api-node-client";
 import newBimsHandler from "./handlers/bimsHandler";
@@ -30,8 +30,7 @@ if (process.env.NODE_ENV === "production") {
     process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, "../keys.json");
 }
 
-export function newServer(): Express {
-    const config = getConfigFromEnv();
+export function newServer(config: Config): Express {
     const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
     const auth = new Auth(config);
 

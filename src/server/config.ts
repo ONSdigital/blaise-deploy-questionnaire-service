@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { AuthConfig } from "blaise-login-react-server";
 
 export interface Config extends AuthConfig {
+    Port: number;
     BlaiseApiUrl: string;
     ProjectId: string;
     BucketName: string;
@@ -14,6 +15,7 @@ export interface Config extends AuthConfig {
 
 export function getConfigFromEnv(): Config {
     let {
+        PORT,
         PROJECT_ID,
         BUCKET_NAME,
         BLAISE_API_URL,
@@ -75,7 +77,13 @@ export function getConfigFromEnv(): Config {
         SESSION_TIMEOUT = "12h";
     }
 
+    let port = 5000;
+    if (PORT !== undefined) {
+        port = +PORT;
+    }
+
     return {
+        Port: port,
         BlaiseApiUrl: fixURL(BLAISE_API_URL),
         ProjectId: PROJECT_ID,
         BucketName: BUCKET_NAME,

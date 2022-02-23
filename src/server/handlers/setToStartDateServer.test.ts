@@ -5,6 +5,7 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { Auth } from "blaise-login-react-server";
+import { getConfigFromEnv } from "../config";
 
 jest.mock("blaise-login-react-server", () => {
     const loginReact = jest.requireActual("blaise-login-react-server");
@@ -23,7 +24,8 @@ const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 const jsonHeaders = { "content-type": "application/json" };
 
 // Mock Express Server
-const request = supertest(newServer());
+const config = getConfigFromEnv();
+const request = supertest(newServer(config));
 
 const feature = loadFeature("./src/features/set_telephone_operations_start_date.feature", { tagFilter: "@server" });
 

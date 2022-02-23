@@ -7,6 +7,7 @@ import supertest from "supertest";
 jest.mock("blaise-api-node-client");
 import BlaiseApiRest from "blaise-api-node-client";
 import { Auth } from "blaise-login-react-server";
+import { getConfigFromEnv } from "./config";
 
 jest.mock("blaise-login-react-server", () => {
     const loginReact = jest.requireActual("blaise-login-react-server");
@@ -19,8 +20,8 @@ Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
 const mockGetInstrumentsWithCatiData = jest.fn();
 BlaiseApiRest.prototype.getInstrumentsWithCatiData = mockGetInstrumentsWithCatiData;
 
-
-const request = supertest(newServer());
+const config = getConfigFromEnv();
+const request = supertest(newServer(config));
 
 describe("Test Heath Endpoint", () => {
     it("should return a 200 status and json message", async () => {
