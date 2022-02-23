@@ -26,5 +26,5 @@ export const expectedInstrumentList: Instrument[] = [{
     dataRecordCount: 0,
     hasData: false,
     active: false,
-    fieldPeriod: "Field period unknown"
+    fieldPeriod: "January 2021"
 }];

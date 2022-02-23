@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import { Auth } from "blaise-login-react-server";
 import BlaiseApiClient, { InstallInstrument, Instrument } from "blaise-api-node-client";
-import { field_period_to_text } from "../functions";
+import { fieldPeriodToText } from "../functions";
 import AuditLogger from "../auditLogging/logger";
 
 export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serverPark: string, auth: Auth, auditLogger: AuditLogger): Router {
@@ -159,7 +159,7 @@ export class BlaiseHandler {
     try {
       const instruments: Instrument[] = await this.blaiseApiClient.getInstrumentsWithCatiData(this.serverPark);
       instruments.forEach(function (instrument: Instrument) {
-        instrument.fieldPeriod = field_period_to_text(instrument.name);
+        instrument.fieldPeriod = fieldPeriodToText(instrument.name);
       });
 
       req.log.info({ instruments }, `${instruments.length} instrument/s currently installed.`);

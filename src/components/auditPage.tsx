@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import dateFormatter from "dayjs";
 import { ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import { getAuditLogs } from "../utilities/http";
-import { AuditLog } from "../../interfaces";
+import { AuditLog } from "../server/auditLogging/logger";
 import ONSTable, { TableColumns } from "./onsTable";
 import Breadcrumbs from "./breadcrumbs";
 

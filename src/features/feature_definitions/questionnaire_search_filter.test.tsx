@@ -56,10 +56,45 @@ defineFeature(feature, test => {
 
     test("Questionnaire not found", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
 
         whenILoadTheHomepage(when);
         whenISearchForAQuestionnaire(when);
 
         thenIAmPresentedWithQuestionnaireNotFound(then);
+    });
+
+
+    test("DST questionnaires do not show up by default", ({ given, when, then }) => {
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+
+        whenILoadTheHomepage(when);
+        whenISearchForAQuestionnaire(when);
+
+        thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
+    });
+
+
+    test("I can search for DST questinnaires", ({ given, when, then }) => {
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+
+        whenILoadTheHomepage(when);
+        whenISearchForAQuestionnaire(when);
+
+        thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
     });
 });

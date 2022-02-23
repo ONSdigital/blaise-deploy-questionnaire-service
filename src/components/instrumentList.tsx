@@ -7,12 +7,25 @@ import dateFormatter from "dayjs";
 import { Link } from "react-router-dom";
 import InstrumentStatus from "./instrumentStatus";
 import { getAllInstruments } from "../utilities/http";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVial } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
     setErrored: (errored: boolean) => void
 }
 
 function instrumentTableRow(instrument: Instrument): ReactElement {
+    function instrumentName(instrument: Instrument) {
+        if (instrument.name.toUpperCase().startsWith("DST")) {
+            return (
+                <>
+                    <>{instrument.name}</> <FontAwesomeIcon icon={faVial} />
+                </>
+            );
+        }
+        return <>{instrument.name}</>;
+    }
+
     return (
         <tr className="table__row" key={instrument.name} data-testid={"instrument-table-row"}>
             <td className="table__cell ">
@@ -24,7 +37,7 @@ function instrumentTableRow(instrument: Instrument): ReactElement {
                         pathname: "/questionnaire",
                         state: { instrument: instrument }
                     }}>
-                    {instrument.name}
+                    {instrumentName(instrument)}
                 </Link>
             </td>
             <td className="table__cell ">
@@ -61,17 +74,26 @@ function instrumentTableRow(instrument: Instrument): ReactElement {
 
 export const InstrumentList = ({ setErrored }: Props): ReactElement => {
     const [instruments, setInstruments] = useState<Instrument[]>([]);
+    const [realInstrumentCount, setRealInstrumentCount] = useState<number>(0);
     const [loaded, setLoaded] = useState<boolean>(false);
 
     const [message, setMessage] = useState<string>("");
     const [filteredList, setFilteredList] = useState<Instrument[]>([]);
 
+    function filterTestInstruments(instrumentsToFilter: Instrument[], filterValue: string): Instrument[] {
+        if (filterValue.toUpperCase() !== "DST") {
+            instrumentsToFilter = filter(instrumentsToFilter, (instrument) => !instrument.name.toUpperCase().startsWith("DST"));
+            setRealInstrumentCount(instrumentsToFilter.length);
+        }
+        return instrumentsToFilter;
+    }
+
     const filterList = (filterValue: string) => {
         // Filter by the search field
         if (filterValue === "") {
-            setFilteredList(instruments);
+            setFilteredList(filterTestInstruments(instruments, filterValue));
         }
-        const newFilteredList = filter(instruments, (instrument) => instrument.name.includes(filterValue.toUpperCase()));
+        const newFilteredList = filter(filterTestInstruments(instruments, filterValue), (instrument) => instrument.name.includes(filterValue.toUpperCase()));
         // Order by date
         newFilteredList.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
 
@@ -85,7 +107,6 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
     const getInstrumentsList = async () => {
         const [success, instrumentList] = await getAllInstruments();
         console.log(`Response from get all instruments ${(success ? "successful" : "failed")}, data list length ${instrumentList.length}`);
-        console.log(instrumentList);
 
         if (!success) {
             setMessage("Unable to load questionnaires");
@@ -103,10 +124,26 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
     useEffect(() => {
         getInstrumentsList().then((instrumentList: Instrument[]) => {
             setInstruments(instrumentList);
-            setFilteredList(instrumentList);
+            setFilteredList(filterTestInstruments(instrumentList, ""));
             setLoaded(true);
         });
     }, []);
+
+    function QuestionnaireTable(): ReactElement {
+        if (filteredList && filteredList.length > 0) {
+            return <ONSTable columns={tableColumns}
+                tableID={"instrument-table"}
+            >
+                {
+                    filteredList.map((item: Instrument) => {
+                        return instrumentTableRow(item);
+                    })
+                }
+            </ONSTable>;
+        }
+        return <ONSPanel spacious={true}
+            status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>;
+    }
 
 
     const tableColumns: TableColumns[] =
@@ -149,24 +186,10 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
                 <div className="u-mt-s">
                     {
                         instruments &&
-                        <h3 aria-live="polite">{filteredList.length} results of {instruments.length}</h3>
+                        <h3 aria-live="polite">{filteredList.length} results of {realInstrumentCount}</h3>
                     }
 
-                    {
-                        filteredList && filteredList.length > 0 ?
-                            <ONSTable columns={tableColumns}
-                                tableID={"instrument-table"}
-                            >
-                                {
-                                    filteredList.map((item: Instrument) => {
-                                        return instrumentTableRow(item);
-                                    })
-                                }
-                            </ONSTable>
-                            :
-                            <ONSPanel spacious={true}
-                                status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>
-                    }
+                    <QuestionnaireTable />
                 </div>
             </div>
         </>

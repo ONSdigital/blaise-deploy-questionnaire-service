@@ -156,7 +156,7 @@ export const thenIAmPresentedWithAListOfDeployedQuestionnaires = (then: DefineSt
         expect(rowData.firstChild).not.toBeNull();
         return;
       }
-      expect(rowData.firstChild.textContent).toEqual(row.Questionnaire);
+      expect(rowData.firstChild.textContent?.trim()).toEqual(row.Questionnaire);
     });
   });
 };

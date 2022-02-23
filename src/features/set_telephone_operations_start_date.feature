@@ -6,14 +6,14 @@ Feature: DQS - Set a TO Start Date during deployment
   #  Scenario 1:
   Scenario: Present TO Start Date option
     Given no questionnaires are installed
-    And I have selected the questionnaire package for 'DST2109A' to deploy
+    And I have selected the questionnaire package for 'TST2109A' to deploy
     When I confirm my selection
     Then I am presented with an option to specify a TO Start Date
 
   #  Scenario 2:
   Scenario: Enter TO Start Date
     Given no questionnaires are installed
-    And I have selected the questionnaire package for 'DST2109B' to deploy
+    And I have selected the questionnaire package for 'TST2109B' to deploy
     When I confirm my selection
     And I specify the TO start date of '05/06/2030'
     And I select the continue button
@@ -22,7 +22,7 @@ Feature: DQS - Set a TO Start Date during deployment
   #  Scenario 3:
   Scenario: Do not enter TO Start Date
     Given no questionnaires are installed
-    And I have selected the questionnaire package for 'DST2109C' to deploy
+    And I have selected the questionnaire package for 'TST2109C' to deploy
     When I confirm my selection
     And I select to not provide a TO Start Date
     Then the questionnaire is deployed without a TO Start Date
@@ -32,8 +32,8 @@ Feature: DQS - Set a TO Start Date during deployment
   #  Scenario 4:
   Scenario: Setting the TO Start Date fails during deployment
     Given no questionnaires are installed
-    And setting a TO start date for 'DST2109D' fails
-    And I have selected the questionnaire package for 'DST2109D' to deploy
+    And setting a TO start date for 'TST2109D' fails
+    And I have selected the questionnaire package for 'TST2109D' to deploy
     When I confirm my selection
     And I specify the TO start date of '05/06/2030'
     And I select the continue button
