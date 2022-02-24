@@ -1,4 +1,5 @@
-import {sendInstallRequest, validateUploadIsComplete} from "../http";
+import { installInstrument } from "../../client/instruments";
+import { validateUploadIsComplete } from "../../client/upload";
 
 type verifyAndInstallResponse = [boolean, string];
 
@@ -10,7 +11,7 @@ async function verifyAndInstallInstrument(filename: string): Promise<verifyAndIn
         return Promise.resolve([false, "Failed to validate if file has been uploaded successfully"]);
     }
 
-    const installSuccess = await sendInstallRequest(filename);
+    const installSuccess = await installInstrument(filename);
 
     if (!installSuccess) {
         console.error("Failed to install the questionnaire");
@@ -21,4 +22,4 @@ async function verifyAndInstallInstrument(filename: string): Promise<verifyAndIn
 
 }
 
-export {verifyAndInstallInstrument};
+export { verifyAndInstallInstrument };

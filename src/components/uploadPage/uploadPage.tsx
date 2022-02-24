@@ -11,7 +11,7 @@ import InvalidSettings from "./sections/invalidSettings";
 import { uploadAndInstallFile, validateSelectedInstrumentExists, checkInstrumentSettings } from "./uploadProcess";
 import { roundUp } from "../../utilities";
 import Breadcrumbs from "../breadcrumbs";
-import { activateInstrument, deleteInstrument } from "../../utilities/http";
+import { activateInstrument, deleteInstrument } from "../../client/instruments";
 import { InstrumentSettings, Instrument } from "blaise-api-node-client";
 
 enum Step {

@@ -1,15 +1,15 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
-import {getTOStartDate} from "../../../utilities/http";
+import React, { ReactElement, useEffect, useState } from "react";
+import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
+import { getTOStartDate } from "../../../client/toStartDate";
 import dateFormatter from "dayjs";
 import TimeAgo from "react-timeago";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface Props {
     instrumentName: string
 }
 
-function ViewToStartDate({instrumentName}: Props): ReactElement {
+function ViewToStartDate({ instrumentName }: Props): ReactElement {
     const [loading, setLoading] = useState<boolean>(true);
     const [errored, setErrored] = useState<boolean>(false);
     const [toStartDate, setToStartDate] = useState<boolean>(false);
@@ -21,27 +21,25 @@ function ViewToStartDate({instrumentName}: Props): ReactElement {
 
     async function getTOStartDateForInstrument() {
         setLoading(true);
-        const [liveDateSet, toStartDate] = await getTOStartDate(instrumentName);
+        try {
+            const toStartDate = await getTOStartDate(instrumentName);
+            if (toStartDate == "") {
+                setToStartDate(false);
+                return;
+            }
 
-        if (liveDateSet === null) {
+            setToStartDate(true);
+            setToStartDateValue(toStartDate);
+        } catch {
             setErrored(true);
-            return;
         }
-
-        if (!liveDateSet) {
-            setToStartDate(false);
-            return;
-        }
-
-        setToStartDate(true);
-        setToStartDateValue(toStartDate);
     }
 
 
     if (loading) {
         return (
             <div className="u-mb-m" aria-busy="true">
-                <ONSLoadingPanel message={"Getting Telephone Operations start date"}/>
+                <ONSLoadingPanel message={"Getting Telephone Operations start date"} />
             </div>
         );
     }
@@ -61,52 +59,52 @@ function ViewToStartDate({instrumentName}: Props): ReactElement {
                     <h2 className="summary__group-title">Telephone Operations start date</h2>
                     <table className="summary__items">
                         <thead className="u-vh">
-                        <tr>
-                            <th>Questionnaire detail</th>
-                            <th>result</th>
-                            <th>Action</th>
-                        </tr>
+                            <tr>
+                                <th>Questionnaire detail</th>
+                                <th>result</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                <div className="summary__item--text">
-                                    Telephone Operations start date
-                                </div>
-                            </td>
-                            <td className="summary__values">
+                            <tr className="summary__row summary__row--has-values">
+                                <td className="summary__item-title">
+                                    <div className="summary__item--text">
+                                        Telephone Operations start date
+                                    </div>
+                                </td>
+                                <td className="summary__values">
 
-                                {
-                                    toStartDate ?
-                                        <>
-                                            {dateFormatter(toStartDateValue).format("DD/MM/YYYY")} ({<TimeAgo
-                                            live={false} date={toStartDateValue}/>})
-                                        </>
+                                    {
+                                        toStartDate ?
+                                            <>
+                                                {dateFormatter(toStartDateValue).format("DD/MM/YYYY")} ({<TimeAgo
+                                                    live={false} date={toStartDateValue} />})
+                                            </>
 
-                                        :
-                                        "No start date specified, using survey days"
-                                }
-                            </td>
-                            <td className="summary__actions">
-                                {
-                                    toStartDate ?
-                                        <Link to={{
-                                            pathname: "/questionnaire/start-date",
-                                            state: {instrumentName: instrumentName, toStartDate: toStartDateValue}
-                                        }} className="summary__button" aria-label={`Change or delete start date for questionnaire ${instrumentName}`}>
-                                            Change or delete start date
-                                        </Link>
-                                        :
-                                        <Link to={{
-                                            pathname: "/questionnaire/start-date",
-                                            state: {instrumentName: instrumentName}
-                                        }} className="summary__button" aria-label={`Add a start date for questionnaire ${instrumentName}`}>
-                                            Add start date
-                                        </Link>
+                                            :
+                                            "No start date specified, using survey days"
+                                    }
+                                </td>
+                                <td className="summary__actions">
+                                    {
+                                        toStartDate ?
+                                            <Link to={{
+                                                pathname: "/questionnaire/start-date",
+                                                state: { instrumentName: instrumentName, toStartDate: toStartDateValue }
+                                            }} className="summary__button" aria-label={`Change or delete start date for questionnaire ${instrumentName}`}>
+                                                Change or delete start date
+                                            </Link>
+                                            :
+                                            <Link to={{
+                                                pathname: "/questionnaire/start-date",
+                                                state: { instrumentName: instrumentName }
+                                            }} className="summary__button" aria-label={`Add a start date for questionnaire ${instrumentName}`}>
+                                                Add start date
+                                            </Link>
 
-                                }
-                            </td>
-                        </tr>
+                                    }
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

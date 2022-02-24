@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { ONSButton } from "blaise-design-system-react-components";
-import { setTOStartDate } from "../../utilities/http";
+import { setTOStartDate } from "../../client/toStartDate";
 import dateFormatter from "dayjs";
 import { useHistory, useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";

@@ -11,7 +11,7 @@ import { DefineStepFunction } from "jest-cucumber";
 import { Router } from "react-router";
 import { createMemoryHistory } from "history";
 import App from "../../app";
-import { format_date_string, navigatePastSettingTOStartDateAndStartDeployment } from "./helpers/functions";
+import { formatDateString, navigatePastSettingTOStartDateAndStartDeployment } from "./helpers/functions";
 
 export const whenIConfirmMySelection = (when: DefineStepFunction): void => {
   when("I confirm my selection", async () => {
@@ -122,7 +122,7 @@ export const whenIHaveSelectedToAddAToStartDate = (when: DefineStepFunction): vo
 export const whenISpecifyAToStartDateOf = (when: DefineStepFunction): void => {
   when(/I specify the TO start date of '(.*)'/, async (toStartDate: string) => {
     userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
-    userEvent.type(screen.getByLabelText(/Please specify date/i), format_date_string(toStartDate));
+    userEvent.type(screen.getByLabelText(/Please specify date/i), formatDateString(toStartDate));
     await act(async () => {
       await flushPromises();
     });

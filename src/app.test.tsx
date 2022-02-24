@@ -6,13 +6,17 @@ import React from "react";
 import { render, waitFor, cleanup, screen } from "@testing-library/react";
 import App from "./app";
 import "@testing-library/jest-dom";
-import flushPromises, { mock_server_request_Return_JSON } from "./tests/utils";
+import flushPromises from "./tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
 import { instrumentList } from "./features/step_definitions/helpers/apiMockObjects";
 import _ from "lodash";
 import { AuthManager } from "blaise-login-react-client";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+
+const mock = new MockAdapter(axios);
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -31,7 +35,7 @@ describe("React homepage", () => {
     });
 
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, instrumentList);
+        mock.onGet("/api/instruments").reply(200, instrumentList);
     });
 
     it("view instrument page matches Snapshot in production", async () => {
@@ -99,14 +103,14 @@ describe("React homepage", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 
 describe("Given the API returns malformed json", () => {
-
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, { text: "Hello" });
+        mock.onGet("/api/instruments").reply(500, { text: "Hello" });
     });
 
     it("it should render with the error message displayed", async () => {
@@ -130,13 +134,13 @@ describe("Given the API returns malformed json", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 describe("Given the API returns an empty list", () => {
-
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, []);
+        mock.onGet("/api/instruments").reply(200, []);
     });
 
     it("it should render with a message to inform the user in the list", async () => {
@@ -160,5 +164,6 @@ describe("Given the API returns an empty list", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });

@@ -2,12 +2,15 @@
  * @jest-environment jsdom
  */
 
-import navigateToDeployPageAndSelectFile, { mock_fetch_requests } from "../../../features/step_definitions/helpers/functions";
+import navigateToDeployPageAndSelectFile from "../../../features/step_definitions/helpers/functions";
 import { act, cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
 import { instrumentList } from "../../../features/step_definitions/helpers/apiMockObjects";
 import flushPromises from "../../../tests/utils";
 import userEvent from "@testing-library/user-event";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
+const mock = new MockAdapter(axios);
 
 import { AuthManager } from "blaise-login-react-client";
 
@@ -16,30 +19,11 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
     return Promise.resolve(true);
 });
 
-const mock_server_responses = (url: string) => {
-    console.log(url);
-    if (url.includes("/api/instruments")) {
-        return Promise.resolve({
-            status: 404,
-            json: () => Promise.resolve(),
-        });
-    } else if (url.includes("/upload/verify")) {
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
-        });
-    } else {
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve(instrumentList),
-        });
-    }
-};
-
 describe("Ask to set TO start date page", () => {
 
     beforeEach(() => {
-        mock_fetch_requests(mock_server_responses);
+        mock.onGet("/api/instruments/OPN2004A").reply(404);
+        mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "OPN2004A.bpkg" });
     });
 
     it("should come up with a error panel if you don't pick an option", async () => {
@@ -111,5 +95,6 @@ describe("Ask to set TO start date page", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });

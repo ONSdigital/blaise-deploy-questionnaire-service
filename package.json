@@ -82,6 +82,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
+    "jest-silent-reporter": "^0.5.0",
     "pino-pretty": "^7.0.0",
     "supertest": "^6.1.6"
   },

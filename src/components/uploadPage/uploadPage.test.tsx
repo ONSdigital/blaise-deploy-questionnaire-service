@@ -5,13 +5,12 @@
 import React from "react";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import flushPromises, { mock_server_request_Return_JSON } from "../../tests/utils";
+import flushPromises from "../../tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
 import { instrumentList } from "../../features/step_definitions/helpers/apiMockObjects";
 import navigateToDeployPageAndSelectFile, {
-    mock_fetch_requests,
     navigatePastSettingTOStartDateAndStartDeployment
 } from "../../features/step_definitions/helpers/functions";
 import MockAdapter from "axios-mock-adapter";
@@ -31,7 +30,7 @@ const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 describe("Upload Page", () => {
 
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, instrumentList);
+        mock.onGet("/api/instruments").reply(200, instrumentList);
     });
 
     it("select file page matches Snapshot", async () => {
@@ -105,37 +104,20 @@ describe("Upload Page", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
-const mock_server_responses = (url: string, config: any) => {
-    console.log(url);
-    if ((url.includes("/api/instruments")) && (config !== undefined && config.method === "POST")) {
-        return Promise.resolve({
-            status: 404,
-            json: () => Promise.resolve(),
-        });
-    } else if (url.includes("/upload/verify")) {
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
-        });
-    } else {
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve(instrumentList),
-        });
-    }
-};
-
-
 describe("Given the file fails to upload", () => {
-
     beforeEach(() => {
-        mock.onPut("^/upload").reply(500,
+        mock.onPut("https://storage.googleapis.com/upload").reply(500,
             {},
         );
-        mock_fetch_requests(mock_server_responses);
+        mock.onGet("/upload/init?filename=OPN2004A.bpkg").reply(200, "https://storage.googleapis.com/upload");
+        mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "OPN2004A.bpkg" });
+        mock.onGet("/api/instruments").reply(200, instrumentList);
+        mock.onGet("/api/instruments/OPN2004A").reply(404);
+        mock.onPost("/api/tostartdate/OPN2004A").reply(201);
     });
 
     it("it should redirect to the summary page with an error", async () => {
@@ -154,5 +136,6 @@ describe("Given the file fails to upload", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });

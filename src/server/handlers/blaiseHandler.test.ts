@@ -158,7 +158,7 @@ describe("BlaiseAPI Post to API to install a specific instrument", () => {
       return Promise.resolve(true);
     });
 
-    const response: Response = await request.post("/api/install?filename=OPN2101A");
+    const response: Response = await request.post("/api/install").send({ filename: "OPN2101A" });
 
     expect(response.status).toEqual(201);
   });
@@ -168,7 +168,7 @@ describe("BlaiseAPI Post to API to install a specific instrument", () => {
       return Promise.reject();
     });
 
-    const response: Response = await request.post("/api/install?filename=OPN2101A");
+    const response: Response = await request.post("/api/install").send({ filename: "OPN2101A" });
 
     expect(response.status).toEqual(500);
   });

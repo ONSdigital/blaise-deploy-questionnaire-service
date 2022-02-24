@@ -75,7 +75,7 @@ export class BlaiseHandler {
   }
 
   async InstallInstrument(req: Request, res: Response): Promise<Response> {
-    const { filename } = req.query;
+    const filename: string = req.body.filename;
     const instrumentName = filename?.toString().replace(/\.[a-zA-Z]*$/, "");
     const installInstrument: InstallInstrument = {
       instrumentFile: filename?.toString() || ""

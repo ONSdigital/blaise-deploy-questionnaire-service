@@ -6,9 +6,9 @@ import {
 } from "../../client/instruments";
 import {
     initialiseUpload,
-    setTOStartDate,
     uploadFile
-} from "../../utilities/http";
+} from "../../client/upload";
+import { setTOStartDate } from "../../client/toStartDate";
 import {
     GetStrictInterviewingSettings,
     ValidateSettings,
@@ -65,8 +65,10 @@ export async function uploadAndInstallFile(
     }
 
     // Get the signed url to allow access to the bucket
-    const [initialised, signedUrl] = await initialiseUpload(file.name);
-    if (!initialised) {
+    let signedUrl: string;
+    try {
+        signedUrl = await initialiseUpload(file.name);
+    } catch {
         console.error("Failed to initialiseUpload");
         setUploadStatus("Failed to upload questionnaire");
         setUploading(false);

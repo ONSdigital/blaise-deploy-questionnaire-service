@@ -1,6 +1,6 @@
 import React, { Fragment, ReactElement, useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { getAllInstrumentsInBucket } from "../utilities/http";
+import { getAllInstrumentsInBucket } from "../client/upload";
 import { getInstruments } from "../client/instruments";
 
 import { ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
@@ -49,10 +49,12 @@ function ReinstallInstruments(): ReactElement {
         const list: string[] = [];
         setListError("");
 
-        const [success, bucketInstrumentList] = await getAllInstrumentsInBucket();
-        console.log(`Response from get all instruments in bucket  ${(success ? "successful" : "failed")}, data list length ${bucketInstrumentList.length}`);
-
-        if (!success) {
+        let bucketInstrumentList: string[];
+        try {
+            bucketInstrumentList = await getAllInstrumentsInBucket();
+            console.log(`Response from get all instruments in bucket successful, data list length ${bucketInstrumentList.length}`);
+        } catch {
+            console.log("Response from get all instruments in bucket failed");
             setListError("Unable to load questionnaires.");
             setLoading(false);
             return;
@@ -60,7 +62,7 @@ function ReinstallInstruments(): ReactElement {
 
         const installedInstrumentList = await getInstalledInstrumentList();
 
-        bucketInstrumentList.map((instrument) => {
+        bucketInstrumentList.map((instrument: string) => {
             if (!installedInstrumentList.includes(instrument)) {
                 list.push(instrument);
             }

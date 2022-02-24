@@ -1,3 +1,6 @@
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+
 export type RouteMock = {
   Path: string;
   Method?: string;
@@ -7,9 +10,11 @@ export type RouteMock = {
 
 export class Mocker {
   mocks: RouteMock[];
+  mock: MockAdapter;
 
   constructor() {
     this.mocks = [];
+    this.mock = new MockAdapter(axios);
   }
 
   set(new_mock: RouteMock): void {
@@ -39,20 +44,25 @@ export class Mocker {
       if (json === undefined) {
         json = {};
       }
-      return Promise.resolve({
-        status: mock.Status,
-        json: () => Promise.resolve(json)
-      });
+      if (mock.Method?.toUpperCase() == "GET") {
+        this.mock.onGet(mock.Path).reply(mock.Status, mock.JSON);
+      }
+      if (mock.Method?.toUpperCase() == "POST") {
+        this.mock.onPost(mock.Path).reply(mock.Status, mock.JSON);
+      }
+      if (mock.Method?.toUpperCase() == "DELETE") {
+        this.mock.onDelete(mock.Path).reply(mock.Status, mock.JSON);
+      }
+      if (mock.Method?.toUpperCase() == "PUT") {
+        this.mock.onPut(mock.Path).reply(mock.Status, mock.JSON);
+      }
+      if (mock.Method?.toUpperCase() == "PATCH") {
+        this.mock.onPatch(mock.Path).reply(mock.Status, mock.JSON);
+      }
     }
     console.log("No matching mock");
     console.log(url);
     return Promise.reject("No matching mock");
-  }
-
-  applyMocks(): void {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    global.fetch = jest.fn((url: RequestInfo, config?: RequestInit) => this.mocker(url, config));
   }
 
   exactMatch(url: RequestInfo, config?: RequestInit): RouteMock | undefined {

@@ -25,7 +25,7 @@ export class BimsApi {
             return undefined;
         }
         if (response.status !== 200) {
-            throw `Error getting start date for instrument: ${instrumentName}`;
+            throw new Error(`Error getting start date for instrument: ${instrumentName}`);
         }
         return response.data;
     }

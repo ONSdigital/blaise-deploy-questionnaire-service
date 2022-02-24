@@ -82,7 +82,12 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
 
     function filterTestInstruments(instrumentsToFilter: Instrument[], filterValue: string): Instrument[] {
         if (filterValue.toUpperCase() !== "DST") {
-            instrumentsToFilter = filter(instrumentsToFilter, (instrument) => !instrument.name.toUpperCase().startsWith("DST"));
+            instrumentsToFilter = filter(instrumentsToFilter, (instrument) => {
+                if (!instrument?.name) {
+                    return false;
+                }
+                return !instrument.name.toUpperCase().startsWith("DST");
+            });
             setRealInstrumentCount(instrumentsToFilter.length);
         }
         return instrumentsToFilter;

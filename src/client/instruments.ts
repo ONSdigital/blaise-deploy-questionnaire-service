@@ -68,10 +68,10 @@ export async function deactivateInstrument(instrumentName: string): Promise<bool
 
 export async function installInstrument(filename: string): Promise<boolean> {
     console.log("Sending request to start install");
-    const url = `/api/install?filename=${filename}`;
+    const url = "/api/install";
 
     try {
-        const response = await axios.post(url, axiosConfig());
+        const response = await axios.post(url, { filename: filename }, axiosConfig());
         return response.status === 201;
     } catch (error: unknown) {
         console.error(`Failed to install questionnaire, Error ${error}`);
@@ -112,6 +112,10 @@ export async function getInstrumentCaseIds(instrumentName: string): Promise<stri
     console.log("Call to getInstrumentCaseIds");
     const url = `/api/instruments/${instrumentName}/cases/ids`;
 
-    const response = await axios.get(url, axiosConfig());
-    return response.data;
+    try {
+        const response = await axios.get(url, axiosConfig());
+        return response.data;
+    } catch {
+        throw new Error("Failed to get instrument case IDs");
+    }
 }

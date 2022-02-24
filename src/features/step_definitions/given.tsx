@@ -1,4 +1,4 @@
-import navigateToDeployPageAndSelectFile, { format_date_string } from "./helpers/functions";
+import navigateToDeployPageAndSelectFile, { formatDateString } from "./helpers/functions";
 import { DefineStepFunction } from "jest-cucumber";
 import { instrumentWithName } from "./helpers/apiMockObjects";
 import { Mocker } from "./helpers/mocker";
@@ -73,7 +73,7 @@ export const givenTheQuestionnaireIsInstalled = (
       Status: 200,
       JSON: ["CAWI", "CATI"]
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -134,7 +134,7 @@ export const givenNoQuestionnairesAreInstalled = (
       Status: 200,
       JSON: ["CAWI", "CATI"]
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -173,7 +173,7 @@ export const givenInstallsSuccessfully = (given: DefineStepFunction, mocker: Moc
       Path: `/api/instruments/${questionnaire}/deactivate`,
       Status: 204
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -187,7 +187,7 @@ export const givenTheQuestionnaireHasModes = (
       Status: 200,
       JSON: modes.split(",")
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -215,7 +215,7 @@ export const givenTheQuestionnaireHasUACs = (
       Status: 200,
       JSON: { count: +cases }
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -246,7 +246,7 @@ export const givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous = (
       Path: `/api/instruments/${questionnaire}`,
       Status: 420
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -256,7 +256,7 @@ export const givenTOStartDateFails = (given: DefineStepFunction, mocker: Mocker)
       Path: `/api/tostartdate/${questionnaire}`,
       Status: 500
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -266,7 +266,7 @@ export const givenUACGenerationIsBroken = (given: DefineStepFunction, mocker: Mo
       Path: `/api/uacs/instrument/${questionnaire}`,
       Status: 500
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -276,9 +276,9 @@ export const givenTheQuestionnaireHasATOStartDate = (given: DefineStepFunction, 
     mocker.set({
       Path: `/api/tostartdate/${questionnaire}`,
       Status: 200,
-      JSON: { tostartdate: format_date_string(toStartDate) }
+      JSON: { tostartdate: formatDateString(toStartDate) }
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -289,7 +289,7 @@ export const givenTheQuestionnaireHasNoTOStartDate = (given: DefineStepFunction,
       Path: `/api/tostartdate/${questionnaire}`,
       Status: 404,
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -299,7 +299,7 @@ export const givenAllInstallsWillFail = (given: DefineStepFunction, mocker: Mock
       Path: `/api/install?filename=${questionnaire_matcher}`,
       Status: 500,
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -328,7 +328,7 @@ export const givenTheQuestionnaireIsLive = (
         });
       }
     }
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -350,7 +350,7 @@ export const givenTheQuestionnaireIsInactive = (
         });
       }
     }
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -372,7 +372,7 @@ export const givenTheQuestionnaireHasActiveSurveyDays = (
         });
       }
     }
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };
 
@@ -395,6 +395,6 @@ export const givenTheQuestionnareHasTheSettings = (given: DefineStepFunction, mo
       Status: 200,
       JSON: settings
     });
-    mocker.applyMocks();
+    // mocker.applyMocks();
   });
 };

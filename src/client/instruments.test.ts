@@ -194,28 +194,28 @@ describe("Function deactivateInstrument(instrumentName: string) ", () => {
 
 describe("Function installInstrument(instrumentName: string) ", () => {
     it("should return true if created 201 response is returned", async () => {
-        mock.onPost("/api/install?filename=OPN2004A").reply(201, {});
+        mock.onPost("/api/install").reply(201, { filename: "OPN2004A" });
 
         const success = await installInstrument("OPN2004A");
         expect(success).toBeTruthy();
     });
 
     it("should return false if a 404 is returned from the server", async () => {
-        mock.onPost("/api/install?filename=OPN2004A").reply(404, {});
+        mock.onPost("/api/install").reply(404, {});
 
         const success = await installInstrument("OPN2004A");
         expect(success).toBeFalsy();
     });
 
     it("should return false if request returns an error code", async () => {
-        mock.onPost("/api/install?filename=OPN2004A").reply(500, {});
+        mock.onPost("/api/install").reply(500, {});
 
         const success = await installInstrument("OPN2004A");
         expect(success).toEqual(false);
     });
 
     it("should return false object if request call fails", async () => {
-        mock.onPost("/api/install?filename=OPN2004A").networkError();
+        mock.onPost("/api/install").networkError();
 
         const success = await installInstrument("OPN2004A");
         expect(success).toEqual(false);

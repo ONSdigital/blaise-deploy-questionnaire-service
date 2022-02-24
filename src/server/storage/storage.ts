@@ -27,10 +27,11 @@ export default class StorageManager {
     };
 
     try {
-      return await this.bucket.file(filename).getSignedUrl(options)[0];
+      const [url] = await this.bucket.file(filename).getSignedUrl(options);
+      return url;
     } catch (error: unknown) {
       console.error(error, "getSignedUrl Failed");
-      throw ("getSignedUrl Failed");
+      throw new Error("getSignedUrl Failed");
     }
   }
 
@@ -42,7 +43,7 @@ export default class StorageManager {
       [files] = await this.bucket.getFiles();
     } catch (error: unknown) {
       console.error(error, "getBucketItems Failed");
-      throw "getBucketItems Failed";
+      throw new Error("getBucketItems Failed");
     }
 
     for (const file of files) {

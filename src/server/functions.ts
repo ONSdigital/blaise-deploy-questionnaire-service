@@ -14,13 +14,13 @@ function fieldPeriodFromInstrument(instrument_name: string): string {
     if (isNumber(month_number_str)) {
         month_number_int = parseInt(month_number_str) - 1;
     } else {
-        throw "Month was not a integer";
+        throw new Error("Month was not a integer");
     }
 
     if (month_number_int >= 0 && month_number_int < 12) {
         month = monthNames[month_number_int];
     } else {
-        throw "Month was dot between 1 and 12";
+        throw new Error("Month was dot between 1 and 12");
     }
 
     return month + " 20" + instrument_name.substring(3, 5);

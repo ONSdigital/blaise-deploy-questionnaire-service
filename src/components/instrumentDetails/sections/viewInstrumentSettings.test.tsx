@@ -10,7 +10,8 @@ import ViewInstrumentSettings from "./viewInstrumentSettings";
 import { opnInstrument } from "../../../features/step_definitions/helpers/apiMockObjects";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
-import { mock_fetch_requests } from "../../../features/step_definitions/helpers/functions";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
 const viewInstrumentSettingsFailedMessage = /Failed to get questionnaire settings/i;
 const InstrumentSettingsMockList = [
@@ -25,31 +26,12 @@ const InstrumentSettingsMockList = [
     }
 ];
 
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Given the API successfully loads the instrument mode and settings for CATI only mode", () => {
-
-    const mock_server_responses = (url: string) => {
-        console.log(url);
-        if (url.includes("/modes")) {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve(["CATI"]),
-            });
-        }
-        if (url.includes("/settings")) {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve(InstrumentSettingsMockList),
-            });
-        }
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve([]),
-        });
-    };
-
     beforeAll(() => {
-        mock_fetch_requests(mock_server_responses);
+        mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(200, ["CATI"]);
+        mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(200, InstrumentSettingsMockList);
     });
 
     it("matches Snapshot for the view Instrument Settings page", async () => {
@@ -109,33 +91,14 @@ describe("Given the API successfully loads the instrument mode and settings for 
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 describe("Given the API successfully loads the instrument mode and settings for mixed mode", () => {
-
-    const mock_server_responses = (url: string) => {
-        console.log(url);
-        if (url.includes("/modes")) {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve(["CATI", "CAWI"]),
-            });
-        }
-        if (url.includes("/settings")) {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve(InstrumentSettingsMockList),
-            });
-        }
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve([]),
-        });
-    };
-
     beforeAll(() => {
-        mock_fetch_requests(mock_server_responses);
+        mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(200, ["CATI", "CAWI"]);
+        mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(200, InstrumentSettingsMockList);
     });
 
     it("matches Snapshot for the view Instrument Settings page", async () => {
@@ -198,33 +161,14 @@ describe("Given the API successfully loads the instrument mode and settings for 
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 describe("Given the API fails to load the instrument mode or settings", () => {
-
-    const mock_server_responses = (url: string) => {
-        console.log(url);
-        if (url.includes("/modes")) {
-            return Promise.resolve({
-                status: 500,
-                json: () => Promise.resolve({}),
-            });
-        }
-        if (url.includes("/settings")) {
-            return Promise.resolve({
-                status: 500,
-                json: () => Promise.resolve({}),
-            });
-        }
-        return Promise.resolve({
-            status: 500,
-            json: () => Promise.resolve({}),
-        });
-    };
-
     beforeAll(() => {
-        mock_fetch_requests(mock_server_responses);
+        mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(500);
+        mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(500);
     });
 
     it("should display an error message when it fails to load the Instrument Modes", async () => {
@@ -255,32 +199,18 @@ describe("Given the API fails to load the instrument mode or settings", () => {
             expect(screen.getByText(viewInstrumentSettingsFailedMessage)).toBeDefined();
         });
     });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
 });
 
 describe("Given the API returns an empty list for instrument mode or settings", () => {
-
-    const mock_server_responses = (url: string) => {
-        console.log(url);
-        if (url.includes("/modes")) {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve([]),
-            });
-        }
-        if (url.includes("/settings")) {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve([]),
-            });
-        }
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve([]),
-        });
-    };
-
     beforeAll(() => {
-        mock_fetch_requests(mock_server_responses);
+        mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(200, []);
+        mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(200, []);
     });
 
     it("it should render an error message", async () => {
@@ -303,5 +233,6 @@ describe("Given the API returns an empty list for instrument mode or settings", 
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });

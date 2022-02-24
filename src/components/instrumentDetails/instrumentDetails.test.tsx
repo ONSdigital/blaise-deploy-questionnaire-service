@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import flushPromises, { mock_server_request_Return_JSON } from "../../tests/utils";
+import flushPromises from "../../tests/utils";
 import { instrumentList } from "../../features/step_definitions/helpers/apiMockObjects";
 import { createMemoryHistory } from "history";
 import { render, waitFor, screen } from "@testing-library/react";
@@ -11,6 +11,10 @@ import App from "../../app";
 import { act } from "react-dom/test-utils";
 import React from "react";
 import { AuthManager } from "blaise-login-react-client";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+
+const mock = new MockAdapter(axios);
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -19,9 +23,8 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 
 
 describe("Instrument Details page ", () => {
-
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, instrumentList);
+        mock.onGet("/api/instruments").reply(200, instrumentList);
     });
 
     it("should redirect to the homepage when no instrument has been provided ", async () => {
@@ -42,5 +45,9 @@ describe("Instrument Details page ", () => {
             expect(screen.getByText(/Table of questionnaires/i)).toBeDefined();
             expect(screen.queryByText(/Questionnaire details/i)).toEqual(null);
         });
+    });
+
+    afterAll(() => {
+        mock.reset();
     });
 });

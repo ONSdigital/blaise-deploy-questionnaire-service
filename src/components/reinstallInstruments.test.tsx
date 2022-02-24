@@ -5,13 +5,16 @@
 import React from "react";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import flushPromises, { mock_server_request_Return_JSON } from "../tests/utils";
+import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
 import { Instrument } from "blaise-api-node-client";
 import ReinstallInstruments from "./reinstallInstruments";
-import { mock_fetch_requests } from "../features/step_definitions/helpers/functions";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+
+const mock = new MockAdapter(axios);
 
 
 const instrumentList: Instrument[] = [{
@@ -28,21 +31,9 @@ const instrumentList: Instrument[] = [{
 const bucketInstrument: string[] = ["OPN2101A.bpkg", "OPN2004A.bpkg", "LMS2101_BK2.bpkg"];
 
 describe("Reinstall instruments list", () => {
-    const mock_server_responses = (url: string) => {
-        if (url.includes("/api/instruments")) {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve(instrumentList),
-            });
-        }
-        return Promise.resolve({
-            status: 200,
-            json: () => Promise.resolve(bucketInstrument),
-        });
-    };
-
     beforeAll(() => {
-        mock_fetch_requests(mock_server_responses);
+        mock.onGet("/api/instruments").reply(200, instrumentList);
+        mock.onGet("/bucket/files").reply(200, bucketInstrument);
     });
 
     it("view Blaise Status page matches Snapshot", async () => {
@@ -86,19 +77,7 @@ describe("Reinstall instruments list", () => {
     it("should render a message if all items in bucket are already installed", async () => {
         const instrumentList: any[] = [{ name: "OPN2101A" }, { name: "OPN2004A" }, { name: "LMS2101_BK2" }];
 
-        const mock_server_responses = (url: string) => {
-            if (url.includes("/api/instruments")) {
-                return Promise.resolve({
-                    status: 200,
-                    json: () => Promise.resolve(instrumentList),
-                });
-            }
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve(bucketInstrument),
-            });
-        };
-        mock_fetch_requests(mock_server_responses);
+        mock.onGet("/api/instruments").reply(200, instrumentList);
 
         const history = createMemoryHistory();
         render(
@@ -120,36 +99,16 @@ describe("Reinstall instruments list", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 describe("Reinstall an instruments", () => {
-    const mock_server_responses = (url: string) => {
-        console.log(url);
-        if (url.includes("/bucket/files")) {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve(bucketInstrument),
-            });
-        } else if (url.includes("/upload/verify")) {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve({ name: "OPN2004A.bpkg" }),
-            });
-        } else if (url.includes("/api/install")) {
-            return Promise.resolve({
-                status: 201,
-                json: () => Promise.resolve(),
-            });
-        } else {
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve([]),
-            });
-        }
-    };
     beforeAll(() => {
-        mock_fetch_requests(mock_server_responses);
+        mock.onGet("/api/instruments").reply(200, []);
+        mock.onGet("/bucket/files").reply(200, bucketInstrument);
+        mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "OPN2004A.bpkg" });
+        mock.onPost("/api/install").reply(201);
     });
 
     it("should redirect to the success page after install", async () => {
@@ -182,19 +141,7 @@ describe("Reinstall an instruments", () => {
     it("should render a message if all items in bucket are already installed", async () => {
         const instrumentList: any[] = [{ name: "OPN2101A" }, { name: "OPN2004A" }, { name: "LMS2101_BK2" }];
 
-        const mock_server_responses = (url: string) => {
-            if (url.includes("/api/instruments")) {
-                return Promise.resolve({
-                    status: 200,
-                    json: () => Promise.resolve(instrumentList),
-                });
-            }
-            return Promise.resolve({
-                status: 200,
-                json: () => Promise.resolve(bucketInstrument),
-            });
-        };
-        mock_fetch_requests(mock_server_responses);
+        mock.onGet("/api/instruments").reply(200, instrumentList);
 
         const history = createMemoryHistory();
         render(
@@ -216,13 +163,13 @@ describe("Reinstall an instruments", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 describe("Given the API returns a 500 status", () => {
-
     beforeAll(() => {
-        mock_server_request_Return_JSON(500, []);
+        mock.onGet("/api/instruments").reply(500);
     });
 
     it("it should render with the error message displayed", async () => {
@@ -244,13 +191,14 @@ describe("Given the API returns a 500 status", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 describe("Given the API returns an empty list", () => {
-
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, []);
+        mock.onGet("/api/instruments").reply(200, []);
+        mock.onGet("/bucket/files").reply(200, []);
     });
 
     it("it should render with a message to inform the user in the list", async () => {
@@ -274,5 +222,6 @@ describe("Given the API returns an empty list", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });

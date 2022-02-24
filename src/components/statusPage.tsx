@@ -1,5 +1,7 @@
+import axios, { AxiosResponse } from "axios";
 import { ErrorBoundary, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import React, { Fragment, ReactElement, useEffect, useState } from "react";
+import axiosConfig from "../client/axiosConfig";
 import Breadcrumbs from "./breadcrumbs";
 
 
@@ -23,31 +25,25 @@ function StatusPage(): ReactElement {
             }
         }, 10000);
 
-        fetch("/api/health/diagnosis")
-            .then((r: Response) => {
-                if (r.status !== 503 && r.status !== 200) {
-                    throw r.status + " - " + r.statusText;
-                }
-                r.json()
-                    .then((json: BlaiseStatus[]) => {
-                        if (!Array.isArray(json)) {
-                            throw "Json response is not a list";
-                        }
-                        console.log("Retrieved blaise status list, " + json.length + " items/s");
-                        console.log(json);
-                        setStatusList(json);
-                        setListError("");
-                        if (json.length === 0) setListError("No connection details found.");
-                    })
-                    .catch((error) => {
-                        console.error("Unable to read json from response, error: " + error);
-                        setListError("Unable to get Blaise status");
-                    });
-            }).catch((error) => {
-                console.error("Failed to retrieve Blaise status, error: " + error);
+        axios.get("/api/health/diagnosis", axiosConfig()).then((response: AxiosResponse) => {
+            if (response.status !== 503 && response.status !== 200) {
                 setListError("Unable to get Blaise status");
+                return;
             }
-            ).finally(() => setLoading(false));
+            if (!Array.isArray(response.data)) {
+                setListError("Unable to get Blaise status");
+                return;
+            }
+            if (response.data.length === 0) {
+                setListError("No connection details found.");
+                return;
+            }
+            setStatusList(response.data);
+            setListError("");
+        }).catch((error) => {
+            console.error("Failed to retrieve Blaise status, error: " + error);
+            setListError("Unable to get Blaise status");
+        }).finally(() => setLoading(false));
     }, []);
 
 

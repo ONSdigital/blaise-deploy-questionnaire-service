@@ -5,12 +5,15 @@
 import React from "react";
 import { render, waitFor, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import flushPromises, { mock_server_request_Return_JSON } from "../tests/utils";
+import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import StatusPage from "./statusPage";
 import { Router } from "react-router";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
+const mock = new MockAdapter(axios);
 
 const status_list = [
     {
@@ -32,9 +35,8 @@ const status_list = [
 ];
 
 describe("Blaise Status page", () => {
-
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, status_list);
+        mock.onGet("/api/health/diagnosis").reply(200, status_list);
     });
 
     it("view Blaise Status page matches Snapshot", async () => {
@@ -81,13 +83,13 @@ describe("Blaise Status page", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 describe("Given the API returns a 500 status", () => {
-
     beforeAll(() => {
-        mock_server_request_Return_JSON(500, []);
+        mock.onGet("/api/health/diagnosis").reply(500);
     });
 
     it("it should render with the error message displayed", async () => {
@@ -111,13 +113,14 @@ describe("Given the API returns a 500 status", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 describe("Given the API returns malformed json", () => {
 
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, { text: "Hello" });
+        mock.onGet("/api/health/diagnosis").reply(200, { text: "Hello" });
     });
 
     it("it should render with the error message displayed", async () => {
@@ -141,13 +144,13 @@ describe("Given the API returns malformed json", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 describe("Given the API returns an empty list", () => {
-
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, []);
+        mock.onGet("/api/health/diagnosis").reply(200, []);
     });
 
     it("it should render with a message to inform the user in the list", async () => {
@@ -171,5 +174,6 @@ describe("Given the API returns an empty list", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });

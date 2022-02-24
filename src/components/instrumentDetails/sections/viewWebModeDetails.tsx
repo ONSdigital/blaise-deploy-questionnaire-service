@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { getCountOfUACs } from "../../../utilities/http";
+import { getCountOfUACs } from "../../../client/uacCodes";
 import { getInstrumentModes } from "../../../client/instruments";
 import { Instrument } from "blaise-api-node-client";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
@@ -20,6 +20,16 @@ const ViewWebModeDetails = ({ instrument }: Props): ReactElement => {
     const [uacGenerationFailed, setUacGenerationFailed] = useState<boolean>(false);
     const [showGenerateUACsButton, setShowGenerateUACsButton] = useState<boolean>(false);
 
+    function getUACCount() {
+        getCountOfUACs(instrument.name)
+            .then((count) => {
+                console.log(`count: ${count}`);
+                if (count !== null) setUacCount(count);
+            }).catch(() => {
+                setErrored(true);
+            });
+    }
+
     useEffect(() => {
         getInstrumentModes(instrument.name)
             .then((modes: string[]) => {
@@ -30,17 +40,9 @@ const ViewWebModeDetails = ({ instrument }: Props): ReactElement => {
                 setErrored(true);
                 return;
             }).finally(() => setLoading(false));
-        getIACsCount();
+        getUACCount();
     }, []);
 
-
-    const getIACsCount = () => {
-        getCountOfUACs(instrument.name)
-            .then((count) => {
-                console.log(`count: ${count}`);
-                if (count !== null) setUacCount(count);
-            });
-    };
 
     useEffect(() => {
         let bool = true;
@@ -58,7 +60,7 @@ const ViewWebModeDetails = ({ instrument }: Props): ReactElement => {
         return generateUACCodesAndCSVFileData(instrument.name)
             .then((uacList) => {
                 console.log("Generated UAC Codes");
-                getIACsCount();
+                getUACCount();
                 return uacList;
             }).catch((error) => {
                 setUacGenerationFailed(true);

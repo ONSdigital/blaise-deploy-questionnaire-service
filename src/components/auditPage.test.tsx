@@ -5,12 +5,16 @@
 import React from "react";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import flushPromises, { mock_server_request_Return_JSON } from "../tests/utils";
+import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
 import AuditPage from "./auditPage";
 import userEvent from "@testing-library/user-event";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+
+const mock = new MockAdapter(axios);
 
 const auditLogsList = [
     {
@@ -31,9 +35,8 @@ const auditLogsList2 = [
 ];
 
 describe("Audit Logs page", () => {
-
     beforeEach(() => {
-        mock_server_request_Return_JSON(200, auditLogsList);
+        mock.onGet("/api/audit").reply(200, auditLogsList);
     });
 
     it("view Audit Logs page matches Snapshot", async () => {
@@ -93,7 +96,7 @@ describe("Audit Logs page", () => {
             expect(getByText(/19\/02\/2021 12:46:29/i)).toBeDefined();
         });
 
-        mock_server_request_Return_JSON(200, auditLogsList2);
+        mock.onGet("/api/audit").reply(200, auditLogsList2);
 
         userEvent.click(screen.getByText("Reload"));
 
@@ -111,12 +114,15 @@ describe("Audit Logs page", () => {
         jest.clearAllMocks();
         cleanup();
     });
+
+    afterEach(() => {
+        mock.reset();
+    });
 });
 
 describe("Given the API returns a 500 status", () => {
-
     beforeEach(() => {
-        mock_server_request_Return_JSON(500, []);
+        mock.onGet("/api/audit").reply(500, []);
     });
 
     it("it should render with the error message displayed", async () => {
@@ -144,9 +150,8 @@ describe("Given the API returns a 500 status", () => {
 });
 
 describe("Given the API returns malformed json", () => {
-
     beforeAll(() => {
-        mock_server_request_Return_JSON(200, { text: "Hello" });
+        mock.onGet("/api/audit").reply(500, { text: "Hello" });
     });
 
     it("it should render with the error message displayed", async () => {
@@ -170,13 +175,13 @@ describe("Given the API returns malformed json", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });
 
 describe("Given the API returns an empty list", () => {
-
     beforeEach(() => {
-        mock_server_request_Return_JSON(200, []);
+        mock.onGet("/api/audit").reply(200, []);
     });
 
     it("it should render with a message to inform the user in the list", async () => {
@@ -200,5 +205,6 @@ describe("Given the API returns an empty list", () => {
     afterAll(() => {
         jest.clearAllMocks();
         cleanup();
+        mock.reset();
     });
 });

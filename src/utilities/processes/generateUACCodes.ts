@@ -1,4 +1,4 @@
-import { generateUACCodes, getUACCodesByCaseID, } from "../http";
+import { generateUACCodes, getUACCodesByCaseID, } from "../../client/uacCodes";
 import { getInstrumentCaseIds } from "../../client/instruments";
 import { Datas } from "react-csv-downloader/dist/esm/lib/csv";
 import { InstrumentUacDetails } from "bus-api-node-client";

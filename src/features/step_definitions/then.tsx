@@ -6,7 +6,7 @@ import { screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DefineStepFunction } from "jest-cucumber";
 import flushPromises from "../../tests/utils";
-import { format_date_string } from "./helpers/functions";
+import { formatDateString } from "./helpers/functions";
 
 export const thenIAmPresentedWithTheOptionsToCancelOrOverwrite = (then: DefineStepFunction): void => {
   then("I am presented with the options to cancel or overwrite the questionnaire", async () => {
@@ -191,7 +191,7 @@ export const thenTheToStartDateIsStored = (then: DefineStepFunction): void => {
     await waitFor(() => {
       expect(screen.getByText(/Questionnaire details/i)).toBeDefined();
       expect(global.fetch).toHaveBeenCalledWith(`/api/tostartdate/${questionnaire}`, {
-        "body": JSON.stringify({ "tostartdate": format_date_string(toStartDate) }),
+        "body": JSON.stringify({ "tostartdate": formatDateString(toStartDate) }),
         "method": "POST",
         "headers": { "Content-Type": "application/json" }
       });
