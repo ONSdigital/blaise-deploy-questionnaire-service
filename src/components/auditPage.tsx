@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import dateFormatter from "dayjs";
 import { ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
-import { getAuditLogs } from "../utilities/http";
+import { getAuditLogs } from "../client/auditLogs";
 import { AuditLog } from "../server/auditLogging/logger";
 import ONSTable, { TableColumns } from "./onsTable";
 import Breadcrumbs from "./breadcrumbs";
@@ -16,26 +16,28 @@ function AuditPage(): ReactElement {
     }, []);
 
     async function callAuditLogs() {
+        let fetchedAuditLogs: AuditLog[] = [];
         setAuditLogs([]);
         setLoading(true);
         setListError("");
 
-        const [success, auditLogs] = await getAuditLogs();
-        console.log(`Response from get audit logs ${(success ? "successful" : "failed")}, data list length ${auditLogs.length}`);
-
-        if (!success) {
+        try {
+            fetchedAuditLogs = await getAuditLogs();
+        } catch (error: unknown) {
+            console.log(`Error getting audit logs: ${error}`);
+            console.log(`Response from get audit logs failed, data list length ${fetchedAuditLogs.length}`);
             setListError("Unable to load deployment history.");
             setLoading(false);
             return;
         }
+        console.log(`Response from get audit logs successful, data list length ${fetchedAuditLogs.length}`);
+        console.log(fetchedAuditLogs);
 
-        console.log(auditLogs);
-
-        if (auditLogs.length === 0) {
+        if (fetchedAuditLogs.length === 0) {
             setListError("No recent deployment history found.");
         }
 
-        setAuditLogs(auditLogs);
+        setAuditLogs(fetchedAuditLogs);
         setLoading(false);
     }
 

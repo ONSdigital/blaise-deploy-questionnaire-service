@@ -17,4 +17,4 @@ const convertFirstCharacterToUppercase = (stringToConvert: string): string => {
     return firstCharacter.toUpperCase() + restString;
 };
 
-export {formatText};
+export { formatText };
