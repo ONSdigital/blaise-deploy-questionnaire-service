@@ -53,7 +53,7 @@ export class BlaiseHandler {
       return res.status(200).json(diagnostics);
     } catch (error: any) {
       req.log.error(error, "health check endpoint failed");
-      return res.status(500).json(null);
+      return res.status(500).json();
     }
   }
 
@@ -66,7 +66,7 @@ export class BlaiseHandler {
       return res.status(200).json(instrument);
     } catch (error: any) {
       if (this.errorNotFound(error)) {
-        return res.status(404).json(null);
+        return res.status(404).json();
       }
       console.log(error);
       req.log.error(error, "Get instrument with CATI data endpoint failed");

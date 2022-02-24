@@ -1,34 +1,45 @@
-import { requestPromiseJson, requestPromiseJsonList, requestPromiseNoResponse } from "./requestPromise";
+import { requestPromiseJson, requestPromiseJsonList, requestPromiseNoResponse } from "../utilities/http/requestPromise";
 import { InstrumentSettings, Instrument } from "blaise-api-node-client";
+import axios from "axios";
 
-type verifyInstrumentExistsResponse = [boolean | null, Instrument | null];
 type getInstrumentListResponse = [boolean, Instrument[]];
 type deleteInstrumentResponse = [boolean, string];
 type getInstrumentCaseIDsResponse = [boolean, string[]];
 
-function checkInstrumentAlreadyExists(instrumentName: string): Promise<verifyInstrumentExistsResponse> {
+export async function getInstrument(instrumentName: string): Promise<Instrument | undefined> {
     console.log(`Call to checkSurveyAlreadyExists(${instrumentName})`);
     const url = `/api/instruments/${instrumentName}`;
 
-    return requestPromiseJson("GET", url).then(([status, data]): verifyInstrumentExistsResponse => {
-        console.log(`Response from check exists: Status ${status}, data ${data}`);
-        if (status === 200) {
-            if (data.name === instrumentName) {
-                console.log(`${instrumentName} already installed`);
-                return [true, data];
-            } else {
-                console.log(`${instrumentName} not found`);
-                return [false, null];
-            }
-        } else if (status === 404) {
-            return [false, null];
-        } else {
-            return [null, null];
+    try {
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error: any) {
+        if (error.isAxiosError && error.response.status === 404) {
+            console.log(`Instrument ${instrumentName} does not exist`);
+            return undefined;
         }
-    }).catch((error: Error) => {
-        console.error(`Response from check bucket Failed: Error ${error}`);
-        return [null, null];
-    });
+        throw error;
+    }
+
+    // return requestPromiseJson("GET", url).then(([status, data]): verifyInstrumentExistsResponse => {
+    //     console.log(`Response from check exists: Status ${status}, data ${data}`);
+    //     if (status === 200) {
+    //         if (data.name === instrumentName) {
+    //             console.log(`${instrumentName} already installed`);
+    //             return [true, data];
+    //         } else {
+    //             console.log(`${instrumentName} not found`);
+    //             return [false, null];
+    //         }
+    //     } else if (status === 404) {
+    //         return [false, null];
+    //     } else {
+    //         return [null, null];
+    //     }
+    // }).catch((error: Error) => {
+    //     console.error(`Response from check bucket Failed: Error ${error}`);
+    //     return [null, null];
+    // });
 }
 
 function getAllInstruments(): Promise<getInstrumentListResponse> {
@@ -141,7 +152,6 @@ function getInstrumentCaseIds(instrumentName: string): Promise<getInstrumentCase
 }
 
 export {
-    checkInstrumentAlreadyExists,
     getAllInstruments,
     deleteInstrument,
     activateInstrument,

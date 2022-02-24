@@ -1,11 +1,13 @@
 import {
-    checkInstrumentAlreadyExists,
-    initialiseUpload,
-    setTOStartDate,
-    uploadFile,
+    getInstrument,
     getInstrumentSettings,
     getInstrumentModes,
     deactivateInstrument,
+} from "../../client/instruments";
+import {
+    initialiseUpload,
+    setTOStartDate,
+    uploadFile
 } from "../../utilities/http";
 import {
     GetStrictInterviewingSettings,
@@ -25,18 +27,20 @@ export async function validateSelectedInstrumentExists(file: File | undefined, s
 
     setInstrumentName(instrumentName);
 
-    const [alreadyExists, instrument] = await checkInstrumentAlreadyExists(instrumentName);
-    if (alreadyExists === null) {
+    let instrument: Instrument | undefined;
+    try {
+        instrument = await getInstrument(instrumentName);
+    } catch {
         console.log("Failed to validate if questionnaire already exists");
         setUploadStatus("Failed to validate if questionnaire already exists");
         return null;
     }
 
-    if (alreadyExists) {
+    if (instrument) {
         setFoundInstrument(instrument);
     }
 
-    return alreadyExists;
+    return false;
 }
 
 export async function uploadAndInstallFile(

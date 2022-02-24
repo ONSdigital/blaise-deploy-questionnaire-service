@@ -1,8 +1,8 @@
 import { cleanup } from "@testing-library/react";
-import { mock_server_request_function, mock_server_request_Return_JSON } from "../../tests/utils";
-import { instrumentList, opnInstrument } from "../../features/step_definitions/helpers/apiMockObjects";
+import { mock_server_request_function, mock_server_request_Return_JSON } from "../tests/utils";
+import { instrumentList, opnInstrument } from "../features/step_definitions/helpers/apiMockObjects";
 import {
-    checkInstrumentAlreadyExists,
+    getInstrument,
     deleteInstrument,
     activateInstrument,
     deactivateInstrument,
@@ -11,57 +11,34 @@ import {
     sendInstallRequest
 } from "./instruments";
 
-describe("Function checkInstrumentAlreadyExists(instrumentName: string) ", () => {
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
-    it("It should return true and the instrument object if object with the correct name returned", async () => {
+const mock = new MockAdapter(axios);
+
+describe("Function getInstrument(instrumentName: string) ", () => {
+
+    it("should return true and the instrument object if object with the correct name returned", async () => {
+        mock.onGet("/api/instruments/OPN2004A").reply(200, opnInstrument);
         mock_server_request_Return_JSON(200, opnInstrument);
-        const [alreadyExists, instrument] = await checkInstrumentAlreadyExists("OPN2004A");
-        expect(alreadyExists).toBeTruthy();
+        const instrument = await getInstrument("OPN2004A");
         expect(instrument).toEqual(opnInstrument);
     });
 
-    it("It should return false and a null object if object with an incorrect name returned", async () => {
-        mock_server_request_Return_JSON(200, { name: "BACON" });
-        const [alreadyExists, instrument] = await checkInstrumentAlreadyExists("OPN2004A");
-        expect(alreadyExists).toBeFalsy();
-        expect(instrument).toEqual(null);
+    it("should return undefined if a 404 is returned from the server", async () => {
+        mock.onGet("/api/instruments/OPN2004A").reply(404, {});
+        const instrument = await getInstrument("OPN2004A");
+        expect(instrument).toBeUndefined();
     });
 
-    it("It should return false and a null object if a 404 is returned from the server", async () => {
-        mock_server_request_Return_JSON(404, {});
-        const [alreadyExists, instrument] = await checkInstrumentAlreadyExists("OPN2004A");
-        expect(alreadyExists).toBeFalsy();
-        expect(instrument).toEqual(null);
+    it("should throw an error if request returns an error code", async () => {
+        mock.onGet("/api/instruments/OPN2004A").reply(500, {});
+        await expect(getInstrument("OPN2004A")).rejects.toThrow();
     });
 
-    it("It should return null and a null object if request returns an error code", async () => {
-        mock_server_request_Return_JSON(500, {});
-        const [alreadyExists, instrument] = await checkInstrumentAlreadyExists("OPN2004A");
-        expect(alreadyExists).toEqual(null);
-        expect(instrument).toEqual(null);
-    });
-
-    it("It should return null and a null object if request JSON is invalid", async () => {
-        mock_server_request_function(() =>
-            Promise.resolve({
-                status: 200,
-                json: () => Promise.reject("Failed"),
-            })
-        );
-        const [alreadyExists, instrument] = await checkInstrumentAlreadyExists("OPN2004A");
-        expect(alreadyExists).toEqual(null);
-        expect(instrument).toEqual(null);
-    });
-
-    it("It should return null and a null object if request call fails", async () => {
-        mock_server_request_function(() =>
-            Promise.resolve(() => {
-                throw "error";
-            })
-        );
-        const [alreadyExists, instrument] = await checkInstrumentAlreadyExists("OPN2004A");
-        expect(alreadyExists).toEqual(null);
-        expect(instrument).toEqual(null);
+    it("should thrown an error if request call fails", async () => {
+        mock.onGet("/api/instruments/OPN2004A").networkError();
+        await expect(getInstrument("OPN2004A")).rejects.toThrow();
     });
 
     afterAll(() => {
@@ -73,28 +50,28 @@ describe("Function checkInstrumentAlreadyExists(instrumentName: string) ", () =>
 
 describe("Function getAllInstruments(filename: string) ", () => {
 
-    it("It should return true with data if the list is returned successfully", async () => {
+    it("should return true with data if the list is returned successfully", async () => {
         mock_server_request_Return_JSON(200, instrumentList);
         const [success, instruments] = await getAllInstruments();
         expect(success).toBeTruthy();
         expect(instruments).toEqual(instruments);
     });
 
-    it("It should return false with an empty list if a 404 is returned from the server", async () => {
+    it("should return false with an empty list if a 404 is returned from the server", async () => {
         mock_server_request_Return_JSON(404, []);
         const [success, instruments] = await getAllInstruments();
         expect(success).toBeFalsy();
         expect(instruments).toEqual([]);
     });
 
-    it("It should return false with an empty list if request returns an error code", async () => {
+    it("should return false with an empty list if request returns an error code", async () => {
         mock_server_request_Return_JSON(500, {});
         const [success, instruments] = await getAllInstruments();
         expect(success).toBeFalsy();
         expect(instruments).toEqual([]);
     });
 
-    it("It should return false with an empty list if request JSON is not a list", async () => {
+    it("should return false with an empty list if request JSON is not a list", async () => {
         mock_server_request_function(() =>
             Promise.resolve({
                 status: 200,
@@ -106,14 +83,14 @@ describe("Function getAllInstruments(filename: string) ", () => {
         expect(instruments).toEqual([]);
     });
 
-    it("It should return false with an empty list if request JSON is invalid", async () => {
+    it("should return false with an empty list if request JSON is invalid", async () => {
         mock_server_request_Return_JSON(200, { name: "NAME" });
         const [success, instruments] = await getAllInstruments();
         expect(success).toBeFalsy();
         expect(instruments).toEqual([]);
     });
 
-    it("It should return false with an empty list if request call fails", async () => {
+    it("should return false with an empty list if request call fails", async () => {
         mock_server_request_function(() =>
             Promise.resolve(() => {
                 throw "error";
@@ -132,25 +109,25 @@ describe("Function getAllInstruments(filename: string) ", () => {
 
 describe("Function deleteInstrument(instrumentName: string) ", () => {
 
-    it("It should return true if created 204 response is returned", async () => {
+    it("should return true if created 204 response is returned", async () => {
         mock_server_request_Return_JSON(204, {});
         const success = await deleteInstrument("OPN2004A");
         expect(success).toBeTruthy();
     });
 
-    it("It should return false if a 404 is returned from the server", async () => {
+    it("should return false if a 404 is returned from the server", async () => {
         mock_server_request_Return_JSON(404, {});
         const success = await deleteInstrument("OPN2004A");
         expect(success).toEqual([false, ""]);
     });
 
-    it("It should return false if request returns an error code", async () => {
+    it("should return false if request returns an error code", async () => {
         mock_server_request_Return_JSON(500, {});
         const success = await deleteInstrument("OPN2004A");
         expect(success).toEqual([false, ""]);
     });
 
-    it("It should return false object if request call fails", async () => {
+    it("should return false object if request call fails", async () => {
         mock_server_request_function(() =>
             Promise.resolve(() => {
                 throw "error";
@@ -168,25 +145,25 @@ describe("Function deleteInstrument(instrumentName: string) ", () => {
 
 describe("Function activateInstrument(instrumentName: string) ", () => {
 
-    it("It should return true if created 204 response is returned", async () => {
+    it("should return true if created 204 response is returned", async () => {
         mock_server_request_Return_JSON(204, {});
         const success = await activateInstrument("OPN2004A");
         expect(success).toBeTruthy();
     });
 
-    it("It should return false if a 404 is returned from the server", async () => {
+    it("should return false if a 404 is returned from the server", async () => {
         mock_server_request_Return_JSON(404, {});
         const success = await activateInstrument("OPN2004A");
         expect(success).toBeFalsy();
     });
 
-    it("It should return false if request returns an error code", async () => {
+    it("should return false if request returns an error code", async () => {
         mock_server_request_Return_JSON(500, {});
         const success = await activateInstrument("OPN2004A");
         expect(success).toBeFalsy();
     });
 
-    it("It should return false object if request call fails", async () => {
+    it("should return false object if request call fails", async () => {
         mock_server_request_function(() =>
             Promise.resolve(() => {
                 throw "error";
@@ -204,25 +181,25 @@ describe("Function activateInstrument(instrumentName: string) ", () => {
 
 describe("Function deactivateInstrument(instrumentName: string) ", () => {
 
-    it("It should return true if created 204 response is returned", async () => {
+    it("should return true if created 204 response is returned", async () => {
         mock_server_request_Return_JSON(204, {});
         const success = await deactivateInstrument("OPN2004A");
         expect(success).toBeTruthy();
     });
 
-    it("It should return false if a 404 is returned from the server", async () => {
+    it("should return false if a 404 is returned from the server", async () => {
         mock_server_request_Return_JSON(404, {});
         const success = await deactivateInstrument("OPN2004A");
         expect(success).toBeFalsy();
     });
 
-    it("It should return false if request returns an error code", async () => {
+    it("should return false if request returns an error code", async () => {
         mock_server_request_Return_JSON(500, {});
         const success = await deactivateInstrument("OPN2004A");
         expect(success).toBeFalsy();
     });
 
-    it("It should return false object if request call fails", async () => {
+    it("should return false object if request call fails", async () => {
         mock_server_request_function(() =>
             Promise.resolve(() => {
                 throw "error";
@@ -240,25 +217,25 @@ describe("Function deactivateInstrument(instrumentName: string) ", () => {
 
 describe("Function sendInstallRequest(instrumentName: string) ", () => {
 
-    it("It should return true if created 201 response is returned", async () => {
+    it("should return true if created 201 response is returned", async () => {
         mock_server_request_Return_JSON(201, {});
         const success = await sendInstallRequest("OPN2004A");
         expect(success).toBeTruthy();
     });
 
-    it("It should return false if a 404 is returned from the server", async () => {
+    it("should return false if a 404 is returned from the server", async () => {
         mock_server_request_Return_JSON(404, {});
         const success = await sendInstallRequest("OPN2004A");
         expect(success).toBeFalsy();
     });
 
-    it("It should return false if request returns an error code", async () => {
+    it("should return false if request returns an error code", async () => {
         mock_server_request_Return_JSON(500, {});
         const success = await sendInstallRequest("OPN2004A");
         expect(success).toEqual(false);
     });
 
-    it("It should return false object if request call fails", async () => {
+    it("should return false object if request call fails", async () => {
         mock_server_request_function(() =>
             Promise.resolve(() => {
                 throw "error";
@@ -276,25 +253,25 @@ describe("Function sendInstallRequest(instrumentName: string) ", () => {
 
 describe("Function getInstrumentModes(instrumentName: string)", () => {
 
-    it("It should return true if created 200 response is returned", async () => {
+    it("should return true if created 200 response is returned", async () => {
         mock_server_request_Return_JSON(200, true);
         const success = await getInstrumentModes("OPN2004A");
         expect(success).toBeTruthy();
     });
 
-    it("It should return null if a 404 is returned from the server", async () => {
+    it("should return null if a 404 is returned from the server", async () => {
         mock_server_request_Return_JSON(404, {});
         const success = await getInstrumentModes("OPN2004A");
         expect(success).toEqual([]);
     });
 
-    it("It should return null if request returns an error code", async () => {
+    it("should return null if request returns an error code", async () => {
         mock_server_request_Return_JSON(500, {});
         const success = await getInstrumentModes("OPN2004A");
         expect(success).toEqual([]);
     });
 
-    it("It should return null object if request call fails", async () => {
+    it("should return null object if request call fails", async () => {
         mock_server_request_function(() =>
             Promise.resolve(() => {
                 throw "error";
