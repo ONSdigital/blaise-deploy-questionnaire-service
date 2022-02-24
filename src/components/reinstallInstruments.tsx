@@ -1,9 +1,12 @@
 import React, { Fragment, ReactElement, useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { getAllInstruments, getAllInstrumentsInBucket } from "../utilities/http";
+import { getAllInstrumentsInBucket } from "../utilities/http";
+import { getInstruments } from "../client/instruments";
+
 import { ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import { verifyAndInstallInstrument } from "../utilities/processes";
 import Breadcrumbs from "./breadcrumbs";
+import { Instrument } from "blaise-api-node-client";
 
 function ReinstallInstruments(): ReactElement {
     const [instrumentList, setInstrumentList] = useState<string[]>([]);
@@ -16,31 +19,33 @@ function ReinstallInstruments(): ReactElement {
     const [installing, setInstalling] = useState<boolean>(false);
 
     useEffect(() => {
-        getInstruments().then();
+        getInstrumentsToReinstall().then();
     }, []);
 
     async function getInstalledInstrumentList() {
-        const [success, instrumentList] = await getAllInstruments();
-        console.log(`Response from get all instruments ${(success ? "successful" : "failed")}, data list length ${instrumentList.length}`);
-        console.log(instrumentList);
-
-        if (!success) {
+        let instruments: Instrument[];
+        try {
+            instruments = await getInstruments();
+            console.log(`Response from get all instruments successful, data list length ${instrumentList.length}`);
+            console.log(instruments);
+        } catch (error: unknown) {
+            console.log(`Response from get all instruments failed, data list length ${instrumentList.length}`);
             setListError("Unable to load questionnaires");
             setLoading(false);
             return [];
         }
 
         const list: string[] = [];
-        for (const instrument of instrumentList) {
+        for (const instrument of instruments) {
             list.push(`${instrument.name}.bpkg`);
         }
 
         return list;
     }
 
-    async function getInstruments() {
+    async function getInstrumentsToReinstall() {
         setLoading(true);
-        console.log("getInstruments");
+        console.log("getInstrumentsToReinstall");
         const list: string[] = [];
         setListError("");
 

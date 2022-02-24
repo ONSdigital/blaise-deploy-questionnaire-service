@@ -1,5 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { getCountOfUACs, getInstrumentModes } from "../../../utilities/http";
+import { getCountOfUACs } from "../../../utilities/http";
+import { getInstrumentModes } from "../../../client/instruments";
 import { Instrument } from "blaise-api-node-client";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import CsvDownloader from "react-csv-downloader";
@@ -21,14 +22,13 @@ const ViewWebModeDetails = ({ instrument }: Props): ReactElement => {
 
     useEffect(() => {
         getInstrumentModes(instrument.name)
-            .then((modes) => {
-                if (modes === null) {
-                    setErrored(true);
-                    return;
-                }
+            .then((modes: string[]) => {
                 if (modes.includes("CAWI")) {
                     setCawiMode(true);
                 }
+            }).catch(() => {
+                setErrored(true);
+                return;
             }).finally(() => setLoading(false));
         getIACsCount();
     }, []);

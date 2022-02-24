@@ -10,7 +10,7 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
   const blaiseHandler = new BlaiseHandler(blaiseApiClient, serverPark, auditLogger);
   router.get("/api/health/diagnosis", auth.Middleware, blaiseHandler.GetHealth);
   router.get("/api/instruments/:instrumentName", auth.Middleware, blaiseHandler.GetInstrument);
-  router.get("/api/install", auth.Middleware, blaiseHandler.InstallInstrument);
+  router.post("/api/install", auth.Middleware, blaiseHandler.InstallInstrument);
   router.delete("/api/instruments/:instrumentName", auth.Middleware, blaiseHandler.DeleteInstrument);
   router.patch("/api/instruments/:instrumentName/activate", auth.Middleware, blaiseHandler.ActivateInstrument);
   router.patch("/api/instruments/:instrumentName/deactivate", auth.Middleware, blaiseHandler.DeactivateInstrument);

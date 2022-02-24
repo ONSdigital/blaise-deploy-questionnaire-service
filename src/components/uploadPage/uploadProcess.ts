@@ -99,9 +99,16 @@ export async function checkInstrumentSettings(
     setInvalidSettings: (invalidSettings: Partial<InstrumentSettings>) => void,
     setErrored: (errored: boolean) => void
 ): Promise<boolean> {
-    const instrumentSettingsList = await getInstrumentSettings(instrumentName);
-    const instrumentModes = await getInstrumentModes(instrumentName);
-    if (instrumentSettingsList.length == 0 || instrumentModes.length == 0) {
+    let instrumentSettingsList: InstrumentSettings[];
+    let instrumentModes: string[];
+    try {
+        instrumentSettingsList = await getInstrumentSettings(instrumentName);
+        instrumentModes = await getInstrumentModes(instrumentName);
+        if (instrumentSettingsList.length == 0 || instrumentModes.length == 0) {
+            setErrored(true);
+            return false;
+        }
+    } catch {
         setErrored(true);
         return false;
     }

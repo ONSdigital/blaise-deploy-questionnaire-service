@@ -1,4 +1,5 @@
-import { deleteInstrument, deleteTOStartDate } from "../http";
+import { deleteTOStartDate } from "../http";
+import { deleteInstrument } from "../../client/instruments";
 
 type removeToStartDateAndDeleteInstrumentResponse = [boolean, string];
 
@@ -10,7 +11,7 @@ async function removeToStartDateAndDeleteInstrument(instrumentName: string): Pro
         return Promise.resolve([false, "Failed to delete TO start date"]);
     }
 
-    const [deleted] = await deleteInstrument(instrumentName);
+    const deleted = await deleteInstrument(instrumentName);
     if (!deleted) {
         console.error("Failed to delete the questionnaire");
         return Promise.resolve([false, "Failed to delete the questionnaire"]);

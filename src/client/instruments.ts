@@ -1,163 +1,117 @@
-import { requestPromiseJson, requestPromiseJsonList, requestPromiseNoResponse } from "../utilities/http/requestPromise";
 import { InstrumentSettings, Instrument } from "blaise-api-node-client";
 import axios from "axios";
-
-type getInstrumentListResponse = [boolean, Instrument[]];
-type deleteInstrumentResponse = [boolean, string];
-type getInstrumentCaseIDsResponse = [boolean, string[]];
+import axiosConfig from "./axiosConfig";
 
 export async function getInstrument(instrumentName: string): Promise<Instrument | undefined> {
     console.log(`Call to checkSurveyAlreadyExists(${instrumentName})`);
     const url = `/api/instruments/${instrumentName}`;
 
     try {
-        const response = await axios.get(url);
+        const response = await axios.get(url, axiosConfig());
         return response.data;
     } catch (error: any) {
         if (error.isAxiosError && error.response.status === 404) {
             console.log(`Instrument ${instrumentName} does not exist`);
             return undefined;
         }
+        console.error(`Failed to get instruments ${error}`);
         throw error;
     }
-
-    // return requestPromiseJson("GET", url).then(([status, data]): verifyInstrumentExistsResponse => {
-    //     console.log(`Response from check exists: Status ${status}, data ${data}`);
-    //     if (status === 200) {
-    //         if (data.name === instrumentName) {
-    //             console.log(`${instrumentName} already installed`);
-    //             return [true, data];
-    //         } else {
-    //             console.log(`${instrumentName} not found`);
-    //             return [false, null];
-    //         }
-    //     } else if (status === 404) {
-    //         return [false, null];
-    //     } else {
-    //         return [null, null];
-    //     }
-    // }).catch((error: Error) => {
-    //     console.error(`Response from check bucket Failed: Error ${error}`);
-    //     return [null, null];
-    // });
 }
 
-function getAllInstruments(): Promise<getInstrumentListResponse> {
-    console.log("Call to getAllInstruments");
+export async function getInstruments(): Promise<Instrument[]> {
+    console.log("Call to getInstruments");
     const url = "/api/instruments";
 
-    return requestPromiseJsonList("GET", url).then((response) => {
-        return response;
-    });
+    const response = await axios.get(url, axiosConfig());
+    return response.data;
 }
 
-function deleteInstrument(instrumentName: string): Promise<deleteInstrumentResponse> {
+export async function deleteInstrument(instrumentName: string): Promise<boolean> {
     console.log("Call to deleteInstrument");
     const url = `/api/instruments/${instrumentName}`;
 
-    return requestPromiseNoResponse("DELETE", url).then((status): deleteInstrumentResponse => {
-        console.log(`Response from deleteInstrument: Status ${status}`);
-        if (status === 204) {
-            return [true, ""];
-        } else {
-            return [false, ""];
-        }
-    }).catch((error: Error) => {
+    try {
+        const response = await axios.delete(url, axiosConfig());
+        return response.status === 204;
+    } catch (error: unknown) {
         console.error(`Response from deleteInstrument: Error ${error}`);
-        return [false, ""];
-    });
+        return false;
+    }
 }
 
-function activateInstrument(instrumentName: string): Promise<boolean> {
+export async function activateInstrument(instrumentName: string): Promise<boolean> {
     console.log("Call to activateInstrument");
     const url = `/api/instruments/${instrumentName}/activate`;
 
-    return requestPromiseNoResponse("PATCH", url).then((status): boolean => {
-        console.log(`Response from activateInstrument: Status ${status}`);
-        return status === 204;
-    }).catch((error: Error) => {
+    try {
+        const response = await axios.patch(url, axiosConfig());
+        return response.status === 204;
+    } catch (error: unknown) {
         console.error(`Response from activateInstrument: Error ${error}`);
         return false;
-    });
+    }
 }
 
-
-function deactivateInstrument(instrumentName: string): Promise<boolean> {
+export async function deactivateInstrument(instrumentName: string): Promise<boolean> {
     console.log("Call to deactivateInstrument");
     const url = `/api/instruments/${instrumentName}/deactivate`;
 
-    return requestPromiseNoResponse("PATCH", url).then((status): boolean => {
-        console.log(`Response from deactivateInstrument: Status ${status}`);
-        return status === 204;
-    }).catch((error: Error) => {
+    try {
+        const response = await axios.patch(url, axiosConfig());
+        return response.status === 204;
+    } catch (error: unknown) {
         console.error(`Response from deactivateInstrument: Error ${error}`);
         return false;
-    });
+    }
 }
 
-function sendInstallRequest(filename: string): Promise<boolean> {
+export async function installInstrument(filename: string): Promise<boolean> {
     console.log("Sending request to start install");
     const url = `/api/install?filename=${filename}`;
 
-    return requestPromiseJson("GET", url).then(([status, data]): boolean => {
-        console.log(`Response from install instrument: Status ${status}, data ${data}`);
-        return status === 201;
-    }).catch((error: Error) => {
+    try {
+        const response = await axios.post(url, axiosConfig());
+        return response.status === 201;
+    } catch (error: unknown) {
         console.error(`Failed to install questionnaire, Error ${error}`);
         return false;
-    });
+
+    }
 }
 
-function getInstrumentModes(instrumentName: string): Promise<string[]> {
+export async function getInstrumentModes(instrumentName: string): Promise<string[]> {
     console.log("Sending request get instrument modes");
     const url = `/api/instruments/${instrumentName}/modes`;
 
-    return requestPromiseJson("GET", url).then(([status, data]): string[] => {
-        console.log(`Response from get instrument modes: Status ${status}, data ${data}`);
-        if (status === 200) {
-            return data;
-        } else {
-            return [];
-        }
-    }).catch((error: Error) => {
+    try {
+        const response = await axios.get(url, axiosConfig());
+
+        return response.data;
+    } catch (error: unknown) {
         console.error(`Failed to get instrument modes, Error ${error}`);
-        return [];
-    });
+        throw error;
+    }
 }
 
-function getInstrumentSettings(instrumentName: string): Promise<InstrumentSettings[]> {
+export async function getInstrumentSettings(instrumentName: string): Promise<InstrumentSettings[]> {
     console.log("Sending request get instrument settings");
     const url = `/api/instruments/${instrumentName}/settings`;
 
-    return requestPromiseJson("GET", url).then(([status, data]): InstrumentSettings[] => {
-        console.log(`Response from get instrument settings: Status ${status}, data ${data}`);
-        if (status === 200) {
-            return data;
-        } else {
-            return [];
-        }
-    }).catch((error: Error) => {
+    try {
+        const response = await axios.get(url, axiosConfig());
+
+        return response.data;
+    } catch (error: unknown) {
         console.error(`Failed to get instrument settings, Error ${error}`);
-        return [];
-    });
+        throw error;
+    }
 }
 
-function getInstrumentCaseIds(instrumentName: string): Promise<getInstrumentCaseIDsResponse> {
-    console.log("Call to getAllInstruments");
+export async function getInstrumentCaseIds(instrumentName: string): Promise<string[]> {
+    console.log("Call to getInstrumentCaseIds");
     const url = `/api/instruments/${instrumentName}/cases/ids`;
 
-    return requestPromiseJsonList("GET", url).then((response) => {
-        return response;
-    });
+    const response = await axios.get(url, axiosConfig());
+    return response.data;
 }
-
-export {
-    getAllInstruments,
-    deleteInstrument,
-    activateInstrument,
-    deactivateInstrument,
-    sendInstallRequest,
-    getInstrumentModes,
-    getInstrumentSettings,
-    getInstrumentCaseIds
-};

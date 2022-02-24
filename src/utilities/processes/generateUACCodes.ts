@@ -1,4 +1,5 @@
-import { generateUACCodes, getInstrumentCaseIds, getUACCodesByCaseID, } from "../http";
+import { generateUACCodes, getUACCodesByCaseID, } from "../http";
+import { getInstrumentCaseIds } from "../../client/instruments";
 import { Datas } from "react-csv-downloader/dist/esm/lib/csv";
 import { InstrumentUacDetails } from "bus-api-node-client";
 
@@ -44,10 +45,7 @@ async function generateUACCodesAndCSVFileData(instrumentName: string): Promise<D
         throw new Error("Failed to get UAC codes by case ID");
     }
 
-    const [getInstrumentCaseIdsSuccess, caseIDs] = await getInstrumentCaseIds(instrumentName);
-    if (!getInstrumentCaseIdsSuccess) {
-        throw new Error("Failed to get instrument case IDs");
-    }
+    const caseIDs = await getInstrumentCaseIds(instrumentName);
 
     return mapCasesToUACCodes(caseIDs, uacCodes);
 }

@@ -6,7 +6,7 @@ import ONSTable, { TableColumns } from "./onsTable";
 import dateFormatter from "dayjs";
 import { Link } from "react-router-dom";
 import InstrumentStatus from "./instrumentStatus";
-import { getAllInstruments } from "../utilities/http";
+import { getInstruments } from "../client/instruments";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVial } from "@fortawesome/free-solid-svg-icons";
 
@@ -105,20 +105,22 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
     };
 
     const getInstrumentsList = async () => {
-        const [success, instrumentList] = await getAllInstruments();
-        console.log(`Response from get all instruments ${(success ? "successful" : "failed")}, data list length ${instrumentList.length}`);
-
-        if (!success) {
+        let instruments: Instrument[];
+        try {
+            instruments = await getInstruments();
+            console.log(`Response from get all instruments successful, data list length ${instruments.length}`);
+        } catch (error: unknown) {
+            console.log("Response from get all instruments failed");
             setMessage("Unable to load questionnaires");
             setErrored(true);
             return [];
         }
 
-        if (instrumentList.length === 0) {
+        if (instruments.length === 0) {
             setMessage("No installed questionnaires found.");
         }
 
-        return instrumentList;
+        return instruments;
     };
 
     useEffect(() => {
