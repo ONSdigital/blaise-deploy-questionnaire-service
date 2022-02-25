@@ -25,7 +25,7 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 
 const mockIsProduction = jest.fn();
 
-jest.mock("./utilities/env", () => ({
+jest.mock("./client/env", () => ({
     isProduction: () => mockIsProduction()
 }));
 

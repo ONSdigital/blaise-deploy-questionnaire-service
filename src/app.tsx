@@ -23,7 +23,7 @@ import InstrumentDetails from "./components/instrumentDetails/instrumentDetails"
 import ChangeToStartDate from "./components/instrumentDetails/changeToStartDate";
 import "./style.css";
 import { NavigationLinks } from "./components/navigationLinks";
-import { isProduction } from "./utilities/env";
+import { isProduction } from "./client/env";
 import { LoginForm, AuthManager } from "blaise-login-react-client";
 import "./style.css";
 

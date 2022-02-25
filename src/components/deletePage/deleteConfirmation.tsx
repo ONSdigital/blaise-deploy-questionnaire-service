@@ -3,7 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 import { Instrument } from "blaise-api-node-client";
 import ErroneousWarning from "./erroneousWarning";
-import { removeToStartDateAndDeleteInstrument } from "../../utilities/processes";
+import { removeToStartDateAndDeleteInstrument } from "../../client/componentProcesses";
 import Breadcrumbs from "../breadcrumbs";
 
 

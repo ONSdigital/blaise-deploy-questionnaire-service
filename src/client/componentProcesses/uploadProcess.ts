@@ -3,17 +3,17 @@ import {
     getInstrumentSettings,
     getInstrumentModes,
     deactivateInstrument,
-} from "../../client/instruments";
+} from "../instruments";
 import {
     initialiseUpload,
     uploadFile
-} from "../../client/upload";
-import { setTOStartDate } from "../../client/toStartDate";
+} from "../upload";
+import { setTOStartDate } from "../toStartDate";
 import {
     GetStrictInterviewingSettings,
     ValidateSettings,
 } from "../../utilities/instrumentSettings";
-import { verifyAndInstallInstrument } from "../../utilities/processes";
+import { verifyAndInstallInstrument } from ".";
 import { GetInstrumentMode } from "../../utilities/instrumentMode";
 import { InstrumentSettings, Instrument } from "blaise-api-node-client";
 

@@ -4,7 +4,7 @@ import { getInstrumentModes } from "../../../client/instruments";
 import { Instrument } from "blaise-api-node-client";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import CsvDownloader from "react-csv-downloader";
-import { generateUACCodesAndCSVFileData } from "../../../utilities/processes";
+import { generateUACCodesAndCSVFileData } from "../../../client/componentProcesses";
 
 interface Props {
     instrument: Instrument;

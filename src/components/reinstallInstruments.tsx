@@ -4,7 +4,7 @@ import { getAllInstrumentsInBucket } from "../client/upload";
 import { getInstruments } from "../client/instruments";
 
 import { ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
-import { verifyAndInstallInstrument } from "../utilities/processes";
+import { verifyAndInstallInstrument } from "../client/componentProcesses";
 import Breadcrumbs from "./breadcrumbs";
 import { Instrument } from "blaise-api-node-client";
 

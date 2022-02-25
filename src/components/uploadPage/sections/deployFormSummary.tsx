@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import { FormikContextType, useFormikContext } from "formik";
 import { Instrument } from "blaise-api-node-client";
 import dateFormatter from "dayjs";
-import { roundUp } from "../../../utilities";
+import { roundUp } from "../../../utilities/maths";
 
 interface PageFourProps {
     file: File | undefined

@@ -2,33 +2,33 @@ function isNumber(n: any) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function fieldPeriodFromInstrument(instrument_name: string): string {
-    const month_number_str: string = instrument_name.substring(5, 7);
-    let month_number_int = -1;
+function fieldPeriodFromInstrument(instrumentName: string): string {
+    const monthNumberString: string = instrumentName.substring(5, 7);
+    let monthNumberInt = -1;
     let month: string;
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
 
-    if (isNumber(month_number_str)) {
-        month_number_int = parseInt(month_number_str) - 1;
+    if (isNumber(monthNumberString)) {
+        monthNumberInt = parseInt(monthNumberString) - 1;
     } else {
         throw new Error("Month was not a integer");
     }
 
-    if (month_number_int >= 0 && month_number_int < 12) {
-        month = monthNames[month_number_int];
+    if (monthNumberInt >= 0 && monthNumberInt < 12) {
+        month = monthNames[monthNumberInt];
     } else {
         throw new Error("Month was dot between 1 and 12");
     }
 
-    return month + " 20" + instrument_name.substring(3, 5);
+    return month + " 20" + instrumentName.substring(3, 5);
 }
 
-export function fieldPeriodToText(instrument_name: string): string {
+export function fieldPeriodToText(instrumentName: string): string {
     try {
-        return fieldPeriodFromInstrument(instrument_name);
+        return fieldPeriodFromInstrument(instrumentName);
     } catch (error: unknown) {
         console.error("Error getting field period");
         return "Field period unknown";

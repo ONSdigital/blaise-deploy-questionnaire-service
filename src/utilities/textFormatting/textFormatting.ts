@@ -1,20 +1,11 @@
-function replaceUnderscoresWithSpaces(text: string) {
-    const search = "_";
-    const replaceWith = " ";
-    return text.split(search).join(replaceWith);
-}
-
 const formatText = (text: string): string => {
-    text = convertFirstCharacterToUppercase(text);
-    text = replaceUnderscoresWithSpaces(text);
-    return text;
+    text = titleCase(text);
+    return text.replaceAll("_", " ");
 };
 
-const convertFirstCharacterToUppercase = (stringToConvert: string): string => {
-    const firstCharacter = stringToConvert.substring(0, 1);
-    const restString = stringToConvert.substring(1);
-
-    return firstCharacter.toUpperCase() + restString;
+const titleCase = (text: string): string => {
+    const firstCharacter = text.substring(0, 1);
+    return `${firstCharacter.toUpperCase()}${text.substring(1)}`;
 };
 
 export { formatText };
