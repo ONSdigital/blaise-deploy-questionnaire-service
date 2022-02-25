@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { Auth } from "blaise-login-react-server";
-import { BimsApi, toStartDate } from "../bimsAPI/bimsApi";
+import { BimsApi, toStartDate } from "../bimsApi/bimsApi";
 import AuditLogger from "../auditLogging/logger";
 
 export default function newBimsHandler(bimsApiClient: BimsApi, auth: Auth, auditLogger: AuditLogger): Router {

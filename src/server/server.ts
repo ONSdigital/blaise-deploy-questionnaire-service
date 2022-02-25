@@ -6,7 +6,7 @@ import { Config } from "./config";
 import { newLoginHandler, Auth } from "blaise-login-react-server";
 import BlaiseApiClient from "blaise-api-node-client";
 import newBimsHandler from "./handlers/bimsHandler";
-import { BimsApi } from "./bimsAPI/bimsApi";
+import { BimsApi } from "./bimsApi/bimsApi";
 import newBlaiseHandler from "./handlers/blaiseHandler";
 import newBusHandler from "./handlers/busHandler";
 import BusApiClient from "bus-api-node-client";
