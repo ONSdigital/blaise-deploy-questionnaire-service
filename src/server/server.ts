@@ -55,7 +55,7 @@ export function newServer(config: Config): Express {
     server.use(express.json());
 
     // where ever the react built package is
-    const buildFolder = "../../build";
+    const buildFolder = "../build";
 
     // treat the index.html as a template and substitute the values at runtime
     server.set("views", path.join(__dirname, buildFolder));
@@ -75,7 +75,7 @@ export function newServer(config: Config): Express {
 
     server.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
         req.log.error(err, err.message);
-        res.render("../views/500.html", {});
+        res.render("../src/views/500.html", {});
     });
     return server;
 }
