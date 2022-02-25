@@ -38,6 +38,7 @@ export async function validateSelectedInstrumentExists(file: File | undefined, s
 
     if (instrument) {
         setFoundInstrument(instrument);
+        return true;
     }
 
     return false;

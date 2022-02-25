@@ -21,7 +21,7 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
     return Promise.resolve(true);
 });
 
-const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
+const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 
 // Load in feature details from .feature file
@@ -32,19 +32,18 @@ const feature = loadFeature(
 
 
 const instrumentList: Instrument[] = [];
-const mocker = new Mocker();
 
 defineFeature(feature, test => {
     afterEach(() => {
         jest.clearAllMocks();
         cleanup();
         jest.resetModules();
-        mock.reset();
+        mocker.reset();
     });
 
     beforeEach(() => {
         cleanup();
-        mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
+        mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
             {},
         );
     });
@@ -98,7 +97,7 @@ defineFeature(feature, test => {
         whenISelectToOverwrite(when);
         whenIConfirmToOverwrite(when);
 
-        thenTheQuestionnaireIsInstalled(then);
+        thenTheQuestionnaireIsInstalled(then, mocker);
         thenIAmPresentedWithASuccessfullyDeployedBanner(then);
     });
 

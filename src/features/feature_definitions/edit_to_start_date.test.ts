@@ -9,8 +9,9 @@ import { Instrument } from "blaise-api-node-client";
 import { thenICanViewTheTOStartDateSetToo, thenIHaveTheOptionToAddAToStartDate, thenIHaveTheOptionToChangeOrDeleteTheToStartDate, thenTheToStartDateIsDeleted, thenTheToStartDateIsStored } from "../step_definitions/then";
 import { whenIDeleteTheToStartDate, whenIHaveSelectedToAddAToStartDate, whenILoadTheHomepage, whenISelectTheContinueButton, whenISelectTheQuestionnaire, whenISelectToChangeOrDeleteTOStartDate, whenISpecifyAToStartDateOf } from "../step_definitions/when";
 import { givenTheQuestionnaireHasATOStartDate, givenTheQuestionnaireHasNoTOStartDate, givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
-import { Mocker } from "../step_definitions/helpers/mocker";
 import { AuthManager } from "blaise-login-react-client";
+import axios from "axios";
+import MockAdapeter from "axios-mock-adapter";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -24,7 +25,7 @@ const feature = loadFeature(
 
 
 const instrumentList: Instrument[] = [];
-const mocker = new Mocker();
+const mocker = new MockAdapeter(axios);
 
 
 defineFeature(feature, test => {
@@ -32,6 +33,7 @@ defineFeature(feature, test => {
         jest.clearAllMocks();
         cleanup();
         jest.resetModules();
+        mocker.reset();
     });
 
     beforeEach(() => {
@@ -78,7 +80,7 @@ defineFeature(feature, test => {
         whenISpecifyAToStartDateOf(when);
         whenISelectTheContinueButton(when);
 
-        thenTheToStartDateIsStored(then);
+        thenTheToStartDateIsStored(then, mocker);
     });
 
     test("Delete a TO start date from a deployed questionnaire", ({ given, when, then }) => {
@@ -91,7 +93,7 @@ defineFeature(feature, test => {
         whenIDeleteTheToStartDate(when);
         whenISelectTheContinueButton(when);
 
-        thenTheToStartDateIsDeleted(then);
+        thenTheToStartDateIsDeleted(then, mocker);
     });
 
     test("Add a TO Start Date to a deployed questionnaire", ({ given, when, then }) => {
@@ -104,6 +106,6 @@ defineFeature(feature, test => {
         whenISpecifyAToStartDateOf(when);
         whenISelectTheContinueButton(when);
 
-        thenTheToStartDateIsStored(then);
+        thenTheToStartDateIsStored(then, mocker);
     });
 });

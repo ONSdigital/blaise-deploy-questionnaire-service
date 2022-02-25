@@ -3,7 +3,7 @@ import axios from "axios";
 import axiosConfig from "./axiosConfig";
 
 export async function getInstrument(instrumentName: string): Promise<Instrument | undefined> {
-    console.log(`Call to checkSurveyAlreadyExists(${instrumentName})`);
+    console.log(`Call to getInstrument(${instrumentName})`);
     const url = `/api/instruments/${instrumentName}`;
 
     try {

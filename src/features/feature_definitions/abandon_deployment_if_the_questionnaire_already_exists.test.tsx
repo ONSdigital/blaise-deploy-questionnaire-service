@@ -22,8 +22,9 @@ import {
     thenIAmPresentedWithTheOptionsToCancelOrOverwrite,
     thenIAmReturnedToTheLandingPage
 } from "../step_definitions/then";
-import { Mocker } from "../step_definitions/helpers/mocker";
 import { AuthManager } from "blaise-login-react-client";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -37,7 +38,7 @@ const feature = loadFeature(
 );
 
 const instrumentList: Instrument[] = [];
-const mocker = new Mocker();
+const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 
 defineFeature(feature, test => {
@@ -45,7 +46,7 @@ defineFeature(feature, test => {
         jest.clearAllMocks();
         cleanup();
         jest.resetModules();
-
+        mocker.reset();
     });
 
     beforeEach(() => {

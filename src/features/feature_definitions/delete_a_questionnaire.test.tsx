@@ -31,8 +31,9 @@ import {
     whenIDeleteAQuestionnaire,
     whenILoadTheHomepage
 } from "../step_definitions/when";
-import { Mocker } from "../step_definitions/helpers/mocker";
 import { AuthManager } from "blaise-login-react-client";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -47,7 +48,7 @@ const feature = loadFeature(
 
 
 const instrumentList: Instrument[] = [];
-const mocker = new Mocker();
+const mocker = new MockAdapter(axios);
 
 
 defineFeature(feature, test => {
@@ -55,6 +56,7 @@ defineFeature(feature, test => {
         jest.clearAllMocks();
         cleanup();
         jest.resetModules();
+        mocker.reset();
     });
 
     beforeEach(() => {
@@ -68,7 +70,7 @@ defineFeature(feature, test => {
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);
-        thenTheQuestionnaireDataIsDeleted(then);
+        thenTheQuestionnaireDataIsDeleted(then, mocker);
         thenIGetTheDeleteSuccessBanner(then);
     });
 
@@ -93,7 +95,7 @@ defineFeature(feature, test => {
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);
-        thenTheQuestionnaireDataIsDeleted(then);
+        thenTheQuestionnaireDataIsDeleted(then, mocker);
         thenIGetTheDeleteSuccessBanner(then);
     });
 
@@ -102,7 +104,7 @@ defineFeature(feature, test => {
         whenILoadTheHomepage(when);
         whenIDeleteAQuestionnaire(when);
         whenICancelDelete(when);
-        thenTheQuestionnaireDataIsNotDeleted(then);
+        thenTheQuestionnaireDataIsNotDeleted(then, mocker);
         thenIAmReturnedToTheLandingPage(then);
     });
 });

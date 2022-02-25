@@ -259,3 +259,23 @@ export const whenIChooseToCancel = (when: DefineStepFunction): void => {
     });
   });
 };
+
+export const whenIDeploy = (when: DefineStepFunction): void => {
+  when("I deploy", async () => {
+    await act(async () => {
+      await flushPromises();
+    });
+    userEvent.click(screen.getByText(/No start date/i));
+    userEvent.click(screen.getByText(/Continue/));
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    userEvent.click(screen.getByText(/Deploy questionnaire/));
+
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+};

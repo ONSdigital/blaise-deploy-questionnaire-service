@@ -12,15 +12,14 @@ import axios from "axios";
 import { whenIChooseToDeployAnyway, whenIChooseToCancel, whenIConfirmMySelection, whenIDeployTheQuestionnaire, whenISelectToInstallWithNoStartDate, } from "../step_definitions/when";
 import { thenAWarningIsDisplayedWithTheMessage, thenIAmPresentedWithASuccessfullyDeployedBanner, thenIAmReturnedToTheLandingPage, thenIGetTheOptionToContinueOrCancel, thenTheQuestionnaireDataIsDeleted, thenTheQuestionnaireIsActivated, thenTheQuestionnaireIsDeactivated, thenTheQuestionnaireIsInstalled } from "../step_definitions/then";
 import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenInstallsSuccessfully, givenNoQuestionnairesAreInstalled, givenTheQuestionnaireHasModes, givenTheQuestionnareHasTheSettings } from "../step_definitions/given";
-import { Mocker } from "../step_definitions/helpers/mocker";
-import {AuthManager} from "blaise-login-react-client";
+import { AuthManager } from "blaise-login-react-client";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
+  return Promise.resolve(true);
 });
 
-const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
+const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 // Load in feature details from .feature file
 const feature = loadFeature(
@@ -28,18 +27,16 @@ const feature = loadFeature(
   { tagFilter: "not @server and not @integration" }
 );
 
-const mocker = new Mocker();
-
 defineFeature(feature, test => {
   afterEach(() => {
     jest.clearAllMocks();
     cleanup();
     jest.resetModules();
-    mock.reset();
+    mocker.reset();
   });
 
   beforeEach(() => {
-    mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200);
+    mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200);
   });
 
   test("Display warning when settings are incorrect", ({ given, when, then }) => {
@@ -53,7 +50,7 @@ defineFeature(feature, test => {
     whenISelectToInstallWithNoStartDate(when);
     whenIDeployTheQuestionnaire(when);
 
-    thenTheQuestionnaireIsDeactivated(then);
+    thenTheQuestionnaireIsDeactivated(then, mocker);
     thenAWarningIsDisplayedWithTheMessage(then);
     thenIGetTheOptionToContinueOrCancel(then);
   });
@@ -70,8 +67,8 @@ defineFeature(feature, test => {
     whenIDeployTheQuestionnaire(when);
     whenIChooseToDeployAnyway(when);
 
-    thenTheQuestionnaireIsInstalled(then);
-    thenTheQuestionnaireIsActivated(then);
+    thenTheQuestionnaireIsInstalled(then, mocker);
+    thenTheQuestionnaireIsActivated(then, mocker);
     thenIAmPresentedWithASuccessfullyDeployedBanner(then);
   });
 
@@ -87,7 +84,7 @@ defineFeature(feature, test => {
     whenIDeployTheQuestionnaire(when);
     whenIChooseToCancel(when);
 
-    thenTheQuestionnaireDataIsDeleted(then);
+    thenTheQuestionnaireDataIsDeleted(then, mocker);
     thenIAmReturnedToTheLandingPage(then);
   });
 
@@ -102,7 +99,7 @@ defineFeature(feature, test => {
     whenISelectToInstallWithNoStartDate(when);
     whenIDeployTheQuestionnaire(when);
 
-    thenTheQuestionnaireIsInstalled(then);
+    thenTheQuestionnaireIsInstalled(then, mocker);
     thenIAmPresentedWithASuccessfullyDeployedBanner(then);
   });
 });

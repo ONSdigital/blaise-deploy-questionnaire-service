@@ -12,8 +12,9 @@ import { Instrument } from "blaise-api-node-client";
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenILoadTheHomepage } from "../step_definitions/when";
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires } from "../step_definitions/then";
-import { Mocker } from "../step_definitions/helpers/mocker";
 import { AuthManager } from "blaise-login-react-client";
+import axios from "axios";
+import MockAdapeter from "axios-mock-adapter";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -27,7 +28,7 @@ const feature = loadFeature(
 );
 
 const instrumentList: Instrument[] = [];
-const mocker = new Mocker();
+const mocker = new MockAdapeter(axios);
 
 
 defineFeature(feature, test => {
@@ -35,6 +36,7 @@ defineFeature(feature, test => {
         jest.clearAllMocks();
         cleanup();
         jest.resetModules();
+        mocker.reset();
     });
 
     beforeEach(() => {

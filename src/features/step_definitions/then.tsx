@@ -4,6 +4,7 @@
 
 import { screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import MockAdapter from "axios-mock-adapter/types";
 import { DefineStepFunction } from "jest-cucumber";
 import flushPromises from "../../tests/utils";
 import { formatDateString } from "./helpers/functions";
@@ -68,72 +69,78 @@ export const thenIAmPresentedWithAConfirmOverwriteWarning = (then: DefineStepFun
   });
 };
 
-export const thenTheQuestionnaireDataIsDeleted = (then: DefineStepFunction): void => {
+export const thenTheQuestionnaireDataIsDeleted = (then: DefineStepFunction, mocker: MockAdapter): void => {
   then(/the questionnaire and data is deleted from Blaise for '(.*)'/, async (questionnaire: string) => {
     await act(async () => {
       await flushPromises();
     });
 
-    expect(global.fetch).toHaveBeenCalledWith(`/api/instruments/${questionnaire}`, {
-      "body": null,
-      "method": "DELETE",
-      "headers": { "Content-Type": "application/json" }
-    });
+    expect(mocker.history.delete).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: `/api/instruments/${questionnaire}`
+        })
+      ])
+    );
   });
 };
 
-export const thenTheQuestionnaireDataIsNotDeleted = (then: DefineStepFunction): void => {
+export const thenTheQuestionnaireDataIsNotDeleted = (then: DefineStepFunction, mocker: MockAdapter): void => {
   then(/the questionnaire and data is not deleted from Blaise for '(.*)'/, async (questionnaire: string) => {
     await act(async () => {
       await flushPromises();
     });
 
-    expect(global.fetch).not.toBeCalledWith(`/api/instruments/${questionnaire}`, {
-      "body": null,
-      "method": "DELETE"
-    });
+    expect(mocker.history.delete).toHaveLength(0);
   });
 };
 
-export const thenTheQuestionnaireIsInstalled = (then: DefineStepFunction): void => {
+export const thenTheQuestionnaireIsInstalled = (then: DefineStepFunction, mocker: MockAdapter): void => {
   then(/the questionnaire package '(.*)' is deployed/, async (questionnaire: string) => {
     await act(async () => {
       await flushPromises();
     });
 
-    expect(global.fetch).toHaveBeenCalledWith(`/api/install?filename=${questionnaire}.bpkg`, {
-      "body": null,
-      "method": "GET",
-      "headers": { "Content-Type": "application/json" }
-    });
+    expect(mocker.history.post).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: "/api/install",
+          data: JSON.stringify({ filename: `${questionnaire}.bpkg` })
+        }),
+      ])
+    );
   });
 };
 
-export const thenTheQuestionnaireIsActivated = (then: DefineStepFunction): void => {
+export const thenTheQuestionnaireIsActivated = (then: DefineStepFunction, mocker: MockAdapter): void => {
   then(/the questionnaire package '(.*)' is activated/, async (questionnaire: string) => {
     await act(async () => {
       await flushPromises();
     });
 
-    expect(global.fetch).toHaveBeenCalledWith(`/api/instruments/${questionnaire}/activate`, {
-      "body": null,
-      "method": "PATCH",
-      "headers": { "Content-Type": "application/json" }
-    });
+    expect(mocker.history.patch).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: `/api/instruments/${questionnaire}/activate`,
+        }),
+      ])
+    );
   });
 };
 
-export const thenTheQuestionnaireIsDeactivated = (then: DefineStepFunction): void => {
+export const thenTheQuestionnaireIsDeactivated = (then: DefineStepFunction, mocker: MockAdapter): void => {
   then(/the questionnaire package '(.*)' is deactivated/, async (questionnaire: string) => {
     await act(async () => {
       await flushPromises();
     });
 
-    expect(global.fetch).toHaveBeenCalledWith(`/api/instruments/${questionnaire}/deactivate`, {
-      "body": null,
-      "method": "PATCH",
-      "headers": { "Content-Type": "application/json" }
-    });
+    expect(mocker.history.patch).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: `/api/instruments/${questionnaire}/deactivate`,
+        }),
+      ])
+    );
   });
 };
 
@@ -186,29 +193,29 @@ export const thenICanViewTheTOStartDateSetToo = (then: DefineStepFunction): void
   });
 };
 
-export const thenTheToStartDateIsStored = (then: DefineStepFunction): void => {
+export const thenTheToStartDateIsStored = (then: DefineStepFunction, mocker: MockAdapter): void => {
   then(/the TO start date of '(.*)' is stored against '(.*)'/, async (toStartDate: string, questionnaire: string) => {
-    await waitFor(() => {
-      expect(screen.getByText(/Questionnaire details/i)).toBeDefined();
-      expect(global.fetch).toHaveBeenCalledWith(`/api/tostartdate/${questionnaire}`, {
-        "body": JSON.stringify({ "tostartdate": formatDateString(toStartDate) }),
-        "method": "POST",
-        "headers": { "Content-Type": "application/json" }
-      });
-    });
+    expect(mocker.history.post).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: `/api/tostartdate/${questionnaire}`,
+          data: JSON.stringify({ "tostartdate": formatDateString(toStartDate) })
+        }),
+      ])
+    );
   });
 };
 
-export const thenTheToStartDateIsDeleted = (then: DefineStepFunction): void => {
+export const thenTheToStartDateIsDeleted = (then: DefineStepFunction, mocker: MockAdapter): void => {
   then(/the TO Start Date is deleted from '(.*)'/, async (questionnaire: string) => {
-    await waitFor(() => {
-      expect(screen.getByText(/Questionnaire details/i)).toBeDefined();
-      expect(global.fetch).toHaveBeenCalledWith(`/api/tostartdate/${questionnaire}`, {
-        "body": JSON.stringify({ "tostartdate": "" }),
-        "method": "POST",
-        "headers": { "Content-Type": "application/json" }
-      });
-    });
+    expect(mocker.history.post).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: `/api/tostartdate/${questionnaire}`,
+          data: JSON.stringify({ "tostartdate": "" })
+        }),
+      ])
+    );
   });
 };
 
@@ -278,13 +285,15 @@ export const thenAGenerateUacButtonIsNotAvailable = (then: DefineStepFunction): 
   });
 };
 
-export const thenUACsAreGenerated = (then: DefineStepFunction): void => {
+export const thenUACsAreGenerated = (then: DefineStepFunction, mocker: MockAdapter): void => {
   then(/UACs are generated for '(.*)'/, (questionnaire: string) => {
-    expect(global.fetch).toHaveBeenCalledWith(`/api/uacs/instrument/${questionnaire}`, {
-      "method": "POST",
-      "body": null,
-      "headers": { "Content-Type": "application/json" }
-    });
+    expect(mocker.history.post).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: `/api/uacs/instrument/${questionnaire}`,
+        }),
+      ])
+    );
   });
 };
 
