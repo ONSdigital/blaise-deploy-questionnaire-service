@@ -4,11 +4,11 @@ import { instrumentWithName } from "./helpers/apiMockObjects";
 import { InstrumentSettings, Instrument } from "blaise-api-node-client";
 import MockAdapter from "axios-mock-adapter";
 
-export const givenTheQuestionnaireIsInstalled = (
+export function givenTheQuestionnaireIsInstalled(
   given: DefineStepFunction,
   instrumentList: Instrument[],
   mocker: MockAdapter
-): void => {
+): void {
   given(/the questionnaire '(.*)' is installed/, (questionnaire: string) => {
     const newInstrument = instrumentWithName(questionnaire);
     if (!instrumentList.some(instrument => instrument.name === questionnaire)) {
@@ -37,19 +37,19 @@ export const givenTheQuestionnaireIsInstalled = (
     mocker.onGet(`/api/instruments/${questionnaire}/modes`).reply(200, ["CAWI", "CATI"]);
     mocker.onGet(`/api/uacs/instrument/${questionnaire}/count`).reply(200, { count: 0 });
   });
-};
+}
 
 // Just a bunch of default mocks to stop things falling over
-export const givenNoQuestionnairesAreInstalled = (
+export function givenNoQuestionnairesAreInstalled(
   given: DefineStepFunction,
   mocker: MockAdapter
-): void => {
+): void {
   given("no questionnaires are installed", () => {
     mocker.onGet("/api/instruments").reply(200, []);
   });
-};
+}
 
-export const givenInstallsSuccessfully = (given: DefineStepFunction, mocker: MockAdapter): void => {
+export function givenInstallsSuccessfully(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' installs successfully/, (questionnaire: string) => {
     mocker.onDelete(`/api/instruments/${questionnaire}`).reply(204);
     mocker.onGet(`/api/instruments/${questionnaire}`).reply(200);
@@ -75,22 +75,22 @@ export const givenInstallsSuccessfully = (given: DefineStepFunction, mocker: Moc
     mocker.onPatch(`/api/instruments/${questionnaire}/activate`).reply(204);
     mocker.onPatch(`/api/instruments/${questionnaire}/deactivate`).reply(204);
   });
-};
+}
 
-export const givenTheQuestionnaireHasModes = (
+export function givenTheQuestionnaireHasModes(
   given: DefineStepFunction,
   mocker: MockAdapter
-): void => {
+): void {
   given(/'(.*)' has the modes '(.*)'/, (questionnaire: string, modes: string) => {
     mocker.onGet(`/api/instruments/${questionnaire}/modes`).reply(200, modes.split(","));
   });
-};
+}
 
-export const givenTheQuestionnaireHasCases = (
+export function givenTheQuestionnaireHasCases(
   given: DefineStepFunction,
   instrumentList: Instrument[],
   mocker: MockAdapter
-): void => {
+): void {
   given(/'(.*)' has (\d+) cases/, (questionnaire: string, cases: string) => {
     const caseCount: number = +cases;
     for (const instrument of instrumentList) {
@@ -100,21 +100,21 @@ export const givenTheQuestionnaireHasCases = (
       }
     }
   });
-};
+}
 
-export const givenTheQuestionnaireHasUACs = (
+export function givenTheQuestionnaireHasUACs(
   given: DefineStepFunction,
   mocker: MockAdapter
-): void => {
+): void {
   given(/'(.*)' has (\d+) UACs/, (questionnaire: string, cases: string) => {
     mocker.onGet(`/api/uacs/instrument/${questionnaire}/count`).reply(200, { count: +cases });
   });
-};
+}
 
-export const givenTheQuestionnaireIsErroneous = (
+export function givenTheQuestionnaireIsErroneous(
   given: DefineStepFunction,
   instrumentList: Instrument[],
-): void => {
+): void {
   given(/'(.*)' is erroneous/, (questionnaire: string) => {
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
@@ -122,61 +122,62 @@ export const givenTheQuestionnaireIsErroneous = (
       }
     }
   });
-};
+}
 
-export const givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous = (
+export function givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(
   given: DefineStepFunction,
   mocker: MockAdapter
-): void => {
+): void {
   given(/'(.*)' cannot be deleted because it would go erroneous/, (questionnaire: string) => {
     mocker.onDelete(`/api/instruments/${questionnaire}`).reply(420);
     mocker.onGet(`/api/instruments/${questionnaire}`).reply(420);
   });
-};
+}
 
-export const givenTOStartDateFails = (given: DefineStepFunction, mocker: MockAdapter): void => {
+
+export function givenTOStartDateFails(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/setting a TO start date for '(.*)' fails/, (questionnaire: string) => {
     mocker.onPost(`/api/tostartdate/${questionnaire}`).reply(500);
   });
-};
+}
 
-export const givenUACGenerationIsBroken = (given: DefineStepFunction, mocker: MockAdapter): void => {
+export function givenUACGenerationIsBroken(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/UAC generation is broken for '(.*)'/, (questionnaire: string) => {
     mocker.onPost(`/api/uacs/instrument/${questionnaire}`).reply(500);
   });
-};
+}
 
 
-export const givenTheQuestionnaireHasATOStartDate = (given: DefineStepFunction, mocker: MockAdapter): void => {
+export function givenTheQuestionnaireHasATOStartDate(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' has a TO start date of '(.*)'/, async (questionnaire: string, toStartDate: string) => {
     mocker.onGet(`/api/tostartdate/${questionnaire}`).reply(200, { tostartdate: formatDateString(toStartDate) });
   });
-};
+}
 
 
-export const givenTheQuestionnaireHasNoTOStartDate = (given: DefineStepFunction, mocker: MockAdapter): void => {
+export function givenTheQuestionnaireHasNoTOStartDate(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' has no TO start date/, async (questionnaire: string) => {
     mocker.onGet(`/api/tostartdate/${questionnaire}`).reply(404);
   });
-};
+}
 
-export const givenAllInstallsWillFail = (given: DefineStepFunction, mocker: MockAdapter): void => {
+export function givenAllInstallsWillFail(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/All Questionnaire installs will fail for '(.*)'/, (questionnaire_matcher: string) => {
     mocker.onPost("/api/install").reply(500);
   });
-};
+}
 
-export const givenIHaveSelectedTheQuestionnairePacakgeToDeploy = (given: DefineStepFunction): void => {
+export function givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given: DefineStepFunction): void {
   given(/I have selected the questionnaire package for '(.*)' to deploy/, async (questionnaire: string) => {
     await navigateToDeployPageAndSelectFile(questionnaire);
   });
-};
+}
 
-export const givenTheQuestionnaireIsLive = (
+export function givenTheQuestionnaireIsLive(
   given: DefineStepFunction,
   instrumentList: Instrument[],
   mocker: MockAdapter
-): void => {
+): void {
   given(/'(.*)' is live/, (questionnaire: string) => {
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
@@ -188,13 +189,13 @@ export const givenTheQuestionnaireIsLive = (
       }
     }
   });
-};
+}
 
-export const givenTheQuestionnaireIsInactive = (
+export function givenTheQuestionnaireIsInactive(
   given: DefineStepFunction,
   instrumentList: Instrument[],
   mocker: MockAdapter
-): void => {
+): void {
   given(/'(.*)' is inactive/, (questionnaire: string) => {
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
@@ -205,13 +206,13 @@ export const givenTheQuestionnaireIsInactive = (
       }
     }
   });
-};
+}
 
-export const givenTheQuestionnaireHasActiveSurveyDays = (
+export function givenTheQuestionnaireHasActiveSurveyDays(
   given: DefineStepFunction,
   instrumentList: Instrument[],
   mocker: MockAdapter
-): void => {
+): void {
   given(/'(.*)' has active survey days/, (questionnaire: string) => {
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
@@ -222,9 +223,9 @@ export const givenTheQuestionnaireHasActiveSurveyDays = (
       }
     }
   });
-};
+}
 
-export const givenTheQuestionnareHasTheSettings = (given: DefineStepFunction, mocker: MockAdapter): void => {
+export function givenTheQuestionnareHasTheSettings(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' has the settings:/, (questionnaire: string, table: any[]) => {
     const settings: InstrumentSettings[] = [];
     table.forEach((row: any) => {
@@ -240,4 +241,4 @@ export const givenTheQuestionnareHasTheSettings = (given: DefineStepFunction, mo
     });
     mocker.onGet(`/api/instruments/${questionnaire}/settings`).reply(200, settings);
   });
-};
+}
