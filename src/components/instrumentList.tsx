@@ -93,7 +93,7 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
         return instrumentsToFilter;
     }
 
-    const filterList = (filterValue: string) => {
+    function filterList(filterValue: string) {
         // Filter by the search field
         if (filterValue === "") {
             setFilteredList(filterTestInstruments(instruments, filterValue));
@@ -107,9 +107,9 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
         if (instruments.length > 0 && newFilteredList.length === 0) {
             setMessage(`No questionnaires containing ${filterValue} found`);
         }
-    };
+    }
 
-    const getInstrumentsList = async () => {
+    async function getInstrumentsList() {
         let instruments: Instrument[];
         try {
             instruments = await getInstruments();
@@ -126,7 +126,7 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
         }
 
         return instruments;
-    };
+    }
 
     useEffect(() => {
         getInstrumentsList().then((instrumentList: Instrument[]) => {

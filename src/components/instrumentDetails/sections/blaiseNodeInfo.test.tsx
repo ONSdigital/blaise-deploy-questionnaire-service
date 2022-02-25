@@ -37,8 +37,6 @@ const instrumentWithNodeInfo: Instrument = {
 
 
 describe("Blaise Node Info Collapsible", () => {
-
-
     it("should display every node and its status", async () => {
         render(
             <BlaiseNodeInfo instrument={instrumentWithNodeInfo} />

@@ -20,7 +20,7 @@ function InstrumentDetails(): ReactElement {
 
     if (instrument === null) {
         // No instrument provided so return users to the homepage
-        return (<Redirect to={"/"} />);
+        return (<Redirect to={"/"} push={true} />);
     }
 
     return (

@@ -1,7 +1,7 @@
-import {ONSPanel, StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
-import React, {ChangeEvent, ReactElement} from "react";
-import {FormikContextType, useFormikContext} from "formik";
-import {Link} from "react-router-dom";
+import { ONSPanel, StyledFormErrorSummary, StyledFormField } from "blaise-design-system-react-components";
+import React, { ChangeEvent, ReactElement } from "react";
+import { FormikContextType, useFormikContext } from "formik";
+import { Link } from "react-router-dom";
 
 interface SelectFilePageProps {
     file: File | undefined;
@@ -10,8 +10,8 @@ interface SelectFilePageProps {
 }
 
 function SelectFile(props: SelectFilePageProps): ReactElement {
-    const {file, setFile} = props;
-    const {isSubmitting}: FormikContextType<unknown> = useFormikContext();
+    const { file, setFile } = props;
+    const { isSubmitting }: FormikContextType<unknown> = useFormikContext();
 
     function validateInput() {
         let error;
@@ -25,11 +25,11 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
     }
 
 
-    const handleFileChange = (selectorFiles: FileList | null) => {
+    function handleFileChange(selectorFiles: FileList | null) {
         if (selectorFiles && selectorFiles.length === 1) {
             setFile(selectorFiles[0]);
         }
-    };
+    }
 
     const field = {
         name: "Select survey package",
@@ -55,18 +55,18 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
             <ONSPanel>
                 <p>
                     When a questionnaire file is selected and you continue to deploy this questionnaire file, <b>this
-                    may take a few minutes</b>.
-                    <br/>
-                    <br/>
+                        may take a few minutes</b>.
+                    <br />
+                    <br />
                     Given this, <b>do not navigate away</b> from this page during this process. You will be
                     re-directed
                     when there is an update regarding the deploy of the questionnaire.
                 </p>
             </ONSPanel>
 
-            <StyledFormErrorSummary/>
+            <StyledFormErrorSummary />
 
-            <StyledFormField {...field}/>
+            <StyledFormField {...field} />
         </>
     );
 }

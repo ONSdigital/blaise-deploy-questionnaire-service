@@ -1,5 +1,5 @@
 import React, { Fragment, ReactElement, useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { getAllInstrumentsInBucket } from "../client/upload";
 import { getInstruments } from "../client/instruments";
 
@@ -11,12 +11,11 @@ import { Instrument } from "blaise-api-node-client";
 function ReinstallInstruments(): ReactElement {
     const [instrumentList, setInstrumentList] = useState<string[]>([]);
     const [listError, setListError] = useState<string>("Loading ...");
-    const [redirect, setRedirect] = useState<boolean>(false);
     const [uploadStatus, setUploadStatus] = useState<string>("");
-    const [instrumentName, setInstrumentName] = useState<string>("");
     const [instrumentToInstall, setInstrumentToInstall] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
     const [installing, setInstalling] = useState<boolean>(false);
+    const history = useHistory();
 
     useEffect(() => {
         getInstrumentsToReinstall().then();
@@ -78,14 +77,15 @@ function ReinstallInstruments(): ReactElement {
 
     async function installInstrumentFromBucket() {
         setInstalling(true);
-        setInstrumentName(instrumentToInstall.replace(/\.[a-zA-Z]*$/, ""));
 
         const [installed, message] = await verifyAndInstallInstrument(instrumentToInstall);
         if (!installed) {
             setUploadStatus(message);
         }
 
-        setRedirect(true);
+        history.push("/UploadSummary",
+            { questionnaireName: instrumentToInstall.replace(/\.[a-zA-Z]*$/, ""), status: uploadStatus }
+        );
     }
 
 
@@ -150,13 +150,6 @@ function ReinstallInstruments(): ReactElement {
 
     return (
         <>
-            {
-                redirect && <Redirect
-                    to={{
-                        pathname: "/UploadSummary",
-                        state: { questionnaireName: instrumentName, status: uploadStatus }
-                    }} />
-            }
             <Breadcrumbs BreadcrumbList={
                 [
                     { link: "/", title: "Home" }, { link: "/upload", title: "Deploy a questionnaire" }

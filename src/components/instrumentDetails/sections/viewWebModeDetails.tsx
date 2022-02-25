@@ -30,6 +30,24 @@ const ViewWebModeDetails = ({ instrument }: Props): ReactElement => {
             });
     }
 
+    async function generateUACs() {
+        setLoading(true);
+        setLoadingMessage("Generating Unique Access Codes for cases");
+        setUacGenerationFailed(false);
+
+        return generateUACCodesAndCSVFileData(instrument.name)
+            .then((uacList) => {
+                console.log("Generated UAC Codes");
+                getUACCount();
+                return uacList;
+            }).catch((error) => {
+                setUacGenerationFailed(true);
+                console.error(error);
+                console.error("Error occurred while generating Unique Access Codes");
+                return [{ error: "Error occurred while generating Unique Access Codes" }];
+            }).finally(() => setLoading(false));
+    }
+
     useEffect(() => {
         getInstrumentModes(instrument.name)
             .then((modes: string[]) => {
@@ -51,24 +69,6 @@ const ViewWebModeDetails = ({ instrument }: Props): ReactElement => {
         }
         setShowGenerateUACsButton(bool);
     }, [instrument, uacCount]);
-
-    const generateUACs = async () => {
-        setLoading(true);
-        setLoadingMessage("Generating Unique Access Codes for cases");
-        setUacGenerationFailed(false);
-
-        return generateUACCodesAndCSVFileData(instrument.name)
-            .then((uacList) => {
-                console.log("Generated UAC Codes");
-                getUACCount();
-                return uacList;
-            }).catch((error) => {
-                setUacGenerationFailed(true);
-                console.error(error);
-                console.error("Error occurred while generating Unique Access Codes");
-                return [{ error: "Error occurred while generating Unique Access Codes" }];
-            }).finally(() => setLoading(false));
-    };
 
     if (loading) {
         return (

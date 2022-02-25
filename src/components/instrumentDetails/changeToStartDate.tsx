@@ -12,7 +12,6 @@ interface LocationState {
     instrumentName: string;
 }
 
-
 function ChangeToStartDate(): ReactElement {
     const history = useHistory();
     const location = useLocation<LocationState>();

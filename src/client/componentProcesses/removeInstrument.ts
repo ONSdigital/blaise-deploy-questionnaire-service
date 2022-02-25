@@ -8,16 +8,16 @@ async function removeToStartDateAndDeleteInstrument(instrumentName: string): Pro
     const toStartDateDeleted = await deleteTOStartDate(instrumentName);
     if (!toStartDateDeleted) {
         console.error("Failed to delete TO start date");
-        return Promise.resolve([false, "Failed to delete TO start date"]);
+        return [false, "Failed to delete TO start date"];
     }
 
     const deleted = await deleteInstrument(instrumentName);
     if (!deleted) {
         console.error("Failed to delete the questionnaire");
-        return Promise.resolve([false, "Failed to delete the questionnaire"]);
+        return [false, "Failed to delete the questionnaire"];
     }
 
-    return Promise.resolve([true, "Deleted successfully"]);
+    return [true, "Deleted successfully"];
 }
 
 export { removeToStartDateAndDeleteInstrument };

@@ -1,5 +1,5 @@
-import React, { ReactElement, useState } from "react";
-import { Redirect, useHistory, useLocation } from "react-router-dom";
+import React, { ReactElement } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 
 interface Location {
@@ -8,18 +8,12 @@ interface Location {
 }
 
 function DeploymentSummary(): ReactElement {
-    const [redirect, setRedirect] = useState<boolean>(false);
     const location = useLocation<Location>();
     const history = useHistory();
     const { questionnaireName, status } = location.state || { questionnaireName: "/" };
 
     return (
         <>
-            {
-                redirect && <Redirect to="/" />
-            }
-
-
             <main id="main-content" className="page__main u-mt-no">
                 {
                     (status === "" ?
@@ -68,7 +62,7 @@ function DeploymentSummary(): ReactElement {
                     onClick={() => history.push("/upload")} />)}
                 <ONSButton label="Go to table of questionnaires"
                     primary={(status === "")}
-                    onClick={() => setRedirect(true)} />
+                    onClick={() => history.push("/")} />
             </main>
         </>
     );

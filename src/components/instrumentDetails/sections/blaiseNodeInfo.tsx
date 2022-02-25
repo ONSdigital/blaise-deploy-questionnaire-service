@@ -8,7 +8,6 @@ interface NodeProps {
 }
 
 function BlaiseNodeInfo({ instrument }: NodeProps): ReactElement {
-
     return (
         <>
             <Collapsible title="What are the questionnaire install states on the Blaise nodes?">

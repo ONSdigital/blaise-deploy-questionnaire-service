@@ -8,7 +8,7 @@ import DeployFormSummary from "./sections/deployFormSummary";
 import AlreadyExists from "./sections/alreadyExists";
 import ConfirmOverride from "./sections/confirmOverride";
 import InvalidSettings from "./sections/invalidSettings";
-import { uploadAndInstallFile, validateSelectedInstrumentExists, checkInstrumentSettings } from "../../client/componentProcesses/uploadProcess";
+import { uploadAndInstallFile, validateSelectedInstrumentExists, checkInstrumentSettings } from "../../client/componentProcesses";
 import { roundUp } from "../../utilities/maths";
 import Breadcrumbs from "../breadcrumbs";
 import { activateInstrument, deleteInstrument } from "../../client/instruments";
@@ -41,10 +41,10 @@ function UploadPage(): ReactElement {
     const history = useHistory();
 
 
-    const onFileUploadProgress = (progressEvent: ProgressEvent) => {
+    function onFileUploadProgress(progressEvent: ProgressEvent) {
         const percentage: number = roundUp((progressEvent.loaded / progressEvent.total) * 100, 2);
         setUploadPercentage(percentage);
-    };
+    }
 
     function submitButton(): string {
         switch (activeStep) {

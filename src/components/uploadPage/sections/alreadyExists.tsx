@@ -1,12 +1,11 @@
-import React, {ReactElement} from "react";
-import {StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
+import React, { ReactElement } from "react";
+import { StyledFormErrorSummary, StyledFormField } from "blaise-design-system-react-components";
 
 interface SelectFilePageProps {
     instrumentName: string;
 }
 
-function AlreadyExists({instrumentName}: SelectFilePageProps): ReactElement {
-
+function AlreadyExists({ instrumentName }: SelectFilePageProps): ReactElement {
     function validateRadio(value: string) {
         let error;
         if (!value) {
@@ -22,8 +21,8 @@ function AlreadyExists({instrumentName}: SelectFilePageProps): ReactElement {
         autoFocus: true,
         validate: validateRadio,
         radioOptions: [
-            {id: "cancel", label: "Cancel and keep original questionnaire", value: "cancel"},
-            {id: "continue", label: "Overwrite the entire questionnaire", value: "continue"},
+            { id: "cancel", label: "Cancel and keep original questionnaire", value: "cancel" },
+            { id: "continue", label: "Overwrite the entire questionnaire", value: "continue" },
         ],
         props: {}
     };
@@ -32,13 +31,13 @@ function AlreadyExists({instrumentName}: SelectFilePageProps): ReactElement {
         <>
             <h1 className="u-mb-l">
                 Questionnaire file <em className="highlight">{instrumentName}</em> already exists in the system.
-                <br/>
+                <br />
                 What action do you want to take?
             </h1>
 
-            <StyledFormErrorSummary/>
+            <StyledFormErrorSummary />
 
-            <StyledFormField {...field}/>
+            <StyledFormField {...field} />
         </>
     );
 }
