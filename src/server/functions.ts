@@ -5,7 +5,7 @@ function isNumber(n: any) {
 function fieldPeriodFromInstrument(instrument_name: string): string {
     const month_number_str: string = instrument_name.substring(5, 7);
     let month_number_int = -1;
-    let month = "Unknown";
+    let month: string;
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
