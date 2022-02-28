@@ -131,7 +131,11 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
     useEffect(() => {
         getInstrumentsList().then((instrumentList: Instrument[]) => {
             setInstruments(instrumentList);
-            setFilteredList(filterTestInstruments(instrumentList, ""));
+            const nonTestInstruments = filterTestInstruments(instrumentList, "");
+            setFilteredList(nonTestInstruments);
+            if (nonTestInstruments.length === 0) {
+                setMessage("No installed questionnaires found.");
+            }
             setLoaded(true);
         });
     }, []);
