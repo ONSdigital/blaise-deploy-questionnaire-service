@@ -15,7 +15,6 @@ export interface Config extends AuthConfig {
 
 export function getConfigFromEnv(): Config {
     let {
-        PORT,
         PROJECT_ID,
         BUCKET_NAME,
         BLAISE_API_URL,
@@ -28,6 +27,7 @@ export function getConfigFromEnv(): Config {
     } = process.env;
 
     const {
+        PORT,
         SESSION_SECRET,
         ROLES
     } = process.env;
