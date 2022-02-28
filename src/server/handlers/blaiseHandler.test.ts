@@ -115,7 +115,7 @@ describe("BlaiseAPI Get all instruments from API", () => {
 describe("BlaiseAPI Get specific instrument information from API", () => {
   it("should return a 404 status with the data as false when API returns can't find the instrument", async () => {
     mockGetInstrumentWithCatiData.mockImplementation(() => {
-      return Promise.reject({ status: 404 });
+      return Promise.reject({ response: { status: 404 }, isAxiosError: true });
     });
 
     const response: Response = await request.get("/api/instruments/OPN2004A");
@@ -192,7 +192,7 @@ describe("BlaiseAPI Delete a specific instrument", () => {
 
   it("should return a 404 status direct from the API", async () => {
     mockDeleteInstrument.mockImplementation(() => {
-      return Promise.reject({ status: 404 });
+      return Promise.reject({ response: { status: 404 }, isAxiosError: true });
     });
 
     const response: Response = await request.delete("/api/instruments/OPN2101A");
@@ -202,7 +202,7 @@ describe("BlaiseAPI Delete a specific instrument", () => {
 
   it("should return a 500 status direct from the API", async () => {
     mockDeleteInstrument.mockImplementation(() => {
-      return Promise.reject({ status: 500 });
+      return Promise.reject({ response: { status: 500 }, isAxiosError: true });
     });
 
     const response: Response = await request.delete("/api/instruments/OPN2101A");
@@ -229,7 +229,7 @@ describe("BlaiseAPI Activate a specific instrument", () => {
 
   it("should return a 404 status direct from the API", async () => {
     mockActivateInstrument.mockImplementation(() => {
-      return Promise.reject({ status: 404 });
+      return Promise.reject({ response: { status: 404 }, isAxiosError: true });
     });
 
     const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
@@ -239,7 +239,7 @@ describe("BlaiseAPI Activate a specific instrument", () => {
 
   it("should return a 500 status direct from the API", async () => {
     mockActivateInstrument.mockImplementation(() => {
-      return Promise.reject({ status: 500 });
+      return Promise.reject({ response: { status: 500 }, isAxiosError: true });
     });
 
     const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
@@ -266,7 +266,7 @@ describe("BlaiseAPI Deactivate a specific instrument", () => {
 
   it("should return a 404 status direct from the API", async () => {
     mockDeactivateInstrument.mockImplementation(() => {
-      return Promise.reject({ status: 404 });
+      return Promise.reject({ response: { status: 404 }, isAxiosError: true });
     });
 
     const response: Response = await request.patch("/api/instruments/OPN2101A/deactivate");
@@ -276,7 +276,7 @@ describe("BlaiseAPI Deactivate a specific instrument", () => {
 
   it("should return a 500 status direct from the API", async () => {
     mockDeactivateInstrument.mockImplementation(() => {
-      return Promise.reject({ status: 500 });
+      return Promise.reject({ response: { status: 500 }, isAxiosError: true });
     });
 
     const response: Response = await request.patch("/api/instruments/OPN2101A/deactivate");

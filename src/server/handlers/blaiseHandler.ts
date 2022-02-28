@@ -210,6 +210,6 @@ export class BlaiseHandler {
   }
 
   errorNotFound(error: any): boolean {
-    return (error && "status" in error && error.status === 404);
+    return (error?.isAxiosError && error.response.status === 404);
   }
 }

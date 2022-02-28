@@ -29,7 +29,7 @@ export async function getTOStartDate(instrumentName: string): Promise<string> {
         }
         return response.data.tostartdate;
     } catch (error: any) {
-        if (error.isAxiosError && error.response.status === 404) {
+        if (error?.isAxiosError && error.response.status === 404) {
             return "";
         }
         console.error(`Response from set start date Failed: Error ${error}`);

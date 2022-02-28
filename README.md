@@ -70,13 +70,13 @@ Create a new .env file and add the following variables.
 | BUS_API_CLIENT | Not needed for local development but the config will look for this variables in the .env file and throw an error if it is not found. Hence, give them a random string                                                                                                                  | FOO                       |
 | BUS_CLIENT_ID  | Not needed for local development but the config will look for this variables in the .env file and throw an error if it is not found. Hence, give them a random string                                                                                                                  | FOO                       |
 
-To find the `X_CLIENT_ID`, navigate to the GCP console, search for `IAP`, click the three dots on right of the service and select `OAuth`. `Client Id` will be on the right. 
+To find the `X_CLIENT_ID`, navigate to the GCP console, search for `IAP`, click the three dots on right of the service and select `OAuth`. `Client Id` will be on the right.
 
 The .env file should be setup as below
 
 ```.env
 BLAISE_API_URL=localhost:5011
-PROJECT_ID=ons-blaise-v2-dev-<sandbox>         
+PROJECT_ID=ons-blaise-v2-dev-<sandbox>
 BUCKET_NAME=ons-blaise-v2-dev-<sandbox>-dqs
 SERVER_PARK=gusty
 BIMS_API_URL=localhost:5000

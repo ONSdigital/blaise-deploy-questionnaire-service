@@ -10,7 +10,7 @@ export async function getInstrument(instrumentName: string): Promise<Instrument 
         const response = await axios.get(url, axiosConfig());
         return response.data;
     } catch (error: any) {
-        if (error.isAxiosError && error.response.status === 404) {
+        if (error?.isAxiosError && error.response.status === 404) {
             console.log(`Instrument ${instrumentName} does not exist`);
             return undefined;
         }
