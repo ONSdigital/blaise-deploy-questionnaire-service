@@ -23,8 +23,12 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 
 
 describe("Instrument Details page ", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/instruments").reply(200, instrumentList);
+    });
+
+    afterEach(() => {
+        mock.reset();
     });
 
     it("should redirect to the homepage when no instrument has been provided ", async () => {
@@ -45,9 +49,5 @@ describe("Instrument Details page ", () => {
             expect(screen.getByText(/Table of questionnaires/i)).toBeDefined();
             expect(screen.queryByText(/Questionnaire details/i)).toEqual(null);
         });
-    });
-
-    afterAll(() => {
-        mock.reset();
     });
 });

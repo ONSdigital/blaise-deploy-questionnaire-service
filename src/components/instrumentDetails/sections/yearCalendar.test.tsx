@@ -10,6 +10,10 @@ import YearCalendar from "./yearCalendar";
 import userEvent from "@testing-library/user-event";
 
 describe("Year calendar", () => {
+    afterEach(() => {
+        cleanup();
+    });
+
     const surveyDays = [
         "24 Dec 1997 00:00:00 GMT",
         "20 Dec 1997 00:00:00 GMT"
@@ -59,10 +63,5 @@ describe("Year calendar", () => {
         await waitFor(() => {
             expect(screen.getByText(/1998/i)).toBeDefined();
         });
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
     });
 });

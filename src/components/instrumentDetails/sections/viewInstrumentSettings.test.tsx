@@ -29,9 +29,15 @@ const InstrumentSettingsMockList = [
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Given the API successfully loads the instrument mode and settings for CATI only mode", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(200, ["CATI"]);
         mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(200, InstrumentSettingsMockList);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("matches Snapshot for the view Instrument Settings page", async () => {
@@ -87,18 +93,18 @@ describe("Given the API successfully loads the instrument mode and settings for 
             expect(screen.getByText(/SaveSessionOnTimeout should be True/i)).toBeDefined();
         });
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 describe("Given the API successfully loads the instrument mode and settings for mixed mode", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(200, ["CATI", "CAWI"]);
         mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(200, InstrumentSettingsMockList);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("matches Snapshot for the view Instrument Settings page", async () => {
@@ -157,18 +163,18 @@ describe("Given the API successfully loads the instrument mode and settings for 
             expect(screen.getByText(/ApplyRecordLocking should be True/i)).toBeDefined();
         });
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 describe("Given the API fails to load the instrument mode or settings", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(500);
         mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(500);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("should display an error message when it fails to load the Instrument Modes", async () => {
@@ -199,18 +205,18 @@ describe("Given the API fails to load the instrument mode or settings", () => {
             expect(screen.getByText(viewInstrumentSettingsFailedMessage)).toBeDefined();
         });
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 describe("Given the API returns an empty list for instrument mode or settings", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(200, []);
         mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(200, []);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("it should render an error message", async () => {
@@ -228,11 +234,5 @@ describe("Given the API returns an empty list for instrument mode or settings", 
         await waitFor(() => {
             expect(screen.getByText(viewInstrumentSettingsFailedMessage)).toBeDefined();
         });
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

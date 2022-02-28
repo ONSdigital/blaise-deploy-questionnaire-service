@@ -30,12 +30,18 @@ jest.mock("./client/env", () => ({
 }));
 
 describe("React homepage", () => {
-    beforeEach(() => {
-        mockIsProduction.mockReturnValue(false);
-    });
-
     beforeAll(() => {
         mock.onGet("/api/instruments").reply(200, instrumentList);
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
+    beforeEach(() => {
+        mockIsProduction.mockReturnValue(false);
     });
 
     it("view instrument page matches Snapshot in production", async () => {
@@ -99,12 +105,6 @@ describe("React homepage", () => {
         });
 
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 
@@ -143,6 +143,12 @@ describe("Given the API returns an empty list", () => {
         mock.onGet("/api/instruments").reply(200, []);
     });
 
+    afterAll(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("it should render with a message to inform the user in the list", async () => {
         const history = createMemoryHistory();
         const { getByText, queryByText } = render(
@@ -159,11 +165,5 @@ describe("Given the API returns an empty list", () => {
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
 
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

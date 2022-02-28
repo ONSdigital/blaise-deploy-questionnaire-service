@@ -31,13 +31,9 @@ const mocker = new MockAdapeter(axios);
 defineFeature(feature, test => {
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
         jest.resetModules();
-        mocker.reset();
-    });
-
-    beforeEach(() => {
         cleanup();
+        mocker.reset();
     });
 
     test("View TO Start Date if specified", ({ given, when, then }) => {

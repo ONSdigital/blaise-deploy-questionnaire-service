@@ -8,6 +8,9 @@ import "@testing-library/jest-dom";
 import InstrumentStatus from "./instrumentStatus";
 
 describe("Instrument Status ", () => {
+    afterEach(() => {
+        cleanup();
+    });
 
     it("should render instrument with class 'status--success' when the status is Active", async () => {
         const { container } = render(
@@ -39,12 +42,5 @@ describe("Instrument Status ", () => {
         );
 
         expect(container.firstChild).toHaveClass("status--info");
-    });
-
-
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
     });
 });

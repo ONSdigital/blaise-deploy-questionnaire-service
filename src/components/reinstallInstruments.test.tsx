@@ -31,9 +31,15 @@ const instrumentList: Instrument[] = [{
 const bucketInstrument: string[] = ["OPN2101A.bpkg", "OPN2004A.bpkg", "LMS2101_BK2.bpkg"];
 
 describe("Reinstall instruments list", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/instruments").reply(200, instrumentList);
         mock.onGet("/bucket/files").reply(200, bucketInstrument);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("view Blaise Status page matches Snapshot", async () => {
@@ -95,20 +101,20 @@ describe("Reinstall instruments list", () => {
             expect(screen.getByText(/No compatible previously installed questionnaires found./i)).toBeDefined();
         });
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 describe("Reinstall an instruments", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/instruments").reply(200, []);
         mock.onGet("/bucket/files").reply(200, bucketInstrument);
         mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "OPN2004A.bpkg" });
         mock.onPost("/api/install").reply(201);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("should redirect to the success page after install", async () => {
@@ -159,17 +165,17 @@ describe("Reinstall an instruments", () => {
             expect(screen.getByText(/No compatible previously installed questionnaires found./i)).toBeDefined();
         });
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 describe("Given the API returns a 500 status", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/instruments").reply(500);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("it should render with the error message displayed", async () => {
@@ -185,20 +191,19 @@ describe("Given the API returns a 500 status", () => {
             expect(screen.getByText(/Unable to load questionnaires./i)).toBeDefined();
             expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();
         });
-
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });
 
 describe("Given the API returns an empty list", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/instruments").reply(200, []);
         mock.onGet("/bucket/files").reply(200, []);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("it should render with a message to inform the user in the list", async () => {
@@ -217,11 +222,5 @@ describe("Given the API returns an empty list", () => {
             expect(screen.getByText(/Reinstall questionnaire/i)).toBeDefined();
             expect(screen.getByText(/No compatible previously installed questionnaires found./i)).toBeDefined();
         });
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

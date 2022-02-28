@@ -35,8 +35,14 @@ const status_list = [
 ];
 
 describe("Blaise Status page", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/health/diagnosis").reply(200, status_list);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("view Blaise Status page matches Snapshot", async () => {
@@ -79,17 +85,17 @@ describe("Blaise Status page", () => {
         });
 
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 describe("Given the API returns a 500 status", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/health/diagnosis").reply(500);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("it should render with the error message displayed", async () => {
@@ -102,25 +108,22 @@ describe("Given the API returns a 500 status", () => {
 
         expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
-
         await waitFor(() => {
             expect(getByText(/Unable to get Blaise status/i)).toBeDefined();
             expect(queryByText(/Checking Blaise status/i)).not.toBeInTheDocument();
         });
-
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });
 
 describe("Given the API returns malformed json", () => {
-
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/health/diagnosis").reply(200, { text: "Hello" });
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("it should render with the error message displayed", async () => {
@@ -133,24 +136,22 @@ describe("Given the API returns malformed json", () => {
 
         expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
-
         await waitFor(() => {
             expect(getByText(/Unable to get Blaise status/i)).toBeDefined();
             expect(queryByText(/Checking Blaise status/i)).not.toBeInTheDocument();
         });
-
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });
 
 describe("Given the API returns an empty list", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/health/diagnosis").reply(200, []);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("it should render with a message to inform the user in the list", async () => {
@@ -163,17 +164,9 @@ describe("Given the API returns an empty list", () => {
 
         expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
-
         await waitFor(() => {
             expect(getByText(/No connection details found./i)).toBeDefined();
             expect(queryByText(/Checking Blaise status/i)).not.toBeInTheDocument();
         });
-
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

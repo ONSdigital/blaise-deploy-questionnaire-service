@@ -33,12 +33,9 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
         },
     };
 
-    afterAll(() => {
+    afterEach(() => {
         jest.clearAllMocks();
         cleanup();
-    });
-
-    afterEach(() => {
         mock.reset();
     });
 

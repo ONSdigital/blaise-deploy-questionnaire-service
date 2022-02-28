@@ -18,6 +18,12 @@ import MockAdapter from "axios-mock-adapter";
 const mock = new MockAdapter(axios);
 
 describe("Function getInstrument(instrumentName: string) ", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("should return true and the instrument object if object with the correct name returned", async () => {
         mock.onGet("/api/instruments/OPN2004A").reply(200, opnInstrument);
 
@@ -43,16 +49,16 @@ describe("Function getInstrument(instrumentName: string) ", () => {
 
         await expect(getInstrument("OPN2004A")).rejects.toThrow();
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 
 describe("Function getInstruments(filename: string) ", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("should return true with data if the list is returned successfully", async () => {
         mock.onGet("/api/instruments").reply(200, instrumentList);
 
@@ -77,15 +83,15 @@ describe("Function getInstruments(filename: string) ", () => {
 
         await expect(getInstruments()).rejects.toThrow();
     });
+});
 
-    afterAll(() => {
+describe("Function deleteInstrument(instrumentName: string) ", () => {
+    afterEach(() => {
         jest.clearAllMocks();
         cleanup();
         mock.reset();
     });
-});
 
-describe("Function deleteInstrument(instrumentName: string) ", () => {
     it("should return true if created 204 response is returned", async () => {
         mock.onDelete("/api/instruments/OPN2004A").reply(204);
 
@@ -113,15 +119,15 @@ describe("Function deleteInstrument(instrumentName: string) ", () => {
         const success = await deleteInstrument("OPN2004A");
         expect(success).toBeFalsy();
     });
+});
 
-    afterAll(() => {
+describe("Function activateInstrument(instrumentName: string) ", () => {
+    afterEach(() => {
         jest.clearAllMocks();
         cleanup();
         mock.reset();
     });
-});
 
-describe("Function activateInstrument(instrumentName: string) ", () => {
     it("should return true if created 204 response is returned", async () => {
         mock.onPatch("/api/instruments/OPN2004A/activate").reply(204);
 
@@ -149,15 +155,15 @@ describe("Function activateInstrument(instrumentName: string) ", () => {
         const success = await activateInstrument("OPN2004A");
         expect(success).toBeFalsy();
     });
+});
 
-    afterAll(() => {
+describe("Function deactivateInstrument(instrumentName: string) ", () => {
+    afterEach(() => {
         jest.clearAllMocks();
         cleanup();
         mock.reset();
     });
-});
 
-describe("Function deactivateInstrument(instrumentName: string) ", () => {
     it("should return true if created 204 response is returned", async () => {
         mock.onPatch("/api/instruments/OPN2004A/deactivate").reply(204);
 
@@ -185,14 +191,15 @@ describe("Function deactivateInstrument(instrumentName: string) ", () => {
         const success = await deactivateInstrument("OPN2004A");
         expect(success).toBeFalsy();
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-    });
 });
 
 describe("Function installInstrument(instrumentName: string) ", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("should return true if created 201 response is returned", async () => {
         mock.onPost("/api/install").reply(201, { filename: "OPN2004A" });
 
@@ -220,15 +227,15 @@ describe("Function installInstrument(instrumentName: string) ", () => {
         const success = await installInstrument("OPN2004A");
         expect(success).toEqual(false);
     });
+});
 
-    afterAll(() => {
+describe("Function getInstrumentModes(instrumentName: string)", () => {
+    afterEach(() => {
         jest.clearAllMocks();
         cleanup();
         mock.reset();
     });
-});
 
-describe("Function getInstrumentModes(instrumentName: string)", () => {
     it("should return true if created 200 response is returned", async () => {
         mock.onGet("/api/instruments/OPN2004A/modes").reply(200, ["CAWI", "CATI"]);
 
@@ -253,16 +260,16 @@ describe("Function getInstrumentModes(instrumentName: string)", () => {
 
         await expect(getInstrumentModes("OPN2004A")).rejects.toThrow();
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 
 describe("Function getInstrumentSettings(instrumentName: string)", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("should return true if created 200 response is returned", async () => {
         mock.onGet("/api/instruments/OPN2004A/settings").reply(200, []);
 
@@ -287,15 +294,15 @@ describe("Function getInstrumentSettings(instrumentName: string)", () => {
 
         await expect(getInstrumentSettings("OPN2004A")).rejects.toThrow();
     });
+});
 
-    afterAll(() => {
+describe("Function getInstruments(filename: string) ", () => {
+    afterEach(() => {
         jest.clearAllMocks();
         cleanup();
         mock.reset();
     });
-});
 
-describe("Function getInstruments(filename: string) ", () => {
     it("should return true with data if the list is returned successfully", async () => {
         mock.onGet("/api/instruments/OPN2004A/cases/ids").reply(200, []);
 
@@ -319,11 +326,5 @@ describe("Function getInstruments(filename: string) ", () => {
         mock.onGet("/api/instruments/OPN2004A/cases/ids").networkError();
 
         await expect(getInstrumentCaseIds("OPN2004A")).rejects.toThrow();
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

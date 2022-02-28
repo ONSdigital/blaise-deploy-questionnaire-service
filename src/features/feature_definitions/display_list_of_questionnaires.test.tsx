@@ -34,13 +34,9 @@ const mocker = new MockAdapeter(axios);
 defineFeature(feature, test => {
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
         jest.resetModules();
-        mocker.reset();
-    });
-
-    beforeEach(() => {
         cleanup();
+        mocker.reset();
     });
 
     test("List all questionnaires in Blaise", ({ given, when, then }) => {

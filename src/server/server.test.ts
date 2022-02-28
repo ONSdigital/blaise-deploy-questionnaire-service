@@ -35,10 +35,15 @@ describe("Test Heath Endpoint", () => {
 
 
 describe("Given the API returns 2 instruments", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mockGetInstrumentsWithCatiData.mockImplementation(() => {
             return Promise.resolve(apiInstrumentList);
         });
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
     });
 
     const apiInstrumentList = [
@@ -84,27 +89,22 @@ describe("Given the API returns 2 instruments", () => {
         expect(response.body).toHaveLength(2);
         expect(response.body).toStrictEqual(apiReturnedInstrumentList);
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
-    });
 });
 
 describe("Get list of instruments endpoint fails", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mockGetInstrumentsWithCatiData.mockImplementation(() => {
             return Promise.reject("Network error");
         });
     });
 
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+    });
+
     it("should return a 500 status and an error message", async () => {
         const response = await request.get("/api/instruments");
         expect(response.statusCode).toEqual(500);
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
     });
 });

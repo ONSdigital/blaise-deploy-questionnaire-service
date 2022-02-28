@@ -33,13 +33,9 @@ const mocker = new Mockadapter(axios);
 defineFeature(feature, test => {
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
         jest.resetModules();
-        mocker.reset();
-    });
-
-    beforeEach(() => {
         cleanup();
+        mocker.reset();
     });
 
     test("Attempt to delete an questionnaire with an erroneous status", ({ given, when, then }) => {

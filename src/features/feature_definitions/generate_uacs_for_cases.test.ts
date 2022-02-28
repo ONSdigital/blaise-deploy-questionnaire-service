@@ -26,16 +26,16 @@ const instrumentList: Instrument[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 defineFeature(feature, test => {
-    afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
-        jest.resetModules();
-        mocker.reset();
-    });
-
     beforeEach(() => {
         global.URL.createObjectURL = jest.fn();
         cleanup();
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+        cleanup();
+        mocker.reset();
     });
 
     test("Generate button exists for questionnaires with CAWI mode and cases", ({ given, when, then }) => {

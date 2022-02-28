@@ -30,13 +30,9 @@ const mocker = new MockAdapter(axios);
 defineFeature(feature, test => {
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
         jest.resetModules();
-        mocker.reset();
-    });
-
-    beforeEach(() => {
         cleanup();
+        mocker.reset();
     });
 
     test("Present TO Start Date option", ({ given, when, then }) => {

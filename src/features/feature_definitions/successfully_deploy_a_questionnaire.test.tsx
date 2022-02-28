@@ -28,15 +28,15 @@ const feature = loadFeature(
 );
 
 defineFeature(feature, test => {
-    afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
-        jest.resetModules();
-        mocker.reset();
-    });
-
     beforeEach(() => {
         mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+        cleanup();
+        mocker.reset();
     });
 
     test("Successful log in to Questionnaire Deployment Service", ({ given, when, then }) => {

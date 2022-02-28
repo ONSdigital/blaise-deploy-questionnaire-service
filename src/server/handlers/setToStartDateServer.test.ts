@@ -34,7 +34,6 @@ const feature = loadFeature("./src/features/set_telephone_operations_start_date.
  * but they work as a decent structure to unit test the BimsAPI requests in the node.js server.
  */
 defineFeature(feature, test => {
-
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();

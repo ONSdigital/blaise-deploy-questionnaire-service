@@ -54,13 +54,9 @@ const mocker = new MockAdapter(axios);
 defineFeature(feature, test => {
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
         jest.resetModules();
-        mocker.reset();
-    });
-
-    beforeEach(() => {
         cleanup();
+        mocker.reset();
     });
 
     test("Delete an 'inactive' survey at any time", ({ given, when, then, }) => {

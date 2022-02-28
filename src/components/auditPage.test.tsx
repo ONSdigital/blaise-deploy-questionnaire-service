@@ -39,6 +39,12 @@ describe("Audit Logs page", () => {
         mock.onGet("/api/audit").reply(200, auditLogsList);
     });
 
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("view Audit Logs page matches Snapshot", async () => {
         const history = createMemoryHistory();
         const wrapper = render(
@@ -109,15 +115,6 @@ describe("Audit Logs page", () => {
             expect(getByText(/19\/02\/2021 12:47:29/i)).toBeDefined();
         });
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-    });
-
-    afterEach(() => {
-        mock.reset();
-    });
 });
 
 describe("Given the API returns a 500 status", () => {
@@ -125,6 +122,12 @@ describe("Given the API returns a 500 status", () => {
         mock.onGet("/api/audit").reply(500, []);
     });
 
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("it should render with the error message displayed", async () => {
         const history = createMemoryHistory();
         const { getByText, queryByText } = render(
@@ -135,23 +138,22 @@ describe("Given the API returns a 500 status", () => {
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
 
-
         await waitFor(() => {
             expect(getByText(/Unable to load deployment history./i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
-
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
     });
 });
 
 describe("Given the API returns malformed json", () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/audit").reply(500, { text: "Hello" });
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("it should render with the error message displayed", async () => {
@@ -164,24 +166,22 @@ describe("Given the API returns malformed json", () => {
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
 
-
         await waitFor(() => {
             expect(getByText(/Unable to load deployment history./i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
-
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });
 
 describe("Given the API returns an empty list", () => {
     beforeEach(() => {
         mock.onGet("/api/audit").reply(200, []);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("it should render with a message to inform the user in the list", async () => {
@@ -194,17 +194,9 @@ describe("Given the API returns an empty list", () => {
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
 
-
         await waitFor(() => {
             expect(getByText(/No recent deployment history found./i)).toBeDefined();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
-
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

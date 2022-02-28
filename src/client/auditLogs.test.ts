@@ -6,6 +6,12 @@ import MockAdapter from "axios-mock-adapter";
 const mock = new MockAdapter(axios);
 
 describe("Function getAuditLogs(filename: string) ", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("It should return true with data if the list is returned successfully", async () => {
         mock.onGet("/api/audit").reply(200, [{
             id: "test-id",
@@ -39,11 +45,5 @@ describe("Function getAuditLogs(filename: string) ", () => {
         mock.onGet("/api/audit").networkError();
 
         await expect(getAuditLogs()).rejects.toThrow();
-    });
-
-    afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

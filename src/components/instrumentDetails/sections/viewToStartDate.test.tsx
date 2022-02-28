@@ -14,8 +14,13 @@ const mock = new MockAdapter(axios);
 
 describe("View TO Start Date section", () => {
     const viewToStartDateFailedMessage = /Failed to get Telephone Operations start date/i;
-    beforeAll(() => {
+
+    beforeEach(() => {
         mock.onGet("/api/tostartdate/OPN2101A").reply(500);
+    });
+
+    afterEach(() => {
+        mock.reset();
     });
 
     it("should display an error message when it fails to load the TO Start Date", async () => {
@@ -32,7 +37,4 @@ describe("View TO Start Date section", () => {
         });
     });
 
-    afterAll(() => {
-        mock.reset();
-    });
 });

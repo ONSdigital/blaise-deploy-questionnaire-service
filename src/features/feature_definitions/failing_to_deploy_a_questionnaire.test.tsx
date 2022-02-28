@@ -30,13 +30,9 @@ const mocker = new MockAdapter(axios);
 defineFeature(feature, test => {
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
         jest.resetModules();
-        mocker.reset();
-    });
-
-    beforeEach(() => {
         cleanup();
+        mocker.reset();
     });
 
     test("Deployment of selected file failure", ({ given, when, then }) => {

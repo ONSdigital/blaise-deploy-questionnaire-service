@@ -7,6 +7,12 @@ import MockAdapter from "axios-mock-adapter";
 const mock = new MockAdapter(axios);
 
 describe("Function validateUploadIsComplete(filename: string) ", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("should return true if object with the correct filename returned", async () => {
         mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "OPN2004A.bpkg" });
 
@@ -34,16 +40,16 @@ describe("Function validateUploadIsComplete(filename: string) ", () => {
         const fileFound = await validateUploadIsComplete("OPN2004A.bpkg");
         expect(fileFound).toBeFalsy();
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 describe("Function getAllInstrumentsInBucket() ", () => {
     const instrumentsInBucket: string[] = ["OPN2101A.bpkg", "OPN2004A.bpkg", "LMS2101_BK2.bpkg"];
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
 
     it("should return true if the list is returned successfully", async () => {
         mock.onGet("/bucket/files").reply(200, instrumentsInBucket);
@@ -68,11 +74,5 @@ describe("Function getAllInstrumentsInBucket() ", () => {
         mock.onGet("/bucket/files").networkError();
 
         await expect(getAllInstrumentsInBucket()).rejects.toThrow();
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

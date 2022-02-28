@@ -28,9 +28,14 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Upload Page", () => {
-
-    beforeAll(() => {
+    beforeEach(() => {
         mock.onGet("/api/instruments").reply(200, instrumentList);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("select file page matches Snapshot", async () => {
@@ -100,12 +105,6 @@ describe("Upload Page", () => {
             expect(screen.queryAllByText("File must be a .bpkg")).toHaveLength(2);
         });
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
-    });
 });
 
 describe("Given the file fails to upload", () => {
@@ -120,6 +119,12 @@ describe("Given the file fails to upload", () => {
         mock.onPost("/api/tostartdate/OPN2004A").reply(201);
     });
 
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("it should redirect to the summary page with an error", async () => {
         await navigateToDeployPageAndSelectFile();
 
@@ -131,11 +136,5 @@ describe("Given the file fails to upload", () => {
             expect(screen.getByText("File deploy failed")).toBeDefined();
             expect(screen.getByText(/Failed to upload questionnaire/i)).toBeDefined();
         });
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

@@ -7,6 +7,12 @@ import MockAdapter from "axios-mock-adapter";
 const mock = new MockAdapter(axios);
 
 describe("Function setTOStartDate(instrumentName: string, toStartDate: string) ", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("should return true if created 201 response is returned", async () => {
         mock.onPost("/api/tostartdate/OPN2004A").reply(201);
 
@@ -34,15 +40,15 @@ describe("Function setTOStartDate(instrumentName: string, toStartDate: string) "
         const success = await setTOStartDate("OPN2004A", "2020-01-01");
         expect(success).toEqual(false);
     });
+});
 
-    afterAll(() => {
+describe("Function getTOStartDate(instrumentName: string) ", () => {
+    afterEach(() => {
         jest.clearAllMocks();
         cleanup();
         mock.reset();
     });
-});
 
-describe("Function getTOStartDate(instrumentName: string) ", () => {
     it("should return true and a TO start date string if object with the correct name returned", async () => {
         mock.onGet("/api/tostartdate/OPN2004A").reply(200, { "tostartdate": "1997-12-24" });
 
@@ -74,15 +80,15 @@ describe("Function getTOStartDate(instrumentName: string) ", () => {
 
         await expect(getTOStartDate("OPN2004A")).rejects.toThrow();
     });
+});
 
-    afterAll(() => {
+describe("Function deleteTOStartDate(instrumentName: string, toStartDate: string) ", () => {
+    afterEach(() => {
         jest.clearAllMocks();
         cleanup();
         mock.reset();
     });
-});
 
-describe("Function deleteTOStartDate(instrumentName: string, toStartDate: string) ", () => {
     it("should return true if created 204 response is returned", async () => {
         mock.onDelete("/api/tostartdate/OPN2004A").reply(204);
 
@@ -109,11 +115,5 @@ describe("Function deleteTOStartDate(instrumentName: string, toStartDate: string
 
         const success = await deleteTOStartDate("OPN2004A");
         expect(success).toEqual(false);
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

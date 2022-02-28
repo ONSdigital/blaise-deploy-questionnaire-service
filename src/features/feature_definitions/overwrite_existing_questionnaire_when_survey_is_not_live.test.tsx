@@ -33,18 +33,18 @@ const feature = loadFeature(
 const instrumentList: Instrument[] = [];
 
 defineFeature(feature, test => {
-    afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
-        jest.resetModules();
-        mocker.reset();
-    });
-
     beforeEach(() => {
         cleanup();
         mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
             {},
         );
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+        cleanup();
+        mocker.reset();
     });
 
     test("Select a new questionnaire package file", ({ given, when, then }) => {

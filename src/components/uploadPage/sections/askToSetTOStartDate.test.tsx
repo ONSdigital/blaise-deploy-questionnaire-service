@@ -4,7 +4,6 @@
 
 import navigateToDeployPageAndSelectFile from "../../../features/step_definitions/helpers/functions";
 import { act, cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
-import { instrumentList } from "../../../features/step_definitions/helpers/apiMockObjects";
 import flushPromises from "../../../tests/utils";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
@@ -20,10 +19,15 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 });
 
 describe("Ask to set TO start date page", () => {
-
     beforeEach(() => {
         mock.onGet("/api/instruments/OPN2004A").reply(404);
         mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "OPN2004A.bpkg" });
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
     });
 
     it("should come up with a error panel if you don't pick an option", async () => {
@@ -90,11 +94,5 @@ describe("Ask to set TO start date page", () => {
             expect(screen.getByText(/Deployment summary/i)).toBeDefined();
             expect(screen.getByText(/Start date set to 05\/06\/2030/i)).toBeDefined();
         });
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });

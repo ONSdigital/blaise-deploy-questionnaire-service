@@ -44,6 +44,11 @@ const config = getConfigFromEnv();
 const request = supertest(newServer(config));
 
 describe("BlaiseAPI Get health Check from API", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetModules();
+  });
+
   it("should return a 200 status and a json list of 4 items when API returns a 4 item list", async () => {
     mockGetDiagnostics.mockImplementation(() => {
       return Promise.resolve(DiagnosticMockObject);
@@ -65,14 +70,14 @@ describe("BlaiseAPI Get health Check from API", () => {
 
     expect(response.status).toEqual(500);
   });
+});
 
+describe("BlaiseAPI Get all instruments from API", () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
   });
-});
 
-describe("BlaiseAPI Get all instruments from API", () => {
   it("should return a 200 status and an empty json list when API returns a empty list", async () => {
     mockGetInstrumentsWithCatiData.mockImplementation(() => {
       return Promise.resolve([]);
@@ -105,14 +110,14 @@ describe("BlaiseAPI Get all instruments from API", () => {
 
     expect(response.status).toEqual(500);
   });
+});
 
+describe("BlaiseAPI Get specific instrument information from API", () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
   });
-});
 
-describe("BlaiseAPI Get specific instrument information from API", () => {
   it("should return a 404 status with the data as false when API returns can't find the instrument", async () => {
     mockGetInstrumentWithCatiData.mockImplementation(() => {
       return Promise.reject({ response: { status: 404 }, isAxiosError: true });
@@ -145,14 +150,14 @@ describe("BlaiseAPI Get specific instrument information from API", () => {
 
     expect(response.status).toEqual(500);
   });
+});
 
+describe("BlaiseAPI Post to API to install a specific instrument", () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
   });
-});
 
-describe("BlaiseAPI Post to API to install a specific instrument", () => {
   it("should return a 201 status when API installs a instrument", async () => {
     mockInstallInstrument.mockImplementation(() => {
       return Promise.resolve(true);
@@ -172,14 +177,14 @@ describe("BlaiseAPI Post to API to install a specific instrument", () => {
 
     expect(response.status).toEqual(500);
   });
+});
 
+describe("BlaiseAPI Delete a specific instrument", () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
   });
-});
 
-describe("BlaiseAPI Delete a specific instrument", () => {
   it("should return a 204 status when API deletes a instrument successfuly", async () => {
     mockDeleteInstrument.mockImplementation(() => {
       return Promise.resolve(true);
@@ -209,14 +214,14 @@ describe("BlaiseAPI Delete a specific instrument", () => {
 
     expect(response.status).toEqual(500);
   });
+});
 
+describe("BlaiseAPI Activate a specific instrument", () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
   });
-});
 
-describe("BlaiseAPI Activate a specific instrument", () => {
   it("should return a 204 status when API activates a instrument successfuly", async () => {
     mockActivateInstrument.mockImplementation(() => {
       return Promise.resolve(true);
@@ -245,15 +250,15 @@ describe("BlaiseAPI Activate a specific instrument", () => {
     const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
 
     expect(response.status).toEqual(500);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-    jest.resetModules();
   });
 });
 
 describe("BlaiseAPI Deactivate a specific instrument", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetModules();
+  });
+
   it("should return a 204 status when API activates a instrument successfuly", async () => {
     mockDeactivateInstrument.mockImplementation(() => {
       return Promise.resolve(true);
@@ -283,14 +288,14 @@ describe("BlaiseAPI Deactivate a specific instrument", () => {
 
     expect(response.status).toEqual(500);
   });
+});
 
+describe("BlaiseAPI does instrument have a specific mode API", () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
   });
-});
 
-describe("BlaiseAPI does instrument have a specific mode API", () => {
   it("should return a 200 status and a json boolean when API returns a boolean", async () => {
     mockDoesInstrumentHaveMode.mockImplementation(() => {
       return Promise.resolve(true);
@@ -311,14 +316,14 @@ describe("BlaiseAPI does instrument have a specific mode API", () => {
 
     expect(response.status).toEqual(500);
   });
+});
 
+describe("BlaiseAPI get instrument modes", () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
   });
-});
 
-describe("BlaiseAPI get instrument modes", () => {
   it("should return a 200 status and an empty json list when API returns a empty list", async () => {
     mockGetInstrumentModes.mockImplementation(() => {
       return Promise.resolve([]);
@@ -351,14 +356,14 @@ describe("BlaiseAPI get instrument modes", () => {
 
     expect(response.status).toEqual(500);
   });
+});
 
+describe("BlaiseAPI get instrument settings", () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
   });
-});
 
-describe("BlaiseAPI get instrument settings", () => {
   it("should return a 200 status and an empty json list when API returns a empty list", async () => {
     mockGetInstrumentSettings.mockImplementation(() => {
       return Promise.resolve([]);
@@ -390,10 +395,5 @@ describe("BlaiseAPI get instrument settings", () => {
     const response: Response = await request.get("/api/instruments/OPN2101A/settings");
 
     expect(response.status).toEqual(500);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-    jest.resetModules();
   });
 });

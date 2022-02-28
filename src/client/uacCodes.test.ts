@@ -8,6 +8,12 @@ const mock = new MockAdapter(axios);
 describe("Function getCountOfUACs(instrumentName: string) ", () => {
     const instrumentName = "OPN2004A";
 
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
     it("should return the count as type number", async () => {
         mock.onGet(`/api/uacs/instrument/${instrumentName}/count`).reply(200, { count: 100 });
 
@@ -32,16 +38,16 @@ describe("Function getCountOfUACs(instrumentName: string) ", () => {
 
         await expect(getCountOfUACs(instrumentName)).rejects.toThrow();
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-    });
-    mock.reset();
 });
 
 describe("Function generateUACCodes(instrumentName: string) ", () => {
     const instrumentName = "OPN2004A";
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
 
     it("should return true if a status 200 is returned", async () => {
         mock.onPost(`/api/uacs/instrument/${instrumentName}`).reply(200);
@@ -63,16 +69,16 @@ describe("Function generateUACCodes(instrumentName: string) ", () => {
         const success = await generateUACCodes(instrumentName);
         expect(success).toBeFalsy();
     });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-    });
-    mock.reset();
 });
 
 describe("Function getUACCodesByCaseID(instrumentName: string) ", () => {
     const instrumentName = "OPN2004A";
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
 
     it("should return true if a status 200 is returned", async () => {
         mock.onGet(`/api/uacs/instrument/${instrumentName}/bycaseid`).reply(200, {
@@ -103,11 +109,5 @@ describe("Function getUACCodesByCaseID(instrumentName: string) ", () => {
         mock.onGet(`/api/uacs/instrument/${instrumentName}/bycaseid`).networkError();
 
         await expect(getUACCodesByCaseID(instrumentName)).rejects.toThrow();
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
-        mock.reset();
     });
 });
