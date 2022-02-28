@@ -1,5 +1,4 @@
 import axios from "axios";
-import { AuthManager } from "blaise-login-react-client";
 import axiosConfig from "./axiosConfig";
 
 export async function initialiseUpload(filename: string): Promise<string> {
@@ -37,12 +36,10 @@ export async function validateUploadIsComplete(filename: string): Promise<boolea
 }
 
 export async function uploadFile(url: string, file: File, onFileUploadProgress: (event: ProgressEvent) => void): Promise<boolean> {
-    const authManager = new AuthManager();
     const config = {
         onUploadProgress: (progressEvent: ProgressEvent) => onFileUploadProgress(progressEvent),
         headers: {
             "Content-Type": "application/octet-stream",
-            ...authManager.authHeader()
         }
     };
 
