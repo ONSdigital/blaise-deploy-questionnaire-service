@@ -8,20 +8,19 @@ import { cleanup } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { Instrument } from "../../../Interfaces";
+import { Instrument } from "blaise-api-node-client";
 
 import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenTheQuestionnaireIsInstalled, givenTheQuestionnaireIsLive } from "../step_definitions/given";
-import { Mocker } from "../step_definitions/helpers/mocker";
 import { thenIAmPresentedWithAConfirmOverwriteWarning, thenIAmPresentedWithASuccessfullyDeployedBanner, thenIAmPresentedWithTheOptionsToCancelOrOverwrite, thenIAmReturnedToTheLandingPage, thenICanOnlyReturnToTheLandingPage, thenIGetTheQuestionnaireIsLiveWarningBanner, thenTheQuestionnaireIsInstalled } from "../step_definitions/then";
 import { whenIConfirmMySelection, whenIConfirmNotToOverwrite, whenIConfirmToOverwrite, whenISelectToOverwrite } from "../step_definitions/when";
-import {AuthManager} from "blaise-login-react-client";
+import { AuthManager } from "blaise-login-react-client";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
     return Promise.resolve(true);
 });
 
-const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
+const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 
 // Load in feature details from .feature file
@@ -32,21 +31,20 @@ const feature = loadFeature(
 
 
 const instrumentList: Instrument[] = [];
-const mocker = new Mocker();
 
 defineFeature(feature, test => {
-    afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
-        jest.resetModules();
-        mock.reset();
-    });
-
     beforeEach(() => {
         cleanup();
-        mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
+        mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
             {},
         );
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+        cleanup();
+        mocker.reset();
     });
 
     test("Select a new questionnaire package file", ({ given, when, then }) => {
@@ -98,7 +96,7 @@ defineFeature(feature, test => {
         whenISelectToOverwrite(when);
         whenIConfirmToOverwrite(when);
 
-        thenTheQuestionnaireIsInstalled(then);
+        thenTheQuestionnaireIsInstalled(then, mocker);
         thenIAmPresentedWithASuccessfullyDeployedBanner(then);
     });
 
