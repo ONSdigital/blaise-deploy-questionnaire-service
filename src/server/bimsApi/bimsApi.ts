@@ -35,6 +35,8 @@ export class BimsApi {
 
         const response = await this.delete(url);
         if (response.status !== 204) {
+            console.error("Failed to delete to start date");
+            console.error(response);
             throw `Could not delete TO Start date for: ${instrumentName}`;
         }
     }
