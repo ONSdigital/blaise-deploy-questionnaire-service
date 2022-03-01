@@ -43,7 +43,6 @@ export class BimsHandler {
           this.auditLogger.info(req.log, `Successfully removed TO start date for questionnaire ${instrumentName}`);
           return res.status(201).json();
         } catch (error: unknown) {
-          console.error(error);
           this.auditLogger.error(req.log, `Failed to remove TO start date for questionnaire ${instrumentName}`);
           throw error;
         }
@@ -110,11 +109,8 @@ export class BimsHandler {
 
 function startDateExists(startDate: toStartDate | undefined): boolean {
   if (!startDate) {
-    console.log("START DATE REALLY DOESNT EXIST");
     return false;
   }
   const regexp = new RegExp(/^[0-9]{4}-[0-9]{2}-[0-9]{2}(.{1}[0-9]{2}:[0-9]{2}:[0-9]{2})?/);
-  console.log(`DOES START DATE EXIST ${startDate.tostartdate}`);
-  console.log(regexp.test(startDate.tostartdate));
   return regexp.test(startDate.tostartdate);
 }

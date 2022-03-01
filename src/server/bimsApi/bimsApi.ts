@@ -35,8 +35,6 @@ export class BimsApi {
 
         const response = await this.delete(url);
         if (response.status !== 204) {
-            console.error("Failed to delete to start date");
-            console.error(response);
             throw `Could not delete TO Start date for: ${instrumentName}`;
         }
     }
@@ -69,7 +67,6 @@ export class BimsApi {
             return [200, 404].includes(statusCode);
         };
         const response = await this.httpClient.get(`${this.bimsApiUrl}${this.url(url)}`, config);
-        this.checkContentType(response);
         return response;
     }
 
@@ -77,7 +74,6 @@ export class BimsApi {
     protected async post(url: string, data: any): Promise<AxiosResponse> {
         const config = await this.axiosConfig();
         const response = await this.httpClient.post(`${this.bimsApiUrl}${this.url(url)}`, data, config);
-        this.checkContentType(response);
         return response;
     }
 
@@ -85,7 +81,6 @@ export class BimsApi {
     protected async delete(url: string): Promise<AxiosResponse> {
         const config = await this.axiosConfig();
         const response = await this.httpClient.delete(`${this.bimsApiUrl}${this.url(url)}`, config);
-        this.checkContentType(response);
         return response;
     }
 
@@ -94,7 +89,6 @@ export class BimsApi {
         const config = await this.axiosConfig();
         console.log(`${this.bimsApiUrl}${this.url(url)}`);
         const response = await this.httpClient.patch(`${this.bimsApiUrl}${this.url(url)}`, data, config);
-        this.checkContentType(response);
         return response;
     }
 
@@ -104,12 +98,5 @@ export class BimsApi {
             config = { headers: await this.authProvider.getAuthHeader() };
         }
         return config;
-    }
-
-    private checkContentType(response: AxiosResponse): void {
-        if (response.headers["content-type"] !== "application/json") {
-            console.warn("Response was not JSON, most likely invalid auth");
-            throw "Response was not JSON, most likely invalid auth";
-        }
     }
 }

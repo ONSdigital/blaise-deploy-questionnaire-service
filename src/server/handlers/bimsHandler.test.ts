@@ -44,16 +44,6 @@ describe("Sending TO start date to BIMS service", () => {
         expect(response.body).toStrictEqual({});
     });
 
-    it("should return a 400 status when status is successful but returned contentType is not application/json", async () => {
-        mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
-        mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(201, []);
-
-        const response: Response = await request.post("/api/tostartdate/OPN2004A").send({ "tostartdate": "2020-06-05" });
-
-        expect(response.status).toEqual(500);
-    });
-
-
     it("should return a 500 status direct from the API", async () => {
         mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
         mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
@@ -88,15 +78,6 @@ describe("Getting TO start date from BIMS service", () => {
         expect(response.status).toEqual(200);
         expect(response.body).toStrictEqual({ "tostartdate": "2020-06-05" });
     });
-
-    it("should return a 500 status when status is successful but returned contentType is not application/json", async () => {
-        mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, { "tostartdate": "2020-06-05" });
-
-        const response: Response = await request.get("/api/tostartdate/OPN2004A");
-
-        expect(response.status).toEqual(500);
-    });
-
 
     it("should return a 500 status direct from the API", async () => {
         mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
@@ -138,7 +119,6 @@ describe("Deleting TO start date to BIMS service", () => {
 
         expect(response.status).toEqual(204);
     });
-
 
     it("should return a 500 status direct from the API", async () => {
         mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, { "tostartdate": "2020-06-05" }, jsonHeaders);
