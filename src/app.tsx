@@ -94,13 +94,13 @@ function App(): ReactElement {
                         <Route path="/UploadSummary">
                             <DeploymentSummary />
                         </Route>
-                        <Route path={"/upload/survey-live/:instrumentName"}>
+                        <Route path="/upload/survey-live/:instrumentName">
                             <LiveSurveyWarning />
                         </Route>
                         <Route path="/questionnaire/start-date">
                             <ChangeToStartDate />
                         </Route>
-                        <Route path="/questionnaire">
+                        <Route path="/questionnaire/:instrumentName">
                             <InstrumentDetails />
                         </Route>
                         <Route path="/upload">
