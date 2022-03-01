@@ -110,8 +110,11 @@ export class BimsHandler {
 
 function startDateExists(startDate: toStartDate | undefined): boolean {
   if (!startDate) {
+    console.log("START DATE REALLY DOESNT EXIST");
     return false;
   }
   const regexp = new RegExp(/^[0-9]{4}-[0-9]{2}-[0-9]{2}(.{1}[0-9]{2}:[0-9]{2}:[0-9]{2})?/);
+  console.log(`DOES START DATE EXIST ${startDate.tostartdate}`);
+  console.log(regexp.test(startDate.tostartdate));
   return regexp.test(startDate.tostartdate);
 }
