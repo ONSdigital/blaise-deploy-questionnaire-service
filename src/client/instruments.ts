@@ -45,7 +45,7 @@ export async function activateInstrument(instrumentName: string): Promise<boolea
     const url = `/api/instruments/${instrumentName}/activate`;
 
     try {
-        const response = await axios.patch(url, axiosConfig());
+        const response = await axios.patch(url, undefined, axiosConfig());
         return response.status === 204;
     } catch (error: unknown) {
         console.error(`Response from activateInstrument: Error ${error}`);
@@ -58,7 +58,7 @@ export async function deactivateInstrument(instrumentName: string): Promise<bool
     const url = `/api/instruments/${instrumentName}/deactivate`;
 
     try {
-        const response = await axios.patch(url, axiosConfig());
+        const response = await axios.patch(url, undefined, axiosConfig());
         return response.status === 204;
     } catch (error: unknown) {
         console.error(`Response from deactivateInstrument: Error ${error}`);
