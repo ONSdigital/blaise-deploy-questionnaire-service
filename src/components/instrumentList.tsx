@@ -81,7 +81,7 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
     const [filteredList, setFilteredList] = useState<Instrument[]>([]);
 
     function filterTestInstruments(instrumentsToFilter: Instrument[], filterValue: string): Instrument[] {
-        if (filterValue.toUpperCase() !== "DST") {
+        if (!filterValue.toUpperCase().startsWith("DST")) {
             instrumentsToFilter = filter(instrumentsToFilter, (instrument) => {
                 if (!instrument?.name) {
                     return false;
