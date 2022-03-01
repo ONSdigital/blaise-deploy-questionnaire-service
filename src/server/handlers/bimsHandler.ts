@@ -69,7 +69,8 @@ export class BimsHandler {
 
       this.auditLogger.info(req.log, `Successfully removed TO start date for questionnaire ${instrumentName}`);
       return res.status(204).json();
-    } catch {
+    } catch (error: unknown) {
+      console.error(error);
       this.auditLogger.error(req.log, `Failed to remove TO start date for questionnaire ${instrumentName}`);
       return res.status(500).json();
     }
