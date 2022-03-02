@@ -10,8 +10,9 @@ import "@testing-library/jest-dom";
 import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenNoQuestionnairesAreInstalled, givenTOStartDateFails } from "../step_definitions/given";
 import { thenIAmPresentedWithAnOptionToSpecifyATOStartDate, thenICanViewTheTOStartDateSetToo, thenIGetAnErrorBannerWithMessage, thenTheSummaryPageHasNoTOStartDate } from "../step_definitions/then";
 import { whenIConfirmMySelection, whenIDeployTheQuestionnaire, whenISelectTheContinueButton, whenISelectToInstallWithNoStartDate, whenISpecifyAToStartDateOf } from "../step_definitions/when";
-import { Mocker } from "../step_definitions/helpers/mocker";
-import {AuthManager} from "blaise-login-react-client";
+import { AuthManager } from "blaise-login-react-client";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -24,20 +25,14 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-
-const mocker = new Mocker();
-
+const mocker = new MockAdapter(axios);
 
 defineFeature(feature, test => {
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
         jest.resetModules();
-
-    });
-
-    beforeEach(() => {
         cleanup();
+        mocker.reset();
     });
 
     test("Present TO Start Date option", ({ given, when, then }) => {
