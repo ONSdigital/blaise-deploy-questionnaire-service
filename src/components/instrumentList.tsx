@@ -34,7 +34,7 @@ function instrumentTableRow(instrument: Instrument): ReactElement {
                     data-testid={`info-${instrument.name}`}
                     aria-label={`View more information for questionnaire ${instrument.name}`}
                     to={{
-                        pathname: "/questionnaire",
+                        pathname: `/questionnaire/${instrument.name}`,
                         state: { instrument: instrument }
                     }}>
                     {instrumentName(instrument)}
