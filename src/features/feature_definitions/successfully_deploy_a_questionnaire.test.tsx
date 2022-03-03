@@ -12,15 +12,14 @@ import axios from "axios";
 import { whenIClickDeployNewQuestionnaire, whenIConfirmMySelection, whenIConfirmMySelectionNoWait, whenIDeployTheQuestionnaire, whenIHaveSelectedADeployPackage, whenILoadTheHomepage, whenISelectToInstallWithNoStartDate } from "../step_definitions/when";
 import { thenIAmPresentedWithAnOptionToDeployAQuestionnaire, thenIAmPresentedWithAnOptionToDeployAQuestionnaireFile, thenIAmPresentedWithASuccessfullyDeployedBanner, thenICanSelectAQuestionnairePackageToInstall, thenTheQuestionnaireIsInstalled, thenUploadIsDisabled } from "../step_definitions/then";
 import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenInstallsSuccessfully, givenNoQuestionnairesAreInstalled } from "../step_definitions/given";
-import { Mocker } from "../step_definitions/helpers/mocker";
-import {AuthManager} from "blaise-login-react-client";
+import { AuthManager } from "blaise-login-react-client";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
     return Promise.resolve(true);
 });
 
-const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
+const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 // Load in feature details from .feature file
 const feature = loadFeature(
@@ -28,18 +27,16 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const mocker = new Mocker();
-
 defineFeature(feature, test => {
-    afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
-        jest.resetModules();
-        mock.reset();
+    beforeEach(() => {
+        mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200);
     });
 
-    beforeEach(() => {
-        mock.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200);
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+        cleanup();
+        mocker.reset();
     });
 
     test("Successful log in to Questionnaire Deployment Service", ({ given, when, then }) => {
@@ -83,7 +80,7 @@ defineFeature(feature, test => {
         whenISelectToInstallWithNoStartDate(when);
         whenIDeployTheQuestionnaire(when);
 
-        thenTheQuestionnaireIsInstalled(then);
+        thenTheQuestionnaireIsInstalled(then, mocker);
         thenIAmPresentedWithASuccessfullyDeployedBanner(then);
     });
 });

@@ -1,229 +1,120 @@
-import navigateToDeployPageAndSelectFile, { format_date_string } from "./helpers/functions";
+import navigateToDeployPageAndSelectFile, { formatDateString } from "./helpers/functions";
 import { DefineStepFunction } from "jest-cucumber";
-import { Instrument } from "../../../Interfaces";
-import { instrumentWithName } from "./helpers/API_Mock_Objects";
-import { Mocker } from "./helpers/mocker";
-import { InstrumentSettings } from "blaise-api-node-client";
+import { instrumentWithName } from "./helpers/apiMockObjects";
+import { InstrumentSettings, Instrument } from "blaise-api-node-client";
+import MockAdapter from "axios-mock-adapter";
 
-export const givenTheQuestionnaireIsInstalled = (
+export function givenTheQuestionnaireIsInstalled(
   given: DefineStepFunction,
   instrumentList: Instrument[],
-  mocker: Mocker
-): void => {
+  mocker: MockAdapter
+): void {
   given(/the questionnaire '(.*)' is installed/, (questionnaire: string) => {
     const newInstrument = instrumentWithName(questionnaire);
     if (!instrumentList.some(instrument => instrument.name === questionnaire)) {
       instrumentList.push(newInstrument);
     }
-    mocker.set({
-      Path: "/api/instruments",
-      Status: 200,
-      JSON: instrumentList
-    });
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}`,
-      Status: 200,
-      JSON: newInstrument
-    });
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}`,
-      Method: "DELETE",
-      Status: 204
-    });
-    mocker.set({
-      Path: `/api/tostartdate/${questionnaire}`,
-      Method: "POST",
-      Status: 200
-    });
-    mocker.set({
-      Path: `/api/tostartdate/${questionnaire}`,
-      Status: 204
-    });
-    mocker.set({
-      Path: `/upload/init?filename=${questionnaire}.bpkg`,
-      Status: 200,
-      JSON: "https://storage.googleapis.com/"
-    });
-    mocker.set({
-      Path: `/upload/verify?filename=${questionnaire}.bpkg`,
-      Status: 200,
-      JSON: { name: `${questionnaire}.bpkg` }
-    });
-    mocker.set({
-      Path: `/api/install?filename=${questionnaire}.bpkg`,
-      Status: 201,
-      JSON: ""
-    });
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}/settings`,
-      Status: 200,
-      JSON: [
-        {
-          type: "StrictInterviewing",
-          saveSessionOnTimeout: true,
-          saveSessionOnQuit: true,
-          deleteSessionOnTimeout: true,
-          deleteSessionOnQuit: true,
-          sessionTimeout: 15,
-          applyRecordLocking: true
-        }
-      ]
-    });
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}/modes`,
-      Status: 200,
-      JSON: ["CAWI", "CATI"]
-    });
-    mocker.applyMocks();
+    mocker.onGet("/api/instruments").reply(200, instrumentList);
+    mocker.onGet(`/api/instruments/${questionnaire}`).reply(200, newInstrument);
+    mocker.onDelete(`/api/instruments/${questionnaire}`).reply(204);
+    mocker.onGet(`/api/tostartdate/${questionnaire}`).reply(200);
+    mocker.onPost(`/api/tostartdate/${questionnaire}`).reply(200);
+    mocker.onDelete(`/api/tostartdate/${questionnaire}`).reply(204);
+    mocker.onGet(`/upload/init?filename=${questionnaire}.bpkg`).reply(200, "https://storage.googleapis.com/");
+    mocker.onGet(`/upload/verify?filename=${questionnaire}.bpkg`).reply(200, { name: `${questionnaire}.bpkg` });
+    mocker.onPost("/api/install").reply(201);
+    mocker.onGet(`/api/instruments/${questionnaire}/settings`).reply(200, [
+      {
+        type: "StrictInterviewing",
+        saveSessionOnTimeout: true,
+        saveSessionOnQuit: true,
+        deleteSessionOnTimeout: true,
+        deleteSessionOnQuit: true,
+        sessionTimeout: 15,
+        applyRecordLocking: true
+      }
+    ]);
+    mocker.onGet(`/api/instruments/${questionnaire}/modes`).reply(200, ["CAWI", "CATI"]);
+    mocker.onGet(`/api/uacs/instrument/${questionnaire}/count`).reply(200, { count: 0 });
   });
-};
+}
 
 // Just a bunch of default mocks to stop things falling over
-export const givenNoQuestionnairesAreInstalled = (
+export function givenNoQuestionnairesAreInstalled(
   given: DefineStepFunction,
-  mocker: Mocker
-): void => {
+  mocker: MockAdapter
+): void {
   given("no questionnaires are installed", () => {
-    mocker.set({
-      Path: "/api/instruments/",
-      Status: 404
-    });
-    mocker.set({
-      Path: "/api/instruments",
-      Status: 200,
-      JSON: []
-    });
-    mocker.set({
-      Path: "/api/tostartdate/",
-      Status: 204
-    });
-    mocker.set({
-      Path: "/api/tostartdate/",
-      Method: "POST",
-      Status: 200
-    });
-    mocker.set({
-      Path: "/upload/init",
-      Status: 200,
-      JSON: "https://storage.googleapis.com/"
-    });
-    mocker.set({
-      Path: "/upload/verify",
-      Status: 200
-    });
-    mocker.set({
-      Path: "/api/install",
-      Status: 201
-    });
-    mocker.set({
-      Path: "/settings",
-      Status: 200,
-      JSON: [
-        {
-          type: "StrictInterviewing",
-          saveSessionOnTimeout: true,
-          saveSessionOnQuit: true,
-          deleteSessionOnTimeout: true,
-          deleteSessionOnQuit: true,
-          sessionTimeout: 15,
-          applyRecordLocking: true
-        }
-      ]
-    });
-    mocker.set({
-      Path: "/modes",
-      Status: 200,
-      JSON: ["CAWI", "CATI"]
-    });
-    mocker.applyMocks();
+    mocker.onGet("/api/instruments").reply(200, []);
   });
-};
+}
 
-export const givenInstallsSuccessfully = (given: DefineStepFunction, mocker: Mocker): void => {
+export function givenInstallsSuccessfully(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' installs successfully/, (questionnaire: string) => {
-    mocker.set({
-      Path: `/upload/verify?filename=${questionnaire}.bpkg`,
-      Status: 200,
-      JSON: { name: `${questionnaire}.bpkg` }
-    });
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}/settings`,
-      Status: 200,
-      JSON: [
-        {
-          type: "StrictInterviewing",
-          saveSessionOnTimeout: true,
-          saveSessionOnQuit: true,
-          deleteSessionOnTimeout: true,
-          deleteSessionOnQuit: true,
-          sessionTimeout: 15,
-          applyRecordLocking: true
-        }
-      ]
-    });
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}/modes`,
-      Status: 200,
-      JSON: ["CAWI", "CATI"]
-    });
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}/activate`,
-      Status: 204
-    });
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}/deactivate`,
-      Status: 204
-    });
-    mocker.applyMocks();
+    mocker.onDelete(`/api/instruments/${questionnaire}`).reply(204);
+    mocker.onGet(`/api/instruments/${questionnaire}`).reply(200);
+    mocker.onGet(`/api/tostartdate/${questionnaire}`).reply(200);
+    mocker.onPost(`/api/tostartdate/${questionnaire}`).reply(200);
+    mocker.onDelete(`/api/tostartdate/${questionnaire}`).reply(204);
+    mocker.onGet(`/upload/init?filename=${questionnaire}.bpkg`).reply(200, "https://storage.googleapis.com/");
+    mocker.onGet(`/upload/verify?filename=${questionnaire}.bpkg`).reply(200, { name: `${questionnaire}.bpkg` });
+    mocker.onPost("/api/install").reply(201);
+    mocker.onGet(`/api/instruments/${questionnaire}/settings`).reply(200, [
+      {
+        type: "StrictInterviewing",
+        saveSessionOnTimeout: true,
+        saveSessionOnQuit: true,
+        deleteSessionOnTimeout: true,
+        deleteSessionOnQuit: true,
+        sessionTimeout: 15,
+        applyRecordLocking: true
+      }
+    ]);
+    mocker.onGet(`/api/instruments/${questionnaire}/modes`).reply(200, ["CAWI", "CATI"]);
+    mocker.onGet(`/api/uacs/instrument/${questionnaire}/count`).reply(200, { count: 0 });
+    mocker.onPatch(`/api/instruments/${questionnaire}/activate`).reply(204);
+    mocker.onPatch(`/api/instruments/${questionnaire}/deactivate`).reply(204);
   });
-};
+}
 
-export const givenTheQuestionnaireHasModes = (
+export function givenTheQuestionnaireHasModes(
   given: DefineStepFunction,
-  mocker: Mocker
-): void => {
+  mocker: MockAdapter
+): void {
   given(/'(.*)' has the modes '(.*)'/, (questionnaire: string, modes: string) => {
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}/modes`,
-      Status: 200,
-      JSON: modes.split(",")
-    });
-    mocker.applyMocks();
+    mocker.onGet(`/api/instruments/${questionnaire}/modes`).reply(200, modes.split(","));
   });
-};
+}
 
-export const givenTheQuestionnaireHasCases = (
+export function givenTheQuestionnaireHasCases(
   given: DefineStepFunction,
   instrumentList: Instrument[],
-): void => {
+  mocker: MockAdapter
+): void {
   given(/'(.*)' has (\d+) cases/, (questionnaire: string, cases: string) => {
     const caseCount: number = +cases;
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
         instrument.dataRecordCount = caseCount;
+        mocker.onGet(`/api/instruments/${questionnaire}`).reply(200, instrument);
       }
     }
   });
-};
+}
 
-export const givenTheQuestionnaireHasUACs = (
+export function givenTheQuestionnaireHasUACs(
   given: DefineStepFunction,
-  mocker: Mocker
-): void => {
+  mocker: MockAdapter
+): void {
   given(/'(.*)' has (\d+) UACs/, (questionnaire: string, cases: string) => {
-    mocker.set({
-      Path: `/api/uacs/instrument/${questionnaire}/count`,
-      Status: 200,
-      JSON: { count: +cases }
-    });
-    mocker.applyMocks();
+    mocker.onGet(`/api/uacs/instrument/${questionnaire}/count`).reply(200, { count: +cases });
   });
-};
+}
 
-export const givenTheQuestionnaireIsErroneous = (
+export function givenTheQuestionnaireIsErroneous(
   given: DefineStepFunction,
   instrumentList: Instrument[],
-): void => {
+): void {
   given(/'(.*)' is erroneous/, (questionnaire: string) => {
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
@@ -231,90 +122,62 @@ export const givenTheQuestionnaireIsErroneous = (
       }
     }
   });
-};
+}
 
-export const givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous = (
+export function givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(
   given: DefineStepFunction,
-  mocker: Mocker
-): void => {
+  mocker: MockAdapter
+): void {
   given(/'(.*)' cannot be deleted because it would go erroneous/, (questionnaire: string) => {
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}`,
-      Method: "DELETE",
-      Status: 420
-    });
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}`,
-      Status: 420
-    });
-    mocker.applyMocks();
+    mocker.onDelete(`/api/instruments/${questionnaire}`).reply(420);
+    mocker.onGet(`/api/instruments/${questionnaire}`).reply(420);
   });
-};
+}
 
-export const givenTOStartDateFails = (given: DefineStepFunction, mocker: Mocker): void => {
+
+export function givenTOStartDateFails(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/setting a TO start date for '(.*)' fails/, (questionnaire: string) => {
-    mocker.set({
-      Path: `/api/tostartdate/${questionnaire}`,
-      Status: 500
-    });
-    mocker.applyMocks();
+    mocker.onPost(`/api/tostartdate/${questionnaire}`).reply(500);
   });
-};
+}
 
-export const givenUACGenerationIsBroken = (given: DefineStepFunction, mocker: Mocker): void => {
+export function givenUACGenerationIsBroken(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/UAC generation is broken for '(.*)'/, (questionnaire: string) => {
-    mocker.set({
-      Path: `/api/uacs/instrument/${questionnaire}`,
-      Status: 500
-    });
-    mocker.applyMocks();
+    mocker.onPost(`/api/uacs/instrument/${questionnaire}`).reply(500);
   });
-};
+}
 
 
-export const givenTheQuestionnaireHasATOStartDate = (given: DefineStepFunction, mocker: Mocker): void => {
+export function givenTheQuestionnaireHasATOStartDate(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' has a TO start date of '(.*)'/, async (questionnaire: string, toStartDate: string) => {
-    mocker.set({
-      Path: `/api/tostartdate/${questionnaire}`,
-      Status: 200,
-      JSON: { tostartdate: format_date_string(toStartDate) }
-    });
-    mocker.applyMocks();
+    mocker.onGet(`/api/tostartdate/${questionnaire}`).reply(200, { tostartdate: formatDateString(toStartDate) });
   });
-};
+}
 
 
-export const givenTheQuestionnaireHasNoTOStartDate = (given: DefineStepFunction, mocker: Mocker): void => {
+export function givenTheQuestionnaireHasNoTOStartDate(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' has no TO start date/, async (questionnaire: string) => {
-    mocker.set({
-      Path: `/api/tostartdate/${questionnaire}`,
-      Status: 404,
-    });
-    mocker.applyMocks();
+    mocker.onGet(`/api/tostartdate/${questionnaire}`).reply(404);
   });
-};
+}
 
-export const givenAllInstallsWillFail = (given: DefineStepFunction, mocker: Mocker): void => {
+export function givenAllInstallsWillFail(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/All Questionnaire installs will fail for '(.*)'/, (questionnaire_matcher: string) => {
-    mocker.set({
-      Path: `/api/install?filename=${questionnaire_matcher}`,
-      Status: 500,
-    });
-    mocker.applyMocks();
+    mocker.onPost("/api/install").reply(500);
   });
-};
+}
 
-export const givenIHaveSelectedTheQuestionnairePacakgeToDeploy = (given: DefineStepFunction): void => {
+export function givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given: DefineStepFunction): void {
   given(/I have selected the questionnaire package for '(.*)' to deploy/, async (questionnaire: string) => {
     await navigateToDeployPageAndSelectFile(questionnaire);
   });
-};
+}
 
-export const givenTheQuestionnaireIsLive = (
+export function givenTheQuestionnaireIsLive(
   given: DefineStepFunction,
   instrumentList: Instrument[],
-  mocker: Mocker
-): void => {
+  mocker: MockAdapter
+): void {
   given(/'(.*)' is live/, (questionnaire: string) => {
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
@@ -322,62 +185,47 @@ export const givenTheQuestionnaireIsLive = (
         instrument.hasData = true;
         instrument.active = true;
 
-        mocker.set({
-          Path: `/api/instruments/${questionnaire}`,
-          Status: 200,
-          JSON: instrument
-        });
+        mocker.onGet(`/api/instruments/${questionnaire}`).reply(200, instrument);
       }
     }
-    mocker.applyMocks();
   });
-};
+}
 
-export const givenTheQuestionnaireIsInactive = (
+export function givenTheQuestionnaireIsInactive(
   given: DefineStepFunction,
   instrumentList: Instrument[],
-  mocker: Mocker
-): void => {
+  mocker: MockAdapter
+): void {
   given(/'(.*)' is inactive/, (questionnaire: string) => {
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
         console.log(questionnaire);
         instrument.status = "inactive";
 
-        mocker.set({
-          Path: `/api/instruments/${questionnaire}`,
-          Status: 200,
-          JSON: instrument
-        });
+        mocker.onGet(`/api/instruments/${questionnaire}`).reply(200, instrument);
       }
     }
-    mocker.applyMocks();
   });
-};
+}
 
-export const givenTheQuestionnaireHasActiveSurveyDays = (
+export function givenTheQuestionnaireHasActiveSurveyDays(
   given: DefineStepFunction,
   instrumentList: Instrument[],
-  mocker: Mocker
-): void => {
+  mocker: MockAdapter
+): void {
   given(/'(.*)' has active survey days/, (questionnaire: string) => {
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
         console.log(questionnaire);
         instrument.active = true;
 
-        mocker.set({
-          Path: `/api/instruments/${questionnaire}`,
-          Status: 200,
-          JSON: instrument
-        });
+        mocker.onGet(`/api/instruments/${questionnaire}`).reply(200, instrument);
       }
     }
-    mocker.applyMocks();
   });
-};
+}
 
-export const givenTheQuestionnareHasTheSettings = (given: DefineStepFunction, mocker: Mocker): void => {
+export function givenTheQuestionnareHasTheSettings(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' has the settings:/, (questionnaire: string, table: any[]) => {
     const settings: InstrumentSettings[] = [];
     table.forEach((row: any) => {
@@ -391,11 +239,6 @@ export const givenTheQuestionnareHasTheSettings = (given: DefineStepFunction, mo
         applyRecordLocking: row.applyRecordLocking === "true",
       });
     });
-    mocker.set({
-      Path: `/api/instruments/${questionnaire}/settings`,
-      Status: 200,
-      JSON: settings
-    });
-    mocker.applyMocks();
+    mocker.onGet(`/api/instruments/${questionnaire}/settings`).reply(200, settings);
   });
-};
+}

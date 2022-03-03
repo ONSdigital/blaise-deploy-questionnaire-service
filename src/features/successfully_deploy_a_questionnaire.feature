@@ -15,7 +15,7 @@ Feature: DQS - Successfully deploy a questionnaire
     When I load the homepage
     And I click deploy a questionnaire
     Then I am presented with an option to choose a file containing the questionnaire
-    And I can select a questionnaire package for 'DST2201A' to install
+    And I can select a questionnaire package for 'TST2201A' to install
 
   # Scenario 3:
   Scenario: Deploy questionnaire functions disabled
@@ -29,10 +29,10 @@ Feature: DQS - Successfully deploy a questionnaire
   # Scenario 3a:
   Scenario: Deploy selected file
     Given no questionnaires are installed
-    And I have selected the questionnaire package for 'DST2201B' to deploy
-    And 'DST2201B' installs successfully
+    And I have selected the questionnaire package for 'TST2201B' to deploy
+    And 'TST2201B' installs successfully
     When I confirm my selection
     And I select to not provide a TO Start Date
     And I deploy the questionnaire
-    Then the questionnaire package 'DST2201B' is deployed
+    Then the questionnaire package 'TST2201B' is deployed
     Then I am presented with a successful deployment banner on the landing page

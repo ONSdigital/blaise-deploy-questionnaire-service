@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { act, render, screen } from "@testing-library/react";
 import { Router } from "react-router";
-import App from "../../../App";
+import App from "../../../app";
 import flushPromises from "../../../tests/utils";
 import React from "react";
 import userEvent from "@testing-library/user-event";
@@ -48,13 +48,7 @@ export async function navigatePastSettingTOStartDateAndStartDeployment(): Promis
     });
 }
 
-export function mock_fetch_requests(mock_server_responses: any): void {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    global.fetch = jest.fn((url: string, config: any) => mock_server_responses(url, config));
-}
-
-export function format_date_string(date: string): string {
+export function formatDateString(date: string): string {
     const splitDate = date.split("/");
     return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`;
 }
