@@ -46,7 +46,7 @@ function ChangeToStartDate(): ReactElement {
         <>
             <Breadcrumbs BreadcrumbList={
                 [
-                    { link: "/", title: "Home" }, { link: "/questionnaire", title: instrumentName }
+                    { link: "/", title: "Home" }, { link: `/questionnaire/${instrumentName}`, title: instrumentName }
                 ]
             } />
 
