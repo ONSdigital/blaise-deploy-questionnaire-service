@@ -1,14 +1,16 @@
 import { InstrumentUacDetailsByCaseId } from "bus-api-node-client";
 import axios from "axios";
 import axiosConfig from "./axiosConfig";
+import { AuthManager } from "blaise-login-react-client";
 
 
 export async function generateUACCodes(instrumentName: string): Promise<boolean> {
     console.log("Sending request generate UAC codes");
     const url = `/api/uacs/instrument/${instrumentName}`;
+    const authManager = new AuthManager();
 
     try {
-        const response = await axios.post(url, null, axiosConfig());
+        const response = await axios.post(url, null, authManager.authHeader());
         return response.status === 200;
     } catch {
         return false;
