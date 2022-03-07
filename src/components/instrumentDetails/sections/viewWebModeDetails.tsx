@@ -17,7 +17,7 @@ const ViewWebModeDetails = ({ instrument }: Props): ReactElement => {
     const [loading, setLoading] = useState<boolean>(true);
     const [loadingMessage, setLoadingMessage] = useState<string>("Getting web mode information");
     const [uacCount, setUacCount] = useState<number>();
-    const [uacGenerationFailed, setUacGenerationFailed] = useState<boolean>(false);
+    const [uacGenerationFailed, setUacGenerationFailed] = useState<string>("");
     const [showGenerateUACsButton, setShowGenerateUACsButton] = useState<boolean>(false);
 
     function getUACCount() {
@@ -33,7 +33,7 @@ const ViewWebModeDetails = ({ instrument }: Props): ReactElement => {
     async function generateUACs() {
         setLoading(true);
         setLoadingMessage("Generating Unique Access Codes for cases");
-        setUacGenerationFailed(false);
+        setUacGenerationFailed("");
 
         return generateUACCodesAndCSVFileData(instrument.name)
             .then((uacList) => {
@@ -41,10 +41,11 @@ const ViewWebModeDetails = ({ instrument }: Props): ReactElement => {
                 getUACCount();
                 return uacList;
             }).catch((error) => {
-                setUacGenerationFailed(true);
+                const userFriendlyError = "Error occurred while generating Unique Access Codes";
+                setUacGenerationFailed(userFriendlyError);
                 console.error(error);
-                console.error("Error occurred while generating Unique Access Codes");
-                return [{ error: "Error occurred while generating Unique Access Codes" }];
+                console.error(userFriendlyError);
+                return [{ error: userFriendlyError }];
             }).finally(() => setLoading(false));
     }
 
@@ -100,13 +101,12 @@ const ViewWebModeDetails = ({ instrument }: Props): ReactElement => {
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody className={`summary__item ${uacGenerationFailed ? "summary__item--error" : ""}`}>
+                        <tbody className={`summary__item ${uacGenerationFailed == "" ? "" : "summary__item--error"}`}>
                             {
-                                uacGenerationFailed &&
+                                uacGenerationFailed != "" &&
                                 <tr className="summary__row">
                                     <th colSpan={3} className="summary__row-title u-fs-r">
-                                        {/* Why are we inflicting this on the users? */}
-                                        I receive an appropriate error describing suitable user actions
+                                        {uacGenerationFailed}
                                     </th>
                                 </tr>
                             }

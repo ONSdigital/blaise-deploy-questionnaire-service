@@ -299,8 +299,7 @@ export function thenUACsAreGenerated(then: DefineStepFunction, mocker: MockAdapt
 
 export function thenIReceiveAUACError(then: DefineStepFunction): void {
   then("I receive an appropriate error describing suitable user actions", () => {
-    // In what world is this an appropriate error???
-    expect(screen.getByText(/I receive an appropriate error describing suitable user actions/i)).toBeDefined();
+    expect(screen.getByText(/Error occurred while generating Unique Access Codes/i)).toBeDefined();
   });
 }
 
