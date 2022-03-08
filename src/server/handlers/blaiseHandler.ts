@@ -160,6 +160,9 @@ export class BlaiseHandler {
     try {
       const instruments: Instrument[] = await this.blaiseApiClient.getInstruments(this.serverPark);
       instruments.forEach(function (instrument: Instrument) {
+        if (instrument.status === "Erroneous") {
+          instrument.status = "Failed";
+        }
         instrument.fieldPeriod = fieldPeriodToText(instrument.name);
       });
 
