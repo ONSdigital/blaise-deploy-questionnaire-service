@@ -1,5 +1,7 @@
 import supertest, { Response } from "supertest";
-import { expectedInstrumentList } from "./mockObjects";
+import {
+  instrumentListMockObject, instrumentMockObject, expectedInstrumentList
+} from "./mockObjects";
 import { Auth } from "blaise-login-react-server";
 import BlaiseApiRest from "blaise-api-node-client";
 import { newServer } from "../server";
@@ -14,11 +16,11 @@ jest.mock("blaise-login-react-server", () => {
 Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
 
 jest.mock("blaise-api-node-client");
-const { DiagnosticMockObject, InstrumentListMockObject, InstrumentMockObject, InstrumentSettingsMockList } = jest.requireActual("blaise-api-node-client");
+const { DiagnosticMockObject, InstrumentSettingsMockList } = jest.requireActual("blaise-api-node-client");
 
 const mockGetDiagnostics = jest.fn();
-const mockGetInstrumentWithCatiData = jest.fn();
-const mockGetInstrumentsWithCatiData = jest.fn();
+const mockGetInstrument = jest.fn();
+const mockGetInstruments = jest.fn();
 const mockInstallInstrument = jest.fn();
 const mockDeleteInstrument = jest.fn();
 const mockActivateInstrument = jest.fn();
@@ -28,8 +30,8 @@ const mockGetInstrumentModes = jest.fn();
 const mockGetInstrumentSettings = jest.fn();
 
 BlaiseApiRest.prototype.getDiagnostics = mockGetDiagnostics;
-BlaiseApiRest.prototype.getInstrumentWithCatiData = mockGetInstrumentWithCatiData;
-BlaiseApiRest.prototype.getInstrumentsWithCatiData = mockGetInstrumentsWithCatiData;
+BlaiseApiRest.prototype.getInstrument = mockGetInstrument;
+BlaiseApiRest.prototype.getInstruments = mockGetInstruments;
 BlaiseApiRest.prototype.installInstrument = mockInstallInstrument;
 BlaiseApiRest.prototype.deleteInstrument = mockDeleteInstrument;
 BlaiseApiRest.prototype.activateInstrument = mockActivateInstrument;
@@ -79,7 +81,7 @@ describe("BlaiseAPI Get all instruments from API", () => {
   });
 
   it("should return a 200 status and an empty json list when API returns a empty list", async () => {
-    mockGetInstrumentsWithCatiData.mockImplementation(() => {
+    mockGetInstruments.mockImplementation(() => {
       return Promise.resolve([]);
     });
 
@@ -90,8 +92,8 @@ describe("BlaiseAPI Get all instruments from API", () => {
   });
 
   it("should return a 200 status and a json list of 3 items when API returns a 3 item list", async () => {
-    mockGetInstrumentsWithCatiData.mockImplementation(() => {
-      return Promise.resolve(InstrumentListMockObject);
+    mockGetInstruments.mockImplementation(() => {
+      return Promise.resolve(instrumentListMockObject);
     });
 
     const response: Response = await request.get("/api/instruments");
@@ -102,7 +104,7 @@ describe("BlaiseAPI Get all instruments from API", () => {
   });
 
   it("should return a 500 status direct from the API", async () => {
-    mockGetInstrumentsWithCatiData.mockImplementation(() => {
+    mockGetInstruments.mockImplementation(() => {
       return Promise.reject();
     });
 
@@ -119,7 +121,7 @@ describe("BlaiseAPI Get specific instrument information from API", () => {
   });
 
   it("should return a 404 status with the data as false when API returns can't find the instrument", async () => {
-    mockGetInstrumentWithCatiData.mockImplementation(() => {
+    mockGetInstrument.mockImplementation(() => {
       return Promise.reject({ response: { status: 404 }, isAxiosError: true });
     });
 
@@ -131,18 +133,18 @@ describe("BlaiseAPI Get specific instrument information from API", () => {
   });
 
   it("should return a 200 status and a json object when API returns a instrument object", async () => {
-    mockGetInstrumentWithCatiData.mockImplementation(() => {
-      return Promise.resolve(InstrumentMockObject);
+    mockGetInstrument.mockImplementation(() => {
+      return Promise.resolve(instrumentMockObject);
     });
 
     const response: Response = await request.get("/api/instruments/OPN2101A");
 
     expect(response.status).toEqual(200);
-    expect(response.body).toStrictEqual(InstrumentMockObject);
+    expect(response.body).toStrictEqual(instrumentMockObject);
   });
 
   it("should return a 500 status direct from the API", async () => {
-    mockGetInstrumentWithCatiData.mockImplementation(() => {
+    mockGetInstrument.mockImplementation(() => {
       return Promise.reject();
     });
 

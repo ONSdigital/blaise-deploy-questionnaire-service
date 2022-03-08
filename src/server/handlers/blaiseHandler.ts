@@ -8,17 +8,20 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
   const router = express.Router();
 
   const blaiseHandler = new BlaiseHandler(blaiseApiClient, serverPark, auditLogger);
+
   router.get("/api/health/diagnosis", auth.Middleware, blaiseHandler.GetHealth);
+
+  router.get("/api/instruments", auth.Middleware, blaiseHandler.GetInstruments);
   router.get("/api/instruments/:instrumentName", auth.Middleware, blaiseHandler.GetInstrument);
+  router.get("/api/instruments/:instrumentName/modes", auth.Middleware, blaiseHandler.GetModes);
+  router.get("/api/instruments/:instrumentName/modes/:mode", auth.Middleware, blaiseHandler.DoesInstrumentHaveMode);
+  router.get("/api/instruments/:instrumentName/settings", auth.Middleware, blaiseHandler.GetSettings);
+  router.get("/api/instruments/:instrumentName/cases/ids", auth.Middleware, blaiseHandler.GetCases);
+
   router.post("/api/install", auth.Middleware, blaiseHandler.InstallInstrument);
-  router.delete("/api/instruments/:instrumentName", auth.Middleware, blaiseHandler.DeleteInstrument);
   router.patch("/api/instruments/:instrumentName/activate", auth.Middleware, blaiseHandler.ActivateInstrument);
   router.patch("/api/instruments/:instrumentName/deactivate", auth.Middleware, blaiseHandler.DeactivateInstrument);
-  router.get("/api/instruments/:instrumentName/modes/:mode", auth.Middleware, blaiseHandler.DoesInstrumentHaveMode);
-  router.get("/api/instruments", auth.Middleware, blaiseHandler.GetInstruments);
-  router.get("/api/instruments/:instrumentName/cases/ids", auth.Middleware, blaiseHandler.GetCases);
-  router.get("/api/instruments/:instrumentName/modes", auth.Middleware, blaiseHandler.GetModes);
-  router.get("/api/instruments/:instrumentName/settings", auth.Middleware, blaiseHandler.GetSettings);
+  router.delete("/api/instruments/:instrumentName", auth.Middleware, blaiseHandler.DeleteInstrument);
 
   return router;
 }
@@ -61,15 +64,15 @@ export class BlaiseHandler {
     const { instrumentName } = req.params;
 
     try {
-      const instrument = await this.blaiseApiClient.getInstrumentWithCatiData(this.serverPark, instrumentName);
-      req.log.info({ instrument }, `Get instrument with CATI data ${instrumentName} endpoint`);
+      const instrument = await this.blaiseApiClient.getInstrument(this.serverPark, instrumentName);
+      req.log.info({ instrument }, `Get instrument ${instrumentName} endpoint`);
       return res.status(200).json(instrument);
     } catch (error: any) {
       if (this.errorNotFound(error)) {
         return res.status(404).json();
       }
       console.log(error);
-      req.log.error(error, "Get instrument with CATI data endpoint failed");
+      req.log.error(error, "Get instrument endpoint failed");
       return res.status(500).json();
     }
   }
@@ -157,7 +160,7 @@ export class BlaiseHandler {
 
   async GetInstruments(req: Request, res: Response): Promise<Response> {
     try {
-      const instruments: Instrument[] = await this.blaiseApiClient.getInstrumentsWithCatiData(this.serverPark);
+      const instruments: Instrument[] = await this.blaiseApiClient.getInstruments(this.serverPark);
       instruments.forEach(function (instrument: Instrument) {
         instrument.fieldPeriod = fieldPeriodToText(instrument.name);
       });
