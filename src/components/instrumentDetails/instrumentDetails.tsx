@@ -9,8 +9,9 @@ import ViewCawiModeDetails from "./sections/viewCawiModeDetails";
 import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
 import YearCalendar from "./sections/yearCalendar";
 import ViewInstrumentSettings from "./sections/viewInstrumentSettings";
-import {getInstrument, getInstruments} from "../../client/instruments";
+import {getInstrument, getInstrumentModes, getInstruments} from "../../client/instruments";
 import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import {GetInstrumentMode} from "../../utilities/instrumentMode";
 
 interface State {
     instrument: Instrument | null;
@@ -24,6 +25,7 @@ function InstrumentDetails(): ReactElement {
     const location = useLocation<State>();
     const history = useHistory();
     const [instrument, setInstrument] = useState<Instrument>();
+    const [modes, setModes] = useState<string[]>([]);
     const [errored, setErrored] = useState<boolean>(false);
     const [loaded, setLoaded]  = useState<boolean>(false);
     const initialState = location.state || {instrument: null};
@@ -33,7 +35,6 @@ function InstrumentDetails(): ReactElement {
         if (initialState.instrument === null) {
             loadInstrument().then(() => {
                 console.log(`Loaded instrument: ${instrumentName}`);
-                setLoaded(true);
             }).catch((error: unknown) => {
                 console.log(`Failed to get instrument ${error}`);
                 setErrored(true);
@@ -41,8 +42,25 @@ function InstrumentDetails(): ReactElement {
             });
         } else {
             setInstrument(initialState.instrument);
-            setLoaded(true);
+
         }
+        getInstrumentModes(instrumentName)
+            .then((modes) => {
+                if (modes.length === 0) {
+                    console.error("returned instrument mode was empty");
+                    setErrored(true);
+                    setLoaded(true);
+                    return;
+                }
+                console.log(`returned instrument mode: ${modes}`);
+                setModes(modes);
+                setLoaded(true);
+            }).catch((error: unknown) => {
+                console.error(`Error getting instrument modes ${error}`);
+                setErrored(true);
+                setLoaded(true);
+                return;
+            });
     }, []);
 
     async function loadInstrument(): Promise<void> {
@@ -104,7 +122,7 @@ function InstrumentDetails(): ReactElement {
                                     </div>
                                 </td>
                                 <td className="summary__values" colSpan={2}>
-                                    {instrument.dataRecordCount}
+                                    {modes.join(", ")}
                                 </td>
                             </tr>
                             </tbody>
