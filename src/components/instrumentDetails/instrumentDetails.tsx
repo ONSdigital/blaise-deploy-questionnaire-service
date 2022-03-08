@@ -9,9 +9,9 @@ import ViewCawiModeDetails from "./sections/viewCawiModeDetails";
 import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
 import YearCalendar from "./sections/yearCalendar";
 import ViewInstrumentSettings from "./sections/viewInstrumentSettings";
-import {getInstrument, getInstrumentModes, getInstruments} from "../../client/instruments";
+import {getInstrument, getInstrumentModes} from "../../client/instruments";
 import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
-import {GetInstrumentMode} from "../../utilities/instrumentMode";
+
 
 interface State {
     instrument: Instrument | null;
@@ -27,7 +27,7 @@ function InstrumentDetails(): ReactElement {
     const [instrument, setInstrument] = useState<Instrument>();
     const [modes, setModes] = useState<string[]>([]);
     const [errored, setErrored] = useState<boolean>(false);
-    const [loaded, setLoaded]  = useState<boolean>(false);
+    const [loaded, setLoaded] = useState<boolean>(false);
     const initialState = location.state || {instrument: null};
     const {instrumentName}: Params = useParams();
 
@@ -56,11 +56,11 @@ function InstrumentDetails(): ReactElement {
                 setModes(modes);
                 setLoaded(true);
             }).catch((error: unknown) => {
-                console.error(`Error getting instrument modes ${error}`);
-                setErrored(true);
-                setLoaded(true);
-                return;
-            });
+            console.error(`Error getting instrument modes ${error}`);
+            setErrored(true);
+            setLoaded(true);
+            return;
+        });
     }, []);
 
     async function loadInstrument(): Promise<void> {
@@ -74,7 +74,7 @@ function InstrumentDetails(): ReactElement {
 
     function InstrumentDetails(): ReactElement {
         if (!loaded) {
-            return <ONSLoadingPanel />;
+            return <ONSLoadingPanel/>;
         }
 
         console.log(instrument);
@@ -156,7 +156,7 @@ function InstrumentDetails(): ReactElement {
 
                 <ViewCatiModeDetails instrumentName={instrument.name}/>
                 <ViewCawiModeDetails instrument={instrument}/>
-                <ViewInstrumentSettings instrument={instrument}/>
+                <ViewInstrumentSettings instrument={instrument} modes={modes}/>
 
                 <h2 className={"u-mt-m"}>Survey days</h2>
                 <YearCalendar surveyDays={instrument.surveyDays}/>
@@ -175,7 +175,7 @@ function InstrumentDetails(): ReactElement {
             }/>
 
             <main id="main-content" className="page__main u-mt-no">
-                <InstrumentDetails />
+                <InstrumentDetails/>
             </main>
         </>
     );
