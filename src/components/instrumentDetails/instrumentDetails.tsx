@@ -5,8 +5,8 @@ import {Instrument} from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
 import InstrumentStatus from "../instrumentStatus";
 import BlaiseNodeInfo from "./sections/blaiseNodeInfo";
-import ViewWebModeDetails from "./sections/viewWebModeDetails";
-import ViewToStartDate from "./sections/viewToStartDate";
+import ViewCawiModeDetails from "./sections/viewCawiModeDetails";
+import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
 import YearCalendar from "./sections/yearCalendar";
 import ViewInstrumentSettings from "./sections/viewInstrumentSettings";
 import {getInstrument, getInstruments} from "../../client/instruments";
@@ -74,8 +74,6 @@ function InstrumentDetails(): ReactElement {
                     {instrument.name}
                 </h1>
 
-                <ViewToStartDate instrumentName={instrument.name}/>
-
                 <div className="summary u-mb-m">
                     <div className="summary__group">
                         <h2 className="summary__group-title">Questionnaire details</h2>
@@ -95,6 +93,18 @@ function InstrumentDetails(): ReactElement {
                                 </td>
                                 <td className="summary__values" colSpan={2}>
                                     <InstrumentStatus status={instrument.status ? instrument.status : ""}/>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody className="summary__item">
+                            <tr className="summary__row summary__row--has-values">
+                                <td className="summary__item-title">
+                                    <div className="summary__item--text">
+                                        Modes
+                                    </div>
+                                </td>
+                                <td className="summary__values" colSpan={2}>
+                                    {instrument.dataRecordCount}
                                 </td>
                             </tr>
                             </tbody>
@@ -126,8 +136,9 @@ function InstrumentDetails(): ReactElement {
                     </div>
                 </div>
 
+                <ViewCatiModeDetails instrumentName={instrument.name}/>
+                <ViewCawiModeDetails instrument={instrument}/>
                 <ViewInstrumentSettings instrument={instrument}/>
-                <ViewWebModeDetails instrument={instrument}/>
 
                 <h2 className={"u-mt-m"}>Survey days</h2>
                 <YearCalendar surveyDays={instrument.surveyDays}/>
