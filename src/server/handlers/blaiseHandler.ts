@@ -161,6 +161,7 @@ export class BlaiseHandler {
       const instruments: Instrument[] = await this.blaiseApiClient.getInstruments(this.serverPark);
       instruments.forEach(function (instrument: Instrument) {
         if (instrument.status === "Erroneous") {
+          req.log.info(`Instrument ${instrument.name} returned erroneous.`);
           instrument.status = "Failed";
         }
         instrument.fieldPeriod = fieldPeriodToText(instrument.name);
@@ -169,7 +170,7 @@ export class BlaiseHandler {
       req.log.info({ instruments }, `${instruments.length} instrument/s currently installed.`);
       return res.status(200).json(instruments);
     } catch (error: any) {
-      req.log.error(error, "Get instruments endpoint failed");
+      req.log.error(error, "Get instruments endpoint failed.");
       return res.status(500).json();
     }
   }
