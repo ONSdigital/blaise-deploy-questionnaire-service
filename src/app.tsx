@@ -123,7 +123,6 @@ function App(): ReactElement {
                                         complete this request.
                                     </p>
                                 </ONSPanel>
-                                <h2 className="u-mt-m">Table of questionnaires</h2>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
                                     <InstrumentList setErrored={setErrored} />
                                 </ErrorBoundary>

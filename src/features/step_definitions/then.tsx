@@ -21,7 +21,7 @@ export function thenIAmPresentedWithTheOptionsToCancelOrOverwrite(then: DefineSt
 export function thenIAmReturnedToTheLandingPage(then: DefineStepFunction): void {
   then("I am returned to the landing page", async () => {
     await waitFor((() => {
-      expect(screen.getByText(/table of questionnaires/i)).toBeDefined();
+      expect(screen.getByText(/Filter by questionnaire name/i)).toBeDefined();
     }));
   });
 }
@@ -154,7 +154,7 @@ export function thenIGetTheDeleteSuccessBanner(then: DefineStepFunction): void {
 
 export function thenIAmPresentedWithAListOfDeployedQuestionnaires(then: DefineStepFunction): void {
   then("I am presented with a list of the deployed questionnaires:", (table: any[]) => {
-    expect(screen.getByText(/table of questionnaires/i)).toBeDefined();
+    expect(screen.getByText(/filter by questionnaire name/i)).toBeDefined();
     const list = screen.queryAllByTestId(/instrument-table-row/i);
     expect(list).toHaveLength(table.length);
     table.forEach((row: any, index: number) => {
@@ -238,10 +238,13 @@ export function thenIAmUnableToDeleteTheQuestionnaire(then: DefineStepFunction):
 }
 
 export function thenICanReturnToTheQuestionnaireList(then: DefineStepFunction): void {
-  then("I can return to the questionnaire list", () => {
+  then("I can return to the questionnaire list", async () => {
     expect(screen.getByText(/Return to table of questionnaires/i)).toBeDefined();
     userEvent.click(screen.getByText(/Return to table of questionnaires/i));
-    expect(screen.getByText(/Table of questionnaires/i)).toBeDefined();
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(screen.getByText(/Filter by questionnaire name/i)).toBeDefined();
   });
 }
 
