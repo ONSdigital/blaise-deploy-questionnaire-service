@@ -5,12 +5,13 @@ import {Instrument} from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
 import InstrumentStatus from "../instrumentStatus";
 import BlaiseNodeInfo from "./sections/blaiseNodeInfo";
-import ViewWebModeDetails from "./sections/viewWebModeDetails";
-import ViewToStartDate from "./sections/viewToStartDate";
+import ViewCawiModeDetails from "./sections/viewCawiModeDetails";
+import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
 import YearCalendar from "./sections/yearCalendar";
 import ViewInstrumentSettings from "./sections/viewInstrumentSettings";
-import {getInstrument, getInstruments} from "../../client/instruments";
+import {getInstrument, getInstrumentModes} from "../../client/instruments";
 import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+
 
 interface State {
     instrument: Instrument | null;
@@ -24,8 +25,9 @@ function InstrumentDetails(): ReactElement {
     const location = useLocation<State>();
     const history = useHistory();
     const [instrument, setInstrument] = useState<Instrument>();
+    const [modes, setModes] = useState<string[]>([]);
     const [errored, setErrored] = useState<boolean>(false);
-    const [loaded, setLoaded]  = useState<boolean>(false);
+    const [loaded, setLoaded] = useState<boolean>(false);
     const initialState = location.state || {instrument: null};
     const {instrumentName}: Params = useParams();
 
@@ -33,7 +35,6 @@ function InstrumentDetails(): ReactElement {
         if (initialState.instrument === null) {
             loadInstrument().then(() => {
                 console.log(`Loaded instrument: ${instrumentName}`);
-                setLoaded(true);
             }).catch((error: unknown) => {
                 console.log(`Failed to get instrument ${error}`);
                 setErrored(true);
@@ -41,8 +42,25 @@ function InstrumentDetails(): ReactElement {
             });
         } else {
             setInstrument(initialState.instrument);
-            setLoaded(true);
+
         }
+        getInstrumentModes(instrumentName)
+            .then((modes) => {
+                if (modes.length === 0) {
+                    console.error("returned instrument mode was empty");
+                    setErrored(true);
+                    setLoaded(true);
+                    return;
+                }
+                console.log(`returned instrument mode: ${modes}`);
+                setModes(modes);
+                setLoaded(true);
+            }).catch((error: unknown) => {
+            console.error(`Error getting instrument modes ${error}`);
+            setErrored(true);
+            setLoaded(true);
+            return;
+        });
     }, []);
 
     async function loadInstrument(): Promise<void> {
@@ -56,7 +74,7 @@ function InstrumentDetails(): ReactElement {
 
     function InstrumentDetails(): ReactElement {
         if (!loaded) {
-            return <ONSLoadingPanel />;
+            return <ONSLoadingPanel/>;
         }
 
         console.log(instrument);
@@ -73,8 +91,6 @@ function InstrumentDetails(): ReactElement {
                 <h1 className="u-mb-l">
                     {instrument.name}
                 </h1>
-
-                <ViewToStartDate instrumentName={instrument.name}/>
 
                 <div className="summary u-mb-m">
                     <div className="summary__group">
@@ -95,6 +111,18 @@ function InstrumentDetails(): ReactElement {
                                 </td>
                                 <td className="summary__values" colSpan={2}>
                                     <InstrumentStatus status={instrument.status ? instrument.status : ""}/>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody className="summary__item">
+                            <tr className="summary__row summary__row--has-values">
+                                <td className="summary__item-title">
+                                    <div className="summary__item--text">
+                                        Modes
+                                    </div>
+                                </td>
+                                <td className="summary__values" colSpan={2}>
+                                    {modes.join(", ")}
                                 </td>
                             </tr>
                             </tbody>
@@ -126,8 +154,9 @@ function InstrumentDetails(): ReactElement {
                     </div>
                 </div>
 
-                <ViewInstrumentSettings instrument={instrument}/>
-                <ViewWebModeDetails instrument={instrument}/>
+                <ViewCatiModeDetails instrumentName={instrument.name}/>
+                <ViewCawiModeDetails instrument={instrument}/>
+                <ViewInstrumentSettings instrument={instrument} modes={modes}/>
 
                 <h2 className={"u-mt-m"}>Survey days</h2>
                 <YearCalendar surveyDays={instrument.surveyDays}/>
@@ -146,7 +175,7 @@ function InstrumentDetails(): ReactElement {
             }/>
 
             <main id="main-content" className="page__main u-mt-no">
-                <InstrumentDetails />
+                <InstrumentDetails/>
             </main>
         </>
     );
