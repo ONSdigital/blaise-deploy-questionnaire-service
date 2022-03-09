@@ -10,7 +10,7 @@ import "@testing-library/jest-dom";
 import { Instrument } from "blaise-api-node-client";
 
 import { givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous, givenTheQuestionnaireIsErroneous, givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
-import { whenIConfirmDelete, whenIDeleteAQuestionnaire, whenILoadTheHomepage } from "../step_definitions/when";
+import { whenIConfirmDelete, whenIDeleteAQuestionnaire, whenIGoToTheQuestionnaireDetailsPage, whenILoadTheHomepage } from "../step_definitions/when";
 import { thenIAmPresentedWithACannotDeleteWarning, thenIAmPresentedWithAUnableDeleteWarning, thenIAmUnableToDeleteTheQuestionnaire, thenICanReturnToTheQuestionnaireList } from "../step_definitions/then";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
@@ -41,8 +41,7 @@ defineFeature(feature, test => {
     test("Attempt to delete an questionnaire with an erroneous status", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenTheQuestionnaireIsErroneous(given, instrumentList);
-
-        whenILoadTheHomepage(when);
+        whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         thenIAmPresentedWithAUnableDeleteWarning(then);
         thenIAmUnableToDeleteTheQuestionnaire(then);
@@ -53,11 +52,9 @@ defineFeature(feature, test => {
     test("Select to deploy a new questionnaire", ({ given, when, and, then }) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(when, mocker);
-
-        whenILoadTheHomepage(when);
+        whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);
-
         thenIAmPresentedWithACannotDeleteWarning(then);
     });
 });
