@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {useHistory, useLocation, useParams} from "react-router-dom";
+import {Link, useHistory, useLocation, useParams} from "react-router-dom";
 import dateFormatter from "dayjs";
 import {Instrument} from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
@@ -162,6 +162,20 @@ function InstrumentDetails(): ReactElement {
                 <YearCalendar surveyDays={instrument.surveyDays}/>
 
                 <BlaiseNodeInfo instrument={instrument}/>
+
+                <td className={"table__cell "} id={`delete-${instrument.name}`}>
+                {
+                        <Link id={`delete-button-${instrument.name}`}
+                            data-testid={`delete-${instrument.name}`}
+                            aria-label={`Delete questionnaire ${instrument.name}`}
+                            to={{
+                                pathname: "/delete",
+                                state: { instrument: instrument, modes: modes }
+                            }}>
+                            Delete
+                        </Link>
+                }
+            </td>
             </>
         );
     }

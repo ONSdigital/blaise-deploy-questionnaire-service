@@ -383,19 +383,6 @@ Object {
                     >
                       0
                     </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2101A"
-                    >
-                      <a
-                        aria-label="Delete questionnaire OPN2101A"
-                        data-testid="delete-OPN2101A"
-                        href="/delete"
-                        id="delete-button-OPN2101A"
-                      >
-                        Delete
-                      </a>
-                    </td>
                   </tr>
                   <tr
                     class="table__row"
@@ -437,12 +424,6 @@ Object {
                     >
                       10
                     </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2007T"
-                    >
-                      Questionnaire is live
-                    </td>
                   </tr>
                   <tr
                     class="table__row"
@@ -483,19 +464,6 @@ Object {
                       class="table__cell "
                     >
                       0
-                    </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2004A"
-                    >
-                      <a
-                        aria-label="Delete questionnaire OPN2004A"
-                        data-testid="delete-OPN2004A"
-                        href="/delete"
-                        id="delete-button-OPN2004A"
-                      >
-                        Delete
-                      </a>
                     </td>
                   </tr>
                 </tbody>
@@ -914,19 +882,6 @@ Object {
                   >
                     0
                   </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2101A"
-                  >
-                    <a
-                      aria-label="Delete questionnaire OPN2101A"
-                      data-testid="delete-OPN2101A"
-                      href="/delete"
-                      id="delete-button-OPN2101A"
-                    >
-                      Delete
-                    </a>
-                  </td>
                 </tr>
                 <tr
                   class="table__row"
@@ -968,12 +923,6 @@ Object {
                   >
                     10
                   </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2007T"
-                  >
-                    Questionnaire is live
-                  </td>
                 </tr>
                 <tr
                   class="table__row"
@@ -1014,19 +963,6 @@ Object {
                     class="table__cell "
                   >
                     0
-                  </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2004A"
-                  >
-                    <a
-                      aria-label="Delete questionnaire OPN2004A"
-                      data-testid="delete-OPN2004A"
-                      href="/delete"
-                      id="delete-button-OPN2004A"
-                    >
-                      Delete
-                    </a>
                   </td>
                 </tr>
               </tbody>
@@ -1472,19 +1408,6 @@ Object {
                     >
                       0
                     </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2101A"
-                    >
-                      <a
-                        aria-label="Delete questionnaire OPN2101A"
-                        data-testid="delete-OPN2101A"
-                        href="/delete"
-                        id="delete-button-OPN2101A"
-                      >
-                        Delete
-                      </a>
-                    </td>
                   </tr>
                   <tr
                     class="table__row"
@@ -1526,12 +1449,6 @@ Object {
                     >
                       10
                     </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2007T"
-                    >
-                      Questionnaire is live
-                    </td>
                   </tr>
                   <tr
                     class="table__row"
@@ -1572,19 +1489,6 @@ Object {
                       class="table__cell "
                     >
                       0
-                    </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2004A"
-                    >
-                      <a
-                        aria-label="Delete questionnaire OPN2004A"
-                        data-testid="delete-OPN2004A"
-                        href="/delete"
-                        id="delete-button-OPN2004A"
-                      >
-                        Delete
-                      </a>
                     </td>
                   </tr>
                 </tbody>
@@ -1973,19 +1877,6 @@ Object {
                   >
                     0
                   </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2101A"
-                  >
-                    <a
-                      aria-label="Delete questionnaire OPN2101A"
-                      data-testid="delete-OPN2101A"
-                      href="/delete"
-                      id="delete-button-OPN2101A"
-                    >
-                      Delete
-                    </a>
-                  </td>
                 </tr>
                 <tr
                   class="table__row"
@@ -2027,12 +1918,6 @@ Object {
                   >
                     10
                   </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2007T"
-                  >
-                    Questionnaire is live
-                  </td>
                 </tr>
                 <tr
                   class="table__row"
@@ -2073,19 +1958,6 @@ Object {
                     class="table__cell "
                   >
                     0
-                  </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2004A"
-                  >
-                    <a
-                      aria-label="Delete questionnaire OPN2004A"
-                      data-testid="delete-OPN2004A"
-                      href="/delete"
-                      id="delete-button-OPN2004A"
-                    >
-                      Delete
-                    </a>
                   </td>
                 </tr>
               </tbody>

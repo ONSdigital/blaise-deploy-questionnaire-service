@@ -11,6 +11,7 @@ import { Instrument } from "blaise-api-node-client";
 import {
     givenTheQuestionnaireHasActiveSurveyDays,
     givenTheQuestionnaireHasModes,
+    givenTheQuestionnaireIsActive,
     givenTheQuestionnaireIsInactive,
     givenTheQuestionnaireIsInstalled,
     givenTheQuestionnaireIsLive
@@ -114,7 +115,7 @@ defineFeature(feature, test => {
 
     test("Select to delete questionnaire that is active and live", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsLive(given, instrumentList, mocker);
+        givenTheQuestionnaireIsActive(given, instrumentList, mocker);
         givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
@@ -147,7 +148,7 @@ defineFeature(feature, test => {
 
     test("Select to delete questionnaire that is active and has mode set to CAWI", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
+        givenTheQuestionnaireIsActive(given, instrumentList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);

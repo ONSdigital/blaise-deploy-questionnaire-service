@@ -13,23 +13,6 @@ Feature: delete a questionnaire
     Then the questionnaire and data is deleted from Blaise for 'TST2101X'
     And I am presented a success banner on the launch page for deleting 'TST2101X'
 
-  # Scenario: Warning that live surveys cannot be deleted
-  #   Given the questionnaire 'TST2101B' is installed
-  #   And 'TST2101B' is live
-  #   When I load the homepage
-  #   Then the landing screen displays a warning that live surveys cannot be deleted
-
-  # Scenario: Delete questionnaire not available, when survey is live
-  #   Given the questionnaire 'TST2101B' is installed
-  #   And 'TST2101B' is live
-  #   When I go to the questionnaire details page for 'TST2101B'
-  #   Then I will not have the option to 'delete' displayed for 'TST2101B'
-
-  # Scenario: Select to delete a questionnaire from the list, when survey is NOT live
-  #   Given the questionnaire 'TST2101C' is installed
-  #   When I go to the questionnaire details page for 'TST2101C'
-  #   And I select a link to delete the 'TST2101C' questionnaire
-  #   Then I am presented with a warning
 
   Scenario: Confirm deletion
     Given the questionnaire 'TST2101D' is installed
@@ -54,7 +37,7 @@ Feature: delete a questionnaire
 
   Scenario: Select to delete questionnaire that is active and live
     Given the questionnaire 'TST2101B' is installed
-    And 'TST2101B' is live
+    And 'TST2101B' is active
     And 'TST2101B' has active survey days
     When I go to the questionnaire details page for 'TST2101B'
     And I select a link to delete the 'TST2101B' questionnaire
@@ -84,7 +67,7 @@ Feature: delete a questionnaire
 
   Scenario: Select to delete questionnaire that is active and has mode set to CAWI
     Given the questionnaire 'TST2101D' is installed
-    And 'TST2101D' has active survey days
+    And 'TST2101D' is active
     And 'TST2101D' has the modes 'CAWI'
     When I go to the questionnaire details page for 'TST2101D'
     And I select a link to delete the 'TST2101D' questionnaire
