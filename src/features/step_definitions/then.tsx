@@ -36,15 +36,6 @@ export function thenIWillNotHaveTheOptionToDelete(then: DefineStepFunction): voi
   });
 }
 
-
-export function thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted(then: DefineStepFunction): void {
-  then("the landing screen displays a warning that live surveys cannot be deleted", async () => {
-    await waitFor(() => {
-      expect(screen.getByText(/questionnaire requires deletion, raise a Service Desk ticket to complete this request/i)).toBeDefined();
-    });
-  });
-}
-
 export function thenIGetTheQuestionnaireIsLiveWarningBanner(then: DefineStepFunction): void {
   then("I am presented with a warning banner that I cannot overwrite the survey", async () => {
     await waitFor((() => {

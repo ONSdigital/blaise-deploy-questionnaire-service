@@ -113,16 +113,6 @@ function App(): ReactElement {
                             <main id="main-content" className="page__main u-mt-no">
                                 {successBanner()}
                                 {errored && <ONSErrorPanel />}
-
-                                <ONSPanel>
-                                    <p>
-                                        Any <b>live</b> questionnaire within the table below <b>does not</b> have the
-                                        option to delete and <b>cannot be deleted</b>.
-
-                                        If a <b>live</b> questionnaire requires deletion, raise a Service Desk ticket to
-                                        complete this request.
-                                    </p>
-                                </ONSPanel>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
                                     <InstrumentList setErrored={setErrored} />
                                 </ErrorBoundary>

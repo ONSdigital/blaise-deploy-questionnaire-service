@@ -18,7 +18,6 @@ Feature: delete a questionnaire
     And 'TST2101B' is live
     When I load the homepage
     Then I will not have the option to 'delete' displayed for 'TST2101B'
-    And the landing screen displays a warning that live surveys cannot be deleted
 
   Scenario: Select to delete a questionnaire from the list, when survey is NOT live
     Given the questionnaire 'TST2101C' is installed

@@ -21,7 +21,6 @@ import {
     thenIAmReturnedToTheLandingPage,
     thenIGetTheDeleteSuccessBanner,
     thenIWillNotHaveTheOptionToDelete,
-    thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted,
     thenTheQuestionnaireDataIsDeleted,
     thenTheQuestionnaireDataIsNotDeleted
 } from "../step_definitions/then";
@@ -75,7 +74,6 @@ defineFeature(feature, test => {
         givenTheQuestionnaireIsLive(given, instrumentList, mocker);
         whenILoadTheHomepage(when);
         thenIWillNotHaveTheOptionToDelete(then);
-        thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted(then);
     });
 
 
