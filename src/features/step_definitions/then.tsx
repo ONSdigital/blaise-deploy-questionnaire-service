@@ -30,8 +30,7 @@ export function thenIWillNotHaveTheOptionToDelete(then: DefineStepFunction): voi
   then(/I will not have the option to 'delete' displayed for '(.*)'/, async (questionnaire: string) => {
     await waitFor(() => {
       const deleteButton: any = document.querySelector(`#delete-${questionnaire}`);
-      expect(deleteButton).not.toBeNull();
-      expect(deleteButton.textContent).toEqual("Questionnaire is live");
+      expect(deleteButton).toBeNull();
     });
   });
 }
@@ -48,6 +47,22 @@ export function thenIAmPresentedWithAWarning(then: DefineStepFunction): void {
   then("I am presented with a warning", async () => {
     await waitFor((() => {
       expect(screen.getByText(/are you sure you want to delete the questionnaire/i)).toBeDefined();
+    }));
+  });
+}
+
+export function thenIAmPresentedWithAnActiveSurveyDaysWarning(then: DefineStepFunction): void {
+  then("I am presented with a warning that questionnaire has active survey days", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/Questionnaire has active Telephone Operations survey days, are you sure you want to delete questionnaire/i)).toBeDefined();
+    }));
+  });
+}
+
+export function thenIAmPresentedWithAnActiveWebCollectionWarning(then: DefineStepFunction): void {
+  then("I am presented with a warning that questionnaire is active for web collection", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/Questionnaire is active for web collection, are you sure you want to delete questionnaire/i)).toBeDefined();
     }));
   });
 }

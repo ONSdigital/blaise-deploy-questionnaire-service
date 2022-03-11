@@ -191,6 +191,23 @@ export function givenTheQuestionnaireIsLive(
   });
 }
 
+export function givenTheQuestionnaireIsActive(
+  given: DefineStepFunction,
+  instrumentList: Instrument[],
+  mocker: MockAdapter
+): void {
+  given(/'(.*)' is active/, (questionnaire: string) => {
+    for (const instrument of instrumentList) {
+      if (instrument.name === questionnaire) {
+        console.log(questionnaire);
+        instrument.status = "active";
+
+        mocker.onGet(`/api/instruments/${questionnaire}`).reply(200, instrument);
+      }
+    }
+  });
+}
+
 export function givenTheQuestionnaireIsInactive(
   given: DefineStepFunction,
   instrumentList: Instrument[],

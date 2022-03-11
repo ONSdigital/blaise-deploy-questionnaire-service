@@ -52,22 +52,6 @@ function instrumentTableRow(instrument: Instrument): ReactElement {
             <td className="table__cell ">
                 {instrument.dataRecordCount}
             </td>
-            <td className={"table__cell "} id={`delete-${instrument.name}`}>
-                {
-                    instrument.active && instrument.status?.toLowerCase() != "inactive" ?
-                        "Questionnaire is live"
-                        :
-                        <Link id={`delete-button-${instrument.name}`}
-                            data-testid={`delete-${instrument.name}`}
-                            aria-label={`Delete questionnaire ${instrument.name}`}
-                            to={{
-                                pathname: "/delete",
-                                state: { instrument: instrument }
-                            }}>
-                            Delete
-                        </Link>
-                }
-            </td>
         </tr>
     );
 }
