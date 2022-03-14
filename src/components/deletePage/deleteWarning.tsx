@@ -52,13 +52,6 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
             </h1>
 
             <ONSPanel status={"warn"}>
-                {
-                    instrument.status?.toLowerCase() === "active" &&
-                        instrument.active
-                        ? <>Questionnaire has active Telephone Operations survey days, are you sure you want to delete questionnaire</>
-                        : modes.includes("CAWI") && <>Questionnaire is active for web collection, are you sure you want to delete questionnaire</>
-                }
-
                 The questionnaire and all associated respondent data will be deleted
             </ONSPanel>
 
