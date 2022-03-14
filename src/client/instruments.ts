@@ -119,3 +119,17 @@ export async function getInstrumentCaseIds(instrumentName: string): Promise<stri
         throw new Error("Failed to get instrument case IDs");
     }
 }
+
+export async function getSurveyDays(instrumentName: string): Promise<string[]> {
+    console.log("Sending request get survey days");
+    const url = `/api/instruments/${instrumentName}/surveydays`;
+
+    try {
+        const response = await axios.get(url, axiosConfig());
+
+        return response.data;
+    } catch (error: unknown) {
+        console.error(`Failed to get survey days, Error ${error}`);
+        throw error;
+    }
+}
