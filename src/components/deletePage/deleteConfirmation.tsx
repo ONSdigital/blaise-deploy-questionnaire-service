@@ -1,10 +1,8 @@
-import React, { ReactElement, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
+import React, { ReactElement } from "react";
+import { useLocation } from "react-router-dom";
 import { Instrument } from "blaise-api-node-client";
 import ErroneousWarning from "./erroneousWarning";
 import DeleteWarning from "./deleteWarning";
-import { removeToStartDateAndDeleteInstrument } from "../../client/componentProcesses";
 import Breadcrumbs from "../breadcrumbs";
 
 
