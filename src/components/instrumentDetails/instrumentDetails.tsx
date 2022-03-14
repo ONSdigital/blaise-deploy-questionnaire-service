@@ -164,35 +164,33 @@ function InstrumentDetails(): ReactElement {
                 <BlaiseNodeInfo instrument={instrument}/>
 
                 <td className={"table__cell "} id={`delete-${instrument.name}`}>
-                {
-                        <Link id={`delete-button-${instrument.name}`}
-                            data-testid={`delete-${instrument.name}`}
-                            aria-label={`Delete questionnaire ${instrument.name}`}
-                            to={{
-                                pathname: "/delete",
-                                state: { instrument: instrument, modes: modes }
-                            }}>
-                            Delete
-                        </Link>
-                }
-            </td>
+                    <Link id={`delete-button-${instrument.name}`}
+                          data-testid={`delete-${instrument.name}`}
+                          aria-label={`Delete questionnaire ${instrument.name}`}
+                          to={{
+                              pathname: "/delete",
+                              state: {instrument: instrument, modes: modes}
+                          }}>
+                        Delete
+                    </Link>
+                </td>
             </>
         );
     }
 
-    return (
-        <>
-            <Breadcrumbs BreadcrumbList={
-                [
-                    {link: "/", title: "Home"},
-                ]
-            }/>
+return (
+    <>
+        <Breadcrumbs BreadcrumbList={
+            [
+                {link: "/", title: "Home"},
+            ]
+        }/>
 
-            <main id="main-content" className="page__main u-mt-no">
-                <InstrumentDetails/>
-            </main>
-        </>
-    );
+        <main id="main-content" className="page__main u-mt-no">
+            <InstrumentDetails/>
+        </main>
+    </>
+);
 }
 
 export default InstrumentDetails;

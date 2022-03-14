@@ -15,11 +15,11 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
     const history = useHistory();
     const [message, setMessage] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
-    
+
     async function cancelDelete() {
         history.push("/");
     }
-    
+
     function ErrorMessage(): ReactElement {
         if (message !== "") {
             return <ONSPanel status="error">
@@ -48,7 +48,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
         <>
             <h1 className="u-mb-l">
                 Are you sure you want to delete the questionnaire <em
-                    className="highlight">{instrument.name}</em>?
+                className="highlight">{instrument.name}</em>?
             </h1>
 
             <ONSPanel status={"warn"}>
