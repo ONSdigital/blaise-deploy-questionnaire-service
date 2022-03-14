@@ -6,10 +6,15 @@ import "./yearCalendar.css";
 import dateFormatter from "dayjs";
 
 interface Props {
-    surveyDays: string[] | undefined
+    modes: string[]
+    surveyDays?: string[]
 }
 
-function YearCalendar({ surveyDays }: Props): ReactElement {
+function YearCalendar({ modes, surveyDays }: Props): ReactElement {
+    if (! modes.includes("CATI")) {
+        return <></>
+    }
+
     if (surveyDays === undefined) {
         surveyDays = [];
     }
@@ -32,6 +37,7 @@ function YearCalendar({ surveyDays }: Props): ReactElement {
 
     return (
         <>
+            <h2 className={"u-mt-m"}>Survey days</h2>
             <CalendarControls
                 year={year}
                 onPrevYear={() => onPrevYear()}
