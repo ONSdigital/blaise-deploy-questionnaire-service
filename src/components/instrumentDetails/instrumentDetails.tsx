@@ -42,7 +42,6 @@ function InstrumentDetails(): ReactElement {
             });
         } else {
             setInstrument(initialState.instrument);
-
         }
         getInstrumentModes(instrumentName)
             .then((modes) => {

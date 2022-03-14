@@ -126,7 +126,6 @@ export async function getSurveyDays(instrumentName: string): Promise<string[]> {
 
     try {
         const response = await axios.get(url, axiosConfig());
-
         return response.data;
     } catch (error: unknown) {
         console.error(`Failed to get survey days, Error ${error}`);
