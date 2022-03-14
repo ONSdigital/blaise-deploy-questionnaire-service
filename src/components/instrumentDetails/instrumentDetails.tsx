@@ -159,6 +159,8 @@ function InstrumentDetails(): ReactElement {
                 <ViewInstrumentSettings instrument={instrument} modes={modes}/>
 
                 <h2 className={"u-mt-m"}>Survey days</h2>
+                {/* TODO */}
+                {/* dis be broke */}
                 <YearCalendar surveyDays={instrument.surveyDays}/>
 
                 <BlaiseNodeInfo instrument={instrument}/>

@@ -44,12 +44,41 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
         history.push("/");
     }
 
+    function CatiWarning(): ReactElement {
+        if (instrument.active == null ) {
+            instrument.active = surveyIsActive(instrument.surveyDays)
+        }
+        if (modes.includes("CATI") && instrument.status?.toLowerCase() === "active" && instrument.active) {
+            return (
+                <ONSPanel status={"warn"}>
+                    Questionnaire has active Telephone Operations survey days, are you sure you want to delete
+                    questionnaire
+                </ONSPanel>
+            )
+        }
+        return <></>
+    }
+
+    function CawiWarning(): ReactElement {
+        if (modes.includes("CAWI")) {
+            return (
+                <ONSPanel status={"warn"}>
+                    Questionnaire is active for web collection, are you sure you want to delete questionnaire
+                </ONSPanel>
+            )
+        }
+        return <></>
+    }
+
     return (
         <>
             <h1 className="u-mb-l">
                 Are you sure you want to delete the questionnaire <em
                 className="highlight">{instrument.name}</em>?
             </h1>
+
+            <CatiWarning />
+            <CawiWarning />
 
             <ONSPanel status={"warn"}>
                 The questionnaire and all associated respondent data will be deleted
