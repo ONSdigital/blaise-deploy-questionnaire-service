@@ -11,7 +11,6 @@ interface Props {
     setStatus: (status: string) => void
 }
 
-
 function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
     const history = useHistory();
     const [message, setMessage] = useState<string>("");
