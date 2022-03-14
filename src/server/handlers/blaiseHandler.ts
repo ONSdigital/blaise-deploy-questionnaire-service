@@ -15,6 +15,7 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
   router.get("/api/instruments/:instrumentName/modes", auth.Middleware, blaiseHandler.GetModes);
   router.get("/api/instruments/:instrumentName/modes/:mode", auth.Middleware, blaiseHandler.DoesInstrumentHaveMode);
   router.get("/api/instruments/:instrumentName/settings", auth.Middleware, blaiseHandler.GetSettings);
+  router.get("/api/instruments/:instrumentName/surveydays", auth.Middleware, blaiseHandler.GetSurveyDays);
   router.get("/api/instruments/:instrumentName/cases/ids", auth.Middleware, blaiseHandler.GetCases);
   router.post("/api/install", auth.Middleware, blaiseHandler.InstallInstrument);
   router.patch("/api/instruments/:instrumentName/activate", auth.Middleware, blaiseHandler.ActivateInstrument);
@@ -45,6 +46,7 @@ export class BlaiseHandler {
     this.GetCases = this.GetCases.bind(this);
     this.GetModes = this.GetModes.bind(this);
     this.GetSettings = this.GetSettings.bind(this);
+    this.GetSurveyDays = this.GetSurveyDays.bind(this);
   }
 
   async GetHealth(req: Request, res: Response): Promise<Response> {
@@ -211,6 +213,19 @@ export class BlaiseHandler {
     } catch (error: any) {
       req.log.error(error, `Get instrument settings for ${instrumentName}`);
       return res.status(500).json();
+    }
+  }
+
+  async GetSurveyDays(req: Request, res: Response): Promise<Response> {
+    const { instrumentName } = req.params;
+
+    try {
+      const surveyDays = await this.blaiseApiClient.getSurveyDays(this.serverPark, instrumentName);
+      req.log.info({ surveyDays }, `Successfully called get survey days for ${instrumentName}`);
+      return res.status(200).json(surveyDays);
+    } catch (error: any) {
+      req.log.error(error, `Get survey days for ${instrumentName}`);
+      return res.status(500).json(null);
     }
   }
 

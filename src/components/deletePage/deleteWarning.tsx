@@ -1,7 +1,7 @@
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 import React, { ReactElement, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Instrument } from "blaise-api-node-client";
+import { Instrument, surveyIsActive } from "blaise-api-node-client";
 import { removeToStartDateAndDeleteInstrument } from "../../client/componentProcesses";
 
 

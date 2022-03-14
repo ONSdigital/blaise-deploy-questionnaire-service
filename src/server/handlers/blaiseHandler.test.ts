@@ -28,6 +28,7 @@ const mockDeactivateInstrument = jest.fn();
 const mockDoesInstrumentHaveMode = jest.fn();
 const mockGetInstrumentModes = jest.fn();
 const mockGetInstrumentSettings = jest.fn();
+const mockGetSurveyDays = jest.fn();
 
 BlaiseApiRest.prototype.getDiagnostics = mockGetDiagnostics;
 BlaiseApiRest.prototype.getInstrument = mockGetInstrument;
@@ -39,6 +40,7 @@ BlaiseApiRest.prototype.deactivateInstrument = mockDeactivateInstrument;
 BlaiseApiRest.prototype.doesInstrumentHaveMode = mockDoesInstrumentHaveMode;
 BlaiseApiRest.prototype.getInstrumentModes = mockGetInstrumentModes;
 BlaiseApiRest.prototype.getInstrumentSettings = mockGetInstrumentSettings;
+BlaiseApiRest.prototype.getSurveyDays = mockGetSurveyDays;
 
 
 // Mock Express Server
@@ -398,4 +400,45 @@ describe("BlaiseAPI get instrument settings", () => {
 
         expect(response.status).toEqual(500);
     });
+});
+
+describe("BlaiseAPI get survey days", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+    });
+
+    it("should return a 200 status and an empty json list when API returns a empty list", async () => {
+        mockGetSurveyDays.mockImplementation(() => {
+            return Promise.resolve([]);
+        });
+
+        const response: Response = await request.get("/api/instruments/OPN2101A/surveydays");
+
+        expect(response.status).toEqual(200);
+        expect(response.body).toStrictEqual([]);
+    });
+
+    // it("should return a 200 status and a json list of 2 items when API returns a 2 item list", async () => {
+    //     mockGetSurveyDays.mockImplementation(() => {
+    //         return Promise.resolve(
+    //             ["2021-10-05T00:00:00", "2021-10-06T00:00:00"]);
+    //     });
+    //
+    //     const response: Response = await request.get("/api/instruments/OPN2101A/surveydays");
+    //
+    //     expect(response.status).toEqual(200);
+    //     expect(response.body).toStrictEqual(["2021-10-05T00:00:00", "2021-10-06T00:00:00"]);
+    //     expect(response.body.length).toStrictEqual(2);
+    // });
+    //
+    // it("should return a 500 status direct from the API", async () => {
+    //     mockGetSurveyDays.mockImplementation(() => {
+    //         return Promise.reject();
+    //     });
+    //
+    //     const response: Response = await request.get("/api/instruments/OPN2101A/surveydays");
+    //
+    //     expect(response.status).toEqual(500);
+    // });
 });
