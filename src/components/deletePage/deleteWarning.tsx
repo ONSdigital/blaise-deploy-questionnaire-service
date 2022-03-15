@@ -1,18 +1,17 @@
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 import React, { ReactElement, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Instrument, surveyIsActive, SurveyDays } from "blaise-api-node-client";
+import { Instrument } from "blaise-api-node-client";
 import { removeToStartDateAndDeleteInstrument } from "../../client/componentProcesses";
-
+import { surveyIsActive } from "../../client/instruments";
 
 interface Props {
     instrument: Instrument
     modes: string[]
     setStatus: (status: string) => void
-    surveyDays: SurveyDays
 }
 
-function DeleteWarning({ instrument, modes, setStatus, surveyDays }: Props): ReactElement {
+function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
     const history = useHistory();
     const [message, setMessage] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -46,8 +45,10 @@ function DeleteWarning({ instrument, modes, setStatus, surveyDays }: Props): Rea
     }
 
     function CatiWarning(): ReactElement {
-        if (instrument.active == null ) {
-            instrument.active = surveyIsActive(surveyDays)
+        if (instrument.active == null) {
+            surveyIsActive(instrument.name).then((isActive: boolean) => {
+                instrument.active = isActive;
+            });
         }
         if (modes.includes("CATI") && instrument.status?.toLowerCase() === "active" && instrument.active) {
             return (

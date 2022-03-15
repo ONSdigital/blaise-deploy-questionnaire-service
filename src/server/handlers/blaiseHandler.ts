@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { Auth } from "blaise-login-react-server";
-import BlaiseApiClient, { InstallInstrument, Instrument } from "blaise-api-node-client";
+import BlaiseApiClient, { InstallInstrument, Instrument, surveyIsActive } from "blaise-api-node-client";
 import { fieldPeriodToText } from "../functions";
 import AuditLogger from "../auditLogging/logger";
 
@@ -16,6 +16,7 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
   router.get("/api/instruments/:instrumentName/modes/:mode", auth.Middleware, blaiseHandler.DoesInstrumentHaveMode);
   router.get("/api/instruments/:instrumentName/settings", auth.Middleware, blaiseHandler.GetSettings);
   router.get("/api/instruments/:instrumentName/surveydays", auth.Middleware, blaiseHandler.GetSurveyDays);
+  router.get("/api/instruments/:instrumentName/active", auth.Middleware, blaiseHandler.GetSurveyIsActive);
   router.get("/api/instruments/:instrumentName/cases/ids", auth.Middleware, blaiseHandler.GetCases);
   router.post("/api/install", auth.Middleware, blaiseHandler.InstallInstrument);
   router.patch("/api/instruments/:instrumentName/activate", auth.Middleware, blaiseHandler.ActivateInstrument);
@@ -47,6 +48,7 @@ export class BlaiseHandler {
     this.GetModes = this.GetModes.bind(this);
     this.GetSettings = this.GetSettings.bind(this);
     this.GetSurveyDays = this.GetSurveyDays.bind(this);
+    this.GetSurveyIsActive = this.GetSurveyIsActive.bind(this);
   }
 
   async GetHealth(req: Request, res: Response): Promise<Response> {
@@ -225,6 +227,20 @@ export class BlaiseHandler {
       return res.status(200).json(surveyDays);
     } catch (error: any) {
       req.log.error(error, `Get survey days for ${instrumentName}`);
+      return res.status(500).json(null);
+    }
+  }
+
+  async GetSurveyIsActive(req: Request, res: Response): Promise<Response> {
+    const { instrumentName } = req.params;
+
+    try {
+      const surveyDays = await this.blaiseApiClient.getSurveyDays(this.serverPark, instrumentName);
+      const surveyActiveStatus = surveyIsActive(surveyDays);
+      req.log.info({ surveyActiveStatus }, `Successfully called get survey is active for ${instrumentName}`);
+      return res.status(200).json(surveyActiveStatus);
+    } catch (error: any) {
+      req.log.error(error, `Get survey is active for ${instrumentName}`);
       return res.status(500).json(null);
     }
   }

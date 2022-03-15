@@ -187,7 +187,7 @@ function InstrumentDetails(): ReactElement {
                           aria-label={`Delete questionnaire ${instrument.name}`}
                           to={{
                               pathname: "/delete",
-                              state: {instrument: instrument, modes: modes, surveyDays: surveyDays}
+                              state: {instrument: instrument, modes: modes}
                           }}>
                         Delete
                     </Link>

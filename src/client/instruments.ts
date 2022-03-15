@@ -132,3 +132,16 @@ export async function getSurveyDays(instrumentName: string): Promise<string[]> {
         throw error;
     }
 }
+
+export async function surveyIsActive(instrumentName: string): Promise<boolean> {
+    console.log("Sending request get survey is active");
+    const url = `/api/instruments/${instrumentName}/active`;
+
+    try {
+        const response = await axios.get(url, axiosConfig());
+        return response.data;
+    } catch (error: unknown) {
+        console.error(`Failed to get survey is active, Error ${error}`);
+        throw error;
+    }
+}
