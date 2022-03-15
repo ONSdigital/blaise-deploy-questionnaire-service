@@ -69,6 +69,10 @@ export function thenIAmPresentedWithAnActiveSurveyDaysWarning(then: DefineStepFu
 
 export function thenIAmPresentedWithAnActiveWebCollectionWarning(then: DefineStepFunction): void {
   then("I am presented with a warning that questionnaire is active for web collection", async () => {
+    await act(async () => {
+      await flushPromises();
+    });
+
     await waitFor((() => {
       expect(screen.getByText(/Questionnaire is active for web collection/i)).toBeDefined();
     }));

@@ -12,7 +12,6 @@ import ViewInstrumentSettings from "./sections/viewInstrumentSettings";
 import { getInstrument, getInstrumentModes, getSurveyDays } from "../../client/instruments";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 
-
 interface State {
     instrument: Instrument | null;
 }
@@ -52,6 +51,25 @@ function InstrumentDetails(): ReactElement {
                     setLoaded(true);
                     return;
                 }
+                if (modes.includes("CATI")) {
+                    getSurveyDays(instrumentName)
+                        .then((surveyDays) => {
+                            if (surveyDays.length === 0) {
+                                console.log("returned instrument survey days was empty");
+                                setSurveyDays(surveyDays);
+                                setLoaded(true);
+                                return;
+                            }
+                            console.log(`returned instrument survey days: ${surveyDays}`);
+                            setSurveyDays(surveyDays);
+                            setLoaded(true);
+                        }).catch((error: unknown) => {
+                        console.error(`Error getting instrument survey days ${error}`);
+                        setErrored(true);
+                        setLoaded(true);
+                        return;
+                    });
+                }
                 console.log(`returned instrument mode: ${modes}`);
                 setModes(modes);
                 setLoaded(true);
@@ -61,25 +79,6 @@ function InstrumentDetails(): ReactElement {
             setLoaded(true);
             return;
         });
-        if (modes.includes("CATI")) {
-            getSurveyDays(instrumentName)
-                .then((surveyDays) => {
-                    if (surveyDays.length === 0) {
-                        console.log("returned instrument survey days was empty");
-                        setSurveyDays(surveyDays);
-                        setLoaded(true);
-                        return;
-                    }
-                    console.log(`returned instrument survey days: ${surveyDays}`);
-                    setSurveyDays(surveyDays);
-                    setLoaded(true);
-                }).catch((error: unknown) => {
-                console.error(`Error getting instrument survey days ${error}`);
-                setErrored(true);
-                setLoaded(true);
-                return;
-            });
-        }
     }, []);
 
     async function loadInstrument(): Promise<void> {
@@ -177,7 +176,6 @@ function InstrumentDetails(): ReactElement {
                 <ViewCawiModeDetails instrument={instrument}/>
                 <ViewInstrumentSettings instrument={instrument} modes={modes}/>
 
-                <h2 className={"u-mt-m"}>Survey days</h2>
                 <YearCalendar modes={modes} surveyDays={surveyDays}/>
 
                 <BlaiseNodeInfo instrument={instrument}/>
