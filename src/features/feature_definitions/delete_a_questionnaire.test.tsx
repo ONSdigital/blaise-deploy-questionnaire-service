@@ -23,9 +23,9 @@ import {
     thenIAmPresentedWithAnActiveWebCollectionWarning,
     thenIAmPresentedWithAWarning,
     thenIAmReturnedToTheLandingPage,
+    thenIAmReturnedToTheQuestionnaireDetailsPage,
     thenIGetTheDeleteSuccessBanner,
     thenIWillNotHaveTheOptionToDelete,
-    thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted,
     thenTheQuestionnaireDataIsDeleted,
     thenTheQuestionnaireDataIsNotDeleted
 } from "../step_definitions/then";
@@ -75,25 +75,11 @@ defineFeature(feature, test => {
         thenIGetTheDeleteSuccessBanner(then);
     });
 
-    // test("Warning that live surveys cannot be deleted", ({ given, when, then, }) => {
-    //     givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-    //     givenTheQuestionnaireIsLive(given, instrumentList, mocker);
-    //     whenILoadTheHomepage(when);
-    //     thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted(then);
-    // });
-
     test("Delete a questionnaire not available from the homepage", ({ given, when, then, }) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         whenILoadTheHomepage(when);        
         thenIWillNotHaveTheOptionToDelete(then);
     });
-
-    // test("Select to delete a questionnaire from the list, when survey is NOT live", ({ given, when, then }) => {
-    //     givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-    //     whenIGoToTheQuestionnaireDetailsPage(when);
-    //     whenIDeleteAQuestionnaire(when);
-    //     thenIAmPresentedWithAWarning(then);
-    // });
 
     test("Confirm deletion", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
@@ -110,7 +96,7 @@ defineFeature(feature, test => {
         whenIDeleteAQuestionnaire(when);
         whenICancelDelete(when);
         thenTheQuestionnaireDataIsNotDeleted(then, mocker);
-        thenIAmReturnedToTheLandingPage(then);
+        thenIAmReturnedToTheQuestionnaireDetailsPage(then);
     });
 
     test("Select to delete questionnaire that is active and live", ({given, when, then}) => {

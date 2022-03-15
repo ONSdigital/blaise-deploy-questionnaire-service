@@ -232,33 +232,6 @@ Object {
           class="page__main u-mt-no"
           id="main-content"
         >
-          <div
-            class="panel panel--info panel--no-title  u-mt-m"
-          >
-            <div
-              class="panel__body "
-            >
-              <p>
-                Any 
-                <b>
-                  live
-                </b>
-                 questionnaire within the table below 
-                <b>
-                  does not
-                </b>
-                 have the option to delete and 
-                <b>
-                  cannot be deleted
-                </b>
-                . If a 
-                <b>
-                  live
-                </b>
-                 questionnaire requires deletion, raise a Service Desk ticket to complete this request.
-              </p>
-            </div>
-          </div>
           <h2
             class="u-mt-m"
           >
@@ -331,12 +304,6 @@ Object {
                       scope="col"
                     >
                       Cases
-                    </th>
-                    <th
-                      class="table__header"
-                      scope="col"
-                    >
-                      Delete questionnaire
                     </th>
                   </tr>
                 </thead>
@@ -731,33 +698,6 @@ Object {
         class="page__main u-mt-no"
         id="main-content"
       >
-        <div
-          class="panel panel--info panel--no-title  u-mt-m"
-        >
-          <div
-            class="panel__body "
-          >
-            <p>
-              Any 
-              <b>
-                live
-              </b>
-               questionnaire within the table below 
-              <b>
-                does not
-              </b>
-               have the option to delete and 
-              <b>
-                cannot be deleted
-              </b>
-              . If a 
-              <b>
-                live
-              </b>
-               questionnaire requires deletion, raise a Service Desk ticket to complete this request.
-            </p>
-          </div>
-        </div>
         <h2
           class="u-mt-m"
         >
@@ -830,12 +770,6 @@ Object {
                     scope="col"
                   >
                     Cases
-                  </th>
-                  <th
-                    class="table__header"
-                    scope="col"
-                  >
-                    Delete questionnaire
                   </th>
                 </tr>
               </thead>
@@ -1257,33 +1191,6 @@ Object {
           class="page__main u-mt-no"
           id="main-content"
         >
-          <div
-            class="panel panel--info panel--no-title  u-mt-m"
-          >
-            <div
-              class="panel__body "
-            >
-              <p>
-                Any 
-                <b>
-                  live
-                </b>
-                 questionnaire within the table below 
-                <b>
-                  does not
-                </b>
-                 have the option to delete and 
-                <b>
-                  cannot be deleted
-                </b>
-                . If a 
-                <b>
-                  live
-                </b>
-                 questionnaire requires deletion, raise a Service Desk ticket to complete this request.
-              </p>
-            </div>
-          </div>
           <h2
             class="u-mt-m"
           >
@@ -1356,12 +1263,6 @@ Object {
                       scope="col"
                     >
                       Cases
-                    </th>
-                    <th
-                      class="table__header"
-                      scope="col"
-                    >
-                      Delete questionnaire
                     </th>
                   </tr>
                 </thead>
@@ -1726,33 +1627,6 @@ Object {
         class="page__main u-mt-no"
         id="main-content"
       >
-        <div
-          class="panel panel--info panel--no-title  u-mt-m"
-        >
-          <div
-            class="panel__body "
-          >
-            <p>
-              Any 
-              <b>
-                live
-              </b>
-               questionnaire within the table below 
-              <b>
-                does not
-              </b>
-               have the option to delete and 
-              <b>
-                cannot be deleted
-              </b>
-              . If a 
-              <b>
-                live
-              </b>
-               questionnaire requires deletion, raise a Service Desk ticket to complete this request.
-            </p>
-          </div>
-        </div>
         <h2
           class="u-mt-m"
         >
@@ -1825,12 +1699,6 @@ Object {
                     scope="col"
                   >
                     Cases
-                  </th>
-                  <th
-                    class="table__header"
-                    scope="col"
-                  >
-                    Delete questionnaire
                   </th>
                 </tr>
               </thead>

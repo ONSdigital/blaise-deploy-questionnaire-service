@@ -26,20 +26,19 @@ export function thenIAmReturnedToTheLandingPage(then: DefineStepFunction): void 
   });
 }
 
+export function thenIAmReturnedToTheQuestionnaireDetailsPage(then: DefineStepFunction): void {
+  then("I am returned to the questionnaire details page", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/questionnaire details/i)).toBeDefined();
+    }));
+  });
+}
+
 export function thenIWillNotHaveTheOptionToDelete(then: DefineStepFunction): void {
   then(/I will not have the option to 'delete' displayed for '(.*)'/, async (questionnaire: string) => {
     await waitFor(() => {
       const deleteButton: any = document.querySelector(`#delete-${questionnaire}`);
       expect(deleteButton).toBeNull();
-    });
-  });
-}
-
-
-export function thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted(then: DefineStepFunction): void {
-  then("the landing screen displays a warning that live surveys cannot be deleted", async () => {
-    await waitFor(() => {
-      expect(screen.getByText(/questionnaire requires deletion, raise a Service Desk ticket to complete this request/i)).toBeDefined();
     });
   });
 }
@@ -63,7 +62,7 @@ export function thenIAmPresentedWithAWarning(then: DefineStepFunction): void {
 export function thenIAmPresentedWithAnActiveSurveyDaysWarning(then: DefineStepFunction): void {
   then("I am presented with a warning that questionnaire has active survey days", async () => {
     await waitFor((() => {
-      expect(screen.getByText(/Questionnaire has active Telephone Operations survey days, are you sure you want to delete questionnaire/i)).toBeDefined();
+      expect(screen.getByText(/Questionnaire has active Telephone Operations survey days/i)).toBeDefined();
     }));
   });
 }
@@ -71,7 +70,7 @@ export function thenIAmPresentedWithAnActiveSurveyDaysWarning(then: DefineStepFu
 export function thenIAmPresentedWithAnActiveWebCollectionWarning(then: DefineStepFunction): void {
   then("I am presented with a warning that questionnaire is active for web collection", async () => {
     await waitFor((() => {
-      expect(screen.getByText(/Questionnaire is active for web collection, are you sure you want to delete questionnaire/i)).toBeDefined();
+      expect(screen.getByText(/Questionnaire is active for web collection/i)).toBeDefined();
     }));
   });
 }
