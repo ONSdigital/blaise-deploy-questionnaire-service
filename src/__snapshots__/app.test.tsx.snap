@@ -233,7 +233,7 @@ Object {
           id="main-content"
         >
           <div
-            class="elementToFadeIn"
+            class="elementToFadeIn u-pt-s"
           >
             <div
               class="field"
@@ -700,7 +700,7 @@ Object {
         id="main-content"
       >
         <div
-          class="elementToFadeIn"
+          class="elementToFadeIn u-pt-s"
         >
           <div
             class="field"
@@ -1194,7 +1194,7 @@ Object {
           id="main-content"
         >
           <div
-            class="elementToFadeIn"
+            class="elementToFadeIn u-pt-s"
           >
             <div
               class="field"
@@ -1631,7 +1631,7 @@ Object {
         id="main-content"
       >
         <div
-          class="elementToFadeIn"
+          class="elementToFadeIn u-pt-s"
         >
           <div
             class="field"
