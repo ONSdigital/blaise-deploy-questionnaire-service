@@ -338,8 +338,8 @@ describe("Function getSurveyDays(instrumentName: string)", () => {
     it("should return true if created 200 response is returned", async () => {
         mock.onGet("/api/instruments/OPN2004A/surveydays").reply(200, ["2021-10-05T00:00:00", "2021-10-06T00:00:00"]);
 
-        const modes = await getSurveyDays("OPN2004A");
-        expect(modes).toEqual(["2021-10-05T00:00:00", "2021-10-06T00:00:00"]);
+        const surveyDays = await getSurveyDays("OPN2004A");
+        expect(surveyDays).toEqual(["2021-10-05T00:00:00", "2021-10-06T00:00:00"]);
     });
 
     it("should throw an error if a 404 is returned from the server", async () => {
