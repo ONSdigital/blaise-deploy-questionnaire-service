@@ -54,7 +54,7 @@ export function thenIAmPresentedWithAWarning(then: DefineStepFunction): void {
 export function thenIAmPresentedWithAnActiveSurveyDaysWarning(then: DefineStepFunction): void {
   then("I am presented with a warning that questionnaire has active survey days", async () => {
     await waitFor((() => {
-      expect(screen.getByText(/Questionnaire has active Telephone Operations survey days, are you sure you want to delete questionnaire/i)).toBeDefined();
+      expect(screen.getByText(/Questionnaire has active Telephone Operations survey days/i)).toBeDefined();
     }));
   });
 }
@@ -62,7 +62,7 @@ export function thenIAmPresentedWithAnActiveSurveyDaysWarning(then: DefineStepFu
 export function thenIAmPresentedWithAnActiveWebCollectionWarning(then: DefineStepFunction): void {
   then("I am presented with a warning that questionnaire is active for web collection", async () => {
     await waitFor((() => {
-      expect(screen.getByText(/Questionnaire is active for web collection, are you sure you want to delete questionnaire/i)).toBeDefined();
+      expect(screen.getByText(/Questionnaire is active for web collection/i)).toBeDefined();
     }));
   });
 }
