@@ -300,12 +300,6 @@ Object {
                     >
                       Cases
                     </th>
-                    <th
-                      class="table__header"
-                      scope="col"
-                    >
-                      Delete questionnaire
-                    </th>
                   </tr>
                 </thead>
                 <tbody
@@ -766,12 +760,6 @@ Object {
                     scope="col"
                   >
                     Cases
-                  </th>
-                  <th
-                    class="table__header"
-                    scope="col"
-                  >
-                    Delete questionnaire
                   </th>
                 </tr>
               </thead>
@@ -1261,12 +1249,6 @@ Object {
                     >
                       Cases
                     </th>
-                    <th
-                      class="table__header"
-                      scope="col"
-                    >
-                      Delete questionnaire
-                    </th>
                   </tr>
                 </thead>
                 <tbody
@@ -1697,12 +1679,6 @@ Object {
                     scope="col"
                   >
                     Cases
-                  </th>
-                  <th
-                    class="table__header"
-                    scope="col"
-                  >
-                    Delete questionnaire
                   </th>
                 </tr>
               </thead>

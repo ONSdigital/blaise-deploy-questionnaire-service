@@ -26,6 +26,14 @@ export function thenIAmReturnedToTheLandingPage(then: DefineStepFunction): void 
   });
 }
 
+export function thenIAmReturnedToTheQuestionnaireDetailsPage(then: DefineStepFunction): void {
+  then("I am returned to the questionnaire details page", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/questionnaire details/i)).toBeDefined();
+    }));
+  });
+}
+
 export function thenIWillNotHaveTheOptionToDelete(then: DefineStepFunction): void {
   then(/I will not have the option to 'delete' displayed for '(.*)'/, async (questionnaire: string) => {
     await waitFor(() => {

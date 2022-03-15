@@ -17,7 +17,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
     const [loading, setLoading] = useState<boolean>(false);
 
     async function cancelDelete() {
-        history.push("/");
+        history.goBack();
     }
 
     function ErrorMessage(): ReactElement {

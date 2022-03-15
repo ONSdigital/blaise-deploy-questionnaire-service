@@ -155,9 +155,6 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
             },
             {
                 title: "Cases"
-            },
-            {
-                title: "Delete questionnaire"
             }
         ];
 

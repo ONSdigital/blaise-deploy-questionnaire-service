@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {Link, useHistory, useLocation, useParams} from "react-router-dom";
+import {Link, Redirect, useHistory, useLocation, useParams} from "react-router-dom";
 import dateFormatter from "dayjs";
 import {Instrument} from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
@@ -10,7 +10,7 @@ import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
 import YearCalendar from "./sections/yearCalendar";
 import ViewInstrumentSettings from "./sections/viewInstrumentSettings";
 import { getInstrument, getInstrumentModes, getSurveyDays } from "../../client/instruments";
-import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
+import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 
 
 interface State {
@@ -177,38 +177,37 @@ function InstrumentDetails(): ReactElement {
                 <ViewCawiModeDetails instrument={instrument}/>
                 <ViewInstrumentSettings instrument={instrument} modes={modes}/>
 
+                <h2 className={"u-mt-m"}>Survey days</h2>
                 <YearCalendar modes={modes} surveyDays={surveyDays}/>
 
                 <BlaiseNodeInfo instrument={instrument}/>
 
-                <td className={"table__cell "} id={`delete-${instrument.name}`}>
-                    <Link id={`delete-button-${instrument.name}`}
-                          data-testid={`delete-${instrument.name}`}
-                          aria-label={`Delete questionnaire ${instrument.name}`}
-                          to={{
-                              pathname: "/delete",
-                              state: {instrument: instrument, modes: modes}
-                          }}>
-                        Delete
-                    </Link>
-                </td>
-            </>
+                <br></br>
+
+                <ONSButton
+                            label={"Delete Questionnaire"}
+                            primary={false}
+                            aria-label={`Delete questionnaire ${instrument.name}`}
+                            id="delete-questionnaire"
+                            testid="delete-questionnaire"
+                            onClick={() => history.push("/delete", {instrument, modes})}/>
+                </>
         );
     }
 
-return (
-    <>
-    <Breadcrumbs BreadcrumbList={
-        [
-            {link: "/", title: "Home"},
-        ]
-    }/>
+    return (
+        <>
+            <Breadcrumbs BreadcrumbList={
+                [
+                    {link: "/", title: "Home"},
+                ]
+            }/>
 
-    <main id="main-content" className="page__main u-mt-no">
-        <InstrumentDetails/>
-    </main>
-    </>
-);
+            <main id="main-content" className="page__main u-mt-no">
+                <InstrumentDetails/>
+            </main>
+        </>
+    );
 }
 
 export default InstrumentDetails;
