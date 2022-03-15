@@ -85,7 +85,6 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
         const newFilteredList = filter(filterTestInstruments(instruments, filterValue), (instrument) => instrument.name.includes(filterValue.toUpperCase()));
         // Order by date
         newFilteredList.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
-
         setFilteredList(newFilteredList);
 
         if (instruments.length > 0 && newFilteredList.length === 0) {
@@ -140,7 +139,6 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
             status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>;
     }
 
-
     const tableColumns: TableColumns[] =
         [
             {
@@ -163,7 +161,6 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
             }
         ];
 
-
     if (!loaded) {
         return <ONSLoadingPanel />;
     }
@@ -177,7 +174,6 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
                         onChange={(e) => filterList(e.target.value)} />
                 </div>
 
-
                 <div className="u-mt-s">
                     {
                         instruments &&
@@ -188,7 +184,6 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
                 </div>
             </div>
         </>
-
     );
 };
 
