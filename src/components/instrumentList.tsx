@@ -169,7 +169,7 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
     }
     return (
         <>
-            <div className={"elementToFadeIn"}>
+            <div className={"elementToFadeIn u-pt-s"}>
                 <div className="field">
                     <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
                     </label>
