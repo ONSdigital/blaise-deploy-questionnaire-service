@@ -1,6 +1,6 @@
 import supertest, { Response } from "supertest";
 import {
-  instrumentListMockObject, instrumentMockObject, expectedInstrumentList
+    instrumentListMockObject, instrumentMockObject, expectedInstrumentList
 } from "./mockObjects";
 import { Auth } from "blaise-login-react-server";
 import BlaiseApiRest from "blaise-api-node-client";
@@ -8,10 +8,10 @@ import { newServer } from "../server";
 import { getConfigFromEnv } from "../config";
 
 jest.mock("blaise-login-react-server", () => {
-  const loginReact = jest.requireActual("blaise-login-react-server");
-  return {
-    ...loginReact
-  };
+    const loginReact = jest.requireActual("blaise-login-react-server");
+    return {
+        ...loginReact
+    };
 });
 Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
 
@@ -27,37 +27,29 @@ const mockGetInstrumentModes = jest.fn();
 const mockGetInstrumentSettings = jest.fn();
 const mockGetSurveyDays = jest.fn();
 
-// BlaiseApiRest.prototype.getDiagnostics = mockGetDiagnostics;
-// BlaiseApiRest.prototype.getInstrument = mockGetInstrument;
-// BlaiseApiRest.prototype.getInstruments = mockGetInstruments;
-// BlaiseApiRest.prototype.installInstrument = mockInstallInstrument;
-// BlaiseApiRest.prototype.deleteInstrument = mockDeleteInstrument;
-// BlaiseApiRest.prototype.activateInstrument = mockActivateInstrument;
-// BlaiseApiRest.prototype.deactivateInstrument = mockDeactivateInstrument;
-// BlaiseApiRest.prototype.doesInstrumentHaveMode = mockDoesInstrumentHaveMode;
-// BlaiseApiRest.prototype.getInstrumentModes = mockGetInstrumentModes;
-// BlaiseApiRest.prototype.getInstrumentSettings = mockGetInstrumentSettings;
-// BlaiseApiRest.prototype.getSurveyDays = mockGetSurveyDays;
 
-jest.mock("blaise-api-node-client", () => ({
-    _esModule: true,
-    ...(jest.requireActual("blaise-api-node-client")),
-    default: () => {
-        return {
-            getDiagnostics : mockGetDiagnostics,
-            getInstrument : mockGetInstrument,
-            getInstruments : mockGetInstruments,
-            installInstrument : mockInstallInstrument,
-            deleteInstrument : mockDeleteInstrument,
-            activateInstrument : mockActivateInstrument,
-            deactivateInstrument : mockDeactivateInstrument,
-            doesInstrumentHaveMode : mockDoesInstrumentHaveMode,
-            getInstrumentModes : mockGetInstrumentModes,
-            getInstrumentSettings : mockGetInstrumentSettings,
-            getSurveyDays : mockGetSurveyDays
-        }
-    },
-}));
+jest.mock("blaise-api-node-client", () => {
+    return {
+        __esModule: true,
+        ...(jest.requireActual("blaise-api-node-client")),
+        default: jest.fn().mockImplementation(() => {
+            return {
+                getDiagnostics: mockGetDiagnostics,
+                getInstrument: mockGetInstrument,
+                getInstruments: mockGetInstruments,
+                installInstrument: mockInstallInstrument,
+                deleteInstrument: mockDeleteInstrument,
+                activateInstrument: mockActivateInstrument,
+                deactivateInstrument: mockDeactivateInstrument,
+                doesInstrumentHaveMode: mockDoesInstrumentHaveMode,
+                getInstrumentModes: mockGetInstrumentModes,
+                getInstrumentSettings: mockGetInstrumentSettings,
+                getSurveyDays: mockGetSurveyDays
+            };
+        })
+    };
+});
+
 const { DiagnosticMockObject, InstrumentSettingsMockList } = jest.requireActual("blaise-api-node-client");
 
 // Mock Express Server
@@ -141,7 +133,7 @@ describe("BlaiseAPI Get specific instrument information from API", () => {
 
     it("should return a 404 status with the data as false when API returns can't find the instrument", async () => {
         mockGetInstrument.mockImplementation(() => {
-            return Promise.reject({response: {status: 404}, isAxiosError: true});
+            return Promise.reject({ response: { status: 404 }, isAxiosError: true });
         });
 
         const response: Response = await request.get("/api/instruments/OPN2004A");
@@ -184,7 +176,7 @@ describe("BlaiseAPI Post to API to install a specific instrument", () => {
             return Promise.resolve(true);
         });
 
-        const response: Response = await request.post("/api/install").send({filename: "OPN2101A"});
+        const response: Response = await request.post("/api/install").send({ filename: "OPN2101A" });
 
         expect(response.status).toEqual(201);
     });
@@ -194,7 +186,7 @@ describe("BlaiseAPI Post to API to install a specific instrument", () => {
             return Promise.reject();
         });
 
-        const response: Response = await request.post("/api/install").send({filename: "OPN2101A"});
+        const response: Response = await request.post("/api/install").send({ filename: "OPN2101A" });
 
         expect(response.status).toEqual(500);
     });
@@ -218,7 +210,7 @@ describe("BlaiseAPI Delete a specific instrument", () => {
 
     it("should return a 404 status direct from the API", async () => {
         mockDeleteInstrument.mockImplementation(() => {
-            return Promise.reject({response: {status: 404}, isAxiosError: true});
+            return Promise.reject({ response: { status: 404 }, isAxiosError: true });
         });
 
         const response: Response = await request.delete("/api/instruments/OPN2101A");
@@ -228,7 +220,7 @@ describe("BlaiseAPI Delete a specific instrument", () => {
 
     it("should return a 500 status direct from the API", async () => {
         mockDeleteInstrument.mockImplementation(() => {
-            return Promise.reject({response: {status: 500}, isAxiosError: true});
+            return Promise.reject({ response: { status: 500 }, isAxiosError: true });
         });
 
         const response: Response = await request.delete("/api/instruments/OPN2101A");
@@ -255,7 +247,7 @@ describe("BlaiseAPI Activate a specific instrument", () => {
 
     it("should return a 404 status direct from the API", async () => {
         mockActivateInstrument.mockImplementation(() => {
-            return Promise.reject({response: {status: 404}, isAxiosError: true});
+            return Promise.reject({ response: { status: 404 }, isAxiosError: true });
         });
 
         const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
@@ -265,7 +257,7 @@ describe("BlaiseAPI Activate a specific instrument", () => {
 
     it("should return a 500 status direct from the API", async () => {
         mockActivateInstrument.mockImplementation(() => {
-            return Promise.reject({response: {status: 500}, isAxiosError: true});
+            return Promise.reject({ response: { status: 500 }, isAxiosError: true });
         });
 
         const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
@@ -292,7 +284,7 @@ describe("BlaiseAPI Deactivate a specific instrument", () => {
 
     it("should return a 404 status direct from the API", async () => {
         mockDeactivateInstrument.mockImplementation(() => {
-            return Promise.reject({response: {status: 404}, isAxiosError: true});
+            return Promise.reject({ response: { status: 404 }, isAxiosError: true });
         });
 
         const response: Response = await request.patch("/api/instruments/OPN2101A/deactivate");
@@ -302,7 +294,7 @@ describe("BlaiseAPI Deactivate a specific instrument", () => {
 
     it("should return a 500 status direct from the API", async () => {
         mockDeactivateInstrument.mockImplementation(() => {
-            return Promise.reject({response: {status: 500}, isAxiosError: true});
+            return Promise.reject({ response: { status: 500 }, isAxiosError: true });
         });
 
         const response: Response = await request.patch("/api/instruments/OPN2101A/deactivate");
@@ -467,7 +459,8 @@ describe("BlaiseAPI get survey is active", () => {
     });
 
     it("should return a 200 status and true if survey is active today", async () => {
-        const todayAsString = "2021-03-15T00:00:00"
+        // const todayAsString = "2021-03-15T00:00:00";
+        const todayAsString = new Date().toISOString();
         mockGetSurveyDays.mockImplementation(() => {
             return Promise.resolve([todayAsString]);
         });
