@@ -10,7 +10,7 @@ import {
     installInstrument,
     getInstrumentSettings,
     getInstrumentCaseIds,
-    getSurveyDays
+    getSurveyDays, surveyIsActive
 } from "./instruments";
 
 import axios from "axios";
@@ -356,6 +356,39 @@ describe("Function getSurveyDays(instrumentName: string)", () => {
 
     it("should throw an error object if request call fails", async () => {
         mock.onGet("/api/instruments/OPN2004A/surveydays").networkError();
+
+        await expect(getSurveyDays("OPN2004A")).rejects.toThrow();
+    });
+});
+
+describe("Function surveyIsActive(instrumentName: string)", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+        mock.reset();
+    });
+
+    it("should return true and 200 response", async () => {
+        mock.onGet("/api/instruments/OPN2004A/active").reply(200, true);
+
+        const surveyActiveStatus = await surveyIsActive("OPN2004A");
+        expect(surveyActiveStatus).toEqual(true);
+    });
+
+    it("should throw an error if a 404 is returned from the server", async () => {
+        mock.onGet("/api/instruments/OPN2004A/active").reply(404, []);
+
+        await expect(surveyIsActive("OPN2004A")).rejects.toThrow();
+    });
+
+    it("should throw an error if request returns an error code", async () => {
+        mock.onGet("/api/instruments/OPN2004A/active").reply(500, []);
+
+        await expect(surveyIsActive("OPN2004A")).rejects.toThrow();
+    });
+
+    it("should throw an error object if request call fails", async () => {
+        mock.onGet("/api/instruments/OPN2004A/active").networkError();
 
         await expect(getSurveyDays("OPN2004A")).rejects.toThrow();
     });

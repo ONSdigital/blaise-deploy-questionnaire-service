@@ -53,8 +53,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
         if (modes.includes("CATI") && instrument.status?.toLowerCase() === "active" && instrument.active) {
             return (
                 <ONSPanel status={"warn"}>
-                    Questionnaire has active Telephone Operations survey days, are you sure you want to delete
-                    questionnaire
+                    Questionnaire has active Telephone Operations survey days
                 </ONSPanel>
             );
         }
@@ -65,7 +64,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
         if (modes.includes("CAWI")) {
             return (
                 <ONSPanel status={"warn"}>
-                    Questionnaire is active for web collection, are you sure you want to delete questionnaire
+                    Questionnaire is active for web collection
                 </ONSPanel>
             );
         }
