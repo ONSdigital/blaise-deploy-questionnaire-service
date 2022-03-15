@@ -12,7 +12,7 @@ interface Props {
 
 function YearCalendar({ modes, surveyDays }: Props): ReactElement {
     if (! modes.includes("CATI")) {
-        return <></>
+        return <></>;
     }
 
     if (surveyDays === undefined) {

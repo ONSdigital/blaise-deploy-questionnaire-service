@@ -22,7 +22,7 @@ describe("Year calendar for mixed and CATI mode", () => {
     const modes = [
         "CATI",
         "CAWI"
-    ]
+    ];
 
     it("should render calendar with the year set as the newest date in survey list specified ", async () => {
         render(
@@ -83,7 +83,7 @@ describe("Year calendar for anything except CATI mode", () => {
 
     const modes = [
         "CAWI"
-    ]
+    ];
 
     it("should not render a Survey Days Calendar", async () => {
         const { container } = render(

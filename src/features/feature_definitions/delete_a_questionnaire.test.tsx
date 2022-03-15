@@ -118,7 +118,7 @@ defineFeature(feature, test => {
         givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
-        thenIAmPresentedWithAnActiveSurveyDaysWarning(then)
+        thenIAmPresentedWithAnActiveSurveyDaysWarning(then);
         whenIConfirmDelete(when);
         thenTheQuestionnaireDataIsDeleted(then, mocker);
         thenIGetTheDeleteSuccessBanner(then);

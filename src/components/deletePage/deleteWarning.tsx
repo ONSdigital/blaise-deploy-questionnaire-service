@@ -55,9 +55,9 @@ function DeleteWarning({ instrument, modes, setStatus, surveyDays }: Props): Rea
                     Questionnaire has active Telephone Operations survey days, are you sure you want to delete
                     questionnaire
                 </ONSPanel>
-            )
+            );
         }
-        return <></>
+        return <></>;
     }
 
     function CawiWarning(): ReactElement {
@@ -66,9 +66,9 @@ function DeleteWarning({ instrument, modes, setStatus, surveyDays }: Props): Rea
                 <ONSPanel status={"warn"}>
                     Questionnaire is active for web collection, are you sure you want to delete questionnaire
                 </ONSPanel>
-            )
+            );
         }
-        return <></>
+        return <></>;
     }
 
     return (

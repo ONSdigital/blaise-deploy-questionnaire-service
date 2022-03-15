@@ -71,7 +71,7 @@ function InstrumentDetails(): ReactElement {
                         return;
                     }
                     console.log(`returned instrument survey days: ${surveyDays}`);
-                    setSurveyDays(surveyDays)
+                    setSurveyDays(surveyDays);
                     setLoaded(true);
                 }).catch((error: unknown) => {
                 console.error(`Error getting instrument survey days ${error}`);
