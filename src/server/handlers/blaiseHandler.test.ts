@@ -15,9 +15,6 @@ jest.mock("blaise-login-react-server", () => {
 });
 Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
 
-jest.mock("blaise-api-node-client");
-const { DiagnosticMockObject, InstrumentSettingsMockList } = jest.requireActual("blaise-api-node-client");
-
 const mockGetDiagnostics = jest.fn();
 const mockGetInstrument = jest.fn();
 const mockGetInstruments = jest.fn();
@@ -30,17 +27,38 @@ const mockGetInstrumentModes = jest.fn();
 const mockGetInstrumentSettings = jest.fn();
 const mockGetSurveyDays = jest.fn();
 
-BlaiseApiRest.prototype.getDiagnostics = mockGetDiagnostics;
-BlaiseApiRest.prototype.getInstrument = mockGetInstrument;
-BlaiseApiRest.prototype.getInstruments = mockGetInstruments;
-BlaiseApiRest.prototype.installInstrument = mockInstallInstrument;
-BlaiseApiRest.prototype.deleteInstrument = mockDeleteInstrument;
-BlaiseApiRest.prototype.activateInstrument = mockActivateInstrument;
-BlaiseApiRest.prototype.deactivateInstrument = mockDeactivateInstrument;
-BlaiseApiRest.prototype.doesInstrumentHaveMode = mockDoesInstrumentHaveMode;
-BlaiseApiRest.prototype.getInstrumentModes = mockGetInstrumentModes;
-BlaiseApiRest.prototype.getInstrumentSettings = mockGetInstrumentSettings;
-BlaiseApiRest.prototype.getSurveyDays = mockGetSurveyDays;
+// BlaiseApiRest.prototype.getDiagnostics = mockGetDiagnostics;
+// BlaiseApiRest.prototype.getInstrument = mockGetInstrument;
+// BlaiseApiRest.prototype.getInstruments = mockGetInstruments;
+// BlaiseApiRest.prototype.installInstrument = mockInstallInstrument;
+// BlaiseApiRest.prototype.deleteInstrument = mockDeleteInstrument;
+// BlaiseApiRest.prototype.activateInstrument = mockActivateInstrument;
+// BlaiseApiRest.prototype.deactivateInstrument = mockDeactivateInstrument;
+// BlaiseApiRest.prototype.doesInstrumentHaveMode = mockDoesInstrumentHaveMode;
+// BlaiseApiRest.prototype.getInstrumentModes = mockGetInstrumentModes;
+// BlaiseApiRest.prototype.getInstrumentSettings = mockGetInstrumentSettings;
+// BlaiseApiRest.prototype.getSurveyDays = mockGetSurveyDays;
+
+jest.mock("blaise-api-node-client", () => ({
+    _esModule: true,
+    ...(jest.requireActual("blaise-api-node-client")),
+    default: () => {
+        return {
+            getDiagnostics : mockGetDiagnostics,
+            getInstrument : mockGetInstrument,
+            getInstruments : mockGetInstruments,
+            installInstrument : mockInstallInstrument,
+            deleteInstrument : mockDeleteInstrument,
+            activateInstrument : mockActivateInstrument,
+            deactivateInstrument : mockDeactivateInstrument,
+            doesInstrumentHaveMode : mockDoesInstrumentHaveMode,
+            getInstrumentModes : mockGetInstrumentModes,
+            getInstrumentSettings : mockGetInstrumentSettings,
+            getSurveyDays : mockGetSurveyDays
+        }
+    },
+}));
+const { DiagnosticMockObject, InstrumentSettingsMockList } = jest.requireActual("blaise-api-node-client");
 
 // Mock Express Server
 const config = getConfigFromEnv();

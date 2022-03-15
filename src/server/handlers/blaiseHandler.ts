@@ -233,13 +233,17 @@ export class BlaiseHandler {
 
   async GetSurveyIsActive(req: Request, res: Response): Promise<Response> {
     const { instrumentName } = req.params;
-
+    console.log("Save me")
     try {
       const surveyDays = await this.blaiseApiClient.getSurveyDays(this.serverPark, instrumentName);
+      console.log(surveyDays);
       const surveyActiveStatus = surveyIsActive(surveyDays);
+      console.log("Ahhhhhhhhhhhhhhhhhhhhhhhhh");
+      console.log(surveyActiveStatus)
       req.log.info({ surveyActiveStatus }, `Successfully called get survey is active for ${instrumentName}`);
       return res.status(200).json(surveyActiveStatus);
     } catch (error: any) {
+      console.log(error)
       req.log.error(error, `Get survey is active for ${instrumentName}`);
       return res.status(500).json(null);
     }
