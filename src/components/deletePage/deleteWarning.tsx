@@ -1,7 +1,7 @@
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Instrument } from "blaise-api-node-client";
+import {Instrument, SurveyDays} from "blaise-api-node-client";
 import { removeToStartDateAndDeleteInstrument } from "../../client/componentProcesses";
 import { surveyIsActive } from "../../client/instruments";
 
@@ -20,15 +20,18 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
     const [errored, setErrored] = useState<boolean>(false);
 
     useEffect(() => {
-        surveyIsActive(instrument.name).then((isActive: boolean) => {
-            console.log(`Survey has active survey days: ${isActive}`);
-            setActive(isActive);
-            setLoaded(true);
-        }).catch((error: unknown) => {
-            console.error(`Failed to get survey is active: ${error}`);
-            setErrored(true);
-            setLoaded(true);
-        });
+        if (modes.includes("CATI")) {
+            surveyIsActive(instrument.name).then((isActive: boolean) => {
+                console.log(`Survey has active survey days: ${isActive}`);
+                setActive(isActive);
+                setLoaded(true);
+            }).catch((error: unknown) => {
+                console.error(`Failed to get survey is active: ${error}`);
+                setErrored(true);
+                setLoaded(true);
+            });
+        }
+        setLoaded(true);
     });
 
     async function cancelDelete() {
