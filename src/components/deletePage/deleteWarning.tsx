@@ -74,7 +74,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
     }
 
     function CawiWarning(): ReactElement {
-        if (modes.includes("CAWI")) {
+        if (modes.includes("CAWI") && instrument.status?.toLowerCase() === "active") {
             return (
                 <ONSPanel status={"error"}>
                     Questionnaire is active for web collection
