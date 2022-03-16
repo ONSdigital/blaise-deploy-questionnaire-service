@@ -239,7 +239,7 @@ export class BlaiseHandler {
       req.log.info({ surveyActiveStatus }, `Successfully called get survey is active for ${instrumentName}`);
       return res.status(200).json(surveyActiveStatus);
     } catch (error: any) {
-      req.log.error(error, `Get survey is active for ${instrumentName}: ${error}`);
+      req.log.error(error, `Get survey is active for ${instrumentName}`);
       return res.status(500).json(null);
     }
   }
