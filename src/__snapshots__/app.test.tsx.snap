@@ -232,33 +232,6 @@ Object {
           class="page__main u-mt-no"
           id="main-content"
         >
-          <div
-            class="panel panel--info panel--no-title  u-mt-m"
-          >
-            <div
-              class="panel__body "
-            >
-              <p>
-                Any 
-                <b>
-                  live
-                </b>
-                 questionnaire within the table below 
-                <b>
-                  does not
-                </b>
-                 have the option to delete and 
-                <b>
-                  cannot be deleted
-                </b>
-                . If a 
-                <b>
-                  live
-                </b>
-                 questionnaire requires deletion, raise a Service Desk ticket to complete this request.
-              </p>
-            </div>
-          </div>
           <h2
             class="u-mt-m"
           >
@@ -332,12 +305,6 @@ Object {
                     >
                       Cases
                     </th>
-                    <th
-                      class="table__header"
-                      scope="col"
-                    >
-                      Delete questionnaire
-                    </th>
                   </tr>
                 </thead>
                 <tbody
@@ -383,19 +350,6 @@ Object {
                     >
                       0
                     </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2101A"
-                    >
-                      <a
-                        aria-label="Delete questionnaire OPN2101A"
-                        data-testid="delete-OPN2101A"
-                        href="/delete"
-                        id="delete-button-OPN2101A"
-                      >
-                        Delete
-                      </a>
-                    </td>
                   </tr>
                   <tr
                     class="table__row"
@@ -437,12 +391,6 @@ Object {
                     >
                       10
                     </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2007T"
-                    >
-                      Questionnaire is live
-                    </td>
                   </tr>
                   <tr
                     class="table__row"
@@ -483,19 +431,6 @@ Object {
                       class="table__cell "
                     >
                       0
-                    </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2004A"
-                    >
-                      <a
-                        aria-label="Delete questionnaire OPN2004A"
-                        data-testid="delete-OPN2004A"
-                        href="/delete"
-                        id="delete-button-OPN2004A"
-                      >
-                        Delete
-                      </a>
                     </td>
                   </tr>
                 </tbody>
@@ -763,33 +698,6 @@ Object {
         class="page__main u-mt-no"
         id="main-content"
       >
-        <div
-          class="panel panel--info panel--no-title  u-mt-m"
-        >
-          <div
-            class="panel__body "
-          >
-            <p>
-              Any 
-              <b>
-                live
-              </b>
-               questionnaire within the table below 
-              <b>
-                does not
-              </b>
-               have the option to delete and 
-              <b>
-                cannot be deleted
-              </b>
-              . If a 
-              <b>
-                live
-              </b>
-               questionnaire requires deletion, raise a Service Desk ticket to complete this request.
-            </p>
-          </div>
-        </div>
         <h2
           class="u-mt-m"
         >
@@ -863,12 +771,6 @@ Object {
                   >
                     Cases
                   </th>
-                  <th
-                    class="table__header"
-                    scope="col"
-                  >
-                    Delete questionnaire
-                  </th>
                 </tr>
               </thead>
               <tbody
@@ -914,19 +816,6 @@ Object {
                   >
                     0
                   </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2101A"
-                  >
-                    <a
-                      aria-label="Delete questionnaire OPN2101A"
-                      data-testid="delete-OPN2101A"
-                      href="/delete"
-                      id="delete-button-OPN2101A"
-                    >
-                      Delete
-                    </a>
-                  </td>
                 </tr>
                 <tr
                   class="table__row"
@@ -968,12 +857,6 @@ Object {
                   >
                     10
                   </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2007T"
-                  >
-                    Questionnaire is live
-                  </td>
                 </tr>
                 <tr
                   class="table__row"
@@ -1014,19 +897,6 @@ Object {
                     class="table__cell "
                   >
                     0
-                  </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2004A"
-                  >
-                    <a
-                      aria-label="Delete questionnaire OPN2004A"
-                      data-testid="delete-OPN2004A"
-                      href="/delete"
-                      id="delete-button-OPN2004A"
-                    >
-                      Delete
-                    </a>
                   </td>
                 </tr>
               </tbody>
@@ -1321,33 +1191,6 @@ Object {
           class="page__main u-mt-no"
           id="main-content"
         >
-          <div
-            class="panel panel--info panel--no-title  u-mt-m"
-          >
-            <div
-              class="panel__body "
-            >
-              <p>
-                Any 
-                <b>
-                  live
-                </b>
-                 questionnaire within the table below 
-                <b>
-                  does not
-                </b>
-                 have the option to delete and 
-                <b>
-                  cannot be deleted
-                </b>
-                . If a 
-                <b>
-                  live
-                </b>
-                 questionnaire requires deletion, raise a Service Desk ticket to complete this request.
-              </p>
-            </div>
-          </div>
           <h2
             class="u-mt-m"
           >
@@ -1421,12 +1264,6 @@ Object {
                     >
                       Cases
                     </th>
-                    <th
-                      class="table__header"
-                      scope="col"
-                    >
-                      Delete questionnaire
-                    </th>
                   </tr>
                 </thead>
                 <tbody
@@ -1472,19 +1309,6 @@ Object {
                     >
                       0
                     </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2101A"
-                    >
-                      <a
-                        aria-label="Delete questionnaire OPN2101A"
-                        data-testid="delete-OPN2101A"
-                        href="/delete"
-                        id="delete-button-OPN2101A"
-                      >
-                        Delete
-                      </a>
-                    </td>
                   </tr>
                   <tr
                     class="table__row"
@@ -1526,12 +1350,6 @@ Object {
                     >
                       10
                     </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2007T"
-                    >
-                      Questionnaire is live
-                    </td>
                   </tr>
                   <tr
                     class="table__row"
@@ -1572,19 +1390,6 @@ Object {
                       class="table__cell "
                     >
                       0
-                    </td>
-                    <td
-                      class="table__cell "
-                      id="delete-OPN2004A"
-                    >
-                      <a
-                        aria-label="Delete questionnaire OPN2004A"
-                        data-testid="delete-OPN2004A"
-                        href="/delete"
-                        id="delete-button-OPN2004A"
-                      >
-                        Delete
-                      </a>
                     </td>
                   </tr>
                 </tbody>
@@ -1822,33 +1627,6 @@ Object {
         class="page__main u-mt-no"
         id="main-content"
       >
-        <div
-          class="panel panel--info panel--no-title  u-mt-m"
-        >
-          <div
-            class="panel__body "
-          >
-            <p>
-              Any 
-              <b>
-                live
-              </b>
-               questionnaire within the table below 
-              <b>
-                does not
-              </b>
-               have the option to delete and 
-              <b>
-                cannot be deleted
-              </b>
-              . If a 
-              <b>
-                live
-              </b>
-               questionnaire requires deletion, raise a Service Desk ticket to complete this request.
-            </p>
-          </div>
-        </div>
         <h2
           class="u-mt-m"
         >
@@ -1922,12 +1700,6 @@ Object {
                   >
                     Cases
                   </th>
-                  <th
-                    class="table__header"
-                    scope="col"
-                  >
-                    Delete questionnaire
-                  </th>
                 </tr>
               </thead>
               <tbody
@@ -1973,19 +1745,6 @@ Object {
                   >
                     0
                   </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2101A"
-                  >
-                    <a
-                      aria-label="Delete questionnaire OPN2101A"
-                      data-testid="delete-OPN2101A"
-                      href="/delete"
-                      id="delete-button-OPN2101A"
-                    >
-                      Delete
-                    </a>
-                  </td>
                 </tr>
                 <tr
                   class="table__row"
@@ -2027,12 +1786,6 @@ Object {
                   >
                     10
                   </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2007T"
-                  >
-                    Questionnaire is live
-                  </td>
                 </tr>
                 <tr
                   class="table__row"
@@ -2073,19 +1826,6 @@ Object {
                     class="table__cell "
                   >
                     0
-                  </td>
-                  <td
-                    class="table__cell "
-                    id="delete-OPN2004A"
-                  >
-                    <a
-                      aria-label="Delete questionnaire OPN2004A"
-                      data-testid="delete-OPN2004A"
-                      href="/delete"
-                      id="delete-button-OPN2004A"
-                    >
-                      Delete
-                    </a>
                   </td>
                 </tr>
               </tbody>
