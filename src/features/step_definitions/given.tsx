@@ -36,6 +36,8 @@ export function givenTheQuestionnaireIsInstalled(
     ]);
     mocker.onGet(`/api/instruments/${questionnaire}/modes`).reply(200, ["CAWI", "CATI"]);
     mocker.onGet(`/api/uacs/instrument/${questionnaire}/count`).reply(200, { count: 0 });
+    mocker.onGet(`/api/instruments/${questionnaire}/surveydays`).reply(200,  [] );
+    mocker.onGet(`/api/instruments/${questionnaire}/active`).reply(200,  true );
   });
 }
 
@@ -147,13 +149,11 @@ export function givenUACGenerationIsBroken(given: DefineStepFunction, mocker: Mo
   });
 }
 
-
 export function givenTheQuestionnaireHasATOStartDate(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' has a TO start date of '(.*)'/, async (questionnaire: string, toStartDate: string) => {
     mocker.onGet(`/api/tostartdate/${questionnaire}`).reply(200, { tostartdate: formatDateString(toStartDate) });
   });
 }
-
 
 export function givenTheQuestionnaireHasNoTOStartDate(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' has no TO start date/, async (questionnaire: string) => {
@@ -234,9 +234,7 @@ export function givenTheQuestionnaireHasActiveSurveyDays(
     for (const instrument of instrumentList) {
       if (instrument.name === questionnaire) {
         console.log(questionnaire);
-        instrument.active = true;
-
-        mocker.onGet(`/api/instruments/${questionnaire}`).reply(200, instrument);
+        mocker.onGet(`/api/instruments/${questionnaire}/active`).reply(200, true);
       }
     }
   });

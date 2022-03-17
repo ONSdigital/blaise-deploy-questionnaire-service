@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { Auth } from "blaise-login-react-server";
-import BlaiseApiClient, { InstallInstrument, Instrument } from "blaise-api-node-client";
+import BlaiseApiClient, { InstallInstrument, Instrument, surveyIsActive } from "blaise-api-node-client";
 import { fieldPeriodToText } from "../functions";
 import AuditLogger from "../auditLogging/logger";
 
@@ -8,17 +8,20 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
   const router = express.Router();
 
   const blaiseHandler = new BlaiseHandler(blaiseApiClient, serverPark, auditLogger);
+
   router.get("/api/health/diagnosis", auth.Middleware, blaiseHandler.GetHealth);
+  router.get("/api/instruments", auth.Middleware, blaiseHandler.GetInstruments);
   router.get("/api/instruments/:instrumentName", auth.Middleware, blaiseHandler.GetInstrument);
+  router.get("/api/instruments/:instrumentName/modes", auth.Middleware, blaiseHandler.GetModes);
+  router.get("/api/instruments/:instrumentName/modes/:mode", auth.Middleware, blaiseHandler.DoesInstrumentHaveMode);
+  router.get("/api/instruments/:instrumentName/settings", auth.Middleware, blaiseHandler.GetSettings);
+  router.get("/api/instruments/:instrumentName/surveydays", auth.Middleware, blaiseHandler.GetSurveyDays);
+  router.get("/api/instruments/:instrumentName/active", auth.Middleware, blaiseHandler.GetSurveyIsActive);
+  router.get("/api/instruments/:instrumentName/cases/ids", auth.Middleware, blaiseHandler.GetCases);
   router.post("/api/install", auth.Middleware, blaiseHandler.InstallInstrument);
-  router.delete("/api/instruments/:instrumentName", auth.Middleware, blaiseHandler.DeleteInstrument);
   router.patch("/api/instruments/:instrumentName/activate", auth.Middleware, blaiseHandler.ActivateInstrument);
   router.patch("/api/instruments/:instrumentName/deactivate", auth.Middleware, blaiseHandler.DeactivateInstrument);
-  router.get("/api/instruments/:instrumentName/modes/:mode", auth.Middleware, blaiseHandler.DoesInstrumentHaveMode);
-  router.get("/api/instruments", auth.Middleware, blaiseHandler.GetInstruments);
-  router.get("/api/instruments/:instrumentName/cases/ids", auth.Middleware, blaiseHandler.GetCases);
-  router.get("/api/instruments/:instrumentName/modes", auth.Middleware, blaiseHandler.GetModes);
-  router.get("/api/instruments/:instrumentName/settings", auth.Middleware, blaiseHandler.GetSettings);
+  router.delete("/api/instruments/:instrumentName", auth.Middleware, blaiseHandler.DeleteInstrument);
 
   return router;
 }
@@ -44,6 +47,8 @@ export class BlaiseHandler {
     this.GetCases = this.GetCases.bind(this);
     this.GetModes = this.GetModes.bind(this);
     this.GetSettings = this.GetSettings.bind(this);
+    this.GetSurveyDays = this.GetSurveyDays.bind(this);
+    this.GetSurveyIsActive = this.GetSurveyIsActive.bind(this);
   }
 
   async GetHealth(req: Request, res: Response): Promise<Response> {
@@ -61,15 +66,15 @@ export class BlaiseHandler {
     const { instrumentName } = req.params;
 
     try {
-      const instrument = await this.blaiseApiClient.getInstrumentWithCatiData(this.serverPark, instrumentName);
-      req.log.info({ instrument }, `Get instrument with CATI data ${instrumentName} endpoint`);
+      const instrument = await this.blaiseApiClient.getInstrument(this.serverPark, instrumentName);
+      req.log.info({ instrument }, `Get instrument ${instrumentName} endpoint`);
       return res.status(200).json(instrument);
     } catch (error: any) {
       if (this.errorNotFound(error)) {
         return res.status(404).json();
       }
       console.log(error);
-      req.log.error(error, "Get instrument with CATI data endpoint failed");
+      req.log.error(error, "Get instrument endpoint failed");
       return res.status(500).json();
     }
   }
@@ -157,15 +162,19 @@ export class BlaiseHandler {
 
   async GetInstruments(req: Request, res: Response): Promise<Response> {
     try {
-      const instruments: Instrument[] = await this.blaiseApiClient.getInstrumentsWithCatiData(this.serverPark);
+      const instruments: Instrument[] = await this.blaiseApiClient.getInstruments(this.serverPark);
       instruments.forEach(function (instrument: Instrument) {
+        if (instrument.status === "Erroneous") {
+          req.log.info(`Instrument ${instrument.name} returned erroneous.`);
+          instrument.status = "Failed";
+        }
         instrument.fieldPeriod = fieldPeriodToText(instrument.name);
       });
 
       req.log.info({ instruments }, `${instruments.length} instrument/s currently installed.`);
       return res.status(200).json(instruments);
     } catch (error: any) {
-      req.log.error(error, "Get instruments endpoint failed");
+      req.log.error(error, "Get instruments endpoint failed.");
       return res.status(500).json();
     }
   }
@@ -206,6 +215,32 @@ export class BlaiseHandler {
     } catch (error: any) {
       req.log.error(error, `Get instrument settings for ${instrumentName}`);
       return res.status(500).json();
+    }
+  }
+
+  async GetSurveyDays(req: Request, res: Response): Promise<Response> {
+    const { instrumentName } = req.params;
+
+    try {
+      const surveyDays = await this.blaiseApiClient.getSurveyDays(this.serverPark, instrumentName);
+      req.log.info({ surveyDays }, `Successfully called get survey days for ${instrumentName}`);
+      return res.status(200).json(surveyDays);
+    } catch (error: any) {
+      req.log.error(error, `Get survey days for ${instrumentName}`);
+      return res.status(500).json(null);
+    }
+  }
+
+  async GetSurveyIsActive(req: Request, res: Response): Promise<Response> {
+    const { instrumentName } = req.params;
+    try {
+      const surveyDays = await this.blaiseApiClient.getSurveyDays(this.serverPark, instrumentName);
+      const surveyActiveStatus = surveyIsActive(surveyDays);
+      req.log.info({ surveyActiveStatus }, `Successfully called get survey is active for ${instrumentName}`);
+      return res.status(200).json(surveyActiveStatus);
+    } catch (error: any) {
+      req.log.error(error, `Get survey is active for ${instrumentName}`);
+      return res.status(500).json(null);
     }
   }
 

@@ -46,7 +46,7 @@ describe("Instrument Details page ", () => {
         });
 
         await waitFor(() => {
-            expect(screen.getByText(/Table of questionnaires/i)).toBeDefined();
+            expect(screen.getByText(/Filter by questionnaire name/i)).toBeDefined();
             expect(screen.queryByText(/Questionnaire details/i)).toEqual(null);
         });
     });

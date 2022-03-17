@@ -22,7 +22,7 @@ describe("Instrument Status ", () => {
 
     it("should render instrument with class 'status--error' when the status is Erroneous", async () => {
         const { container } = render(
-            <InstrumentStatus status={"Erroneous"} />
+            <InstrumentStatus status={"Failed"} />
         );
 
         expect(container.firstChild).toHaveClass("status--error");
@@ -30,7 +30,7 @@ describe("Instrument Status ", () => {
 
     it("should render instrument with class 'status--error' when the status is Failed", async () => {
         const { container } = render(
-            <InstrumentStatus status={"Erroneous"} />
+            <InstrumentStatus status={"Failed"} />
         );
 
         expect(container.firstChild).toHaveClass("status--error");

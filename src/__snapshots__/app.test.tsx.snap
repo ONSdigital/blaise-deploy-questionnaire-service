@@ -232,13 +232,8 @@ Object {
           class="page__main u-mt-no"
           id="main-content"
         >
-          <h2
-            class="u-mt-m"
-          >
-            Table of questionnaires
-          </h2>
           <div
-            class="elementToFadeIn"
+            class="elementToFadeIn u-pt-s"
           >
             <div
               class="field"
@@ -698,13 +693,8 @@ Object {
         class="page__main u-mt-no"
         id="main-content"
       >
-        <h2
-          class="u-mt-m"
-        >
-          Table of questionnaires
-        </h2>
         <div
-          class="elementToFadeIn"
+          class="elementToFadeIn u-pt-s"
         >
           <div
             class="field"
@@ -1191,13 +1181,8 @@ Object {
           class="page__main u-mt-no"
           id="main-content"
         >
-          <h2
-            class="u-mt-m"
-          >
-            Table of questionnaires
-          </h2>
           <div
-            class="elementToFadeIn"
+            class="elementToFadeIn u-pt-s"
           >
             <div
               class="field"
@@ -1627,13 +1612,8 @@ Object {
         class="page__main u-mt-no"
         id="main-content"
       >
-        <h2
-          class="u-mt-m"
-        >
-          Table of questionnaires
-        </h2>
         <div
-          class="elementToFadeIn"
+          class="elementToFadeIn u-pt-s"
         >
           <div
             class="field"
