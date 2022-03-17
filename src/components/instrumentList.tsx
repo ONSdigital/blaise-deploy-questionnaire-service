@@ -85,7 +85,6 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
         const newFilteredList = filter(filterTestInstruments(instruments, filterValue), (instrument) => instrument.name.includes(filterValue.toUpperCase()));
         // Order by date
         newFilteredList.sort((a: Instrument, b: Instrument) => Date.parse(b.installDate) - Date.parse(a.installDate));
-
         setFilteredList(newFilteredList);
 
         if (instruments.length > 0 && newFilteredList.length === 0) {
@@ -140,7 +139,6 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
             status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>;
     }
 
-
     const tableColumns: TableColumns[] =
         [
             {
@@ -160,20 +158,18 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
             }
         ];
 
-
     if (!loaded) {
         return <ONSLoadingPanel />;
     }
     return (
         <>
-            <div className={"elementToFadeIn"}>
+            <div className={"elementToFadeIn u-pt-s"}>
                 <div className="field">
                     <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
                     </label>
                     <input type="text" id="filter-by-name" className="input input--text input-type__input"
                         onChange={(e) => filterList(e.target.value)} />
                 </div>
-
 
                 <div className="u-mt-s">
                     {
@@ -185,7 +181,6 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
                 </div>
             </div>
         </>
-
     );
 };
 

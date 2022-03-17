@@ -119,3 +119,29 @@ export async function getInstrumentCaseIds(instrumentName: string): Promise<stri
         throw new Error("Failed to get instrument case IDs");
     }
 }
+
+export async function getSurveyDays(instrumentName: string): Promise<string[]> {
+    console.log("Sending request get survey days");
+    const url = `/api/instruments/${instrumentName}/surveydays`;
+
+    try {
+        const response = await axios.get(url, axiosConfig());
+        return response.data;
+    } catch (error: unknown) {
+        console.error(`Failed to get survey days, Error ${error}`);
+        throw error;
+    }
+}
+
+export async function surveyIsActive(instrumentName: string): Promise<boolean> {
+    console.log("Sending request get survey is active");
+    const url = `/api/instruments/${instrumentName}/active`;
+
+    try {
+        const response = await axios.get(url, axiosConfig());
+        return response.data;
+    } catch (error: unknown) {
+        console.error(`Failed to get survey is active, Error ${error}`);
+        throw error;
+    }
+}

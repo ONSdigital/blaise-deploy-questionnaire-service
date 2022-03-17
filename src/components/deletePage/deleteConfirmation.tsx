@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { useLocation } from "react-router-dom";
 import { Instrument } from "blaise-api-node-client";
 import ErroneousWarning from "./erroneousWarning";
@@ -8,7 +8,7 @@ import Breadcrumbs from "../breadcrumbs";
 
 interface Location {
     instrument: Instrument,
-    modes : string[]
+    modes : string[],
 }
 
 type Props = {
@@ -32,7 +32,7 @@ function DeleteConfirmation({ setStatus }: Props): ReactElement {
                     (
                         instrument.status === "Failed" 
                             ? <ErroneousWarning instrumentName={instrument.name} />
-                            : <DeleteWarning instrument={instrument} modes={modes} setStatus={setStatus}/>                
+                            : <DeleteWarning instrument={instrument} modes={modes} setStatus={setStatus} />
                     )
                 }
             </main>

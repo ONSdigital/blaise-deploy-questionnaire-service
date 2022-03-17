@@ -113,8 +113,6 @@ function App(): ReactElement {
                             <main id="main-content" className="page__main u-mt-no">
                                 {successBanner()}
                                 {errored && <ONSErrorPanel />}
-
-                                <h2 className="u-mt-m">Table of questionnaires</h2>
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
                                     <InstrumentList setErrored={setErrored} />
                                 </ErrorBoundary>
