@@ -26,21 +26,19 @@ export function thenIAmReturnedToTheLandingPage(then: DefineStepFunction): void 
   });
 }
 
+export function thenIAmReturnedToTheQuestionnaireDetailsPage(then: DefineStepFunction): void {
+  then("I am returned to the questionnaire details page", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/questionnaire details/i)).toBeDefined();
+    }));
+  });
+}
+
 export function thenIWillNotHaveTheOptionToDelete(then: DefineStepFunction): void {
   then(/I will not have the option to 'delete' displayed for '(.*)'/, async (questionnaire: string) => {
     await waitFor(() => {
       const deleteButton: any = document.querySelector(`#delete-${questionnaire}`);
-      expect(deleteButton).not.toBeNull();
-      expect(deleteButton.textContent).toEqual("Questionnaire is live");
-    });
-  });
-}
-
-
-export function thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted(then: DefineStepFunction): void {
-  then("the landing screen displays a warning that live surveys cannot be deleted", async () => {
-    await waitFor(() => {
-      expect(screen.getByText(/questionnaire requires deletion, raise a Service Desk ticket to complete this request/i)).toBeDefined();
+      expect(deleteButton).toBeNull();
     });
   });
 }
@@ -57,6 +55,22 @@ export function thenIAmPresentedWithAWarning(then: DefineStepFunction): void {
   then("I am presented with a warning", async () => {
     await waitFor((() => {
       expect(screen.getByText(/are you sure you want to delete the questionnaire/i)).toBeDefined();
+    }));
+  });
+}
+
+export function thenIAmPresentedWithAnActiveSurveyDaysWarning(then: DefineStepFunction): void {
+  then("I am presented with a warning that questionnaire has active survey days", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/Questionnaire has active Telephone Operations survey days/i)).toBeDefined();
+    }));
+  });
+}
+
+export function thenIAmPresentedWithAnActiveWebCollectionWarning(then: DefineStepFunction): void {
+  then("I am presented with a warning that questionnaire is active for web collection", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/Questionnaire is active for web collection/i)).toBeDefined();
     }));
   });
 }
@@ -299,8 +313,7 @@ export function thenUACsAreGenerated(then: DefineStepFunction, mocker: MockAdapt
 
 export function thenIReceiveAUACError(then: DefineStepFunction): void {
   then("I receive an appropriate error describing suitable user actions", () => {
-    // In what world is this an appropriate error???
-    expect(screen.getByText(/I receive an appropriate error describing suitable user actions/i)).toBeDefined();
+    expect(screen.getByText(/Error occurred while generating Unique Access Codes/i)).toBeDefined();
   });
 }
 

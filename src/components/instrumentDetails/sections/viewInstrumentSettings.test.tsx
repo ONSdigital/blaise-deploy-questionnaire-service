@@ -30,7 +30,6 @@ const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Given the API successfully loads the instrument mode and settings for CATI only mode", () => {
     beforeEach(() => {
-        mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(200, ["CATI"]);
         mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(200, InstrumentSettingsMockList);
     });
 
@@ -44,7 +43,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument} />
+                <ViewInstrumentSettings instrument={opnInstrument} modes={["CATI"]} />
             </Router>
         );
 
@@ -61,7 +60,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument} />
+                <ViewInstrumentSettings instrument={opnInstrument} modes={["CATI"]}/>
             </Router>
         );
 
@@ -81,7 +80,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument} />
+                <ViewInstrumentSettings instrument={opnInstrument} modes={["CATI"]}/>
             </Router>
         );
 
@@ -97,7 +96,6 @@ describe("Given the API successfully loads the instrument mode and settings for 
 
 describe("Given the API successfully loads the instrument mode and settings for mixed mode", () => {
     beforeEach(() => {
-        mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(200, ["CATI", "CAWI"]);
         mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(200, InstrumentSettingsMockList);
     });
 
@@ -111,7 +109,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument} />
+                <ViewInstrumentSettings instrument={opnInstrument} modes={["CATI", "CAWI"]}/>
             </Router>
         );
 
@@ -128,7 +126,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument} />
+                <ViewInstrumentSettings instrument={opnInstrument} modes={["CATI", "CAWI"]}/>
             </Router>
         );
 
@@ -148,7 +146,7 @@ describe("Given the API successfully loads the instrument mode and settings for 
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument} />
+                <ViewInstrumentSettings instrument={opnInstrument} modes={["CATI", "CAWI"]}/>
             </Router>
         );
 
@@ -167,7 +165,6 @@ describe("Given the API successfully loads the instrument mode and settings for 
 
 describe("Given the API fails to load the instrument mode or settings", () => {
     beforeEach(() => {
-        mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(500);
         mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(500);
     });
 
@@ -177,24 +174,9 @@ describe("Given the API fails to load the instrument mode or settings", () => {
         mock.reset();
     });
 
-    it("should display an error message when it fails to load the Instrument Modes", async () => {
-        render(
-            <ViewInstrumentSettings instrument={opnInstrument} />
-        );
-
-        await act(async () => {
-            await flushPromises();
-        });
-
-        await waitFor(() => {
-            expect(screen.getByText(viewInstrumentSettingsFailedMessage)).toBeDefined();
-        });
-    });
-
     it("should display an error message when it fails to load the Instrument Settings", async () => {
         render(
-            <ViewInstrumentSettings instrument={opnInstrument}
-            />
+            <ViewInstrumentSettings instrument={opnInstrument} modes={["CATI"]}/>
         );
 
         await act(async () => {
@@ -209,7 +191,6 @@ describe("Given the API fails to load the instrument mode or settings", () => {
 
 describe("Given the API returns an empty list for instrument mode or settings", () => {
     beforeEach(() => {
-        mock.onGet(`/api/instruments/${opnInstrument.name}/modes`).reply(200, []);
         mock.onGet(`/api/instruments/${opnInstrument.name}/settings`).reply(200, []);
     });
 
@@ -223,7 +204,7 @@ describe("Given the API returns an empty list for instrument mode or settings", 
         const history = createMemoryHistory();
         render(
             <Router history={history}>
-                <ViewInstrumentSettings instrument={opnInstrument} />
+                <ViewInstrumentSettings instrument={opnInstrument} modes={[]}/>
             </Router>
         );
 
