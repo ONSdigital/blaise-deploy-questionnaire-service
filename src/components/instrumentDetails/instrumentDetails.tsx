@@ -9,9 +9,8 @@ import ViewCawiModeDetails from "./sections/viewCawiModeDetails";
 import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
 import YearCalendar from "./sections/yearCalendar";
 import ViewInstrumentSettings from "./sections/viewInstrumentSettings";
-import {getInstrument, getInstrumentModes} from "../../client/instruments";
-import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
-
+import { getInstrument, getInstrumentModes, getSurveyDays } from "../../client/instruments";
+import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 
 interface State {
     instrument: Instrument | null;
@@ -26,6 +25,7 @@ function InstrumentDetails(): ReactElement {
     const history = useHistory();
     const [instrument, setInstrument] = useState<Instrument>();
     const [modes, setModes] = useState<string[]>([]);
+    const [surveyDays, setSurveyDays] = useState<string[]>([]);
     const [errored, setErrored] = useState<boolean>(false);
     const [loaded, setLoaded] = useState<boolean>(false);
     const initialState = location.state || {instrument: null};
@@ -42,7 +42,6 @@ function InstrumentDetails(): ReactElement {
             });
         } else {
             setInstrument(initialState.instrument);
-
         }
         getInstrumentModes(instrumentName)
             .then((modes) => {
@@ -51,6 +50,25 @@ function InstrumentDetails(): ReactElement {
                     setErrored(true);
                     setLoaded(true);
                     return;
+                }
+                if (modes.includes("CATI")) {
+                    getSurveyDays(instrumentName)
+                        .then((surveyDays) => {
+                            if (surveyDays.length === 0) {
+                                console.log("returned instrument survey days was empty");
+                                setSurveyDays(surveyDays);
+                                setLoaded(true);
+                                return;
+                            }
+                            console.log(`returned instrument survey days: ${surveyDays}`);
+                            setSurveyDays(surveyDays);
+                            setLoaded(true);
+                        }).catch((error: unknown) => {
+                        console.error(`Error getting instrument survey days ${error}`);
+                        setErrored(true);
+                        setLoaded(true);
+                        return;
+                    });
                 }
                 console.log(`returned instrument mode: ${modes}`);
                 setModes(modes);
@@ -158,11 +176,10 @@ function InstrumentDetails(): ReactElement {
                 <ViewCawiModeDetails instrument={instrument}/>
                 <ViewInstrumentSettings instrument={instrument} modes={modes}/>
 
-                <h2 className={"u-mt-m"}>Survey days</h2>
-                <YearCalendar surveyDays={instrument.surveyDays}/>
+                <YearCalendar modes={modes} surveyDays={surveyDays}/>
 
                 <BlaiseNodeInfo instrument={instrument}/>
-                
+
                 <br></br>
 
                 <ONSButton

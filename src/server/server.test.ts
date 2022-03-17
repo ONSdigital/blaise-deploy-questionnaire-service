@@ -17,13 +17,13 @@ jest.mock("blaise-login-react-server", () => {
 });
 Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
 
-const mockGetInstrumentsWithCatiData = jest.fn();
-BlaiseApiRest.prototype.getInstrumentsWithCatiData = mockGetInstrumentsWithCatiData;
+const mockGetInstruments = jest.fn();
+BlaiseApiRest.prototype.getInstruments = mockGetInstruments;
 
 const config = getConfigFromEnv();
 const request = supertest(newServer(config));
 
-describe("Test Heath Endpoint", () => {
+describe("Test Health Endpoint", () => {
     it("should return a 200 status and json message", async () => {
         const response = await request.get("/dqs-ui/version/health");
 
@@ -33,10 +33,9 @@ describe("Test Heath Endpoint", () => {
     });
 });
 
-
 describe("Given the API returns 2 instruments", () => {
     beforeEach(() => {
-        mockGetInstrumentsWithCatiData.mockImplementation(() => {
+        mockGetInstruments.mockImplementation(() => {
             return Promise.resolve(apiInstrumentList);
         });
     });
@@ -48,15 +47,11 @@ describe("Given the API returns 2 instruments", () => {
 
     const apiInstrumentList = [
         {
-            activeToday: true,
-            expired: false,
             installDate: "2020-12-11T11:53:55.5612856+00:00",
             name: "OPN2007T",
             serverParkName: "LocalDevelopment"
         },
         {
-            activeToday: false,
-            expired: false,
             installDate: "2020-12-11T11:53:55.5612856+00:00",
             name: "OPN2004A",
             serverParkName: "LocalDevelopment"
@@ -65,16 +60,12 @@ describe("Given the API returns 2 instruments", () => {
 
     const apiReturnedInstrumentList = [
         {
-            activeToday: true,
-            expired: false,
             installDate: "2020-12-11T11:53:55.5612856+00:00",
             name: "OPN2007T",
             serverParkName: "LocalDevelopment",
             fieldPeriod: "July 2020"
         },
         {
-            activeToday: false,
-            expired: false,
             installDate: "2020-12-11T11:53:55.5612856+00:00",
             name: "OPN2004A",
             serverParkName: "LocalDevelopment",
@@ -93,7 +84,7 @@ describe("Given the API returns 2 instruments", () => {
 
 describe("Get list of instruments endpoint fails", () => {
     beforeEach(() => {
-        mockGetInstrumentsWithCatiData.mockImplementation(() => {
+        mockGetInstruments.mockImplementation(() => {
             return Promise.reject("Network error");
         });
     });

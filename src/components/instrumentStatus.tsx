@@ -8,8 +8,6 @@ function getStatusColor(status: string | undefined) {
     switch (status) {
         case "Active":
             return "success";
-        case "Erroneous":
-            return "error";
         case "Failed":
             return "error";
         default:
