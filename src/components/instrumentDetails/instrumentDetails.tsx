@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {useHistory, useLocation, useParams} from "react-router-dom";
+import {Link, Redirect, useHistory, useLocation, useParams} from "react-router-dom";
 import dateFormatter from "dayjs";
 import {Instrument} from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
@@ -10,7 +10,7 @@ import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
 import YearCalendar from "./sections/yearCalendar";
 import ViewInstrumentSettings from "./sections/viewInstrumentSettings";
 import {getInstrument, getInstrumentModes} from "../../client/instruments";
-import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 
 
 interface State {
@@ -162,7 +162,17 @@ function InstrumentDetails(): ReactElement {
                 <YearCalendar surveyDays={instrument.surveyDays}/>
 
                 <BlaiseNodeInfo instrument={instrument}/>
-            </>
+                
+                <br></br>
+
+                <ONSButton
+                            label={"Delete Questionnaire"}
+                            primary={false}
+                            aria-label={`Delete questionnaire ${instrument.name}`}
+                            id="delete-questionnaire"
+                            testid="delete-questionnaire"
+                            onClick={() => history.push("/delete", {instrument, modes})}/>
+                </>
         );
     }
 

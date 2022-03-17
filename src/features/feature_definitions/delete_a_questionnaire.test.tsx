@@ -10,6 +10,8 @@ import { Instrument } from "blaise-api-node-client";
 
 import {
     givenTheQuestionnaireHasActiveSurveyDays,
+    givenTheQuestionnaireHasModes,
+    givenTheQuestionnaireIsActive,
     givenTheQuestionnaireIsInactive,
     givenTheQuestionnaireIsInstalled,
     givenTheQuestionnaireIsLive
@@ -17,11 +19,13 @@ import {
 
 
 import {
+    thenIAmPresentedWithAnActiveSurveyDaysWarning,
+    thenIAmPresentedWithAnActiveWebCollectionWarning,
     thenIAmPresentedWithAWarning,
     thenIAmReturnedToTheLandingPage,
+    thenIAmReturnedToTheQuestionnaireDetailsPage,
     thenIGetTheDeleteSuccessBanner,
     thenIWillNotHaveTheOptionToDelete,
-    thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted,
     thenTheQuestionnaireDataIsDeleted,
     thenTheQuestionnaireDataIsNotDeleted
 } from "../step_definitions/then";
@@ -29,6 +33,7 @@ import {
     whenICancelDelete,
     whenIConfirmDelete,
     whenIDeleteAQuestionnaire,
+    whenIGoToTheQuestionnaireDetailsPage,
     whenILoadTheHomepage
 } from "../step_definitions/when";
 import { AuthManager } from "blaise-login-react-client";
@@ -63,32 +68,22 @@ defineFeature(feature, test => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
         givenTheQuestionnaireIsInactive(given, instrumentList, mocker);
         givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
-        whenILoadTheHomepage(when);
+        whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);
         thenTheQuestionnaireDataIsDeleted(then, mocker);
         thenIGetTheDeleteSuccessBanner(then);
     });
 
-    test("Delete questionnaire not available from the list, when survey is live", ({ given, when, then, }) => {
+    test("Delete a questionnaire not available from the homepage", ({ given, when, then, }) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsLive(given, instrumentList, mocker);
-        whenILoadTheHomepage(when);
+        whenILoadTheHomepage(when);        
         thenIWillNotHaveTheOptionToDelete(then);
-        thenTheLandingScreenDisplaysAWarningThatLiveSurveysCannotBeDeleted(then);
-    });
-
-
-    test("Select to delete a questionnaire from the list, when survey is NOT live", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        whenILoadTheHomepage(when);
-        whenIDeleteAQuestionnaire(when);
-        thenIAmPresentedWithAWarning(then);
     });
 
     test("Confirm deletion", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        whenILoadTheHomepage(when);
+        whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);
         thenTheQuestionnaireDataIsDeleted(then, mocker);
@@ -97,10 +92,55 @@ defineFeature(feature, test => {
 
     test("Cancel deletion", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        whenILoadTheHomepage(when);
+        whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         whenICancelDelete(when);
         thenTheQuestionnaireDataIsNotDeleted(then, mocker);
-        thenIAmReturnedToTheLandingPage(then);
+        thenIAmReturnedToTheQuestionnaireDetailsPage(then);
+    });
+
+    test("Select to delete questionnaire that is active and live", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsActive(given, instrumentList, mocker);
+        givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
+        whenIGoToTheQuestionnaireDetailsPage(when);
+        whenIDeleteAQuestionnaire(when);
+        thenIAmPresentedWithAnActiveSurveyDaysWarning(then)
+        whenIConfirmDelete(when);
+        thenTheQuestionnaireDataIsDeleted(then, mocker);
+        thenIGetTheDeleteSuccessBanner(then);
+    });
+
+    test("Select to delete questionnaire that is active and not live", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
+        whenIGoToTheQuestionnaireDetailsPage(when);
+        whenIDeleteAQuestionnaire(when);
+        thenIAmPresentedWithAWarning(then);
+        whenIConfirmDelete(when);
+        thenTheQuestionnaireDataIsDeleted(then, mocker);
+        thenIGetTheDeleteSuccessBanner(then);
+    });
+
+    test("Select to delete questionnaire that is inactive", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInactive(given, instrumentList, mocker);
+        whenIGoToTheQuestionnaireDetailsPage(when);
+        whenIDeleteAQuestionnaire(when);
+        whenIConfirmDelete(when);
+        thenTheQuestionnaireDataIsDeleted(then, mocker);
+        thenIGetTheDeleteSuccessBanner(then);
+    });
+
+    test("Select to delete questionnaire that is active and has mode set to CAWI", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsActive(given, instrumentList, mocker);
+        givenTheQuestionnaireHasModes(given, mocker);
+        whenIGoToTheQuestionnaireDetailsPage(when);
+        whenIDeleteAQuestionnaire(when);
+        thenIAmPresentedWithAnActiveWebCollectionWarning(then);
+        whenIConfirmDelete(when);
+        thenTheQuestionnaireDataIsDeleted(then, mocker);
+        thenIGetTheDeleteSuccessBanner(then);
     });
 });
