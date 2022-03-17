@@ -8,10 +8,15 @@ import {generateUACCodesAndCSVFileData} from "../../../client/componentProcesses
 
 interface Props {
     instrument: Instrument;
+    modes: string[]
 }
 
 
-const ViewCawiModeDetails = ({instrument}: Props): ReactElement => {
+const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
+    if (!modes.includes("CAWI")) {
+        return <></>
+    }
+
     const [errored, setErrored] = useState<boolean>(false);
     const [cawiMode, setCawiMode] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);

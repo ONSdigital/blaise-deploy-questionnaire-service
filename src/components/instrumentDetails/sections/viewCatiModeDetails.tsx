@@ -7,9 +7,14 @@ import {Link} from "react-router-dom";
 
 interface Props {
     instrumentName: string
+    modes: string[]
 }
 
-function ViewCatiModeDetails({instrumentName}: Props): ReactElement {
+function ViewCatiModeDetails({instrumentName, modes}: Props): ReactElement {
+    if (!modes.includes("CATI")) {
+        return <></>
+    }
+
     const [loading, setLoading] = useState<boolean>(true);
     const [errored, setErrored] = useState<boolean>(false);
     const [toStartDate, setToStartDate] = useState<boolean>(false);
