@@ -12,7 +12,7 @@ interface Props {
 
 function ViewCatiModeDetails({instrumentName, modes}: Props): ReactElement {
     if (!modes.includes("CATI")) {
-        return <></>
+        return <></>;
     }
 
     const [loading, setLoading] = useState<boolean>(true);

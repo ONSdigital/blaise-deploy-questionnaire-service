@@ -14,7 +14,7 @@ interface Props {
 
 const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
     if (!modes.includes("CAWI")) {
-        return <></>
+        return <></>;
     }
 
     const [errored, setErrored] = useState<boolean>(false);
