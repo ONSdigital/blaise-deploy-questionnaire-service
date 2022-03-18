@@ -6,20 +6,21 @@ import flushPromises from "../../../tests/utils";
 import { render, waitFor, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import React from "react";
-import ViewCatiModeDetails from "./viewCatiModeDetails";
+import ViewCawiModeDetails from "./viewCawiModeDetails";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
+import {opnInstrument} from "../../../features/step_definitions/helpers/apiMockObjects";
 
 const mock = new MockAdapter(axios);
 
-describe("View TO Start Date section", () => {
+describe("View CAWI mode section", () => {
     afterEach(() => {
         mock.reset();
     });
 
-    it("should not render for non-CATI instruments", async () => {
+    it("should not render for non-CAWI instruments", async () => {
         const { container } = render(
-            <ViewCatiModeDetails instrumentName={"OPN2101A"} modes={["CAWI"]} />
+            <ViewCawiModeDetails instrument={opnInstrument} modes={["CATI"]} />
         );
 
         await act(async () => {
@@ -31,11 +32,11 @@ describe("View TO Start Date section", () => {
         });
     });
 
-    it("should display an error message when it fails to load the TO Start Date", async () => {
-        const viewToStartDateFailedMessage = /Failed to get Telephone Operations start date/i;
-        mock.onGet("/api/tostartdate/OPN2101A").reply(500);
+    it("should display an error message when it fails to load the generated UACs", async () => {
+        const viewGeneratedUacsFailedMessage = /Failed to get Web mode details/i;
+        mock.onGet("/api/uacs/instrument/OPN2004A/count").reply(500);
         render(
-            <ViewCatiModeDetails instrumentName={"OPN2101A"} modes={["CATI"]} />
+            <ViewCawiModeDetails instrument={opnInstrument} modes={["CAWI"]} />
         );
 
         await act(async () => {
@@ -43,8 +44,7 @@ describe("View TO Start Date section", () => {
         });
 
         await waitFor(() => {
-            expect(screen.getByText(viewToStartDateFailedMessage)).toBeDefined();
+            expect(screen.getByText(viewGeneratedUacsFailedMessage)).toBeDefined();
         });
     });
-
 });
