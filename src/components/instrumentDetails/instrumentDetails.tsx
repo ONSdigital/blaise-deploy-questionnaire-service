@@ -172,8 +172,8 @@ function InstrumentDetails(): ReactElement {
                     </div>
                 </div>
 
-                <ViewCatiModeDetails instrumentName={instrument.name}/>
-                <ViewCawiModeDetails instrument={instrument}/>
+                <ViewCatiModeDetails instrumentName={instrument.name} modes={modes}/>
+                <ViewCawiModeDetails instrument={instrument} modes={modes}/>
                 <ViewInstrumentSettings instrument={instrument} modes={modes}/>
 
                 <YearCalendar modes={modes} surveyDays={surveyDays}/>
