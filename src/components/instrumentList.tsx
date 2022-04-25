@@ -113,7 +113,7 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
 
     useEffect( () => {
         (async () => {
-            let instrumentList = await getInstrumentsList();
+            const instrumentList = await getInstrumentsList();
             setInstruments(instrumentList);
             const nonTestInstruments = filterTestInstruments(instrumentList, "");
             setFilteredList(nonTestInstruments);
