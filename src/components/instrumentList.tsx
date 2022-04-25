@@ -112,8 +112,8 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
     }
 
     useEffect( () => {
-        const getInstrumentsAsync = async () => {
-         getInstrumentsList().then((instrumentList: Instrument[]) => {
+        (async () => {
+            let instrumentList = await getInstrumentsList();
             setInstruments(instrumentList);
             const nonTestInstruments = filterTestInstruments(instrumentList, "");
             setFilteredList(nonTestInstruments);
@@ -121,11 +121,8 @@ export const InstrumentList = ({ setErrored }: Props): ReactElement => {
                 setMessage("No installed questionnaires found.");
             }
             setLoaded(true);
-        });};
-
-        getInstrumentsAsync().catch(console.error);
-
-    }, []);
+        })();
+        }, []);
 
     function QuestionnaireTable(): ReactElement {
         if (filteredList && filteredList.length > 0) {
