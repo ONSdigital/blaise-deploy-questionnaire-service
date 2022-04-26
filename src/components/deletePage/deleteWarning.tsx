@@ -8,10 +8,9 @@ import { surveyIsActive } from "../../client/instruments";
 interface Props {
     instrument: Instrument
     modes: string[]
-    setStatus: (status: string) => void
 }
 
-function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
+function DeleteWarning({ instrument, modes }: Props): ReactElement {
     const history = useHistory();
     const [message, setMessage] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -33,6 +32,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
             });
         }
         setLoaded(true);
+        return () => console.log("Cleaning up Delete Warning");
     }, []);
 
     async function cancelDelete() {
@@ -58,9 +58,10 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
             return;
         }
 
-        setStatus(`Questionnaire: ${instrument.name} Successfully deleted`);
+        history.push("/", {
+            statusMessage: `Questionnaire: ${instrument.name} Successfully deleted`
+        });
         setLoading(false);
-        history.push("/");
     }
 
     function CatiWarning(): ReactElement {

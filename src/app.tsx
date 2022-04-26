@@ -32,9 +32,12 @@ const divStyle = {
     minHeight: "calc(67vh)"
 };
 
+interface LocationState {
+    statusMessage?: string
+}
 
 function App(): ReactElement {
-    const location = useLocation();
+    const location = useLocation<LocationState>();
 
     const authManager = new AuthManager();
 
@@ -42,6 +45,12 @@ function App(): ReactElement {
     const [loggedIn, setLoggedIn] = useState(false);
     const [errored, setErrored] = useState(false);
     const [status, setStatus] = useState("");
+
+    useEffect( () => {
+        if ( location.state?.statusMessage ) {
+            setStatus( location.state.statusMessage );
+        }
+    }, [location]);
 
     useEffect(() => {
         console.log(location);
@@ -107,7 +116,7 @@ function App(): ReactElement {
                             <UploadPage />
                         </Route>
                         <Route path="/delete">
-                            <DeleteConfirmation setStatus={setStatus} />
+                            <DeleteConfirmation />
                         </Route>
                         <Route path="/">
                             <main id="main-content" className="page__main u-mt-no">

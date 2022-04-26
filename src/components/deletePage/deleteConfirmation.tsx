@@ -11,11 +11,7 @@ interface Location {
     modes : string[],
 }
 
-type Props = {
-    setStatus: (status: string) => void
-}
-
-function DeleteConfirmation({ setStatus }: Props): ReactElement {
+function DeleteConfirmation(): ReactElement {
     const location = useLocation<Location>();
     const { instrument, modes } = location.state || { instrument: "", modes: "" };
 
@@ -32,7 +28,7 @@ function DeleteConfirmation({ setStatus }: Props): ReactElement {
                     (
                         instrument.status === "Failed" 
                             ? <ErroneousWarning instrumentName={instrument.name} />
-                            : <DeleteWarning instrument={instrument} modes={modes} setStatus={setStatus} />
+                            : <DeleteWarning instrument={instrument} modes={modes} />
                     )
                 }
             </main>
