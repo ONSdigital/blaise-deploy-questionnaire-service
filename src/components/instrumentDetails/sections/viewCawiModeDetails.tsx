@@ -11,7 +11,6 @@ interface Props {
     modes: string[]
 }
 
-
 const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
     if (!modes.includes("CAWI")) {
         return <></>;
@@ -83,7 +82,6 @@ const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
         );
     }
 
-    if (modes.includes("CAWI")) {
         return (
             <div className="summary u-mb-m elementToFadeIn u-mt-m">
                 <div className="summary__group">
@@ -136,36 +134,5 @@ const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
             </div>
         );
     }
-
-    return (
-        <>
-            <div className="summary u-mb-m elementToFadeIn u-mt-m">
-                <div className="summary__group">
-                    <h2 className="summary__group-title">Web mode details</h2>
-                    <table className="summary__items">
-                        <thead className="u-vh">
-                        <tr>
-                            <th>Questionnaire detail</th>
-                            <th>result</th>
-                        </tr>
-                        </thead>
-                        <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                <div className="summary__item--text">
-                                    Does this questionnaire have a Web mode?
-                                </div>
-                            </td>
-                            <td className="summary__values">
-                                No
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </>
-    );
-};
 
 export default ViewCawiModeDetails;
