@@ -32,7 +32,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
             });
         }
         setLoaded(true);
-    });
+    }, []);
 
     async function cancelDelete() {
         history.goBack();
