@@ -82,57 +82,57 @@ const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
         );
     }
 
-        return (
-            <div className="summary u-mb-m elementToFadeIn u-mt-m">
-                <div className="summary__group">
-                    <h2 className="summary__group-title">CAWI mode details</h2>
-                    <table className="summary__items">
-                        <thead className="u-vh">
-                        <tr>
-                            <th>Questionnaire detail</th>
-                            <th>result</th>
-                            <th>Action</th>
+    return (
+        <div className="summary u-mb-m elementToFadeIn u-mt-m">
+            <div className="summary__group">
+                <h2 className="summary__group-title">CAWI mode details</h2>
+                <table className="summary__items">
+                    <thead className="u-vh">
+                    <tr>
+                        <th>Questionnaire detail</th>
+                        <th>result</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody className={`summary__item ${uacGenerationFailed == "" ? "" : "summary__item--error"}`}>
+                    {
+                        uacGenerationFailed != "" &&
+                        <tr className="summary__row">
+                            <th colSpan={3} className="summary__row-title u-fs-r">
+                                {uacGenerationFailed}
+                            </th>
                         </tr>
-                        </thead>
-                        <tbody className={`summary__item ${uacGenerationFailed == "" ? "" : "summary__item--error"}`}>
-                        {
-                            uacGenerationFailed != "" &&
-                            <tr className="summary__row">
-                                <th colSpan={3} className="summary__row-title u-fs-r">
-                                    {uacGenerationFailed}
-                                </th>
-                            </tr>
-                        }
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                <div className="summary__item--text">
-                                    Unique Access Codes generated
-                                </div>
-                            </td>
-                            <td className="summary__values">
-                                {uacCount}
-                            </td>
-                            <td className="summary__actions">
-                                {
-                                    showGenerateUACsButton &&
-                                    <>
-                                        <CsvDownloader datas={generateUACs}
-                                                       bom={false}
-                                                       filename={`${instrument.name}-uac-codes.csv`}>
-                                            <ONSButton label={"Generate and download Unique Access Codes"}
-                                                       primary={false} small={true}
-                                                       loading={loading}/>
-                                        </CsvDownloader>
-                                    </>
+                    }
+                    <tr className="summary__row summary__row--has-values">
+                        <td className="summary__item-title">
+                            <div className="summary__item--text">
+                                Unique Access Codes generated
+                            </div>
+                        </td>
+                        <td className="summary__values">
+                            {uacCount}
+                        </td>
+                        <td className="summary__actions">
+                            {
+                                showGenerateUACsButton &&
+                                <>
+                                    <CsvDownloader datas={generateUACs}
+                                                   bom={false}
+                                                   filename={`${instrument.name}-uac-codes.csv`}>
+                                        <ONSButton label={"Generate and download Unique Access Codes"}
+                                                   primary={false} small={true}
+                                                   loading={loading}/>
+                                    </CsvDownloader>
+                                </>
 
-                                }
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                            }
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-        );
-    }
+        </div>
+    );
+}
 
 export default ViewCawiModeDetails;
