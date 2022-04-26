@@ -1,7 +1,7 @@
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {Instrument, SurveyDays} from "blaise-api-node-client";
+import {Instrument} from "blaise-api-node-client";
 import { removeToStartDateAndDeleteInstrument } from "../../client/componentProcesses";
 import { surveyIsActive } from "../../client/instruments";
 
@@ -20,6 +20,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
     const [errored, setErrored] = useState<boolean>(false);
 
     useEffect(() => {
+        console.log("Delete Warning useEffect");
         if (modes.includes("CATI")) {
             surveyIsActive(instrument.name).then((isActive: boolean) => {
                 console.log(`Survey has active survey days: ${isActive}`);
