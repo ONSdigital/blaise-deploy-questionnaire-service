@@ -25,7 +25,7 @@ function InstrumentDetails(): ReactElement {
     const history = useHistory();
     const [instrument, setInstrument] = useState<Instrument>();
     const [modes, setModes] = useState<string[]>([]);
-    // const [surveyDays, setSurveyDays] = useState<string[]>([]);
+    const [surveyDays, setSurveyDays] = useState<string[]>([]);
     const [errored, setErrored] = useState<boolean>(false);
     const [loaded, setLoaded] = useState<boolean>(false);
     const initialState = location.state || {instrument: null};
@@ -51,25 +51,25 @@ function InstrumentDetails(): ReactElement {
                     setLoaded(true);
                     return;
                 }
-                // if (modes.includes("CATI")) {
-                //     getSurveyDays(instrumentName)
-                //         .then((surveyDays) => {
-                //             if (surveyDays.length === 0) {
-                //                 console.log("returned instrument survey days was empty");
-                //                 // setSurveyDays(surveyDays);
-                //                 setLoaded(true);
-                //                 return;
-                //             }
-                //             console.log(`returned instrument survey days: ${surveyDays}`);
-                //             // setSurveyDays(surveyDays);
-                //             setLoaded(true);
-                //         }).catch((error: unknown) => {
-                //         console.error(`Error getting instrument survey days ${error}`);
-                //         setErrored(true);
-                //         setLoaded(true);
-                //         return;
-                //     });
-                // }
+                if (modes.includes("CATI")) {
+                    getSurveyDays(instrumentName)
+                        .then((surveyDays) => {
+                            if (surveyDays.length === 0) {
+                                console.log("returned instrument survey days was empty");
+                                setSurveyDays(surveyDays);
+                                setLoaded(true);
+                                return;
+                            }
+                            console.log(`returned instrument survey days: ${surveyDays}`);
+                            setSurveyDays(surveyDays);
+                            setLoaded(true);
+                        }).catch((error: unknown) => {
+                        console.error(`Error getting instrument survey days ${error}`);
+                        setErrored(true);
+                        setLoaded(true);
+                        return;
+                    });
+                }
                 console.log(`returned instrument mode: ${modes}`);
                 setModes(modes);
                 setLoaded(true);
@@ -176,7 +176,7 @@ function InstrumentDetails(): ReactElement {
                 <ViewCawiModeDetails instrument={instrument} modes={modes}/>
                 <ViewInstrumentSettings instrument={instrument} modes={modes}/>
 
-                {/*<YearCalendar modes={modes} surveyDays={surveyDays}/>*/}
+                <YearCalendar modes={modes} surveyDays={surveyDays}/>
 
                 <BlaiseNodeInfo instrument={instrument}/>
 

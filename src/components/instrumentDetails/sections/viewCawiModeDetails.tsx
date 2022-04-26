@@ -13,21 +13,16 @@ interface Props {
 
 
 const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
+    if (!modes.includes("CAWI")) {
+        return <></>;
+    }
+
     const [errored, setErrored] = useState<boolean>(false);
-    const [cawiMode, setCawiMode] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [loadingMessage, setLoadingMessage] = useState<string>("Getting web mode information");
     const [uacCount, setUacCount] = useState<number>();
     const [uacGenerationFailed, setUacGenerationFailed] = useState<string>("");
     const [showGenerateUACsButton, setShowGenerateUACsButton] = useState<boolean>(false);
-
-    if (!modes.includes("CAWI")) {
-        setCawiMode(false);
-        return <></>;
-    } else {
-        setCawiMode(true);
-    }
-
 
     function getUACCount() {
         getCountOfUACs(instrument.name)
@@ -88,7 +83,7 @@ const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
         );
     }
 
-    if (cawiMode) {
+    if (modes.includes("CAWI")) {
         return (
             <div className="summary u-mb-m elementToFadeIn u-mt-m">
                 <div className="summary__group">
