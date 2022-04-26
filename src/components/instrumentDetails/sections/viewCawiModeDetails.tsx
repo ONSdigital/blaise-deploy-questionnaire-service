@@ -134,6 +134,6 @@ const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
             </div>
         </div>
     );
-}
+};
 
 export default ViewCawiModeDetails;
