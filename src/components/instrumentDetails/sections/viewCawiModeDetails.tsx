@@ -53,6 +53,7 @@ const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
     }
 
     useEffect(() => {
+        setLoading(false);
         getUACCount();
     }, []);
 
