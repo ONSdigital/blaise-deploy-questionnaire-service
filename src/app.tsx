@@ -47,7 +47,7 @@ function App(): ReactElement {
     const [status, setStatus] = useState("");
 
     useEffect( () => {
-        if ( location.state?.statusMessage ) {
+        if ( location.state.statusMessage ) {
             setStatus( location.state.statusMessage );
         }
     }, [location]);

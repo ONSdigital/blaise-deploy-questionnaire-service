@@ -57,11 +57,12 @@ function DeleteWarning({ instrument, modes }: Props): ReactElement {
             setLoading(false);
             return;
         }
-
-        history.push("/", {
-            statusMessage: `Questionnaire: ${instrument.name} Successfully deleted`
-        });
-        setLoading(false);
+        setTimeout(() => {
+            history.push("/", {
+                statusMessage: `Questionnaire: ${instrument.name} successfully deleted`
+            });
+            setLoading(false);
+        }, 10000);
     }
 
     function CatiWarning(): ReactElement {
