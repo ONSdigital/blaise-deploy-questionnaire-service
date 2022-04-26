@@ -122,7 +122,6 @@ export async function getInstrumentCaseIds(instrumentName: string): Promise<stri
 
 export async function getSurveyDays(instrumentName: string): Promise<string[]> {
     console.log("Sending request get survey days");
-    console.log("Elinor! getSurveyDays called from DQS!");
     const url = `/api/instruments/${instrumentName}/surveydays`;
 
     try {
