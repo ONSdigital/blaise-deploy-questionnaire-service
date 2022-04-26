@@ -79,7 +79,6 @@ const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
                     <p>Failed to get Web mode details</p>
                 </ONSPanel>
             </>
-
         );
     }
 
