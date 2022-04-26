@@ -13,10 +13,6 @@ interface Props {
 
 
 const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
-    if (!modes.includes("CAWI")) {
-        return <></>;
-    }
-
     const [errored, setErrored] = useState<boolean>(false);
     const [cawiMode, setCawiMode] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
@@ -24,6 +20,14 @@ const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
     const [uacCount, setUacCount] = useState<number>();
     const [uacGenerationFailed, setUacGenerationFailed] = useState<string>("");
     const [showGenerateUACsButton, setShowGenerateUACsButton] = useState<boolean>(false);
+
+    if (!modes.includes("CAWI")) {
+        setCawiMode(false);
+        return <></>;
+    } else {
+        setCawiMode(true);
+    }
+
 
     function getUACCount() {
         getCountOfUACs(instrument.name)
@@ -55,15 +59,6 @@ const ViewCawiModeDetails = ({instrument, modes}: Props): ReactElement => {
     }
 
     useEffect(() => {
-        getInstrumentModes(instrument.name)
-            .then((modes: string[]) => {
-                if (modes.includes("CAWI")) {
-                    setCawiMode(true);
-                }
-            }).catch(() => {
-            setErrored(true);
-            return;
-        }).finally(() => setLoading(false));
         getUACCount();
     }, []);
 
