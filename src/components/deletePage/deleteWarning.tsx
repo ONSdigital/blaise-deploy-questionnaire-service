@@ -63,6 +63,11 @@ function DeleteWarning({ instrument, modes }: Props): ReactElement {
             });
             setLoading(false);
         }, 10000);
+        //
+        // history.push("/", {
+        //     statusMessage: `Questionnaire: ${instrument.name} successfully deleted`
+        // });
+        // setLoading(false);
     }
 
     function CatiWarning(): ReactElement {
