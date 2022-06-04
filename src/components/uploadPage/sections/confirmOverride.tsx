@@ -2,10 +2,10 @@ import React, { ReactElement } from "react";
 import { ONSPanel, StyledFormErrorSummary, StyledFormField } from "blaise-design-system-react-components";
 
 interface SelectFilePageProps {
-    instrumentName: string;
+    questionnaireName: string;
 }
 
-function ConfirmOverride({ instrumentName }: SelectFilePageProps): ReactElement {
+function ConfirmOverride({ questionnaireName }: SelectFilePageProps): ReactElement {
     function validateRadio(value: string) {
         let error;
         if (!value) {
@@ -31,7 +31,7 @@ function ConfirmOverride({ instrumentName }: SelectFilePageProps): ReactElement 
         <>
             <h1 className="u-mb-l">
                 Are you sure you want to overwrite the entire questionnaire <em
-                    className="highlight">{instrumentName}</em>?
+                    className="highlight">{questionnaireName}</em>?
             </h1>
 
             <ONSPanel status={"warn"}>

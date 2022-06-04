@@ -1,9 +1,9 @@
 import {
-    getInstrument,
-    getInstrumentSettings,
-    getInstrumentModes,
-    deactivateInstrument,
-} from "../instruments";
+    getQuestionnaire,
+    getQuestionnaireSettings,
+    getQuestionnaireModes,
+    deactivateQuestionnaire,
+} from "../questionnaires";
 import {
     initialiseUpload,
     uploadFile
@@ -12,32 +12,32 @@ import { setTOStartDate } from "../toStartDate";
 import {
     GetStrictInterviewingSettings,
     ValidateSettings,
-} from "../../utilities/instrumentSettings";
-import { verifyAndInstallInstrument } from ".";
-import { GetInstrumentMode } from "../../utilities/instrumentMode";
-import { InstrumentSettings, Instrument } from "blaise-api-node-client";
+} from "../../utilities/questionnaireSettings";
+import { verifyAndInstallQuestionnaire } from ".";
+import { GetQuestionnaireMode } from "../../utilities/questionnaireMode";
+import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
 
-export async function validateSelectedInstrumentExists(file: File | undefined, setInstrumentName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundInstrument: (object: Instrument | null) => void): Promise<boolean | null> {
+export async function validateSelectedQuestionnaireExists(file: File | undefined, setQuestionnaireName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundQuestionnaire: (object: Questionnaire | null) => void): Promise<boolean | null> {
     if (file === undefined) {
         return null;
     }
 
     const fileName = file.name;
-    const instrumentName = fileName.replace(/\.[a-zA-Z]*$/, "");
+    const questionnaireName = fileName.replace(/\.[a-zA-Z]*$/, "");
 
-    setInstrumentName(instrumentName);
+    setQuestionnaireName(questionnaireName);
 
-    let instrument: Instrument | undefined;
+    let questionnaire: Questionnaire | undefined;
     try {
-        instrument = await getInstrument(instrumentName);
+        questionnaire = await getQuestionnaire(questionnaireName);
     } catch {
         console.log("Failed to validate if questionnaire already exists");
         setUploadStatus("Failed to validate if questionnaire already exists");
         return null;
     }
 
-    if (instrument) {
-        setFoundInstrument(instrument);
+    if (questionnaire) {
+        setFoundQuestionnaire(questionnaire);
         return true;
     }
 
@@ -45,7 +45,7 @@ export async function validateSelectedInstrumentExists(file: File | undefined, s
 }
 
 export async function uploadAndInstallFile(
-    instrumentName: string,
+    questionnaireName: string,
     toStartDate: string | undefined,
     file: File | undefined,
     setUploading: (boolean: boolean) => void,
@@ -58,7 +58,7 @@ export async function uploadAndInstallFile(
     console.log("Start uploading the file");
 
     console.log(`liveDate ${toStartDate}`);
-    const liveDateCreated = await setTOStartDate(instrumentName, toStartDate);
+    const liveDateCreated = await setTOStartDate(questionnaireName, toStartDate);
     if (!liveDateCreated) {
         setUploadStatus("Failed to store telephone operations start date specified");
         setUploading(false);
@@ -89,25 +89,25 @@ export async function uploadAndInstallFile(
 
 
     // Validate the file is in the bucket and call the rest API to install
-    const [installed, message] = await verifyAndInstallInstrument(file.name);
+    const [installed, message] = await verifyAndInstallQuestionnaire(file.name);
     if (!installed) {
         setUploadStatus(message);
     }
     return installed;
 }
 
-export async function checkInstrumentSettings(
-    instrumentName: string,
-    setInstrumentSettings: (instrumentSettings: InstrumentSettings) => void,
-    setInvalidSettings: (invalidSettings: Partial<InstrumentSettings>) => void,
+export async function checkQuestionnaireSettings(
+    questionnaireName: string,
+    setQuestionnaireSettings: (questionnaireSettings: QuestionnaireSettings) => void,
+    setInvalidSettings: (invalidSettings: Partial<QuestionnaireSettings>) => void,
     setErrored: (errored: boolean) => void
 ): Promise<boolean> {
-    let instrumentSettingsList: InstrumentSettings[];
-    let instrumentModes: string[];
+    let questionnaireSettingsList: QuestionnaireSettings[];
+    let questionnaireModes: string[];
     try {
-        instrumentSettingsList = await getInstrumentSettings(instrumentName);
-        instrumentModes = await getInstrumentModes(instrumentName);
-        if (instrumentSettingsList.length == 0 || instrumentModes.length == 0) {
+        questionnaireSettingsList = await getQuestionnaireSettings(questionnaireName);
+        questionnaireModes = await getQuestionnaireModes(questionnaireName);
+        if (questionnaireSettingsList.length == 0 || questionnaireModes.length == 0) {
             setErrored(true);
             return false;
         }
@@ -115,13 +115,13 @@ export async function checkInstrumentSettings(
         setErrored(true);
         return false;
     }
-    const instrumentSettings = GetStrictInterviewingSettings(instrumentSettingsList);
-    setInstrumentSettings(instrumentSettings);
-    const [valid, invalidSettings] = ValidateSettings(instrumentSettings, GetInstrumentMode(instrumentModes));
+    const questionnaireSettings = GetStrictInterviewingSettings(questionnaireSettingsList);
+    setQuestionnaireSettings(questionnaireSettings);
+    const [valid, invalidSettings] = ValidateSettings(questionnaireSettings, GetQuestionnaireMode(questionnaireModes));
     setInvalidSettings(invalidSettings);
 
     if (!valid) {
-        deactivateInstrument(instrumentName);
+        deactivateQuestionnaire(questionnaireName);
     }
 
     return valid;

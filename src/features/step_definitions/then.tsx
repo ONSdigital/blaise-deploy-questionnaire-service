@@ -96,7 +96,7 @@ export function thenTheQuestionnaireDataIsDeleted(then: DefineStepFunction, mock
     expect(mocker.history.delete).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          url: `/api/instruments/${questionnaire}`
+          url: `/api/questionnaires/${questionnaire}`
         })
       ])
     );
@@ -139,7 +139,7 @@ export function thenTheQuestionnaireIsActivated(then: DefineStepFunction, mocker
     expect(mocker.history.patch).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          url: `/api/instruments/${questionnaire}/activate`,
+          url: `/api/questionnaires/${questionnaire}/activate`,
         }),
       ])
     );
@@ -155,7 +155,7 @@ export function thenTheQuestionnaireIsDeactivated(then: DefineStepFunction, mock
     expect(mocker.history.patch).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          url: `/api/instruments/${questionnaire}/deactivate`,
+          url: `/api/questionnaires/${questionnaire}/deactivate`,
         }),
       ])
     );
@@ -173,7 +173,7 @@ export function thenIGetTheDeleteSuccessBanner(then: DefineStepFunction): void {
 export function thenIAmPresentedWithAListOfDeployedQuestionnaires(then: DefineStepFunction): void {
   then("I am presented with a list of the deployed questionnaires:", (table: any[]) => {
     expect(screen.getByText(/filter by questionnaire name/i)).toBeDefined();
-    const list = screen.queryAllByTestId(/instrument-table-row/i);
+    const list = screen.queryAllByTestId(/questionnaire-table-row/i);
     expect(list).toHaveLength(table.length);
     table.forEach((row: any, index: number) => {
       const rowData = list[index];
@@ -307,11 +307,11 @@ export function thenAGenerateUacButtonIsNotAvailable(then: DefineStepFunction): 
 }
 
 export function thenUACsAreGenerated(then: DefineStepFunction, mocker: MockAdapter): void {
-  then(/UACs are generated for '(.*)'/, (questionnaire: string) => {
+  then(/UACs are generated for '(.*)'/, (questionnaireName: string) => {
     expect(mocker.history.post).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          url: `/api/uacs/instrument/${questionnaire}`,
+          url: `/api/uacs/instrument/${questionnaireName}`,
         }),
       ])
     );

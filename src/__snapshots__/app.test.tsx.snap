@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`React homepage view instrument page matches Snapshot in non-production environments 1`] = `
+exports[`React homepage view questionnaire page matches Snapshot in non-production environments 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -262,7 +262,7 @@ Object {
               </h3>
               <table
                 class="table"
-                id="instrument-table"
+                id="questionnaire-table"
               >
                 <thead
                   class="table__head"
@@ -307,7 +307,7 @@ Object {
                 >
                   <tr
                     class="table__row"
-                    data-testid="instrument-table-row"
+                    data-testid="questionnaire-table-row"
                   >
                     <td
                       class="table__cell "
@@ -348,7 +348,7 @@ Object {
                   </tr>
                   <tr
                     class="table__row"
-                    data-testid="instrument-table-row"
+                    data-testid="questionnaire-table-row"
                   >
                     <td
                       class="table__cell "
@@ -389,7 +389,7 @@ Object {
                   </tr>
                   <tr
                     class="table__row"
-                    data-testid="instrument-table-row"
+                    data-testid="questionnaire-table-row"
                   >
                     <td
                       class="table__cell "
@@ -723,7 +723,7 @@ Object {
             </h3>
             <table
               class="table"
-              id="instrument-table"
+              id="questionnaire-table"
             >
               <thead
                 class="table__head"
@@ -768,7 +768,7 @@ Object {
               >
                 <tr
                   class="table__row"
-                  data-testid="instrument-table-row"
+                  data-testid="questionnaire-table-row"
                 >
                   <td
                     class="table__cell "
@@ -809,7 +809,7 @@ Object {
                 </tr>
                 <tr
                   class="table__row"
-                  data-testid="instrument-table-row"
+                  data-testid="questionnaire-table-row"
                 >
                   <td
                     class="table__cell "
@@ -850,7 +850,7 @@ Object {
                 </tr>
                 <tr
                   class="table__row"
-                  data-testid="instrument-table-row"
+                  data-testid="questionnaire-table-row"
                 >
                   <td
                     class="table__cell "
@@ -979,7 +979,7 @@ Object {
 }
 `;
 
-exports[`React homepage view instrument page matches Snapshot in production 1`] = `
+exports[`React homepage view questionnaire page matches Snapshot in production 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -1211,7 +1211,7 @@ Object {
               </h3>
               <table
                 class="table"
-                id="instrument-table"
+                id="questionnaire-table"
               >
                 <thead
                   class="table__head"
@@ -1256,7 +1256,7 @@ Object {
                 >
                   <tr
                     class="table__row"
-                    data-testid="instrument-table-row"
+                    data-testid="questionnaire-table-row"
                   >
                     <td
                       class="table__cell "
@@ -1297,7 +1297,7 @@ Object {
                   </tr>
                   <tr
                     class="table__row"
-                    data-testid="instrument-table-row"
+                    data-testid="questionnaire-table-row"
                   >
                     <td
                       class="table__cell "
@@ -1338,7 +1338,7 @@ Object {
                   </tr>
                   <tr
                     class="table__row"
-                    data-testid="instrument-table-row"
+                    data-testid="questionnaire-table-row"
                   >
                     <td
                       class="table__cell "
@@ -1642,7 +1642,7 @@ Object {
             </h3>
             <table
               class="table"
-              id="instrument-table"
+              id="questionnaire-table"
             >
               <thead
                 class="table__head"
@@ -1687,7 +1687,7 @@ Object {
               >
                 <tr
                   class="table__row"
-                  data-testid="instrument-table-row"
+                  data-testid="questionnaire-table-row"
                 >
                   <td
                     class="table__cell "
@@ -1728,7 +1728,7 @@ Object {
                 </tr>
                 <tr
                   class="table__row"
-                  data-testid="instrument-table-row"
+                  data-testid="questionnaire-table-row"
                 >
                   <td
                     class="table__cell "
@@ -1769,7 +1769,7 @@ Object {
                 </tr>
                 <tr
                   class="table__row"
-                  data-testid="instrument-table-row"
+                  data-testid="questionnaire-table-row"
                 >
                   <td
                     class="table__cell "

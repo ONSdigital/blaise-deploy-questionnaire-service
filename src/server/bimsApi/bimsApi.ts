@@ -17,37 +17,37 @@ export class BimsApi {
         this.authProvider = new BlaiseIapNodeProvider(bimsClientId);
     }
 
-    async getStartDate(instrumentName: string): Promise<toStartDate | undefined> {
-        const url = `/tostartdate/${instrumentName}`;
+    async getStartDate(questionnaireName: string): Promise<toStartDate | undefined> {
+        const url = `/tostartdate/${questionnaireName}`;
 
         const response = await this.get(url);
         if (response.status === 404) {
             return undefined;
         }
         if (response.status !== 200) {
-            throw new Error(`Error getting start date for instrument: ${instrumentName}`);
+            throw new Error(`Error getting start date for questionnaire: ${questionnaireName}`);
         }
         return response.data;
     }
 
-    async deleteStartDate(instrumentName: string): Promise<void> {
-        const url = `/tostartdate/${instrumentName}`;
+    async deleteStartDate(questionnaireName: string): Promise<void> {
+        const url = `/tostartdate/${questionnaireName}`;
 
         const response = await this.delete(url);
         if (response.status !== 204) {
-            throw `Could not delete TO Start date for: ${instrumentName}`;
+            throw `Could not delete TO Start date for: ${questionnaireName}`;
         }
     }
 
-    async createStartDate(instrumentName: string, startDate: string): Promise<toStartDate> {
-        const url = `/tostartdate/${instrumentName}`;
+    async createStartDate(questionnaireName: string, startDate: string): Promise<toStartDate> {
+        const url = `/tostartdate/${questionnaireName}`;
 
         const response = await this.post(url, { tostartdate: startDate });
         return response.data;
     }
 
-    async updateStartDate(instrumentName: string, startDate: string): Promise<toStartDate> {
-        const url = `/tostartdate/${instrumentName}`;
+    async updateStartDate(questionnaireName: string, startDate: string): Promise<toStartDate> {
+        const url = `/tostartdate/${questionnaireName}`;
 
         const response = await this.patch(url, { tostartdate: startDate });
         return response.data;

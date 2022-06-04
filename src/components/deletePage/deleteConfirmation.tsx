@@ -1,13 +1,13 @@
 import React, { ReactElement } from "react";
 import { useLocation } from "react-router-dom";
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import ErroneousWarning from "./erroneousWarning";
 import DeleteWarning from "./deleteWarning";
 import Breadcrumbs from "../breadcrumbs";
 
 
 interface Location {
-    instrument: Instrument,
+    questionnaire: Questionnaire,
     modes : string[],
 }
 
@@ -17,7 +17,7 @@ type Props = {
 
 function DeleteConfirmation({ setStatus }: Props): ReactElement {
     const location = useLocation<Location>();
-    const { instrument, modes } = location.state || { instrument: "", modes: "" };
+    const { questionnaire, modes } = location.state || { questionnaire: "", modes: "" };
 
     return (
         <>
@@ -30,9 +30,9 @@ function DeleteConfirmation({ setStatus }: Props): ReactElement {
             <main id="main-content" className="page__main u-mt-no">
                 {
                     (
-                        instrument.status === "Failed" 
-                            ? <ErroneousWarning instrumentName={instrument.name} />
-                            : <DeleteWarning instrument={instrument} modes={modes} setStatus={setStatus} />
+                        questionnaire.status === "Failed" 
+                            ? <ErroneousWarning questionnaireName={questionnaire.name} />
+                            : <DeleteWarning questionnaire={questionnaire} modes={modes} setStatus={setStatus} />
                     )
                 }
             </main>

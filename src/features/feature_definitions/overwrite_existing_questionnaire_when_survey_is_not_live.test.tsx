@@ -8,7 +8,7 @@ import { cleanup } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenTheQuestionnaireIsInstalled, givenTheQuestionnaireIsLive } from "../step_definitions/given";
 import { thenIAmPresentedWithAConfirmOverwriteWarning, thenIAmPresentedWithASuccessfullyDeployedBanner, thenIAmPresentedWithTheOptionsToCancelOrOverwrite, thenIAmReturnedToTheLandingPage, thenICanOnlyReturnToTheLandingPage, thenIGetTheQuestionnaireIsLiveWarningBanner, thenTheQuestionnaireIsInstalled } from "../step_definitions/then";
@@ -30,7 +30,7 @@ const feature = loadFeature(
 );
 
 
-const instrumentList: Instrument[] = [];
+const questionnaireList: Questionnaire[] = [];
 
 defineFeature(feature, test => {
     beforeEach(() => {
@@ -48,7 +48,7 @@ defineFeature(feature, test => {
     });
 
     test("Select a new questionnaire package file", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
 
         whenIConfirmMySelection(when);
@@ -57,9 +57,9 @@ defineFeature(feature, test => {
 
 
     test("Select to overwrite existing questionnaire when it is live", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
-        givenTheQuestionnaireIsLive(given, instrumentList, mocker);
+        givenTheQuestionnaireIsLive(given, questionnaireList, mocker);
 
         whenIConfirmMySelection(when);
         whenISelectToOverwrite(when);
@@ -74,7 +74,7 @@ defineFeature(feature, test => {
         when,
         then
     }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
 
         whenIConfirmMySelection(when);
@@ -89,7 +89,7 @@ defineFeature(feature, test => {
         when,
         then,
     }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
 
         whenIConfirmMySelection(when);
@@ -102,7 +102,7 @@ defineFeature(feature, test => {
 
 
     test("Cancel overwrite of existing questionnaire package", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
 
         whenIConfirmMySelection(when);

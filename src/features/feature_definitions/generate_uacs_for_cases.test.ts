@@ -7,7 +7,7 @@ import { cleanup, } from "@testing-library/react";
 import { givenTheQuestionnaireHasCases, givenTheQuestionnaireHasModes, givenTheQuestionnaireHasUACs, givenTheQuestionnaireIsInstalled, givenUACGenerationIsBroken } from "../step_definitions/given";
 import { whenIClickGenerateCases, whenIGoToTheQuestionnaireDetailsPage } from "../step_definitions/when";
 import { thenAGenerateUacButtonIsAvailable, thenAGenerateUacButtonIsNotAvailable, thenICanSeeThatThatTheQuestionnaireHasCases, thenIReceiveAUACError, thenUACsAreGenerated } from "../step_definitions/then";
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -22,7 +22,7 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const instrumentList: Instrument[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 defineFeature(feature, test => {
@@ -39,9 +39,9 @@ defineFeature(feature, test => {
     });
 
     test("Generate button exists for questionnaires with CAWI mode and cases", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, instrumentList, mocker);
+        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
 
         whenIGoToTheQuestionnaireDetailsPage(when);
 
@@ -50,9 +50,9 @@ defineFeature(feature, test => {
 
 
     test("Generate button does not exist for questionnaires in CAWI mode without cases", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, instrumentList, mocker);
+        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
 
         whenIGoToTheQuestionnaireDetailsPage(when);
 
@@ -61,9 +61,9 @@ defineFeature(feature, test => {
 
 
     test("Generate button does not exist for questionnaires in CATI mode without cases", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, instrumentList, mocker);
+        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
 
         whenIGoToTheQuestionnaireDetailsPage(when);
 
@@ -72,9 +72,9 @@ defineFeature(feature, test => {
 
 
     test("Generate button does not exist for questionnaires in CATI mode with cases", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, instrumentList, mocker);
+        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
 
         whenIGoToTheQuestionnaireDetailsPage(when);
 
@@ -83,9 +83,9 @@ defineFeature(feature, test => {
 
 
     test("I get a confirmation message when generating UACs", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, instrumentList, mocker);
+        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
 
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIClickGenerateCases(when);
@@ -95,9 +95,9 @@ defineFeature(feature, test => {
 
 
     test("I get a error message when generating UACs", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, instrumentList, mocker);
+        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
         givenUACGenerationIsBroken(given, mocker);
 
         whenIGoToTheQuestionnaireDetailsPage(when);
@@ -109,9 +109,9 @@ defineFeature(feature, test => {
 
     test("I can see how many UACs have been generated for a particular questionnaire in the details page", (
         { given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, instrumentList, mocker);
+        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
         givenTheQuestionnaireHasUACs(given, mocker);
 
         whenIGoToTheQuestionnaireDetailsPage(when);
