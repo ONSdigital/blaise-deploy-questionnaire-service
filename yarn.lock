@@ -3393,7 +3393,7 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
     blaise-iap-node-provider "https://github.com/ONSdigital/blaise-iap-node-provider.git"
     typescript "~4.2.2"
 
-"blaise-api-node-client@https://github.com/ONSdigital/blaise-api-node-client#BLAIS5-3105":
+"blaise-api-node-client@https://github.com/ONSdigital/blaise-api-node-client#93cad6b1a5cffc0dec7ba350f786b22ee89f71c9":
   version "1.0.0"
   resolved "https://github.com/ONSdigital/blaise-api-node-client#93cad6b1a5cffc0dec7ba350f786b22ee89f71c9"
   dependencies:
