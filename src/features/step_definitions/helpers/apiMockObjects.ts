@@ -1,6 +1,6 @@
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
-export const instrumentList: Instrument[] = [{
+export const questionnaireList: Questionnaire[] = [{
     name: "OPN2101A",
     serverParkName: "gusty",
     installDate: "2021-01-15T14:41:29.4399898+00:00",
@@ -29,7 +29,7 @@ export const instrumentList: Instrument[] = [{
     fieldPeriod: "April 2020"
 }];
 
-export const opnInstrument: Instrument = {
+export const opnQuestionnaire: Questionnaire = {
     name: "OPN2004A",
     serverParkName: "gusty",
     installDate: "2021-01-15T15:26:43.4233454+00:00",
@@ -40,9 +40,9 @@ export const opnInstrument: Instrument = {
     fieldPeriod: "April 2020"
 };
 
-export const instrumentWithName = (instrumentName: string): Instrument => {
+export const questionnaireWithName = (questionnaireName: string): Questionnaire => {
     return {
-        name: instrumentName,
+        name: questionnaireName,
         serverParkName: "gusty",
         installDate: "2021-01-15T15:26:43.4233454+00:00",
         status: "Active",

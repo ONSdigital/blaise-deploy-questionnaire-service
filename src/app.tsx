@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
-import InstrumentList from "./components/instrumentList";
+import QuestionnaireList from "./components/questionnaireList";
 import UploadPage from "./components/uploadPage/uploadPage";
 import DeploymentSummary from "./components/deploymentSummary";
 import DeleteConfirmation from "./components/deletePage/deleteConfirmation";
@@ -17,10 +17,10 @@ import {
     ONSErrorPanel
 } from "blaise-design-system-react-components";
 import AuditPage from "./components/auditPage";
-import ReinstallInstruments from "./components/reinstallInstruments";
+import ReinstallQuestionnaires from "./components/reinstallQuestionnaires";
 import LiveSurveyWarning from "./components/uploadPage/liveSurveyWarning";
-import InstrumentDetails from "./components/instrumentDetails/instrumentDetails";
-import ChangeToStartDate from "./components/instrumentDetails/changeToStartDate";
+import QuestionnaireDetails from "./components/QuestionnaireDetails/questionnaireDetails";
+import ChangeToStartDate from "./components/QuestionnaireDetails/changeToStartDate";
 import "./style.css";
 import { NavigationLinks } from "./components/navigationLinks";
 import { isProduction } from "./client/env";
@@ -86,7 +86,7 @@ function App(): ReactElement {
                             <StatusPage />
                         </Route>
                         <Route path="/reinstall">
-                            <ReinstallInstruments />
+                            <ReinstallQuestionnaires />
                         </Route>
                         <Route path="/audit">
                             <AuditPage />
@@ -94,14 +94,14 @@ function App(): ReactElement {
                         <Route path="/UploadSummary">
                             <DeploymentSummary />
                         </Route>
-                        <Route path="/upload/survey-live/:instrumentName">
+                        <Route path="/upload/survey-live/:questionnaireName">
                             <LiveSurveyWarning />
                         </Route>
                         <Route path="/questionnaire/start-date">
                             <ChangeToStartDate />
                         </Route>
-                        <Route path="/questionnaire/:instrumentName">
-                            <InstrumentDetails />
+                        <Route path="/questionnaire/:questionnaireName">
+                            <QuestionnaireDetails />
                         </Route>
                         <Route path="/upload">
                             <UploadPage />
@@ -114,7 +114,7 @@ function App(): ReactElement {
                                 {successBanner()}
                                 {errored && <ONSErrorPanel />}
                                 <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <InstrumentList setErrored={setErrored} />
+                                    <QuestionnaireList setErrored={setErrored} />
                                 </ErrorBoundary>
                             </main>
                         </Route>

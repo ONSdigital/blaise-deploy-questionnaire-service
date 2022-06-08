@@ -1,17 +1,17 @@
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {Instrument, SurveyDays} from "blaise-api-node-client";
-import { removeToStartDateAndDeleteInstrument } from "../../client/componentProcesses";
-import { surveyIsActive } from "../../client/instruments";
+import {Questionnaire, SurveyDays} from "blaise-api-node-client";
+import { removeToStartDateAndDeleteQuestionnaire } from "../../client/componentProcesses";
+import { surveyIsActive } from "../../client/questionnaires";
 
 interface Props {
-    instrument: Instrument
+    questionnaire: Questionnaire
     modes: string[]
     setStatus: (status: string) => void
 }
 
-function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
+function DeleteWarning({ questionnaire, modes, setStatus }: Props): ReactElement {
     const history = useHistory();
     const [message, setMessage] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -21,7 +21,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
 
     useEffect(() => {
         if (modes.includes("CATI")) {
-            surveyIsActive(instrument.name).then((isActive: boolean) => {
+            surveyIsActive(questionnaire.name).then((isActive: boolean) => {
                 console.log(`Survey has active survey days: ${isActive}`);
                 setActive(isActive);
                 setLoaded(true);
@@ -50,20 +50,20 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
     async function confirmDelete() {
         setLoading(true);
 
-        const [deleted, message] = await removeToStartDateAndDeleteInstrument(instrument.name);
+        const [deleted, message] = await removeToStartDateAndDeleteQuestionnaire(questionnaire.name);
         if (!deleted) {
             setMessage(message);
             setLoading(false);
             return;
         }
 
-        setStatus(`Questionnaire: ${instrument.name} Successfully deleted`);
+        setStatus(`Questionnaire: ${questionnaire.name} Successfully deleted`);
         setLoading(false);
         history.push("/");
     }
 
     function CatiWarning(): ReactElement {
-        if (modes.includes("CATI") && instrument.status?.toLowerCase() === "active" && active) {
+        if (modes.includes("CATI") && questionnaire.status?.toLowerCase() === "active" && active) {
             return (
                 <ONSPanel status={"error"}>
                     Questionnaire has active Telephone Operations survey days
@@ -74,7 +74,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
     }
 
     function CawiWarning(): ReactElement {
-        if (modes.includes("CAWI") && instrument.status?.toLowerCase() === "active") {
+        if (modes.includes("CAWI") && questionnaire.status?.toLowerCase() === "active") {
             return (
                 <ONSPanel status={"error"}>
                     Questionnaire is active for web collection
@@ -101,7 +101,7 @@ function DeleteWarning({ instrument, modes, setStatus }: Props): ReactElement {
             <>
                 <h1 className="u-mb-l">
                     Are you sure you want to delete the questionnaire <em
-                    className="highlight">{instrument.name}</em>?
+                    className="highlight">{questionnaire.name}</em>?
                 </h1>
 
                 <CatiWarning />

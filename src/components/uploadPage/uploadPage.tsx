@@ -8,11 +8,11 @@ import DeployFormSummary from "./sections/deployFormSummary";
 import AlreadyExists from "./sections/alreadyExists";
 import ConfirmOverride from "./sections/confirmOverride";
 import InvalidSettings from "./sections/invalidSettings";
-import { uploadAndInstallFile, validateSelectedInstrumentExists, checkInstrumentSettings } from "../../client/componentProcesses";
+import { uploadAndInstallFile, validateSelectedQuestionnaireExists, checkQuestionnaireSettings } from "../../client/componentProcesses";
 import { roundUp } from "../../utilities/maths";
 import Breadcrumbs from "../breadcrumbs";
-import { activateInstrument, deleteInstrument } from "../../client/instruments";
-import { InstrumentSettings, Instrument } from "blaise-api-node-client";
+import { activateQuestionnaire, deleteQuestionnaire } from "../../client/questionnaires";
+import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
 
 enum Step {
     SelectFile,
@@ -26,16 +26,16 @@ enum Step {
 
 function UploadPage(): ReactElement {
     const [file, setFile] = useState<File>();
-    const [instrumentName, setInstrumentName] = useState<string>("");
-    const [foundInstrument, setFoundInstrument] = useState<Instrument | null>(null);
+    const [questionnaireName, setQuestionnaireName] = useState<string>("");
+    const [foundQuestionnaire, setFoundQuestionnaire] = useState<Questionnaire | null>(null);
     const [activeStep, setActiveStep] = useState<Step>(Step.SelectFile);
 
     const [uploading, setUploading] = useState<boolean>(false);
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [uploadStatus, setUploadStatus] = useState<string>("");
 
-    const [instrumentSettings, setInstrumentSettings] = useState<InstrumentSettings>();
-    const [invalidSettings, setInvalidSettings] = useState<Partial<InstrumentSettings>>({});
+    const [questionnaireSettings, setQuestionnaireSettings] = useState<QuestionnaireSettings>();
+    const [invalidSettings, setInvalidSettings] = useState<Partial<QuestionnaireSettings>>({});
     const [errored, setErrored] = useState<boolean>(false);
 
     const history = useHistory();
@@ -72,8 +72,8 @@ function UploadPage(): ReactElement {
 
     async function cancelButtonAction(): Promise<void> {
         if (activeStep == Step.InvalidSettings) {
-            console.log(`Cancelling partial install, uninstalling questionnaire ${instrumentName}`);
-            await deleteInstrument(instrumentName);
+            console.log(`Cancelling partial install, uninstalling questionnaire ${questionnaireName}`);
+            await deleteQuestionnaire(questionnaireName);
         }
         history.push("/");
     }
@@ -87,36 +87,36 @@ function UploadPage(): ReactElement {
                         loading={false} />
                 );
             case Step.AlreadyExists:
-                return <AlreadyExists instrumentName={instrumentName} />;
+                return <AlreadyExists questionnaireName={questionnaireName} />;
             case Step.ConfirmOverride:
-                return <ConfirmOverride instrumentName={instrumentName} />;
+                return <ConfirmOverride questionnaireName={questionnaireName} />;
             case Step.SetLiveDate:
-                return <AskToSetTOStartDate instrumentName={instrumentName} />;
+                return <AskToSetTOStartDate questionnaireName={questionnaireName} />;
             case Step.Summary:
-                return <DeployFormSummary file={file} foundInstrument={foundInstrument} />;
+                return <DeployFormSummary file={file} foundQuestionnaire={foundQuestionnaire} />;
             case Step.InvalidSettings:
                 return <InvalidSettings
-                    instrumentName={instrumentName}
-                    instrumentSettings={instrumentSettings}
+                    questionnaireName={questionnaireName}
+                    questionnaireSettings={questionnaireSettings}
                     invalidSettings={invalidSettings}
                     errored={errored}
                 />;
         }
     }
 
-    async function _uploadAndInstallInstrument(values: any, actions: any) {
-        const installed = await uploadAndInstallFile(instrumentName, values["set TO start date"], file, setUploading, setUploadStatus, onFileUploadProgress);
+    async function _uploadAndInstallQuestionnaire(values: any, actions: any) {
+        const installed = await uploadAndInstallFile(questionnaireName, values["set TO start date"], file, setUploading, setUploadStatus, onFileUploadProgress);
         actions.setSubmitting(false);
         if (!installed) {
             setActiveStep(stepLength());
             return;
         }
 
-        await _checkInstrumentSettings();
+        await _checkQuestionnaireSettings();
     }
 
-    async function _checkInstrumentSettings() {
-        const valid = await checkInstrumentSettings(instrumentName, setInstrumentSettings, setInvalidSettings, setErrored);
+    async function _checkQuestionnaireSettings() {
+        const valid = await checkQuestionnaireSettings(questionnaireName, setQuestionnaireSettings, setInvalidSettings, setErrored);
 
         if (!valid) {
             setActiveStep(Step.InvalidSettings);
@@ -129,7 +129,7 @@ function UploadPage(): ReactElement {
         let result;
         switch (activeStep) {
             case Step.SelectFile:
-                result = await validateSelectedInstrumentExists(file, setInstrumentName, setUploadStatus, setFoundInstrument);
+                result = await validateSelectedQuestionnaireExists(file, setQuestionnaireName, setUploadStatus, setFoundQuestionnaire);
                 if (result === null) {
                     actions.setTouched({});
                     actions.setSubmitting(false);
@@ -149,9 +149,9 @@ function UploadPage(): ReactElement {
                     history.push("/");
                     return;
                 }
-                if (foundInstrument?.active && foundInstrument.status?.toLowerCase() !== "inactive") {
+                if (foundQuestionnaire?.active && foundQuestionnaire.status?.toLowerCase() !== "inactive") {
                     actions.setSubmitting(false);
-                    history.push(`/upload/survey-live/${instrumentName}`);
+                    history.push(`/upload/survey-live/${questionnaireName}`);
                 }
                 break;
             case Step.ConfirmOverride:
@@ -167,10 +167,10 @@ function UploadPage(): ReactElement {
                 }
                 break;
             case Step.Summary:
-                await _uploadAndInstallInstrument(values, actions);
+                await _uploadAndInstallQuestionnaire(values, actions);
                 break;
             case Step.InvalidSettings:
-                await activateInstrument(instrumentName);
+                await activateQuestionnaire(questionnaireName);
                 break;
         }
         // Summary has custom handling for steps
@@ -194,7 +194,7 @@ function UploadPage(): ReactElement {
                     <Redirect
                         to={{
                             pathname: "/UploadSummary",
-                            state: { questionnaireName: instrumentName, status: uploadStatus }
+                            state: { questionnaireName: questionnaireName, status: uploadStatus }
                         }} />
                 ) : (
                     <Formik

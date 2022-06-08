@@ -7,9 +7,9 @@ export default function newBimsHandler(bimsApiClient: BimsApi, auth: Auth, audit
   const router = express.Router();
 
   const bimsHandler = new BimsHandler(bimsApiClient, auditLogger);
-  router.post("/api/tostartdate/:instrumentName", auth.Middleware, bimsHandler.SetToStartDate);
-  router.delete("/api/tostartdate/:instrumentName", auth.Middleware, bimsHandler.DeleteToStartDate);
-  router.get("/api/tostartdate/:instrumentName", auth.Middleware, bimsHandler.GetToStartDate);
+  router.post("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.SetToStartDate);
+  router.delete("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.DeleteToStartDate);
+  router.get("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.GetToStartDate);
   return router;
 }
 
@@ -27,28 +27,28 @@ export class BimsHandler {
   }
 
   async SetToStartDate(req: Request, res: Response): Promise<Response> {
-    const { instrumentName } = req.params;
+    const { questionnaireName } = req.params;
     const reqData = req.body;
     try {
-      let startDate = await this.bimsApiClient.getStartDate(instrumentName);
+      let startDate = await this.bimsApiClient.getStartDate(questionnaireName);
 
       if (!startDateExists(startDate) && reqData.tostartdate === "") {
-        req.log.info(`No previous TO start date found and none specified for questionnaire ${instrumentName}`);
+        req.log.info(`No previous TO start date found and none specified for questionnaire ${questionnaireName}`);
         return res.status(201).json("");
       }
 
       if (startDateExists(startDate) && reqData.tostartdate === "") {
         try {
-          await this.bimsApiClient.deleteStartDate(instrumentName);
-          this.auditLogger.info(req.log, `Successfully removed TO start date for questionnaire ${instrumentName}`);
+          await this.bimsApiClient.deleteStartDate(questionnaireName);
+          this.auditLogger.info(req.log, `Successfully removed TO start date for questionnaire ${questionnaireName}`);
           return res.status(201).json();
         } catch (error: unknown) {
-          this.auditLogger.error(req.log, `Failed to remove TO start date for questionnaire ${instrumentName}`);
+          this.auditLogger.error(req.log, `Failed to remove TO start date for questionnaire ${questionnaireName}`);
           throw error;
         }
       }
 
-      startDate = await this.setToStartDate(instrumentName, startDate, reqData.tostartdate, req);
+      startDate = await this.setToStartDate(questionnaireName, startDate, reqData.tostartdate, req);
       return res.status(201).json(startDate);
     } catch {
       return res.status(500).json();
@@ -56,52 +56,52 @@ export class BimsHandler {
   }
 
   async DeleteToStartDate(req: Request, res: Response): Promise<Response> {
-    const { instrumentName } = req.params;
+    const { questionnaireName } = req.params;
 
     try {
-      const startDate = await this.bimsApiClient.getStartDate(instrumentName);
+      const startDate = await this.bimsApiClient.getStartDate(questionnaireName);
 
       if (!startDateExists(startDate)) {
         return res.status(204).json();
       }
 
-      await this.bimsApiClient.deleteStartDate(instrumentName);
+      await this.bimsApiClient.deleteStartDate(questionnaireName);
 
-      this.auditLogger.info(req.log, `Successfully removed TO start date for questionnaire ${instrumentName}`);
+      this.auditLogger.info(req.log, `Successfully removed TO start date for questionnaire ${questionnaireName}`);
       return res.status(204).json();
     } catch (error: unknown) {
       console.error(error);
-      this.auditLogger.error(req.log, `Failed to remove TO start date for questionnaire ${instrumentName}`);
+      this.auditLogger.error(req.log, `Failed to remove TO start date for questionnaire ${questionnaireName}`);
       return res.status(500).json();
     }
   }
 
   async GetToStartDate(req: Request, res: Response): Promise<Response> {
-    const { instrumentName } = req.params;
+    const { questionnaireName } = req.params;
 
     try {
-      const startDate = await this.bimsApiClient.getStartDate(instrumentName);
+      const startDate = await this.bimsApiClient.getStartDate(questionnaireName);
       if (!startDate) {
         return res.status(404).json();
       }
-      return res.status(200).json(await this.bimsApiClient.getStartDate(instrumentName));
+      return res.status(200).json(await this.bimsApiClient.getStartDate(questionnaireName));
     } catch {
       return res.status(500).json({});
     }
   }
 
-  async setToStartDate(instrumentName: string, startDate: toStartDate | undefined, newStartDate: string, req: Request): Promise<toStartDate> {
+  async setToStartDate(questionnaireName: string, startDate: toStartDate | undefined, newStartDate: string, req: Request): Promise<toStartDate> {
     try {
       let configuredToStartDate: toStartDate;
       if (startDateExists(startDate)) {
-        configuredToStartDate = await this.bimsApiClient.updateStartDate(instrumentName, newStartDate);
+        configuredToStartDate = await this.bimsApiClient.updateStartDate(questionnaireName, newStartDate);
       } else {
-        configuredToStartDate = await this.bimsApiClient.createStartDate(instrumentName, newStartDate);
+        configuredToStartDate = await this.bimsApiClient.createStartDate(questionnaireName, newStartDate);
       }
-      this.auditLogger.info(req.log, `Successfully set TO start date to ${newStartDate} for questionnaire ${instrumentName}`);
+      this.auditLogger.info(req.log, `Successfully set TO start date to ${newStartDate} for questionnaire ${questionnaireName}`);
       return configuredToStartDate;
     } catch (error: unknown) {
-      this.auditLogger.error(req.log, `Failed to set TO start date to ${newStartDate} for questionnaire ${instrumentName}`);
+      this.auditLogger.error(req.log, `Failed to set TO start date to ${newStartDate} for questionnaire ${questionnaireName}`);
       throw error;
     }
   }

@@ -6,7 +6,7 @@ import MockAdapter from "axios-mock-adapter";
 
 const mock = new MockAdapter(axios);
 
-describe("Function setTOStartDate(instrumentName: string, toStartDate: string) ", () => {
+describe("Function setTOStartDate(questionnaireName: string, toStartDate: string) ", () => {
     afterEach(() => {
         jest.clearAllMocks();
         cleanup();
@@ -42,7 +42,7 @@ describe("Function setTOStartDate(instrumentName: string, toStartDate: string) "
     });
 });
 
-describe("Function getTOStartDate(instrumentName: string) ", () => {
+describe("Function getTOStartDate(questionnaireName: string) ", () => {
     afterEach(() => {
         jest.clearAllMocks();
         cleanup();
@@ -82,7 +82,7 @@ describe("Function getTOStartDate(instrumentName: string) ", () => {
     });
 });
 
-describe("Function deleteTOStartDate(instrumentName: string, toStartDate: string) ", () => {
+describe("Function deleteTOStartDate(questionnaireName: string, toStartDate: string) ", () => {
     afterEach(() => {
         jest.clearAllMocks();
         cleanup();

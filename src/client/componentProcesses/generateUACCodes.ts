@@ -1,5 +1,5 @@
 import { generateUACCodes, getUACCodesByCaseID, } from "../../client/uacCodes";
-import { getInstrumentCaseIds } from "../../client/instruments";
+import { getQuestionnaireCaseIds } from "../questionnaires";
 import { Datas } from "react-csv-downloader/dist/esm/lib/csv";
 import { InstrumentUacDetails } from "bus-api-node-client";
 
@@ -34,18 +34,18 @@ export function mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDet
     return array;
 }
 
-export async function generateUACCodesAndCSVFileData(instrumentName: string): Promise<Datas> {
-    const generatedUACCodes = await generateUACCodes(instrumentName);
+export async function generateUACCodesAndCSVFileData(questionnaireName: string): Promise<Datas> {
+    const generatedUACCodes = await generateUACCodes(questionnaireName);
     if (!generatedUACCodes) {
         throw new Error("Failed to generate UAC codes");
     }
 
-    const uacCodes = await getUACCodesByCaseID(instrumentName);
+    const uacCodes = await getUACCodesByCaseID(questionnaireName);
     if (uacCodes === undefined) {
         throw new Error("Failed to get UAC codes by case ID");
     }
 
-    const caseIDs = await getInstrumentCaseIds(instrumentName);
+    const caseIDs = await getQuestionnaireCaseIds(questionnaireName);
 
     return mapCasesToUACCodes(caseIDs, uacCodes);
 }

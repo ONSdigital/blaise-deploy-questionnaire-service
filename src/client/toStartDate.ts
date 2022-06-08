@@ -1,9 +1,9 @@
 import axios from "axios";
 import axiosConfig from "./axiosConfig";
 
-export async function setTOStartDate(instrumentName: string, toStartDate: string | undefined): Promise<boolean> {
-    console.log(`Call to setTOStartDate(${instrumentName}, ${toStartDate})`);
-    const url = `/api/tostartdate/${instrumentName}`;
+export async function setTOStartDate(questionnaireName: string, toStartDate: string | undefined): Promise<boolean> {
+    console.log(`Call to setTOStartDate(${questionnaireName}, ${toStartDate})`);
+    const url = `/api/tostartdate/${questionnaireName}`;
     const data = { "tostartdate": toStartDate };
 
     try {
@@ -17,9 +17,9 @@ export async function setTOStartDate(instrumentName: string, toStartDate: string
 }
 
 
-export async function getTOStartDate(instrumentName: string): Promise<string> {
-    console.log(`Call to getTOStartDate(${instrumentName})`);
-    const url = `/api/tostartdate/${instrumentName}`;
+export async function getTOStartDate(questionnaireName: string): Promise<string> {
+    console.log(`Call to getTOStartDate(${questionnaireName})`);
+    const url = `/api/tostartdate/${questionnaireName}`;
 
     try {
         const response = await axios.get(url, axiosConfig());
@@ -38,9 +38,9 @@ export async function getTOStartDate(instrumentName: string): Promise<string> {
 }
 
 
-export async function deleteTOStartDate(instrumentName: string): Promise<boolean> {
-    console.log(`Call to deleteTOStartDate(${instrumentName})`);
-    const url = `/api/tostartdate/${instrumentName}`;
+export async function deleteTOStartDate(questionnaireName: string): Promise<boolean> {
+    console.log(`Call to deleteTOStartDate(${questionnaireName})`);
+    const url = `/api/tostartdate/${questionnaireName}`;
 
     try {
         const response = await axios.delete(url, axiosConfig());

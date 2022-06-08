@@ -66,7 +66,7 @@ function AuditPage(): ReactElement {
                             auditLogs.map(({ id, timestamp, severity, message }: AuditLog) => {
                                 return (
                                     <tr className="table__row" key={id}
-                                        data-testid={"instrument-table-row"}>
+                                        data-testid={"questionnaire-table-row"}>
                                         <td className="table__cell ">
                                             {dateFormatter(new Date(timestamp)).format("DD/MM/YYYY HH:mm:ss")}
                                         </td>

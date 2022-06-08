@@ -1,19 +1,19 @@
 import React, { ReactElement } from "react";
-import InstrumentSettingsTable from "../../instrumentSettings/instrumentSettingsTable";
-import { InstrumentSettings } from "blaise-api-node-client";
+import QuestionnaireSettingsTable from "../../questionnaireSettings/questionnaireSettingsTable";
+import { QuestionnaireSettings } from "blaise-api-node-client";
 import { ONSPanel } from "blaise-design-system-react-components";
 
 
 interface SelectFilePageProps {
-    instrumentName: string;
-    instrumentSettings: InstrumentSettings | undefined
-    invalidSettings: Partial<InstrumentSettings>
+    questionnaireName: string;
+    questionnaireSettings: QuestionnaireSettings | undefined
+    invalidSettings: Partial<QuestionnaireSettings>
     errored: boolean
 }
 
 function ConfirmOverride({
-    instrumentName,
-    instrumentSettings,
+    questionnaireName,
+    questionnaireSettings,
     invalidSettings,
     errored
 }: SelectFilePageProps): ReactElement {
@@ -21,7 +21,7 @@ function ConfirmOverride({
     return (
         <>
             <h1 className="u-mb-l">
-                Questionnaire settings for {instrumentName} do not match recommendations
+                Questionnaire settings for {questionnaireName} do not match recommendations
             </h1>
             <ONSPanel status={"error"}>
                 <p>
@@ -36,7 +36,7 @@ function ConfirmOverride({
                 </p>
             </ONSPanel>
             <br></br>
-            <InstrumentSettingsTable instrumentSettings={instrumentSettings} invalidSettings={invalidSettings}
+            <QuestionnaireSettingsTable questionnaireSettings={questionnaireSettings} invalidSettings={invalidSettings}
                 errored={errored} />
         </>
     );

@@ -54,8 +54,8 @@ export async function uploadFile(url: string, file: File, onFileUploadProgress: 
     }
 }
 
-export async function getAllInstrumentsInBucket(): Promise<string[]> {
-    console.log("Call to getAllInstruments");
+export async function getAllQuestionnairesInBucket(): Promise<string[]> {
+    console.log("Call to getAllQuestionnairesInBucket");
     const url = "/bucket/files";
 
     const response = await axios.get(url, axiosConfig());

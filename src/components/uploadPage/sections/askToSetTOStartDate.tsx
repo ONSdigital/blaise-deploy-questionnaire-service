@@ -3,10 +3,10 @@ import {useFormikContext} from "formik";
 import {StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
 
 interface SelectFilePageProps {
-    instrumentName: string;
+    questionnaireName: string;
 }
 
-function AskToSetTOStartDate({instrumentName}: SelectFilePageProps): ReactElement {
+function AskToSetTOStartDate({questionnaireName}: SelectFilePageProps): ReactElement {
     const {values}: any = useFormikContext();
 
     function validateRadio(value: string) {
@@ -48,7 +48,7 @@ function AskToSetTOStartDate({instrumentName}: SelectFilePageProps): ReactElemen
                 <div className="grid__col col-8@m">
                     <h1 className="u-mb-l">
                         Would you like to set a telephone operations start date for questionnaire <em
-                        className="highlight">{instrumentName}</em>?
+                        className="highlight">{questionnaireName}</em>?
                     </h1>
 
                     <p>

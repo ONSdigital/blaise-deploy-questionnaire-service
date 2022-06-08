@@ -3,18 +3,18 @@ import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
 import {useHistory, useParams} from "react-router-dom";
 
 interface Params {
-    instrumentName: string
+    questionnaireName: string
 }
 
 function LiveSurveyWarning(): ReactElement {
     const history = useHistory();
 
-    const { instrumentName }: Params = useParams();
+    const { questionnaireName }: Params = useParams();
 
     return (
         <>
             <ONSPanel status="error">
-                <h1>Cannot overwrite questionnaire <em>{instrumentName}</em> as it is currently live.</h1>
+                <h1>Cannot overwrite questionnaire <em>{questionnaireName}</em> as it is currently live.</h1>
                 <p>
                     Note, you cannot overwrite questionnaire that are currently live.
                     <br/>

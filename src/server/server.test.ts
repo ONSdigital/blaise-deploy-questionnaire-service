@@ -17,8 +17,8 @@ jest.mock("blaise-login-react-server", () => {
 });
 Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
 
-const mockGetInstruments = jest.fn();
-BlaiseApiRest.prototype.getInstruments = mockGetInstruments;
+const mockGetQuestionnaires = jest.fn();
+BlaiseApiRest.prototype.getQuestionnaires = mockGetQuestionnaires;
 
 const config = getConfigFromEnv();
 const request = supertest(newServer(config));
@@ -33,10 +33,10 @@ describe("Test Health Endpoint", () => {
     });
 });
 
-describe("Given the API returns 2 instruments", () => {
+describe("Given the API returns 2 questionnaires", () => {
     beforeEach(() => {
-        mockGetInstruments.mockImplementation(() => {
-            return Promise.resolve(apiInstrumentList);
+        mockGetQuestionnaires.mockImplementation(() => {
+            return Promise.resolve(apiQuestionnaireList);
         });
     });
 
@@ -45,7 +45,7 @@ describe("Given the API returns 2 instruments", () => {
         jest.resetModules();
     });
 
-    const apiInstrumentList = [
+    const apiQuestionnaireList = [
         {
             installDate: "2020-12-11T11:53:55.5612856+00:00",
             name: "OPN2007T",
@@ -58,7 +58,7 @@ describe("Given the API returns 2 instruments", () => {
         }
     ];
 
-    const apiReturnedInstrumentList = [
+    const apiReturnedQuestionnaireList = [
         {
             installDate: "2020-12-11T11:53:55.5612856+00:00",
             name: "OPN2007T",
@@ -74,17 +74,17 @@ describe("Given the API returns 2 instruments", () => {
     ];
 
     it("should return a 200 status and a list with the two", async () => {
-        const response = await request.get("/api/instruments");
+        const response = await request.get("/api/questionnaires");
 
         expect(response.statusCode).toEqual(200);
         expect(response.body).toHaveLength(2);
-        expect(response.body).toStrictEqual(apiReturnedInstrumentList);
+        expect(response.body).toStrictEqual(apiReturnedQuestionnaireList);
     });
 });
 
-describe("Get list of instruments endpoint fails", () => {
+describe("Get list of questionnaires endpoint fails", () => {
     beforeEach(() => {
-        mockGetInstruments.mockImplementation(() => {
+        mockGetQuestionnaires.mockImplementation(() => {
             return Promise.reject("Network error");
         });
     });
@@ -95,7 +95,7 @@ describe("Get list of instruments endpoint fails", () => {
     });
 
     it("should return a 500 status and an error message", async () => {
-        const response = await request.get("/api/instruments");
+        const response = await request.get("/api/questionnaires");
         expect(response.statusCode).toEqual(500);
     });
 });
