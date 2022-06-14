@@ -18,10 +18,10 @@ function ChangeToStartDate(): ReactElement {
     const { toStartDate, questionnaireName } = location.state || { toStartDate: null, questionnaireName: null };
 
     async function _handleSubmit(values: any, actions: any) {
-        if (values.askToSetTOStartDate === "no") {
-            values["set TO start date"] = "";
+        if (values.askToSetDate === "no") {
+            values["set start date"] = "";
         }
-        const liveDateCreated = await setTOStartDate(questionnaireName, values["set TO start date"]);
+        const liveDateCreated = await setTOStartDate(questionnaireName, values["set start date"]);
         if (!liveDateCreated) {
             console.log("Failed to store telephone operations start date specified");
             return;
@@ -31,14 +31,14 @@ function ChangeToStartDate(): ReactElement {
     }
 
     let initialValues = {
-        askToSetTOStartDate: "",
-        "set TO start date": ""
+        askToSetDate: "",
+        "set start date": ""
     };
 
     if (toStartDate != null) {
         initialValues = {
-            askToSetTOStartDate: "yes",
-            "set TO start date": dateFormatter(toStartDate).format("YYYY-MM-DD")
+            askToSetDate: "yes",
+            "set start date": dateFormatter(toStartDate).format("YYYY-MM-DD")
         };
     }
 

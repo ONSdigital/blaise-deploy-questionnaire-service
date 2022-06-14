@@ -85,8 +85,8 @@ function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactEl
                                 </td>
                                 <td className="summary__values">
                                     {
-                                        formValues["set TO start date"] ?
-                                            `Start date set to ${dateFormatter(formValues["set TO start date"]).format("DD/MM/YYYY")}`
+                                        formValues["set start date"] ?
+                                            `Start date set to ${dateFormatter(formValues["set start date"]).format("DD/MM/YYYY")}`
                                             :
                                             "Start date not specified"
                                     }

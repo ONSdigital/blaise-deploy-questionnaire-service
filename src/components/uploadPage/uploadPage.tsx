@@ -105,7 +105,7 @@ function UploadPage(): ReactElement {
     }
 
     async function _uploadAndInstallQuestionnaire(values: any, actions: any) {
-        const installed = await uploadAndInstallFile(questionnaireName, values["set TO start date"], file, setUploading, setUploadStatus, onFileUploadProgress);
+        const installed = await uploadAndInstallFile(questionnaireName, values["set start date"], file, setUploading, setUploadStatus, onFileUploadProgress);
         actions.setSubmitting(false);
         if (!installed) {
             setActiveStep(stepLength());
@@ -162,8 +162,8 @@ function UploadPage(): ReactElement {
                 }
                 break;
             case Step.SetLiveDate:
-                if (values.askToSetTOStartDate === "no") {
-                    values["set TO start date"] = "";
+                if (values.askToSetDate === "no") {
+                    values["set start date"] = "";
                 }
                 break;
             case Step.Summary:

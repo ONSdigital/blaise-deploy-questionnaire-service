@@ -1,47 +1,14 @@
 import React, {ReactElement} from "react";
 import {useFormikContext} from "formik";
 import {StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
+import SetDateForm from "../../SetDateForm";
 
 interface SelectFilePageProps {
     questionnaireName: string;
 }
 
 function AskToSetTOStartDate({questionnaireName}: SelectFilePageProps): ReactElement {
-    const {values}: any = useFormikContext();
-
-    function validateRadio(value: string) {
-        let error;
-
-        if (!value) {
-            error = "Select an option";
-        } else if (values.askToSetTOStartDate === "yes" && !values["set TO start date"]) {
-            error = "Enter a start date";
-        }
-        return error;
-    }
-
-    const field = {
-        name: "askToSetTOStartDate",
-        type: "radio",
-        autoFocus: true,
-        validate: validateRadio,
-        radioOptions: [
-            {
-                id: "no", label: "No start date", value: "no"
-            },
-            {
-                id: "yes", label: "Yes, let me specify a start date", value: "yes",
-                specifyOption: {
-                    type: "date",
-                    id: "set-live-date",
-                    name: "set TO start date",
-                    description: "Please specify date"
-                }
-            },
-        ],
-        props: {}
-    };
-
+    // const {values}: any = useFormikContext();
     return (
         <>
             <div className="grid">
@@ -60,7 +27,8 @@ function AskToSetTOStartDate({questionnaireName}: SelectFilePageProps): ReactEle
 
                     <StyledFormErrorSummary/>
 
-                    <StyledFormField {...field}/>
+
+                    <SetDateForm dateType="start"/>
                 </div>
             </div>
         </>
