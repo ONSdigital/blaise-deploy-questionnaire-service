@@ -1,6 +1,5 @@
 import React, {ReactElement} from "react";
-import {useFormikContext} from "formik";
-import {StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
+import {StyledFormErrorSummary} from "blaise-design-system-react-components";
 import SetDateForm from "../../SetDateForm";
 
 interface SelectFilePageProps {
@@ -8,7 +7,6 @@ interface SelectFilePageProps {
 }
 
 function AskToSetTOStartDate({questionnaireName}: SelectFilePageProps): ReactElement {
-    // const {values}: any = useFormikContext();
     return (
         <>
             <div className="grid">
@@ -24,9 +22,7 @@ function AskToSetTOStartDate({questionnaireName}: SelectFilePageProps): ReactEle
                         will use the surveys days to determine when to display.
                     </p>
 
-
                     <StyledFormErrorSummary/>
-
 
                     <SetDateForm dateType="start"/>
                 </div>
