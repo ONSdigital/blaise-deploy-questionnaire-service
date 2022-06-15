@@ -8,8 +8,6 @@ interface DateFormProps {
 
 function SetDateForm(DateFormProps: DateFormProps): ReactElement {
     const {values}: any = useFormikContext();
-    console.log({values});
-    console.log("inside setdateform")
     function validateRadio(value: string) {
         let error;
 
@@ -43,10 +41,8 @@ function SetDateForm(DateFormProps: DateFormProps): ReactElement {
         props: {}
     };
     return (
-        <>
         <StyledFormField {...field}/>
-        </>
     );
-};
+}
 
 export default SetDateForm;
