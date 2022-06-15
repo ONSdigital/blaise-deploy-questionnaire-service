@@ -6,7 +6,7 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup, } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import {
     givenTheQuestionnaireHasActiveSurveyDays,
@@ -50,7 +50,7 @@ const feature = loadFeature(
 );
 
 
-const instrumentList: Instrument[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
 
@@ -63,9 +63,9 @@ defineFeature(feature, test => {
     });
 
     test("Delete an 'inactive' survey at any time", ({ given, when, then, }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInactive(given, instrumentList, mocker);
-        givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInactive(given, questionnaireList, mocker);
+        givenTheQuestionnaireHasActiveSurveyDays(given, questionnaireList, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);
@@ -74,13 +74,13 @@ defineFeature(feature, test => {
     });
 
     test("Delete a questionnaire not available from the homepage", ({ given, when, then, }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         whenILoadTheHomepage(when);        
         thenIWillNotHaveTheOptionToDelete(then);
     });
 
     test("Confirm deletion", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);
@@ -89,7 +89,7 @@ defineFeature(feature, test => {
     });
 
     test("Cancel deletion", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         whenICancelDelete(when);
@@ -98,9 +98,9 @@ defineFeature(feature, test => {
     });
 
     test("Select to delete questionnaire that is active and live", ({given, when, then}) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsActive(given, instrumentList, mocker);
-        givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsActive(given, questionnaireList, mocker);
+        givenTheQuestionnaireHasActiveSurveyDays(given, questionnaireList, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         thenIAmPresentedWithAnActiveSurveyDaysWarning(then);
@@ -110,8 +110,8 @@ defineFeature(feature, test => {
     });
 
     test("Select to delete questionnaire that is active and not live", ({given, when, then}) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireHasActiveSurveyDays(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireHasActiveSurveyDays(given, questionnaireList, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         thenIAmPresentedWithAWarning(then);
@@ -121,8 +121,8 @@ defineFeature(feature, test => {
     });
 
     test("Select to delete questionnaire that is inactive", ({given, when, then}) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInactive(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInactive(given, questionnaireList, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         whenIConfirmDelete(when);
@@ -131,8 +131,8 @@ defineFeature(feature, test => {
     });
 
     test("Select to delete questionnaire that is active and has mode set to CAWI", ({given, when, then}) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsActive(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsActive(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);

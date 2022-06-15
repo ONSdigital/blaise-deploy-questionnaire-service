@@ -1,6 +1,6 @@
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
-export const instrumentListMockObject = [{
+export const questionnaireListMockObject = [{
     name: "OPN2101A",
     serverParkName: "gusty",
     installDate: "2021-01-15T14:41:29.4399898+00:00",
@@ -23,7 +23,7 @@ export const instrumentListMockObject = [{
     hasData: false,
 }];
 
-export const instrumentMockObject = {
+export const questionnaireMockObject = {
     name: "OPN2101A",
     serverParkName: "gusty",
     installDate: "2021-01-15T14:41:29.4399898+00:00",
@@ -32,7 +32,7 @@ export const instrumentMockObject = {
     hasData: false,
 };
 
-export const expectedInstrumentList: Instrument[] = [{
+export const expectedQuestionnaireList: Questionnaire[] = [{
     name: "OPN2101A",
     serverParkName: "gusty",
     installDate: "2021-01-15T14:41:29.4399898+00:00",

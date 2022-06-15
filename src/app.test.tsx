@@ -10,7 +10,7 @@ import flushPromises from "./tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
-import { instrumentList } from "./features/step_definitions/helpers/apiMockObjects";
+import { questionnaireList } from "./features/step_definitions/helpers/apiMockObjects";
 import _ from "lodash";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
@@ -31,7 +31,7 @@ jest.mock("./client/env", () => ({
 
 describe("React homepage", () => {
     beforeAll(() => {
-        mock.onGet("/api/instruments").reply(200, instrumentList);
+        mock.onGet("/api/questionnaires").reply(200, questionnaireList);
     });
 
     afterAll(() => {
@@ -44,7 +44,7 @@ describe("React homepage", () => {
         mockIsProduction.mockReturnValue(false);
     });
 
-    it("view instrument page matches Snapshot in production", async () => {
+    it("view questionnaire page matches Snapshot in production", async () => {
         mockIsProduction.mockReturnValue(true);
         const history = createMemoryHistory();
         const wrapper = render(
@@ -64,7 +64,7 @@ describe("React homepage", () => {
         });
     });
 
-    it("view instrument page matches Snapshot in non-production environments", async () => {
+    it("view questionnaire page matches Snapshot in non-production environments", async () => {
         const history = createMemoryHistory();
         const wrapper = render(
             <Router history={history}>
@@ -110,7 +110,7 @@ describe("React homepage", () => {
 
 describe("Given the API returns malformed json", () => {
     beforeAll(() => {
-        mock.onGet("/api/instruments").reply(500, { text: "Hello" });
+        mock.onGet("/api/questionnaires").reply(500, { text: "Hello" });
     });
 
     it("it should render with the error message displayed", async () => {
@@ -140,7 +140,7 @@ describe("Given the API returns malformed json", () => {
 
 describe("Given the API returns an empty list", () => {
     beforeAll(() => {
-        mock.onGet("/api/instruments").reply(200, []);
+        mock.onGet("/api/questionnaires").reply(200, []);
     });
 
     afterAll(() => {

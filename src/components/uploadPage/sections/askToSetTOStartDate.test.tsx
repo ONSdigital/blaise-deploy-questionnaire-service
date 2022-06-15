@@ -20,7 +20,7 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 
 describe("Ask to set TO start date page", () => {
     beforeEach(() => {
-        mock.onGet("/api/instruments/OPN2004A").reply(404);
+        mock.onGet("/api/questionnaires/OPN2004A").reply(404);
         mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "OPN2004A.bpkg" });
     });
 

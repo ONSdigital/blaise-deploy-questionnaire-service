@@ -1,4 +1,4 @@
-export * from "./deployInstrument";
-export * from "./removeInstrument";
+export * from "./deployQuestionnaire";
+export * from "./removeQuestionnaire";
 export * from "./generateUACCodes";
 export * from "./uploadProcess";

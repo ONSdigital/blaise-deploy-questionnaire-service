@@ -1,6 +1,6 @@
 import supertest, { Response } from "supertest";
 import {
-    instrumentListMockObject, instrumentMockObject, expectedInstrumentList
+    questionnaireListMockObject, questionnaireMockObject, expectedQuestionnaireList
 } from "./mockObjects";
 import { Auth } from "blaise-login-react-server";
 import BlaiseApiRest from "blaise-api-node-client";
@@ -16,15 +16,15 @@ jest.mock("blaise-login-react-server", () => {
 Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
 
 const mockGetDiagnostics = jest.fn();
-const mockGetInstrument = jest.fn();
-const mockGetInstruments = jest.fn();
-const mockInstallInstrument = jest.fn();
-const mockDeleteInstrument = jest.fn();
-const mockActivateInstrument = jest.fn();
-const mockDeactivateInstrument = jest.fn();
-const mockDoesInstrumentHaveMode = jest.fn();
-const mockGetInstrumentModes = jest.fn();
-const mockGetInstrumentSettings = jest.fn();
+const mockGetQuestionnaire = jest.fn();
+const mockGetQuestionnaires = jest.fn();
+const mockInstallQuestionnaire = jest.fn();
+const mockDeleteQuestionnaire = jest.fn();
+const mockActivateQuestionnaire = jest.fn();
+const mockDeactivateQuestionnaire = jest.fn();
+const mockDoesQuestionnaireHaveMode = jest.fn();
+const mockGetQuestionnaireModes = jest.fn();
+const mockGetQuestionnaireSettings = jest.fn();
 const mockGetSurveyDays = jest.fn();
 
 
@@ -35,22 +35,22 @@ jest.mock("blaise-api-node-client", () => {
         default: jest.fn().mockImplementation(() => {
             return {
                 getDiagnostics: mockGetDiagnostics,
-                getInstrument: mockGetInstrument,
-                getInstruments: mockGetInstruments,
-                installInstrument: mockInstallInstrument,
-                deleteInstrument: mockDeleteInstrument,
-                activateInstrument: mockActivateInstrument,
-                deactivateInstrument: mockDeactivateInstrument,
-                doesInstrumentHaveMode: mockDoesInstrumentHaveMode,
-                getInstrumentModes: mockGetInstrumentModes,
-                getInstrumentSettings: mockGetInstrumentSettings,
+                getQuestionnaire: mockGetQuestionnaire,
+                getQuestionnaires: mockGetQuestionnaires,
+                installQuestionnaire: mockInstallQuestionnaire,
+                deleteQuestionnaire: mockDeleteQuestionnaire,
+                activateQuestionnaire: mockActivateQuestionnaire,
+                deactivateQuestionnaire: mockDeactivateQuestionnaire,
+                doesQuestionnaireHaveMode: mockDoesQuestionnaireHaveMode,
+                getQuestionnaireModes: mockGetQuestionnaireModes,
+                getQuestionnaireSettings: mockGetQuestionnaireSettings,
                 getSurveyDays: mockGetSurveyDays
             };
         })
     };
 });
 
-const { DiagnosticMockObject, InstrumentSettingsMockList } = jest.requireActual("blaise-api-node-client");
+const { DiagnosticMockObject, QuestionnaireSettingsMockList } = jest.requireActual("blaise-api-node-client");
 
 // Mock Express Server
 const config = getConfigFromEnv();
@@ -85,94 +85,94 @@ describe("BlaiseAPI Get health Check from API", () => {
     });
 });
 
-describe("BlaiseAPI Get all instruments from API", () => {
+describe("BlaiseAPI Get all questionnaires from API", () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();
     });
 
     it("should return a 200 status and an empty json list when API returns a empty list", async () => {
-        mockGetInstruments.mockImplementation(() => {
+        mockGetQuestionnaires.mockImplementation(() => {
             return Promise.resolve([]);
         });
 
-        const response: Response = await request.get("/api/instruments");
+        const response: Response = await request.get("/api/questionnaires");
 
         expect(response.status).toEqual(200);
         expect(response.body).toStrictEqual([]);
     });
 
     it("should return a 200 status and a json list of 3 items when API returns a 3 item list", async () => {
-        mockGetInstruments.mockImplementation(() => {
-            return Promise.resolve(instrumentListMockObject);
+        mockGetQuestionnaires.mockImplementation(() => {
+            return Promise.resolve(questionnaireListMockObject);
         });
 
-        const response: Response = await request.get("/api/instruments");
+        const response: Response = await request.get("/api/questionnaires");
 
         expect(response.status).toEqual(200);
-        expect(response.body).toStrictEqual(expectedInstrumentList);
+        expect(response.body).toStrictEqual(expectedQuestionnaireList);
         expect(response.body.length).toStrictEqual(3);
     });
 
     it("should return a 500 status direct from the API", async () => {
-        mockGetInstruments.mockImplementation(() => {
+        mockGetQuestionnaires.mockImplementation(() => {
             return Promise.reject();
         });
 
-        const response: Response = await request.get("/api/instruments");
+        const response: Response = await request.get("/api/questionnaires");
 
         expect(response.status).toEqual(500);
     });
 });
 
-describe("BlaiseAPI Get specific instrument information from API", () => {
+describe("BlaiseAPI Get specific questionnaire information from API", () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();
     });
 
-    it("should return a 404 status with the data as false when API returns can't find the instrument", async () => {
-        mockGetInstrument.mockImplementation(() => {
+    it("should return a 404 status with the data as false when API returns can't find the questionnaire", async () => {
+        mockGetQuestionnaire.mockImplementation(() => {
             return Promise.reject({ response: { status: 404 }, isAxiosError: true });
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2004A");
+        const response: Response = await request.get("/api/questionnaires/OPN2004A");
 
         expect(response.status).toEqual(404);
         expect(response.body).toEqual("");
 
     });
 
-    it("should return a 200 status and a json object when API returns a instrument object", async () => {
-        mockGetInstrument.mockImplementation(() => {
-            return Promise.resolve(instrumentMockObject);
+    it("should return a 200 status and a json object when API returns a questionnaire object", async () => {
+        mockGetQuestionnaire.mockImplementation(() => {
+            return Promise.resolve(questionnaireMockObject);
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A");
 
         expect(response.status).toEqual(200);
-        expect(response.body).toStrictEqual(instrumentMockObject);
+        expect(response.body).toStrictEqual(questionnaireMockObject);
     });
 
     it("should return a 500 status direct from the API", async () => {
-        mockGetInstrument.mockImplementation(() => {
+        mockGetQuestionnaire.mockImplementation(() => {
             return Promise.reject();
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A");
 
         expect(response.status).toEqual(500);
     });
 });
 
-describe("BlaiseAPI Post to API to install a specific instrument", () => {
+describe("BlaiseAPI Post to API to install a specific questionnaire", () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();
     });
 
-    it("should return a 201 status when API installs a instrument", async () => {
-        mockInstallInstrument.mockImplementation(() => {
+    it("should return a 201 status when API installs a questionnaire", async () => {
+        mockInstallQuestionnaire.mockImplementation(() => {
             return Promise.resolve(true);
         });
 
@@ -182,7 +182,7 @@ describe("BlaiseAPI Post to API to install a specific instrument", () => {
     });
 
     it("should return a 500 status direct from the API", async () => {
-        mockInstallInstrument.mockImplementation(() => {
+        mockInstallQuestionnaire.mockImplementation(() => {
             return Promise.reject();
         });
 
@@ -192,168 +192,168 @@ describe("BlaiseAPI Post to API to install a specific instrument", () => {
     });
 });
 
-describe("BlaiseAPI Delete a specific instrument", () => {
+describe("BlaiseAPI Delete a specific questionnaire", () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();
     });
 
-    it("should return a 204 status when API deletes a instrument successfuly", async () => {
-        mockDeleteInstrument.mockImplementation(() => {
+    it("should return a 204 status when API deletes a questionnaire successfuly", async () => {
+        mockDeleteQuestionnaire.mockImplementation(() => {
             return Promise.resolve(true);
         });
 
-        const response: Response = await request.delete("/api/instruments/OPN2101A");
+        const response: Response = await request.delete("/api/questionnaires/OPN2101A");
 
         expect(response.status).toEqual(204);
     });
 
     it("should return a 404 status direct from the API", async () => {
-        mockDeleteInstrument.mockImplementation(() => {
+        mockDeleteQuestionnaire.mockImplementation(() => {
             return Promise.reject({ response: { status: 404 }, isAxiosError: true });
         });
 
-        const response: Response = await request.delete("/api/instruments/OPN2101A");
+        const response: Response = await request.delete("/api/questionnaires/OPN2101A");
 
         expect(response.status).toEqual(404);
     });
 
     it("should return a 500 status direct from the API", async () => {
-        mockDeleteInstrument.mockImplementation(() => {
+        mockDeleteQuestionnaire.mockImplementation(() => {
             return Promise.reject({ response: { status: 500 }, isAxiosError: true });
         });
 
-        const response: Response = await request.delete("/api/instruments/OPN2101A");
+        const response: Response = await request.delete("/api/questionnaires/OPN2101A");
 
         expect(response.status).toEqual(500);
     });
 });
 
-describe("BlaiseAPI Activate a specific instrument", () => {
+describe("BlaiseAPI Activate a specific questionnaire", () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();
     });
 
-    it("should return a 204 status when API activates a instrument successfuly", async () => {
-        mockActivateInstrument.mockImplementation(() => {
+    it("should return a 204 status when API activates a questionnaire successfuly", async () => {
+        mockActivateQuestionnaire.mockImplementation(() => {
             return Promise.resolve(true);
         });
 
-        const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
+        const response: Response = await request.patch("/api/questionnaires/OPN2101A/activate");
 
         expect(response.status).toEqual(204);
     });
 
     it("should return a 404 status direct from the API", async () => {
-        mockActivateInstrument.mockImplementation(() => {
+        mockActivateQuestionnaire.mockImplementation(() => {
             return Promise.reject({ response: { status: 404 }, isAxiosError: true });
         });
 
-        const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
+        const response: Response = await request.patch("/api/questionnaires/OPN2101A/activate");
 
         expect(response.status).toEqual(404);
     });
 
     it("should return a 500 status direct from the API", async () => {
-        mockActivateInstrument.mockImplementation(() => {
+        mockActivateQuestionnaire.mockImplementation(() => {
             return Promise.reject({ response: { status: 500 }, isAxiosError: true });
         });
 
-        const response: Response = await request.patch("/api/instruments/OPN2101A/activate");
+        const response: Response = await request.patch("/api/questionnaires/OPN2101A/activate");
 
         expect(response.status).toEqual(500);
     });
 });
 
-describe("BlaiseAPI Deactivate a specific instrument", () => {
+describe("BlaiseAPI Deactivate a specific questionnaire", () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();
     });
 
-    it("should return a 204 status when API activates a instrument successfuly", async () => {
-        mockDeactivateInstrument.mockImplementation(() => {
+    it("should return a 204 status when API activates a questionnaire successfuly", async () => {
+        mockDeactivateQuestionnaire.mockImplementation(() => {
             return Promise.resolve(true);
         });
 
-        const response: Response = await request.patch("/api/instruments/OPN2101A/deactivate");
+        const response: Response = await request.patch("/api/questionnaires/OPN2101A/deactivate");
 
         expect(response.status).toEqual(204);
     });
 
     it("should return a 404 status direct from the API", async () => {
-        mockDeactivateInstrument.mockImplementation(() => {
+        mockDeactivateQuestionnaire.mockImplementation(() => {
             return Promise.reject({ response: { status: 404 }, isAxiosError: true });
         });
 
-        const response: Response = await request.patch("/api/instruments/OPN2101A/deactivate");
+        const response: Response = await request.patch("/api/questionnaires/OPN2101A/deactivate");
 
         expect(response.status).toEqual(404);
     });
 
     it("should return a 500 status direct from the API", async () => {
-        mockDeactivateInstrument.mockImplementation(() => {
+        mockDeactivateQuestionnaire.mockImplementation(() => {
             return Promise.reject({ response: { status: 500 }, isAxiosError: true });
         });
 
-        const response: Response = await request.patch("/api/instruments/OPN2101A/deactivate");
+        const response: Response = await request.patch("/api/questionnaires/OPN2101A/deactivate");
 
         expect(response.status).toEqual(500);
     });
 });
 
-describe("BlaiseAPI does instrument have a specific mode API", () => {
+describe("BlaiseAPI does questionnaire have a specific mode API", () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();
     });
 
     it("should return a 200 status and a json boolean when API returns a boolean", async () => {
-        mockDoesInstrumentHaveMode.mockImplementation(() => {
+        mockDoesQuestionnaireHaveMode.mockImplementation(() => {
             return Promise.resolve(true);
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/modes/CAWI");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/modes/CAWI");
 
         expect(response.status).toEqual(200);
         expect(response.body).toStrictEqual(true);
     });
 
     it("should return a 500 status direct from the API", async () => {
-        mockDoesInstrumentHaveMode.mockImplementation(() => {
+        mockDoesQuestionnaireHaveMode.mockImplementation(() => {
             return Promise.reject(true);
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/modes/CAWI");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/modes/CAWI");
 
         expect(response.status).toEqual(500);
     });
 });
 
-describe("BlaiseAPI get instrument modes", () => {
+describe("BlaiseAPI get questionnaire modes", () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();
     });
 
     it("should return a 200 status and an empty json list when API returns a empty list", async () => {
-        mockGetInstrumentModes.mockImplementation(() => {
+        mockGetQuestionnaireModes.mockImplementation(() => {
             return Promise.resolve([]);
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/modes");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/modes");
 
         expect(response.status).toEqual(200);
         expect(response.body).toStrictEqual([]);
     });
 
     it("should return a 200 status and a json list of 2 items when API returns a 2 item list", async () => {
-        mockGetInstrumentModes.mockImplementation(() => {
+        mockGetQuestionnaireModes.mockImplementation(() => {
             return Promise.resolve(["CATI", "CAWI"]);
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/modes");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/modes");
 
         expect(response.status).toEqual(200);
         expect(response.body).toStrictEqual(["CATI", "CAWI"]);
@@ -361,51 +361,51 @@ describe("BlaiseAPI get instrument modes", () => {
     });
 
     it("should return a 500 status direct from the API", async () => {
-        mockGetInstrumentModes.mockImplementation(() => {
+        mockGetQuestionnaireModes.mockImplementation(() => {
             return Promise.reject();
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/modes");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/modes");
 
         expect(response.status).toEqual(500);
     });
 });
 
-describe("BlaiseAPI get instrument settings", () => {
+describe("BlaiseAPI get questionnaire settings", () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();
     });
 
     it("should return a 200 status and an empty json list when API returns a empty list", async () => {
-        mockGetInstrumentSettings.mockImplementation(() => {
+        mockGetQuestionnaireSettings.mockImplementation(() => {
             return Promise.resolve([]);
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/settings");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/settings");
 
         expect(response.status).toEqual(200);
         expect(response.body).toStrictEqual([]);
     });
 
-    it("should return a 200 status and a json object when API returns an instrument settings object", async () => {
-        mockGetInstrumentSettings.mockImplementation(() => {
-            return Promise.resolve(InstrumentSettingsMockList);
+    it("should return a 200 status and a json object when API returns an questionnaire settings object", async () => {
+        mockGetQuestionnaireSettings.mockImplementation(() => {
+            return Promise.resolve(QuestionnaireSettingsMockList);
         });
 
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/settings");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/settings");
 
         expect(response.status).toEqual(200);
-        expect(response.body).toStrictEqual(InstrumentSettingsMockList);
+        expect(response.body).toStrictEqual(QuestionnaireSettingsMockList);
     });
 
     it("should return a 500 status direct from the API", async () => {
-        mockGetInstrumentSettings.mockImplementation(() => {
+        mockGetQuestionnaireSettings.mockImplementation(() => {
             return Promise.reject();
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/settings");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/settings");
 
         expect(response.status).toEqual(500);
     });
@@ -422,7 +422,7 @@ describe("BlaiseAPI get survey days", () => {
             return Promise.resolve([]);
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/surveydays");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/surveydays");
 
         expect(response.status).toEqual(200);
         expect(response.body).toStrictEqual([]);
@@ -434,7 +434,7 @@ describe("BlaiseAPI get survey days", () => {
                 ["2021-10-05T00:00:00", "2021-10-06T00:00:00"]);
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/surveydays");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/surveydays");
 
         expect(response.status).toEqual(200);
         expect(response.body).toStrictEqual(["2021-10-05T00:00:00", "2021-10-06T00:00:00"]);
@@ -446,7 +446,7 @@ describe("BlaiseAPI get survey days", () => {
             return Promise.reject();
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/surveydays");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/surveydays");
 
         expect(response.status).toEqual(500);
     });
@@ -465,7 +465,7 @@ describe("BlaiseAPI get survey is active", () => {
             return Promise.resolve([todayAsString]);
         });
 
-        const response: Response = await request.get("/api/instruments/OPN2101A/active");
+        const response: Response = await request.get("/api/questionnaires/OPN2101A/active");
 
         expect(response.status).toEqual(200);
         expect(response.body).toStrictEqual(true);
@@ -477,7 +477,7 @@ describe("BlaiseAPI get survey is active", () => {
     //             ["2021-10-05T00:00:00", "2021-10-06T00:00:00"]);
     //     });
     //
-    //     const response: Response = await request.get("/api/instruments/OPN2101A/surveydays");
+    //     const response: Response = await request.get("/api/questionnaires/OPN2101A/surveydays");
     //
     //     expect(response.status).toEqual(200);
     //     expect(response.body).toStrictEqual(["2021-10-05T00:00:00", "2021-10-06T00:00:00"]);
@@ -489,7 +489,7 @@ describe("BlaiseAPI get survey is active", () => {
     //         return Promise.reject();
     //     });
     //
-    //     const response: Response = await request.get("/api/instruments/OPN2101A/surveydays");
+    //     const response: Response = await request.get("/api/questionnaires/OPN2101A/surveydays");
     //
     //     expect(response.status).toEqual(500);
     // });
