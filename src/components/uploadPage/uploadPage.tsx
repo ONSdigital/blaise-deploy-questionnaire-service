@@ -172,15 +172,11 @@ function UploadPage(): ReactElement {
                 if (values.askToSetDate === "no") {
                     values["set start date"] = "";
                 }
-                // TODO
-                console.log(`THORNE 0! values["set start date"]: ${values["set start date"]}`);
                 break;
             case Step.SetReleaseDate:
                 if (values.askToSetDate === "no") {
                     values["set release date"] = "";
                 }
-                // TODO
-                console.log(`THORNE 1! values["set release date"]: ${values["set release date"]}`);
                 break;
             case Step.Summary:
                 await _uploadAndInstallQuestionnaire(values, actions);

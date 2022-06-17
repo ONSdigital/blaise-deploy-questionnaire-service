@@ -2,8 +2,6 @@ import axios from "axios";
 import axiosConfig from "./axiosConfig";
 
 export async function setTMReleaseDate(questionnaireName: string, tmReleaseDate: string | undefined): Promise<boolean> {
-    // TODO
-    console.log(`THORNE 3! Call to setTMReleaseDate(${questionnaireName}, ${tmReleaseDate})`);
     console.log(`Call to setTMReleaseDate(${questionnaireName}, ${tmReleaseDate})`);
     const url = `/api/tmreleasedate/${questionnaireName}`;
     const data = { "tmreleasedate": tmReleaseDate };

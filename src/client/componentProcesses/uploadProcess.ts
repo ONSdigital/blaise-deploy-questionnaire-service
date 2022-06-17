@@ -68,17 +68,10 @@ export async function uploadAndInstallFile(
     }
 
     if (questionnaireName.startsWith("LMS")) {
-        // TODO
-        console.log(`THORNE 2! tmReleaseDate: ${tmReleaseDate}`);
         console.log(`releaseDate ${tmReleaseDate}`);
         const releaseDateCreated = await setTMReleaseDate(questionnaireName, tmReleaseDate);
 
-        // TODO
-        console.log(`THORNE 4! releaseDateCreated: ${releaseDateCreated}`);
-
         if (!releaseDateCreated) {
-            // TODO
-            console.log("THORNE 5! :(");
             setUploadStatus("Failed to store Totalmobile release date specified");
             setUploading(false);
             return false;
