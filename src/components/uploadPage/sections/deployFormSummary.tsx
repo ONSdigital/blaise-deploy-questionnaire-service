@@ -167,7 +167,6 @@ function DeployFormSummary({file, foundQuestionnaire}: PageFourProps): ReactElem
                     </table>
                 </div>
             </div>
-
         </>
     );
 }

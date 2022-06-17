@@ -2,10 +2,11 @@
  * @jest-environment jsdom
  */
 
-import navigateToDeployPageAndSelectFile from "../../../features/step_definitions/helpers/functions";
-import {act, screen} from "@testing-library/react";
-import flushPromises from "../../../tests/utils";
-import userEvent from "@testing-library/user-event";
+import {
+    deployQuestionnaireAndSetNoTOStartDate,
+    selectNoReleaseDate
+} from "../../../features/step_definitions/helpers/functions";
+import {screen} from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import '@testing-library/jest-dom/extend-expect';
@@ -45,27 +46,3 @@ describe("Ask to set TM release date page", () => {
         expect(screen.getByText(/Deployment summary/i)).toBeDefined();
     });
 });
-
-async function deployQuestionnaireAndSetNoTOStartDate(questionnaire: string): Promise<void> {
-    // Deploy page
-    await navigateToDeployPageAndSelectFile(questionnaire);
-    userEvent.click(screen.getByText(/Continue/));
-    await act(async () => {
-        await flushPromises();
-    });
-
-    // TO start date page
-    userEvent.click(screen.getByText(/No start date/i));
-    userEvent.click(screen.getByText(/Continue/));
-    await act(async () => {
-        await flushPromises();
-    });
-}
-
-async function selectNoReleaseDate(): Promise<void> {
-    userEvent.click(screen.getByText(/No release date/i));
-    userEvent.click(screen.getByText(/Continue/));
-    await act(async () => {
-        await flushPromises();
-    });
-}

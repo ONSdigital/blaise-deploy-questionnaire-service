@@ -48,6 +48,30 @@ export async function navigatePastSettingTOStartDateAndStartDeployment(): Promis
     });
 }
 
+export async function deployQuestionnaireAndSetNoTOStartDate(questionnaire: string): Promise<void> {
+    // Deploy page
+    await navigateToDeployPageAndSelectFile(questionnaire);
+    userEvent.click(screen.getByText(/Continue/));
+    await act(async () => {
+        await flushPromises();
+    });
+
+    // TO start date page
+    userEvent.click(screen.getByText(/No start date/i));
+    userEvent.click(screen.getByText(/Continue/));
+    await act(async () => {
+        await flushPromises();
+    });
+}
+
+export async function selectNoReleaseDate(): Promise<void> {
+    userEvent.click(screen.getByText(/No release date/i));
+    userEvent.click(screen.getByText(/Continue/));
+    await act(async () => {
+        await flushPromises();
+    });
+}
+
 export function formatDateString(date: string): string {
     const splitDate = date.split("/");
     return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`;
