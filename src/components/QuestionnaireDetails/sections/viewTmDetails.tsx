@@ -10,11 +10,9 @@ interface Props {
 }
 
 function ViewTmDetails({questionnaireName}: Props): ReactElement {
-    //TODO: change logic to filter out non-LMS questionnaire
-
-    // if (!modes.includes("CATI")) {
-    //     return <></>;
-    // }
+    if (!questionnaireName.includes("LMS")) {
+        return <></>;
+    }
 
     const [loading, setLoading] = useState<boolean>(true);
     const [errored, setErrored] = useState<boolean>(false);
