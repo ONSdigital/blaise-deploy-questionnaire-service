@@ -4,6 +4,7 @@ import { ONSButton } from "blaise-design-system-react-components";
 import { Form, Formik } from "formik";
 import SelectFile from "./sections/selectFile";
 import AskToSetTOStartDate from "./sections/askToSetTOStartDate";
+import AskToSetTMReleaseDate from "./sections/askToSetTMReleaseDate";
 import DeployFormSummary from "./sections/deployFormSummary";
 import AlreadyExists from "./sections/alreadyExists";
 import ConfirmOverride from "./sections/confirmOverride";
@@ -19,6 +20,7 @@ enum Step {
     AlreadyExists,
     ConfirmOverride,
     SetLiveDate,
+    SetReleaseDate,
     Summary,
     InvalidSettings
 }
@@ -39,7 +41,6 @@ function UploadPage(): ReactElement {
     const [errored, setErrored] = useState<boolean>(false);
 
     const history = useHistory();
-
 
     function onFileUploadProgress(progressEvent: ProgressEvent) {
         const percentage: number = roundUp((progressEvent.loaded / progressEvent.total) * 100, 2);
@@ -92,6 +93,12 @@ function UploadPage(): ReactElement {
                 return <ConfirmOverride questionnaireName={questionnaireName} />;
             case Step.SetLiveDate:
                 return <AskToSetTOStartDate questionnaireName={questionnaireName} />;
+            case Step.SetReleaseDate:
+                if (questionnaireName.startsWith("LMS")) {
+                    return <AskToSetTMReleaseDate questionnaireName={questionnaireName} />;
+                }
+                setActiveStep(Step.Summary);
+                return <DeployFormSummary file={file} foundQuestionnaire={foundQuestionnaire} />;
             case Step.Summary:
                 return <DeployFormSummary file={file} foundQuestionnaire={foundQuestionnaire} />;
             case Step.InvalidSettings:
