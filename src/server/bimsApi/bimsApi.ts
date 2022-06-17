@@ -5,6 +5,10 @@ export type toStartDate = {
     tostartdate: string
 }
 
+export type tmReleaseDate = {
+    tmreleasedate: string
+}
+
 export class BimsApi {
     private readonly bimsApiUrl: string;
     private authProvider: BlaiseIapNodeProvider;
@@ -50,6 +54,42 @@ export class BimsApi {
         const url = `/tostartdate/${questionnaireName}`;
 
         const response = await this.patch(url, { tostartdate: startDate });
+        return response.data;
+    }
+
+    async getReleaseDate(questionnaireName: string): Promise<tmReleaseDate | undefined> {
+        const url = `/tmreleasedate/${questionnaireName}`;
+
+        const response = await this.get(url);
+        if (response.status === 404) {
+            return undefined;
+        }
+        if (response.status !== 200) {
+            throw new Error(`Error getting release date for questionnaire: ${questionnaireName}`);
+        }
+        return response.data;
+    }
+
+    async deleteReleaseDate(questionnaireName: string): Promise<void> {
+        const url = `/tmreleasedate/${questionnaireName}`;
+
+        const response = await this.delete(url);
+        if (response.status !== 204) {
+            throw `Could not delete TM Release date for: ${questionnaireName}`;
+        }
+    }
+
+    async createReleaseDate(questionnaireName: string, releaseDate: string): Promise<tmReleaseDate> {
+        const url = `/tmreleasedate/${questionnaireName}`;
+
+        const response = await this.post(url, { tmreleasedate: releaseDate });
+        return response.data;
+    }
+
+    async updateReleaseDate(questionnaireName: string, releaseDate: string): Promise<tmReleaseDate> {
+        const url = `/tmreleasedate/${questionnaireName}`;
+
+        const response = await this.patch(url, { tmreleasedate: releaseDate });
         return response.data;
     }
 
