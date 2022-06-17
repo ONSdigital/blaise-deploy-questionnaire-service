@@ -48,6 +48,7 @@ export async function validateSelectedQuestionnaireExists(file: File | undefined
 export async function uploadAndInstallFile(
     questionnaireName: string,
     toStartDate: string | undefined,
+    tmReleaseDate: string | undefined,
     file: File | undefined,
     setUploading: (boolean: boolean) => void,
     setUploadStatus: (status: string) => void,
@@ -64,6 +65,24 @@ export async function uploadAndInstallFile(
         setUploadStatus("Failed to store telephone operations start date specified");
         setUploading(false);
         return false;
+    }
+
+    if (questionnaireName.startsWith("LMS")) {
+        // TODO
+        console.log(`THORNE 2! tmReleaseDate: ${tmReleaseDate}`);
+        console.log(`releaseDate ${tmReleaseDate}`);
+        const releaseDateCreated = await setTMReleaseDate(questionnaireName, tmReleaseDate);
+
+        // TODO
+        console.log(`THORNE 4! releaseDateCreated: ${releaseDateCreated}`);
+
+        if (!releaseDateCreated) {
+            // TODO
+            console.log("THORNE 5! :(");
+            setUploadStatus("Failed to store Totalmobile release date specified");
+            setUploading(false);
+            return false;
+        }
     }
 
     // Get the signed url to allow access to the bucket

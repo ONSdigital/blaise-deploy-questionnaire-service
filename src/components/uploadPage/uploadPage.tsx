@@ -112,7 +112,7 @@ function UploadPage(): ReactElement {
     }
 
     async function _uploadAndInstallQuestionnaire(values: any, actions: any) {
-        const installed = await uploadAndInstallFile(questionnaireName, values["set start date"], file, setUploading, setUploadStatus, onFileUploadProgress);
+        const installed = await uploadAndInstallFile(questionnaireName, values["set start date"], values["set release date"], file, setUploading, setUploadStatus, onFileUploadProgress);
         actions.setSubmitting(false);
         if (!installed) {
             setActiveStep(stepLength());
@@ -172,6 +172,15 @@ function UploadPage(): ReactElement {
                 if (values.askToSetDate === "no") {
                     values["set start date"] = "";
                 }
+                // TODO
+                console.log(`THORNE 0! values["set start date"]: ${values["set start date"]}`);
+                break;
+            case Step.SetReleaseDate:
+                if (values.askToSetDate === "no") {
+                    values["set release date"] = "";
+                }
+                // TODO
+                console.log(`THORNE 1! values["set release date"]: ${values["set release date"]}`);
                 break;
             case Step.Summary:
                 await _uploadAndInstallQuestionnaire(values, actions);
