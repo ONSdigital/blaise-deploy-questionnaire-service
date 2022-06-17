@@ -7,10 +7,9 @@ import {Link} from "react-router-dom";
 
 interface Props {
     questionnaireName: string
-    modes: string[]
 }
 
-function ViewTmDetails({questionnaireName, modes}: Props): ReactElement {
+function ViewTmDetails({questionnaireName}: Props): ReactElement {
     //TODO: change logic to filter out non-LMS questionnaire
 
     // if (!modes.includes("CATI")) {
