@@ -265,50 +265,13 @@ export function givenTheQuestionnareHasTheSettings(given: DefineStepFunction, mo
     });
 }
 
-export function givenIHaveDeployedAQuestionnaireUsingDQS(
-    given: DefineStepFunction,
-    questionnaireList: Questionnaire[],
-    mocker: MockAdapter
-): void {
-    given(/I have deployed a questionnaire using DQS/, (questionnaireName: string) => {
-        const newQuestionnaire = questionnaireWithName(questionnaireName);
-        if (!questionnaireList.some(questionnaire => questionnaire.name === questionnaireName)) {
-            questionnaireList.push(newQuestionnaire);
-        }
-        mocker.onGet("/api/questionnaires").reply(200, questionnaireList);
-        mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(200, newQuestionnaire);
-        mocker.onDelete(`/api/questionnaires/${questionnaireName}`).reply(204);
-        mocker.onGet(`/api/tostartdate/${questionnaireName}`).reply(200);
-        mocker.onPost(`/api/tostartdate/${questionnaireName}`).reply(200);
-        mocker.onDelete(`/api/tostartdate/${questionnaireName}`).reply(204);
-        mocker.onGet(`/upload/init?filename=${questionnaireName}.bpkg`).reply(200, "https://storage.googleapis.com/");
-        mocker.onGet(`/upload/verify?filename=${questionnaireName}.bpkg`).reply(200, {name: `${questionnaireName}.bpkg`});
-        mocker.onPost("/api/install").reply(201);
-        mocker.onGet(`/api/questionnaires/${questionnaireName}/settings`).reply(200, [
-            {
-                type: "StrictInterviewing",
-                saveSessionOnTimeout: true,
-                saveSessionOnQuit: true,
-                deleteSessionOnTimeout: true,
-                deleteSessionOnQuit: true,
-                sessionTimeout: 15,
-                applyRecordLocking: true
-            }
-        ]);
-        mocker.onGet(`/api/questionnaires/${questionnaireName}/modes`).reply(200, ["CAWI", "CATI"]);
-        mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, {count: 0});
-        mocker.onGet(`/api/questionnaires/${questionnaireName}/surveydays`).reply(200, []);
-        mocker.onGet(`/api/questionnaires/${questionnaireName}/active`).reply(200, true);
-    });
-}
-
-export function givenSpecifiedATotalMobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
+export function givenIHaveSpecifiedATotalMobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
     given(/specified a Total Mobile release date/, async (questionnaireName: string) => {
         mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(200, {tmreleasedate: "2021-06-27T16:29:00+00:00"});
     });
 }
 
-export function givenHaveNotSpecifiedATotalMobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
+export function givenIHaveNotSpecifiedATotalMobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
     given(/have not specified a Total Mobile release date/, async (questionnaireName: string) => {
         mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(404);
     });

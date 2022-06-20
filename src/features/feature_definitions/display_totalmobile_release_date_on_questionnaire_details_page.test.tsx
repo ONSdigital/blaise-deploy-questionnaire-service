@@ -10,11 +10,14 @@ import "@testing-library/jest-dom";
 import {Questionnaire} from "blaise-api-node-client";
 
 import {
-    givenIHaveDeployedAQuestionnaireUsingDQS,
-    givenSpecifiedATotalMobileReleaseDate,
-    givenHaveNotSpecifiedATotalMobileReleaseDate
+    givenTheQuestionnaireIsInstalled,
+    givenIHaveSpecifiedATotalMobileReleaseDate,
+    givenIHaveNotSpecifiedATotalMobileReleaseDate
 } from "../step_definitions/given";
-import {whenIViewTheQuestionnaireDetailsPageForThatQuestionnairInDQS} from "../step_definitions/when";
+import {
+    whenIGoToTheQuestionnaireDetailsPage,
+    whenIViewTheQuestionnaireDetailsPageForThatQuestionnaireInDQS,
+} from "../step_definitions/when";
 import {
     thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate,
     thenHaveTheOptionToChangeOrDeleteTheDate,
@@ -48,18 +51,18 @@ defineFeature(feature, test => {
     });
 
     test("View saved Totalmobile release date in questionnaire details", ({given, when, then}) => {
-        givenIHaveDeployedAQuestionnaireUsingDQS(given, questionnaireList, mocker);
-        givenSpecifiedATotalMobileReleaseDate(given, mocker);
-        // whenIViewTheQuestionnaireDetailsPageForThatQuestionnairInDQS(when, questionnaireList, mocker);
-        // thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
-        // thenHaveTheOptionToChangeOrDeleteTheDate(then);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenIHaveSpecifiedATotalMobileReleaseDate(given, mocker);
+        whenIGoToTheQuestionnaireDetailsPage(when);
+        thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
+        thenHaveTheOptionToChangeOrDeleteTheDate(then);
     });
 
     test("Add Totalmobile release date in questionnaire details", ({given, when, then}) => {
-        givenIHaveDeployedAQuestionnaireUsingDQS(given, questionnaireList, mocker);
-        givenHaveNotSpecifiedATotalMobileReleaseDate(given, mocker);
-        // whenIViewTheQuestionnaireDetailsPageForThatQuestionnairInDQS(when, questionnaireList, mocker);
-        // thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
-        // thenHaveTheOptionToAddTheDate(then);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenIHaveNotSpecifiedATotalMobileReleaseDate(given, mocker);
+        whenIGoToTheQuestionnaireDetailsPage(when);
+        thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
+        thenHaveTheOptionToAddTheDate(then);
     });
 });
