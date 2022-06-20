@@ -17,25 +17,12 @@ describe("View TM Release Date section", () => {
         mock.reset();
     });
 
-    it("should not render for non-LMS questionnaires", async () => {
-        const { container } = render(
-            <ViewTmDetails questionnaireName={"OPN2101A"} />
-        );
 
-        await act(async () => {
-            await flushPromises();
-        });
-
-        await waitFor(() => {
-            expect(container.childElementCount).toEqual(0);
-        });
-    });
-
-    it("should display an error message when it fails to load the TM Release Date", async () => {
-        const viewTmReleaseDateFailedMessage = /Failed to get Totalmobile release date/i;
-        mock.onGet("/api/tmreleasedate/OPN2101A").reply(500);
+    it("should render for LMS questionnaires", async () => {
+        const viewOnScreen = /Totalmobile/i;
+        mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(500);
         render(
-            <ViewTmDetails questionnaireName={"OPN2101A"}/>
+            <ViewTmDetails questionnaireName={"LMS2101_AA1"} />
         );
 
         await act(async () => {
@@ -43,7 +30,7 @@ describe("View TM Release Date section", () => {
         });
 
         await waitFor(() => {
-            expect(screen.getByText(viewTmReleaseDateFailedMessage)).toBeDefined();
+            expect(screen.getByText(viewOnScreen)).toBeDefined();
         });
     });
 
