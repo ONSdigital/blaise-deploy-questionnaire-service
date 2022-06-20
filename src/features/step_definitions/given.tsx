@@ -167,17 +167,10 @@ export function givenAllInstallsWillFail(given: DefineStepFunction, mocker: Mock
     });
 }
 
-<<<<<<< HEAD
 export function givenIHaveSelectedTheQuestionnairePackageToDeploy(given: DefineStepFunction): void {
   given(/I have selected the questionnaire package for '(.*)' to deploy/, async (questionnaireName: string) => {
     await navigateToDeployPageAndSelectFile(questionnaireName);
   });
-=======
-export function givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given: DefineStepFunction): void {
-    given(/I have selected the questionnaire package for '(.*)' to deploy/, async (questionnaireName: string) => {
-        await navigateToDeployPageAndSelectFile(questionnaireName);
-    });
->>>>>>> aa2dab7 (test: add behaviour tests for totalmobile release date feature)
 }
 
 export function givenTheQuestionnaireIsLive(
