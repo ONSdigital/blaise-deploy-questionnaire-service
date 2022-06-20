@@ -10,7 +10,7 @@ import "@testing-library/jest-dom";
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenILoadTheHomepage, whenISearchForAQuestionnaire } from "../step_definitions/when";
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires, thenIAmPresentedWithQuestionnaireNotFound } from "../step_definitions/then";
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -27,7 +27,7 @@ const feature = loadFeature(
 );
 
 
-const instrumentList: Instrument[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
 defineFeature(feature, test => {
@@ -39,12 +39,12 @@ defineFeature(feature, test => {
     });
 
     test("Search for a questionnaire", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
 
         whenILoadTheHomepage(when);
         whenISearchForAQuestionnaire(when);
@@ -53,12 +53,12 @@ defineFeature(feature, test => {
     });
 
     test("Questionnaire not found", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
 
         whenILoadTheHomepage(when);
         whenISearchForAQuestionnaire(when);
@@ -68,12 +68,12 @@ defineFeature(feature, test => {
 
 
     test("DST questionnaires do not show up by default", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
 
         whenILoadTheHomepage(when);
         whenISearchForAQuestionnaire(when);
@@ -83,12 +83,12 @@ defineFeature(feature, test => {
 
 
     test("I can search for DST questinnaires", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
 
         whenILoadTheHomepage(when);
         whenISearchForAQuestionnaire(when);

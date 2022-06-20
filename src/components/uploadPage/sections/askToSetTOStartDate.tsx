@@ -1,54 +1,19 @@
 import React, {ReactElement} from "react";
-import {useFormikContext} from "formik";
-import {StyledFormErrorSummary, StyledFormField} from "blaise-design-system-react-components";
+import {StyledFormErrorSummary} from "blaise-design-system-react-components";
+import SetDateForm from "../../SetDateForm";
 
 interface SelectFilePageProps {
-    instrumentName: string;
+    questionnaireName: string;
 }
 
-function AskToSetTOStartDate({instrumentName}: SelectFilePageProps): ReactElement {
-    const {values}: any = useFormikContext();
-
-    function validateRadio(value: string) {
-        let error;
-
-        if (!value) {
-            error = "Select an option";
-        } else if (values.askToSetTOStartDate === "yes" && !values["set TO start date"]) {
-            error = "Enter a start date";
-        }
-        return error;
-    }
-
-    const field = {
-        name: "askToSetTOStartDate",
-        type: "radio",
-        autoFocus: true,
-        validate: validateRadio,
-        radioOptions: [
-            {
-                id: "no", label: "No start date", value: "no"
-            },
-            {
-                id: "yes", label: "Yes, let me specify a start date", value: "yes",
-                specifyOption: {
-                    type: "date",
-                    id: "set-live-date",
-                    name: "set TO start date",
-                    description: "Please specify date"
-                }
-            },
-        ],
-        props: {}
-    };
-
+function AskToSetTOStartDate({questionnaireName}: SelectFilePageProps): ReactElement {
     return (
         <>
             <div className="grid">
                 <div className="grid__col col-8@m">
                     <h1 className="u-mb-l">
                         Would you like to set a telephone operations start date for questionnaire <em
-                        className="highlight">{instrumentName}</em>?
+                        className="highlight">{questionnaireName}</em>?
                     </h1>
 
                     <p>
@@ -57,10 +22,9 @@ function AskToSetTOStartDate({instrumentName}: SelectFilePageProps): ReactElemen
                         will use the surveys days to determine when to display.
                     </p>
 
-
                     <StyledFormErrorSummary/>
 
-                    <StyledFormField {...field}/>
+                    <SetDateForm dateType="start"/>
                 </div>
             </div>
         </>

@@ -42,7 +42,7 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
     it("should return a list of matched cases", async () => {
         mock.onPost(`/api/uacs/instrument/${instrumentName}`).reply(200);
         mock.onGet(`/api/uacs/instrument/${instrumentName}/bycaseid`).reply(200, uacCodes);
-        mock.onGet(`/api/instruments/${instrumentName}/cases/ids`).reply(200, caseIDs);
+        mock.onGet(`/api/questionnaires/${instrumentName}/cases/ids`).reply(200, caseIDs);
 
         const mergedCases = await generateUACCodesAndCSVFileData(instrumentName);
 
@@ -57,7 +57,7 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
     it("should throw error when UAC generation fails", async () => {
         mock.onPost(`/api/uacs/instrument/${instrumentName}`).reply(500);
         mock.onGet(`/api/uacs/instrument/${instrumentName}/bycaseid`).reply(200, uacCodes);
-        mock.onGet(`/api/instruments/${instrumentName}/cases/ids`).reply(200, caseIDs);
+        mock.onGet(`/api/questionnaires/${instrumentName}/cases/ids`).reply(200, caseIDs);
 
         await expect(generateUACCodesAndCSVFileData(instrumentName))
             .rejects
@@ -67,7 +67,7 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
     it("should throw error when get UACs fails", async () => {
         mock.onPost(`/api/uacs/instrument/${instrumentName}`).reply(200);
         mock.onGet(`/api/uacs/instrument/${instrumentName}/bycaseid`).reply(500);
-        mock.onGet(`/api/instruments/${instrumentName}/cases/ids`).reply(200, caseIDs);
+        mock.onGet(`/api/questionnaires/${instrumentName}/cases/ids`).reply(200, caseIDs);
 
         await expect(generateUACCodesAndCSVFileData(instrumentName))
             .rejects
@@ -77,11 +77,11 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
     it("should throw error when get Case IDs", async () => {
         mock.onPost(`/api/uacs/instrument/${instrumentName}`).reply(200);
         mock.onGet(`/api/uacs/instrument/${instrumentName}/bycaseid`).reply(200, uacCodes);
-        mock.onGet(`/api/instruments/${instrumentName}/cases/ids`).reply(500);
+        mock.onGet(`/api/questionnaires/${instrumentName}/cases/ids`).reply(500);
 
         await expect(generateUACCodesAndCSVFileData(instrumentName))
             .rejects
-            .toThrow("Failed to get instrument case IDs");
+            .toThrow("Failed to get questionnaire case IDs");
     });
 });
 

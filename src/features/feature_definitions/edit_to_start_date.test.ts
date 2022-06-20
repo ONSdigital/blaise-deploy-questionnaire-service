@@ -4,7 +4,7 @@
 
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup, } from "@testing-library/react";
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import { thenICanViewTheTOStartDateSetToo, thenIHaveTheOptionToAddAToStartDate, thenIHaveTheOptionToChangeOrDeleteTheToStartDate, thenTheToStartDateIsDeleted, thenTheToStartDateIsStored } from "../step_definitions/then";
 import { whenIDeleteTheToStartDate, whenIHaveSelectedToAddAToStartDate, whenILoadTheHomepage, whenISelectTheContinueButton, whenISelectTheQuestionnaire, whenISelectToChangeOrDeleteTOStartDate, whenISpecifyAToStartDateOf } from "../step_definitions/when";
@@ -24,7 +24,7 @@ const feature = loadFeature(
 );
 
 
-const instrumentList: Instrument[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapeter(axios);
 
 
@@ -37,7 +37,7 @@ defineFeature(feature, test => {
     });
 
     test("View TO Start Date if specified", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasATOStartDate(given, mocker);
 
         whenILoadTheHomepage(when);
@@ -47,7 +47,7 @@ defineFeature(feature, test => {
     });
 
     test("Change TO Start Date if specified", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasATOStartDate(given, mocker);
 
         whenILoadTheHomepage(when);
@@ -57,7 +57,7 @@ defineFeature(feature, test => {
     });
 
     test("Add TO Start Date if not previously specified", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasNoTOStartDate(given, mocker);
 
         whenILoadTheHomepage(when);
@@ -67,7 +67,7 @@ defineFeature(feature, test => {
     });
 
     test("Change an existing TO Start Date for a deployed questionnaire", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasATOStartDate(given, mocker);
 
         whenILoadTheHomepage(when);
@@ -80,7 +80,7 @@ defineFeature(feature, test => {
     });
 
     test("Delete a TO start date from a deployed questionnaire", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasATOStartDate(given, mocker);
 
         whenILoadTheHomepage(when);
@@ -93,7 +93,7 @@ defineFeature(feature, test => {
     });
 
     test("Add a TO Start Date to a deployed questionnaire", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasNoTOStartDate(given, mocker);
 
         whenILoadTheHomepage(when);

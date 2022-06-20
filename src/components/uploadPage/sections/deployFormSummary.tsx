@@ -1,15 +1,15 @@
 import React, { ReactElement } from "react";
 import { FormikContextType, useFormikContext } from "formik";
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import dateFormatter from "dayjs";
 import { roundUp } from "../../../utilities/maths";
 
 interface PageFourProps {
     file: File | undefined
-    foundInstrument: Instrument | null
+    foundQuestionnaire: Questionnaire | null
 }
 
-function DeployFormSummary({ file, foundInstrument }: PageFourProps): ReactElement {
+function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactElement {
     const { values: formValues }: FormikContextType<any> = useFormikContext();
 
     return (
@@ -69,7 +69,7 @@ function DeployFormSummary({ file, foundInstrument }: PageFourProps): ReactEleme
                                 </td>
                                 <td className="summary__values">
                                     {
-                                        foundInstrument ?
+                                        foundQuestionnaire ?
                                             "Yes, overriding questionnaire" : "No"
                                     }
                                 </td>
@@ -85,8 +85,8 @@ function DeployFormSummary({ file, foundInstrument }: PageFourProps): ReactEleme
                                 </td>
                                 <td className="summary__values">
                                     {
-                                        formValues["set TO start date"] ?
-                                            `Start date set to ${dateFormatter(formValues["set TO start date"]).format("DD/MM/YYYY")}`
+                                        formValues["set start date"] ?
+                                            `Start date set to ${dateFormatter(formValues["set start date"]).format("DD/MM/YYYY")}`
                                             :
                                             "Start date not specified"
                                     }

@@ -7,7 +7,7 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenILoadTheHomepage } from "../step_definitions/when";
@@ -27,7 +27,7 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const instrumentList: Instrument[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapeter(axios);
 
 
@@ -40,9 +40,9 @@ defineFeature(feature, test => {
     });
 
     test("List all questionnaires in Blaise", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         whenILoadTheHomepage(when);
         thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
     });

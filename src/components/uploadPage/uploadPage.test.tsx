@@ -9,7 +9,7 @@ import flushPromises from "../../tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
-import { instrumentList } from "../../features/step_definitions/helpers/apiMockObjects";
+import { questionnaireList } from "../../features/step_definitions/helpers/apiMockObjects";
 import navigateToDeployPageAndSelectFile, {
     navigatePastSettingTOStartDateAndStartDeployment
 } from "../../features/step_definitions/helpers/functions";
@@ -29,7 +29,7 @@ const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Upload Page", () => {
     beforeEach(() => {
-        mock.onGet("/api/instruments").reply(200, instrumentList);
+        mock.onGet("/api/questionnaires").reply(200, questionnaireList);
     });
 
     afterEach(() => {
@@ -114,8 +114,8 @@ describe("Given the file fails to upload", () => {
         );
         mock.onGet("/upload/init?filename=OPN2004A.bpkg").reply(200, "https://storage.googleapis.com/upload");
         mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "OPN2004A.bpkg" });
-        mock.onGet("/api/instruments").reply(200, instrumentList);
-        mock.onGet("/api/instruments/OPN2004A").reply(404);
+        mock.onGet("/api/questionnaires").reply(200, questionnaireList);
+        mock.onGet("/api/questionnaires/OPN2004A").reply(404);
         mock.onPost("/api/tostartdate/OPN2004A").reply(201);
     });
 

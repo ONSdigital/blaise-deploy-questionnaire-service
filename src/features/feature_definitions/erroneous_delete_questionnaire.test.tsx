@@ -7,7 +7,7 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import { givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous, givenTheQuestionnaireIsErroneous, givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenIConfirmDelete, whenIDeleteAQuestionnaire, whenIGoToTheQuestionnaireDetailsPage, whenILoadTheHomepage } from "../step_definitions/when";
@@ -27,7 +27,7 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const instrumentList: Instrument[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new Mockadapter(axios);
 
 defineFeature(feature, test => {
@@ -39,8 +39,8 @@ defineFeature(feature, test => {
     });
 
     test("Attempt to delete an questionnaire with an erroneous status", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
-        givenTheQuestionnaireIsErroneous(given, instrumentList);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireIsErroneous(given, questionnaireList);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);
         thenIAmPresentedWithAUnableDeleteWarning(then);
@@ -50,7 +50,7 @@ defineFeature(feature, test => {
 
 
     test("Select to deploy a new questionnaire", ({ given, when, and, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(when, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenIDeleteAQuestionnaire(when);

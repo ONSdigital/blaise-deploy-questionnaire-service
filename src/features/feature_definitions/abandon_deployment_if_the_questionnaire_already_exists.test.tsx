@@ -6,7 +6,7 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { Instrument } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import {
     givenIHaveSelectedTheQuestionnairePacakgeToDeploy,
@@ -37,7 +37,7 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const instrumentList: Instrument[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 
@@ -50,7 +50,7 @@ defineFeature(feature, test => {
     });
 
     test("Questionnaire package already in Blaise", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
 
         whenIConfirmMySelection(when);
@@ -59,7 +59,7 @@ defineFeature(feature, test => {
 
 
     test("Back-out of deploying a questionnaire", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, instrumentList, mocker);
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
 
         whenIConfirmMySelection(when);

@@ -2,10 +2,10 @@ import React, { ReactElement } from "react";
 import { StyledFormErrorSummary, StyledFormField } from "blaise-design-system-react-components";
 
 interface SelectFilePageProps {
-    instrumentName: string;
+    questionnaireName: string;
 }
 
-function AlreadyExists({ instrumentName }: SelectFilePageProps): ReactElement {
+function AlreadyExists({ questionnaireName }: SelectFilePageProps): ReactElement {
     function validateRadio(value: string) {
         let error;
         if (!value) {
@@ -30,7 +30,7 @@ function AlreadyExists({ instrumentName }: SelectFilePageProps): ReactElement {
     return (
         <>
             <h1 className="u-mb-l">
-                Questionnaire file <em className="highlight">{instrumentName}</em> already exists in the system.
+                Questionnaire file <em className="highlight">{questionnaireName}</em> already exists in the system.
                 <br />
                 What action do you want to take?
             </h1>

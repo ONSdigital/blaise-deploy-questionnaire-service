@@ -2,8 +2,8 @@ function isNumber(n: any) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function fieldPeriodFromInstrument(instrumentName: string): string {
-    const monthNumberString: string = instrumentName.substring(5, 7);
+function fieldPeriodFromQuestionnare(questionnaireName: string): string {
+    const monthNumberString: string = questionnaireName.substring(5, 7);
     let monthNumberInt = -1;
     let month: string;
 
@@ -23,12 +23,12 @@ function fieldPeriodFromInstrument(instrumentName: string): string {
         throw new Error("Month was dot between 1 and 12");
     }
 
-    return month + " 20" + instrumentName.substring(3, 5);
+    return month + " 20" + questionnaireName.substring(3, 5);
 }
 
-export function fieldPeriodToText(instrumentName: string): string {
+export function fieldPeriodToText(questionnaireName: string): string {
     try {
-        return fieldPeriodFromInstrument(instrumentName);
+        return fieldPeriodFromQuestionnare(questionnaireName);
     } catch (error: unknown) {
         console.error("Error getting field period");
         return "Field period unknown";
