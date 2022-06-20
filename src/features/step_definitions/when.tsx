@@ -281,3 +281,23 @@ export function whenIDeploy(when: DefineStepFunction): void {
     });
   });
 }
+
+export function whenISpecifyATMReleaseDateOf(when: DefineStepFunction): void {
+  when(/I specify the TM release date of '(.*)'/, async (toStartDate: string) => {
+    userEvent.click(screen.getByText(/Yes, let me specify a release date/i));
+    userEvent.type(screen.getByLabelText(/Please specify date/i), formatDateString(toStartDate));
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+}
+
+export function whenISelectToInstallWithNoReleaseDate(when: DefineStepFunction): void{
+  when("I select to not provide a TM Release Date", async () => {
+    userEvent.click(screen.getByText(/No release date/i));
+    userEvent.click(screen.getByText(/Continue/));
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+}

@@ -431,3 +431,39 @@ export function thenIGetTheOptionToContinueOrCancel(then: DefineStepFunction): v
     });
   });
 }
+
+export function thenIAmPresentedWithAnOptionToSpecifyATMReleaseDate(then: DefineStepFunction): void {
+  then("I am presented with an option to specify a Totalmobile release date", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/Would you like to set a Totalmobile release date/i)).toBeDefined();
+    }));
+  });
+}
+
+export function thenIAmGivenASummaryOfTheDeployment(then: DefineStepFunction): void {
+  then("I am given a summary of the deployment", async () => {
+    await waitFor(() => {
+      expect(screen.getByText(/Deployment summary/i)).toBeDefined();
+      expect(screen.getByText(/Questionnaire file name/i)).toBeDefined();
+      expect(screen.getByText(/Questionnaire file last modified date/i)).toBeDefined();
+      expect(screen.getByText(/Questionnaire file size/i)).toBeDefined();
+    });
+  });
+}
+
+export function thenICanViewTheTMReleaseDateIsSetTo(then: DefineStepFunction): void {
+  then(/I can view the TM Release Date is set to '(.*)'/, async (tmReleaseDate: string) => {
+    await waitFor(() => {
+      expect(screen.getByText(new RegExp(tmReleaseDate, "i"))).toBeDefined();
+    });
+  });
+}
+
+export function thenTheSummaryPageHasNoTMReleaseDate(then: DefineStepFunction): void {
+  then("the questionnaire is deployed without a TM Release Date", async () => {
+    await waitFor(() => {
+      expect(screen.getByText(/Deployment summary/i)).toBeDefined();
+      expect(screen.getByText(/Release date not specified/i)).toBeDefined();
+    });
+  });
+}
