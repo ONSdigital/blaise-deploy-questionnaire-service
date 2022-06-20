@@ -203,8 +203,8 @@ export function thenIHaveTheOptionToAddAToStartDate(then: DefineStepFunction): v
   });
 }
 
-export function thenICanViewTheTOStartDateSetToo(then: DefineStepFunction): void {
-  then(/I can view the TO Start Date set too '(.*)'/, async (toStartDate: string) => {
+export function thenICanViewTheTOStartDateIsSetTo(then: DefineStepFunction): void {
+  then(/I can view the TO Start Date is set to '(.*)'/, async (toStartDate: string) => {
     await waitFor(() => {
       expect(screen.getByText(new RegExp(toStartDate, "i"))).toBeDefined();
     });

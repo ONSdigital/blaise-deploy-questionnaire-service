@@ -118,7 +118,7 @@ export function whenIHaveSelectedToAddAToStartDate(when: DefineStepFunction): vo
   });
 }
 
-export function whenISpecifyAToStartDateOf(when: DefineStepFunction): void {
+export function whenISpecifyATOStartDateOf(when: DefineStepFunction): void {
   when(/I specify the TO start date of '(.*)'/, async (toStartDate: string) => {
     userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
     userEvent.type(screen.getByLabelText(/Please specify date/i), formatDateString(toStartDate));

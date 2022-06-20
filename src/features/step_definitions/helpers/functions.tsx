@@ -36,7 +36,7 @@ export default async function navigateToDeployPageAndSelectFileAndContinue(quest
 }
 
 export async function navigatePastSettingTOStartDateAndDeployQuestionnaire(): Promise<void> {
-    await selectNoTOStartDate();
+    await selectNoTOStartDateAndContinue();
     await clickContinue();
     await clickDeployQuestionnaire();
 }
@@ -46,11 +46,11 @@ export async function navigateToSetTMReleaseDatePageAndContinue(questionnaire: s
     await clickContinue();
 
     // TO start date page
-    await selectNoTOStartDate();
+    await selectNoTOStartDateAndContinue();
     await clickContinue();
 }
 
-export async function selectNoTOStartDate(): Promise<void> {
+export async function selectNoTOStartDateAndContinue(): Promise<void> {
     userEvent.click(screen.getByText(/No start date/i));
 }
 

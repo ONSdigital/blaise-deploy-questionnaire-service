@@ -7,9 +7,9 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenNoQuestionnairesAreInstalled, givenTOStartDateFails } from "../step_definitions/given";
-import { thenIAmPresentedWithAnOptionToSpecifyATOStartDate, thenICanViewTheTOStartDateSetToo, thenIGetAnErrorBannerWithMessage, thenTheSummaryPageHasNoTOStartDate } from "../step_definitions/then";
-import { whenIConfirmMySelection, whenIDeployTheQuestionnaire, whenISelectTheContinueButton, whenISelectToInstallWithNoStartDate, whenISpecifyAToStartDateOf } from "../step_definitions/when";
+import { givenIHaveSelectedTheQuestionnairePackageToDeploy, givenNoQuestionnairesAreInstalled, givenTOStartDateFails } from "../step_definitions/given";
+import { thenIAmPresentedWithAnOptionToSpecifyATOStartDate, thenICanViewTheTOStartDateIsSetTo, thenIGetAnErrorBannerWithMessage, thenTheSummaryPageHasNoTOStartDate } from "../step_definitions/then";
+import { whenIConfirmMySelection, whenIDeployTheQuestionnaire, whenISelectTheContinueButton, whenISelectToInstallWithNoStartDate, whenISpecifyATOStartDateOf } from "../step_definitions/when";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -37,29 +37,27 @@ defineFeature(feature, test => {
 
     test("Present TO Start Date option", ({ given, when, then }) => {
         givenNoQuestionnairesAreInstalled(given, mocker);
-        givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
 
         whenIConfirmMySelection(when);
 
         thenIAmPresentedWithAnOptionToSpecifyATOStartDate(then);
     });
 
-
     test("Enter TO Start Date", ({ given, when, then }) => {
         givenNoQuestionnairesAreInstalled(given, mocker);
-        givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
 
         whenIConfirmMySelection(when);
-        whenISpecifyAToStartDateOf(when);
+        whenISpecifyATOStartDateOf(when);
         whenISelectTheContinueButton(when);
 
-        thenICanViewTheTOStartDateSetToo(then);
+        thenICanViewTheTOStartDateIsSetTo(then);
     });
-
 
     test("Do not enter TO Start Date", ({ given, when, then }) => {
         givenNoQuestionnairesAreInstalled(given, mocker);
-        givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
 
         whenIConfirmMySelection(when);
         whenISelectToInstallWithNoStartDate(when);
@@ -67,14 +65,13 @@ defineFeature(feature, test => {
         thenTheSummaryPageHasNoTOStartDate(then);
     });
 
-
     test("Setting the TO Start Date fails during deployment", ({ given, when, then }) => {
         givenNoQuestionnairesAreInstalled(given, mocker);
         givenTOStartDateFails(given, mocker);
-        givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
 
         whenIConfirmMySelection(when);
-        whenISpecifyAToStartDateOf(when);
+        whenISpecifyATOStartDateOf(when);
         whenISelectTheContinueButton(when);
         whenIDeployTheQuestionnaire(when);
 

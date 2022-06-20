@@ -6,8 +6,8 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup, } from "@testing-library/react";
 import { Questionnaire } from "blaise-api-node-client";
 
-import { thenICanViewTheTOStartDateSetToo, thenIHaveTheOptionToAddAToStartDate, thenIHaveTheOptionToChangeOrDeleteTheToStartDate, thenTheToStartDateIsDeleted, thenTheToStartDateIsStored } from "../step_definitions/then";
-import { whenIDeleteTheToStartDate, whenIHaveSelectedToAddAToStartDate, whenILoadTheHomepage, whenISelectTheContinueButton, whenISelectTheQuestionnaire, whenISelectToChangeOrDeleteTOStartDate, whenISpecifyAToStartDateOf } from "../step_definitions/when";
+import { thenICanViewTheTOStartDateIsSetTo, thenIHaveTheOptionToAddAToStartDate, thenIHaveTheOptionToChangeOrDeleteTheToStartDate, thenTheToStartDateIsDeleted, thenTheToStartDateIsStored } from "../step_definitions/then";
+import { whenIDeleteTheToStartDate, whenIHaveSelectedToAddAToStartDate, whenILoadTheHomepage, whenISelectTheContinueButton, whenISelectTheQuestionnaire, whenISelectToChangeOrDeleteTOStartDate, whenISpecifyATOStartDateOf } from "../step_definitions/when";
 import { givenTheQuestionnaireHasATOStartDate, givenTheQuestionnaireHasNoTOStartDate, givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
@@ -43,7 +43,7 @@ defineFeature(feature, test => {
         whenILoadTheHomepage(when);
         whenISelectTheQuestionnaire(when);
 
-        thenICanViewTheTOStartDateSetToo(then);
+        thenICanViewTheTOStartDateIsSetTo(then);
     });
 
     test("Change TO Start Date if specified", ({ given, when, then }) => {
@@ -73,7 +73,7 @@ defineFeature(feature, test => {
         whenILoadTheHomepage(when);
         whenISelectTheQuestionnaire(when);
         whenISelectToChangeOrDeleteTOStartDate(when);
-        whenISpecifyAToStartDateOf(when);
+        whenISpecifyATOStartDateOf(when);
         whenISelectTheContinueButton(when);
 
         thenTheToStartDateIsStored(then, mocker);
@@ -99,7 +99,7 @@ defineFeature(feature, test => {
         whenILoadTheHomepage(when);
         whenISelectTheQuestionnaire(when);
         whenIHaveSelectedToAddAToStartDate(when);
-        whenISpecifyAToStartDateOf(when);
+        whenISpecifyATOStartDateOf(when);
         whenISelectTheContinueButton(when);
 
         thenTheToStartDateIsStored(then, mocker);

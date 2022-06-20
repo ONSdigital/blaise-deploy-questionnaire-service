@@ -9,7 +9,7 @@ import "@testing-library/jest-dom";
 import { Questionnaire } from "blaise-api-node-client";
 
 import {
-    givenIHaveSelectedTheQuestionnairePacakgeToDeploy,
+    givenIHaveSelectedTheQuestionnairePackageToDeploy,
     givenTheQuestionnaireIsInstalled,
 } from "../step_definitions/given";
 
@@ -51,7 +51,7 @@ defineFeature(feature, test => {
 
     test("Questionnaire package already in Blaise", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
 
         whenIConfirmMySelection(when);
         thenIAmPresentedWithTheOptionsToCancelOrOverwrite(then);
@@ -60,7 +60,7 @@ defineFeature(feature, test => {
 
     test("Back-out of deploying a questionnaire", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
 
         whenIConfirmMySelection(when);
         whenISelectTo(when);

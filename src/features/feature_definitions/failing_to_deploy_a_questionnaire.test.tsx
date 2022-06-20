@@ -7,7 +7,7 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import { givenAllInstallsWillFail, givenIHaveSelectedTheQuestionnairePacakgeToDeploy } from "../step_definitions/given";
+import { givenAllInstallsWillFail, givenIHaveSelectedTheQuestionnairePackageToDeploy } from "../step_definitions/given";
 import { whenIConfirmMySelection, whenIDeploy } from "../step_definitions/when";
 import { thenICanRetryAnInstall, thenIGetAnErrorBanner } from "../step_definitions/then";
 import { AuthManager } from "blaise-login-react-client";
@@ -37,7 +37,7 @@ defineFeature(feature, test => {
 
     test("Deployment of selected file failure", ({ given, when, then }) => {
         givenAllInstallsWillFail(given, mocker);
-        givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
 
         whenIConfirmMySelection(when);
         whenIDeploy(when);
@@ -47,7 +47,7 @@ defineFeature(feature, test => {
 
     test("Deploy selected file, retry following failure", ({ given, when, then }) => {
         givenAllInstallsWillFail(given, mocker);
-        givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
 
         whenIConfirmMySelection(when);
         whenIDeploy(when);

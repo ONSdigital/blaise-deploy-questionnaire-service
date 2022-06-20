@@ -167,7 +167,7 @@ export function givenAllInstallsWillFail(given: DefineStepFunction, mocker: Mock
   });
 }
 
-export function givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given: DefineStepFunction): void {
+export function givenIHaveSelectedTheQuestionnairePackageToDeploy(given: DefineStepFunction): void {
   given(/I have selected the questionnaire package for '(.*)' to deploy/, async (questionnaireName: string) => {
     await navigateToDeployPageAndSelectFile(questionnaireName);
   });
