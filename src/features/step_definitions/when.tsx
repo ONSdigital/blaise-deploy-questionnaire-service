@@ -11,7 +11,7 @@ import { DefineStepFunction } from "jest-cucumber";
 import { Router } from "react-router";
 import { createMemoryHistory } from "history";
 import App from "../../app";
-import { formatDateString, navigatePastSettingTOStartDateAndStartDeployment } from "./helpers/functions";
+import { formatDateString, navigatePastSettingTOStartDateAndDeployQuestionnaire } from "./helpers/functions";
 
 export function whenIConfirmMySelection(when: DefineStepFunction): void {
   when("I confirm my selection", async () => {
@@ -185,8 +185,11 @@ export function whenIConfirmToOverwrite(when: DefineStepFunction): void {
   when("I confirm 'overwrite'", async () => {
     userEvent.click(screen.getByText(/yes, overwrite questionnaire/i));
     userEvent.click(screen.getByText(/Continue/));
+    await act(async () => {
+      await flushPromises();
+    });
 
-    await navigatePastSettingTOStartDateAndStartDeployment();
+    await navigatePastSettingTOStartDateAndDeployQuestionnaire();
     await act(async () => {
       await flushPromises();
     });

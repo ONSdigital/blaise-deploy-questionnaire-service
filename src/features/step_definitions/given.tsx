@@ -1,4 +1,4 @@
-import navigateToDeployPageAndSelectFile, { formatDateString } from "./helpers/functions";
+import { formatDateString, navigateToDeployPageAndSelectFile } from "./helpers/functions";
 import { DefineStepFunction } from "jest-cucumber";
 import { questionnaireWithName } from "./helpers/apiMockObjects";
 import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";

@@ -3,8 +3,8 @@
  */
 
 import {
-    deployQuestionnaireAndSetNoTOStartDate,
-    selectNoReleaseDate
+    navigateToSetTMReleaseDatePageAndContinue,
+    selectNoTMReleaseDateAndContinue
 } from "../../../features/step_definitions/helpers/functions";
 import {screen} from "@testing-library/react";
 import axios from "axios";
@@ -26,22 +26,22 @@ describe("Ask to set TM release date page", () => {
     const OPNQuestionnaire = "OPN2004A.bpkg"
 
     it("should render when an LMS questionnaire is being deployed", async () => {
-        await deployQuestionnaireAndSetNoTOStartDate(LMSQuestionnaire);
+        await navigateToSetTMReleaseDatePageAndContinue(LMSQuestionnaire);
 
         expect(screen.getByText(/Would you like to set a Totalmobile release date for questionnaire/i)).toBeDefined();
         expect(screen.queryByText(/Deployment summary/i)).not.toBeInTheDocument();
     });
 
     it("should not render when a non-LMS questionnaire is being deployed", async () => {
-        await deployQuestionnaireAndSetNoTOStartDate(OPNQuestionnaire);
+        await navigateToSetTMReleaseDatePageAndContinue(OPNQuestionnaire);
 
         expect(screen.queryByText(/Would you like to set a Totalmobile release date for questionnaire/i)).not.toBeInTheDocument();
         expect(screen.getByText(/Deployment summary/i)).toBeDefined();
     });
 
     it("should continue to deploy questionnaire if no release date has been selected", async () => {
-        await deployQuestionnaireAndSetNoTOStartDate(LMSQuestionnaire);
-        await selectNoReleaseDate();
+        await navigateToSetTMReleaseDatePageAndContinue(LMSQuestionnaire);
+        await selectNoTMReleaseDateAndContinue();
 
         expect(screen.getByText(/Deployment summary/i)).toBeDefined();
     });
