@@ -1,7 +1,7 @@
 import { DefineStepFunction } from "jest-cucumber";
 import { questionnaireWithName } from "./helpers/apiMockObjects";
 import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
-import navigateToDeployPageAndSelectFile, {formatDateString} from "./helpers/functions";
+import { navigateToDeployPageAndSelectFile, formatDateString } from "./helpers/functions";
 import MockAdapter from "axios-mock-adapter";
 
 export function givenTheQuestionnaireIsInstalled(
