@@ -189,7 +189,7 @@ export function thenIAmPresentedWithAListOfDeployedQuestionnaires(then: DefineSt
 export function thenIHaveTheOptionToChangeOrDeleteTheToStartDate(then: DefineStepFunction): void {
   then("I have the option to change or delete the TO Start date", async () => {
     await waitFor(() => {
-      expect(screen.getByText(/Change or delete start date/i)).toBeDefined();
+       expect(screen.getByText(/Change or delete start date/i)).toBeDefined();
     });
   });
 }
@@ -487,7 +487,6 @@ export function thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(then
 export function thenIHaveTheOptionToAddATotalmobileReleaseDate(then: DefineStepFunction): void {
   then("I have the option to add a Totalmobile release date", async () => {
     await waitFor(() => {
-
       expect(screen.getByText(/Add release date/i)).toBeDefined();
     });
   });

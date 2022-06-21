@@ -94,7 +94,7 @@ function ViewTmDetails({questionnaireName}: Props): ReactElement {
                                     tmReleaseDate ?
                                         <Link to={{
                                             pathname: "/questionnaire/release-date",
-                                            state: {questionnaireName: questionnaireName, toStartDate: tmReleaseDateValue}
+                                            state: {questionnaireName: questionnaireName, tmReleaseDate: tmReleaseDateValue}
                                         }} className="summary__button"
                                               aria-label={`Change or delete release date for questionnaire ${questionnaireName}`}>
                                             Change or delete release date
