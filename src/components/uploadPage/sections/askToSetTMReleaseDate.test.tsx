@@ -2,11 +2,7 @@
  * @jest-environment jsdom
  */
 
-import {
-    navigateToSetTMReleaseDatePageAndContinue,
-    selectNoTMReleaseDateAndContinue
-} from "../../../features/step_definitions/helpers/functions";
-import {screen} from "@testing-library/react";
+import {render} from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import '@testing-library/jest-dom/extend-expect';
@@ -15,6 +11,8 @@ const mock = new MockAdapter(axios);
 
 import { AuthManager } from "blaise-login-react-client";
 import React from "react";
+import AskToSetTMReleaseDate from "./askToSetTMReleaseDate";
+import { Formik } from "formik";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -22,27 +20,34 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 });
 
 describe("Ask to set TM release date page", () => {
-    const LMSQuestionnaire = "LMS2004A.bpkg"
-    const OPNQuestionnaire = "OPN2004A.bpkg"
+    it("should match the Snapshot", async () => {
+        const wrapper = render(
+            <Formik initialValues={{ }} onSubmit={( ) => { }} >
+                <AskToSetTMReleaseDate questionnaireName={"LMS2207T"}/>
+            </Formik>
+        );
 
-    it("should render when an LMS questionnaire is being deployed", async () => {
-        await navigateToSetTMReleaseDatePageAndContinue(LMSQuestionnaire);
-
-        expect(screen.getByText(/Would you like to set a Totalmobile release date for questionnaire/i)).toBeDefined();
-        expect(screen.queryByText(/Deployment summary/i)).not.toBeInTheDocument();
+        expect(wrapper).toMatchSnapshot();
     });
 
-    it("should not render when a non-LMS questionnaire is being deployed", async () => {
-        await navigateToSetTMReleaseDatePageAndContinue(OPNQuestionnaire);
+    it("should render with the questionnaire name displayed", async () => {
+        const { queryByText } = render(
+            <Formik initialValues={{ }} onSubmit={( ) => { }}>
+                <AskToSetTMReleaseDate questionnaireName={"LMS2207T"}/>
+            </Formik>
+        );
 
-        expect(screen.queryByText(/Would you like to set a Totalmobile release date for questionnaire/i)).not.toBeInTheDocument();
-        expect(screen.getByText(/Deployment summary/i)).toBeDefined();
+        expect(queryByText(/LMS2207T/i)).toBeInTheDocument();
     });
 
-    it("should continue to deploy questionnaire if no release date has been selected", async () => {
-        await navigateToSetTMReleaseDatePageAndContinue(LMSQuestionnaire);
-        await selectNoTMReleaseDateAndContinue();
+    it("should render with SetDateForm displayed", async () => {
+        const { queryByText } = render(
+            <Formik initialValues={{ }} onSubmit={( ) => { }}>
+                <AskToSetTMReleaseDate questionnaireName={"LMS2207T"}/>
+            </Formik>
+        );
 
-        expect(screen.getByText(/Deployment summary/i)).toBeDefined();
+        expect(queryByText(/Yes, let me specify a release date/i)).toBeInTheDocument();
     });
 });
+
