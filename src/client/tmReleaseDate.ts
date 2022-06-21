@@ -16,7 +16,6 @@ export async function setTMReleaseDate(questionnaireName: string, tmReleaseDate:
     }
 }
 
-
 export async function getTMReleaseDate(questionnaireName: string): Promise<string> {
     console.log(`Call to getTMReleaseDate(${questionnaireName})`);
     const url = `/api/tmreleasedate/${questionnaireName}`;
@@ -36,7 +35,6 @@ export async function getTMReleaseDate(questionnaireName: string): Promise<strin
         throw error;
     }
 }
-
 
 export async function deleteTMReleaseDate(questionnaireName: string): Promise<boolean> {
     console.log(`Call to deleteTMReleaseDate(${questionnaireName})`);
