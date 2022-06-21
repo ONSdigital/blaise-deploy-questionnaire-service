@@ -42,7 +42,7 @@ function DeployFormSummary({file, foundQuestionnaire}: PageFourProps): ReactElem
                         </div>
                     </td>
                     <td className="summary__values">
-                        {dateFormatter(file?.lastModified).format("DD/MM/YYYY HH:MM")}
+                        {dateFormatter(file?.lastModified).format("DD/MM/YYYY HH:mm")}
                     </td>
                 </tr>
                 </tbody>
