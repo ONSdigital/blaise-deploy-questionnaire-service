@@ -24,12 +24,12 @@ describe("Deploy form summary page", () => {
     const opnQuestionnaireName = "OPN2004A"
     const lastModified = new Date("2022-01-24T01:02:03").getTime()
 
-    const lmsFile = new File( ["龴ↀ◡ↀ龴"], `${lmsQuestionnaireName}.bpkg`, {
-            type: "application/pdf", lastModified: lastModified
-        });
-    const opnFile = new File( ["(♥_♥)"], `${opnQuestionnaireName}.bpkg`, {
-            type: "application/pdf", lastModified: lastModified
-        });
+    const lmsFile = new File(["龴ↀ◡ↀ龴"], `${lmsQuestionnaireName}.bpkg`, {
+        type: "application/pdf", lastModified: lastModified
+    });
+    const opnFile = new File(["(♥_♥)"], `${opnQuestionnaireName}.bpkg`, {
+        type: "application/pdf", lastModified: lastModified
+    });
 
     const lmsQuestionnaire = questionnaireWithName(lmsQuestionnaireName);
     const opnQuestionnaire = questionnaireWithName(opnQuestionnaireName);
