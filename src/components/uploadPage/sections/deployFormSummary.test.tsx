@@ -53,7 +53,7 @@ describe("Deploy form summary page", () => {
             </Formik>
         );
 
-        expect(getByText(/Questionnaire file name/i)).toBeDefined();
+        expect(getByText(/Questionnaire file name/i)).toBeInTheDocument();
     });
 
     it("should display when the file was last modified", async () => {
@@ -64,7 +64,7 @@ describe("Deploy form summary page", () => {
             </Formik>
         );
 
-        expect(getByText(/Questionnaire file last modified date/i)).toBeDefined();
+        expect(getByText(/Questionnaire file last modified date/i)).toBeInTheDocument();
     });
 
     it("should display the questionnaire file size", async () => {
@@ -75,7 +75,7 @@ describe("Deploy form summary page", () => {
             </Formik>
         );
 
-        expect(getByText(/Questionnaire file size/i)).toBeDefined();
+        expect(getByText(/Questionnaire file size/i)).toBeInTheDocument();
     });
 
     it("should display if the questionnaire exists in Blaise", async () => {
@@ -86,7 +86,7 @@ describe("Deploy form summary page", () => {
             </Formik>
         );
 
-        expect(getByText(/Does the questionnaire already exist in blaise?/i)).toBeDefined();
+        expect(getByText(/Does the questionnaire already exist in blaise?/i)).toBeInTheDocument();
     });
 
     it("should display the telephone operation start date", async () => {
@@ -97,7 +97,7 @@ describe("Deploy form summary page", () => {
             </Formik>
         );
 
-        expect(getByText(/Set a telephone operations start date for questionnaire?/i)).toBeDefined();
+        expect(getByText(/Set a telephone operations start date for questionnaire?/i)).toBeInTheDocument();
     });
 
     it("should display the totalmobile release date for LMS questionnaires", async () => {
@@ -108,7 +108,7 @@ describe("Deploy form summary page", () => {
             </Formik>
         );
 
-        expect(getByText(/Set a totalmobile release date for questionnaire?/i)).toBeDefined();
+        expect(getByText(/Set a totalmobile release date for questionnaire?/i)).toBeInTheDocument();
     });
 
     it("should not display the totalmobile release date for non-LMS questionnaires", async () => {
