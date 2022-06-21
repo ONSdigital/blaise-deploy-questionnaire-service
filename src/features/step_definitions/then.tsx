@@ -11,59 +11,45 @@ import { formatDateString } from "./helpers/functions";
 
 export function thenIAmPresentedWithTheOptionsToCancelOrOverwrite(then: DefineStepFunction): void {
   then("I am presented with the options to cancel or overwrite the questionnaire", async () => {
-    await waitFor((() => {
-      expect(screen.getByText(/already exists in the system/i)).toBeDefined();
-      expect(screen.getByText("Overwrite the entire questionnaire")).toBeDefined();
-    }));
+    expect(await screen.findByText(/already exists in the system/i)).toBeDefined();
+    expect(await screen.findByText("Overwrite the entire questionnaire")).toBeDefined();
   });
 }
 
 export function thenIAmReturnedToTheLandingPage(then: DefineStepFunction): void {
   then("I am returned to the landing page", async () => {
-    await waitFor((() => {
-      expect(screen.getByText(/Filter by questionnaire name/i)).toBeDefined();
-    }));
+    expect(await screen.findByText(/Filter by questionnaire name/i)).toBeDefined();
   });
 }
 
 export function thenIAmReturnedToTheQuestionnaireDetailsPage(then: DefineStepFunction): void {
   then("I am returned to the questionnaire details page", async () => {
-    await waitFor((() => {
-      expect(screen.getByText(/questionnaire details/i)).toBeDefined();
-    }));
+    expect(await screen.findByText(/questionnaire details/i)).toBeDefined();
   });
 }
 
 export function thenIWillNotHaveTheOptionToDelete(then: DefineStepFunction): void {
   then(/I will not have the option to 'delete' displayed for '(.*)'/, async (questionnaire: string) => {
-    await waitFor(() => {
       const deleteButton: any = document.querySelector(`#delete-${questionnaire}`);
-      expect(deleteButton).toBeNull();
-    });
+      expect(await deleteButton).toBeNull();
   });
 }
 
 export function thenIGetTheQuestionnaireIsLiveWarningBanner(then: DefineStepFunction): void {
   then("I am presented with a warning banner that I cannot overwrite the survey", async () => {
-    await waitFor((() => {
-      expect(screen.getByText(/you cannot overwrite questionnaire that are currently live/i));
-    }));
+    expect(await screen.findByText(/you cannot overwrite questionnaire that are currently live/i));
   });
 }
 
 export function thenIAmPresentedWithAWarning(then: DefineStepFunction): void {
   then("I am presented with a warning", async () => {
-    await waitFor((() => {
-      expect(screen.getByText(/are you sure you want to delete the questionnaire/i)).toBeDefined();
-    }));
+    expect(await screen.findByText(/are you sure you want to delete the questionnaire/i)).toBeDefined();
   });
 }
 
 export function thenIAmPresentedWithAnActiveSurveyDaysWarning(then: DefineStepFunction): void {
   then("I am presented with a warning that questionnaire has active survey days", async () => {
-    await waitFor((() => {
-      expect(screen.getByText(/Questionnaire has active Telephone Operations survey days/i)).toBeDefined();
-    }));
+    expect(await screen.findByText(/Questionnaire has active Telephone Operations survey days/i)).toBeDefined();
   });
 }
 
@@ -73,17 +59,13 @@ export function thenIAmPresentedWithAnActiveWebCollectionWarning(then: DefineSte
       await flushPromises();
     });
 
-    await waitFor((() => {
-      expect(screen.getByText(/Questionnaire is active for web collection/i)).toBeDefined();
-    }));
+    expect(await screen.findByText(/Questionnaire is active for web collection/i)).toBeDefined();
   });
 }
 
 export function thenIAmPresentedWithAConfirmOverwriteWarning(then: DefineStepFunction): void {
   then("I am presented with a warning, to confirm overwrite", async () => {
-    await waitFor((() => {
-      expect(screen.getByText(/are you sure you want to overwrite the entire questionnaire/i));
-    }));
+    expect(await screen.findByText(/are you sure you want to overwrite the entire questionnaire/i));
   });
 }
 
@@ -164,9 +146,7 @@ export function thenTheQuestionnaireIsDeactivated(then: DefineStepFunction, mock
 
 export function thenIGetTheDeleteSuccessBanner(then: DefineStepFunction): void {
   then(/I am presented a success banner on the launch page for deleting '(.*)'/, async (questionnaire: string) => {
-    await waitFor(() => {
-      expect(screen.getByText(new RegExp(`questionnaire: ${questionnaire} successfully deleted`, "i"))).toBeDefined();
-    });
+    expect(await screen.findByText(new RegExp(`questionnaire: ${questionnaire} successfully deleted`, "i"))).toBeDefined();
   });
 }
 
@@ -188,26 +168,19 @@ export function thenIAmPresentedWithAListOfDeployedQuestionnaires(then: DefineSt
 
 export function thenIHaveTheOptionToChangeOrDeleteTheToStartDate(then: DefineStepFunction): void {
   then("I have the option to change or delete the TO Start date", async () => {
-    await waitFor(() => {
-       expect(screen.getByText(/Change or delete start date/i)).toBeDefined();
-    });
+    expect(await screen.findByText(/Change or delete start date/i)).toBeDefined();
   });
 }
 
 export function thenIHaveTheOptionToAddAToStartDate(then: DefineStepFunction): void {
   then("I have the option to add a TO Start date", async () => {
-    await waitFor(() => {
-
-      expect(screen.getByText(/Add start date/i)).toBeDefined();
-    });
+    expect(await screen.findByText(/Add start date/i)).toBeDefined();
   });
 }
 
 export function thenICanViewTheTOStartDateIsSetTo(then: DefineStepFunction): void {
   then(/I can view the TO Start Date is set to '(.*)'/, async (toStartDate: string) => {
-    await waitFor(() => {
-      expect(screen.getByText(new RegExp(toStartDate, "i"))).toBeDefined();
-    });
+    expect(await screen.findByText(new RegExp(toStartDate, "i"))).toBeDefined();
   });
 }
 
@@ -268,27 +241,21 @@ export function thenICanReturnToTheQuestionnaireList(then: DefineStepFunction): 
 
 export function thenIGetAnErrorBanner(then: DefineStepFunction): void {
   then("I am presented with an information banner with an error message", async () => {
-    await waitFor(() => {
-      expect(screen.getByText("File deploy failed")).toBeDefined();
-    });
+    expect(await screen.findByText("File deploy failed")).toBeDefined();
   });
 }
 
 export function thenIGetAnErrorBannerWithMessage(then: DefineStepFunction): void {
   then("I am presented with an information banner with an error message:", async (message: string) => {
-    await waitFor(() => {
-      expect(screen.getByText("File deploy failed")).toBeDefined();
-      expect(screen.getByText(new RegExp(message, "i"))).toBeDefined();
-    });
+    expect(await screen.findByText("File deploy failed")).toBeDefined();
+    expect(await screen.findByText(new RegExp(message, "i"))).toBeDefined();
   });
 }
 
 export function thenICanRetryAnInstall(then: DefineStepFunction): void {
   then("I am able to return to the select survey package screen", async () => {
     userEvent.click(screen.getByText(/return to select survey package page/i));
-    await waitFor(() => {
-      expect(screen.getByText(/deploy a questionnaire file/i)).toBeDefined();
-    });
+    expect(await screen.findByText(/deploy a questionnaire file/i)).toBeDefined();
   });
 }
 
@@ -300,9 +267,7 @@ export function thenAGenerateUacButtonIsAvailable(then: DefineStepFunction): voi
 
 export function thenAGenerateUacButtonIsNotAvailable(then: DefineStepFunction): void {
   then("A generate UAC button is not available", async () => {
-    await waitFor(() => {
-      expect(screen.queryAllByText(/Generate and download Unique Access Codes/i)).toHaveLength(0);
-    });
+    expect(await screen.queryAllByText(/Generate and download Unique Access Codes/i)).toHaveLength(0);
   });
 }
 
@@ -320,76 +285,60 @@ export function thenUACsAreGenerated(then: DefineStepFunction, mocker: MockAdapt
 
 export function thenIReceiveAUACError(then: DefineStepFunction): void {
   then("I receive an appropriate error describing suitable user actions", () => {
-    expect(screen.getByText(/Error occurred while generating Unique Access Codes/i)).toBeDefined();
+    expect(screen.getByText(/Error occurred while generating Unique Access Codes/i)).toBeInTheDocument();
   });
 }
 
 export function thenICanSeeThatThatTheQuestionnaireHasCases(then: DefineStepFunction): void {
   then(/I can see that that the questionnaire has (\d+) cases/, async (cases: string) => {
-    await waitFor(() => {
-      // Should appear twice as the number 500 should show for number of cases
-      // as well as number of Unique Access Codes generated
-      expect(screen.queryAllByText(cases)).toHaveLength(2);
-    });
+    // Should appear twice as the number 500 should show for number of cases
+    // as well as number of Unique Access Codes generated
+    expect(await screen.findAllByText(cases)).toHaveLength(2);
   });
 }
 
 export function thenIAmPresentedWithASuccessfullyDeployedBanner(then: DefineStepFunction): void {
   then("I am presented with a successful deployment banner on the landing page", async () => {
-    await waitFor(() => {
-      expect(screen.getByText(/The questionnaire file has been successfully deployed and will be displayed within the table of questionnaires./i)).toBeDefined();
-    });
+    expect(await screen.findByText(/The questionnaire file has been successfully deployed and will be displayed within the table of questionnaires./i)).toBeDefined();
   });
 }
 
 export function thenICanOnlyReturnToTheLandingPage(then: DefineStepFunction): void {
   then("I can only return to the landing page", async () => {
-    await waitFor((() => {
-      expect(screen.getByText(/accept and go to table of questionnaires/i));
-      userEvent.click(screen.getByText(/accept and go to table of questionnaires/i));
-    }));
+    expect(await screen.findByText(/accept and go to table of questionnaires/i));
+    userEvent.click(await screen.findByText(/accept and go to table of questionnaires/i));
   });
 }
 
 export function thenIAmPresentedWithQuestionnaireNotFound(then: DefineStepFunction): void {
   then(/I am presented with the following message: '(.*)'/, async (message: string) => {
-    await waitFor((() => {
-      expect(screen.getByText(/0 results/i)).toBeDefined();
-      expect(screen.getByText(new RegExp(message, "i"))).toBeDefined();
-    }));
+    expect(await screen.findByText(/0 results/i)).toBeDefined();
+    expect(await screen.findByText(new RegExp(message, "i"))).toBeDefined();
   });
 }
 
 export function thenIAmPresentedWithAnOptionToSpecifyATOStartDate(then: DefineStepFunction): void {
   then("I am presented with an option to specify a TO Start Date", async () => {
-    await waitFor((() => {
-      expect(screen.getByText(/Would you like to set a telephone operations start date/i)).toBeDefined();
-    }));
+    expect(await screen.findByText(/Would you like to set a telephone operations start date/i)).toBeDefined();
   });
 }
 
 export function thenTheSummaryPageHasNoTOStartDate(then: DefineStepFunction): void {
   then("the questionnaire is deployed without a TO Start Date", async () => {
-    await waitFor(() => {
-      expect(screen.getByText(/Deployment summary/i)).toBeDefined();
-      expect(screen.getByText(/Start date not specified/i)).toBeDefined();
-    });
+    expect(await screen.findByText(/Deployment summary/i)).toBeDefined();
+    expect(await screen.findByText(/Start date not specified/i)).toBeDefined();
   });
 }
 
 export function thenIAmPresentedWithAnOptionToDeployAQuestionnaire(then: DefineStepFunction): void {
   then("I am presented with an option to deploy a new questionnaire", async () => {
-    await waitFor(() => {
-      expect(screen.getByText(/Deploy a questionnaire/i)).toBeDefined();
-    });
+    expect(await screen.findByText(/Deploy a questionnaire/i)).toBeDefined();
   });
 }
 
 export function thenIAmPresentedWithAnOptionToDeployAQuestionnaireFile(then: DefineStepFunction): void {
   then("I am presented with an option to choose a file containing the questionnaire", async () => {
-    await waitFor(() => {
-      expect(screen.getByText(/Deploy a questionnaire file/i)).toBeDefined();
-    });
+    expect(await screen.findByText(/Deploy a questionnaire file/i)).toBeDefined();
   });
 }
 
@@ -413,9 +362,7 @@ export function thenUploadIsDisabled(then: DefineStepFunction): void {
 export function thenAWarningIsDisplayedWithTheMessage(then: DefineStepFunction): void {
   then("a warning is displayed with the message", async (message: string) => {
     message = message.replace(/\s/g, " ");
-    await waitFor((() => {
-      expect(screen.getByText(message, { exact: false })).toBeDefined();
-    }));
+    expect(await screen.findByText(message, { exact: false })).toBeDefined();
   });
 }
 
@@ -434,37 +381,29 @@ export function thenIGetTheOptionToContinueOrCancel(then: DefineStepFunction): v
 
 export function thenIAmPresentedWithAnOptionToSpecifyATMReleaseDate(then: DefineStepFunction): void {
   then("I am presented with an option to specify a Totalmobile release date", async () => {
-    await waitFor((() => {
-      expect(screen.getByText(/Would you like to set a Totalmobile release date/i)).toBeDefined();
-    }));
+    expect(await screen.findByText(/Would you like to set a Totalmobile release date/i)).toBeDefined();
   });
 }
 
 export function thenIAmGivenASummaryOfTheDeployment(then: DefineStepFunction): void {
   then("I am given a summary of the deployment", async () => {
-    await waitFor(() => {
-      expect(screen.getByText(/Deployment summary/i)).toBeDefined();
-      expect(screen.getByText(/Questionnaire file name/i)).toBeDefined();
-      expect(screen.getByText(/Questionnaire file last modified date/i)).toBeDefined();
-      expect(screen.getByText(/Questionnaire file size/i)).toBeDefined();
-    });
+    expect(await screen.findByText(/Deployment summary/i)).toBeDefined();
+    expect(await screen.findByText(/Questionnaire file name/i)).toBeDefined();
+    expect(await screen.findByText(/Questionnaire file last modified date/i)).toBeDefined();
+    expect(await screen.findByText(/Questionnaire file size/i)).toBeDefined();
   });
 }
 
 export function thenICanViewTheTMReleaseDateIsSetTo(then: DefineStepFunction): void {
   then(/I can view the TM Release Date is set to '(.*)'/, async (tmReleaseDate: string) => {
-    await waitFor(() => {
-      expect(screen.getByText(new RegExp(tmReleaseDate, "i"))).toBeDefined();
-    });
+    expect(await screen.findByText(new RegExp(tmReleaseDate, "i"))).toBeDefined();
   });
 }
 
 export function thenTheSummaryPageHasNoTMReleaseDate(then: DefineStepFunction): void {
   then("the questionnaire is deployed without a TM Release Date", async () => {
-    await waitFor(() => {
-      expect(screen.getByText(/Deployment summary/i)).toBeDefined();
-      expect(screen.getByText(/Release date not specified/i)).toBeDefined();
-    });
+    expect(await screen.findByText(/Deployment summary/i)).toBeDefined();
+    expect(await screen.findByText(/Release date not specified/i)).toBeDefined();
   });
 }
 
