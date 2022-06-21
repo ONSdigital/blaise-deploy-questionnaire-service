@@ -6,7 +6,7 @@ Feature: Display Totalmobile release date on the DQS questionnaire details page
   # Scenario 1
   Scenario: View saved Totalmobile release date in questionnaire details
     Given the questionnaire 'LMS2101_AA1' is installed
-    And I have specified a Totalmobile release date
+    And 'LMS2101_AA1' has a Totalmobile release date of '01/12/2021'
     When I go to the questionnaire details page for 'LMS2101_AA1'
     Then I will see an entry displayed for Totalmobile release date
     And I have the option to change or delete the Totalmobile release date
@@ -14,7 +14,7 @@ Feature: Display Totalmobile release date on the DQS questionnaire details page
   # Scenario 2
   Scenario: Add Totalmobile release date in questionnaire details
     Given the questionnaire 'LMS2101_AA1' is installed
-    And I have not specified a Totalmobile release date
+    And 'LMS2101_AA1' does not have a Totalmobile release date
     When I go to the questionnaire details page for 'LMS2101_AA1'
     Then I will see an entry displayed for Totalmobile release date
     And I have the option to add a Totalmobile release date

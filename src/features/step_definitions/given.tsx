@@ -258,14 +258,14 @@ export function givenTheQuestionnareHasTheSettings(given: DefineStepFunction, mo
     });
 }
 
-export function givenIHaveSpecifiedATotalmobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
-    given(/I have specified a Totalmobile release date/, async (questionnaireName: string) => {
-        mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(200, {tmreleasedate: "2021-06-27T16:29:00+00:00"});
+export function givenTheQuestionnaireHasATotalmobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
+    given(/'(.*)' has a Totalmobile release date of '(.*)'/, async (questionnaireName: string, tmReleaseDate: string) => {
+        mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(200, {tmreleasedate: formatDateString(tmReleaseDate)});
     });
 }
 
-export function givenIHaveNotSpecifiedATotalmobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
-    given(/I have not specified a Totalmobile release date/, async (questionnaireName: string) => {
+export function givenTheQuestionnaireDoesNotHaveATotalmobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
+    given(/'(.*)' does not have a Totalmobile release date/, async (questionnaireName: string) => {
         mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(404);
     });
 }

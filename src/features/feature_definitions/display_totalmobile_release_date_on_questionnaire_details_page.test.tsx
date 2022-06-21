@@ -11,8 +11,8 @@ import {Questionnaire} from "blaise-api-node-client";
 
 import {
     givenTheQuestionnaireIsInstalled,
-    givenIHaveSpecifiedATotalmobileReleaseDate,
-    givenIHaveNotSpecifiedATotalmobileReleaseDate
+    givenTheQuestionnaireHasATotalmobileReleaseDate,
+    givenTheQuestionnaireDoesNotHaveATotalmobileReleaseDate
 } from "../step_definitions/given";
 import {
     whenIGoToTheQuestionnaireDetailsPage,
@@ -51,7 +51,7 @@ defineFeature(feature, test => {
 
     test("View saved Totalmobile release date in questionnaire details", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenIHaveSpecifiedATotalmobileReleaseDate(given, mocker);
+        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
         thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(then);
@@ -59,7 +59,7 @@ defineFeature(feature, test => {
 
     test("Add Totalmobile release date in questionnaire details", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenIHaveNotSpecifiedATotalmobileReleaseDate(given, mocker);
+        givenTheQuestionnaireDoesNotHaveATotalmobileReleaseDate(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
         thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
         thenIHaveTheOptionToAddATotalmobileReleaseDate(then);
