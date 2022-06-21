@@ -11,6 +11,7 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import {Router} from "react-router";
 import {createMemoryHistory} from "history";
+import ViewCatiModeDetails from "./viewCatiModeDetails";
 
 const mock = new MockAdapter(axios);
 
@@ -57,6 +58,24 @@ describe("View Totalmobile details", () => {
             expect(screen.getByText(/Totalmobile details/i)).toBeDefined();
             expect(screen.getByText(/No release date specified/i)).toBeDefined();
             expect(screen.getByText(/Add release date/i)).toBeDefined();
+        });
+    });
+
+    it("should display an error message when it fails to load the Totalmobile release date", async () => {
+        const history = createMemoryHistory();
+        mock.onGet("/api/tmreleasedate/LMS2101A").reply(500);
+        const wrapper = render(
+            <Router history={history}>
+                <ViewTmDetails questionnaireName={"LMS2101A"}/>
+            </Router>
+        );
+
+        await act(async () => {
+            await flushPromises();
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText(/Failed to get Totalmobile release date/i)).toBeDefined();
         });
     });
 
