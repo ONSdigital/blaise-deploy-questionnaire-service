@@ -11,17 +11,16 @@ import {Questionnaire} from "blaise-api-node-client";
 
 import {
     givenTheQuestionnaireIsInstalled,
-    givenIHaveSpecifiedATotalMobileReleaseDate,
-    givenIHaveNotSpecifiedATotalMobileReleaseDate
+    givenIHaveSpecifiedATotalmobileReleaseDate,
+    givenIHaveNotSpecifiedATotalmobileReleaseDate
 } from "../step_definitions/given";
 import {
     whenIGoToTheQuestionnaireDetailsPage,
-    whenIViewTheQuestionnaireDetailsPageForThatQuestionnaireInDQS,
 } from "../step_definitions/when";
 import {
-    // thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate,
-    // thenHaveTheOptionToChangeOrDeleteTheDate,
-    // thenHaveTheOptionToAddTheDate
+    thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate,
+    thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate,
+    thenIHaveTheOptionToAddATotalmobileReleaseDate
 } from "../step_definitions/then";
 import {AuthManager} from "blaise-login-react-client";
 import axios from "axios";
@@ -52,17 +51,17 @@ defineFeature(feature, test => {
 
     test("View saved Totalmobile release date in questionnaire details", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenIHaveSpecifiedATotalMobileReleaseDate(given, mocker);
+        givenIHaveSpecifiedATotalmobileReleaseDate(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
-        // thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
-        // thenHaveTheOptionToChangeOrDeleteTheDate(then);
+        thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
+        thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(then);
     });
 
     test("Add Totalmobile release date in questionnaire details", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenIHaveNotSpecifiedATotalMobileReleaseDate(given, mocker);
+        givenIHaveNotSpecifiedATotalmobileReleaseDate(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
-        // thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
-        // thenHaveTheOptionToAddTheDate(then);
+        thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
+        thenIHaveTheOptionToAddATotalmobileReleaseDate(then);
     });
 });

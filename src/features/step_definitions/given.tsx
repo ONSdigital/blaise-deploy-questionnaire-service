@@ -258,14 +258,14 @@ export function givenTheQuestionnareHasTheSettings(given: DefineStepFunction, mo
     });
 }
 
-export function givenIHaveSpecifiedATotalMobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
-    given(/specified a Total Mobile release date/, async (questionnaireName: string) => {
+export function givenIHaveSpecifiedATotalmobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
+    given(/I have specified a Totalmobile release date/, async (questionnaireName: string) => {
         mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(200, {tmreleasedate: "2021-06-27T16:29:00+00:00"});
     });
 }
 
-export function givenIHaveNotSpecifiedATotalMobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
-    given(/have not specified a Total Mobile release date/, async (questionnaireName: string) => {
+export function givenIHaveNotSpecifiedATotalmobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
+    given(/I have not specified a Totalmobile release date/, async (questionnaireName: string) => {
         mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(404);
     });
 }

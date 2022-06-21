@@ -467,3 +467,28 @@ export function thenTheSummaryPageHasNoTMReleaseDate(then: DefineStepFunction): 
     });
   });
 }
+
+export function thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then: DefineStepFunction): void {
+  then("I will see an entry displayed for Totalmobile release date", async () => {
+    await waitFor((() => {
+      expect(screen.getByText(/Totalmobile release date/i)).toBeDefined();
+    }));
+  });
+}
+
+export function thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(then: DefineStepFunction): void {
+  then("I have the option to change or delete the Totalmobile release date", async () => {
+    await waitFor(() => {
+      expect(screen.getByText(/Change or delete release date/i)).toBeDefined();
+    });
+  });
+}
+
+export function thenIHaveTheOptionToAddATotalmobileReleaseDate(then: DefineStepFunction): void {
+  then("I have the option to add a Totalmobile release date", async () => {
+    await waitFor(() => {
+
+      expect(screen.getByText(/Add release date/i)).toBeDefined();
+    });
+  });
+}
