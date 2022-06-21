@@ -27,8 +27,6 @@ const request = supertest(newServer(config));
 
 describe("Sending TO start date to BIMS service", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
         mock.reset();
     });
 
@@ -65,8 +63,6 @@ describe("Sending TO start date to BIMS service", () => {
 
 describe("Getting TO start date from BIMS service", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
         mock.reset();
     });
 
@@ -98,8 +94,6 @@ describe("Getting TO start date from BIMS service", () => {
 
 describe("Deleting TO start date to BIMS service", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
         mock.reset();
     });
 
@@ -141,8 +135,6 @@ describe("Deleting TO start date to BIMS service", () => {
 
 describe("Sending TM release date to BIMS service", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
         mock.reset();
     });
 
@@ -179,8 +171,6 @@ describe("Sending TM release date to BIMS service", () => {
 
 describe("Getting TM release date from BIMS service", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
         mock.reset();
     });
 
@@ -212,8 +202,6 @@ describe("Getting TM release date from BIMS service", () => {
 
 describe("Deleting TM release date to BIMS service", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
         mock.reset();
     });
 
