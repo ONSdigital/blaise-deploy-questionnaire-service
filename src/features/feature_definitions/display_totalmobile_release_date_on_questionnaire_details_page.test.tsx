@@ -19,9 +19,9 @@ import {
     whenIViewTheQuestionnaireDetailsPageForThatQuestionnaireInDQS,
 } from "../step_definitions/when";
 import {
-    thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate,
-    thenHaveTheOptionToChangeOrDeleteTheDate,
-    thenHaveTheOptionToAddTheDate
+    // thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate,
+    // thenHaveTheOptionToChangeOrDeleteTheDate,
+    // thenHaveTheOptionToAddTheDate
 } from "../step_definitions/then";
 import {AuthManager} from "blaise-login-react-client";
 import axios from "axios";
@@ -54,15 +54,15 @@ defineFeature(feature, test => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenIHaveSpecifiedATotalMobileReleaseDate(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
-        thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
-        thenHaveTheOptionToChangeOrDeleteTheDate(then);
+        // thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
+        // thenHaveTheOptionToChangeOrDeleteTheDate(then);
     });
 
     test("Add Totalmobile release date in questionnaire details", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenIHaveNotSpecifiedATotalMobileReleaseDate(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
-        thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
-        thenHaveTheOptionToAddTheDate(then);
+        // thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
+        // thenHaveTheOptionToAddTheDate(then);
     });
 });
