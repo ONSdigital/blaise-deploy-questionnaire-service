@@ -10,7 +10,7 @@ import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
 import { questionnaireList } from "../../features/step_definitions/helpers/apiMockObjects";
-import navigateToDeployPageAndSelectFileAndContinue, {
+import {
     clickContinue,
     navigatePastSettingTOStartDateAndDeployQuestionnaire, navigateToDeployPageAndSelectFile
 } from "../../features/step_definitions/helpers/functions";
