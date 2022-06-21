@@ -1,4 +1,3 @@
-import { cleanup } from "@testing-library/react";
 import { deleteTMReleaseDate, getTMReleaseDate, setTMReleaseDate } from "./tmReleaseDate";
 
 import axios from "axios";
@@ -8,8 +7,6 @@ const mock = new MockAdapter(axios);
 
 describe("Function setTMReleaseDate(questionnaireName: string, tmReleaseDate: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -44,8 +41,6 @@ describe("Function setTMReleaseDate(questionnaireName: string, tmReleaseDate: st
 
 describe("Function getTMReleaseDate(questionnaireName: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -84,8 +79,6 @@ describe("Function getTMReleaseDate(questionnaireName: string) ", () => {
 
 describe("Function deleteTMReleaseDate(questionnaireName: string, tmReleaseDate: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
