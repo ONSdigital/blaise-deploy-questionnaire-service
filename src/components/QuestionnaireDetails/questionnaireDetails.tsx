@@ -7,10 +7,11 @@ import QuestionnaireStatus from "../questionnaireStatus";
 import BlaiseNodeInfo from "./sections/blaiseNodeInfo";
 import ViewCawiModeDetails from "./sections/viewCawiModeDetails";
 import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
+import ViewTmDetails from "./sections/viewTmDetails";
 import YearCalendar from "./sections/yearCalendar";
 import ViewQuestionnaireSettings from "./sections/viewQuestionnaireSettings";
-import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
-import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
+import {getQuestionnaire, getQuestionnaireModes, getSurveyDays} from "../../client/questionnaires";
+import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
 
 interface State {
     questionnaire: Questionnaire | null;
@@ -174,6 +175,7 @@ function QuestionnaireDetails(): ReactElement {
 
                 <ViewCatiModeDetails questionnaireName={questionnaire.name} modes={modes}/>
                 <ViewCawiModeDetails questionnaire={questionnaire} modes={modes}/>
+                <ViewTmDetails questionnaireName={questionnaire.name}/>
                 <ViewQuestionnaireSettings questionnaire={questionnaire} modes={modes}/>
 
                 <YearCalendar modes={modes} surveyDays={surveyDays}/>
@@ -183,13 +185,13 @@ function QuestionnaireDetails(): ReactElement {
                 <br></br>
 
                 <ONSButton
-                            label={"Delete Questionnaire"}
-                            primary={false}
-                            aria-label={`Delete questionnaire ${questionnaire.name}`}
-                            id="delete-questionnaire"
-                            testid="delete-questionnaire"
-                            onClick={() => history.push("/delete", {questionnaire, modes})}/>
-                </>
+                    label={"Delete Questionnaire"}
+                    primary={false}
+                    aria-label={`Delete questionnaire ${questionnaire.name}`}
+                    id="delete-questionnaire"
+                    testid="delete-questionnaire"
+                    onClick={() => history.push("/delete", {questionnaire, modes})}/>
+            </>
         );
     }
 
