@@ -426,3 +426,17 @@ export function thenIHaveTheOptionToAddATotalmobileReleaseDate(then: DefineStepF
         });
     });
 }
+
+export function thenIamAbleToViewTheDateSelectionForm(then: DefineStepFunction): void {
+    then("I am able to view the date selection form", async () => {
+        await waitFor(() => {
+            expect(screen.getByText(/Set a Totalmobile release date/i)).toBeInTheDocument();
+        });
+    });
+}
+
+export function thenThePreviouslySelectedDateIsPrepopulated(then: DefineStepFunction): void {
+    then(/the previously selected date '(.*)' is pre-populated/, async (tmReleaseDate: string) => {
+        expect(await screen.getByRole(new RegExp(tmReleaseDate, "i"))).toBeInTheDocument();
+    });
+}

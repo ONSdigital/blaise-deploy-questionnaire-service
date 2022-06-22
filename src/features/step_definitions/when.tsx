@@ -320,3 +320,12 @@ export function whenISelectToInstallWithNoReleaseDate(when: DefineStepFunction):
         });
     });
 }
+
+export function whenISelectToChangeOrDeleteTMReleaseDate(when: DefineStepFunction): void {
+    when("I select to change or delete the Totalmobile release date", async () => {
+        await act(async () => {
+            await flushPromises();
+        });
+        userEvent.click(screen.getByText(/Change or delete release date/i));
+    });
+}
