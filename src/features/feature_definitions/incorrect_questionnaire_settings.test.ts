@@ -11,7 +11,7 @@ import axios from "axios";
 
 import { whenIChooseToDeployAnyway, whenIChooseToCancel, whenIConfirmMySelection, whenIDeployTheQuestionnaire, whenISelectToInstallWithNoStartDate, } from "../step_definitions/when";
 import { thenAWarningIsDisplayedWithTheMessage, thenIAmPresentedWithASuccessfullyDeployedBanner, thenIAmReturnedToTheLandingPage, thenIGetTheOptionToContinueOrCancel, thenTheQuestionnaireDataIsDeleted, thenTheQuestionnaireIsActivated, thenTheQuestionnaireIsDeactivated, thenTheQuestionnaireIsInstalled } from "../step_definitions/then";
-import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenInstallsSuccessfully, givenNoQuestionnairesAreInstalled, givenTheQuestionnaireHasModes, givenTheQuestionnareHasTheSettings } from "../step_definitions/given";
+import { givenIHaveSelectedTheQuestionnairePackageToDeploy, givenInstallsSuccessfully, givenNoQuestionnairesAreInstalled, givenTheQuestionnaireHasModes, givenTheQuestionnareHasTheSettings } from "../step_definitions/given";
 import { AuthManager } from "blaise-login-react-client";
 
 jest.mock("blaise-login-react-client");
@@ -41,7 +41,7 @@ defineFeature(feature, test => {
 
   test("Display warning when settings are incorrect", ({ given, when, then }) => {
     givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
     givenInstallsSuccessfully(given, mocker);
     givenTheQuestionnaireHasModes(given, mocker);
     givenTheQuestionnareHasTheSettings(given, mocker);
@@ -57,7 +57,7 @@ defineFeature(feature, test => {
 
   test("Choose to continue with incorrect settings", ({ given, when, then }) => {
     givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
     givenInstallsSuccessfully(given, mocker);
     givenTheQuestionnaireHasModes(given, mocker);
     givenTheQuestionnareHasTheSettings(given, mocker);
@@ -74,7 +74,7 @@ defineFeature(feature, test => {
 
   test("Choose cancel and rectify settings issue", ({ given, when, then }) => {
     givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
     givenInstallsSuccessfully(given, mocker);
     givenTheQuestionnaireHasModes(given, mocker);
     givenTheQuestionnareHasTheSettings(given, mocker);
@@ -90,7 +90,7 @@ defineFeature(feature, test => {
 
   test("Install with correct settings", ({ given, when, then }) => {
     givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
     givenInstallsSuccessfully(given, mocker);
     givenTheQuestionnaireHasModes(given, mocker);
     givenTheQuestionnareHasTheSettings(given, mocker);

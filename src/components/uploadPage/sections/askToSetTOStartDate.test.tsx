@@ -2,7 +2,10 @@
  * @jest-environment jsdom
  */
 
-import navigateToDeployPageAndSelectFile from "../../../features/step_definitions/helpers/functions";
+import navigateToDeployPageAndSelectFileAndContinue, {
+    clickContinue,
+    navigateToDeployPageAndSelectFile
+} from "../../../features/step_definitions/helpers/functions";
 import { act, cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
 import flushPromises from "../../../tests/utils";
 import userEvent from "@testing-library/user-event";
@@ -32,12 +35,7 @@ describe("Ask to set TO start date page", () => {
 
     it("should come up with a error panel if you don't pick an option", async () => {
         await navigateToDeployPageAndSelectFile();
-
-        userEvent.click(screen.getByText(/Continue/));
-
-        await act(async () => {
-            await flushPromises();
-        });
+        await clickContinue();
 
         userEvent.click(screen.getByText(/Continue/i));
 
@@ -52,12 +50,7 @@ describe("Ask to set TO start date page", () => {
 
     it("should come up with a error panel if pick set to set a start date but don't enter one", async () => {
         await navigateToDeployPageAndSelectFile();
-
-        userEvent.click(screen.getByText(/Continue/));
-
-        await act(async () => {
-            await flushPromises();
-        });
+        await clickContinue();
 
         userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
         userEvent.click(screen.getByText(/Continue/i));
@@ -73,12 +66,7 @@ describe("Ask to set TO start date page", () => {
 
     it("should show selected date on the summary page", async () => {
         await navigateToDeployPageAndSelectFile();
-
-        userEvent.click(screen.getByText(/Continue/));
-
-        await act(async () => {
-            await flushPromises();
-        });
+        await clickContinue();
 
         userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
 

@@ -7,9 +7,19 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import { givenIHaveSelectedTheQuestionnairePackageToDeploy, givenNoQuestionnairesAreInstalled, givenTOStartDateFails } from "../step_definitions/given";
-import { thenIAmPresentedWithAnOptionToSpecifyATOStartDate, thenICanViewTheTOStartDateIsSetTo, thenIGetAnErrorBannerWithMessage, thenTheSummaryPageHasNoTOStartDate } from "../step_definitions/then";
-import { whenIConfirmMySelection, whenIDeployTheQuestionnaire, whenISelectTheContinueButton, whenISelectToInstallWithNoStartDate, whenISpecifyATOStartDateOf } from "../step_definitions/when";
+import { givenIHaveSelectedTheQuestionnairePackageToDeploy, givenNoQuestionnairesAreInstalled } from "../step_definitions/given";
+import {
+    thenIAmGivenASummaryOfTheDeployment,
+    thenIAmPresentedWithAnOptionToSpecifyATMReleaseDate,
+    thenICanViewTheTMReleaseDateIsSetTo,
+    thenTheSummaryPageHasNoTMReleaseDate,
+} from "../step_definitions/then";
+import {
+    whenIConfirmMySelection,
+    whenISelectTheContinueButton, whenISelectToInstallWithNoReleaseDate,
+    whenISelectToInstallWithNoStartDate,
+    whenISpecifyATMReleaseDateOf,
+} from "../step_definitions/when";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -21,7 +31,7 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 
 // Load in feature details from .feature file
 const feature = loadFeature(
-    "./src/features/set_telephone_operations_start_date.feature",
+    "./src/features/add_option_to_set_a_totalmobile_release_date.feature",
     { tagFilter: "not @server and not @integration" }
 );
 
@@ -35,46 +45,38 @@ defineFeature(feature, test => {
         mocker.reset();
     });
 
-    test("Present TO Start Date option", ({ given, when, then }) => {
+    test("Present Totalmobile release date selector", ({ given, when, then }) => {
         givenNoQuestionnairesAreInstalled(given, mocker);
         givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-
-        whenIConfirmMySelection(when);
-
-        thenIAmPresentedWithAnOptionToSpecifyATOStartDate(then);
-    });
-
-    test("Enter TO Start Date", ({ given, when, then }) => {
-        givenNoQuestionnairesAreInstalled(given, mocker);
-        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-
-        whenIConfirmMySelection(when);
-        whenISpecifyATOStartDateOf(when);
-        whenISelectTheContinueButton(when);
-
-        thenICanViewTheTOStartDateIsSetTo(then);
-    });
-
-    test("Do not enter TO Start Date", ({ given, when, then }) => {
-        givenNoQuestionnairesAreInstalled(given, mocker);
-        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-
         whenIConfirmMySelection(when);
         whenISelectToInstallWithNoStartDate(when);
-
-        thenTheSummaryPageHasNoTOStartDate(then);
+        thenIAmPresentedWithAnOptionToSpecifyATMReleaseDate(then);
     });
 
-    test("Setting the TO Start Date fails during deployment", ({ given, when, then }) => {
+    test("Non LMS questionnaire does not see the release date selector", ({ given, when, then }) => {
         givenNoQuestionnairesAreInstalled(given, mocker);
-        givenTOStartDateFails(given, mocker);
         givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-
         whenIConfirmMySelection(when);
-        whenISpecifyATOStartDateOf(when);
-        whenISelectTheContinueButton(when);
-        whenIDeployTheQuestionnaire(when);
+        whenISelectToInstallWithNoStartDate(when);
+        thenIAmGivenASummaryOfTheDeployment(then);
+    });
 
-        thenIGetAnErrorBannerWithMessage(then);
+    test("Totalmobile date selected", ({ given, when, then }) => {
+        givenNoQuestionnairesAreInstalled(given, mocker);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+        whenIConfirmMySelection(when);
+        whenISelectToInstallWithNoStartDate(when);
+        whenISpecifyATMReleaseDateOf(when);
+        whenISelectTheContinueButton(when);
+        thenICanViewTheTMReleaseDateIsSetTo(then);
+    });
+
+    test("If I select no date to be set", ({ given, when, then }) => {
+        givenNoQuestionnairesAreInstalled(given, mocker);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+        whenIConfirmMySelection(when);
+        whenISelectToInstallWithNoStartDate(when);
+        whenISelectToInstallWithNoReleaseDate(when);
+        thenTheSummaryPageHasNoTMReleaseDate(then);
     });
 });

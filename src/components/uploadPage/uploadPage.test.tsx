@@ -10,8 +10,9 @@ import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
 import { questionnaireList } from "../../features/step_definitions/helpers/apiMockObjects";
-import navigateToDeployPageAndSelectFile, {
-    navigatePastSettingTOStartDateAndStartDeployment
+import {
+    clickContinue,
+    navigatePastSettingTOStartDateAndDeployQuestionnaire, navigateToDeployPageAndSelectFile
 } from "../../features/step_definitions/helpers/functions";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
@@ -127,10 +128,9 @@ describe("Given the file fails to upload", () => {
 
     it("it should redirect to the summary page with an error", async () => {
         await navigateToDeployPageAndSelectFile();
+        await clickContinue();
 
-        userEvent.click(screen.getByText(/Continue/));
-
-        await navigatePastSettingTOStartDateAndStartDeployment();
+        await navigatePastSettingTOStartDateAndDeployQuestionnaire();
 
         await waitFor(() => {
             expect(screen.getByText("File deploy failed")).toBeDefined();
