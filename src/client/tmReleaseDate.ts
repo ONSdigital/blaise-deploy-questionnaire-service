@@ -24,8 +24,6 @@ export async function getTMReleaseDate(questionnaireName: string): Promise<strin
         const response = await axios.get(url, axiosConfig());
         if (!response.data.tmreleasedate) {
             console.log("throw that error: No tmreleasedate in response");
-            console.log(response.data);
-            console.log(url);
             throw new Error("No tmreleasedate in response");
         }
         return response.data.tmreleasedate;
