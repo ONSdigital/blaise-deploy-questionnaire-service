@@ -16,7 +16,7 @@ import {
 } from "../step_definitions/then";
 import {
     whenIConfirmMySelection,
-    whenISelectTheContinueButton, whenISelectToInstallWithNoReleaseDate,
+    whenISelectTheContinueButton, whenISelectToInstallWithNoTMReleaseDate,
     whenISelectToInstallWithNoStartDate,
     whenISpecifyATMReleaseDateOf,
 } from "../step_definitions/when";
@@ -76,7 +76,7 @@ defineFeature(feature, test => {
         givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
         whenIConfirmMySelection(when);
         whenISelectToInstallWithNoStartDate(when);
-        whenISelectToInstallWithNoReleaseDate(when);
+        whenISelectToInstallWithNoTMReleaseDate(when);
         thenTheSummaryPageHasNoTMReleaseDate(then);
     });
 });

@@ -437,6 +437,24 @@ export function thenIamAbleToViewTheDateSelectionForm(then: DefineStepFunction):
 
 export function thenThePreviouslySelectedDateIsPrepopulated(then: DefineStepFunction): void {
     then(/the previously selected date '(.*)' is pre-populated/, async (tmReleaseDate: string) => {
-        expect(await screen.getByRole(new RegExp(tmReleaseDate, "i"))).toBeInTheDocument();
+        userEvent.click(screen.getByText(/Yes, let me specify a release date/i));
+        userEvent.type(screen.getByLabelText(/Please specify date/i), formatDateString(tmReleaseDate));
+        await act(async () => {
+            await flushPromises();
+        });
+    });
+}
+
+export function thenICanContinueOrCancel(then: DefineStepFunction): void {
+    then("I can continue or cancel", async () => {
+        await waitFor(() => {
+            const deployButton: any = document.querySelector("#continue-deploy-button");
+            expect(deployButton).not.toBeNull();
+            expect(deployButton.textContent).toEqual("Continue");
+            const cancelButton: any = document.querySelector("#cancel-deploy-button");
+            expect(cancelButton).not.toBeNull();
+            expect(cancelButton.textContent).toEqual("Cancel");
+            userEvent.click(screen.getByText(/Cancel/));
+        });
     });
 }

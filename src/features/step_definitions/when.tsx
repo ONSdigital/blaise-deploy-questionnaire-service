@@ -282,24 +282,24 @@ export function whenIDeploy(when: DefineStepFunction): void {
     });
 }
 
-export function whenIViewTheQuestionnaireDetailsPageForThatQuestionnaireInDQS(when: DefineStepFunction): void {
-    when(/I view the questionnaire details page for questionnaire '(.*)' in DQS/, async (questionnaire: string) => {
-        const history = createMemoryHistory();
-        render(
-            <Router history={history}>
-                <App/>
-            </Router>
-        );
-        await act(async () => {
-            await flushPromises();
-        });
-
-        userEvent.click(screen.getByText(questionnaire));
-        await act(async () => {
-            await flushPromises();
-        });
-    });
-}
+// export function whenIViewTheQuestionnaireDetailsPageForThatQuestionnaireInDQS(when: DefineStepFunction): void {
+//     when(/I view the questionnaire details page for questionnaire '(.*)' in DQS/, async (questionnaire: string) => {
+//         const history = createMemoryHistory();
+//         render(
+//             <Router history={history}>
+//                 <App/>
+//             </Router>
+//         );
+//         await act(async () => {
+//             await flushPromises();
+//         });
+//
+//         userEvent.click(screen.getByText(questionnaire));
+//         await act(async () => {
+//             await flushPromises();
+//         });
+//     });
+// }
 
 export function whenISpecifyATMReleaseDateOf(when: DefineStepFunction): void {
     when(/I specify the TM release date of '(.*)'/, async (toStartDate: string) => {
@@ -311,7 +311,7 @@ export function whenISpecifyATMReleaseDateOf(when: DefineStepFunction): void {
     });
 }
 
-export function whenISelectToInstallWithNoReleaseDate(when: DefineStepFunction): void {
+export function whenISelectToInstallWithNoTMReleaseDate(when: DefineStepFunction): void {
     when("I select to not provide a TM Release Date", async () => {
         userEvent.click(screen.getByText(/No release date/i));
         userEvent.click(screen.getByText(/Continue/));
@@ -327,5 +327,17 @@ export function whenISelectToChangeOrDeleteTMReleaseDate(when: DefineStepFunctio
             await flushPromises();
         });
         userEvent.click(screen.getByText(/Change or delete release date/i));
+    });
+}
+
+export function whenIDoNotSelectANewDate(when: DefineStepFunction): void {
+    when("I do not select a new date", async () => {
+        expect(true)
+    });
+}
+
+export function whenIDoNotRemoveThePreSelectedDate(when: DefineStepFunction): void {
+    when("I do not remove the pre selected date", async () => {
+        expect(true)
     });
 }

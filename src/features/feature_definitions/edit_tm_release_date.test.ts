@@ -9,9 +9,21 @@ import {Questionnaire} from "blaise-api-node-client";
 import {AuthManager} from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapeter from "axios-mock-adapter";
-import {givenTheQuestionnaireIsInstalled, givenTheQuestionnaireHasATotalmobileReleaseDate} from "../step_definitions/given";
-import {whenIGoToTheQuestionnaireDetailsPage, whenISelectToChangeOrDeleteTMReleaseDate} from "../step_definitions/when";
-import {thenIamAbleToViewTheDateSelectionForm, thenThePreviouslySelectedDateIsPrepopulated} from "../step_definitions/then";
+import {
+    givenTheQuestionnaireIsInstalled,
+    givenTheQuestionnaireHasATotalmobileReleaseDate
+} from "../step_definitions/given";
+import {
+    whenIGoToTheQuestionnaireDetailsPage,
+    whenISelectToChangeOrDeleteTMReleaseDate,
+    whenIDoNotSelectANewDate,
+    whenIDoNotRemoveThePreSelectedDate
+} from "../step_definitions/when";
+import {
+    thenIamAbleToViewTheDateSelectionForm, thenIAmReturnedToTheQuestionnaireDetailsPage,
+    thenICanContinueOrCancel,
+    thenThePreviouslySelectedDateIsPrepopulated
+} from "../step_definitions/then";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -42,6 +54,19 @@ defineFeature(feature, test => {
         whenIGoToTheQuestionnaireDetailsPage(when);
         whenISelectToChangeOrDeleteTMReleaseDate(when);
         thenIamAbleToViewTheDateSelectionForm(then);
-        // thenThePreviouslySelectedDateIsPrepopulated(then)
+        thenThePreviouslySelectedDateIsPrepopulated(then)
+    });
+
+    test("Make no change to previously selected release date", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker)
+        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
+        whenIGoToTheQuestionnaireDetailsPage(when);
+        whenISelectToChangeOrDeleteTMReleaseDate(when);
+        thenIamAbleToViewTheDateSelectionForm(then);
+        thenThePreviouslySelectedDateIsPrepopulated(then);
+        whenIDoNotSelectANewDate(when);
+        whenIDoNotRemoveThePreSelectedDate(when);
+        thenICanContinueOrCancel(then);
+        thenIAmReturnedToTheQuestionnaireDetailsPage(then)
     });
 });
