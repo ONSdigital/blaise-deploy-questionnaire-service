@@ -10,7 +10,7 @@ Feature: Add option to DQS to edit a TO Start Date for an existing questionnaire
     And 'TST2102A' has a TO start date of '01/12/2021'
     When I load the homepage
     And I select the questionnaire 'TST2102A'
-    Then I can view the TO Start Date set too '01/12/2021'
+    Then I can view the TO Start Date is set to '01/12/2021'
 
   # Scenario 2:
   Scenario: Change TO Start Date if specified

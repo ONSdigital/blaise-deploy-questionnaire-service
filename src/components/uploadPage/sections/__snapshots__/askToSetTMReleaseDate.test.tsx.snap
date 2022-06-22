@@ -1,0 +1,266 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ask to set TM release date page should match the Snapshot 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="grid"
+      >
+        <div
+          class="grid__col col-8@m"
+        >
+          <h1
+            class="u-mb-l"
+          >
+            Would you like to set a Totalmobile release date for questionnaire 
+            <em
+              class="highlight"
+            >
+              LMS2207T
+            </em>
+            ?
+          </h1>
+          <p>
+            This is used to determine the date that selected cases will be sent to Totalmobile for field allocation. If a date is not selected, then no cases will be sent to Totalmobile.
+          </p>
+          <fieldset
+            class="fieldset"
+          >
+            <legend
+              class="fieldset__legend"
+            />
+            <div
+              class="radios__items"
+              id="askToSetDate"
+            >
+              <p
+                class="radios__item"
+              >
+                <span
+                  class="radio"
+                >
+                  <input
+                    class="radio__input js-radio"
+                    id="no"
+                    name="askToSetDate"
+                    props="[object Object]"
+                    type="radio"
+                    value="no"
+                  />
+                  <label
+                    class="radio__label "
+                    for="no"
+                    id="no-label"
+                  >
+                    No release date
+                  </label>
+                </span>
+              </p>
+              <br />
+              <p
+                class="radios__item"
+              >
+                <span
+                  class="radio"
+                >
+                  <input
+                    class="radio__input js-radio"
+                    id="yes"
+                    name="askToSetDate"
+                    props="[object Object]"
+                    type="radio"
+                    value="yes"
+                  />
+                  <label
+                    class="radio__label "
+                    for="yes"
+                    id="yes-label"
+                  >
+                    Yes, let me specify a release date
+                  </label>
+                  <span
+                    class="radio__other radio__other--open"
+                    id="other-radio-other-wrap"
+                  >
+                    <label
+                      class="label u-fs-s--b "
+                      for="set-live-date"
+                      id="other-textbox-label"
+                    >
+                      Please specify date
+                    </label>
+                    <input
+                      class="input input--text input-type__input input--w-auto"
+                      id="set-live-date"
+                      name="set release date"
+                      type="date"
+                      value=""
+                    />
+                  </span>
+                </span>
+              </p>
+              <br />
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="grid"
+    >
+      <div
+        class="grid__col col-8@m"
+      >
+        <h1
+          class="u-mb-l"
+        >
+          Would you like to set a Totalmobile release date for questionnaire 
+          <em
+            class="highlight"
+          >
+            LMS2207T
+          </em>
+          ?
+        </h1>
+        <p>
+          This is used to determine the date that selected cases will be sent to Totalmobile for field allocation. If a date is not selected, then no cases will be sent to Totalmobile.
+        </p>
+        <fieldset
+          class="fieldset"
+        >
+          <legend
+            class="fieldset__legend"
+          />
+          <div
+            class="radios__items"
+            id="askToSetDate"
+          >
+            <p
+              class="radios__item"
+            >
+              <span
+                class="radio"
+              >
+                <input
+                  class="radio__input js-radio"
+                  id="no"
+                  name="askToSetDate"
+                  props="[object Object]"
+                  type="radio"
+                  value="no"
+                />
+                <label
+                  class="radio__label "
+                  for="no"
+                  id="no-label"
+                >
+                  No release date
+                </label>
+              </span>
+            </p>
+            <br />
+            <p
+              class="radios__item"
+            >
+              <span
+                class="radio"
+              >
+                <input
+                  class="radio__input js-radio"
+                  id="yes"
+                  name="askToSetDate"
+                  props="[object Object]"
+                  type="radio"
+                  value="yes"
+                />
+                <label
+                  class="radio__label "
+                  for="yes"
+                  id="yes-label"
+                >
+                  Yes, let me specify a release date
+                </label>
+                <span
+                  class="radio__other radio__other--open"
+                  id="other-radio-other-wrap"
+                >
+                  <label
+                    class="label u-fs-s--b "
+                    for="set-live-date"
+                    id="other-textbox-label"
+                  >
+                    Please specify date
+                  </label>
+                  <input
+                    class="input input--text input-type__input input--w-auto"
+                    id="set-live-date"
+                    name="set release date"
+                    type="date"
+                    value=""
+                  />
+                </span>
+              </span>
+            </p>
+            <br />
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

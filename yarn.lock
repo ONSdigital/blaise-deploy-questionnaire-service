@@ -2006,10 +2006,10 @@
     lz-string "^1.4.4"
     pretty-format "^27.0.2"
 
-"@testing-library/jest-dom@^5.14.1":
-  version "5.16.2"
-  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.16.2.tgz#f329b36b44aa6149cd6ced9adf567f8b6aa1c959"
-  integrity sha512-6ewxs1MXWwsBFZXIk4nKKskWANelkdUehchEOokHsN8X7c2eKXGw+77aRV63UU8f/DTSVUPLaGxdrj4lN7D/ug==
+"@testing-library/jest-dom@^5.16.4":
+  version "5.16.4"
+  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.16.4.tgz#938302d7b8b483963a3ae821f1c0808f872245cd"
+  integrity sha512-Gy+IoFutbMQcky0k+bqqumXZ1cTGswLsFqmNLzNdSKkU9KGV2u9oXhukCbbJ9/LRPKiqwxEE8VpV/+YZlfkPUA==
   dependencies:
     "@babel/runtime" "^7.9.2"
     "@types/testing-library__jest-dom" "^5.9.1"
@@ -3451,7 +3451,7 @@ blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
   resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?2157644435f5938f13241f6e1f4170faa9c2581e#fc7594c37473fb9667c44dcb5a96e2e3affa5ac6"
   dependencies:
     axios "~0.21.0"
-    blaise-api-node-client ONSDigital/blaise-api-node-client#BLAIS5-3105
+    blaise-api-node-client ONSDigital/blaise-api-node-client
     blaise-design-system-react-components ONSDigital/blaise-design-system-react-components
     formik "^2.2.9"
     react "^17.0.1"
@@ -3466,7 +3466,7 @@ blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
-    blaise-api-node-client ONSDigital/blaise-api-node-client#BLAIS5-3105
+    blaise-api-node-client ONSDigital/blaise-api-node-client
     express "^4.17.2"
     jsonwebtoken "^8.5.1"
     typescript "~4.2.2"
