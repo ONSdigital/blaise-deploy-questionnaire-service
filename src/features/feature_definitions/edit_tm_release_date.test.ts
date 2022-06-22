@@ -15,13 +15,14 @@ import {
 } from "../step_definitions/given";
 import {
     whenIGoToTheQuestionnaireDetailsPage,
-    whenISelectToChangeOrDeleteTMReleaseDate,
+    whenIChooseToChangeOrDeleteTMReleaseDate,
     whenIDoNotSelectANewDate,
     whenIDoNotRemoveThePreSelectedDate
 } from "../step_definitions/when";
 import {
-    thenIamAbleToViewTheDateSelectionForm, thenIAmReturnedToTheQuestionnaireDetailsPage,
-    thenICanContinueOrCancel,
+    thenIamAbleToViewTheDateSelectionForm,
+    thenIAmReturnedToTheQuestionnaireDetailsPage,
+    thenICanSelectContinueOrCancel,
     thenThePreviouslySelectedDateIsPrepopulated
 } from "../step_definitions/then";
 
@@ -48,25 +49,38 @@ defineFeature(feature, test => {
         mocker.reset();
     });
 
-    test("View the Totalmobile release date if specified", ({given, when, then}) => {
+    test("View the Totalmobile release date if specified and return to the questionnaire details page", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker)
         givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
-        whenISelectToChangeOrDeleteTMReleaseDate(when);
+        whenIChooseToChangeOrDeleteTMReleaseDate(when);
         thenIamAbleToViewTheDateSelectionForm(then);
         thenThePreviouslySelectedDateIsPrepopulated(then)
+        thenICanSelectContinueOrCancel(then);
+        //thenIAmReturnedToTheQuestionnaireDetailsPage(then)
     });
 
-    test("Make no change to previously selected release date", ({given, when, then}) => {
+    test("Select a new release date and return to the questionnaire details page", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker)
         givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
-        whenISelectToChangeOrDeleteTMReleaseDate(when);
+        whenIChooseToChangeOrDeleteTMReleaseDate(when);
         thenIamAbleToViewTheDateSelectionForm(then);
-        thenThePreviouslySelectedDateIsPrepopulated(then);
-        whenIDoNotSelectANewDate(when);
-        whenIDoNotRemoveThePreSelectedDate(when);
-        thenICanContinueOrCancel(then);
-        thenIAmReturnedToTheQuestionnaireDetailsPage(then)
+    });
+
+    test("Select a new release date but cancel the transaction before returning to the questionnaire details page", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker)
+        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
+        whenIGoToTheQuestionnaireDetailsPage(when);
+        whenIChooseToChangeOrDeleteTMReleaseDate(when);
+        thenIamAbleToViewTheDateSelectionForm(then);
+    });
+
+    test("Delete Totalmobile release date and return to questionnaire details", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker)
+        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
+        whenIGoToTheQuestionnaireDetailsPage(when);
+        whenIChooseToChangeOrDeleteTMReleaseDate(when);
+        thenIamAbleToViewTheDateSelectionForm(then);
     });
 });
