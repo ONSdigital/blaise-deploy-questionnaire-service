@@ -1,6 +1,6 @@
-Feature: Add option to DQS to edit/change a Tm Release Date for an existing questionnaire
+Feature: Add option to edit/change/delete an existing Tm Release Date for an existing questionnaire
   As a survey research officer
-  I want to be able to change a previously save Totalmobile release date via DQS
+  I want to be able to change/delete a previously saved Totalmobile release date via DQS
   So that I can amend mistakes or make changes in line with survey decisions
 
   Background:
