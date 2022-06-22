@@ -17,7 +17,7 @@ Feature: DQS - Set a TO Start Date during deployment
     When I confirm my selection
     And I specify the TO start date of '05/06/2030'
     And I select the continue button
-    And I can view the TO Start Date set too '05/06/2030'
+    And I can view the TO Start Date is set to '05/06/2030'
 
   #  Scenario 3:
   Scenario: Do not enter TO Start Date

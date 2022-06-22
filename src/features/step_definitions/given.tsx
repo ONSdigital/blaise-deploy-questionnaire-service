@@ -1,4 +1,4 @@
-import navigateToDeployPageAndSelectFile, { formatDateString } from "./helpers/functions";
+import { formatDateString, navigateToDeployPageAndSelectFile } from "./helpers/functions";
 import { DefineStepFunction } from "jest-cucumber";
 import { questionnaireWithName } from "./helpers/apiMockObjects";
 import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
@@ -167,7 +167,7 @@ export function givenAllInstallsWillFail(given: DefineStepFunction, mocker: Mock
   });
 }
 
-export function givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given: DefineStepFunction): void {
+export function givenIHaveSelectedTheQuestionnairePackageToDeploy(given: DefineStepFunction): void {
   given(/I have selected the questionnaire package for '(.*)' to deploy/, async (questionnaireName: string) => {
     await navigateToDeployPageAndSelectFile(questionnaireName);
   });

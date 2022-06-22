@@ -9,6 +9,7 @@ import {
     uploadFile
 } from "../upload";
 import { setTOStartDate } from "../toStartDate";
+import { setTMReleaseDate } from "../tmReleaseDate";
 import {
     GetStrictInterviewingSettings,
     ValidateSettings,
@@ -47,6 +48,7 @@ export async function validateSelectedQuestionnaireExists(file: File | undefined
 export async function uploadAndInstallFile(
     questionnaireName: string,
     toStartDate: string | undefined,
+    tmReleaseDate: string | undefined,
     file: File | undefined,
     setUploading: (boolean: boolean) => void,
     setUploadStatus: (status: string) => void,
@@ -63,6 +65,17 @@ export async function uploadAndInstallFile(
         setUploadStatus("Failed to store telephone operations start date specified");
         setUploading(false);
         return false;
+    }
+
+    if (questionnaireName.startsWith("LMS")) {
+        console.log(`releaseDate ${tmReleaseDate}`);
+        const releaseDateCreated = await setTMReleaseDate(questionnaireName, tmReleaseDate);
+
+        if (!releaseDateCreated) {
+            setUploadStatus("Failed to store Totalmobile release date specified");
+            setUploading(false);
+            return false;
+        }
     }
 
     // Get the signed url to allow access to the bucket

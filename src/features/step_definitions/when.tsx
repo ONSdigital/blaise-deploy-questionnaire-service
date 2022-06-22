@@ -11,7 +11,7 @@ import { DefineStepFunction } from "jest-cucumber";
 import { Router } from "react-router";
 import { createMemoryHistory } from "history";
 import App from "../../app";
-import { formatDateString, navigatePastSettingTOStartDateAndStartDeployment } from "./helpers/functions";
+import { formatDateString, navigatePastSettingTOStartDateAndDeployQuestionnaire } from "./helpers/functions";
 
 export function whenIConfirmMySelection(when: DefineStepFunction): void {
   when("I confirm my selection", async () => {
@@ -118,7 +118,7 @@ export function whenIHaveSelectedToAddAToStartDate(when: DefineStepFunction): vo
   });
 }
 
-export function whenISpecifyAToStartDateOf(when: DefineStepFunction): void {
+export function whenISpecifyATOStartDateOf(when: DefineStepFunction): void {
   when(/I specify the TO start date of '(.*)'/, async (toStartDate: string) => {
     userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
     userEvent.type(screen.getByLabelText(/Please specify date/i), formatDateString(toStartDate));
@@ -185,8 +185,11 @@ export function whenIConfirmToOverwrite(when: DefineStepFunction): void {
   when("I confirm 'overwrite'", async () => {
     userEvent.click(screen.getByText(/yes, overwrite questionnaire/i));
     userEvent.click(screen.getByText(/Continue/));
+    await act(async () => {
+      await flushPromises();
+    });
 
-    await navigatePastSettingTOStartDateAndStartDeployment();
+    await navigatePastSettingTOStartDateAndDeployQuestionnaire();
     await act(async () => {
       await flushPromises();
     });
@@ -273,6 +276,26 @@ export function whenIDeploy(when: DefineStepFunction): void {
 
     userEvent.click(screen.getByText(/Deploy questionnaire/));
 
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+}
+
+export function whenISpecifyATMReleaseDateOf(when: DefineStepFunction): void {
+  when(/I specify the TM release date of '(.*)'/, async (toStartDate: string) => {
+    userEvent.click(screen.getByText(/Yes, let me specify a release date/i));
+    userEvent.type(screen.getByLabelText(/Please specify date/i), formatDateString(toStartDate));
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+}
+
+export function whenISelectToInstallWithNoReleaseDate(when: DefineStepFunction): void{
+  when("I select to not provide a TM Release Date", async () => {
+    userEvent.click(screen.getByText(/No release date/i));
+    userEvent.click(screen.getByText(/Continue/));
     await act(async () => {
       await flushPromises();
     });

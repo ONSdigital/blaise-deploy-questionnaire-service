@@ -11,7 +11,7 @@ import axios from "axios";
 
 import { whenIClickDeployNewQuestionnaire, whenIConfirmMySelection, whenIConfirmMySelectionNoWait, whenIDeployTheQuestionnaire, whenIHaveSelectedADeployPackage, whenILoadTheHomepage, whenISelectToInstallWithNoStartDate } from "../step_definitions/when";
 import { thenIAmPresentedWithAnOptionToDeployAQuestionnaire, thenIAmPresentedWithAnOptionToDeployAQuestionnaireFile, thenIAmPresentedWithASuccessfullyDeployedBanner, thenICanSelectAQuestionnairePackageToInstall, thenTheQuestionnaireIsInstalled, thenUploadIsDisabled } from "../step_definitions/then";
-import { givenIHaveSelectedTheQuestionnairePacakgeToDeploy, givenInstallsSuccessfully, givenNoQuestionnairesAreInstalled } from "../step_definitions/given";
+import { givenIHaveSelectedTheQuestionnairePackageToDeploy, givenInstallsSuccessfully, givenNoQuestionnairesAreInstalled } from "../step_definitions/given";
 import { AuthManager } from "blaise-login-react-client";
 
 jest.mock("blaise-login-react-client");
@@ -73,7 +73,7 @@ defineFeature(feature, test => {
     test("Deploy selected file", ({ given, when, then }) => {
         givenNoQuestionnairesAreInstalled(given, mocker);
 
-        givenIHaveSelectedTheQuestionnairePacakgeToDeploy(given);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
         givenInstallsSuccessfully(given, mocker);
 
         whenIConfirmMySelection(when);
