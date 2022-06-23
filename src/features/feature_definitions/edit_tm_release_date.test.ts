@@ -11,11 +11,16 @@ import axios from "axios";
 import MockAdapeter from "axios-mock-adapter";
 import {
     givenTheQuestionnaireIsInstalled,
-    givenTheQuestionnaireHasATMReleaseDate,
-    givenTheQuestionnaireHasNoTMReleaseDate,
+    givenTheQuestionnaireHasATotalmobileReleaseDate,
+    givenTheQuestionnaireHasNoTotalmobileReleaseDate
 } from "../step_definitions/given";
-import {} from "../step_definitions/when";
-import {} from "../step_definitions/then";
+import {
+    whenILoadTheHomepage,
+    whenISelectTheQuestionnaire
+} from "../step_definitions/when";
+import {
+    thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate
+} from "../step_definitions/then";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -42,40 +47,40 @@ defineFeature(feature, test => {
 
     test("View Tm Release Date if specified", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasATMReleaseDate(given, mocker);
+        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
 
-        // whenILoadTheHomepage(when);
-        // whenISelectTheQuestionnaire(when);
-        //
-        // thenICanViewTheTOStartDateIsSetTo(then);
+        whenILoadTheHomepage(when);
+        whenISelectTheQuestionnaire(when);
+
+        // thenICanViewTheTMReleaseDateIsSetTo(then);
     });
 
     test("Change Tm Release Date if specified", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasATMReleaseDate(given, mocker);
+        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
 
-        //     whenILoadTheHomepage(when);
-        //     whenISelectTheQuestionnaire(when);
-        //
-        //     thenIHaveTheOptionToChangeOrDeleteTheToStartDate(then);
+        whenILoadTheHomepage(when);
+        whenISelectTheQuestionnaire(when);
+
+        // thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(then);
     });
 
     test("Add Tm Release Date if not previously specified", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasNoTMReleaseDate(given, mocker);
+        givenTheQuestionnaireHasNoTotalmobileReleaseDate(given, mocker);
 
-        // whenILoadTheHomepage(when);
-        // whenISelectTheQuestionnaire(when);
-        //
+        whenILoadTheHomepage(when);
+        whenISelectTheQuestionnaire(when);
+
         // thenIHaveTheOptionToAddAToStartDate(then);
     });
 
     test("Change an existing Tm Release Date for a deployed questionnaire", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasATMReleaseDate(given, mocker);
+        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
 
-        // whenILoadTheHomepage(when);
-        // whenISelectTheQuestionnaire(when);
+        whenILoadTheHomepage(when);
+        whenISelectTheQuestionnaire(when);
         // whenISelectToChangeOrDeleteTOStartDate(when);
         // whenISpecifyATOStartDateOf(when);
         // whenISelectTheContinueButton(when);
@@ -85,10 +90,10 @@ defineFeature(feature, test => {
 
     test("Delete a Tm Release Date from a deployed questionnaire", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasATMReleaseDate(given, mocker);
+        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
 
-        //     whenILoadTheHomepage(when);
-        //     whenISelectTheQuestionnaire(when);
+        whenILoadTheHomepage(when);
+        whenISelectTheQuestionnaire(when);
         //     whenISelectToChangeOrDeleteTOStartDate(when);
         //     whenIDeleteTheToStartDate(when);
         //     whenISelectTheContinueButton(when);
@@ -98,10 +103,10 @@ defineFeature(feature, test => {
 
     test("Add a Tm Release Date to a deployed questionnaire", ({given, when, then}) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasNoTMReleaseDate(given, mocker);
+        givenTheQuestionnaireHasNoTotalmobileReleaseDate(given, mocker);
 
-        // whenILoadTheHomepage(when);
-        // whenISelectTheQuestionnaire(when);
+        whenILoadTheHomepage(when);
+        whenISelectTheQuestionnaire(when);
         // whenIHaveSelectedToAddAToStartDate(when);
         // whenISpecifyATOStartDateOf(when);
         // whenISelectTheContinueButton(when);
