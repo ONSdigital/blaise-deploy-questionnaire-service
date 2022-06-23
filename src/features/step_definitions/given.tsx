@@ -168,7 +168,7 @@ export function givenTheQuestionnaireHasNoTOStartDate(given: DefineStepFunction,
 }
 
 export function givenTheQuestionnaireHasNoTotalmobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
-    given(/'(.*)' has no Tm Release Date/, async (questionnaireName: string) => {
+    given(/'(.*)' has no Totalmobile release date/, async (questionnaireName: string) => {
         mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(404);
     });
 }
