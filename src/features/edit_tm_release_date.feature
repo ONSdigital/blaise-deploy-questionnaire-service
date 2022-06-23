@@ -1,4 +1,3 @@
-# Created by ThornE1 at 08/07/2021
 Feature: Add option to DQS to edit a Tm Release Date for an existing questionnaire
   As a Survey Research Officer
   I want to edit a Tm Release Date in DQS

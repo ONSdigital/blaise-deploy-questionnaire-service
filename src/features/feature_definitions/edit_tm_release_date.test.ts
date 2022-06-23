@@ -107,7 +107,7 @@ defineFeature(feature, test => {
         whenIDeleteTheTotalmobileReleaseDate(when);
         whenISelectTheContinueButton(when);
 
-         // thenTheTotalmobileReleaseDateIsDeleted(then, mocker);
+        // thenTheTotalmobileReleaseDateIsDeleted(then, mocker);
     });
 
     test("Add a Totalmobile release date to a deployed questionnaire", ({given, when, then}) => {
