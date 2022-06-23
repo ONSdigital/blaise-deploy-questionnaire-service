@@ -156,8 +156,8 @@ export function givenTheQuestionnaireHasATOStartDate(given: DefineStepFunction, 
 }
 
 export function givenTheQuestionnaireHasATotalmobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
-    given(/'(.*)' has a Tm Release Date of '(.*)'/, async (questionnaireName: string, tmReleaseDate: string) => {
-        mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(200, {tostartdate: formatDateString(tmReleaseDate)});
+    given(/'(.*)' has a Totalmobile release date of '(.*)'/, async (questionnaireName: string, tmReleaseDate: string) => {
+        mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(200, {tmreleasedate: formatDateString(tmReleaseDate)});
     });
 }
 
