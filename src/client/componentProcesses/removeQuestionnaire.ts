@@ -13,7 +13,7 @@ async function removeToStartDateAndDeleteQuestionnaire(questionnaireName: string
     }
 
     const tmReleaseDateDeleted = await deleteTMReleaseDate(questionnaireName);
-    if (!toStartDateDeleted) {
+    if (!tmReleaseDateDeleted) {
         console.error("Failed to delete Totalmobile release date");
         return [false, "Failed to delete Totalmobile release date"];
     }
