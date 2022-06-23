@@ -48,9 +48,6 @@ const mocker = new MockAdapeter(axios);
 
 defineFeature(feature, test => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
-        cleanup();
         mocker.reset();
     });
 
