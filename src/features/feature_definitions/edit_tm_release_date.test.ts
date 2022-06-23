@@ -19,7 +19,9 @@ import {
     whenISelectTheQuestionnaire
 } from "../step_definitions/when";
 import {
-    thenICanViewTheTotalmobileReleaseDateIsSetTo
+    thenICanViewTheTotalmobileReleaseDateIsSetTo,
+    thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate,
+    thenIHaveTheOptionToAddATotalmobileReleaseDate
 } from "../step_definitions/then";
 
 jest.mock("blaise-login-react-client");
@@ -52,7 +54,7 @@ defineFeature(feature, test => {
         whenILoadTheHomepage(when);
         whenISelectTheQuestionnaire(when);
 
-        // thenICanViewTheTotalmobileReleaseDateIsSetTo(then);
+        thenICanViewTheTotalmobileReleaseDateIsSetTo(then);
     });
 
     test("Change Totalmobile release date if specified", ({given, when, then}) => {
@@ -62,7 +64,7 @@ defineFeature(feature, test => {
         whenILoadTheHomepage(when);
         whenISelectTheQuestionnaire(when);
 
-        // thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(then);
+        thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(then);
     });
 
     test("Add Totalmobile release date if not previously specified", ({given, when, then}) => {
@@ -72,7 +74,7 @@ defineFeature(feature, test => {
         whenILoadTheHomepage(when);
         whenISelectTheQuestionnaire(when);
 
-        // thenIHaveTheOptionToAddAToStartDate(then);
+        thenIHaveTheOptionToAddATotalmobileReleaseDate(then);
     });
 
     test("Change an existing Totalmobile release date for a deployed questionnaire", ({given, when, then}) => {

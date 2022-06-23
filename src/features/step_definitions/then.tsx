@@ -395,7 +395,7 @@ export function thenIAmGivenASummaryOfTheDeployment(then: DefineStepFunction): v
 }
 
 export function thenICanViewTheTotalmobileReleaseDateIsSetTo(then: DefineStepFunction): void {
-    then(/I can view the TM Release Date is set to '(.*)'/, async (tmReleaseDate: string) => {
+    then(/I can view the Totalmobile release date is set to '(.*)'/, async (tmReleaseDate: string) => {
         expect(await screen.findByText(new RegExp(tmReleaseDate, "i"))).toBeDefined();
     });
 }

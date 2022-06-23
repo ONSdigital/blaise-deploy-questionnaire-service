@@ -10,7 +10,7 @@ Feature: Add option to DQS to edit a Tm Release Date for an existing questionnai
     And 'LMS2101_AA1' has a Totalmobile release date of '01/12/2021'
     When I load the homepage
     And I select the questionnaire 'LMS2101_AA1'
-#    Then I can view the TM Release Date is set to '01/12/2021'
+    Then I can view the Totalmobile release date is set to '01/12/2021'
 
   # Scenario 2:
   Scenario: Change Totalmobile release date if specified
@@ -18,7 +18,7 @@ Feature: Add option to DQS to edit a Tm Release Date for an existing questionnai
     And 'LMS2101_AA1' has a Totalmobile release date of '01/12/2021'
     When I load the homepage
     And I select the questionnaire 'LMS2101_AA1'
-#    Then I have the option to change or delete the Totalmobile release date
+    Then I have the option to change or delete the Totalmobile release date
 
   # Scenario 3:
   Scenario: Add Totalmobile release date if not previously specified
@@ -26,7 +26,7 @@ Feature: Add option to DQS to edit a Tm Release Date for an existing questionnai
     And 'LMS2101_AA1' has no Totalmobile release date
     When I load the homepage
     And I select the questionnaire 'LMS2101_AA1'
-#    Then I have the option to add a Totalmobile release date
+    Then I have the option to add a Totalmobile release date
 
   # Scenario 4:
   Scenario: Change an existing Totalmobile release date for a deployed questionnaire
