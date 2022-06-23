@@ -34,10 +34,10 @@ Feature: Add option to DQS to edit a Tm Release Date for an existing questionnai
     And 'LMS2101_AA1' has a Totalmobile release date of '01/12/2021'
     When I load the homepage
     And I select the questionnaire 'LMS2101_AA1'
-#    And I select to change or delete the Totalmobile release date
-#    And I specify the Totalmobile release date of '06/01/2022'
-#    And I select the continue button
-#    Then the Totalmobile release date of '06/01/2022' is stored against 'TST2102D'
+    And I select to change or delete the Totalmobile release date
+    And I specify the Totalmobile release date of '06/01/2022'
+    And I select the continue button
+    Then the Totalmobile release date of '06/01/2022' is stored against 'LMS2101_AA1'
 
 
   # Scenario 5:
@@ -46,9 +46,9 @@ Feature: Add option to DQS to edit a Tm Release Date for an existing questionnai
     And 'LMS2101_AA1' has a Totalmobile release date of '01/12/2021'
     When I load the homepage
     And I select the questionnaire 'LMS2101_AA1'
-#    And I select to change or delete the Totalmobile release date
-#    And I delete the Totalmobile release date
-#    And I select the continue button
+    And I select to change or delete the Totalmobile release date
+    And I delete the Totalmobile release date
+    And I select the continue button
 #    Then the Totalmobile release date is deleted from 'LMS2101_AA1'
 
   # Scenario 6:
@@ -57,7 +57,7 @@ Feature: Add option to DQS to edit a Tm Release Date for an existing questionnai
     And 'LMS2101_AA1' has no Totalmobile release date
     When I load the homepage
     And I select the questionnaire 'LMS2101_AA1'
-#    And I have selected to add a Totalmobile release date
-#    And I specify the Totalmobile release date of '18/11/2021'
-#    And I select the continue button
-#    Then the Totalmobile release date of '18/11/2021' is stored against 'LMS2101_AA1'
+    And I have selected to add a Totalmobile release date
+    And I specify the Totalmobile release date of '18/11/2021'
+    And I select the continue button
+    Then the Totalmobile release date of '18/11/2021' is stored against 'LMS2101_AA1'

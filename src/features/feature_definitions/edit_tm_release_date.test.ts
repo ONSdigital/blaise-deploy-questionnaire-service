@@ -16,12 +16,19 @@ import {
 } from "../step_definitions/given";
 import {
     whenILoadTheHomepage,
-    whenISelectTheQuestionnaire
+    whenISelectTheQuestionnaire,
+    whenISelectToChangeOrDeleteTotalmobileReleaseDate,
+    whenISpecifyATotalmobileReleaseDateOf,
+    whenISelectTheContinueButton,
+    whenIDeleteTheTotalmobileReleaseDate,
+    whenIHaveSelectedToAddATotalmobileReleaseDate
 } from "../step_definitions/when";
 import {
     thenICanViewTheTotalmobileReleaseDateIsSetTo,
     thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate,
-    thenIHaveTheOptionToAddATotalmobileReleaseDate
+    thenIHaveTheOptionToAddATotalmobileReleaseDate,
+    thenTheTotalmobileReleaseDateIsStored,
+    thenTheTotalmobileReleaseDateIsDeleted
 } from "../step_definitions/then";
 
 jest.mock("blaise-login-react-client");
@@ -83,11 +90,11 @@ defineFeature(feature, test => {
 
         whenILoadTheHomepage(when);
         whenISelectTheQuestionnaire(when);
-        // whenISelectToChangeOrDeleteTOStartDate(when);
-        // whenISpecifyATOStartDateOf(when);
-        // whenISelectTheContinueButton(when);
-        //
-        // thenTheToStartDateIsStored(then, mocker);
+        whenISelectToChangeOrDeleteTotalmobileReleaseDate(when);
+        whenISpecifyATotalmobileReleaseDateOf(when);
+        whenISelectTheContinueButton(when);
+
+        thenTheTotalmobileReleaseDateIsStored(then, mocker);
     });
 
     test("Delete a Totalmobile release date from a deployed questionnaire", ({given, when, then}) => {
@@ -96,11 +103,11 @@ defineFeature(feature, test => {
 
         whenILoadTheHomepage(when);
         whenISelectTheQuestionnaire(when);
-        //     whenISelectToChangeOrDeleteTOStartDate(when);
-        //     whenIDeleteTheToStartDate(when);
-        //     whenISelectTheContinueButton(when);
-        //
-        //     thenTheToStartDateIsDeleted(then, mocker);
+        whenISelectToChangeOrDeleteTotalmobileReleaseDate(when);
+        whenIDeleteTheTotalmobileReleaseDate(when);
+        whenISelectTheContinueButton(when);
+
+         // thenTheTotalmobileReleaseDateIsDeleted(then, mocker);
     });
 
     test("Add a Totalmobile release date to a deployed questionnaire", ({given, when, then}) => {
@@ -109,10 +116,10 @@ defineFeature(feature, test => {
 
         whenILoadTheHomepage(when);
         whenISelectTheQuestionnaire(when);
-        // whenIHaveSelectedToAddAToStartDate(when);
-        // whenISpecifyATOStartDateOf(when);
-        // whenISelectTheContinueButton(when);
-        //
-        // thenTheToStartDateIsStored(then, mocker);
+        whenIHaveSelectedToAddATotalmobileReleaseDate(when);
+        whenISpecifyATotalmobileReleaseDateOf(when);
+        whenISelectTheContinueButton(when);
+
+        thenTheTotalmobileReleaseDateIsStored(then, mocker);
     });
 });

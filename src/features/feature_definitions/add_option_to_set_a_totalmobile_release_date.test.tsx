@@ -18,7 +18,7 @@ import {
     whenIConfirmMySelection,
     whenISelectTheContinueButton, whenISelectToInstallWithNoTMReleaseDate,
     whenISelectToInstallWithNoStartDate,
-    whenISpecifyATMReleaseDateOf,
+    whenISpecifyATotalmobileReleaseDateOf,
 } from "../step_definitions/when";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
@@ -66,7 +66,7 @@ defineFeature(feature, test => {
         givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
         whenIConfirmMySelection(when);
         whenISelectToInstallWithNoStartDate(when);
-        whenISpecifyATMReleaseDateOf(when);
+        whenISpecifyATotalmobileReleaseDateOf(when);
         whenISelectTheContinueButton(when);
         thenICanViewTheTMReleaseDateIsSetTo(then);
     });

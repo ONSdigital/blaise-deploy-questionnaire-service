@@ -118,6 +118,15 @@ export function whenIHaveSelectedToAddAToStartDate(when: DefineStepFunction): vo
     });
 }
 
+export function whenIHaveSelectedToAddATotalmobileReleaseDate(when: DefineStepFunction): void {
+    when("I have selected to add a Totalmobile release date", async () => {
+        await act(async () => {
+            await flushPromises();
+        });
+        userEvent.click(screen.getByText(/Add release date/i));
+    });
+}
+
 export function whenISpecifyATOStartDateOf(when: DefineStepFunction): void {
     when(/I specify the TO start date of '(.*)'/, async (toStartDate: string) => {
         userEvent.click(screen.getByText(/Yes, let me specify a start date/i));
@@ -131,6 +140,15 @@ export function whenISpecifyATOStartDateOf(when: DefineStepFunction): void {
 export function whenIDeleteTheToStartDate(when: DefineStepFunction): void {
     when("I delete the TO start date", async () => {
         userEvent.click(screen.getByText(/No start date/i));
+        await act(async () => {
+            await flushPromises();
+        });
+    });
+}
+
+export function whenIDeleteTheTotalmobileReleaseDate(when: DefineStepFunction): void {
+    when("I delete the Totalmobile release date", async () => {
+        userEvent.click(screen.getByText(/No release date/i));
         await act(async () => {
             await flushPromises();
         });
@@ -301,8 +319,8 @@ export function whenIDeploy(when: DefineStepFunction): void {
 //     });
 // }
 
-export function whenISpecifyATMReleaseDateOf(when: DefineStepFunction): void {
-    when(/I specify the TM release date of '(.*)'/, async (toStartDate: string) => {
+export function whenISpecifyATotalmobileReleaseDateOf(when: DefineStepFunction): void {
+    when(/I specify the Totalmobile release date of '(.*)'/, async (toStartDate: string) => {
         userEvent.click(screen.getByText(/Yes, let me specify a release date/i));
         userEvent.type(screen.getByLabelText(/Please specify date/i), formatDateString(toStartDate));
         await act(async () => {
@@ -321,8 +339,8 @@ export function whenISelectToInstallWithNoTMReleaseDate(when: DefineStepFunction
     });
 }
 
-export function whenIChooseToChangeOrDeleteTMReleaseDate(when: DefineStepFunction): void {
-    when("I choose to change or delete the Totalmobile release date", async () => {
+export function whenISelectToChangeOrDeleteTotalmobileReleaseDate(when: DefineStepFunction): void {
+    when("I select to change or delete the Totalmobile release date", async () => {
         await act(async () => {
             await flushPromises();
         });

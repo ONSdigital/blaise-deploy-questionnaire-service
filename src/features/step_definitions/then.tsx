@@ -197,6 +197,19 @@ export function thenTheToStartDateIsStored(then: DefineStepFunction, mocker: Moc
     });
 }
 
+export function thenTheTotalmobileReleaseDateIsStored(then: DefineStepFunction, mocker: MockAdapter): void {
+    then(/the Totalmobile release date of '(.*)' is stored against '(.*)'/, async (tmReleaseDate: string, questionnaire: string) => {
+        expect(mocker.history.post).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    url: `/api/tmreleasedate/${questionnaire}`,
+                    data: JSON.stringify({"tmreleasedate": formatDateString(tmReleaseDate)})
+                }),
+            ])
+        );
+    });
+}
+
 export function thenTheToStartDateIsDeleted(then: DefineStepFunction, mocker: MockAdapter): void {
     then(/the TO Start Date is deleted from '(.*)'/, async (questionnaire: string) => {
         expect(mocker.history.post).toEqual(
@@ -204,6 +217,19 @@ export function thenTheToStartDateIsDeleted(then: DefineStepFunction, mocker: Mo
                 expect.objectContaining({
                     url: `/api/tostartdate/${questionnaire}`,
                     data: JSON.stringify({"tostartdate": ""})
+                }),
+            ])
+        );
+    });
+}
+
+export function thenTheTotalmobileReleaseDateIsDeleted(then: DefineStepFunction, mocker: MockAdapter): void {
+    then(/the Totalmobile release date is deleted from '(.*)'/, async (questionnaire: string) => {
+        expect(mocker.history.post).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    url: `/api/tmreleasedate/${questionnaire}`,
+                    data: JSON.stringify({"tmreleasedate": ""})
                 }),
             ])
         );
