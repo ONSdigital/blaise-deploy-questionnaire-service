@@ -155,9 +155,21 @@ export function givenTheQuestionnaireHasATOStartDate(given: DefineStepFunction, 
     });
 }
 
+export function givenTheQuestionnaireHasATMReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
+    given(/'(.*)' has a Tm Release Date of '(.*)'/, async (questionnaireName: string, tmReleaseDate: string) => {
+        mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(200, {tostartdate: formatDateString(tmReleaseDate)});
+    });
+}
+
 export function givenTheQuestionnaireHasNoTOStartDate(given: DefineStepFunction, mocker: MockAdapter): void {
     given(/'(.*)' has no TO start date/, async (questionnaireName: string) => {
         mocker.onGet(`/api/tostartdate/${questionnaireName}`).reply(404);
+    });
+}
+
+export function givenTheQuestionnaireHasNoTMReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
+    given(/'(.*)' has no Tm Release Date/, async (questionnaireName: string) => {
+        mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(404);
     });
 }
 

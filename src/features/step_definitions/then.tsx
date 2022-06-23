@@ -448,12 +448,22 @@ export function thenThePreviouslySelectedDateIsPrepopulated(then: DefineStepFunc
 export function thenICanSelectContinueOrCancel(then: DefineStepFunction): void {
     then("I can select 'continue' or 'cancel'", async () => {
         await waitFor(() => {
-            const deployButton: any = document.querySelector("#continue-deploy-button");
-            expect(deployButton).not.toBeNull();
-            expect(deployButton.textContent).toEqual("Continue");
+            const continueButton: any = document.querySelector("#continue-deploy-button");
+            expect(continueButton).not.toBeNull();
+            expect(continueButton.textContent).toEqual("Continue");
             const cancelButton: any = document.querySelector("#cancel-deploy-button");
             expect(cancelButton).not.toBeNull();
             expect(cancelButton.textContent).toEqual("Cancel");
+            userEvent.click(screen.getByText(/Continue/i));
         });
     });
 }
+
+// export function whenISelectContinue(when: DefineStepFunction): void {
+//     when("I select continue", async () => {
+//         userEvent.click(screen.getByText(/Continue/i));
+//         await act(async () => {
+//             await flushPromises();
+//         });
+//     });
+// }

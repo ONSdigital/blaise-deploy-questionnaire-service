@@ -11,20 +11,11 @@ import axios from "axios";
 import MockAdapeter from "axios-mock-adapter";
 import {
     givenTheQuestionnaireIsInstalled,
-    givenTheQuestionnaireHasATotalmobileReleaseDate
+    givenTheQuestionnaireHasATMReleaseDate,
+    givenTheQuestionnaireHasNoTMReleaseDate,
 } from "../step_definitions/given";
-import {
-    whenIGoToTheQuestionnaireDetailsPage,
-    whenIChooseToChangeOrDeleteTMReleaseDate,
-    whenIDoNotSelectANewDate,
-    whenIDoNotRemoveThePreSelectedDate
-} from "../step_definitions/when";
-import {
-    thenIamAbleToViewTheDateSelectionForm,
-    thenIAmReturnedToTheQuestionnaireDetailsPage,
-    thenICanSelectContinueOrCancel,
-    thenThePreviouslySelectedDateIsPrepopulated
-} from "../step_definitions/then";
+import {} from "../step_definitions/when";
+import {} from "../step_definitions/then";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
@@ -49,38 +40,72 @@ defineFeature(feature, test => {
         mocker.reset();
     });
 
-    test("View the Totalmobile release date if specified and return to the questionnaire details page", ({given, when, then}) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker)
-        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
-        whenIGoToTheQuestionnaireDetailsPage(when);
-        whenIChooseToChangeOrDeleteTMReleaseDate(when);
-        thenIamAbleToViewTheDateSelectionForm(then);
-        thenThePreviouslySelectedDateIsPrepopulated(then)
-        thenICanSelectContinueOrCancel(then);
-        //thenIAmReturnedToTheQuestionnaireDetailsPage(then)
+    test("View Tm Release Date if specified", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireHasATMReleaseDate(given, mocker);
+
+        // whenILoadTheHomepage(when);
+        // whenISelectTheQuestionnaire(when);
+        //
+        // thenICanViewTheTOStartDateIsSetTo(then);
     });
 
-    test("Select a new release date and return to the questionnaire details page", ({given, when, then}) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker)
-        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
-        whenIGoToTheQuestionnaireDetailsPage(when);
-        whenIChooseToChangeOrDeleteTMReleaseDate(when);
-        thenIamAbleToViewTheDateSelectionForm(then);
+    test("Change Tm Release Date if specified", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireHasATMReleaseDate(given, mocker);
+
+        //     whenILoadTheHomepage(when);
+        //     whenISelectTheQuestionnaire(when);
+        //
+        //     thenIHaveTheOptionToChangeOrDeleteTheToStartDate(then);
     });
 
-    test("Select a new release date but cancel the transaction before returning to the questionnaire details page", ({given, when, then}) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker)
-        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
-        whenIGoToTheQuestionnaireDetailsPage(when);
-        whenIChooseToChangeOrDeleteTMReleaseDate(when);
-        thenIamAbleToViewTheDateSelectionForm(then);
+    test("Add Tm Release Date if not previously specified", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireHasNoTMReleaseDate(given, mocker);
+
+        // whenILoadTheHomepage(when);
+        // whenISelectTheQuestionnaire(when);
+        //
+        // thenIHaveTheOptionToAddAToStartDate(then);
     });
 
-    test("Delete Totalmobile release date and return to questionnaire details", ({given, when, then}) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker)
-        givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
-        whenIGoToTheQuestionnaireDetailsPage(when);
-        whenIChooseToChangeOrDeleteTMReleaseDate(when);
-        thenIamAbleToViewTheDateSelectionForm(then);
+    test("Change an existing Tm Release Date for a deployed questionnaire", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireHasATMReleaseDate(given, mocker);
+
+        // whenILoadTheHomepage(when);
+        // whenISelectTheQuestionnaire(when);
+        // whenISelectToChangeOrDeleteTOStartDate(when);
+        // whenISpecifyATOStartDateOf(when);
+        // whenISelectTheContinueButton(when);
+        //
+        // thenTheToStartDateIsStored(then, mocker);
+    });
+
+    test("Delete a Tm Release Date from a deployed questionnaire", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireHasATMReleaseDate(given, mocker);
+
+        //     whenILoadTheHomepage(when);
+        //     whenISelectTheQuestionnaire(when);
+        //     whenISelectToChangeOrDeleteTOStartDate(when);
+        //     whenIDeleteTheToStartDate(when);
+        //     whenISelectTheContinueButton(when);
+        //
+        //     thenTheToStartDateIsDeleted(then, mocker);
+    });
+
+    test("Add a Tm Release Date to a deployed questionnaire", ({given, when, then}) => {
+        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+        givenTheQuestionnaireHasNoTMReleaseDate(given, mocker);
+
+        // whenILoadTheHomepage(when);
+        // whenISelectTheQuestionnaire(when);
+        // whenIHaveSelectedToAddAToStartDate(when);
+        // whenISpecifyATOStartDateOf(when);
+        // whenISelectTheContinueButton(when);
+        //
+        // thenTheToStartDateIsStored(then, mocker);
     });
 });
