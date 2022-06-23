@@ -329,15 +329,3 @@ export function whenIChooseToChangeOrDeleteTMReleaseDate(when: DefineStepFunctio
         userEvent.click(screen.getByText(/Change or delete release date/i));
     });
 }
-
-export function whenIDoNotSelectANewDate(when: DefineStepFunction): void {
-    when("I do not select a new date", async () => {
-        expect(true)
-    });
-}
-
-export function whenIDoNotRemoveThePreSelectedDate(when: DefineStepFunction): void {
-    when("I do not remove the pre selected date", async () => {
-        expect(true)
-    });
-}
