@@ -11,7 +11,7 @@ import { givenIHaveSelectedTheQuestionnairePackageToDeploy, givenNoQuestionnaire
 import {
     thenIAmGivenASummaryOfTheDeployment,
     thenIAmPresentedWithAnOptionToSpecifyATMReleaseDate,
-    thenICanViewTheTMReleaseDateIsSetTo,
+    thenICanViewTheTotalmobileReleaseDateIsSetTo,
     thenTheSummaryPageHasNoTMReleaseDate,
 } from "../step_definitions/then";
 import {
@@ -68,7 +68,7 @@ defineFeature(feature, test => {
         whenISelectToInstallWithNoStartDate(when);
         whenISpecifyATotalmobileReleaseDateOf(when);
         whenISelectTheContinueButton(when);
-        thenICanViewTheTMReleaseDateIsSetTo(then);
+        thenICanViewTheTotalmobileReleaseDateIsSetTo(then);
     });
 
     test("If I select no date to be set", ({ given, when, then }) => {
