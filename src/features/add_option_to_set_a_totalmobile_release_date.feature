@@ -25,9 +25,9 @@ Feature: Add option to set a Totalmobile 'release date' in DQS
     And I have selected the questionnaire package for 'LMS2109A' to deploy
     When I confirm my selection
     And I select to not provide a TO Start Date
-    And I specify the TM release date of '05/06/2030'
+    And I specify the Totalmobile release date of '05/06/2030'
     And I select the continue button
-    Then I can view the TM Release Date is set to '05/06/2030'
+    Then I can view the Totalmobile release date is set to '05/06/2030'
 
   # Scenario 3:
   Scenario: If I select no date to be set

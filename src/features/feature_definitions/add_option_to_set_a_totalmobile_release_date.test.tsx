@@ -11,14 +11,14 @@ import { givenIHaveSelectedTheQuestionnairePackageToDeploy, givenNoQuestionnaire
 import {
     thenIAmGivenASummaryOfTheDeployment,
     thenIAmPresentedWithAnOptionToSpecifyATMReleaseDate,
-    thenICanViewTheTMReleaseDateIsSetTo,
+    thenICanViewTheTotalmobileReleaseDateIsSetTo,
     thenTheSummaryPageHasNoTMReleaseDate,
 } from "../step_definitions/then";
 import {
     whenIConfirmMySelection,
-    whenISelectTheContinueButton, whenISelectToInstallWithNoReleaseDate,
+    whenISelectTheContinueButton, whenISelectToInstallWithNoTMReleaseDate,
     whenISelectToInstallWithNoStartDate,
-    whenISpecifyATMReleaseDateOf,
+    whenISpecifyATotalmobileReleaseDateOf,
 } from "../step_definitions/when";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
@@ -66,9 +66,9 @@ defineFeature(feature, test => {
         givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
         whenIConfirmMySelection(when);
         whenISelectToInstallWithNoStartDate(when);
-        whenISpecifyATMReleaseDateOf(when);
+        whenISpecifyATotalmobileReleaseDateOf(when);
         whenISelectTheContinueButton(when);
-        thenICanViewTheTMReleaseDateIsSetTo(then);
+        thenICanViewTheTotalmobileReleaseDateIsSetTo(then);
     });
 
     test("If I select no date to be set", ({ given, when, then }) => {
@@ -76,7 +76,7 @@ defineFeature(feature, test => {
         givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
         whenIConfirmMySelection(when);
         whenISelectToInstallWithNoStartDate(when);
-        whenISelectToInstallWithNoReleaseDate(when);
+        whenISelectToInstallWithNoTMReleaseDate(when);
         thenTheSummaryPageHasNoTMReleaseDate(then);
     });
 });
