@@ -20,7 +20,8 @@ import AuditPage from "./components/auditPage";
 import ReinstallQuestionnaires from "./components/reinstallQuestionnaires";
 import LiveSurveyWarning from "./components/uploadPage/liveSurveyWarning";
 import QuestionnaireDetails from "./components/QuestionnaireDetails/questionnaireDetails";
-import ChangeToStartDate from "./components/QuestionnaireDetails/changeToStartDate";
+import ChangeTOStartDate from "./components/QuestionnaireDetails/changeTOStartDate";
+import ChangeTMReleaseDate from "./components/QuestionnaireDetails/changeTmReleaseDate";
 import "./style.css";
 import { NavigationLinks } from "./components/navigationLinks";
 import { isProduction } from "./client/env";
@@ -98,7 +99,10 @@ function App(): ReactElement {
                             <LiveSurveyWarning />
                         </Route>
                         <Route path="/questionnaire/start-date">
-                            <ChangeToStartDate />
+                            <ChangeTOStartDate />
+                        </Route>
+                        <Route path="/questionnaire/release-date">
+                            <ChangeTMReleaseDate />
                         </Route>
                         <Route path="/questionnaire/:questionnaireName">
                             <QuestionnaireDetails />

@@ -12,7 +12,7 @@ interface LocationState {
     questionnaireName: string;
 }
 
-function ChangeToStartDate(): ReactElement {
+function ChangeTOStartDate(): ReactElement {
     const history = useHistory();
     const location = useLocation<LocationState>();
     const { toStartDate, questionnaireName } = location.state || { toStartDate: null, questionnaireName: null };
@@ -83,4 +83,4 @@ function ChangeToStartDate(): ReactElement {
     );
 }
 
-export default ChangeToStartDate;
+export default ChangeTOStartDate;
