@@ -48,7 +48,7 @@ Feature: Add option to DQS to edit a Tm Release Date for an existing questionnai
     And I select to change or delete the Totalmobile release date
     And I delete the Totalmobile release date
     And I select the continue button
-#    Then the Totalmobile release date is deleted from 'LMS2101_AA1'
+    Then the Totalmobile release date is deleted from 'LMS2101_AA1'
 
   # Scenario 6:
   Scenario: Add a Totalmobile release date to a deployed questionnaire

@@ -1,7 +1,7 @@
-import { DefineStepFunction } from "jest-cucumber";
-import { questionnaireWithName } from "./helpers/apiMockObjects";
-import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
-import { navigateToDeployPageAndSelectFile, formatDateString } from "./helpers/functions";
+import {DefineStepFunction} from "jest-cucumber";
+import {questionnaireWithName} from "./helpers/apiMockObjects";
+import {QuestionnaireSettings, Questionnaire} from "blaise-api-node-client";
+import {navigateToDeployPageAndSelectFile, formatDateString} from "./helpers/functions";
 import MockAdapter from "axios-mock-adapter";
 
 export function givenTheQuestionnaireIsInstalled(
@@ -20,6 +20,8 @@ export function givenTheQuestionnaireIsInstalled(
         mocker.onGet(`/api/tostartdate/${questionnaireName}`).reply(200);
         mocker.onPost(`/api/tostartdate/${questionnaireName}`).reply(200);
         mocker.onDelete(`/api/tostartdate/${questionnaireName}`).reply(204);
+        mocker.onPost(`/api/tmreleasedate/${questionnaireName}`).reply(200);
+        mocker.onDelete(`/api/tmreleasedate/${questionnaireName}`).reply(204);
         mocker.onGet(`/upload/init?filename=${questionnaireName}.bpkg`).reply(200, "https://storage.googleapis.com/");
         mocker.onGet(`/upload/verify?filename=${questionnaireName}.bpkg`).reply(200, {name: `${questionnaireName}.bpkg`});
         mocker.onPost("/api/install").reply(201);
@@ -180,9 +182,9 @@ export function givenAllInstallsWillFail(given: DefineStepFunction, mocker: Mock
 }
 
 export function givenIHaveSelectedTheQuestionnairePackageToDeploy(given: DefineStepFunction): void {
-  given(/I have selected the questionnaire package for '(.*)' to deploy/, async (questionnaireName: string) => {
-    await navigateToDeployPageAndSelectFile(questionnaireName);
-  });
+    given(/I have selected the questionnaire package for '(.*)' to deploy/, async (questionnaireName: string) => {
+        await navigateToDeployPageAndSelectFile(questionnaireName);
+    });
 }
 
 export function givenTheQuestionnaireIsLive(
