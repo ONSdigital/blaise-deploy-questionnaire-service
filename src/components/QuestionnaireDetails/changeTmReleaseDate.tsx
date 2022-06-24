@@ -19,7 +19,7 @@ function ChangeTMReleaseDate(): ReactElement {
 
     async function _handleSubmit(values: any, actions: any) {
         if (values.askToSetDate === "no") {
-            values["set start date"] = "";
+            values["set release date"] = "";
         }
         const liveDateCreated = await setTMReleaseDate(questionnaireName, values["set release date"]);
         if (!liveDateCreated) {
