@@ -1,5 +1,6 @@
-import { deleteTOStartDate } from "../toStartDate";
-import { deleteQuestionnaire } from "../questionnaires";
+import {deleteTOStartDate} from "../toStartDate";
+import {deleteTMReleaseDate} from "../tmReleaseDate";
+import {deleteQuestionnaire} from "../questionnaires";
 
 type removeToStartDateAndDeleteQuestionnaireResponse = [boolean, string];
 
@@ -11,6 +12,12 @@ async function removeToStartDateAndDeleteQuestionnaire(questionnaireName: string
         return [false, "Failed to delete TO start date"];
     }
 
+    const tmReleaseDateDeleted = await deleteTMReleaseDate(questionnaireName);
+    if (!tmReleaseDateDeleted) {
+        console.error("Failed to delete Totalmobile release date");
+        return [false, "Failed to delete Totalmobile release date"];
+    }
+
     const deleted = await deleteQuestionnaire(questionnaireName);
     if (!deleted) {
         console.error("Failed to delete the questionnaire");
@@ -20,4 +27,4 @@ async function removeToStartDateAndDeleteQuestionnaire(questionnaireName: string
     return [true, "Deleted successfully"];
 }
 
-export { removeToStartDateAndDeleteQuestionnaire };
+export {removeToStartDateAndDeleteQuestionnaire};
