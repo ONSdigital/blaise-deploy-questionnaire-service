@@ -5,6 +5,9 @@ import AuditLogger from "../auditLogging/logger";
 import dateFormatter from "dayjs";
 import {release} from "os";
 import {IncomingMessage} from "http";
+import {ReleaseDateManager} from "../bimsApi/releaseDateManager";
+import LoggingReleaseDateManager from "../bimsApi/loggingReleaseDateManager";
+import { Logger } from "../bimsApi/logger";
 
 export default function newBimsHandler(bimsApiClient: BimsApi, auth: Auth, auditLogger: AuditLogger): Router {
   const router = express.Router();
@@ -122,8 +125,13 @@ export class BimsHandler {
 
   async SetTmReleaseDate(req: Request, res: Response): Promise<Response> {
     try {
+      const logger: Logger = {
+        info: (message: string) => this.auditLogger.info(req.log, message),
+        error: (message: string) => this.auditLogger.error(req.log, message),
+      }
+
       const responseBody = await setReleaseDate(
-          this.bimsApiClient,
+          new LoggingReleaseDateManager(this.bimsApiClient, logger) ,
           req.params.questionnaireName,
           req.body.tmreleasedate,
           this.auditLogger,
@@ -189,41 +197,30 @@ function releaseDateExists(releaseDate: tmReleaseDate | undefined): boolean {
 }
 
 async function setReleaseDate(
-    bimsApiClient: BimsApi,
+    bimsApiClient: ReleaseDateManager,
     questionnaireName: string,
     newTmReleaseDate: string,
     auditLogger: AuditLogger,
     log: IncomingMessage["log"]
 ) {
-  let releaseDate = await bimsApiClient.getReleaseDate(questionnaireName);
+  const newTmReleaseDateIsEmpty = newTmReleaseDate === "";
+  const releaseDate = await bimsApiClient.getReleaseDate(questionnaireName);
+  const originalDateExists = releaseDateExists(releaseDate);
 
-  if (!releaseDateExists(releaseDate) && newTmReleaseDate === "") {
+  if (!originalDateExists && newTmReleaseDateIsEmpty) {
     log.info(`No previous TM release date found and none specified for questionnaire ${questionnaireName}`);
     return "";
   }
 
-  if (releaseDateExists(releaseDate) && newTmReleaseDate === "") {
-    try {
-      await bimsApiClient.deleteReleaseDate(questionnaireName);
-      auditLogger.info(log, `Successfully removed TM release date for questionnaire ${questionnaireName}`);
-      return;
-    } catch (error: unknown) {
-      auditLogger.error(log, `Failed to remove TM release date for questionnaire ${questionnaireName}`);
-      throw error;
-    }
+  if (originalDateExists && newTmReleaseDateIsEmpty) {
+    return bimsApiClient.deleteReleaseDate(questionnaireName);
   }
 
-  try {
-    let responseBody;
-    if (releaseDateExists(releaseDate)) {
-      responseBody = await bimsApiClient.updateReleaseDate(questionnaireName, newTmReleaseDate);
-    } else {
-      responseBody = await bimsApiClient.createReleaseDate(questionnaireName, newTmReleaseDate);
-    }
-    auditLogger.info(log, `Successfully set TM release date to ${newTmReleaseDate} for questionnaire ${questionnaireName}`);
-    return responseBody;
-  } catch (error: unknown) {
-    auditLogger.error(log, `Failed to set TM release date to ${newTmReleaseDate} for questionnaire ${questionnaireName}`);
-    throw error;
+  if (originalDateExists) {
+      return bimsApiClient.updateReleaseDate(questionnaireName, newTmReleaseDate);
+  } else {
+      return bimsApiClient.createReleaseDate(questionnaireName, newTmReleaseDate);
   }
 }
+
+

@@ -1,5 +1,6 @@
 import BlaiseIapNodeProvider from "blaise-iap-node-provider";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import {ReleaseDateManager} from "./releaseDateManager";
 
 export type toStartDate = {
     tostartdate: string
@@ -9,7 +10,7 @@ export type tmReleaseDate = {
     tmreleasedate: string
 }
 
-export class BimsApi {
+export class BimsApi implements ReleaseDateManager {
     private readonly bimsApiUrl: string;
     private authProvider: BlaiseIapNodeProvider;
     private httpClient: AxiosInstance;
