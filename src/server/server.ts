@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === "production") {
     process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, "../keys.json");
 }
 
-export function newServer(config: Config): Express {
+export function newServer(config: Config, logger: HttpLogger = createLogger()): Express {
     const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
     const auth = new Auth(config);
 
@@ -48,7 +48,7 @@ export function newServer(config: Config): Express {
 
     const server = express();
 
-    const logger: HttpLogger = createLogger();
+    // const logger: HttpLogger = createLogger();
     server.use(logger);
 
     server.use("/", loginHandler);
