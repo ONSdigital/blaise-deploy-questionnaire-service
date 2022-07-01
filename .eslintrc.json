@@ -36,7 +36,8 @@
             "always"
         ],
         "no-undef": "off",
-        "@typescript-eslint/no-empty-function": "off"
+        "@typescript-eslint/no-empty-function": "off",
+        "indent": ["error", 4]
     },
     "overrides": [
         {

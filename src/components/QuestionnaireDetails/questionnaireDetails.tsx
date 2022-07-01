@@ -65,21 +65,21 @@ function QuestionnaireDetails(): ReactElement {
                             setSurveyDays(surveyDays);
                             setLoaded(true);
                         }).catch((error: unknown) => {
-                        console.error(`Error getting questionnaire survey days ${error}`);
-                        setErrored(true);
-                        setLoaded(true);
-                        return;
-                    });
+                            console.error(`Error getting questionnaire survey days ${error}`);
+                            setErrored(true);
+                            setLoaded(true);
+                            return;
+                        });
                 }
                 console.log(`returned questionnaire mode: ${modes}`);
                 setModes(modes);
                 setLoaded(true);
             }).catch((error: unknown) => {
-            console.error(`Error getting questionnaire modes ${error}`);
-            setErrored(true);
-            setLoaded(true);
-            return;
-        });
+                console.error(`Error getting questionnaire modes ${error}`);
+                setErrored(true);
+                setLoaded(true);
+                return;
+            });
     }, []);
 
     async function loadQuestionnaire(): Promise<void> {
@@ -116,58 +116,58 @@ function QuestionnaireDetails(): ReactElement {
                         <h2 className="summary__group-title">Questionnaire details</h2>
                         <table className="summary__items">
                             <thead className="u-vh">
-                            <tr>
-                                <th>Detail</th>
-                                <th>Output</th>
-                            </tr>
+                                <tr>
+                                    <th>Detail</th>
+                                    <th>Output</th>
+                                </tr>
                             </thead>
                             <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                                <tr className="summary__row summary__row--has-values">
+                                    <td className="summary__item-title">
+                                        <div className="summary__item--text">
                                         Questionnaire status
-                                    </div>
-                                </td>
-                                <td className="summary__values" colSpan={2}>
-                                    <QuestionnaireStatus status={questionnaire.status ? questionnaire.status : ""}/>
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                    <td className="summary__values" colSpan={2}>
+                                        <QuestionnaireStatus status={questionnaire.status ? questionnaire.status : ""}/>
+                                    </td>
+                                </tr>
                             </tbody>
                             <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                                <tr className="summary__row summary__row--has-values">
+                                    <td className="summary__item-title">
+                                        <div className="summary__item--text">
                                         Modes
-                                    </div>
-                                </td>
-                                <td className="summary__values" colSpan={2}>
-                                    {modes.join(", ")}
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                    <td className="summary__values" colSpan={2}>
+                                        {modes.join(", ")}
+                                    </td>
+                                </tr>
                             </tbody>
                             <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                                <tr className="summary__row summary__row--has-values">
+                                    <td className="summary__item-title">
+                                        <div className="summary__item--text">
                                         Number of cases
-                                    </div>
-                                </td>
-                                <td className="summary__values" colSpan={2}>
-                                    {questionnaire.dataRecordCount}
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                    <td className="summary__values" colSpan={2}>
+                                        {questionnaire.dataRecordCount}
+                                    </td>
+                                </tr>
                             </tbody>
                             <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                                <tr className="summary__row summary__row--has-values">
+                                    <td className="summary__item-title">
+                                        <div className="summary__item--text">
                                         Install date
-                                    </div>
-                                </td>
-                                <td className="summary__values" colSpan={2}>
-                                    {dateFormatter(questionnaire.installDate).format("DD/MM/YYYY HH:mm")}
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                    <td className="summary__values" colSpan={2}>
+                                        {dateFormatter(questionnaire.installDate).format("DD/MM/YYYY HH:mm")}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

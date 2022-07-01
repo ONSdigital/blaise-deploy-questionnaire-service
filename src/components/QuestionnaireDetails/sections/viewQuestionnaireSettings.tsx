@@ -29,10 +29,10 @@ function ViewQuestionnaireSettings({questionnaire, modes}: Props): ReactElement 
                 console.log("returned questionnaire settings: ", questionnaireSettingsList);
                 setSetting(GetStrictInterviewingSettings(questionnaireSettingsList));
             }).catch((error: unknown) => {
-            console.error(`Error getting questionnaire settings ${error}`);
-            setErrored(true);
-            return;
-        });
+                console.error(`Error getting questionnaire settings ${error}`);
+                setErrored(true);
+                return;
+            });
     }, []);
 
     useEffect(() => {

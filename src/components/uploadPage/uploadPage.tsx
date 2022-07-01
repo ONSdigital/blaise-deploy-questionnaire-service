@@ -49,21 +49,21 @@ function UploadPage(): ReactElement {
 
     function submitButton(): string {
         switch (activeStep) {
-            case Step.Summary:
-                return "Deploy questionnaire";
-            case Step.InvalidSettings:
-                return "Deploy anyway";
-            default:
-                return "Continue";
+        case Step.Summary:
+            return "Deploy questionnaire";
+        case Step.InvalidSettings:
+            return "Deploy anyway";
+        default:
+            return "Continue";
         }
     }
 
     function cancelButton(): string {
         switch (activeStep) {
-            case Step.InvalidSettings:
-                return "Cancel";
-            default:
-                return "Cancel";
+        case Step.InvalidSettings:
+            return "Cancel";
+        default:
+            return "Cancel";
         }
     }
 
@@ -81,33 +81,33 @@ function UploadPage(): ReactElement {
 
     function _renderStepContent(step: Step) {
         switch (step) {
-            case Step.SelectFile:
-                return (
-                    <SelectFile file={file}
-                        setFile={setFile}
-                        loading={false} />
-                );
-            case Step.AlreadyExists:
-                return <AlreadyExists questionnaireName={questionnaireName} />;
-            case Step.ConfirmOverride:
-                return <ConfirmOverride questionnaireName={questionnaireName} />;
-            case Step.SetLiveDate:
-                return <AskToSetTOStartDate questionnaireName={questionnaireName} />;
-            case Step.SetReleaseDate:
-                if (questionnaireName.startsWith("LMS")) {
-                    return <AskToSetTMReleaseDate questionnaireName={questionnaireName} />;
-                }
-                setActiveStep(Step.Summary);
-                return <DeployFormSummary file={file} foundQuestionnaire={foundQuestionnaire} />;
-            case Step.Summary:
-                return <DeployFormSummary file={file} foundQuestionnaire={foundQuestionnaire} />;
-            case Step.InvalidSettings:
-                return <InvalidSettings
-                    questionnaireName={questionnaireName}
-                    questionnaireSettings={questionnaireSettings}
-                    invalidSettings={invalidSettings}
-                    errored={errored}
-                />;
+        case Step.SelectFile:
+            return (
+                <SelectFile file={file}
+                    setFile={setFile}
+                    loading={false} />
+            );
+        case Step.AlreadyExists:
+            return <AlreadyExists questionnaireName={questionnaireName} />;
+        case Step.ConfirmOverride:
+            return <ConfirmOverride questionnaireName={questionnaireName} />;
+        case Step.SetLiveDate:
+            return <AskToSetTOStartDate questionnaireName={questionnaireName} />;
+        case Step.SetReleaseDate:
+            if (questionnaireName.startsWith("LMS")) {
+                return <AskToSetTMReleaseDate questionnaireName={questionnaireName} />;
+            }
+            setActiveStep(Step.Summary);
+            return <DeployFormSummary file={file} foundQuestionnaire={foundQuestionnaire} />;
+        case Step.Summary:
+            return <DeployFormSummary file={file} foundQuestionnaire={foundQuestionnaire} />;
+        case Step.InvalidSettings:
+            return <InvalidSettings
+                questionnaireName={questionnaireName}
+                questionnaireSettings={questionnaireSettings}
+                invalidSettings={invalidSettings}
+                errored={errored}
+            />;
         }
     }
 
@@ -135,55 +135,55 @@ function UploadPage(): ReactElement {
     async function _handleSubmit(values: any, actions: any) {
         let result;
         switch (activeStep) {
-            case Step.SelectFile:
-                result = await validateSelectedQuestionnaireExists(file, setQuestionnaireName, setUploadStatus, setFoundQuestionnaire);
-                if (result === null) {
-                    actions.setTouched({});
-                    actions.setSubmitting(false);
-                    setActiveStep(stepLength());
-                    return;
-                }
-                if (result === false) {
-                    setActiveStep(Step.SetLiveDate);
-                    actions.setTouched({});
-                    actions.setSubmitting(false);
-                    return;
-                }
-                break;
-            case Step.AlreadyExists:
-                if (values.override === "cancel") {
-                    actions.setSubmitting(false);
-                    history.push("/");
-                    return;
-                }
-                if (foundQuestionnaire?.active && foundQuestionnaire.status?.toLowerCase() !== "inactive") {
-                    actions.setSubmitting(false);
-                    history.push(`/upload/survey-live/${questionnaireName}`);
-                }
-                break;
-            case Step.ConfirmOverride:
-                if (values.override === "cancel") {
-                    actions.setSubmitting(false);
-                    history.push("/");
-                    return;
-                }
-                break;
-            case Step.SetLiveDate:
-                if (values.askToSetDate === "no") {
-                    values["set start date"] = "";
-                }
-                break;
-            case Step.SetReleaseDate:
-                if (values.askToSetDate === "no") {
-                    values["set release date"] = "";
-                }
-                break;
-            case Step.Summary:
-                await _uploadAndInstallQuestionnaire(values, actions);
-                break;
-            case Step.InvalidSettings:
-                await activateQuestionnaire(questionnaireName);
-                break;
+        case Step.SelectFile:
+            result = await validateSelectedQuestionnaireExists(file, setQuestionnaireName, setUploadStatus, setFoundQuestionnaire);
+            if (result === null) {
+                actions.setTouched({});
+                actions.setSubmitting(false);
+                setActiveStep(stepLength());
+                return;
+            }
+            if (result === false) {
+                setActiveStep(Step.SetLiveDate);
+                actions.setTouched({});
+                actions.setSubmitting(false);
+                return;
+            }
+            break;
+        case Step.AlreadyExists:
+            if (values.override === "cancel") {
+                actions.setSubmitting(false);
+                history.push("/");
+                return;
+            }
+            if (foundQuestionnaire?.active && foundQuestionnaire.status?.toLowerCase() !== "inactive") {
+                actions.setSubmitting(false);
+                history.push(`/upload/survey-live/${questionnaireName}`);
+            }
+            break;
+        case Step.ConfirmOverride:
+            if (values.override === "cancel") {
+                actions.setSubmitting(false);
+                history.push("/");
+                return;
+            }
+            break;
+        case Step.SetLiveDate:
+            if (values.askToSetDate === "no") {
+                values["set start date"] = "";
+            }
+            break;
+        case Step.SetReleaseDate:
+            if (values.askToSetDate === "no") {
+                values["set release date"] = "";
+            }
+            break;
+        case Step.Summary:
+            await _uploadAndInstallQuestionnaire(values, actions);
+            break;
+        case Step.InvalidSettings:
+            await activateQuestionnaire(questionnaireName);
+            break;
         }
         // Summary has custom handling for steps
         if (activeStep != Step.Summary) {

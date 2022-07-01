@@ -24,7 +24,7 @@ export function NavigationLinks(): ReactElement {
         <div className="header__bottom">
             <div className="container container--gutterless@xxs@m">
                 <nav className="header-nav js-header-nav" id="main-nav" aria-label="Main menu"
-                     data-analytics="header-navigation">
+                    data-analytics="header-navigation">
                     <ul className="header-nav__list">
                         <li className={`header-nav__item  ${(pathname === "/" ? "header-nav__item--active" : "")}`}>
                             <Link to="/" id="home-link" className="header-nav__link">

@@ -6,12 +6,12 @@ interface Props {
 
 function getStatusColor(status: string | undefined) {
     switch (status) {
-        case "Active":
-            return "success";
-        case "Failed":
-            return "error";
-        default:
-            return "info";
+    case "Active":
+        return "success";
+    case "Failed":
+        return "error";
+    default:
+        return "info";
     }
 }
 
