@@ -166,7 +166,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
         expect(response.status).toEqual(500);
     });
 
-    describe("when there is no existing release", () => {
+    describe("when there is no existing release date", () => {
         beforeEach(() => {
             mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
         });
@@ -262,7 +262,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
             it("should log a message when a release date is not provided", async () => {
                 await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
-                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date removed for LMS2004A. Previously 2022-06-27");
+                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date deleted for LMS2004A. Previously 2022-06-27");
             });
         });
     });
