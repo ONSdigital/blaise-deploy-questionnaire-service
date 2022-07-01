@@ -166,101 +166,104 @@ describe("Sending Totalmobile release date to BIMS service", () => {
         expect(response.status).toEqual(500);
     });
 
-    describe("when an original release date exists and an empty new release date is provided", () => {
-        beforeEach(() => {
-            mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200,
-                {
-                    "tmreleasedate": "2021-06-27T16:29:00+00:00"
-                }, jsonHeaders);
-            mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
-        });
-
-        it("should return a 204 status", async () => {
-            const response: Response = await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
-
-            expect(response.status).toEqual(201);   // 201 because it's an update not a delete
-            expect(response.body).toStrictEqual("");    // currently returns an empty string - not consistent
-        });
-
-        it("updates BIMS with a release date", async () => {
-            await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
-            expect(mock.history.delete.length).toBe(1);
-        });
-
-        it("should log a success message when a release date is provided", async () => {
-            await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
-            expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Successfully removed TM release date for questionnaire LMS2004A");
-        });
-    });
-
-    describe("when an original release date exists and a new release date is provided", () => {
-        beforeEach(() => {
-            mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200,
-                {
-                    "tmreleasedate": "2021-06-27T16:29:00+00:00"
-                }, jsonHeaders);
-            mock.onPatch(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(201, {}, jsonHeaders);
-        });
-
-        it("should return a 201 status", async () => {
-            const response: Response = await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
-
-            expect(response.status).toEqual(201);
-            expect(response.body).toStrictEqual({});
-        });
-
-        it("updates BIMS with a release date", async () => {
-            await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
-            expect(mock.history.patch[0].data).toEqual("{\"tmreleasedate\":\"2022-12-31\"}");
-        });
-
-        it("should log a success message when a release date is provided", async () => {
-            await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
-            expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Successfully set TM release date to 2022-12-31 for questionnaire LMS2004A");
-        });
-    });
-
-    describe("when an original release date is empty and a new release date provided", () => {
-        beforeEach(() => {
-            mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
-            mock.onPost(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(201, {}, jsonHeaders);
-        });
-
-        it("should return a 201 status", async () => {
-            const response: Response = await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
-
-            expect(response.status).toEqual(201);
-            expect(response.body).toStrictEqual({});
-        });
-
-        it("updates BIMS with a release date", async () => {
-            await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
-            expect(mock.history.post[0].data).toEqual("{\"tmreleasedate\":\"2022-12-31\"}");
-        });
-
-        it("should log a success message when a release date is provided", async () => {
-            await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
-
-            expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Successfully set TM release date to 2022-12-31 for questionnaire LMS2004A");
-        });
-    });
-
-    describe("when an original Totalmobile release date is empty and an empty new Totalmobile release date provided", () => {
+    describe("when there is no existing release", () => {
         beforeEach(() => {
             mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
         });
 
-        it("should return a 201 status", async () => {
-            const response: Response = await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
+        describe("specifying a new release date", () => {
+            beforeEach(() => {
+                mock.onPost(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(201, {}, jsonHeaders);
+            });
 
-            expect(response.status).toEqual(201);
-            expect(response.body).toStrictEqual("");    // Not consistent :sob:
+            it("should return a 201 status", async () => {
+                const response: Response = await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
+
+                expect(response.status).toEqual(201);
+                expect(response.body).toStrictEqual({});
+            });
+
+            it("updates BIMS with a release date", async () => {
+                await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
+                expect(mock.history.post[0].data).toEqual("{\"tmreleasedate\":\"2022-12-31\"}");
+            });
+
+            it("should log a message when a release date is provided", async () => {
+                await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
+
+                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date set to 2022-12-31 for LMS2004A");
+            });
         });
 
-        it("should log a success message when a release date is provided", async () => {
-            await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
+        describe("not specifying any release date", () => {
 
-            expect(logInfo).toHaveBeenCalledWith( "No previous TM release date found and none specified for questionnaire LMS2004A");
+            it("should return a 201 status", async () => {
+                const response: Response = await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
+
+                expect(response.status).toEqual(201);
+                expect(response.body).toStrictEqual("");    // Not consistent :sob:
+            });
+
+            it("should log a message when a release date is not provided", async () => {
+                await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
+
+                expect(logInfo).toHaveBeenCalledWith( "AUDIT_LOG: No Totalmobile release date set for LMS2004A");
+            });
+        });
+    });
+
+    describe("when there is an existing release date", () => {
+        beforeEach(() => {
+            mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200,
+                {
+                    "tmreleasedate": "2022-06-27T16:29:00+00:00"
+                }, jsonHeaders);
+        });
+
+        describe("specifying a new release date", () => {
+            beforeEach(() => {
+                mock.onPatch(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(201, {}, jsonHeaders);
+            });
+
+            it("should return a 201 status", async () => {
+                const response: Response = await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
+
+                expect(response.status).toEqual(201);
+                expect(response.body).toStrictEqual({});
+            });
+
+            it("updates BIMS with a release date", async () => {
+                await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
+                expect(mock.history.patch[0].data).toEqual("{\"tmreleasedate\":\"2022-12-31\"}");
+            });
+
+            it("should log a message when a release date is provided", async () => {
+                await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": "2022-12-31"});
+                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date updated to 2022-12-31 for LMS2004A. Previously 2022-06-27");
+            });
+        });
+
+        describe("deleting a release date", () => {
+            beforeEach(() => {
+                mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
+            });
+
+            it("should return a 204 status", async () => {
+                const response: Response = await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
+
+                expect(response.status).toEqual(201);   // 201 because it's an update not a delete
+                expect(response.body).toStrictEqual("");    // currently returns an empty string - not consistent
+            });
+
+            it("updates BIMS with a release date", async () => {
+                await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
+                expect(mock.history.delete.length).toBe(1);
+            });
+
+            it("should log a message when a release date is not provided", async () => {
+                await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
+                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date removed for LMS2004A. Previously 2022-06-27");
+            });
         });
     });
 });
