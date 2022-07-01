@@ -260,7 +260,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
         it("should log a success message when a release date is provided", async () => {
             await request.post("/api/tmreleasedate/LMS2004A").send({"tmreleasedate": ""});
 
-            expect(logInfo).toHaveBeenCalledWith( {"questionnaire": "LMS2004A", "type": "totalmobile"}, "No previous TM release date found and none specified for questionnaire LMS2004A");
+            expect(logInfo).toHaveBeenCalledWith( "No previous TM release date found and none specified for questionnaire LMS2004A");
         });
     });
 });

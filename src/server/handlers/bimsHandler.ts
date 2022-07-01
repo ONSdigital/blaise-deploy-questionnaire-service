@@ -124,10 +124,7 @@ export class BimsHandler {
       let releaseDate = await this.bimsApiClient.getReleaseDate(questionnaireName);
 
       if (!releaseDateExists(releaseDate) && reqData.tmreleasedate === "") {
-        req.log.info({
-          questionnaire: questionnaireName,
-          type: "totalmobile",
-        },`No previous TM release date found and none specified for questionnaire ${questionnaireName}`);
+        req.log.info(`No previous TM release date found and none specified for questionnaire ${questionnaireName}`);
         return res.status(201).json("");
       }
 
