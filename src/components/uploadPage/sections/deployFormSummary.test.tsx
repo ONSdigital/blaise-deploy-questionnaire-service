@@ -2,15 +2,15 @@
  * @jest-environment jsdom
  */
 
-import {render} from "@testing-library/react";
+import { render } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import "@testing-library/jest-dom/extend-expect";
-import {AuthManager} from "blaise-login-react-client";
+import { AuthManager } from "blaise-login-react-client";
 import React from "react";
-import {Formik} from "formik";
+import { Formik } from "formik";
 import DeployFormSummary from "./deployFormSummary";
-import {questionnaireWithName} from "../../../features/step_definitions/helpers/apiMockObjects";
+import { questionnaireWithName } from "../../../features/step_definitions/helpers/apiMockObjects";
 
 const mock = new MockAdapter(axios);
 
@@ -46,7 +46,7 @@ describe("Deploy form summary page", () => {
     });
 
     it("should display the questionnaire file name", async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
                 <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
@@ -57,7 +57,7 @@ describe("Deploy form summary page", () => {
     });
 
     it("should display when the file was last modified", async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
                 <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
@@ -68,7 +68,7 @@ describe("Deploy form summary page", () => {
     });
 
     it("should display the questionnaire file size", async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
                 <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
@@ -79,7 +79,7 @@ describe("Deploy form summary page", () => {
     });
 
     it("should display if the questionnaire exists in Blaise", async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
                 <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
@@ -90,7 +90,7 @@ describe("Deploy form summary page", () => {
     });
 
     it("should display the telephone operation start date", async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
                 <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
@@ -101,7 +101,7 @@ describe("Deploy form summary page", () => {
     });
 
     it("should display the totalmobile release date for LMS questionnaires", async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
                 <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
@@ -112,7 +112,7 @@ describe("Deploy form summary page", () => {
     });
 
     it("should not display the totalmobile release date for non-LMS questionnaires", async () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
                 <DeployFormSummary file={opnFile} foundQuestionnaire={opnQuestionnaire}/>

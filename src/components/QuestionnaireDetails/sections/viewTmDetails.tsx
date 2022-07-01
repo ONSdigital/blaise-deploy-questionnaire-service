@@ -1,15 +1,15 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
-import {getTMReleaseDate} from "../../../client/tmReleaseDate";
+import React, { ReactElement, useEffect, useState } from "react";
+import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
+import { getTMReleaseDate } from "../../../client/tmReleaseDate";
 import dateFormatter from "dayjs";
 import TimeAgo from "react-timeago";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface Props {
     questionnaireName: string
 }
 
-function ViewTmDetails({questionnaireName}: Props): ReactElement {
+function ViewTmDetails({ questionnaireName }: Props): ReactElement {
     if (!questionnaireName.includes("LMS")) {
         return <></>;
     }
@@ -94,7 +94,7 @@ function ViewTmDetails({questionnaireName}: Props): ReactElement {
                                         tmReleaseDate ?
                                             <Link to={{
                                                 pathname: "/questionnaire/release-date",
-                                                state: {questionnaireName: questionnaireName, tmReleaseDate: tmReleaseDateValue}
+                                                state: { questionnaireName: questionnaireName, tmReleaseDate: tmReleaseDateValue }
                                             }} className="summary__button"
                                             aria-label={`Change or delete release date for questionnaire ${questionnaireName}`}>
                                             Change or delete release date
@@ -102,7 +102,7 @@ function ViewTmDetails({questionnaireName}: Props): ReactElement {
                                             :
                                             <Link to={{
                                                 pathname: "/questionnaire/release-date",
-                                                state: {questionnaireName: questionnaireName}
+                                                state: { questionnaireName: questionnaireName }
                                             }} className="summary__button"
                                             aria-label={`Add a release date for questionnaire ${questionnaireName}`}>
                                             Add release date

@@ -1,4 +1,4 @@
-import React, {ReactElement} from "react";
+import React, { ReactElement } from "react";
 
 interface Props {
     status: string
@@ -15,7 +15,7 @@ function getStatusColor(status: string | undefined) {
     }
 }
 
-function QuestionnaireStatus({status}: Props): ReactElement {
+function QuestionnaireStatus({ status }: Props): ReactElement {
     return (
         <>
             <span

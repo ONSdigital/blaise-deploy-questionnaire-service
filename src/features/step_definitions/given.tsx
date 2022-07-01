@@ -1,7 +1,7 @@
-import {DefineStepFunction} from "jest-cucumber";
-import {questionnaireWithName} from "./helpers/apiMockObjects";
-import {QuestionnaireSettings, Questionnaire} from "blaise-api-node-client";
-import {navigateToDeployPageAndSelectFile, formatDateString} from "./helpers/functions";
+import { DefineStepFunction } from "jest-cucumber";
+import { questionnaireWithName } from "./helpers/apiMockObjects";
+import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
+import { navigateToDeployPageAndSelectFile, formatDateString } from "./helpers/functions";
 import MockAdapter from "axios-mock-adapter";
 
 export function givenTheQuestionnaireIsInstalled(
@@ -23,7 +23,7 @@ export function givenTheQuestionnaireIsInstalled(
         mocker.onPost(`/api/tmreleasedate/${questionnaireName}`).reply(200);
         mocker.onDelete(`/api/tmreleasedate/${questionnaireName}`).reply(204);
         mocker.onGet(`/upload/init?filename=${questionnaireName}.bpkg`).reply(200, "https://storage.googleapis.com/");
-        mocker.onGet(`/upload/verify?filename=${questionnaireName}.bpkg`).reply(200, {name: `${questionnaireName}.bpkg`});
+        mocker.onGet(`/upload/verify?filename=${questionnaireName}.bpkg`).reply(200, { name: `${questionnaireName}.bpkg` });
         mocker.onPost("/api/install").reply(201);
         mocker.onGet(`/api/questionnaires/${questionnaireName}/settings`).reply(200, [
             {
@@ -37,7 +37,7 @@ export function givenTheQuestionnaireIsInstalled(
             }
         ]);
         mocker.onGet(`/api/questionnaires/${questionnaireName}/modes`).reply(200, ["CAWI", "CATI"]);
-        mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, {count: 0});
+        mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, { count: 0 });
         mocker.onGet(`/api/questionnaires/${questionnaireName}/surveydays`).reply(200, []);
         mocker.onGet(`/api/questionnaires/${questionnaireName}/active`).reply(200, true);
     });
@@ -61,7 +61,7 @@ export function givenInstallsSuccessfully(given: DefineStepFunction, mocker: Moc
         mocker.onPost(`/api/tostartdate/${questionnaireName}`).reply(200);
         mocker.onDelete(`/api/tostartdate/${questionnaireName}`).reply(204);
         mocker.onGet(`/upload/init?filename=${questionnaireName}.bpkg`).reply(200, "https://storage.googleapis.com/");
-        mocker.onGet(`/upload/verify?filename=${questionnaireName}.bpkg`).reply(200, {name: `${questionnaireName}.bpkg`});
+        mocker.onGet(`/upload/verify?filename=${questionnaireName}.bpkg`).reply(200, { name: `${questionnaireName}.bpkg` });
         mocker.onPost("/api/install").reply(201);
         mocker.onGet(`/api/questionnaires/${questionnaireName}/settings`).reply(200, [
             {
@@ -75,7 +75,7 @@ export function givenInstallsSuccessfully(given: DefineStepFunction, mocker: Moc
             }
         ]);
         mocker.onGet(`/api/questionnaires/${questionnaireName}/modes`).reply(200, ["CAWI", "CATI"]);
-        mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, {count: 0});
+        mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, { count: 0 });
         mocker.onPatch(`/api/questionnaires/${questionnaireName}/activate`).reply(204);
         mocker.onPatch(`/api/questionnaires/${questionnaireName}/deactivate`).reply(204);
     });
@@ -111,7 +111,7 @@ export function givenTheQuestionnaireHasUACs(
     mocker: MockAdapter
 ): void {
     given(/'(.*)' has (\d+) UACs/, (questionnaireName: string, cases: string) => {
-        mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, {count: +cases});
+        mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, { count: +cases });
     });
 }
 
@@ -153,13 +153,13 @@ export function givenUACGenerationIsBroken(given: DefineStepFunction, mocker: Mo
 
 export function givenTheQuestionnaireHasATOStartDate(given: DefineStepFunction, mocker: MockAdapter): void {
     given(/'(.*)' has a TO start date of '(.*)'/, async (questionnaireName: string, toStartDate: string) => {
-        mocker.onGet(`/api/tostartdate/${questionnaireName}`).reply(200, {tostartdate: formatDateString(toStartDate)});
+        mocker.onGet(`/api/tostartdate/${questionnaireName}`).reply(200, { tostartdate: formatDateString(toStartDate) });
     });
 }
 
 export function givenTheQuestionnaireHasATotalmobileReleaseDate(given: DefineStepFunction, mocker: MockAdapter): void {
     given(/'(.*)' has a Totalmobile release date of '(.*)'/, async (questionnaireName: string, tmReleaseDate: string) => {
-        mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(200, {tmreleasedate: formatDateString(tmReleaseDate)});
+        mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(200, { tmreleasedate: formatDateString(tmReleaseDate) });
     });
 }
 

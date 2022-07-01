@@ -1,10 +1,10 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {getCountOfUACs} from "../../../client/uacCodes";
-import {getQuestionnaireModes} from "../../../client/questionnaires";
-import {Questionnaire} from "blaise-api-node-client";
-import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import React, { ReactElement, useEffect, useState } from "react";
+import { getCountOfUACs } from "../../../client/uacCodes";
+import { getQuestionnaireModes } from "../../../client/questionnaires";
+import { Questionnaire } from "blaise-api-node-client";
+import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import CsvDownloader from "react-csv-downloader";
-import {generateUACCodesAndCSVFileData} from "../../../client/componentProcesses";
+import { generateUACCodesAndCSVFileData } from "../../../client/componentProcesses";
 
 interface Props {
     questionnaire: Questionnaire;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 
-const ViewCawiModeDetails = ({questionnaire, modes}: Props): ReactElement => {
+const ViewCawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
     if (!modes.includes("CAWI")) {
         return <></>;
     }
@@ -50,7 +50,7 @@ const ViewCawiModeDetails = ({questionnaire, modes}: Props): ReactElement => {
                 setUacGenerationFailed(userFriendlyError);
                 console.error(error);
                 console.error(userFriendlyError);
-                return [{error: userFriendlyError}];
+                return [{ error: userFriendlyError }];
             }).finally(() => setLoading(false));
     }
 

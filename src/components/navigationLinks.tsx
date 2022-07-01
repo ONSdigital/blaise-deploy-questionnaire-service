@@ -1,8 +1,8 @@
-import {Link, useLocation} from "react-router-dom";
-import React, {ReactElement} from "react";
+import { Link, useLocation } from "react-router-dom";
+import React, { ReactElement } from "react";
 
 export function NavigationLinks(): ReactElement {
-    const {pathname} = useLocation();
+    const { pathname } = useLocation();
 
     const list = [
         {
@@ -31,7 +31,7 @@ export function NavigationLinks(): ReactElement {
                                 Home
                             </Link>
                         </li>
-                        {list.map(({id, title, link}) => {
+                        {list.map(({ id, title, link }) => {
                             return (
                                 <li key={id}
                                     className={`header-nav__item  ${(pathname.includes(link) ? "header-nav__item--active" : "")}`}>

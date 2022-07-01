@@ -1,10 +1,10 @@
-import express, {Request, Response, Router} from "express";
-import {Auth} from "blaise-login-react-server";
-import {BimsApi, tmReleaseDate, toStartDate} from "../bimsApi/bimsApi";
+import express, { Request, Response, Router } from "express";
+import { Auth } from "blaise-login-react-server";
+import { BimsApi, tmReleaseDate, toStartDate } from "../bimsApi/bimsApi";
 import AuditLogger from "../auditLogging/logger";
 import dateFormatter from "dayjs";
-import {IncomingMessage} from "http";
-import {ReleaseDateManager} from "../bimsApi/releaseDateManager";
+import { IncomingMessage } from "http";
+import { ReleaseDateManager } from "../bimsApi/releaseDateManager";
 import LoggingReleaseDateManager from "../bimsApi/loggingReleaseDateManager";
 import { Logger } from "../bimsApi/logger";
 
@@ -165,7 +165,7 @@ export class BimsHandler {
     }
 
     async GetTmReleaseDate(req: Request, res: Response): Promise<Response> {
-        const {questionnaireName} = req.params;
+        const { questionnaireName } = req.params;
 
         try {
             const releaseDate = await this.bimsApiClient.getReleaseDate(questionnaireName);

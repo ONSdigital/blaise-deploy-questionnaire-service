@@ -1,6 +1,6 @@
-import {ReleaseDateManager} from "./releaseDateManager";
-import {tmReleaseDate} from "./bimsApi";
-import {Logger} from "./logger";
+import { ReleaseDateManager } from "./releaseDateManager";
+import { tmReleaseDate } from "./bimsApi";
+import { Logger } from "./logger";
 import dateFormatter from "dayjs";
 
 

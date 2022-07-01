@@ -1,7 +1,7 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {Link, Redirect, useHistory, useLocation, useParams} from "react-router-dom";
+import React, { ReactElement, useEffect, useState } from "react";
+import { Link, Redirect, useHistory, useLocation, useParams } from "react-router-dom";
 import dateFormatter from "dayjs";
-import {Questionnaire} from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
 import QuestionnaireStatus from "../questionnaireStatus";
 import BlaiseNodeInfo from "./sections/blaiseNodeInfo";
@@ -10,8 +10,8 @@ import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
 import ViewTmDetails from "./sections/viewTmDetails";
 import YearCalendar from "./sections/yearCalendar";
 import ViewQuestionnaireSettings from "./sections/viewQuestionnaireSettings";
-import {getQuestionnaire, getQuestionnaireModes, getSurveyDays} from "../../client/questionnaires";
-import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
+import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 
 interface State {
     questionnaire: Questionnaire | null;
@@ -29,8 +29,8 @@ function QuestionnaireDetails(): ReactElement {
     const [surveyDays, setSurveyDays] = useState<string[]>([]);
     const [errored, setErrored] = useState<boolean>(false);
     const [loaded, setLoaded] = useState<boolean>(false);
-    const initialState = location.state || {questionnaire: null};
-    const {questionnaireName}: Params = useParams();
+    const initialState = location.state || { questionnaire: null };
+    const { questionnaireName }: Params = useParams();
 
     useEffect(() => {
         if (initialState.questionnaire === null) {
@@ -190,7 +190,7 @@ function QuestionnaireDetails(): ReactElement {
                     aria-label={`Delete questionnaire ${questionnaire.name}`}
                     id="delete-questionnaire"
                     testid="delete-questionnaire"
-                    onClick={() => history.push("/delete", {questionnaire, modes})}/>
+                    onClick={() => history.push("/delete", { questionnaire, modes })}/>
             </>
         );
     }
@@ -199,7 +199,7 @@ function QuestionnaireDetails(): ReactElement {
         <>
             <Breadcrumbs BreadcrumbList={
                 [
-                    {link: "/", title: "Home"},
+                    { link: "/", title: "Home" },
                 ]
             }/>
 

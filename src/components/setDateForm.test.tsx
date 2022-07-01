@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import {render} from "@testing-library/react";
+import { render } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import "@testing-library/jest-dom/extend-expect";
@@ -30,7 +30,7 @@ describe("SetDateForm for TO Start Date", () => {
     });
 
     it("display 'No start date'", async () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Formik initialValues={{ }} onSubmit={( ) => { }} >
                 <SetDateForm  dateType={"start"}/>
             </Formik>
@@ -40,7 +40,7 @@ describe("SetDateForm for TO Start Date", () => {
     });
 
     it("display 'Yes let me specify a start date'", async () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Formik initialValues={{ }} onSubmit={( ) => { }} >
                 <SetDateForm  dateType={"start"}/>
             </Formik>
@@ -62,7 +62,7 @@ describe("SetDateForm for TM Release Date", () => {
     });
 
     it("display 'No release date'", async () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Formik initialValues={{ }} onSubmit={( ) => { }} >
                 <SetDateForm  dateType={"release"}/>
             </Formik>
@@ -72,7 +72,7 @@ describe("SetDateForm for TM Release Date", () => {
     });
 
     it("display 'Yes let me specify a release date'", async () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Formik initialValues={{ }} onSubmit={( ) => { }} >
                 <SetDateForm  dateType={"release"}/>
             </Formik>

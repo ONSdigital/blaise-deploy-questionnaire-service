@@ -1,6 +1,6 @@
 import BlaiseIapNodeProvider from "blaise-iap-node-provider";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import {ReleaseDateManager} from "./releaseDateManager";
+import { ReleaseDateManager } from "./releaseDateManager";
 
 export type toStartDate = {
     tostartdate: string

@@ -1,13 +1,13 @@
 import { StyledFormField } from "blaise-design-system-react-components";
 import { useFormikContext } from "formik";
-import React, {ReactElement} from "react";
+import React, { ReactElement } from "react";
 
 interface DateFormProps {
     dateType: string
 }
 
 function SetDateForm(DateFormProps: DateFormProps): ReactElement {
-    const {values}: any = useFormikContext();
+    const { values }: any = useFormikContext();
     function validateRadio(value: string) {
         let error;
 

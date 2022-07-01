@@ -1,16 +1,16 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
-import {getTOStartDate} from "../../../client/toStartDate";
+import React, { ReactElement, useEffect, useState } from "react";
+import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
+import { getTOStartDate } from "../../../client/toStartDate";
 import dateFormatter from "dayjs";
 import TimeAgo from "react-timeago";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface Props {
     questionnaireName: string
     modes: string[]
 }
 
-function ViewCatiModeDetails({questionnaireName, modes}: Props): ReactElement {
+function ViewCatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
     if (!modes.includes("CATI")) {
         return <></>;
     }
@@ -95,7 +95,7 @@ function ViewCatiModeDetails({questionnaireName, modes}: Props): ReactElement {
                                         toStartDate ?
                                             <Link to={{
                                                 pathname: "/questionnaire/start-date",
-                                                state: {questionnaireName: questionnaireName, toStartDate: toStartDateValue}
+                                                state: { questionnaireName: questionnaireName, toStartDate: toStartDateValue }
                                             }} className="summary__button"
                                             aria-label={`Change or delete start date for questionnaire ${questionnaireName}`}>
                                             Change or delete start date
@@ -103,7 +103,7 @@ function ViewCatiModeDetails({questionnaireName, modes}: Props): ReactElement {
                                             :
                                             <Link to={{
                                                 pathname: "/questionnaire/start-date",
-                                                state: {questionnaireName: questionnaireName}
+                                                state: { questionnaireName: questionnaireName }
                                             }} className="summary__button"
                                             aria-label={`Add a start date for questionnaire ${questionnaireName}`}>
                                             Add start date

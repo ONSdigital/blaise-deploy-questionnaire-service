@@ -1,5 +1,5 @@
-import React, {ReactElement} from "react";
-import {Link} from "react-router-dom";
+import React, { ReactElement } from "react";
+import { Link } from "react-router-dom";
 
 
 export interface BreadcrumbItem {
@@ -11,12 +11,12 @@ interface Props {
     BreadcrumbList: BreadcrumbItem[]
 }
 
-function Breadcrumbs({BreadcrumbList}: Props): ReactElement {
+function Breadcrumbs({ BreadcrumbList }: Props): ReactElement {
     return (
         <nav className="breadcrumb" aria-label="Breadcrumb">
             <ol className="breadcrumb__items u-fs-s">
                 {
-                    BreadcrumbList.map(({link, title}: BreadcrumbItem, index) => {
+                    BreadcrumbList.map(({ link, title }: BreadcrumbItem, index) => {
                         return (
                             <li className="breadcrumb__item" id={`breadcrumb-${index}`} key={title}>
                                 <Link className="breadcrumb__link" to={link}>{title}</Link>

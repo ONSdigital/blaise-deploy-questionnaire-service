@@ -1,6 +1,6 @@
 import { Logger } from "./logger";
 import LoggingReleaseDateManager from "./loggingReleaseDateManager";
-import {ReleaseDateManager} from "./releaseDateManager";
+import { ReleaseDateManager } from "./releaseDateManager";
 
 
 describe("loggingReleaseDateManager", () => {
@@ -63,7 +63,7 @@ describe("loggingReleaseDateManager", () => {
         });
 
         it("logs a message with previous release date exists for questionnaire", async () => {
-            (instance.getReleaseDate as jest.Mock).mockReturnValue(Promise.resolve({"tmreleasedate": "2022-06-27T16:29:00+00:00"}));
+            (instance.getReleaseDate as jest.Mock).mockReturnValue(Promise.resolve({ "tmreleasedate": "2022-06-27T16:29:00+00:00" }));
 
             await decorator.getReleaseDate("DST211Z");
             await decorator.deleteReleaseDate("DST211Z");
@@ -72,7 +72,7 @@ describe("loggingReleaseDateManager", () => {
         });
 
         it("logs a success message without previous release date if different questionnaire fetched", async () => {
-            (instance.getReleaseDate as jest.Mock).mockReturnValue(Promise.resolve({"tmreleasedate": "2022-12-31"}));
+            (instance.getReleaseDate as jest.Mock).mockReturnValue(Promise.resolve({ "tmreleasedate": "2022-12-31" }));
 
             await decorator.getReleaseDate("LMS2111Z");
             await decorator.deleteReleaseDate("DST211Z");
@@ -128,7 +128,7 @@ describe("loggingReleaseDateManager", () => {
         });
 
         it("logs a message with previous release date exists for questionnaire", async () => {
-            (instance.getReleaseDate as jest.Mock).mockReturnValue(Promise.resolve({"tmreleasedate": "2022-12-31T16:29:00+00:00"}));
+            (instance.getReleaseDate as jest.Mock).mockReturnValue(Promise.resolve({ "tmreleasedate": "2022-12-31T16:29:00+00:00" }));
 
             await decorator.getReleaseDate("DST211Z");
             await decorator.updateReleaseDate("DST211Z", "2022-06-29");
@@ -137,7 +137,7 @@ describe("loggingReleaseDateManager", () => {
         });
 
         it("logs a success message without previous release date if different questionnaire fetched", async () => {
-            (instance.getReleaseDate as jest.Mock).mockReturnValue(Promise.resolve({"tmreleasedate": "2022-12-31"}));
+            (instance.getReleaseDate as jest.Mock).mockReturnValue(Promise.resolve({ "tmreleasedate": "2022-12-31" }));
 
             await decorator.getReleaseDate("LMS2111Z");
             await decorator.updateReleaseDate("DST211Z", "2022-06-29");

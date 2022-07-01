@@ -1,16 +1,16 @@
-import React, {ReactElement} from "react";
-import {FormikContextType, useFormikContext} from "formik";
-import {Questionnaire} from "blaise-api-node-client";
+import React, { ReactElement } from "react";
+import { FormikContextType, useFormikContext } from "formik";
+import { Questionnaire } from "blaise-api-node-client";
 import dateFormatter from "dayjs";
-import {roundUp} from "../../../utilities/maths";
+import { roundUp } from "../../../utilities/maths";
 
 interface PageFourProps {
     file: File | undefined
     foundQuestionnaire: Questionnaire | null
 }
 
-function DeployFormSummary({file, foundQuestionnaire}: PageFourProps): ReactElement {
-    const {values: formValues}: FormikContextType<any> = useFormikContext();
+function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactElement {
+    const { values: formValues }: FormikContextType<any> = useFormikContext();
 
     function QuestionnaireFileName(): ReactElement {
         return (

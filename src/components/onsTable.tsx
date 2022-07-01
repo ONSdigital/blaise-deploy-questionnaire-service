@@ -1,4 +1,4 @@
-import React, {ReactElement} from "react";
+import React, { ReactElement } from "react";
 
 export interface TableColumns {
     title: string,
@@ -11,7 +11,7 @@ interface ONSTable {
     tableCaption?: string
 }
 
-export const ONSTable = ({columns, children, tableCaption, tableID}: ONSTable): ReactElement => {
+export const ONSTable = ({ columns, children, tableCaption, tableID }: ONSTable): ReactElement => {
     return (
         <>
             <table
@@ -21,7 +21,7 @@ export const ONSTable = ({columns, children, tableCaption, tableID}: ONSTable): 
                 <thead className="table__head">
                     <tr className="table__row">
                         {
-                            columns.map(({title}: TableColumns, index: number) => (
+                            columns.map(({ title }: TableColumns, index: number) => (
                                 <th scope="col" className="table__header" key={index}>{title}</th>
                             ))
                         }

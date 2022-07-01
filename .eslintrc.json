@@ -31,13 +31,11 @@
             "error",
             "double"
         ],
-        "semi": [
-            "error",
-            "always"
-        ],
+        "semi": ["error","always"],
         "no-undef": "off",
         "@typescript-eslint/no-empty-function": "off",
-        "indent": ["error", 4]
+        "indent": ["error", 4],
+        "object-curly-spacing": ["error","always"]
     },
     "overrides": [
         {

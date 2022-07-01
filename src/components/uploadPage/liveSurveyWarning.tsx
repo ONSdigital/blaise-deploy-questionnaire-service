@@ -1,6 +1,6 @@
-import React, {ReactElement} from "react";
-import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
-import {useHistory, useParams} from "react-router-dom";
+import React, { ReactElement } from "react";
+import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
+import { useHistory, useParams } from "react-router-dom";
 
 interface Params {
     questionnaireName: string

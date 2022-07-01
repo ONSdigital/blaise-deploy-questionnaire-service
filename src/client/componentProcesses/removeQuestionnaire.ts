@@ -1,6 +1,6 @@
-import {deleteTOStartDate} from "../toStartDate";
-import {deleteTMReleaseDate} from "../tmReleaseDate";
-import {deleteQuestionnaire} from "../questionnaires";
+import { deleteTOStartDate } from "../toStartDate";
+import { deleteTMReleaseDate } from "../tmReleaseDate";
+import { deleteQuestionnaire } from "../questionnaires";
 
 type removeToStartDateAndDeleteQuestionnaireResponse = [boolean, string];
 
@@ -27,4 +27,4 @@ async function removeToStartDateAndDeleteQuestionnaire(questionnaireName: string
     return [true, "Deleted successfully"];
 }
 
-export {removeToStartDateAndDeleteQuestionnaire};
+export { removeToStartDateAndDeleteQuestionnaire };

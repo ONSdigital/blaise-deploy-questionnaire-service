@@ -2,11 +2,11 @@
  * @jest-environment jsdom
  */
 
-import {defineFeature, loadFeature} from "jest-cucumber";
-import {cleanup,} from "@testing-library/react";
-import {Questionnaire} from "blaise-api-node-client";
+import { defineFeature, loadFeature } from "jest-cucumber";
+import { cleanup, } from "@testing-library/react";
+import { Questionnaire } from "blaise-api-node-client";
 
-import {AuthManager} from "blaise-login-react-client";
+import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapeter from "axios-mock-adapter";
 import {
@@ -38,7 +38,7 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 
 const feature = loadFeature(
     "./src/features/edit_tm_release_date.feature",
-    {tagFilter: "not @server and not @integration"}
+    { tagFilter: "not @server and not @integration" }
 );
 
 
@@ -51,7 +51,7 @@ defineFeature(feature, test => {
         mocker.reset();
     });
 
-    test("View Totalmobile release date if specified", ({given, when, then}) => {
+    test("View Totalmobile release date if specified", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
 
@@ -61,7 +61,7 @@ defineFeature(feature, test => {
         thenICanViewTheTotalmobileReleaseDateIsSetTo(then);
     });
 
-    test("Change Totalmobile release date if specified", ({given, when, then}) => {
+    test("Change Totalmobile release date if specified", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
 
@@ -71,7 +71,7 @@ defineFeature(feature, test => {
         thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(then);
     });
 
-    test("Add Totalmobile release date if not previously specified", ({given, when, then}) => {
+    test("Add Totalmobile release date if not previously specified", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasNoTotalmobileReleaseDate(given, mocker);
 
@@ -81,7 +81,7 @@ defineFeature(feature, test => {
         thenIHaveTheOptionToAddATotalmobileReleaseDate(then);
     });
 
-    test("Change an existing Totalmobile release date for a deployed questionnaire", ({given, when, then}) => {
+    test("Change an existing Totalmobile release date for a deployed questionnaire", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
 
@@ -94,7 +94,7 @@ defineFeature(feature, test => {
         thenTheTotalmobileReleaseDateIsStored(then, mocker);
     });
 
-    test("Delete a Totalmobile release date from a deployed questionnaire", ({given, when, then}) => {
+    test("Delete a Totalmobile release date from a deployed questionnaire", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
 
@@ -107,7 +107,7 @@ defineFeature(feature, test => {
         thenTheTotalmobileReleaseDateIsDeleted(then, mocker);
     });
 
-    test("Add a Totalmobile release date to a deployed questionnaire", ({given, when, then}) => {
+    test("Add a Totalmobile release date to a deployed questionnaire", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasNoTotalmobileReleaseDate(given, mocker);
 
