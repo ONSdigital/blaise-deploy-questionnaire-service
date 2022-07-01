@@ -5,7 +5,7 @@
 import {render} from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import '@testing-library/jest-dom/extend-expect';
+import "@testing-library/jest-dom/extend-expect";
 
 const mock = new MockAdapter(axios);
 

@@ -5,7 +5,7 @@
 import {render} from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import '@testing-library/jest-dom/extend-expect';
+import "@testing-library/jest-dom/extend-expect";
 import { AuthManager } from "blaise-login-react-client";
 import React from "react";
 import { Formik } from "formik";

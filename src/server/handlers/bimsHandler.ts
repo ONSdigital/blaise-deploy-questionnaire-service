@@ -127,7 +127,7 @@ export class BimsHandler {
       const logger: Logger = {
         info: (message: string) => this.auditLogger.info(req.log, message),
         error: (message: string) => this.auditLogger.error(req.log, message),
-      }
+      };
 
       const responseBody = await setReleaseDate(
           new LoggingReleaseDateManager(this.bimsApiClient, logger) ,

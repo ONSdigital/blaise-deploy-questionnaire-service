@@ -5,7 +5,7 @@
 import {render} from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import '@testing-library/jest-dom/extend-expect';
+import "@testing-library/jest-dom/extend-expect";
 import {AuthManager} from "blaise-login-react-client";
 import React from "react";
 import {Formik} from "formik";
@@ -20,9 +20,9 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 });
 
 describe("Deploy form summary page", () => {
-    const lmsQuestionnaireName = "LMS2004A"
-    const opnQuestionnaireName = "OPN2004A"
-    const lastModified = new Date("2022-01-24T01:02:03").getTime()
+    const lmsQuestionnaireName = "LMS2004A";
+    const opnQuestionnaireName = "OPN2004A";
+    const lastModified = new Date("2022-01-24T01:02:03").getTime();
 
     const lmsFile = new File(["龴ↀ◡ↀ龴"], `${lmsQuestionnaireName}.bpkg`, {
         type: "application/pdf", lastModified: lastModified

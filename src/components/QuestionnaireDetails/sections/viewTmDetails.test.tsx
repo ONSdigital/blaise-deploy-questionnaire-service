@@ -11,7 +11,7 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import {Router} from "react-router";
 import {createMemoryHistory} from "history";
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 
 const mock = new MockAdapter(axios);
 
@@ -77,7 +77,7 @@ describe("View Totalmobile details", () => {
 
     it("should not display the Totalmobile details for a non-LMS questionnaire ", async () => {
         const history = createMemoryHistory();
-        const date = /27\/06\/2021/i
+        const date = /27\/06\/2021/i;
         mock.onGet("/api/tmreleasedate/OPN2101_AA1").reply(200, {tmreleasedate: "2021-06-27T16:29:00+00:00"});
         const rerender = render(
             <Router history={history}>
