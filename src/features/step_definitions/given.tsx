@@ -138,7 +138,6 @@ export function givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(
     });
 }
 
-
 export function givenTOStartDateFails(given: DefineStepFunction, mocker: MockAdapter): void {
     given(/setting a TO start date for '(.*)' fails/, (questionnaireName: string) => {
         mocker.onPost(`/api/tostartdate/${questionnaireName}`).reply(500);

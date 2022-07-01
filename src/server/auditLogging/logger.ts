@@ -8,7 +8,6 @@ export interface AuditLog {
   severity: string;
 }
 
-
 export default class AuditLogger {
     projectId: string;
     logger: Logging;

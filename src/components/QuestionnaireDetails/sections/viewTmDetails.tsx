@@ -39,7 +39,6 @@ function ViewTmDetails({ questionnaireName }: Props): ReactElement {
         }
     }
 
-
     if (loading) {
         return (
             <div className="u-mb-m" aria-busy="true">

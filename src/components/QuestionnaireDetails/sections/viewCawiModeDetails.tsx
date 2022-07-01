@@ -11,7 +11,6 @@ interface Props {
     modes: string[]
 }
 
-
 const ViewCawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
     if (!modes.includes("CAWI")) {
         return <></>;
@@ -66,7 +65,6 @@ const ViewCawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
             }).finally(() => setLoading(false));
         getUACCount();
     }, []);
-
 
     useEffect(() => {
         let bool = true;

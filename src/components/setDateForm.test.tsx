@@ -21,8 +21,8 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 describe("SetDateForm for TO Start Date", () => {
     it("should match the Snapshot", async () => {
         const wrapper = render(
-            <Formik initialValues={{ }} onSubmit={( ) => { }} >
-                <SetDateForm  dateType={"start"}/>
+            <Formik initialValues={{ }} onSubmit={() => { }} >
+                <SetDateForm dateType={"start"}/>
             </Formik>
         );
 
@@ -31,8 +31,8 @@ describe("SetDateForm for TO Start Date", () => {
 
     it("display 'No start date'", async () => {
         const { queryByText } = render(
-            <Formik initialValues={{ }} onSubmit={( ) => { }} >
-                <SetDateForm  dateType={"start"}/>
+            <Formik initialValues={{ }} onSubmit={() => { }} >
+                <SetDateForm dateType={"start"}/>
             </Formik>
         );
 
@@ -41,8 +41,8 @@ describe("SetDateForm for TO Start Date", () => {
 
     it("display 'Yes let me specify a start date'", async () => {
         const { queryByText } = render(
-            <Formik initialValues={{ }} onSubmit={( ) => { }} >
-                <SetDateForm  dateType={"start"}/>
+            <Formik initialValues={{ }} onSubmit={() => { }} >
+                <SetDateForm dateType={"start"}/>
             </Formik>
         );
 
@@ -53,8 +53,8 @@ describe("SetDateForm for TO Start Date", () => {
 describe("SetDateForm for TM Release Date", () => {
     it("should match the Snapshot", async () => {
         const wrapper = render(
-            <Formik initialValues={{ }} onSubmit={( ) => { }} >
-                <SetDateForm  dateType={"release"}/>
+            <Formik initialValues={{ }} onSubmit={() => { }} >
+                <SetDateForm dateType={"release"}/>
             </Formik>
         );
 
@@ -63,8 +63,8 @@ describe("SetDateForm for TM Release Date", () => {
 
     it("display 'No release date'", async () => {
         const { queryByText } = render(
-            <Formik initialValues={{ }} onSubmit={( ) => { }} >
-                <SetDateForm  dateType={"release"}/>
+            <Formik initialValues={{ }} onSubmit={() => { }} >
+                <SetDateForm dateType={"release"}/>
             </Formik>
         );
 
@@ -73,8 +73,8 @@ describe("SetDateForm for TM Release Date", () => {
 
     it("display 'Yes let me specify a release date'", async () => {
         const { queryByText } = render(
-            <Formik initialValues={{ }} onSubmit={( ) => { }} >
-                <SetDateForm  dateType={"release"}/>
+            <Formik initialValues={{ }} onSubmit={() => { }} >
+                <SetDateForm dateType={"release"}/>
             </Formik>
         );
 

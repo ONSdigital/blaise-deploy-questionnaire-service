@@ -130,7 +130,7 @@ export class BimsHandler {
             };
 
             const responseBody = await setReleaseDate(
-                new LoggingReleaseDateManager(this.bimsApiClient, logger) ,
+                new LoggingReleaseDateManager(this.bimsApiClient, logger),
                 req.params.questionnaireName,
                 req.body.tmreleasedate,
                 this.auditLogger,
@@ -221,5 +221,4 @@ async function setReleaseDate(
         return bimsApiClient.createReleaseDate(questionnaireName, newTmReleaseDate);
     }
 }
-
 

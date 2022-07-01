@@ -28,11 +28,9 @@ import { isProduction } from "./client/env";
 import { LoginForm, AuthManager } from "blaise-login-react-client";
 import "./style.css";
 
-
 const divStyle = {
     minHeight: "calc(67vh)"
 };
-
 
 function App(): ReactElement {
     const location = useLocation();

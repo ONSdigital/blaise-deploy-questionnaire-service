@@ -16,7 +16,6 @@ import {
     givenTheQuestionnaireIsInstalled,
 } from "../step_definitions/given";
 
-
 import {
     thenIAmPresentedWithAnActiveSurveyDaysWarning,
     thenIAmPresentedWithAnActiveWebCollectionWarning,
@@ -49,10 +48,8 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
-
 
 defineFeature(feature, test => {
     afterEach(() => {

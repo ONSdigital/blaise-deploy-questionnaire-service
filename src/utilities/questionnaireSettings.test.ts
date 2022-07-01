@@ -85,7 +85,6 @@ describe("Function ValidateCATIModeSettings()", () => {
     });
 });
 
-
 describe("Function ValidateMixedModeSettings()", () => {
     describe("when the settings are valid", () => {
         const questionnaireSettings = {
@@ -127,7 +126,6 @@ describe("Function ValidateMixedModeSettings()", () => {
         });
     });
 });
-
 
 describe("Function ValidateSettings()", () => {
     const questionnaireSettings = {

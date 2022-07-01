@@ -35,5 +35,4 @@ export const ONSTable = ({ columns, children, tableCaption, tableID }: ONSTable)
     );
 };
 
-
 export default ONSTable;

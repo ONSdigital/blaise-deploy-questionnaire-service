@@ -20,7 +20,6 @@ describe("Questionnaire settings table", () => {
         applyRecordLocking: true
     };
 
-
     const questionnaireSettingsInvalid: QuestionnaireSettings = {
         type: "StrictInterviewing",
         saveSessionOnTimeout: false,

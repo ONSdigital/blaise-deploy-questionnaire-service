@@ -24,7 +24,6 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
         return error;
     }
 
-
     function handleFileChange(selectorFiles: FileList | null) {
         if (selectorFiles && selectorFiles.length === 1) {
             setFile(selectorFiles[0]);

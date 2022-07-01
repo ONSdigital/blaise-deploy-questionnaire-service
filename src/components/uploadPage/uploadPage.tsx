@@ -25,7 +25,6 @@ enum Step {
     InvalidSettings
 }
 
-
 function UploadPage(): ReactElement {
     const [file, setFile] = useState<File>();
     const [questionnaireName, setQuestionnaireName] = useState<string>("");

@@ -4,7 +4,6 @@ import { deleteQuestionnaire } from "../questionnaires";
 
 type removeToStartDateAndDeleteQuestionnaireResponse = [boolean, string];
 
-
 async function removeToStartDateAndDeleteQuestionnaire(questionnaireName: string): Promise<removeToStartDateAndDeleteQuestionnaireResponse> {
     const toStartDateDeleted = await deleteTOStartDate(questionnaireName);
     if (!toStartDateDeleted) {

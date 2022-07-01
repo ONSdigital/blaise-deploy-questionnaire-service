@@ -18,10 +18,10 @@ Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
 
 jest.mock("blaise-iap-node-provider");
 
-const logger: pino.Logger = pino();                                     // Real logger instance
-logger.child = jest.fn(() => logger);                      // Dirty little hack
-const logInfo = jest.spyOn(logger, "info");                     // Get jest test to spy on it
-const httpLogger: HttpLogger = createLogger({ logger: logger });    // Logging middleware
+const logger: pino.Logger = pino(); // Real logger instance
+logger.child = jest.fn(() => logger); // Dirty little hack
+const logInfo = jest.spyOn(logger, "info"); // Get jest test to spy on it
+const httpLogger: HttpLogger = createLogger({ logger: logger }); // Logging middleware
 
 // Create Mock adapter for Axios requests
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
@@ -201,13 +201,13 @@ describe("Sending Totalmobile release date to BIMS service", () => {
                 const response: Response = await request.post("/api/tmreleasedate/LMS2004A").send({ "tmreleasedate": "" });
 
                 expect(response.status).toEqual(201);
-                expect(response.body).toStrictEqual("");    // Not consistent :sob:
+                expect(response.body).toStrictEqual(""); // Not consistent :sob:
             });
 
             it("should log a message when a release date is not provided", async () => {
                 await request.post("/api/tmreleasedate/LMS2004A").send({ "tmreleasedate": "" });
 
-                expect(logInfo).toHaveBeenCalledWith( "AUDIT_LOG: No Totalmobile release date set for LMS2004A");
+                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: No Totalmobile release date set for LMS2004A");
             });
         });
     });
@@ -251,8 +251,8 @@ describe("Sending Totalmobile release date to BIMS service", () => {
             it("should return a 204 status", async () => {
                 const response: Response = await request.post("/api/tmreleasedate/LMS2004A").send({ "tmreleasedate": "" });
 
-                expect(response.status).toEqual(201);   // 201 because it's an update not a delete
-                expect(response.body).toStrictEqual("");    // currently returns an empty string - not consistent
+                expect(response.status).toEqual(201); // 201 because it's an update not a delete
+                expect(response.body).toStrictEqual(""); // currently returns an empty string - not consistent
             });
 
             it("updates BIMS with a release date", async () => {

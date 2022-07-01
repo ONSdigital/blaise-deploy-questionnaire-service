@@ -2,13 +2,12 @@ import { Logger } from "./logger";
 import LoggingReleaseDateManager from "./loggingReleaseDateManager";
 import { ReleaseDateManager } from "./releaseDateManager";
 
-
 describe("loggingReleaseDateManager", () => {
     let instance: ReleaseDateManager;
     let logger: Logger;
     let decorator: LoggingReleaseDateManager;
 
-    beforeEach( () => {
+    beforeEach(() => {
         instance = {
             createReleaseDate: jest.fn(),
             deleteReleaseDate: jest.fn(),
@@ -48,7 +47,6 @@ describe("loggingReleaseDateManager", () => {
             expect(logger.info).not.toHaveBeenCalled();
         });
     });
-
 
     describe("deleteReleaseDate", () => {
         it("calls the decorated instance with the provided args", async () => {

@@ -40,7 +40,6 @@ const feature = loadFeature(
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
-
 defineFeature(feature, test => {
     afterEach(() => {
         jest.clearAllMocks();
@@ -56,7 +55,6 @@ defineFeature(feature, test => {
         whenIConfirmMySelection(when);
         thenIAmPresentedWithTheOptionsToCancelOrOverwrite(then);
     });
-
 
     test("Back-out of deploying a questionnaire", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);

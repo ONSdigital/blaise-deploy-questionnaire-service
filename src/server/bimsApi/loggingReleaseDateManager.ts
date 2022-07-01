@@ -3,7 +3,6 @@ import { tmReleaseDate } from "./bimsApi";
 import { Logger } from "./logger";
 import dateFormatter from "dayjs";
 
-
 export default class LoggingReleaseDateManager implements ReleaseDateManager {
     private previousReleaseDate: Map<string, string> = new Map();
 

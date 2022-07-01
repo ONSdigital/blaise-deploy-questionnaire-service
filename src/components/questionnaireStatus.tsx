@@ -28,4 +28,3 @@ function QuestionnaireStatus({ status }: Props): ReactElement {
 
 export default QuestionnaireStatus;
 
-
