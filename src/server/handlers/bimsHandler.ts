@@ -3,7 +3,6 @@ import {Auth} from "blaise-login-react-server";
 import {BimsApi, tmReleaseDate, toStartDate} from "../bimsApi/bimsApi";
 import AuditLogger from "../auditLogging/logger";
 import dateFormatter from "dayjs";
-import {release} from "os";
 import {IncomingMessage} from "http";
 import {ReleaseDateManager} from "../bimsApi/releaseDateManager";
 import LoggingReleaseDateManager from "../bimsApi/loggingReleaseDateManager";
