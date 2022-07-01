@@ -208,7 +208,7 @@ async function setReleaseDate(
   const originalDateExists = releaseDateExists(releaseDate);
 
   if (!originalDateExists && newTmReleaseDateIsEmpty) {
-    log.info(`No previous TM release date found and none specified for questionnaire ${questionnaireName}`);
+    auditLogger.info(log, `No Totalmobile release date set for ${questionnaireName}`);
     return "";
   }
 
