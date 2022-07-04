@@ -88,7 +88,6 @@ function ReinstallQuestionnaires(): ReactElement {
         );
     }
 
-
     function DisplayQuestionnairesToInstallList(): ReactElement {
         return (
             <div className={"elementToFadeIn"}>

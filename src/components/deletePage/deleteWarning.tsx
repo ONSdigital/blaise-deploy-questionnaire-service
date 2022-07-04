@@ -1,7 +1,7 @@
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {Questionnaire, SurveyDays} from "blaise-api-node-client";
+import { Questionnaire, SurveyDays } from "blaise-api-node-client";
 import { removeToStartDateAndDeleteQuestionnaire } from "../../client/componentProcesses";
 import { surveyIsActive } from "../../client/questionnaires";
 
@@ -101,7 +101,7 @@ function DeleteWarning({ questionnaire, modes, setStatus }: Props): ReactElement
             <>
                 <h1 className="u-mb-l">
                     Are you sure you want to delete the questionnaire <em
-                    className="highlight">{questionnaire.name}</em>?
+                        className="highlight">{questionnaire.name}</em>?
                 </h1>
 
                 <CatiWarning />

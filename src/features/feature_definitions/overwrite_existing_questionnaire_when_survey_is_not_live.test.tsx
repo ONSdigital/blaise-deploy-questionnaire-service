@@ -22,13 +22,11 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
-
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/overwrite_existing_questionnaire_when_survey_is_not_live.feature",
     { tagFilter: "not @server and not @integration" }
 );
-
 
 const questionnaireList: Questionnaire[] = [];
 

@@ -48,7 +48,6 @@ defineFeature(feature, test => {
         thenICanReturnToTheQuestionnaireList(then);
     });
 
-
     test("Select to deploy a new questionnaire", ({ given, when, and, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(when, mocker);

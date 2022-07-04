@@ -2,12 +2,12 @@
  * @jest-environment jsdom
  */
 
-import {screen, waitFor, act} from "@testing-library/react";
+import { screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import MockAdapter from "axios-mock-adapter/types";
-import {DefineStepFunction} from "jest-cucumber";
+import { DefineStepFunction } from "jest-cucumber";
 import flushPromises from "../../tests/utils";
-import {formatDateString} from "./helpers/functions";
+import { formatDateString } from "./helpers/functions";
 
 export function thenIAmPresentedWithTheOptionsToCancelOrOverwrite(then: DefineStepFunction): void {
     then("I am presented with the options to cancel or overwrite the questionnaire", async () => {
@@ -105,7 +105,7 @@ export function thenTheQuestionnaireIsInstalled(then: DefineStepFunction, mocker
             expect.arrayContaining([
                 expect.objectContaining({
                     url: "/api/install",
-                    data: JSON.stringify({filename: `${questionnaire}.bpkg`})
+                    data: JSON.stringify({ filename: `${questionnaire}.bpkg` })
                 }),
             ])
         );
@@ -190,7 +190,7 @@ export function thenTheToStartDateIsStored(then: DefineStepFunction, mocker: Moc
             expect.arrayContaining([
                 expect.objectContaining({
                     url: `/api/tostartdate/${questionnaire}`,
-                    data: JSON.stringify({"tostartdate": formatDateString(toStartDate)})
+                    data: JSON.stringify({ "tostartdate": formatDateString(toStartDate) })
                 }),
             ])
         );
@@ -203,7 +203,7 @@ export function thenTheTotalmobileReleaseDateIsStored(then: DefineStepFunction, 
             expect.arrayContaining([
                 expect.objectContaining({
                     url: `/api/tmreleasedate/${questionnaire}`,
-                    data: JSON.stringify({"tmreleasedate": formatDateString(tmReleaseDate)})
+                    data: JSON.stringify({ "tmreleasedate": formatDateString(tmReleaseDate) })
                 }),
             ])
         );
@@ -216,7 +216,7 @@ export function thenTheToStartDateIsDeleted(then: DefineStepFunction, mocker: Mo
             expect.arrayContaining([
                 expect.objectContaining({
                     url: `/api/tostartdate/${questionnaire}`,
-                    data: JSON.stringify({"tostartdate": ""})
+                    data: JSON.stringify({ "tostartdate": "" })
                 }),
             ])
         );
@@ -229,7 +229,7 @@ export function thenTheTotalmobileReleaseDateIsDeleted(then: DefineStepFunction,
             expect.arrayContaining([
                 expect.objectContaining({
                     url: `/api/tmreleasedate/${questionnaire}`,
-                    data: JSON.stringify({"tmreleasedate": ""})
+                    data: JSON.stringify({ "tmreleasedate": "" })
                 }),
             ])
         );
@@ -372,7 +372,7 @@ export function thenICanSelectAQuestionnairePackageToInstall(then: DefineStepFun
     then(/I can select a questionnaire package for '(.*)' to install/, async (questionnaire: string) => {
         const input = screen.getByLabelText(/Select survey package/i);
 
-        const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, {type: "application/zip"});
+        const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, { type: "application/zip" });
 
         userEvent.upload(input, file);
     });
@@ -388,7 +388,7 @@ export function thenUploadIsDisabled(then: DefineStepFunction): void {
 export function thenAWarningIsDisplayedWithTheMessage(then: DefineStepFunction): void {
     then("a warning is displayed with the message", async (message: string) => {
         message = message.replace(/\s/g, " ");
-        expect(await screen.findByText(message, {exact: false})).toBeDefined();
+        expect(await screen.findByText(message, { exact: false })).toBeDefined();
     });
 }
 

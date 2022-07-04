@@ -1,4 +1,4 @@
-import {tmReleaseDate} from "./bimsApi";
+import { tmReleaseDate } from "./bimsApi";
 
 export interface ReleaseDateManager {
     getReleaseDate(questionnaireName: string): Promise<tmReleaseDate | undefined>;

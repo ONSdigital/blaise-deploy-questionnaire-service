@@ -34,7 +34,6 @@ function YearCalendar({ modes, surveyDays }: Props): ReactElement {
         setYear(year + 1);
     }
 
-
     return (
         <>
             <h2 className={"u-mt-m"}>Survey days</h2>

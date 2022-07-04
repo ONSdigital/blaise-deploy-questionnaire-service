@@ -2,10 +2,10 @@
  * @jest-environment jsdom
  */
 
-import {render} from "@testing-library/react";
+import { render } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import '@testing-library/jest-dom/extend-expect';
+import "@testing-library/jest-dom/extend-expect";
 
 const mock = new MockAdapter(axios);
 
@@ -22,7 +22,7 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 describe("Ask to set TM release date page", () => {
     it("should match the Snapshot", async () => {
         const wrapper = render(
-            <Formik initialValues={{ }} onSubmit={( ) => { }} >
+            <Formik initialValues={{ }} onSubmit={() => { }} >
                 <AskToSetTMReleaseDate questionnaireName={"LMS2207T"}/>
             </Formik>
         );
@@ -32,7 +32,7 @@ describe("Ask to set TM release date page", () => {
 
     it("should render with the questionnaire name displayed", async () => {
         const { queryByText } = render(
-            <Formik initialValues={{ }} onSubmit={( ) => { }}>
+            <Formik initialValues={{ }} onSubmit={() => { }}>
                 <AskToSetTMReleaseDate questionnaireName={"LMS2207T"}/>
             </Formik>
         );
@@ -42,7 +42,7 @@ describe("Ask to set TM release date page", () => {
 
     it("should render with SetDateForm displayed", async () => {
         const { queryByText } = render(
-            <Formik initialValues={{ }} onSubmit={( ) => { }}>
+            <Formik initialValues={{ }} onSubmit={() => { }}>
                 <AskToSetTMReleaseDate questionnaireName={"LMS2207T"}/>
             </Formik>
         );

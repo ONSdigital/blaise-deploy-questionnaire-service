@@ -16,7 +16,6 @@ export async function setTOStartDate(questionnaireName: string, toStartDate: str
     }
 }
 
-
 export async function getTOStartDate(questionnaireName: string): Promise<string> {
     console.log(`Call to getTOStartDate(${questionnaireName})`);
     const url = `/api/tostartdate/${questionnaireName}`;
@@ -36,7 +35,6 @@ export async function getTOStartDate(questionnaireName: string): Promise<string>
         throw error;
     }
 }
-
 
 export async function deleteTOStartDate(questionnaireName: string): Promise<boolean> {
     console.log(`Call to deleteTOStartDate(${questionnaireName})`);

@@ -1,15 +1,15 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
-import {getTMReleaseDate} from "../../../client/tmReleaseDate";
+import React, { ReactElement, useEffect, useState } from "react";
+import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
+import { getTMReleaseDate } from "../../../client/tmReleaseDate";
 import dateFormatter from "dayjs";
 import TimeAgo from "react-timeago";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface Props {
     questionnaireName: string
 }
 
-function ViewTmDetails({questionnaireName}: Props): ReactElement {
+function ViewTmDetails({ questionnaireName }: Props): ReactElement {
     if (!questionnaireName.includes("LMS")) {
         return <></>;
     }
@@ -39,7 +39,6 @@ function ViewTmDetails({questionnaireName}: Props): ReactElement {
         }
     }
 
-
     if (loading) {
         return (
             <div className="u-mb-m" aria-busy="true">
@@ -63,54 +62,54 @@ function ViewTmDetails({questionnaireName}: Props): ReactElement {
                     <h2 className="summary__group-title">Totalmobile details</h2>
                     <table className="summary__items">
                         <thead className="u-vh">
-                        <tr>
-                            <th>Questionnaire detail</th>
-                            <th>result</th>
-                            <th>Action</th>
-                        </tr>
+                            <tr>
+                                <th>Questionnaire detail</th>
+                                <th>result</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                <div className="summary__item--text">
+                            <tr className="summary__row summary__row--has-values">
+                                <td className="summary__item-title">
+                                    <div className="summary__item--text">
                                     Totalmobile release date
-                                </div>
-                            </td>
-                            <td className="summary__values">
+                                    </div>
+                                </td>
+                                <td className="summary__values">
 
-                                {
-                                    tmReleaseDate ?
-                                        <>
-                                            {dateFormatter(tmReleaseDateValue).format("DD/MM/YYYY")} ({<TimeAgo
-                                            live={false} date={tmReleaseDateValue}/>})
-                                        </>
+                                    {
+                                        tmReleaseDate ?
+                                            <>
+                                                {dateFormatter(tmReleaseDateValue).format("DD/MM/YYYY")} ({<TimeAgo
+                                                    live={false} date={tmReleaseDateValue}/>})
+                                            </>
 
-                                        :
-                                        "No release date specified"
-                                }
-                            </td>
-                            <td className="summary__actions">
-                                {
-                                    tmReleaseDate ?
-                                        <Link to={{
-                                            pathname: "/questionnaire/release-date",
-                                            state: {questionnaireName: questionnaireName, tmReleaseDate: tmReleaseDateValue}
-                                        }} className="summary__button"
-                                              aria-label={`Change or delete release date for questionnaire ${questionnaireName}`}>
+                                            :
+                                            "No release date specified"
+                                    }
+                                </td>
+                                <td className="summary__actions">
+                                    {
+                                        tmReleaseDate ?
+                                            <Link to={{
+                                                pathname: "/questionnaire/release-date",
+                                                state: { questionnaireName: questionnaireName, tmReleaseDate: tmReleaseDateValue }
+                                            }} className="summary__button"
+                                            aria-label={`Change or delete release date for questionnaire ${questionnaireName}`}>
                                             Change or delete release date
-                                        </Link>
-                                        :
-                                        <Link to={{
-                                            pathname: "/questionnaire/release-date",
-                                            state: {questionnaireName: questionnaireName}
-                                        }} className="summary__button"
-                                              aria-label={`Add a release date for questionnaire ${questionnaireName}`}>
+                                            </Link>
+                                            :
+                                            <Link to={{
+                                                pathname: "/questionnaire/release-date",
+                                                state: { questionnaireName: questionnaireName }
+                                            }} className="summary__button"
+                                            aria-label={`Add a release date for questionnaire ${questionnaireName}`}>
                                             Add release date
-                                        </Link>
+                                            </Link>
 
-                                }
-                            </td>
-                        </tr>
+                                    }
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -21,7 +21,6 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
     return Promise.resolve(true);
 });
 
-
 describe("Questionnaire Details page ", () => {
     beforeEach(() => {
         mock.onGet("/api/questionnaires").reply(200, questionnaireList);

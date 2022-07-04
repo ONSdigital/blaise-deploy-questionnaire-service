@@ -1,7 +1,7 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {Link, Redirect, useHistory, useLocation, useParams} from "react-router-dom";
+import React, { ReactElement, useEffect, useState } from "react";
+import { Link, Redirect, useHistory, useLocation, useParams } from "react-router-dom";
 import dateFormatter from "dayjs";
-import {Questionnaire} from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
 import QuestionnaireStatus from "../questionnaireStatus";
 import BlaiseNodeInfo from "./sections/blaiseNodeInfo";
@@ -10,8 +10,8 @@ import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
 import ViewTmDetails from "./sections/viewTmDetails";
 import YearCalendar from "./sections/yearCalendar";
 import ViewQuestionnaireSettings from "./sections/viewQuestionnaireSettings";
-import {getQuestionnaire, getQuestionnaireModes, getSurveyDays} from "../../client/questionnaires";
-import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
+import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 
 interface State {
     questionnaire: Questionnaire | null;
@@ -29,8 +29,8 @@ function QuestionnaireDetails(): ReactElement {
     const [surveyDays, setSurveyDays] = useState<string[]>([]);
     const [errored, setErrored] = useState<boolean>(false);
     const [loaded, setLoaded] = useState<boolean>(false);
-    const initialState = location.state || {questionnaire: null};
-    const {questionnaireName}: Params = useParams();
+    const initialState = location.state || { questionnaire: null };
+    const { questionnaireName }: Params = useParams();
 
     useEffect(() => {
         if (initialState.questionnaire === null) {
@@ -65,21 +65,21 @@ function QuestionnaireDetails(): ReactElement {
                             setSurveyDays(surveyDays);
                             setLoaded(true);
                         }).catch((error: unknown) => {
-                        console.error(`Error getting questionnaire survey days ${error}`);
-                        setErrored(true);
-                        setLoaded(true);
-                        return;
-                    });
+                            console.error(`Error getting questionnaire survey days ${error}`);
+                            setErrored(true);
+                            setLoaded(true);
+                            return;
+                        });
                 }
                 console.log(`returned questionnaire mode: ${modes}`);
                 setModes(modes);
                 setLoaded(true);
             }).catch((error: unknown) => {
-            console.error(`Error getting questionnaire modes ${error}`);
-            setErrored(true);
-            setLoaded(true);
-            return;
-        });
+                console.error(`Error getting questionnaire modes ${error}`);
+                setErrored(true);
+                setLoaded(true);
+                return;
+            });
     }, []);
 
     async function loadQuestionnaire(): Promise<void> {
@@ -116,58 +116,58 @@ function QuestionnaireDetails(): ReactElement {
                         <h2 className="summary__group-title">Questionnaire details</h2>
                         <table className="summary__items">
                             <thead className="u-vh">
-                            <tr>
-                                <th>Detail</th>
-                                <th>Output</th>
-                            </tr>
+                                <tr>
+                                    <th>Detail</th>
+                                    <th>Output</th>
+                                </tr>
                             </thead>
                             <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                                <tr className="summary__row summary__row--has-values">
+                                    <td className="summary__item-title">
+                                        <div className="summary__item--text">
                                         Questionnaire status
-                                    </div>
-                                </td>
-                                <td className="summary__values" colSpan={2}>
-                                    <QuestionnaireStatus status={questionnaire.status ? questionnaire.status : ""}/>
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                    <td className="summary__values" colSpan={2}>
+                                        <QuestionnaireStatus status={questionnaire.status ? questionnaire.status : ""}/>
+                                    </td>
+                                </tr>
                             </tbody>
                             <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                                <tr className="summary__row summary__row--has-values">
+                                    <td className="summary__item-title">
+                                        <div className="summary__item--text">
                                         Modes
-                                    </div>
-                                </td>
-                                <td className="summary__values" colSpan={2}>
-                                    {modes.join(", ")}
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                    <td className="summary__values" colSpan={2}>
+                                        {modes.join(", ")}
+                                    </td>
+                                </tr>
                             </tbody>
                             <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                                <tr className="summary__row summary__row--has-values">
+                                    <td className="summary__item-title">
+                                        <div className="summary__item--text">
                                         Number of cases
-                                    </div>
-                                </td>
-                                <td className="summary__values" colSpan={2}>
-                                    {questionnaire.dataRecordCount}
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                    <td className="summary__values" colSpan={2}>
+                                        {questionnaire.dataRecordCount}
+                                    </td>
+                                </tr>
                             </tbody>
                             <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                                <tr className="summary__row summary__row--has-values">
+                                    <td className="summary__item-title">
+                                        <div className="summary__item--text">
                                         Install date
-                                    </div>
-                                </td>
-                                <td className="summary__values" colSpan={2}>
-                                    {dateFormatter(questionnaire.installDate).format("DD/MM/YYYY HH:mm")}
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                    <td className="summary__values" colSpan={2}>
+                                        {dateFormatter(questionnaire.installDate).format("DD/MM/YYYY HH:mm")}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -190,7 +190,7 @@ function QuestionnaireDetails(): ReactElement {
                     aria-label={`Delete questionnaire ${questionnaire.name}`}
                     id="delete-questionnaire"
                     testid="delete-questionnaire"
-                    onClick={() => history.push("/delete", {questionnaire, modes})}/>
+                    onClick={() => history.push("/delete", { questionnaire, modes })}/>
             </>
         );
     }
@@ -199,7 +199,7 @@ function QuestionnaireDetails(): ReactElement {
         <>
             <Breadcrumbs BreadcrumbList={
                 [
-                    {link: "/", title: "Home"},
+                    { link: "/", title: "Home" },
                 ]
             }/>
 

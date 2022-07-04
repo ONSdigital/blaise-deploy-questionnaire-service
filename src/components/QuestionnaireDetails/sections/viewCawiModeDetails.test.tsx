@@ -9,7 +9,7 @@ import React from "react";
 import ViewCawiModeDetails from "./viewCawiModeDetails";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import {opnQuestionnaire} from "../../../features/step_definitions/helpers/apiMockObjects";
+import { opnQuestionnaire } from "../../../features/step_definitions/helpers/apiMockObjects";
 
 const mock = new MockAdapter(axios);
 

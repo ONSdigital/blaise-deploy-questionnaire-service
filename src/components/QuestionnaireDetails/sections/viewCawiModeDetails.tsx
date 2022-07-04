@@ -1,18 +1,17 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {getCountOfUACs} from "../../../client/uacCodes";
-import {getQuestionnaireModes} from "../../../client/questionnaires";
-import {Questionnaire} from "blaise-api-node-client";
-import {ONSButton, ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
+import React, { ReactElement, useEffect, useState } from "react";
+import { getCountOfUACs } from "../../../client/uacCodes";
+import { getQuestionnaireModes } from "../../../client/questionnaires";
+import { Questionnaire } from "blaise-api-node-client";
+import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import CsvDownloader from "react-csv-downloader";
-import {generateUACCodesAndCSVFileData} from "../../../client/componentProcesses";
+import { generateUACCodesAndCSVFileData } from "../../../client/componentProcesses";
 
 interface Props {
     questionnaire: Questionnaire;
     modes: string[]
 }
 
-
-const ViewCawiModeDetails = ({questionnaire, modes}: Props): ReactElement => {
+const ViewCawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
     if (!modes.includes("CAWI")) {
         return <></>;
     }
@@ -31,8 +30,8 @@ const ViewCawiModeDetails = ({questionnaire, modes}: Props): ReactElement => {
                 console.log(`count: ${count}`);
                 if (count !== null) setUacCount(count);
             }).catch(() => {
-            setErrored(true);
-        });
+                setErrored(true);
+            });
     }
 
     async function generateUACs() {
@@ -50,7 +49,7 @@ const ViewCawiModeDetails = ({questionnaire, modes}: Props): ReactElement => {
                 setUacGenerationFailed(userFriendlyError);
                 console.error(error);
                 console.error(userFriendlyError);
-                return [{error: userFriendlyError}];
+                return [{ error: userFriendlyError }];
             }).finally(() => setLoading(false));
     }
 
@@ -61,12 +60,11 @@ const ViewCawiModeDetails = ({questionnaire, modes}: Props): ReactElement => {
                     setCawiMode(true);
                 }
             }).catch(() => {
-            setErrored(true);
-            return;
-        }).finally(() => setLoading(false));
+                setErrored(true);
+                return;
+            }).finally(() => setLoading(false));
         getUACCount();
     }, []);
-
 
     useEffect(() => {
         let bool = true;
@@ -100,46 +98,46 @@ const ViewCawiModeDetails = ({questionnaire, modes}: Props): ReactElement => {
                     <h2 className="summary__group-title">CAWI mode details</h2>
                     <table className="summary__items">
                         <thead className="u-vh">
-                        <tr>
-                            <th>Questionnaire detail</th>
-                            <th>result</th>
-                            <th>Action</th>
-                        </tr>
+                            <tr>
+                                <th>Questionnaire detail</th>
+                                <th>result</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody className={`summary__item ${uacGenerationFailed == "" ? "" : "summary__item--error"}`}>
-                        {
-                            uacGenerationFailed != "" &&
+                            {
+                                uacGenerationFailed != "" &&
                             <tr className="summary__row">
                                 <th colSpan={3} className="summary__row-title u-fs-r">
                                     {uacGenerationFailed}
                                 </th>
                             </tr>
-                        }
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                <div className="summary__item--text">
+                            }
+                            <tr className="summary__row summary__row--has-values">
+                                <td className="summary__item-title">
+                                    <div className="summary__item--text">
                                     Unique Access Codes generated
-                                </div>
-                            </td>
-                            <td className="summary__values">
-                                {uacCount}
-                            </td>
-                            <td className="summary__actions">
-                                {
-                                    showGenerateUACsButton &&
+                                    </div>
+                                </td>
+                                <td className="summary__values">
+                                    {uacCount}
+                                </td>
+                                <td className="summary__actions">
+                                    {
+                                        showGenerateUACsButton &&
                                     <>
                                         <CsvDownloader datas={generateUACs}
-                                                       bom={false}
-                                                       filename={`${questionnaire.name}-uac-codes.csv`}>
+                                            bom={false}
+                                            filename={`${questionnaire.name}-uac-codes.csv`}>
                                             <ONSButton label={"Generate and download Unique Access Codes"}
-                                                       primary={false} small={true}
-                                                       loading={loading}/>
+                                                primary={false} small={true}
+                                                loading={loading}/>
                                         </CsvDownloader>
                                     </>
 
-                                }
-                            </td>
-                        </tr>
+                                    }
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -154,22 +152,22 @@ const ViewCawiModeDetails = ({questionnaire, modes}: Props): ReactElement => {
                     <h2 className="summary__group-title">Web mode details</h2>
                     <table className="summary__items">
                         <thead className="u-vh">
-                        <tr>
-                            <th>Questionnaire detail</th>
-                            <th>result</th>
-                        </tr>
+                            <tr>
+                                <th>Questionnaire detail</th>
+                                <th>result</th>
+                            </tr>
                         </thead>
                         <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                <div className="summary__item--text">
+                            <tr className="summary__row summary__row--has-values">
+                                <td className="summary__item-title">
+                                    <div className="summary__item--text">
                                     Does this questionnaire have a Web mode?
-                                </div>
-                            </td>
-                            <td className="summary__values">
+                                    </div>
+                                </td>
+                                <td className="summary__values">
                                 No
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

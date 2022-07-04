@@ -2,7 +2,6 @@ import { newServer } from "../server";
 import supertest from "supertest";
 import { getConfigFromEnv } from "../config";
 
-
 const config = getConfigFromEnv();
 const request = supertest(newServer(config));
 

@@ -31,7 +31,7 @@ export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004
 }
 
 export default async function navigateToDeployPageAndSelectFileAndContinue(questionnaire = "OPN2004A"): Promise<void> {
-    await navigateToDeployPageAndSelectFile(questionnaire)
+    await navigateToDeployPageAndSelectFile(questionnaire);
     await clickContinue();
 }
 

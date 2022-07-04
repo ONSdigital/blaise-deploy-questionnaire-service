@@ -1,4 +1,4 @@
-import { QuestionnaireSettings,  Questionnaire } from "blaise-api-node-client";
+import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
 import axios from "axios";
 import axiosConfig from "./axiosConfig";
 

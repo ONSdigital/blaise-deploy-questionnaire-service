@@ -1,4 +1,4 @@
-import React, {ReactElement} from "react";
+import React, { ReactElement } from "react";
 
 interface Props {
     status: string
@@ -6,16 +6,16 @@ interface Props {
 
 function getStatusColor(status: string | undefined) {
     switch (status) {
-        case "Active":
-            return "success";
-        case "Failed":
-            return "error";
-        default:
-            return "info";
+    case "Active":
+        return "success";
+    case "Failed":
+        return "error";
+    default:
+        return "info";
     }
 }
 
-function QuestionnaireStatus({status}: Props): ReactElement {
+function QuestionnaireStatus({ status }: Props): ReactElement {
     return (
         <>
             <span
@@ -27,5 +27,4 @@ function QuestionnaireStatus({status}: Props): ReactElement {
 }
 
 export default QuestionnaireStatus;
-
 
