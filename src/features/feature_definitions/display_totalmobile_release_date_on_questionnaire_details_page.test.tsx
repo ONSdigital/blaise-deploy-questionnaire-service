@@ -3,11 +3,11 @@
  */
 
 // Test modules
-import {defineFeature, loadFeature} from "jest-cucumber";
-import {cleanup} from "@testing-library/react";
+import { defineFeature, loadFeature } from "jest-cucumber";
+import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
-import {Questionnaire} from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import {
     givenTheQuestionnaireIsInstalled,
@@ -22,7 +22,7 @@ import {
     thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate,
     thenIHaveTheOptionToAddATotalmobileReleaseDate
 } from "../step_definitions/then";
-import {AuthManager} from "blaise-login-react-client";
+import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapeter from "axios-mock-adapter";
 
@@ -34,12 +34,11 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/display_totalmobile_release_date_on_questionnaire_details_page.feature",
-    {tagFilter: "not @server and not @integration"}
+    { tagFilter: "not @server and not @integration" }
 );
 
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapeter(axios);
-
 
 defineFeature(feature, test => {
     afterEach(() => {
@@ -49,7 +48,7 @@ defineFeature(feature, test => {
         mocker.reset();
     });
 
-    test("View saved Totalmobile release date in questionnaire details", ({given, when, then}) => {
+    test("View saved Totalmobile release date in questionnaire details", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);
@@ -57,7 +56,7 @@ defineFeature(feature, test => {
         thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(then);
     });
 
-    test("Add Totalmobile release date in questionnaire details", ({given, when, then}) => {
+    test("Add Totalmobile release date in questionnaire details", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireDoesNotHaveATotalmobileReleaseDate(given, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);

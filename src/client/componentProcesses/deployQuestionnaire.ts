@@ -3,7 +3,6 @@ import { validateUploadIsComplete } from "../upload";
 
 type verifyAndInstallResponse = [boolean, string];
 
-
 async function verifyAndInstallQuestionnaire(filename: string): Promise<verifyAndInstallResponse> {
     const fileFound = await validateUploadIsComplete(filename);
     if (!fileFound) {

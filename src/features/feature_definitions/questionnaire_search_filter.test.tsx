@@ -26,7 +26,6 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
@@ -66,7 +65,6 @@ defineFeature(feature, test => {
         thenIAmPresentedWithQuestionnaireNotFound(then);
     });
 
-
     test("DST questionnaires do not show up by default", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
@@ -80,7 +78,6 @@ defineFeature(feature, test => {
 
         thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
     });
-
 
     test("I can search for DST questinnaires", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);

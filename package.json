@@ -11,7 +11,8 @@
     "test": "jest --coverage --watchAll=false",
     "gcp-build": "GENERATE_SOURCEMAP=false react-scripts build && tsc --project tsconfig.server.json",
     "lint-fix": "node_modules/.bin/eslint . --fix",
-    "dev": "concurrently --kill-others-on-fail \"yarn start-server\" \"yarn start-react\""
+    "dev": "concurrently --kill-others-on-fail \"yarn start-server\" \"yarn start-react\"",
+    "lint": "node_modules/.bin/eslint ."
   },
   "proxy": "http://localhost:5000",
   "keywords": [],

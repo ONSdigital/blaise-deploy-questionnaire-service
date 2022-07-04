@@ -23,10 +23,8 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapeter(axios);
-
 
 defineFeature(feature, test => {
     afterEach(() => {

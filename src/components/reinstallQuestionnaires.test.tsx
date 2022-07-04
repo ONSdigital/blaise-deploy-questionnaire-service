@@ -16,7 +16,6 @@ import MockAdapter from "axios-mock-adapter";
 
 const mock = new MockAdapter(axios);
 
-
 const questionnaireList: Questionnaire[] = [{
     name: "OPN2101A",
     serverParkName: "gusty",
@@ -185,7 +184,6 @@ describe("Given the API returns a 500 status", () => {
                 <ReinstallQuestionnaires />
             </Router>
         );
-
 
         await waitFor(() => {
             expect(screen.getByText(/Unable to load questionnaires./i)).toBeDefined();

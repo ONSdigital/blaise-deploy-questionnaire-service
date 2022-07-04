@@ -15,9 +15,7 @@ jest.mock("blaise-login-react-server", () => {
 });
 Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
 
-
 jest.mock("blaise-iap-node-provider");
-
 
 // Create Mock adapter for Axios requests
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });

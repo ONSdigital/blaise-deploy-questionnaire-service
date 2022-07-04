@@ -27,7 +27,6 @@ const mockGetQuestionnaireModes = jest.fn();
 const mockGetQuestionnaireSettings = jest.fn();
 const mockGetSurveyDays = jest.fn();
 
-
 jest.mock("blaise-api-node-client", () => {
     return {
         __esModule: true,
@@ -392,7 +391,6 @@ describe("BlaiseAPI get questionnaire settings", () => {
         mockGetQuestionnaireSettings.mockImplementation(() => {
             return Promise.resolve(QuestionnaireSettingsMockList);
         });
-
 
         const response: Response = await request.get("/api/questionnaires/OPN2101A/settings");
 

@@ -16,90 +16,90 @@ import { AuthManager } from "blaise-login-react-client";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-  return Promise.resolve(true);
+    return Promise.resolve(true);
 });
 
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 // Load in feature details from .feature file
 const feature = loadFeature(
-  "./src/features/incorrect_questionnaire_settings.feature",
-  { tagFilter: "not @server and not @integration" }
+    "./src/features/incorrect_questionnaire_settings.feature",
+    { tagFilter: "not @server and not @integration" }
 );
 
 defineFeature(feature, test => {
-  beforeEach(() => {
-    mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200);
-  });
+    beforeEach(() => {
+        mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200);
+    });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-    jest.resetModules();
-    cleanup();
-    mocker.reset();
-  });
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+        cleanup();
+        mocker.reset();
+    });
 
-  test("Display warning when settings are incorrect", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-    givenInstallsSuccessfully(given, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnareHasTheSettings(given, mocker);
+    test("Display warning when settings are incorrect", ({ given, when, then }) => {
+        givenNoQuestionnairesAreInstalled(given, mocker);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+        givenInstallsSuccessfully(given, mocker);
+        givenTheQuestionnaireHasModes(given, mocker);
+        givenTheQuestionnareHasTheSettings(given, mocker);
 
-    whenIConfirmMySelection(when);
-    whenISelectToInstallWithNoStartDate(when);
-    whenIDeployTheQuestionnaire(when);
+        whenIConfirmMySelection(when);
+        whenISelectToInstallWithNoStartDate(when);
+        whenIDeployTheQuestionnaire(when);
 
-    thenTheQuestionnaireIsDeactivated(then, mocker);
-    thenAWarningIsDisplayedWithTheMessage(then);
-    thenIGetTheOptionToContinueOrCancel(then);
-  });
+        thenTheQuestionnaireIsDeactivated(then, mocker);
+        thenAWarningIsDisplayedWithTheMessage(then);
+        thenIGetTheOptionToContinueOrCancel(then);
+    });
 
-  test("Choose to continue with incorrect settings", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-    givenInstallsSuccessfully(given, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnareHasTheSettings(given, mocker);
+    test("Choose to continue with incorrect settings", ({ given, when, then }) => {
+        givenNoQuestionnairesAreInstalled(given, mocker);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+        givenInstallsSuccessfully(given, mocker);
+        givenTheQuestionnaireHasModes(given, mocker);
+        givenTheQuestionnareHasTheSettings(given, mocker);
 
-    whenIConfirmMySelection(when);
-    whenISelectToInstallWithNoStartDate(when);
-    whenIDeployTheQuestionnaire(when);
-    whenIChooseToDeployAnyway(when);
+        whenIConfirmMySelection(when);
+        whenISelectToInstallWithNoStartDate(when);
+        whenIDeployTheQuestionnaire(when);
+        whenIChooseToDeployAnyway(when);
 
-    thenTheQuestionnaireIsInstalled(then, mocker);
-    thenTheQuestionnaireIsActivated(then, mocker);
-    thenIAmPresentedWithASuccessfullyDeployedBanner(then);
-  });
+        thenTheQuestionnaireIsInstalled(then, mocker);
+        thenTheQuestionnaireIsActivated(then, mocker);
+        thenIAmPresentedWithASuccessfullyDeployedBanner(then);
+    });
 
-  test("Choose cancel and rectify settings issue", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-    givenInstallsSuccessfully(given, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnareHasTheSettings(given, mocker);
+    test("Choose cancel and rectify settings issue", ({ given, when, then }) => {
+        givenNoQuestionnairesAreInstalled(given, mocker);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+        givenInstallsSuccessfully(given, mocker);
+        givenTheQuestionnaireHasModes(given, mocker);
+        givenTheQuestionnareHasTheSettings(given, mocker);
 
-    whenIConfirmMySelection(when);
-    whenISelectToInstallWithNoStartDate(when);
-    whenIDeployTheQuestionnaire(when);
-    whenIChooseToCancel(when);
+        whenIConfirmMySelection(when);
+        whenISelectToInstallWithNoStartDate(when);
+        whenIDeployTheQuestionnaire(when);
+        whenIChooseToCancel(when);
 
-    thenTheQuestionnaireDataIsDeleted(then, mocker);
-    thenIAmReturnedToTheLandingPage(then);
-  });
+        thenTheQuestionnaireDataIsDeleted(then, mocker);
+        thenIAmReturnedToTheLandingPage(then);
+    });
 
-  test("Install with correct settings", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-    givenInstallsSuccessfully(given, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnareHasTheSettings(given, mocker);
+    test("Install with correct settings", ({ given, when, then }) => {
+        givenNoQuestionnairesAreInstalled(given, mocker);
+        givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+        givenInstallsSuccessfully(given, mocker);
+        givenTheQuestionnaireHasModes(given, mocker);
+        givenTheQuestionnareHasTheSettings(given, mocker);
 
-    whenIConfirmMySelection(when);
-    whenISelectToInstallWithNoStartDate(when);
-    whenIDeployTheQuestionnaire(when);
+        whenIConfirmMySelection(when);
+        whenISelectToInstallWithNoStartDate(when);
+        whenIDeployTheQuestionnaire(when);
 
-    thenTheQuestionnaireIsInstalled(then, mocker);
-    thenIAmPresentedWithASuccessfullyDeployedBanner(then);
-  });
+        thenTheQuestionnaireIsInstalled(then, mocker);
+        thenIAmPresentedWithASuccessfullyDeployedBanner(then);
+    });
 });

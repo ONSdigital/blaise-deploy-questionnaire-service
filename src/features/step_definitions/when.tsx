@@ -4,14 +4,14 @@
 
 import React from "react";
 import "@testing-library/jest-dom";
-import {act, screen, render} from "@testing-library/react";
+import { act, screen, render } from "@testing-library/react";
 import flushPromises from "../../tests/utils";
 import userEvent from "@testing-library/user-event";
-import {DefineStepFunction} from "jest-cucumber";
-import {Router} from "react-router";
-import {createMemoryHistory} from "history";
+import { DefineStepFunction } from "jest-cucumber";
+import { Router } from "react-router";
+import { createMemoryHistory } from "history";
 import App from "../../app";
-import {formatDateString, navigatePastSettingTOStartDateAndDeployQuestionnaire} from "./helpers/functions";
+import { formatDateString, navigatePastSettingTOStartDateAndDeployQuestionnaire } from "./helpers/functions";
 
 export function whenIConfirmMySelection(when: DefineStepFunction): void {
     when("I confirm my selection", async () => {
@@ -256,7 +256,7 @@ export function whenIHaveSelectedADeployPackage(then: DefineStepFunction): void 
     then(/I have selected a deploy package for '(.*)'/, async (questionnaire: string) => {
         const input = screen.getByLabelText(/Select survey package/i);
 
-        const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, {type: "application/zip"});
+        const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, { type: "application/zip" });
 
         userEvent.upload(input, file);
     });
@@ -264,7 +264,7 @@ export function whenIHaveSelectedADeployPackage(then: DefineStepFunction): void 
 
 export function whenIChooseToDeployAnyway(when: DefineStepFunction): void {
     when("I choose to deploy anyway", async () => {
-        userEvent.click(await screen.getByRole("button", {name: /Deploy anyway/i}));
+        userEvent.click(await screen.getByRole("button", { name: /Deploy anyway/i }));
         await act(async () => {
             await flushPromises();
         });
@@ -273,7 +273,7 @@ export function whenIChooseToDeployAnyway(when: DefineStepFunction): void {
 
 export function whenIChooseToCancel(when: DefineStepFunction): void {
     when("I choose to cancel", async () => {
-        userEvent.click(await screen.getByRole("button", {name: /Cancel/i}));
+        userEvent.click(await screen.getByRole("button", { name: /Cancel/i }));
         await act(async () => {
             await flushPromises();
         });

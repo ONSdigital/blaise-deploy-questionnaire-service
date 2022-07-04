@@ -6,7 +6,6 @@ import MockAdapter from "axios-mock-adapter";
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
-
 describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
     const instrumentName = "dst2106a";
     const caseIDs = ["0008", "0009"];
@@ -85,7 +84,6 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
     });
 });
 
-
 describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)", () => {
     it("should return an list of matched cases", async () => {
         const caseIDs = ["0008", "0009"];
@@ -162,7 +160,6 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
         ));
     });
 
-
     it("should throw an error if no cases match", async () => {
         const caseIDs = ["0001", "0002"];
         const uacCodes: InstrumentUacDetails = {
@@ -218,7 +215,6 @@ describe("mapCasesToUACCodes(caseIDs: string[], uacCodes: InstrumentUacDetails)"
             mapCasesToUACCodes(caseIDs, uacCodes);
         }).toThrow("Number of cases (3) does not match number of UAC Codes (0)");
     });
-
 
     it("should throw error when case IDs list and UAC codes are empty", async () => {
         const caseIDs: string[] = [];

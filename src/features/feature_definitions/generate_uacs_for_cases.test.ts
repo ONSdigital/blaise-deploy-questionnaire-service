@@ -48,7 +48,6 @@ defineFeature(feature, test => {
         thenAGenerateUacButtonIsAvailable(then);
     });
 
-
     test("Generate button does not exist for questionnaires in CAWI mode without cases", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
@@ -58,7 +57,6 @@ defineFeature(feature, test => {
 
         thenAGenerateUacButtonIsNotAvailable(then);
     });
-
 
     test("Generate button does not exist for questionnaires in CATI mode without cases", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
@@ -70,7 +68,6 @@ defineFeature(feature, test => {
         thenAGenerateUacButtonIsNotAvailable(then);
     });
 
-
     test("Generate button does not exist for questionnaires in CATI mode with cases", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
@@ -80,7 +77,6 @@ defineFeature(feature, test => {
 
         thenAGenerateUacButtonIsNotAvailable(then);
     });
-
 
     test("I get a confirmation message when generating UACs", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
@@ -93,7 +89,6 @@ defineFeature(feature, test => {
         thenUACsAreGenerated(then, mocker);
     });
 
-
     test("I get a error message when generating UACs", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireHasModes(given, mocker);
@@ -105,7 +100,6 @@ defineFeature(feature, test => {
 
         thenIReceiveAUACError(then);
     });
-
 
     test("I can see how many UACs have been generated for a particular questionnaire in the details page", (
         { given, when, then }) => {

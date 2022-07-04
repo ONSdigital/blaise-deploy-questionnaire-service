@@ -30,7 +30,6 @@ const feature = loadFeature(
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapeter(axios);
 
-
 defineFeature(feature, test => {
     afterEach(() => {
         jest.clearAllMocks();

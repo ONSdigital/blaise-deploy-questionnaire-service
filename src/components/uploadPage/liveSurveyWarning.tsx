@@ -1,6 +1,6 @@
-import React, {ReactElement} from "react";
-import {ONSButton, ONSPanel} from "blaise-design-system-react-components";
-import {useHistory, useParams} from "react-router-dom";
+import React, { ReactElement } from "react";
+import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
+import { useHistory, useParams } from "react-router-dom";
 
 interface Params {
     questionnaireName: string
@@ -24,9 +24,9 @@ function LiveSurveyWarning(): ReactElement {
             <br/>
             <br/>
             <ONSButton label="Accept and go to table of questionnaires"
-                       primary={true}
-                       id="return-to-home"
-                       onClick={() => history.push("/")}/>
+                primary={true}
+                id="return-to-home"
+                onClick={() => history.push("/")}/>
 
         </>
     );

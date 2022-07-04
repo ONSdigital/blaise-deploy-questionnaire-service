@@ -100,7 +100,6 @@ export async function uploadAndInstallFile(
         return false;
     }
 
-
     // Validate the file is in the bucket and call the rest API to install
     const [installed, message] = await verifyAndInstallQuestionnaire(file.name);
     if (!installed) {

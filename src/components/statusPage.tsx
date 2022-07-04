@@ -4,7 +4,6 @@ import React, { Fragment, ReactElement, useEffect, useState } from "react";
 import axiosConfig from "../client/axiosConfig";
 import Breadcrumbs from "./breadcrumbs";
 
-
 interface BlaiseStatus {
     "health check type": string;
     status: string;
@@ -45,7 +44,6 @@ function StatusPage(): ReactElement {
             setListError("Unable to get Blaise status");
         }).finally(() => setLoading(false));
     }, []);
-
 
     function DisplayBlaiseStatus(): ReactElement {
         if (loading) {

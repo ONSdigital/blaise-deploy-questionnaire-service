@@ -107,7 +107,6 @@ describe("React homepage", () => {
     });
 });
 
-
 describe("Given the API returns malformed json", () => {
     beforeAll(() => {
         mock.onGet("/api/questionnaires").reply(500, { text: "Hello" });
@@ -122,7 +121,6 @@ describe("Given the API returns malformed json", () => {
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
-
 
         await waitFor(() => {
             expect(getByText(/Sorry, there is a problem with this service. We are working to fix the problem. Please try again later./i)).toBeDefined();
@@ -158,7 +156,6 @@ describe("Given the API returns an empty list", () => {
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
-
 
         await waitFor(() => {
             expect(getByText(/No installed questionnaires found./i)).toBeDefined();
