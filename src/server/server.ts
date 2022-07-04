@@ -18,7 +18,6 @@ import { HttpLogger } from "pino-http";
 import AuditLogger from "./auditLogging/logger";
 import newAuditHandler from "./handlers/auditHandler";
 
-
 if (process.env.NODE_ENV === "production") {
     import("@google-cloud/profiler").then((profiler) => {
         profiler.start({ logLevel: 4 }).catch((err: unknown) => {

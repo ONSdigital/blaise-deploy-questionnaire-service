@@ -3,7 +3,6 @@ import axios from "axios";
 import axiosConfig from "./axiosConfig";
 import { AuthManager } from "blaise-login-react-client";
 
-
 export async function generateUACCodes(instrumentName: string): Promise<boolean> {
     console.log("Sending request generate UAC codes");
     const url = `/api/uacs/instrument/${instrumentName}`;

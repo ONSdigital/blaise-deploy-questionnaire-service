@@ -57,7 +57,6 @@ defineFeature(feature, test => {
         thenICanSelectAQuestionnairePackageToInstall(then);
     });
 
-
     test("Deploy questionnaire functions disabled", ({ given, when, then }) => {
         givenNoQuestionnairesAreInstalled(given, mocker);
 
@@ -68,7 +67,6 @@ defineFeature(feature, test => {
 
         thenUploadIsDisabled(then);
     });
-
 
     test("Deploy selected file", ({ given, when, then }) => {
         givenNoQuestionnairesAreInstalled(given, mocker);

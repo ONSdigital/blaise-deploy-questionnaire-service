@@ -3,7 +3,6 @@ import QuestionnaireSettingsTable from "../../questionnaireSettings/questionnair
 import { QuestionnaireSettings } from "blaise-api-node-client";
 import { ONSPanel } from "blaise-design-system-react-components";
 
-
 interface SelectFilePageProps {
     questionnaireName: string;
     questionnaireSettings: QuestionnaireSettings | undefined

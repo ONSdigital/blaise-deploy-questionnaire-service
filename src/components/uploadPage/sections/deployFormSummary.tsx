@@ -1,31 +1,31 @@
-import React, {ReactElement} from "react";
-import {FormikContextType, useFormikContext} from "formik";
-import {Questionnaire} from "blaise-api-node-client";
+import React, { ReactElement } from "react";
+import { FormikContextType, useFormikContext } from "formik";
+import { Questionnaire } from "blaise-api-node-client";
 import dateFormatter from "dayjs";
-import {roundUp} from "../../../utilities/maths";
+import { roundUp } from "../../../utilities/maths";
 
 interface PageFourProps {
     file: File | undefined
     foundQuestionnaire: Questionnaire | null
 }
 
-function DeployFormSummary({file, foundQuestionnaire}: PageFourProps): ReactElement {
-    const {values: formValues}: FormikContextType<any> = useFormikContext();
+function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactElement {
+    const { values: formValues }: FormikContextType<any> = useFormikContext();
 
     function QuestionnaireFileName(): ReactElement {
         return (
             <>
                 <tbody className="summary__item">
-                <tr className="summary__row summary__row--has-values">
-                    <td className="summary__item-title">
-                        <div className="summary__item--text">
+                    <tr className="summary__row summary__row--has-values">
+                        <td className="summary__item-title">
+                            <div className="summary__item--text">
                             Questionnaire file name
-                        </div>
-                    </td>
-                    <td className="summary__values">
-                        {file?.name}
-                    </td>
-                </tr>
+                            </div>
+                        </td>
+                        <td className="summary__values">
+                            {file?.name}
+                        </td>
+                    </tr>
                 </tbody>
             </>
         );
@@ -35,16 +35,16 @@ function DeployFormSummary({file, foundQuestionnaire}: PageFourProps): ReactElem
         return (
             <>
                 <tbody className="summary__item">
-                <tr className="summary__row summary__row--has-values">
-                    <td className="summary__item-title">
-                        <div className="summary__item--text">
+                    <tr className="summary__row summary__row--has-values">
+                        <td className="summary__item-title">
+                            <div className="summary__item--text">
                             Questionnaire file last modified date
-                        </div>
-                    </td>
-                    <td className="summary__values">
-                        {dateFormatter(file?.lastModified).format("DD/MM/YYYY HH:mm")}
-                    </td>
-                </tr>
+                            </div>
+                        </td>
+                        <td className="summary__values">
+                            {dateFormatter(file?.lastModified).format("DD/MM/YYYY HH:mm")}
+                        </td>
+                    </tr>
                 </tbody>
             </>
         );
@@ -54,16 +54,16 @@ function DeployFormSummary({file, foundQuestionnaire}: PageFourProps): ReactElem
         return (
             <>
                 <tbody className="summary__item">
-                <tr className="summary__row summary__row--has-values">
-                    <td className="summary__item-title">
-                        <div className="summary__item--text">
+                    <tr className="summary__row summary__row--has-values">
+                        <td className="summary__item-title">
+                            <div className="summary__item--text">
                             Questionnaire file size
-                        </div>
-                    </td>
-                    <td className="summary__values">
-                        {(file && roundUp(file.size / 1000000, 0))}MB
-                    </td>
-                </tr>
+                            </div>
+                        </td>
+                        <td className="summary__values">
+                            {(file && roundUp(file.size / 1000000, 0))}MB
+                        </td>
+                    </tr>
                 </tbody>
             </>
         );
@@ -73,19 +73,19 @@ function DeployFormSummary({file, foundQuestionnaire}: PageFourProps): ReactElem
         return (
             <>
                 <tbody className="summary__item">
-                <tr className="summary__row summary__row--has-values">
-                    <td className="summary__item-title">
-                        <div className="summary__item--text">
+                    <tr className="summary__row summary__row--has-values">
+                        <td className="summary__item-title">
+                            <div className="summary__item--text">
                             Does the questionnaire already exist in blaise?
-                        </div>
-                    </td>
-                    <td className="summary__values">
-                        {
-                            foundQuestionnaire ?
-                                "Yes, overriding questionnaire" : "No"
-                        }
-                    </td>
-                </tr>
+                            </div>
+                        </td>
+                        <td className="summary__values">
+                            {
+                                foundQuestionnaire ?
+                                    "Yes, overriding questionnaire" : "No"
+                            }
+                        </td>
+                    </tr>
                 </tbody>
             </>
         );
@@ -95,22 +95,22 @@ function DeployFormSummary({file, foundQuestionnaire}: PageFourProps): ReactElem
         return (
             <>
                 <tbody className="summary__item">
-                <tr className="summary__row summary__row--has-values">
-                    <td className="summary__item-title">
-                        <div className="summary__item--text">
+                    <tr className="summary__row summary__row--has-values">
+                        <td className="summary__item-title">
+                            <div className="summary__item--text">
                             Set a telephone operations start date for questionnaire?
-                        </div>
-                    </td>
-                    <td className="summary__values">
-                        {
-                            formValues["set start date"] ?
-                                `Start date set to ${dateFormatter(formValues["set start date"]).format("DD/MM/YYYY")}`
-                                :
-                                "Start date not specified"
-                        }
+                            </div>
+                        </td>
+                        <td className="summary__values">
+                            {
+                                formValues["set start date"] ?
+                                    `Start date set to ${dateFormatter(formValues["set start date"]).format("DD/MM/YYYY")}`
+                                    :
+                                    "Start date not specified"
+                            }
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </>
         );
@@ -124,21 +124,21 @@ function DeployFormSummary({file, foundQuestionnaire}: PageFourProps): ReactElem
         return (
             <>
                 <tbody className="summary__item">
-                <tr className="summary__row summary__row--has-values">
-                    <td className="summary__item-title">
-                        <div className="summary__item--text">
+                    <tr className="summary__row summary__row--has-values">
+                        <td className="summary__item-title">
+                            <div className="summary__item--text">
                             Set a totalmobile release date for questionnaire?
-                        </div>
-                    </td>
-                    <td className="summary__values">
-                        {
-                            formValues["set release date"] ?
-                                `Release date set to ${dateFormatter(formValues["set release date"]).format("DD/MM/YYYY")}`
-                                :
-                                "Release date not specified"
-                        }
-                    </td>
-                </tr>
+                            </div>
+                        </td>
+                        <td className="summary__values">
+                            {
+                                formValues["set release date"] ?
+                                    `Release date set to ${dateFormatter(formValues["set release date"]).format("DD/MM/YYYY")}`
+                                    :
+                                    "Release date not specified"
+                            }
+                        </td>
+                    </tr>
                 </tbody>
             </>
         );
@@ -151,10 +151,10 @@ function DeployFormSummary({file, foundQuestionnaire}: PageFourProps): ReactElem
                     <h1 className="summary__group-title">Deployment summary</h1>
                     <table className="summary__items">
                         <thead className="u-vh">
-                        <tr>
-                            <th>Question</th>
-                            <th>Answer given</th>
-                        </tr>
+                            <tr>
+                                <th>Question</th>
+                                <th>Answer given</th>
+                            </tr>
                         </thead>
 
                         <QuestionnaireFileName/>

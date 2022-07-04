@@ -1,19 +1,19 @@
-import React, {ReactElement} from "react";
-import {StyledFormErrorSummary} from "blaise-design-system-react-components";
+import React, { ReactElement } from "react";
+import { StyledFormErrorSummary } from "blaise-design-system-react-components";
 import SetDateForm from "../../SetDateForm";
 
 interface SelectFilePageProps {
     questionnaireName: string;
 }
 
-function AskToSetTOStartDate({questionnaireName}: SelectFilePageProps): ReactElement {
+function AskToSetTOStartDate({ questionnaireName }: SelectFilePageProps): ReactElement {
     return (
         <>
             <div className="grid">
                 <div className="grid__col col-8@m">
                     <h1 className="u-mb-l">
                         Would you like to set a telephone operations start date for questionnaire <em
-                        className="highlight">{questionnaireName}</em>?
+                            className="highlight">{questionnaireName}</em>?
                     </h1>
 
                     <p>

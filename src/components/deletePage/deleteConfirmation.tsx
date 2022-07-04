@@ -5,7 +5,6 @@ import ErroneousWarning from "./erroneousWarning";
 import DeleteWarning from "./deleteWarning";
 import Breadcrumbs from "../breadcrumbs";
 
-
 interface Location {
     questionnaire: Questionnaire,
     modes : string[],

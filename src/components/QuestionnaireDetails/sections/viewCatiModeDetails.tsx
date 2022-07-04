@@ -1,16 +1,16 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {ONSLoadingPanel, ONSPanel} from "blaise-design-system-react-components";
-import {getTOStartDate} from "../../../client/toStartDate";
+import React, { ReactElement, useEffect, useState } from "react";
+import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
+import { getTOStartDate } from "../../../client/toStartDate";
 import dateFormatter from "dayjs";
 import TimeAgo from "react-timeago";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface Props {
     questionnaireName: string
     modes: string[]
 }
 
-function ViewCatiModeDetails({questionnaireName, modes}: Props): ReactElement {
+function ViewCatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
     if (!modes.includes("CATI")) {
         return <></>;
     }
@@ -40,7 +40,6 @@ function ViewCatiModeDetails({questionnaireName, modes}: Props): ReactElement {
         }
     }
 
-
     if (loading) {
         return (
             <div className="u-mb-m" aria-busy="true">
@@ -64,54 +63,54 @@ function ViewCatiModeDetails({questionnaireName, modes}: Props): ReactElement {
                     <h2 className="summary__group-title">CATI mode details</h2>
                     <table className="summary__items">
                         <thead className="u-vh">
-                        <tr>
-                            <th>Questionnaire detail</th>
-                            <th>result</th>
-                            <th>Action</th>
-                        </tr>
+                            <tr>
+                                <th>Questionnaire detail</th>
+                                <th>result</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody className="summary__item">
-                        <tr className="summary__row summary__row--has-values">
-                            <td className="summary__item-title">
-                                <div className="summary__item--text">
+                            <tr className="summary__row summary__row--has-values">
+                                <td className="summary__item-title">
+                                    <div className="summary__item--text">
                                     Telephone Operations start date
-                                </div>
-                            </td>
-                            <td className="summary__values">
+                                    </div>
+                                </td>
+                                <td className="summary__values">
 
-                                {
-                                    toStartDate ?
-                                        <>
-                                            {dateFormatter(toStartDateValue).format("DD/MM/YYYY")} ({<TimeAgo
-                                            live={false} date={toStartDateValue}/>})
-                                        </>
+                                    {
+                                        toStartDate ?
+                                            <>
+                                                {dateFormatter(toStartDateValue).format("DD/MM/YYYY")} ({<TimeAgo
+                                                    live={false} date={toStartDateValue}/>})
+                                            </>
 
-                                        :
-                                        "No start date specified, using survey days"
-                                }
-                            </td>
-                            <td className="summary__actions">
-                                {
-                                    toStartDate ?
-                                        <Link to={{
-                                            pathname: "/questionnaire/start-date",
-                                            state: {questionnaireName: questionnaireName, toStartDate: toStartDateValue}
-                                        }} className="summary__button"
-                                              aria-label={`Change or delete start date for questionnaire ${questionnaireName}`}>
+                                            :
+                                            "No start date specified, using survey days"
+                                    }
+                                </td>
+                                <td className="summary__actions">
+                                    {
+                                        toStartDate ?
+                                            <Link to={{
+                                                pathname: "/questionnaire/start-date",
+                                                state: { questionnaireName: questionnaireName, toStartDate: toStartDateValue }
+                                            }} className="summary__button"
+                                            aria-label={`Change or delete start date for questionnaire ${questionnaireName}`}>
                                             Change or delete start date
-                                        </Link>
-                                        :
-                                        <Link to={{
-                                            pathname: "/questionnaire/start-date",
-                                            state: {questionnaireName: questionnaireName}
-                                        }} className="summary__button"
-                                              aria-label={`Add a start date for questionnaire ${questionnaireName}`}>
+                                            </Link>
+                                            :
+                                            <Link to={{
+                                                pathname: "/questionnaire/start-date",
+                                                state: { questionnaireName: questionnaireName }
+                                            }} className="summary__button"
+                                            aria-label={`Add a start date for questionnaire ${questionnaireName}`}>
                                             Add start date
-                                        </Link>
+                                            </Link>
 
-                                }
-                            </td>
-                        </tr>
+                                    }
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

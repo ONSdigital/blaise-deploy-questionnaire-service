@@ -1,8 +1,7 @@
-import {ReleaseDateManager} from "./releaseDateManager";
-import {tmReleaseDate} from "./bimsApi";
-import {Logger} from "./logger";
+import { ReleaseDateManager } from "./releaseDateManager";
+import { tmReleaseDate } from "./bimsApi";
+import { Logger } from "./logger";
 import dateFormatter from "dayjs";
-
 
 export default class LoggingReleaseDateManager implements ReleaseDateManager {
     private previousReleaseDate: Map<string, string> = new Map();
@@ -31,7 +30,7 @@ export default class LoggingReleaseDateManager implements ReleaseDateManager {
     async getReleaseDate(questionnaireName: string): Promise<tmReleaseDate | undefined> {
         const releaseDate = await this.instance.getReleaseDate(questionnaireName);
         if (releaseDate && releaseDate.tmreleasedate){
-            this.previousReleaseDate.set(questionnaireName, releaseDate.tmreleasedate)
+            this.previousReleaseDate.set(questionnaireName, releaseDate.tmreleasedate);
         }
 
         return releaseDate;
@@ -48,7 +47,7 @@ export default class LoggingReleaseDateManager implements ReleaseDateManager {
 
     private async performActionAndLog <Result> (action: () => Promise<Result>, successMessage: string, errorMessage: string, questionnaireName: string): Promise<Result> {
         try {
-            let result = await action();
+            const result = await action();
             let message = successMessage;
 
             if(this.previousReleaseDate.has(questionnaireName)){
