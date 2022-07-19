@@ -108,6 +108,21 @@ describe("DeleteWarning", () => {
             expect(view).toMatchSnapshot();
         });
 
+        it("should not fetch the active status more than once", async () => {
+            const questionnaire: Questionnaire = {
+                ...defaultQuestionnaire,
+                name: "LMS2201_AA1",
+                status: "active",
+            };
+            mockHttp.onGet("/api/questionnaires/LMS2201_AA1/active").reply(200, true);
+
+            const { rerender } = render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} setStatus={() => {}}/>);
+            expect(await screen.findByText(CATI_WARNING_MESSAGE)).toBeVisible();
+            rerender(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} setStatus={() => {}}/>);
+
+            expect(mockHttp.history.get.length).toBe(1);
+        });
+
         it("should not display the CATI warning for an inactive CATI questionnaire", async () => {
             const questionnaire: Questionnaire = {
                 ...defaultQuestionnaire,
