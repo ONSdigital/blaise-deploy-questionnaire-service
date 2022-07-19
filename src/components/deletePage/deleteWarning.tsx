@@ -30,8 +30,9 @@ function DeleteWarning({ questionnaire, modes, setStatus }: Props): ReactElement
                 setErrored(true);
                 setLoaded(true);
             });
+        } else {
+            setLoaded(true);
         }
-        setLoaded(true);
     });
 
     async function cancelDelete() {
