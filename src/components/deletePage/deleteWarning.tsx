@@ -33,7 +33,7 @@ function DeleteWarning({ questionnaire, modes, setStatus }: Props): ReactElement
         } else {
             setLoaded(true);
         }
-    });
+    }, []);
 
     async function cancelDelete() {
         history.goBack();
