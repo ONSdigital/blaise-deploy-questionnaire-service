@@ -11,10 +11,11 @@ interface Location {
 }
 
 type Props = {
-    setStatus: (status: string) => void
+    onDelete: (status: string) => void
+    onCancel: () => void
 }
 
-function DeleteConfirmation({ setStatus }: Props): ReactElement {
+function DeleteConfirmation({ onDelete, onCancel }: Props): ReactElement {
     const location = useLocation<Location>();
     const { questionnaire, modes } = location.state || { questionnaire: "", modes: "" };
 
@@ -29,9 +30,14 @@ function DeleteConfirmation({ setStatus }: Props): ReactElement {
             <main id="main-content" className="page__main u-mt-no">
                 {
                     (
-                        questionnaire.status === "Failed" 
+                        questionnaire.status === "Failed"
                             ? <ErroneousWarning questionnaireName={questionnaire.name} />
-                            : <DeleteWarning questionnaire={questionnaire} modes={modes} setStatus={setStatus} />
+                            : <DeleteWarning
+                                questionnaire={questionnaire}
+                                modes={modes}
+                                onDelete={onDelete}
+                                onCancel={onCancel}
+                            />
                     )
                 }
             </main>
