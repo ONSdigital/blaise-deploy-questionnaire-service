@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import QuestionnaireList from "./components/questionnaireList";
 import UploadPage from "./components/uploadPage/uploadPage";
 import DeploymentSummary from "./components/deploymentSummary";
@@ -34,6 +34,7 @@ const divStyle = {
 
 function App(): ReactElement {
     const location = useLocation();
+    const history = useHistory();
 
     const authManager = new AuthManager();
 
@@ -76,6 +77,15 @@ function App(): ReactElement {
         return <></>;
     }
 
+    function onDeleteQuestionnaire(status: string): void {
+        history.push("/");
+        setStatus(status);
+    }
+
+    function onCancelDeleteQuestionnaire(): void {
+        history.goBack();
+    }
+
     function AppContent(): ReactElement {
         if (loaded && loggedIn) {
             return (
@@ -109,7 +119,7 @@ function App(): ReactElement {
                             <UploadPage />
                         </Route>
                         <Route path="/delete">
-                            <DeleteConfirmation setStatus={setStatus} />
+                            <DeleteConfirmation onDelete={onDeleteQuestionnaire} onCancel={onCancelDeleteQuestionnaire} />
                         </Route>
                         <Route path="/">
                             <main id="main-content" className="page__main u-mt-no">

@@ -11,7 +11,6 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
-import * as H from "history";
 import { Router } from "react-router";
 
 const mockHttp = new MockAdapter(axios);
@@ -39,7 +38,7 @@ describe("DeleteWarning", () => {
             };
 
             const view = render(
-                <DeleteWarning modes={["CAWI"]} questionnaire={questionnaire} setStatus={() => {}} />
+                <DeleteWarning modes={["CAWI"]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />
             );
 
             expect(await screen.findByText(CAWI_WARNING_MESSAGE)).toBeVisible();
@@ -54,7 +53,7 @@ describe("DeleteWarning", () => {
             };
 
             render(
-                <DeleteWarning modes={["CAWI"]} questionnaire={questionnaire} setStatus={() => {}}/>
+                <DeleteWarning modes={["CAWI"]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />
             );
             await screen.findByText(/Are you sure you want to delete/);
 
@@ -69,7 +68,7 @@ describe("DeleteWarning", () => {
             };
 
             render(
-                <DeleteWarning modes={["OTHER"]} questionnaire={questionnaire} setStatus={() => {}}/>
+                <DeleteWarning modes={["OTHER"]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />
             );
 
             expect(screen.queryByText(CAWI_WARNING_MESSAGE)).toBeNull();
@@ -87,7 +86,7 @@ describe("DeleteWarning", () => {
             mockHttp.onGet("/api/questionnaires/LMS2201_AA1/active").reply(200, true);
 
             const view = render(
-                <DeleteWarning modes={["CATI"]} questionnaire={questionnaire} setStatus={() => { }}/>
+                <DeleteWarning modes={["CATI"]} questionnaire={questionnaire} onDelete={() => { }} onCancel={() => {}}/>
             );
             expect(screen.getByText("Loading")).toBeVisible();
             expect(view).toMatchSnapshot();
@@ -103,7 +102,7 @@ describe("DeleteWarning", () => {
             };
             mockHttp.onGet("/api/questionnaires/LMS2201_AA1/active").reply(200, true);
 
-            const view = render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} setStatus={() => {}}/>);
+            const view = render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />);
             expect(await screen.findByText(CATI_WARNING_MESSAGE)).toBeVisible();
             expect(view).toMatchSnapshot();
         });
@@ -116,9 +115,9 @@ describe("DeleteWarning", () => {
             };
             mockHttp.onGet("/api/questionnaires/LMS2201_AA1/active").reply(200, true);
 
-            const { rerender } = render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} setStatus={() => {}}/>);
+            const { rerender } = render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />);
             expect(await screen.findByText(CATI_WARNING_MESSAGE)).toBeVisible();
-            rerender(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} setStatus={() => {}}/>);
+            rerender(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />);
 
             expect(mockHttp.history.get.length).toBe(1);
         });
@@ -131,7 +130,7 @@ describe("DeleteWarning", () => {
             };
             mockHttp.onGet("/api/questionnaires/LMS2201_AA1/active").reply(200, true);
 
-            render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} setStatus={() => {}}/>);
+            render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />);
             await screen.findByText(/Are you sure you want to delete/);
 
             expect(screen.queryByText(CATI_WARNING_MESSAGE)).toBeNull();
@@ -145,7 +144,7 @@ describe("DeleteWarning", () => {
             };
             mockHttp.onGet("/api/questionnaires/LMS2201_AA1/active").reply(200, false);
 
-            render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} setStatus={() => {}}/>);
+            render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />);
             await screen.findByText(/Are you sure you want to delete/);
 
             expect(screen.queryByText(CATI_WARNING_MESSAGE)).toBeNull();
@@ -159,7 +158,7 @@ describe("DeleteWarning", () => {
             };
             mockHttp.onGet("/api/questionnaires/LMS2201_AA1/active").reply(200, true);
 
-            render(<DeleteWarning modes={["OTHER"]} questionnaire={questionnaire} setStatus={() => {}}/>);
+            render(<DeleteWarning modes={["OTHER"]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />);
             await screen.findByText(/Are you sure you want to delete/);
 
             expect(screen.queryByText(CATI_WARNING_MESSAGE)).toBeNull();
@@ -173,7 +172,7 @@ describe("DeleteWarning", () => {
             };
             mockHttp.onGet("/api/questionnaires/LMS2201_AA1/active").reply(500);
 
-            const view = render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} setStatus={() => {}}/> );
+            const view = render(<DeleteWarning modes={["CATI"]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />);
 
             const errorMessage = "Could not get warning details, please try again";
             expect(await screen.findByText(errorMessage)).toBeVisible();
@@ -182,32 +181,25 @@ describe("DeleteWarning", () => {
     });
 
     describe("when the Cancel button is pressed", () => {
-        it("should go back on cancel", async () => {
-            const history = createMemoryHistory();
-            history.push("/one");
-            history.push("/two");
-
+        it("should call onCancel on cancel", async () => {
+            const onCancel = jest.fn();
+            const onDelete = jest.fn();
             render(
-                <Router history={history}>
-                    <DeleteWarning modes={[]} questionnaire={defaultQuestionnaire} setStatus={() => {}} />
-                </Router>
+                <DeleteWarning modes={[]} questionnaire={defaultQuestionnaire} onDelete={onDelete} onCancel={onCancel} />
             );
 
             const cancel = await screen.findByRole("button", { name: "Cancel" });
             userEvent.click(cancel);
 
-            expect(history.location.pathname).toBe("/one");
+            expect(onCancel).toHaveBeenCalledTimes(1);
+            expect(onDelete).not.toHaveBeenCalled();
         });
     });
 
     describe("when Delete button is pressed", () => {
         const questionnaire = { ...defaultQuestionnaire, name: "LMS2210_CC1" };
-        let history: H.MemoryHistory;
 
         beforeEach(() => {
-            history = createMemoryHistory();
-            history.push("/warning");
-
             mockHttp.onDelete("/api/tostartdate/LMS2210_CC1").reply(204);
             mockHttp.onDelete("/api/tmreleasedate/LMS2210_CC1").reply(204);
             mockHttp.onDelete("/api/questionnaires/LMS2210_CC1").reply(204);
@@ -215,42 +207,38 @@ describe("DeleteWarning", () => {
 
         it("should delete the TO start date, release date and questionnaire on confirm", async () => {
             render(
-                <Router history={history}>
-                    <DeleteWarning modes={[]} questionnaire={questionnaire} setStatus={() => {}}/>
-                </Router>
+                <DeleteWarning modes={[]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />
             );
 
             const confirm = await screen.findByRole("button", { name: "Delete" });
             userEvent.click(confirm);
 
-            await waitFor(() => { expect(history.location.pathname).toBe("/"); });
-            expect(mockHttp.history.delete.length).toBe(3);
+            await waitFor(() => { expect(mockHttp.history.delete.length).toBe(3); });
             expect(mockHttp.history.delete[0].url).toBe("/api/tostartdate/LMS2210_CC1");
             expect(mockHttp.history.delete[1].url).toBe("/api/tmreleasedate/LMS2210_CC1");
             expect(mockHttp.history.delete[2].url).toBe("/api/questionnaires/LMS2210_CC1");
         });
 
         it("should set the status", async () => {
-            const setStatus = jest.fn();
+            const onDelete = jest.fn();
+            const onCancel = jest.fn();
             render(
-                <Router history={history}>
-                    <DeleteWarning modes={[]} questionnaire={questionnaire} setStatus={setStatus}/>
-                </Router>
+                <DeleteWarning modes={[]} questionnaire={questionnaire} onDelete={onDelete} onCancel={onCancel} />
             );
 
             const confirm = await screen.findByRole("button", { name: "Delete" });
             userEvent.click(confirm);
-            await waitFor(() => { expect(history.location.pathname).toBe("/"); });
+            await waitFor(() => {
+                expect(onDelete).toHaveBeenCalledWith("Questionnaire: LMS2210_CC1 Successfully deleted");
+            });
 
-            expect(setStatus).toHaveBeenCalledWith("Questionnaire: LMS2210_CC1 Successfully deleted");
+            expect(onCancel).not.toHaveBeenCalled();
         });
 
         it("should display an error if deleting TO start date fails", async () => {
             mockHttp.onDelete("/api/tostartdate/LMS2210_CC1").reply(500);
             const view = render(
-                <Router history={history}>
-                    <DeleteWarning modes={[]} questionnaire={questionnaire} setStatus={() => {}}/>
-                </Router>
+                <DeleteWarning modes={[]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />
             );
 
             const confirm = await screen.findByRole("button", { name: "Delete" });
@@ -264,9 +252,7 @@ describe("DeleteWarning", () => {
         it("should display an error if deleting TO release date fails", async () => {
             mockHttp.onDelete("/api/tmreleasedate/LMS2210_CC1").reply(500);
             render(
-                <Router history={history}>
-                    <DeleteWarning modes={[]} questionnaire={questionnaire} setStatus={() => {}}/>
-                </Router>
+                <DeleteWarning modes={[]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />
             );
 
             const confirm = await screen.findByRole("button", { name: "Delete" });
@@ -279,9 +265,7 @@ describe("DeleteWarning", () => {
         it("should display an error if deleting questionnaire fails", async () => {
             mockHttp.onDelete("/api/questionnaires/LMS2210_CC1").reply(500);
             render(
-                <Router history={history}>
-                    <DeleteWarning modes={[]} questionnaire={questionnaire} setStatus={() => {}}/>
-                </Router>
+                <DeleteWarning modes={[]} questionnaire={questionnaire} onDelete={() => {}} onCancel={() => {}} />
             );
 
             const confirm = await screen.findByRole("button", { name: "Delete" });
