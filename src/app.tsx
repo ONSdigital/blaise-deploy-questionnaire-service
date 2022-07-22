@@ -87,53 +87,55 @@ function App(): ReactElement {
     }
 
     function AppContent(): ReactElement {
-        if (loaded && loggedIn) {
-            return (
-                <DefaultErrorBoundary>
-                    <Switch>
-                        <Route path="/status">
-                            <StatusPage />
-                        </Route>
-                        <Route path="/reinstall">
-                            <ReinstallQuestionnaires />
-                        </Route>
-                        <Route path="/audit">
-                            <AuditPage />
-                        </Route>
-                        <Route path="/UploadSummary">
-                            <DeploymentSummary />
-                        </Route>
-                        <Route path="/upload/survey-live/:questionnaireName">
-                            <LiveSurveyWarning />
-                        </Route>
-                        <Route path="/questionnaire/start-date">
-                            <ChangeTOStartDate />
-                        </Route>
-                        <Route path="/questionnaire/release-date">
-                            <ChangeTMReleaseDate />
-                        </Route>
-                        <Route path="/questionnaire/:questionnaireName">
-                            <QuestionnaireDetails />
-                        </Route>
-                        <Route path="/upload">
-                            <UploadPage />
-                        </Route>
-                        <Route path="/delete">
-                            <DeleteConfirmation onDelete={onDeleteQuestionnaire} onCancel={onCancelDeleteQuestionnaire} />
-                        </Route>
-                        <Route path="/">
-                            <main id="main-content" className="page__main u-mt-no">
-                                {successBanner()}
-                                {errored && <ONSErrorPanel />}
-                                <ErrorBoundary errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <QuestionnaireList setErrored={setErrored} />
-                                </ErrorBoundary>
-                            </main>
-                        </Route>
-                    </Switch>
-                </DefaultErrorBoundary>);
+        if (!loaded || !loggedIn) {
+            return <></>;
         }
-        return <></>;
+
+        return (
+            <DefaultErrorBoundary>
+                <Switch>
+                    <Route path="/status">
+                        <StatusPage/>
+                    </Route>
+                    <Route path="/reinstall">
+                        <ReinstallQuestionnaires/>
+                    </Route>
+                    <Route path="/audit">
+                        <AuditPage/>
+                    </Route>
+                    <Route path="/UploadSummary">
+                        <DeploymentSummary/>
+                    </Route>
+                    <Route path="/upload/survey-live/:questionnaireName">
+                        <LiveSurveyWarning/>
+                    </Route>
+                    <Route path="/questionnaire/start-date">
+                        <ChangeTOStartDate/>
+                    </Route>
+                    <Route path="/questionnaire/release-date">
+                        <ChangeTMReleaseDate/>
+                    </Route>
+                    <Route path="/questionnaire/:questionnaireName">
+                        <QuestionnaireDetails/>
+                    </Route>
+                    <Route path="/upload">
+                        <UploadPage/>
+                    </Route>
+                    <Route path="/delete">
+                        <DeleteConfirmation onDelete={onDeleteQuestionnaire} onCancel={onCancelDeleteQuestionnaire} />
+                    </Route>
+                    <Route path="/">
+                        <main id="main-content" className="page__main u-mt-no">
+                            {successBanner()}
+                            {errored && <ONSErrorPanel/>}
+                            <ErrorBoundary
+                                errorMessageText={"Unable to load questionnaire table correctly"}>
+                                <QuestionnaireList setErrored={setErrored}/>
+                            </ErrorBoundary>
+                        </main>
+                    </Route>
+                </Switch>
+            </DefaultErrorBoundary>);
     }
 
     return (
