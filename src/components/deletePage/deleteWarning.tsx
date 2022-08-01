@@ -1,18 +1,17 @@
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import React, { ReactElement, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { Questionnaire, SurveyDays } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import { removeToStartDateAndDeleteQuestionnaire } from "../../client/componentProcesses";
 import { surveyIsActive } from "../../client/questionnaires";
 
 interface Props {
     questionnaire: Questionnaire
     modes: string[]
-    setStatus: (status: string) => void
+    onDelete: (message: string) => void
+    onCancel: () => void
 }
 
-function DeleteWarning({ questionnaire, modes, setStatus }: Props): ReactElement {
-    const history = useHistory();
+function DeleteWarning({ questionnaire, modes, onDelete, onCancel }: Props): ReactElement {
     const [message, setMessage] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [loaded, setLoaded] = useState<boolean>(false);
@@ -35,10 +34,6 @@ function DeleteWarning({ questionnaire, modes, setStatus }: Props): ReactElement
         }
     }, []);
 
-    async function cancelDelete() {
-        history.goBack();
-    }
-
     function ErrorMessage(): ReactElement {
         if (message !== "") {
             return <ONSPanel status="error">
@@ -58,9 +53,8 @@ function DeleteWarning({ questionnaire, modes, setStatus }: Props): ReactElement
             return;
         }
 
-        setStatus(`Questionnaire: ${questionnaire.name} Successfully deleted`);
         setLoading(false);
-        history.push("/");
+        onDelete(`Questionnaire: ${questionnaire.name} Successfully deleted`);
     }
 
     function CatiWarning(): ReactElement {
@@ -129,7 +123,7 @@ function DeleteWarning({ questionnaire, modes, setStatus }: Props): ReactElement
                         primary={false}
                         id="cancel-delete"
                         testid="cancel-delete"
-                        onClick={() => cancelDelete()} />
+                        onClick={() => onCancel()} />
                     }
                 </form>
             </>
