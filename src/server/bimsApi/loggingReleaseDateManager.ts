@@ -6,13 +6,13 @@ import dateFormatter from "dayjs";
 export default class LoggingReleaseDateManager implements ReleaseDateManager {
     private previousReleaseDate: Map<string, string> = new Map();
 
-    constructor(private readonly instance: ReleaseDateManager, private readonly logger: Logger) {
+    constructor(private readonly instance: ReleaseDateManager, private readonly logger: Logger, private readonly username: string) {
     }
 
     createReleaseDate(questionnaireName: string, releaseDate: string): Promise<tmReleaseDate> {
         return this.performActionAndLog(
             () => this.instance.createReleaseDate(questionnaireName, releaseDate),
-            `Totalmobile release date set to ${releaseDate} for ${questionnaireName}`,
+            `Totalmobile release date set to ${releaseDate} for ${questionnaireName} by ${this.username}`,
             `Failed to set TM release date to ${releaseDate} for questionnaire ${questionnaireName}`,
             questionnaireName
         );

@@ -18,7 +18,7 @@ describe("loggingReleaseDateManager", () => {
             info: jest.fn(),
             error: jest.fn(),
         };
-        decorator = new LoggingReleaseDateManager(instance, logger);
+        decorator = new LoggingReleaseDateManager(instance, logger, "rich");
     });
 
     describe("createReleaseDate", () => {
@@ -34,7 +34,7 @@ describe("loggingReleaseDateManager", () => {
 
         it("logs a success message", async () => {
             await decorator.createReleaseDate("DST211Z", "24-01-1988");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date set to 24-01-1988 for DST211Z");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date set to 24-01-1988 for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 

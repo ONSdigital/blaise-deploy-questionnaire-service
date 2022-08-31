@@ -11,7 +11,7 @@ import { Logger } from "../bimsApi/logger";
 export default function newBimsHandler(bimsApiClient: BimsApi, auth: Auth, auditLogger: AuditLogger): Router {
     const router = express.Router();
 
-    const bimsHandler = new BimsHandler(bimsApiClient, auditLogger);
+    const bimsHandler = new BimsHandler(bimsApiClient, auditLogger, auth);
     // TO start date
     router.post("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.SetToStartDate);
     router.delete("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.DeleteToStartDate);
@@ -28,10 +28,12 @@ export default function newBimsHandler(bimsApiClient: BimsApi, auth: Auth, audit
 export class BimsHandler {
     bimsApiClient: BimsApi;
     auditLogger: AuditLogger;
+    auth: Auth;
 
-    constructor(bimsApiClient: BimsApi, auditLogger: AuditLogger) {
+    constructor(bimsApiClient: BimsApi, auditLogger: AuditLogger, auth: Auth) {
         this.bimsApiClient = bimsApiClient;
         this.auditLogger = auditLogger;
+        this.auth = auth;
 
         this.SetToStartDate = this.SetToStartDate.bind(this);
         this.DeleteToStartDate = this.DeleteToStartDate.bind(this);
@@ -129,8 +131,10 @@ export class BimsHandler {
                 error: (message: string) => this.auditLogger.error(req.log, message),
             };
 
+            const username = this.auth.GetUser(this.auth.GetToken(req)).name;
+
             const responseBody = await setReleaseDate(
-                new LoggingReleaseDateManager(this.bimsApiClient, logger),
+                new LoggingReleaseDateManager(this.bimsApiClient, logger, username),
                 req.params.questionnaireName,
                 req.body.tmreleasedate,
                 this.auditLogger,
