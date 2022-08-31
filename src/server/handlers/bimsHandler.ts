@@ -2,7 +2,6 @@ import express, { Request, Response, Router } from "express";
 import { Auth } from "blaise-login-react-server";
 import { BimsApi, tmReleaseDate, toStartDate } from "../bimsApi/bimsApi";
 import AuditLogger from "../auditLogging/logger";
-import dateFormatter from "dayjs";
 import { IncomingMessage } from "http";
 import { ReleaseDateManager } from "../bimsApi/releaseDateManager";
 import LoggingReleaseDateManager from "../bimsApi/loggingReleaseDateManager";
@@ -126,15 +125,8 @@ export class BimsHandler {
 
     async SetTmReleaseDate(req: Request, res: Response): Promise<Response> {
         try {
-            const logger: Logger = {
-                info: (message: string) => this.auditLogger.info(req.log, message),
-                error: (message: string) => this.auditLogger.error(req.log, message),
-            };
-
-            const username = this.auth.GetUser(this.auth.GetToken(req)).name;
-
             const responseBody = await setReleaseDate(
-                new LoggingReleaseDateManager(this.bimsApiClient, logger, username),
+                this.getLoggingBimsApiClient(req),
                 req.params.questionnaireName,
                 req.body.tmreleasedate,
                 this.auditLogger,
@@ -150,21 +142,18 @@ export class BimsHandler {
         const { questionnaireName } = req.params;
 
         try {
-            const releaseDate = await this.bimsApiClient.getReleaseDate(questionnaireName);
-            const previousReleaseDate = dateFormatter(releaseDate?.tmreleasedate).format("YYYY-MM-DD");
+            const bimsApiClient = this.getLoggingBimsApiClient(req);
+
+            const releaseDate = await bimsApiClient.getReleaseDate(questionnaireName);
 
             if (!releaseDateExists(releaseDate)) {
                 return res.status(204).json();
             }
 
-            await this.bimsApiClient.deleteReleaseDate(questionnaireName);
-
-            const username = this.auth.GetUser(this.auth.GetToken(req)).name;
-            this.auditLogger.info(req.log, `Totalmobile release date deleted (previously ${previousReleaseDate}) for ${questionnaireName} by ${username}`);
+            await bimsApiClient.deleteReleaseDate(questionnaireName);
             return res.status(204).json();
         } catch (error: unknown) {
             console.error(error);
-            this.auditLogger.error(req.log, `Failed to remove TM release date for questionnaire ${questionnaireName}`);
             return res.status(500).json();
         }
     }
@@ -181,6 +170,16 @@ export class BimsHandler {
         } catch {
             return res.status(500).json({});
         }
+    }
+
+    private getLoggingBimsApiClient(req: Request): ReleaseDateManager {
+        const logger: Logger = {
+            info: (message: string) => this.auditLogger.info(req.log, message),
+            error: (message: string) => this.auditLogger.error(req.log, message),
+        };
+
+        const username = this.auth.GetUser(this.auth.GetToken(req)).name;
+        return new LoggingReleaseDateManager(this.bimsApiClient, logger, username);
     }
 }
 
