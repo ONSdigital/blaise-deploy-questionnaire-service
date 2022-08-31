@@ -18,9 +18,9 @@ export default class LoggingReleaseDateManager implements ReleaseDateManager {
     }
 
     deleteReleaseDate(questionnaireName: string): Promise<void> {
-        let successMessage = `Totalmobile release date deleted for ${questionnaireName}`;
-        if(this.previousReleaseDate.has(questionnaireName)){
-            successMessage += `. Previously ${dateFormatter(this.previousReleaseDate.get(questionnaireName)).format("YYYY-MM-DD")}`;
+        let successMessage = `Totalmobile release date deleted for ${questionnaireName} by ${this.username}`;
+        if(this.previousReleaseDate.has(questionnaireName)) {
+            successMessage = `Totalmobile release date deleted (previously ${dateFormatter(this.previousReleaseDate.get(questionnaireName)).format("YYYY-MM-DD")}) for ${questionnaireName} by ${this.username}`;
         }
         return this.performActionAndLog(
             () => this.instance.deleteReleaseDate(questionnaireName),

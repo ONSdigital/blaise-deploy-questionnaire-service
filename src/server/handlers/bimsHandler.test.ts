@@ -264,7 +264,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
             it("should log a message when a release date is not provided", async () => {
                 await request.post("/api/tmreleasedate/LMS2004A").send({ "tmreleasedate": "" });
-                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date deleted for LMS2004A. Previously 2022-06-27");
+                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date deleted (previously 2022-06-27) for LMS2004A by rich");
             });
         });
     });

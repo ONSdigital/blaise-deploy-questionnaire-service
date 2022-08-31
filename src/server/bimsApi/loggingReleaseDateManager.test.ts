@@ -56,7 +56,7 @@ describe("loggingReleaseDateManager", () => {
 
         it("logs a message", async () => {
             await decorator.deleteReleaseDate("DST211Z");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted for DST211Z");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
@@ -65,7 +65,7 @@ describe("loggingReleaseDateManager", () => {
 
             await decorator.getReleaseDate("DST211Z");
             await decorator.deleteReleaseDate("DST211Z");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted for DST211Z. Previously 2022-06-27");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted (previously 2022-06-27) for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
@@ -74,7 +74,7 @@ describe("loggingReleaseDateManager", () => {
 
             await decorator.getReleaseDate("LMS2111Z");
             await decorator.deleteReleaseDate("DST211Z");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted for DST211Z");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
