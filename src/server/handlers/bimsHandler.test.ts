@@ -317,6 +317,15 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
         expect(response.status).toEqual(204);
     });
 
+    it("should log a message the TM release date has been deleted", async () => {
+        mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, { "tmreleasedate": "2022-12-31" }, jsonHeaders);
+        mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
+
+        await request.delete("/api/tmreleasedate/LMS2004A");
+
+        expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date deleted (previously 2022-12-31) for LMS2004A by rich");
+    });
+
     it("should return a 204 status when the TM release date doesn't exits", async () => {
         mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(404, {}, jsonHeaders);
 

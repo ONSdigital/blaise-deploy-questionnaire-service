@@ -159,7 +159,8 @@ export class BimsHandler {
 
             await this.bimsApiClient.deleteReleaseDate(questionnaireName);
 
-            this.auditLogger.info(req.log, `Totalmobile release date removed for ${questionnaireName}. Previously ${previousReleaseDate}`);
+            const username = this.auth.GetUser(this.auth.GetToken(req)).name;
+            this.auditLogger.info(req.log, `Totalmobile release date deleted (previously ${previousReleaseDate}) for ${questionnaireName} by ${username}`);
             return res.status(204).json();
         } catch (error: unknown) {
             console.error(error);
