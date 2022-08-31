@@ -13,7 +13,7 @@ export default class LoggingReleaseDateManager implements ReleaseDateManager {
         return this.performActionAndLog(
             () => this.instance.createReleaseDate(questionnaireName, releaseDate),
             `Totalmobile release date set to ${releaseDate} for ${questionnaireName} by ${this.username}`,
-            `Failed to set TM release date to ${releaseDate} for questionnaire ${questionnaireName}`
+            `Failed to set TM release date to ${releaseDate} for questionnaire ${questionnaireName} (user: ${this.username})`
         );
     }
 
@@ -25,7 +25,7 @@ export default class LoggingReleaseDateManager implements ReleaseDateManager {
         return this.performActionAndLog(
             () => this.instance.deleteReleaseDate(questionnaireName),
             successMessage,
-            `Failed to remove TM release date for questionnaire ${questionnaireName}`
+            `Failed to remove TM release date for questionnaire ${questionnaireName} (user: ${this.username})`
         );
     }
 
@@ -47,7 +47,7 @@ export default class LoggingReleaseDateManager implements ReleaseDateManager {
         return this.performActionAndLog(
             () => this.instance.updateReleaseDate(questionnaireName, releaseDate),
             successMessage,
-            `Failed to set TM release date to ${releaseDate} for questionnaire ${questionnaireName}`
+            `Failed to set TM release date to ${releaseDate} for questionnaire ${questionnaireName} (user: ${this.username})`
         );
     }
 

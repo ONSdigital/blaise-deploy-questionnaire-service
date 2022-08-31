@@ -42,7 +42,7 @@ describe("loggingReleaseDateManager", () => {
             (instance.createReleaseDate as jest.Mock).mockReturnValue(Promise.reject("foo"));
 
             await expect(decorator.createReleaseDate("DST211Z", "29-06-2022")).rejects.toEqual("foo");
-            expect(logger.error).toHaveBeenCalledWith("Failed to set TM release date to 29-06-2022 for questionnaire DST211Z");
+            expect(logger.error).toHaveBeenCalledWith("Failed to set TM release date to 29-06-2022 for questionnaire DST211Z (user: rich)");
 
             expect(logger.info).not.toHaveBeenCalled();
         });
@@ -82,7 +82,7 @@ describe("loggingReleaseDateManager", () => {
             (instance.deleteReleaseDate as jest.Mock).mockReturnValue(Promise.reject("foo"));
 
             await expect(decorator.deleteReleaseDate("DST211Z")).rejects.toEqual("foo");
-            expect(logger.error).toHaveBeenCalledWith("Failed to remove TM release date for questionnaire DST211Z");
+            expect(logger.error).toHaveBeenCalledWith("Failed to remove TM release date for questionnaire DST211Z (user: rich)");
 
             expect(logger.info).not.toHaveBeenCalled();
         });
@@ -120,7 +120,7 @@ describe("loggingReleaseDateManager", () => {
             (instance.updateReleaseDate as jest.Mock).mockReturnValue(Promise.reject("foo"));
 
             await expect(decorator.updateReleaseDate("DST211Z", "2022-06-29")).rejects.toEqual("foo");
-            expect(logger.error).toHaveBeenCalledWith("Failed to set TM release date to 2022-06-29 for questionnaire DST211Z");
+            expect(logger.error).toHaveBeenCalledWith("Failed to set TM release date to 2022-06-29 for questionnaire DST211Z (user: rich)");
 
             expect(logger.info).not.toHaveBeenCalled();
         });
