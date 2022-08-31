@@ -15,7 +15,7 @@ jest.mock("blaise-login-react-server", () => {
     };
 });
 Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
-Auth.prototype.GetUser = jest.fn().mockImplementation((token) => token === "example-token" ? {name: "rich"} : {});
+Auth.prototype.GetUser = jest.fn().mockImplementation((token) => token === "example-token" ? { name: "rich" } : {});
 Auth.prototype.GetToken = jest.fn().mockReturnValue("example-token");
 
 jest.mock("blaise-iap-node-provider");
@@ -241,7 +241,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
             it("should log a message when a release date is provided", async () => {
                 await request.post("/api/tmreleasedate/LMS2004A").send({ "tmreleasedate": "2022-12-31" });
-                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date updated to 2022-12-31 for LMS2004A. Previously 2022-06-27");
+                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date updated to 2022-12-31 (previously 2022-06-27) for LMS2004A by rich");
             });
         });
 

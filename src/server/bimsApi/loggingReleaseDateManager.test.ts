@@ -112,7 +112,7 @@ describe("loggingReleaseDateManager", () => {
 
         it("logs a success message", async () => {
             await decorator.updateReleaseDate("DST211Z", "24-01-1988");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 24-01-1988 for DST211Z");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 24-01-1988 for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
@@ -130,7 +130,7 @@ describe("loggingReleaseDateManager", () => {
 
             await decorator.getReleaseDate("DST211Z");
             await decorator.updateReleaseDate("DST211Z", "2022-06-29");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 2022-06-29 for DST211Z. Previously 2022-12-31");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 2022-06-29 (previously 2022-12-31) for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
@@ -139,7 +139,7 @@ describe("loggingReleaseDateManager", () => {
 
             await decorator.getReleaseDate("LMS2111Z");
             await decorator.updateReleaseDate("DST211Z", "2022-06-29");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 2022-06-29 for DST211Z");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 2022-06-29 for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
     });

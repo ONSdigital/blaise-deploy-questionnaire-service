@@ -13,17 +13,19 @@ export default class LoggingReleaseDateManager implements ReleaseDateManager {
         return this.performActionAndLog(
             () => this.instance.createReleaseDate(questionnaireName, releaseDate),
             `Totalmobile release date set to ${releaseDate} for ${questionnaireName} by ${this.username}`,
-            `Failed to set TM release date to ${releaseDate} for questionnaire ${questionnaireName}`,
-            questionnaireName
+            `Failed to set TM release date to ${releaseDate} for questionnaire ${questionnaireName}`
         );
     }
 
     deleteReleaseDate(questionnaireName: string): Promise<void> {
+        let successMessage = `Totalmobile release date deleted for ${questionnaireName}`;
+        if(this.previousReleaseDate.has(questionnaireName)){
+            successMessage += `. Previously ${dateFormatter(this.previousReleaseDate.get(questionnaireName)).format("YYYY-MM-DD")}`;
+        }
         return this.performActionAndLog(
             () => this.instance.deleteReleaseDate(questionnaireName),
-            `Totalmobile release date deleted for ${questionnaireName}`,
-            `Failed to remove TM release date for questionnaire ${questionnaireName}`,
-            questionnaireName
+            successMessage,
+            `Failed to remove TM release date for questionnaire ${questionnaireName}`
         );
     }
 
@@ -37,25 +39,23 @@ export default class LoggingReleaseDateManager implements ReleaseDateManager {
     }
 
     updateReleaseDate(questionnaireName: string, releaseDate: string): Promise<tmReleaseDate> {
+        let successMessage = `Totalmobile release date updated to ${releaseDate} for ${questionnaireName} by ${this.username}`;
+        if(this.previousReleaseDate.has(questionnaireName)){
+            successMessage = `Totalmobile release date updated to ${releaseDate} (previously ${dateFormatter(this.previousReleaseDate.get(questionnaireName)).format("YYYY-MM-DD")}) for ${questionnaireName} by ${this.username}`;
+        }
+
         return this.performActionAndLog(
             () => this.instance.updateReleaseDate(questionnaireName, releaseDate),
-            `Totalmobile release date updated to ${releaseDate} for ${questionnaireName}`,
-            `Failed to set TM release date to ${releaseDate} for questionnaire ${questionnaireName}`,
-            questionnaireName
+            successMessage,
+            `Failed to set TM release date to ${releaseDate} for questionnaire ${questionnaireName}`
         );
     }
 
-    private async performActionAndLog <Result> (action: () => Promise<Result>, successMessage: string, errorMessage: string, questionnaireName: string): Promise<Result> {
+    private async performActionAndLog <Result> (action: () => Promise<Result>, successMessage: string, errorMessage: string): Promise<Result> {
         try {
             const result = await action();
-            let message = successMessage;
-
-            if(this.previousReleaseDate.has(questionnaireName)){
-                message += `. Previously ${dateFormatter(this.previousReleaseDate.get(questionnaireName)).format("YYYY-MM-DD")}`;
-            }
-            this.logger.info(message);
+            this.logger.info(successMessage);
             return result;
-
         } catch (error) {
             this.logger.error(errorMessage);
             throw error;
