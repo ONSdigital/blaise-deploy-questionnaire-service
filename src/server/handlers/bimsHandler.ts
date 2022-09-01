@@ -2,7 +2,6 @@ import express, { Request, Response, Router } from "express";
 import { Auth } from "blaise-login-react-server";
 import { BimsApi, tmReleaseDate, toStartDate } from "../bimsApi/bimsApi";
 import AuditLogger from "../auditLogging/logger";
-import dateFormatter from "dayjs";
 import { IncomingMessage } from "http";
 import { ReleaseDateManager } from "../bimsApi/releaseDateManager";
 import LoggingReleaseDateManager from "../bimsApi/loggingReleaseDateManager";
@@ -11,7 +10,7 @@ import { Logger } from "../bimsApi/logger";
 export default function newBimsHandler(bimsApiClient: BimsApi, auth: Auth, auditLogger: AuditLogger): Router {
     const router = express.Router();
 
-    const bimsHandler = new BimsHandler(bimsApiClient, auditLogger);
+    const bimsHandler = new BimsHandler(bimsApiClient, auditLogger, auth);
     // TO start date
     router.post("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.SetToStartDate);
     router.delete("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.DeleteToStartDate);
@@ -28,10 +27,12 @@ export default function newBimsHandler(bimsApiClient: BimsApi, auth: Auth, audit
 export class BimsHandler {
     bimsApiClient: BimsApi;
     auditLogger: AuditLogger;
+    auth: Auth;
 
-    constructor(bimsApiClient: BimsApi, auditLogger: AuditLogger) {
+    constructor(bimsApiClient: BimsApi, auditLogger: AuditLogger, auth: Auth) {
         this.bimsApiClient = bimsApiClient;
         this.auditLogger = auditLogger;
+        this.auth = auth;
 
         this.SetToStartDate = this.SetToStartDate.bind(this);
         this.DeleteToStartDate = this.DeleteToStartDate.bind(this);
@@ -124,13 +125,8 @@ export class BimsHandler {
 
     async SetTmReleaseDate(req: Request, res: Response): Promise<Response> {
         try {
-            const logger: Logger = {
-                info: (message: string) => this.auditLogger.info(req.log, message),
-                error: (message: string) => this.auditLogger.error(req.log, message),
-            };
-
             const responseBody = await setReleaseDate(
-                new LoggingReleaseDateManager(this.bimsApiClient, logger),
+                this.getLoggingBimsApiClient(req),
                 req.params.questionnaireName,
                 req.body.tmreleasedate,
                 this.auditLogger,
@@ -146,20 +142,18 @@ export class BimsHandler {
         const { questionnaireName } = req.params;
 
         try {
-            const releaseDate = await this.bimsApiClient.getReleaseDate(questionnaireName);
-            const previousReleaseDate = dateFormatter(releaseDate?.tmreleasedate).format("YYYY-MM-DD");
+            const bimsApiClient = this.getLoggingBimsApiClient(req);
+
+            const releaseDate = await bimsApiClient.getReleaseDate(questionnaireName);
 
             if (!releaseDateExists(releaseDate)) {
                 return res.status(204).json();
             }
 
-            await this.bimsApiClient.deleteReleaseDate(questionnaireName);
-
-            this.auditLogger.info(req.log, `Totalmobile release date removed for ${questionnaireName}. Previously ${previousReleaseDate}`);
+            await bimsApiClient.deleteReleaseDate(questionnaireName);
             return res.status(204).json();
         } catch (error: unknown) {
             console.error(error);
-            this.auditLogger.error(req.log, `Failed to remove TM release date for questionnaire ${questionnaireName}`);
             return res.status(500).json();
         }
     }
@@ -176,6 +170,16 @@ export class BimsHandler {
         } catch {
             return res.status(500).json({});
         }
+    }
+
+    private getLoggingBimsApiClient(req: Request): ReleaseDateManager {
+        const logger: Logger = {
+            info: (message: string) => this.auditLogger.info(req.log, message),
+            error: (message: string) => this.auditLogger.error(req.log, message),
+        };
+
+        const username = this.auth.GetUser(this.auth.GetToken(req)).name;
+        return new LoggingReleaseDateManager(this.bimsApiClient, logger, username);
     }
 }
 

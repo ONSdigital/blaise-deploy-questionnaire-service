@@ -26,7 +26,6 @@ if (process.env.NODE_ENV === "production") {
     });
 } else {
     dotenv.config();
-    process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, "../keys.json");
 }
 
 export function newServer(config: Config, logger: HttpLogger = createLogger()): Express {

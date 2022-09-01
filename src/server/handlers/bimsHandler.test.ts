@@ -11,10 +11,12 @@ import pino from "pino";
 jest.mock("blaise-login-react-server", () => {
     const loginReact = jest.requireActual("blaise-login-react-server");
     return {
-        ...loginReact
+        ...loginReact,
     };
 });
 Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
+Auth.prototype.GetUser = jest.fn().mockImplementation((token) => token === "example-token" ? { name: "rich" } : {});
+Auth.prototype.GetToken = jest.fn().mockReturnValue("example-token");
 
 jest.mock("blaise-iap-node-provider");
 
@@ -191,7 +193,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
             it("should log a message when a release date is provided", async () => {
                 await request.post("/api/tmreleasedate/LMS2004A").send({ "tmreleasedate": "2022-12-31" });
 
-                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date set to 2022-12-31 for LMS2004A");
+                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date set to 2022-12-31 for LMS2004A by rich");
             });
         });
 
@@ -239,7 +241,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
             it("should log a message when a release date is provided", async () => {
                 await request.post("/api/tmreleasedate/LMS2004A").send({ "tmreleasedate": "2022-12-31" });
-                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date updated to 2022-12-31 for LMS2004A. Previously 2022-06-27");
+                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date updated to 2022-12-31 (previously 2022-06-27) for LMS2004A by rich");
             });
         });
 
@@ -262,7 +264,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
             it("should log a message when a release date is not provided", async () => {
                 await request.post("/api/tmreleasedate/LMS2004A").send({ "tmreleasedate": "" });
-                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date deleted for LMS2004A. Previously 2022-06-27");
+                expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date deleted (previously 2022-06-27) for LMS2004A by rich");
             });
         });
     });
@@ -313,6 +315,15 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
         const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");
 
         expect(response.status).toEqual(204);
+    });
+
+    it("should log a message the TM release date has been deleted", async () => {
+        mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, { "tmreleasedate": "2022-12-31" }, jsonHeaders);
+        mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
+
+        await request.delete("/api/tmreleasedate/LMS2004A");
+
+        expect(logInfo).toHaveBeenCalledWith("AUDIT_LOG: Totalmobile release date deleted (previously 2022-12-31) for LMS2004A by rich");
     });
 
     it("should return a 204 status when the TM release date doesn't exits", async () => {
