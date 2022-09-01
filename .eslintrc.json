@@ -41,7 +41,8 @@
         }],
         "space-in-parens": ["error", "never"],
         "no-multi-spaces": "error",
-        "comma-spacing": ["error", { "before": false, "after": true }]
+        "comma-spacing": ["error", { "before": false, "after": true }],
+        "template-curly-spacing": ["error", "never"]
     },
     "overrides": [
         {

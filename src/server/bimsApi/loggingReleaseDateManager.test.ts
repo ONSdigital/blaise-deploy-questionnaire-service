@@ -18,7 +18,7 @@ describe("loggingReleaseDateManager", () => {
             info: jest.fn(),
             error: jest.fn(),
         };
-        decorator = new LoggingReleaseDateManager(instance, logger);
+        decorator = new LoggingReleaseDateManager(instance, logger, "rich");
     });
 
     describe("createReleaseDate", () => {
@@ -34,7 +34,7 @@ describe("loggingReleaseDateManager", () => {
 
         it("logs a success message", async () => {
             await decorator.createReleaseDate("DST211Z", "24-01-1988");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date set to 24-01-1988 for DST211Z");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date set to 24-01-1988 for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
@@ -42,7 +42,7 @@ describe("loggingReleaseDateManager", () => {
             (instance.createReleaseDate as jest.Mock).mockReturnValue(Promise.reject("foo"));
 
             await expect(decorator.createReleaseDate("DST211Z", "29-06-2022")).rejects.toEqual("foo");
-            expect(logger.error).toHaveBeenCalledWith("Failed to set TM release date to 29-06-2022 for questionnaire DST211Z");
+            expect(logger.error).toHaveBeenCalledWith("Failed to set TM release date to 29-06-2022 for questionnaire DST211Z (user: rich)");
 
             expect(logger.info).not.toHaveBeenCalled();
         });
@@ -56,7 +56,7 @@ describe("loggingReleaseDateManager", () => {
 
         it("logs a message", async () => {
             await decorator.deleteReleaseDate("DST211Z");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted for DST211Z");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
@@ -65,7 +65,7 @@ describe("loggingReleaseDateManager", () => {
 
             await decorator.getReleaseDate("DST211Z");
             await decorator.deleteReleaseDate("DST211Z");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted for DST211Z. Previously 2022-06-27");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted (previously 2022-06-27) for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
@@ -74,7 +74,7 @@ describe("loggingReleaseDateManager", () => {
 
             await decorator.getReleaseDate("LMS2111Z");
             await decorator.deleteReleaseDate("DST211Z");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted for DST211Z");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date deleted for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
@@ -82,7 +82,7 @@ describe("loggingReleaseDateManager", () => {
             (instance.deleteReleaseDate as jest.Mock).mockReturnValue(Promise.reject("foo"));
 
             await expect(decorator.deleteReleaseDate("DST211Z")).rejects.toEqual("foo");
-            expect(logger.error).toHaveBeenCalledWith("Failed to remove TM release date for questionnaire DST211Z");
+            expect(logger.error).toHaveBeenCalledWith("Failed to remove TM release date for questionnaire DST211Z (user: rich)");
 
             expect(logger.info).not.toHaveBeenCalled();
         });
@@ -112,7 +112,7 @@ describe("loggingReleaseDateManager", () => {
 
         it("logs a success message", async () => {
             await decorator.updateReleaseDate("DST211Z", "24-01-1988");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 24-01-1988 for DST211Z");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 24-01-1988 for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
@@ -120,7 +120,7 @@ describe("loggingReleaseDateManager", () => {
             (instance.updateReleaseDate as jest.Mock).mockReturnValue(Promise.reject("foo"));
 
             await expect(decorator.updateReleaseDate("DST211Z", "2022-06-29")).rejects.toEqual("foo");
-            expect(logger.error).toHaveBeenCalledWith("Failed to set TM release date to 2022-06-29 for questionnaire DST211Z");
+            expect(logger.error).toHaveBeenCalledWith("Failed to set TM release date to 2022-06-29 for questionnaire DST211Z (user: rich)");
 
             expect(logger.info).not.toHaveBeenCalled();
         });
@@ -130,7 +130,7 @@ describe("loggingReleaseDateManager", () => {
 
             await decorator.getReleaseDate("DST211Z");
             await decorator.updateReleaseDate("DST211Z", "2022-06-29");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 2022-06-29 for DST211Z. Previously 2022-12-31");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 2022-06-29 (previously 2022-12-31) for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
 
@@ -139,7 +139,7 @@ describe("loggingReleaseDateManager", () => {
 
             await decorator.getReleaseDate("LMS2111Z");
             await decorator.updateReleaseDate("DST211Z", "2022-06-29");
-            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 2022-06-29 for DST211Z");
+            expect(logger.info).toHaveBeenCalledWith("Totalmobile release date updated to 2022-06-29 for DST211Z by rich");
             expect(logger.error).not.toHaveBeenCalled();
         });
     });
