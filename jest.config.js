@@ -5,7 +5,7 @@ module.exports = {
     coveragePathIgnorePatterns: [
         "/node_modules/"
     ],
-    testTimeout: 20000
+    testTimeout: 30000
 };
 
 process.env = Object.assign(process.env, {
