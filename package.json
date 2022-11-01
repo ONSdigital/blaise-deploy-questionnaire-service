@@ -35,7 +35,7 @@
     "@types/react-dom": "^17.0.3",
     "axios": "^0.21.2",
     "blaise-api-node-client": "https://github.com/ONSdigital/blaise-api-node-client",
-    "blaise-design-system-react-components": "git+https://github.com/ONSdigital/blaise-design-system-react-components",
+    "blaise-design-system-react-components": "git+https://github.com/ONSdigital/blaise-design-system-react-components#014a606b35c63d6fd703f7523918b8f9527bf2ff",
     "blaise-iap-node-provider": "ONSdigital/blaise-iap-node-provider",
     "blaise-login-react-client": "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?2157644435f5938f13241f6e1f4170faa9c2581e",
     "blaise-login-react-server": "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?2157644435f5938f13241f6e1f4170faa9c2581e",
