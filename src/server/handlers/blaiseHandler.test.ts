@@ -3,7 +3,6 @@ import {
     questionnaireListMockObject, questionnaireMockObject, expectedQuestionnaireList
 } from "./mockObjects";
 import { Auth } from "blaise-login-react-server";
-import BlaiseApiRest from "blaise-api-node-client";
 import { newServer } from "../server";
 import { getConfigFromEnv } from "../config";
 
