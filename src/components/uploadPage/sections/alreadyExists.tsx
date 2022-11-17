@@ -29,8 +29,8 @@ function AlreadyExists({ questionnaireName }: SelectFilePageProps): ReactElement
 
     return (
         <>
-            <h1 className="u-mb-l">
-                Questionnaire file <em className="highlight">{questionnaireName}</em> already exists in the system.
+            <h1 className="ons-u-mb-l">
+                Questionnaire file <em className="ons-highlight">{questionnaireName}</em> already exists in the system.
                 <br />
                 What action do you want to take?
             </h1>

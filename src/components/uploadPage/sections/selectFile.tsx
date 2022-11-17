@@ -36,7 +36,7 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
         type: "file",
         id: "survey-selector",
         validate: validateInput,
-        className: "input input--text input-type__input input--upload",
+        className: "ons-input ons-input--text ons-input-type__input ons-input--upload",
         onChange: (e: ChangeEvent<HTMLInputElement>) => handleFileChange(e.target.files),
         accept: ".bpkg",
         disabled: isSubmitting,
@@ -46,7 +46,7 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
 
     return (
         <>
-            <h1 className="u-mb-l">Deploy a questionnaire file</h1>
+            <h1 className="ons-u-mb-l">Deploy a questionnaire file</h1>
             <p>
                 Upload and deploy a new Blaise package.
                 You can also <Link to={"/reinstall"}>reinstall a previously uploaded questionnaire</Link>.

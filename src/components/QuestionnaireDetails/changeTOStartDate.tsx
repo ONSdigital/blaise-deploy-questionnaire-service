@@ -50,7 +50,7 @@ function ChangeTOStartDate(): ReactElement {
                 ]
             } />
 
-            <main id="main-content" className="page__main u-mt-no">
+            <main id="main-content" className="ons-page__main ons-u-mt-no">
                 <Formik
                     validateOnBlur={false}
                     validateOnChange={false}
@@ -61,7 +61,7 @@ function ChangeTOStartDate(): ReactElement {
                         <Form id={"formID"}>
                             <AskToSetTOStartDate questionnaireName={questionnaireName} />
 
-                            <div className="btn-group u-mt-m">
+                            <div className="ons-btn-group ons-u-mt-m">
                                 <ONSButton
                                     id={"continue-deploy-button"}
                                     submit={true}

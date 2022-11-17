@@ -14,7 +14,7 @@ function DeploymentSummary(): ReactElement {
 
     return (
         <>
-            <main id="main-content" className="page__main u-mt-no">
+            <main id="main-content" className="ons-page__main ons-u-mt-no">
                 {
                     (status === "" ?
                         <ONSPanel status="success" bigIcon={true}>
@@ -32,7 +32,7 @@ function DeploymentSummary(): ReactElement {
                         </ONSPanel>
                         :
                         <>
-                            <h1 className="u-mb-l u-mt-m">
+                            <h1 className="ons-u-mb-l ons-u-mt-m">
                                 Questionnaire
                                 file <em>{questionnaireName}</em> deploy failed
                             </h1>

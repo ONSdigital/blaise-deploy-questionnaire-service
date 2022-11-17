@@ -125,7 +125,7 @@ function App(): ReactElement {
                         <DeleteConfirmation onDelete={onDeleteQuestionnaire} onCancel={onCancelDeleteQuestionnaire} />
                     </Route>
                     <Route path="/">
-                        <main id="main-content" className="page__main u-mt-no">
+                        <main id="main-content" className="ons-page__main ons-u-mt-no">
                             {successBanner()}
                             {errored && <ONSErrorPanel/>}
                             <ErrorBoundary
@@ -147,7 +147,7 @@ function App(): ReactElement {
             <BetaBanner />
             <Header title={"Deploy Questionnaire Service"} signOutButton={loggedIn} noSave={true} signOutFunction={signOut} />
             <NavigationLinks />
-            <div style={divStyle} className="page__container container">
+            <div style={divStyle} className="ons-page__container ons-container">
                 <Loading />
                 <LoginPage />
                 <AppContent />
