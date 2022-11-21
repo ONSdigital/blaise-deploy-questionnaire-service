@@ -23,7 +23,6 @@ import QuestionnaireDetails from "./components/QuestionnaireDetails/questionnair
 import ChangeTOStartDate from "./components/QuestionnaireDetails/changeTOStartDate";
 import ChangeTMReleaseDate from "./components/QuestionnaireDetails/changeTmReleaseDate";
 import "./style.css";
-import { NavigationLinks } from "./components/navigationLinks";
 import { isProduction } from "./client/env";
 import { LoginForm, AuthManager } from "blaise-login-react-client";
 import "./style.css";
@@ -146,7 +145,6 @@ function App(): ReactElement {
             }
             <BetaBanner />
             <Header title={"Deploy Questionnaire Service"} signOutButton={loggedIn} noSave={true} signOutFunction={signOut} />
-            <NavigationLinks />
             <div style={divStyle} className="ons-page__container ons-container">
                 <Loading />
                 <LoginPage />
