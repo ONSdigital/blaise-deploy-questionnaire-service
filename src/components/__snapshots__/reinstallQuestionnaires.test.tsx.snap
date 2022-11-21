@@ -7,23 +7,23 @@ Object {
     <div>
       <nav
         aria-label="Breadcrumb"
-        class="breadcrumb"
+        class="ons-breadcrumb"
       >
         <ol
-          class="breadcrumb__items u-fs-s"
+          class="ons-breadcrumb__items u-fs-s"
         >
           <li
-            class="breadcrumb__item"
+            class="ons-breadcrumb__item"
             id="breadcrumb-0"
           >
             <a
-              class="breadcrumb__link"
+              class="ons-breadcrumb__link"
               href="/"
             >
               Home
             </a>
             <svg
-              class="svg-icon"
+              class="ons-svg-icon"
               focusable="false"
               viewBox="0 0 8 13"
               xmlns="http://www.w3.org/2000/svg"
@@ -35,17 +35,17 @@ Object {
             </svg>
           </li>
           <li
-            class="breadcrumb__item"
+            class="ons-breadcrumb__item"
             id="breadcrumb-1"
           >
             <a
-              class="breadcrumb__link"
+              class="ons-breadcrumb__link"
               href="/upload"
             >
               Deploy a questionnaire
             </a>
             <svg
-              class="svg-icon"
+              class="ons-svg-icon"
               focusable="false"
               viewBox="0 0 8 13"
               xmlns="http://www.w3.org/2000/svg"
@@ -59,11 +59,11 @@ Object {
         </ol>
       </nav>
       <main
-        class="page__main u-mt-no"
+        class="ons-page__main ons-u-mt-no"
         id="main-content"
       >
         <h1
-          class="u-mb-l"
+          class="ons-u-mb-l"
         >
           Reinstall questionnaire
         </h1>
@@ -77,32 +77,32 @@ Object {
         >
           <form>
             <fieldset
-              class="fieldset"
+              class="ons-fieldset"
             >
               <legend
-                class="fieldset__legend"
+                class="ons-fieldset__legend"
               >
                 Select a questionnaire to install
               </legend>
               <div
-                class="radios__items"
+                class="ons-radios__items"
               >
                 <p
-                  class="radios__item"
+                  class="ons-radios__item"
                 >
                   <span
-                    class="radio"
+                    class="ons-radio"
                   >
                     <input
                       aria-label="No"
-                      class="radio__input js-radio "
+                      class="ons-radio__input ons-js-radio "
                       id="install-OPN2004A.bpkg"
                       name="select-survey"
                       type="radio"
                       value="OPN2004A.bpkg"
                     />
                     <label
-                      class="radio__label "
+                      class="ons-radio__label "
                       for="install-OPN2004A.bpkg"
                     >
                       OPN2004A.bpkg
@@ -111,21 +111,21 @@ Object {
                 </p>
                 <br />
                 <p
-                  class="radios__item"
+                  class="ons-radios__item"
                 >
                   <span
-                    class="radio"
+                    class="ons-radio"
                   >
                     <input
                       aria-label="No"
-                      class="radio__input js-radio "
+                      class="ons-radio__input ons-js-radio "
                       id="install-LMS2101_BK2.bpkg"
                       name="select-survey"
                       type="radio"
                       value="LMS2101_BK2.bpkg"
                     />
                     <label
-                      class="radio__label "
+                      class="ons-radio__label "
                       for="install-LMS2101_BK2.bpkg"
                     >
                       LMS2101_BK2.bpkg
@@ -156,23 +156,23 @@ Object {
   "container": <div>
     <nav
       aria-label="Breadcrumb"
-      class="breadcrumb"
+      class="ons-breadcrumb"
     >
       <ol
-        class="breadcrumb__items u-fs-s"
+        class="ons-breadcrumb__items u-fs-s"
       >
         <li
-          class="breadcrumb__item"
+          class="ons-breadcrumb__item"
           id="breadcrumb-0"
         >
           <a
-            class="breadcrumb__link"
+            class="ons-breadcrumb__link"
             href="/"
           >
             Home
           </a>
           <svg
-            class="svg-icon"
+            class="ons-svg-icon"
             focusable="false"
             viewBox="0 0 8 13"
             xmlns="http://www.w3.org/2000/svg"
@@ -184,17 +184,17 @@ Object {
           </svg>
         </li>
         <li
-          class="breadcrumb__item"
+          class="ons-breadcrumb__item"
           id="breadcrumb-1"
         >
           <a
-            class="breadcrumb__link"
+            class="ons-breadcrumb__link"
             href="/upload"
           >
             Deploy a questionnaire
           </a>
           <svg
-            class="svg-icon"
+            class="ons-svg-icon"
             focusable="false"
             viewBox="0 0 8 13"
             xmlns="http://www.w3.org/2000/svg"
@@ -208,11 +208,11 @@ Object {
       </ol>
     </nav>
     <main
-      class="page__main u-mt-no"
+      class="ons-page__main ons-u-mt-no"
       id="main-content"
     >
       <h1
-        class="u-mb-l"
+        class="ons-u-mb-l"
       >
         Reinstall questionnaire
       </h1>
@@ -226,32 +226,32 @@ Object {
       >
         <form>
           <fieldset
-            class="fieldset"
+            class="ons-fieldset"
           >
             <legend
-              class="fieldset__legend"
+              class="ons-fieldset__legend"
             >
               Select a questionnaire to install
             </legend>
             <div
-              class="radios__items"
+              class="ons-radios__items"
             >
               <p
-                class="radios__item"
+                class="ons-radios__item"
               >
                 <span
-                  class="radio"
+                  class="ons-radio"
                 >
                   <input
                     aria-label="No"
-                    class="radio__input js-radio "
+                    class="ons-radio__input ons-js-radio "
                     id="install-OPN2004A.bpkg"
                     name="select-survey"
                     type="radio"
                     value="OPN2004A.bpkg"
                   />
                   <label
-                    class="radio__label "
+                    class="ons-radio__label "
                     for="install-OPN2004A.bpkg"
                   >
                     OPN2004A.bpkg
@@ -260,21 +260,21 @@ Object {
               </p>
               <br />
               <p
-                class="radios__item"
+                class="ons-radios__item"
               >
                 <span
-                  class="radio"
+                  class="ons-radio"
                 >
                   <input
                     aria-label="No"
-                    class="radio__input js-radio "
+                    class="ons-radio__input ons-js-radio "
                     id="install-LMS2101_BK2.bpkg"
                     name="select-survey"
                     type="radio"
                     value="LMS2101_BK2.bpkg"
                   />
                   <label
-                    class="radio__label "
+                    class="ons-radio__label "
                     for="install-LMS2101_BK2.bpkg"
                   >
                     LMS2101_BK2.bpkg

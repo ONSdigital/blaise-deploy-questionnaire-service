@@ -6,35 +6,35 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="summary"
+        class="ons-summary"
       >
         <div
-          class="summary__group"
+          class="ons-summary__group"
         >
           <h2>
             Questionnaire settings
           </h2>
           <table
-            class="summary__items u-mt-s"
+            class="ons-summary__items ons-u-mt-s"
             id="report-table"
           >
             <tbody
-              class="summary__item "
+              class="ons-summary__item "
             >
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     Type
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   StrictInterviewing
@@ -42,13 +42,13 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item summary__item--error"
+              class="ons-summary__item ons-summary__item--error"
             >
               <tr
-                class="summary__row"
+                class="ons-summary__row"
               >
                 <th
-                  class="summary__row-title u-fs-r"
+                  class="ons-summary__row-title ons-u-fs-r"
                   colspan="3"
                 >
                   SaveSessionOnTimeout
@@ -57,19 +57,19 @@ Object {
                 </th>
               </tr>
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     SaveSessionOnTimeout
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   False
@@ -77,22 +77,22 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item "
+              class="ons-summary__item "
             >
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     SaveSessionOnQuit
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   True
@@ -100,22 +100,22 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item "
+              class="ons-summary__item "
             >
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     DeleteSessionOnTimeout
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   False
@@ -123,22 +123,22 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item "
+              class="ons-summary__item "
             >
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     DeleteSessionOnQuit
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   False
@@ -146,22 +146,22 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item "
+              class="ons-summary__item "
             >
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     SessionTimeout
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   15
@@ -169,13 +169,13 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item summary__item--error"
+              class="ons-summary__item ons-summary__item--error"
             >
               <tr
-                class="summary__row"
+                class="ons-summary__row"
               >
                 <th
-                  class="summary__row-title u-fs-r"
+                  class="ons-summary__row-title ons-u-fs-r"
                   colspan="3"
                 >
                   ApplyRecordLocking
@@ -184,19 +184,19 @@ Object {
                 </th>
               </tr>
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     ApplyRecordLocking
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   False
@@ -210,35 +210,35 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="summary"
+      class="ons-summary"
     >
       <div
-        class="summary__group"
+        class="ons-summary__group"
       >
         <h2>
           Questionnaire settings
         </h2>
         <table
-          class="summary__items u-mt-s"
+          class="ons-summary__items ons-u-mt-s"
           id="report-table"
         >
           <tbody
-            class="summary__item "
+            class="ons-summary__item "
           >
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   Type
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 StrictInterviewing
@@ -246,13 +246,13 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item summary__item--error"
+            class="ons-summary__item ons-summary__item--error"
           >
             <tr
-              class="summary__row"
+              class="ons-summary__row"
             >
               <th
-                class="summary__row-title u-fs-r"
+                class="ons-summary__row-title ons-u-fs-r"
                 colspan="3"
               >
                 SaveSessionOnTimeout
@@ -261,19 +261,19 @@ Object {
               </th>
             </tr>
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   SaveSessionOnTimeout
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 False
@@ -281,22 +281,22 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item "
+            class="ons-summary__item "
           >
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   SaveSessionOnQuit
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 True
@@ -304,22 +304,22 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item "
+            class="ons-summary__item "
           >
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   DeleteSessionOnTimeout
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 False
@@ -327,22 +327,22 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item "
+            class="ons-summary__item "
           >
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   DeleteSessionOnQuit
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 False
@@ -350,22 +350,22 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item "
+            class="ons-summary__item "
           >
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   SessionTimeout
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 15
@@ -373,13 +373,13 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item summary__item--error"
+            class="ons-summary__item ons-summary__item--error"
           >
             <tr
-              class="summary__row"
+              class="ons-summary__row"
             >
               <th
-                class="summary__row-title u-fs-r"
+                class="ons-summary__row-title ons-u-fs-r"
                 colspan="3"
               >
                 ApplyRecordLocking
@@ -388,19 +388,19 @@ Object {
               </th>
             </tr>
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   ApplyRecordLocking
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 False
@@ -471,35 +471,35 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="summary"
+        class="ons-summary"
       >
         <div
-          class="summary__group"
+          class="ons-summary__group"
         >
           <h2>
             Questionnaire settings
           </h2>
           <table
-            class="summary__items u-mt-s"
+            class="ons-summary__items ons-u-mt-s"
             id="report-table"
           >
             <tbody
-              class="summary__item "
+              class="ons-summary__item "
             >
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     Type
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   StrictInterviewing
@@ -507,13 +507,13 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item summary__item--error"
+              class="ons-summary__item ons-summary__item--error"
             >
               <tr
-                class="summary__row"
+                class="ons-summary__row"
               >
                 <th
-                  class="summary__row-title u-fs-r"
+                  class="ons-summary__row-title ons-u-fs-r"
                   colspan="3"
                 >
                   SaveSessionOnTimeout
@@ -522,19 +522,19 @@ Object {
                 </th>
               </tr>
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     SaveSessionOnTimeout
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   False
@@ -542,22 +542,22 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item "
+              class="ons-summary__item "
             >
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     SaveSessionOnQuit
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   True
@@ -565,13 +565,13 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item summary__item--error"
+              class="ons-summary__item ons-summary__item--error"
             >
               <tr
-                class="summary__row"
+                class="ons-summary__row"
               >
                 <th
-                  class="summary__row-title u-fs-r"
+                  class="ons-summary__row-title ons-u-fs-r"
                   colspan="3"
                 >
                   DeleteSessionOnTimeout
@@ -580,19 +580,19 @@ Object {
                 </th>
               </tr>
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     DeleteSessionOnTimeout
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   False
@@ -600,13 +600,13 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item summary__item--error"
+              class="ons-summary__item ons-summary__item--error"
             >
               <tr
-                class="summary__row"
+                class="ons-summary__row"
               >
                 <th
-                  class="summary__row-title u-fs-r"
+                  class="ons-summary__row-title ons-u-fs-r"
                   colspan="3"
                 >
                   DeleteSessionOnQuit
@@ -615,19 +615,19 @@ Object {
                 </th>
               </tr>
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     DeleteSessionOnQuit
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   False
@@ -635,22 +635,22 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item "
+              class="ons-summary__item "
             >
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     SessionTimeout
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   15
@@ -658,13 +658,13 @@ Object {
               </tr>
             </tbody>
             <tbody
-              class="summary__item summary__item--error"
+              class="ons-summary__item ons-summary__item--error"
             >
               <tr
-                class="summary__row"
+                class="ons-summary__row"
               >
                 <th
-                  class="summary__row-title u-fs-r"
+                  class="ons-summary__row-title ons-u-fs-r"
                   colspan="3"
                 >
                   ApplyRecordLocking
@@ -673,19 +673,19 @@ Object {
                 </th>
               </tr>
               <tr
-                class="summary__row summary__row--has-values"
+                class="ons-summary__row ons-summary__row--has-values"
               >
                 <td
-                  class="summary__item-title"
+                  class="ons-summary__item-title"
                 >
                   <div
-                    class="summary__item--text"
+                    class="ons-summary__item--text"
                   >
                     ApplyRecordLocking
                   </div>
                 </td>
                 <td
-                  class="summary__values"
+                  class="ons-summary__values"
                   colspan="2"
                 >
                   False
@@ -699,35 +699,35 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="summary"
+      class="ons-summary"
     >
       <div
-        class="summary__group"
+        class="ons-summary__group"
       >
         <h2>
           Questionnaire settings
         </h2>
         <table
-          class="summary__items u-mt-s"
+          class="ons-summary__items ons-u-mt-s"
           id="report-table"
         >
           <tbody
-            class="summary__item "
+            class="ons-summary__item "
           >
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   Type
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 StrictInterviewing
@@ -735,13 +735,13 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item summary__item--error"
+            class="ons-summary__item ons-summary__item--error"
           >
             <tr
-              class="summary__row"
+              class="ons-summary__row"
             >
               <th
-                class="summary__row-title u-fs-r"
+                class="ons-summary__row-title ons-u-fs-r"
                 colspan="3"
               >
                 SaveSessionOnTimeout
@@ -750,19 +750,19 @@ Object {
               </th>
             </tr>
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   SaveSessionOnTimeout
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 False
@@ -770,22 +770,22 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item "
+            class="ons-summary__item "
           >
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   SaveSessionOnQuit
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 True
@@ -793,13 +793,13 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item summary__item--error"
+            class="ons-summary__item ons-summary__item--error"
           >
             <tr
-              class="summary__row"
+              class="ons-summary__row"
             >
               <th
-                class="summary__row-title u-fs-r"
+                class="ons-summary__row-title ons-u-fs-r"
                 colspan="3"
               >
                 DeleteSessionOnTimeout
@@ -808,19 +808,19 @@ Object {
               </th>
             </tr>
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   DeleteSessionOnTimeout
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 False
@@ -828,13 +828,13 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item summary__item--error"
+            class="ons-summary__item ons-summary__item--error"
           >
             <tr
-              class="summary__row"
+              class="ons-summary__row"
             >
               <th
-                class="summary__row-title u-fs-r"
+                class="ons-summary__row-title ons-u-fs-r"
                 colspan="3"
               >
                 DeleteSessionOnQuit
@@ -843,19 +843,19 @@ Object {
               </th>
             </tr>
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   DeleteSessionOnQuit
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 False
@@ -863,22 +863,22 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item "
+            class="ons-summary__item "
           >
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   SessionTimeout
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 15
@@ -886,13 +886,13 @@ Object {
             </tr>
           </tbody>
           <tbody
-            class="summary__item summary__item--error"
+            class="ons-summary__item ons-summary__item--error"
           >
             <tr
-              class="summary__row"
+              class="ons-summary__row"
             >
               <th
-                class="summary__row-title u-fs-r"
+                class="ons-summary__row-title ons-u-fs-r"
                 colspan="3"
               >
                 ApplyRecordLocking
@@ -901,19 +901,19 @@ Object {
               </th>
             </tr>
             <tr
-              class="summary__row summary__row--has-values"
+              class="ons-summary__row ons-summary__row--has-values"
             >
               <td
-                class="summary__item-title"
+                class="ons-summary__item-title"
               >
                 <div
-                  class="summary__item--text"
+                  class="ons-summary__item--text"
                 >
                   ApplyRecordLocking
                 </div>
               </td>
               <td
-                class="summary__values"
+                class="ons-summary__values"
                 colspan="2"
               >
                 False

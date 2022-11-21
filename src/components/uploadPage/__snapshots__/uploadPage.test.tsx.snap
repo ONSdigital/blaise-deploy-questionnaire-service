@@ -7,23 +7,23 @@ Object {
     <div>
       <nav
         aria-label="Breadcrumb"
-        class="breadcrumb"
+        class="ons-breadcrumb"
       >
         <ol
-          class="breadcrumb__items u-fs-s"
+          class="ons-breadcrumb__items u-fs-s"
         >
           <li
-            class="breadcrumb__item"
+            class="ons-breadcrumb__item"
             id="breadcrumb-0"
           >
             <a
-              class="breadcrumb__link"
+              class="ons-breadcrumb__link"
               href="/"
             >
               Home
             </a>
             <svg
-              class="svg-icon"
+              class="ons-svg-icon"
               focusable="false"
               viewBox="0 0 8 13"
               xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +37,7 @@ Object {
         </ol>
       </nav>
       <main
-        class="page__main u-mt-no"
+        class="ons-page__main ons-u-mt-no"
         id="main-content"
       >
         <form
@@ -45,7 +45,7 @@ Object {
           id="formID"
         >
           <h1
-            class="u-mb-l"
+            class="ons-u-mb-l"
           >
             Deploy a questionnaire file
           </h1>
@@ -97,7 +97,7 @@ Object {
             </span>
             <input
               accept=".bpkg"
-              class="input input--text input-type__input input--upload"
+              class="ons-input ons-input--text ons-input-type__input ons-input--upload"
               id="survey-selector"
               name="Select survey package"
               props="[object Object]"
@@ -106,7 +106,7 @@ Object {
             />
           </div>
           <div
-            class="btn-group u-mt-m"
+            class="ons-btn-group ons-u-mt-m"
           >
             <button
               class="btn "
@@ -140,23 +140,23 @@ Object {
   "container": <div>
     <nav
       aria-label="Breadcrumb"
-      class="breadcrumb"
+      class="ons-breadcrumb"
     >
       <ol
-        class="breadcrumb__items u-fs-s"
+        class="ons-breadcrumb__items u-fs-s"
       >
         <li
-          class="breadcrumb__item"
+          class="ons-breadcrumb__item"
           id="breadcrumb-0"
         >
           <a
-            class="breadcrumb__link"
+            class="ons-breadcrumb__link"
             href="/"
           >
             Home
           </a>
           <svg
-            class="svg-icon"
+            class="ons-svg-icon"
             focusable="false"
             viewBox="0 0 8 13"
             xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +170,7 @@ Object {
       </ol>
     </nav>
     <main
-      class="page__main u-mt-no"
+      class="ons-page__main ons-u-mt-no"
       id="main-content"
     >
       <form
@@ -178,7 +178,7 @@ Object {
         id="formID"
       >
         <h1
-          class="u-mb-l"
+          class="ons-u-mb-l"
         >
           Deploy a questionnaire file
         </h1>
@@ -230,7 +230,7 @@ Object {
           </span>
           <input
             accept=".bpkg"
-            class="input input--text input-type__input input--upload"
+            class="ons-input ons-input--text ons-input-type__input ons-input--upload"
             id="survey-selector"
             name="Select survey package"
             props="[object Object]"
@@ -239,7 +239,7 @@ Object {
           />
         </div>
         <div
-          class="btn-group u-mt-m"
+          class="ons-btn-group ons-u-mt-m"
         >
           <button
             class="btn "

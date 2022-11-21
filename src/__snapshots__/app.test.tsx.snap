@@ -162,25 +162,25 @@ Object {
         </div>
       </header>
       <div
-        class="header__bottom"
+        class="ons-header__bottom"
       >
         <div
-          class="container container--gutterless@xxs@m"
+          class="ons-container ons-container--gutterless@xxs@m"
         >
           <nav
             aria-label="Main menu"
-            class="header-nav js-header-nav"
+            class="ons-header-nav ons-js-header-nav"
             data-analytics="header-navigation"
             id="main-nav"
           >
             <ul
-              class="header-nav__list"
+              class="ons-header-nav__list"
             >
               <li
-                class="header-nav__item  header-nav__item--active"
+                class="ons-header-nav__item  ons-header-nav__item--active"
               >
                 <a
-                  class="header-nav__link"
+                  class="ons-header-nav__link"
                   href="/"
                   id="home-link"
                 >
@@ -188,10 +188,10 @@ Object {
                 </a>
               </li>
               <li
-                class="header-nav__item  "
+                class="ons-header-nav__item  "
               >
                 <a
-                  class="header-nav__link"
+                  class="ons-header-nav__link"
                   href="/upload"
                   id="deploy-questionnaire-link"
                 >
@@ -199,10 +199,10 @@ Object {
                 </a>
               </li>
               <li
-                class="header-nav__item  "
+                class="ons-header-nav__item  "
               >
                 <a
-                  class="header-nav__link"
+                  class="ons-header-nav__link"
                   href="/audit"
                   id="audit-logs-link"
                 >
@@ -210,10 +210,10 @@ Object {
                 </a>
               </li>
               <li
-                class="header-nav__item  "
+                class="ons-header-nav__item  "
               >
                 <a
-                  class="header-nav__link"
+                  class="ons-header-nav__link"
                   href="/status"
                   id="blaise-status-link"
                 >
@@ -225,33 +225,33 @@ Object {
         </div>
       </div>
       <div
-        class="page__container container"
+        class="ons-page__container ons-container"
         style="min-height: calc(67vh);"
       >
         <main
-          class="page__main u-mt-no"
+          class="ons-page__main ons-u-mt-no"
           id="main-content"
         >
           <div
-            class="elementToFadeIn u-pt-s"
+            class="elementToFadeIn ons-u-pt-s"
           >
             <div
-              class="field"
+              class="ons-field"
             >
               <label
-                class="label"
+                class="ons-label"
                 for="filter-by-name"
               >
                 Filter by questionnaire name
               </label>
               <input
-                class="input input--text input-type__input"
+                class="ons-input ons-input--text ons-input-type__input"
                 id="filter-by-name"
                 type="text"
               />
             </div>
             <div
-              class="u-mt-s"
+              class="ons-u-mt-s"
             >
               <h3
                 aria-live="polite"
@@ -265,37 +265,37 @@ Object {
                 id="questionnaire-table"
               >
                 <thead
-                  class="table__head"
+                  class="ons-table__head"
                 >
                   <tr
-                    class="table__row"
+                    class="ons-table__row"
                   >
                     <th
-                      class="table__header"
+                      class="ons-table__header"
                       scope="col"
                     >
                       Questionnaire
                     </th>
                     <th
-                      class="table__header"
+                      class="ons-table__header"
                       scope="col"
                     >
                       Field period
                     </th>
                     <th
-                      class="table__header"
+                      class="ons-table__header"
                       scope="col"
                     >
                       Status
                     </th>
                     <th
-                      class="table__header"
+                      class="ons-table__header"
                       scope="col"
                     >
                       Install date
                     </th>
                     <th
-                      class="table__header"
+                      class="ons-table__header"
                       scope="col"
                     >
                       Cases
@@ -303,7 +303,7 @@ Object {
                   </tr>
                 </thead>
                 <tbody
-                  class="table__body"
+                  class="ons-table__body"
                 >
                   <tr
                     class="table__row"
@@ -330,7 +330,7 @@ Object {
                       class="table__cell "
                     >
                       <span
-                        class="status status--success"
+                        class="ons-status ons-status--success"
                       >
                         Active
                       </span>
@@ -371,7 +371,7 @@ Object {
                       class="table__cell "
                     >
                       <span
-                        class="status status--success"
+                        class="ons-status ons-status--success"
                       >
                         Active
                       </span>
@@ -412,7 +412,7 @@ Object {
                       class="table__cell "
                     >
                       <span
-                        class="status status--error"
+                        class="ons-status ons-status--error"
                       >
                         Failed
                       </span>
@@ -623,25 +623,25 @@ Object {
       </div>
     </header>
     <div
-      class="header__bottom"
+      class="ons-header__bottom"
     >
       <div
-        class="container container--gutterless@xxs@m"
+        class="ons-container ons-container--gutterless@xxs@m"
       >
         <nav
           aria-label="Main menu"
-          class="header-nav js-header-nav"
+          class="ons-header-nav ons-js-header-nav"
           data-analytics="header-navigation"
           id="main-nav"
         >
           <ul
-            class="header-nav__list"
+            class="ons-header-nav__list"
           >
             <li
-              class="header-nav__item  header-nav__item--active"
+              class="ons-header-nav__item  ons-header-nav__item--active"
             >
               <a
-                class="header-nav__link"
+                class="ons-header-nav__link"
                 href="/"
                 id="home-link"
               >
@@ -649,10 +649,10 @@ Object {
               </a>
             </li>
             <li
-              class="header-nav__item  "
+              class="ons-header-nav__item  "
             >
               <a
-                class="header-nav__link"
+                class="ons-header-nav__link"
                 href="/upload"
                 id="deploy-questionnaire-link"
               >
@@ -660,10 +660,10 @@ Object {
               </a>
             </li>
             <li
-              class="header-nav__item  "
+              class="ons-header-nav__item  "
             >
               <a
-                class="header-nav__link"
+                class="ons-header-nav__link"
                 href="/audit"
                 id="audit-logs-link"
               >
@@ -671,10 +671,10 @@ Object {
               </a>
             </li>
             <li
-              class="header-nav__item  "
+              class="ons-header-nav__item  "
             >
               <a
-                class="header-nav__link"
+                class="ons-header-nav__link"
                 href="/status"
                 id="blaise-status-link"
               >
@@ -686,33 +686,33 @@ Object {
       </div>
     </div>
     <div
-      class="page__container container"
+      class="ons-page__container ons-container"
       style="min-height: calc(67vh);"
     >
       <main
-        class="page__main u-mt-no"
+        class="ons-page__main ons-u-mt-no"
         id="main-content"
       >
         <div
-          class="elementToFadeIn u-pt-s"
+          class="elementToFadeIn ons-u-pt-s"
         >
           <div
-            class="field"
+            class="ons-field"
           >
             <label
-              class="label"
+              class="ons-label"
               for="filter-by-name"
             >
               Filter by questionnaire name
             </label>
             <input
-              class="input input--text input-type__input"
+              class="ons-input ons-input--text ons-input-type__input"
               id="filter-by-name"
               type="text"
             />
           </div>
           <div
-            class="u-mt-s"
+            class="ons-u-mt-s"
           >
             <h3
               aria-live="polite"
@@ -726,37 +726,37 @@ Object {
               id="questionnaire-table"
             >
               <thead
-                class="table__head"
+                class="ons-table__head"
               >
                 <tr
-                  class="table__row"
+                  class="ons-table__row"
                 >
                   <th
-                    class="table__header"
+                    class="ons-table__header"
                     scope="col"
                   >
                     Questionnaire
                   </th>
                   <th
-                    class="table__header"
+                    class="ons-table__header"
                     scope="col"
                   >
                     Field period
                   </th>
                   <th
-                    class="table__header"
+                    class="ons-table__header"
                     scope="col"
                   >
                     Status
                   </th>
                   <th
-                    class="table__header"
+                    class="ons-table__header"
                     scope="col"
                   >
                     Install date
                   </th>
                   <th
-                    class="table__header"
+                    class="ons-table__header"
                     scope="col"
                   >
                     Cases
@@ -764,7 +764,7 @@ Object {
                 </tr>
               </thead>
               <tbody
-                class="table__body"
+                class="ons-table__body"
               >
                 <tr
                   class="table__row"
@@ -791,7 +791,7 @@ Object {
                     class="table__cell "
                   >
                     <span
-                      class="status status--success"
+                      class="ons-status ons-status--success"
                     >
                       Active
                     </span>
@@ -832,7 +832,7 @@ Object {
                     class="table__cell "
                   >
                     <span
-                      class="status status--success"
+                      class="ons-status ons-status--success"
                     >
                       Active
                     </span>
@@ -873,7 +873,7 @@ Object {
                     class="table__cell "
                   >
                     <span
-                      class="status status--error"
+                      class="ons-status ons-status--error"
                     >
                       Failed
                     </span>
@@ -1111,25 +1111,25 @@ Object {
         </div>
       </header>
       <div
-        class="header__bottom"
+        class="ons-header__bottom"
       >
         <div
-          class="container container--gutterless@xxs@m"
+          class="ons-container ons-container--gutterless@xxs@m"
         >
           <nav
             aria-label="Main menu"
-            class="header-nav js-header-nav"
+            class="ons-header-nav ons-js-header-nav"
             data-analytics="header-navigation"
             id="main-nav"
           >
             <ul
-              class="header-nav__list"
+              class="ons-header-nav__list"
             >
               <li
-                class="header-nav__item  header-nav__item--active"
+                class="ons-header-nav__item  ons-header-nav__item--active"
               >
                 <a
-                  class="header-nav__link"
+                  class="ons-header-nav__link"
                   href="/"
                   id="home-link"
                 >
@@ -1137,10 +1137,10 @@ Object {
                 </a>
               </li>
               <li
-                class="header-nav__item  "
+                class="ons-header-nav__item  "
               >
                 <a
-                  class="header-nav__link"
+                  class="ons-header-nav__link"
                   href="/upload"
                   id="deploy-questionnaire-link"
                 >
@@ -1148,10 +1148,10 @@ Object {
                 </a>
               </li>
               <li
-                class="header-nav__item  "
+                class="ons-header-nav__item  "
               >
                 <a
-                  class="header-nav__link"
+                  class="ons-header-nav__link"
                   href="/audit"
                   id="audit-logs-link"
                 >
@@ -1159,10 +1159,10 @@ Object {
                 </a>
               </li>
               <li
-                class="header-nav__item  "
+                class="ons-header-nav__item  "
               >
                 <a
-                  class="header-nav__link"
+                  class="ons-header-nav__link"
                   href="/status"
                   id="blaise-status-link"
                 >
@@ -1174,33 +1174,33 @@ Object {
         </div>
       </div>
       <div
-        class="page__container container"
+        class="ons-page__container ons-container"
         style="min-height: calc(67vh);"
       >
         <main
-          class="page__main u-mt-no"
+          class="ons-page__main ons-u-mt-no"
           id="main-content"
         >
           <div
-            class="elementToFadeIn u-pt-s"
+            class="elementToFadeIn ons-u-pt-s"
           >
             <div
-              class="field"
+              class="ons-field"
             >
               <label
-                class="label"
+                class="ons-label"
                 for="filter-by-name"
               >
                 Filter by questionnaire name
               </label>
               <input
-                class="input input--text input-type__input"
+                class="ons-input ons-input--text ons-input-type__input"
                 id="filter-by-name"
                 type="text"
               />
             </div>
             <div
-              class="u-mt-s"
+              class="ons-u-mt-s"
             >
               <h3
                 aria-live="polite"
@@ -1214,37 +1214,37 @@ Object {
                 id="questionnaire-table"
               >
                 <thead
-                  class="table__head"
+                  class="ons-table__head"
                 >
                   <tr
-                    class="table__row"
+                    class="ons-table__row"
                   >
                     <th
-                      class="table__header"
+                      class="ons-table__header"
                       scope="col"
                     >
                       Questionnaire
                     </th>
                     <th
-                      class="table__header"
+                      class="ons-table__header"
                       scope="col"
                     >
                       Field period
                     </th>
                     <th
-                      class="table__header"
+                      class="ons-table__header"
                       scope="col"
                     >
                       Status
                     </th>
                     <th
-                      class="table__header"
+                      class="ons-table__header"
                       scope="col"
                     >
                       Install date
                     </th>
                     <th
-                      class="table__header"
+                      class="ons-table__header"
                       scope="col"
                     >
                       Cases
@@ -1252,7 +1252,7 @@ Object {
                   </tr>
                 </thead>
                 <tbody
-                  class="table__body"
+                  class="ons-table__body"
                 >
                   <tr
                     class="table__row"
@@ -1279,7 +1279,7 @@ Object {
                       class="table__cell "
                     >
                       <span
-                        class="status status--success"
+                        class="ons-status ons-status--success"
                       >
                         Active
                       </span>
@@ -1320,7 +1320,7 @@ Object {
                       class="table__cell "
                     >
                       <span
-                        class="status status--success"
+                        class="ons-status ons-status--success"
                       >
                         Active
                       </span>
@@ -1361,7 +1361,7 @@ Object {
                       class="table__cell "
                     >
                       <span
-                        class="status status--error"
+                        class="ons-status ons-status--error"
                       >
                         Failed
                       </span>
@@ -1542,25 +1542,25 @@ Object {
       </div>
     </header>
     <div
-      class="header__bottom"
+      class="ons-header__bottom"
     >
       <div
-        class="container container--gutterless@xxs@m"
+        class="ons-container ons-container--gutterless@xxs@m"
       >
         <nav
           aria-label="Main menu"
-          class="header-nav js-header-nav"
+          class="ons-header-nav ons-js-header-nav"
           data-analytics="header-navigation"
           id="main-nav"
         >
           <ul
-            class="header-nav__list"
+            class="ons-header-nav__list"
           >
             <li
-              class="header-nav__item  header-nav__item--active"
+              class="ons-header-nav__item  ons-header-nav__item--active"
             >
               <a
-                class="header-nav__link"
+                class="ons-header-nav__link"
                 href="/"
                 id="home-link"
               >
@@ -1568,10 +1568,10 @@ Object {
               </a>
             </li>
             <li
-              class="header-nav__item  "
+              class="ons-header-nav__item  "
             >
               <a
-                class="header-nav__link"
+                class="ons-header-nav__link"
                 href="/upload"
                 id="deploy-questionnaire-link"
               >
@@ -1579,10 +1579,10 @@ Object {
               </a>
             </li>
             <li
-              class="header-nav__item  "
+              class="ons-header-nav__item  "
             >
               <a
-                class="header-nav__link"
+                class="ons-header-nav__link"
                 href="/audit"
                 id="audit-logs-link"
               >
@@ -1590,10 +1590,10 @@ Object {
               </a>
             </li>
             <li
-              class="header-nav__item  "
+              class="ons-header-nav__item  "
             >
               <a
-                class="header-nav__link"
+                class="ons-header-nav__link"
                 href="/status"
                 id="blaise-status-link"
               >
@@ -1605,33 +1605,33 @@ Object {
       </div>
     </div>
     <div
-      class="page__container container"
+      class="ons-page__container ons-container"
       style="min-height: calc(67vh);"
     >
       <main
-        class="page__main u-mt-no"
+        class="ons-page__main ons-u-mt-no"
         id="main-content"
       >
         <div
-          class="elementToFadeIn u-pt-s"
+          class="elementToFadeIn ons-u-pt-s"
         >
           <div
-            class="field"
+            class="ons-field"
           >
             <label
-              class="label"
+              class="ons-label"
               for="filter-by-name"
             >
               Filter by questionnaire name
             </label>
             <input
-              class="input input--text input-type__input"
+              class="ons-input ons-input--text ons-input-type__input"
               id="filter-by-name"
               type="text"
             />
           </div>
           <div
-            class="u-mt-s"
+            class="ons-u-mt-s"
           >
             <h3
               aria-live="polite"
@@ -1645,37 +1645,37 @@ Object {
               id="questionnaire-table"
             >
               <thead
-                class="table__head"
+                class="ons-table__head"
               >
                 <tr
-                  class="table__row"
+                  class="ons-table__row"
                 >
                   <th
-                    class="table__header"
+                    class="ons-table__header"
                     scope="col"
                   >
                     Questionnaire
                   </th>
                   <th
-                    class="table__header"
+                    class="ons-table__header"
                     scope="col"
                   >
                     Field period
                   </th>
                   <th
-                    class="table__header"
+                    class="ons-table__header"
                     scope="col"
                   >
                     Status
                   </th>
                   <th
-                    class="table__header"
+                    class="ons-table__header"
                     scope="col"
                   >
                     Install date
                   </th>
                   <th
-                    class="table__header"
+                    class="ons-table__header"
                     scope="col"
                   >
                     Cases
@@ -1683,7 +1683,7 @@ Object {
                 </tr>
               </thead>
               <tbody
-                class="table__body"
+                class="ons-table__body"
               >
                 <tr
                   class="table__row"
@@ -1710,7 +1710,7 @@ Object {
                     class="table__cell "
                   >
                     <span
-                      class="status status--success"
+                      class="ons-status ons-status--success"
                     >
                       Active
                     </span>
@@ -1751,7 +1751,7 @@ Object {
                     class="table__cell "
                   >
                     <span
-                      class="status status--success"
+                      class="ons-status ons-status--success"
                     >
                       Active
                     </span>
@@ -1792,7 +1792,7 @@ Object {
                     class="table__cell "
                   >
                     <span
-                      class="status status--error"
+                      class="ons-status ons-status--error"
                     >
                       Failed
                     </span>

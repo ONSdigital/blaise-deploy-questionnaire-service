@@ -6,17 +6,17 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="grid"
+        class="ons-grid"
       >
         <div
-          class="grid__col col-8@m"
+          class="ons-grid__col ons-col-8@m"
         >
           <h1
-            class="u-mb-l"
+            class="ons-u-mb-l"
           >
             Would you like to set a Totalmobile release date for questionnaire 
             <em
-              class="highlight"
+              class="ons-highlight"
             >
               LMS2207T
             </em>
@@ -110,17 +110,17 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="grid"
+      class="ons-grid"
     >
       <div
-        class="grid__col col-8@m"
+        class="ons-grid__col ons-col-8@m"
       >
         <h1
-          class="u-mb-l"
+          class="ons-u-mb-l"
         >
           Would you like to set a Totalmobile release date for questionnaire 
           <em
-            class="highlight"
+            class="ons-highlight"
           >
             LMS2207T
           </em>
