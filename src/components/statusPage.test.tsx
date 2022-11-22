@@ -9,7 +9,7 @@ import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import StatusPage from "./statusPage";
-import { Router } from "react-router";
+import { Router } from "react-router-dom";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 

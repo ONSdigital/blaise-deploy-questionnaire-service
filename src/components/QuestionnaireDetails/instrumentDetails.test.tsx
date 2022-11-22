@@ -6,7 +6,7 @@ import flushPromises from "../../tests/utils";
 import { questionnaireList } from "../../features/step_definitions/helpers/apiMockObjects";
 import { createMemoryHistory } from "history";
 import { render, waitFor, screen } from "@testing-library/react";
-import { Router } from "react-router";
+import { Router } from "react-router-dom";
 import App from "../../app";
 import { act } from "react-dom/test-utils";
 import React from "react";

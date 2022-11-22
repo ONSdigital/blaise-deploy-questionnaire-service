@@ -92,10 +92,7 @@ function App(): ReactElement {
 
         return (
            <>
-           "content"
-           { location.pathname }
             <DefaultErrorBoundary>
-                "inside error"
                 <Switch>
                     <Route path="/status">
                         <StatusPage/>
@@ -145,11 +142,11 @@ function App(): ReactElement {
 
     return (
         <>
-            {/* <a className="ons-skip-link" href="#main-content">Skip to content</a>
+            <a className="ons-skip-link" href="#main-content">Skip to content</a>
             {
                 isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
             }
-            <BetaBanner /> */}
+            <BetaBanner />
             <Header 
                 title={"Deploy Questionnaire Service"} 
                 signOutButton={loggedIn} 
@@ -172,7 +169,6 @@ function App(): ReactElement {
                 <Loading />
                 <LoginPage />
                 <AppContent />
-
             </div>
             <Footer />
         </>
