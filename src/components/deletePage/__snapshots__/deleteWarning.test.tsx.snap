@@ -6,10 +6,10 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="panel panel--error panel--no-title  u-mt-m"
+        class="ons-panel ons-panel--error ons-panel--no-title  ons-u-mt-m"
       >
         <div
-          class="panel__body "
+          class="ons-panel__body "
         >
           Could not get warning details, please try again
         </div>
@@ -18,10 +18,10 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="panel panel--error panel--no-title  u-mt-m"
+      class="ons-panel ons-panel--error ons-panel--no-title  ons-u-mt-m"
     >
       <div
-        class="panel__body "
+        class="ons-panel__body "
       >
         Could not get warning details, please try again
       </div>
@@ -98,30 +98,30 @@ Object {
         ?
       </h1>
       <div
-        class="panel panel--error panel--no-title  u-mt-m"
+        class="ons-panel ons-panel--error ons-panel--no-title  ons-u-mt-m"
       >
         <div
-          class="panel__body "
+          class="ons-panel__body "
         >
           Questionnaire has active Telephone Operations survey days
         </div>
       </div>
       <div
-        class="panel panel--warn panel--no-title  u-mt-m"
+        class="ons-panel ons-panel--warn ons-panel--no-title  ons-u-mt-m"
       >
         <span
           aria-hidden="true"
-          class="panel__icon"
+          class="ons-panel__icon"
         >
           !
         </span>
         <span
-          class="u-vh"
+          class="ons-u-vh"
         >
           Warning: 
         </span>
         <div
-          class="panel__body "
+          class="ons-panel__body "
         >
           The questionnaire and all associated respondent data will be deleted
         </div>
@@ -129,25 +129,25 @@ Object {
       <form>
         <br />
         <button
-          class="btn "
+          class="ons-btn "
           data-testid="confirm-delete-button"
           id="confirm-delete"
           type="button"
         >
           <span
-            class="btn__inner"
+            class="ons-btn__inner"
           >
             Delete
           </span>
         </button>
         <button
-          class="btn btn--secondary "
+          class="ons-btn  ons-btn--secondary"
           data-testid="cancel-delete-button"
           id="cancel-delete"
           type="button"
         >
           <span
-            class="btn__inner"
+            class="ons-btn__inner"
           >
             Cancel
           </span>
@@ -168,30 +168,30 @@ Object {
       ?
     </h1>
     <div
-      class="panel panel--error panel--no-title  u-mt-m"
+      class="ons-panel ons-panel--error ons-panel--no-title  ons-u-mt-m"
     >
       <div
-        class="panel__body "
+        class="ons-panel__body "
       >
         Questionnaire has active Telephone Operations survey days
       </div>
     </div>
     <div
-      class="panel panel--warn panel--no-title  u-mt-m"
+      class="ons-panel ons-panel--warn ons-panel--no-title  ons-u-mt-m"
     >
       <span
         aria-hidden="true"
-        class="panel__icon"
+        class="ons-panel__icon"
       >
         !
       </span>
       <span
-        class="u-vh"
+        class="ons-u-vh"
       >
         Warning: 
       </span>
       <div
-        class="panel__body "
+        class="ons-panel__body "
       >
         The questionnaire and all associated respondent data will be deleted
       </div>
@@ -199,25 +199,25 @@ Object {
     <form>
       <br />
       <button
-        class="btn "
+        class="ons-btn "
         data-testid="confirm-delete-button"
         id="confirm-delete"
         type="button"
       >
         <span
-          class="btn__inner"
+          class="ons-btn__inner"
         >
           Delete
         </span>
       </button>
       <button
-        class="btn btn--secondary "
+        class="ons-btn  ons-btn--secondary"
         data-testid="cancel-delete-button"
         id="cancel-delete"
         type="button"
       >
         <span
-          class="btn__inner"
+          class="ons-btn__inner"
         >
           Cancel
         </span>
@@ -284,10 +284,10 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="panel panel--info panel--no-title  u-mt-m"
+        class="ons-panel ons-panel--info ons-panel--no-title  ons-u-mt-m"
       >
         <div
-          class="panel__body "
+          class="ons-panel__body "
         >
           <div
             style="text-align: center;"
@@ -376,10 +376,10 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="panel panel--info panel--no-title  u-mt-m"
+      class="ons-panel ons-panel--info ons-panel--no-title  ons-u-mt-m"
     >
       <div
-        class="panel__body "
+        class="ons-panel__body "
       >
         <div
           style="text-align: center;"
@@ -534,30 +534,30 @@ Object {
         ?
       </h1>
       <div
-        class="panel panel--error panel--no-title  u-mt-m"
+        class="ons-panel ons-panel--error ons-panel--no-title  ons-u-mt-m"
       >
         <div
-          class="panel__body "
+          class="ons-panel__body "
         >
           Questionnaire is active for web collection
         </div>
       </div>
       <div
-        class="panel panel--warn panel--no-title  u-mt-m"
+        class="ons-panel ons-panel--warn ons-panel--no-title  ons-u-mt-m"
       >
         <span
           aria-hidden="true"
-          class="panel__icon"
+          class="ons-panel__icon"
         >
           !
         </span>
         <span
-          class="u-vh"
+          class="ons-u-vh"
         >
           Warning: 
         </span>
         <div
-          class="panel__body "
+          class="ons-panel__body "
         >
           The questionnaire and all associated respondent data will be deleted
         </div>
@@ -565,25 +565,25 @@ Object {
       <form>
         <br />
         <button
-          class="btn "
+          class="ons-btn "
           data-testid="confirm-delete-button"
           id="confirm-delete"
           type="button"
         >
           <span
-            class="btn__inner"
+            class="ons-btn__inner"
           >
             Delete
           </span>
         </button>
         <button
-          class="btn btn--secondary "
+          class="ons-btn  ons-btn--secondary"
           data-testid="cancel-delete-button"
           id="cancel-delete"
           type="button"
         >
           <span
-            class="btn__inner"
+            class="ons-btn__inner"
           >
             Cancel
           </span>
@@ -602,30 +602,30 @@ Object {
       ?
     </h1>
     <div
-      class="panel panel--error panel--no-title  u-mt-m"
+      class="ons-panel ons-panel--error ons-panel--no-title  ons-u-mt-m"
     >
       <div
-        class="panel__body "
+        class="ons-panel__body "
       >
         Questionnaire is active for web collection
       </div>
     </div>
     <div
-      class="panel panel--warn panel--no-title  u-mt-m"
+      class="ons-panel ons-panel--warn ons-panel--no-title  ons-u-mt-m"
     >
       <span
         aria-hidden="true"
-        class="panel__icon"
+        class="ons-panel__icon"
       >
         !
       </span>
       <span
-        class="u-vh"
+        class="ons-u-vh"
       >
         Warning: 
       </span>
       <div
-        class="panel__body "
+        class="ons-panel__body "
       >
         The questionnaire and all associated respondent data will be deleted
       </div>
@@ -633,25 +633,25 @@ Object {
     <form>
       <br />
       <button
-        class="btn "
+        class="ons-btn "
         data-testid="confirm-delete-button"
         id="confirm-delete"
         type="button"
       >
         <span
-          class="btn__inner"
+          class="ons-btn__inner"
         >
           Delete
         </span>
       </button>
       <button
-        class="btn btn--secondary "
+        class="ons-btn  ons-btn--secondary"
         data-testid="cancel-delete-button"
         id="cancel-delete"
         type="button"
       >
         <span
-          class="btn__inner"
+          class="ons-btn__inner"
         >
           Cancel
         </span>
@@ -729,30 +729,30 @@ Object {
         ?
       </h1>
       <div
-        class="panel panel--warn panel--no-title  u-mt-m"
+        class="ons-panel ons-panel--warn ons-panel--no-title  ons-u-mt-m"
       >
         <span
           aria-hidden="true"
-          class="panel__icon"
+          class="ons-panel__icon"
         >
           !
         </span>
         <span
-          class="u-vh"
+          class="ons-u-vh"
         >
           Warning: 
         </span>
         <div
-          class="panel__body "
+          class="ons-panel__body "
         >
           The questionnaire and all associated respondent data will be deleted
         </div>
       </div>
       <div
-        class="panel panel--error panel--no-title  u-mt-m"
+        class="ons-panel ons-panel--error ons-panel--no-title  ons-u-mt-m"
       >
         <div
-          class="panel__body "
+          class="ons-panel__body "
         >
           Failed to delete TO start date
         </div>
@@ -760,25 +760,25 @@ Object {
       <form>
         <br />
         <button
-          class="btn "
+          class="ons-btn "
           data-testid="confirm-delete-button"
           id="confirm-delete"
           type="button"
         >
           <span
-            class="btn__inner"
+            class="ons-btn__inner"
           >
             Delete
           </span>
         </button>
         <button
-          class="btn btn--secondary "
+          class="ons-btn  ons-btn--secondary"
           data-testid="cancel-delete-button"
           id="cancel-delete"
           type="button"
         >
           <span
-            class="btn__inner"
+            class="ons-btn__inner"
           >
             Cancel
           </span>
@@ -799,30 +799,30 @@ Object {
       ?
     </h1>
     <div
-      class="panel panel--warn panel--no-title  u-mt-m"
+      class="ons-panel ons-panel--warn ons-panel--no-title  ons-u-mt-m"
     >
       <span
         aria-hidden="true"
-        class="panel__icon"
+        class="ons-panel__icon"
       >
         !
       </span>
       <span
-        class="u-vh"
+        class="ons-u-vh"
       >
         Warning: 
       </span>
       <div
-        class="panel__body "
+        class="ons-panel__body "
       >
         The questionnaire and all associated respondent data will be deleted
       </div>
     </div>
     <div
-      class="panel panel--error panel--no-title  u-mt-m"
+      class="ons-panel ons-panel--error ons-panel--no-title  ons-u-mt-m"
     >
       <div
-        class="panel__body "
+        class="ons-panel__body "
       >
         Failed to delete TO start date
       </div>
@@ -830,25 +830,25 @@ Object {
     <form>
       <br />
       <button
-        class="btn "
+        class="ons-btn "
         data-testid="confirm-delete-button"
         id="confirm-delete"
         type="button"
       >
         <span
-          class="btn__inner"
+          class="ons-btn__inner"
         >
           Delete
         </span>
       </button>
       <button
-        class="btn btn--secondary "
+        class="ons-btn  ons-btn--secondary"
         data-testid="cancel-delete-button"
         id="cancel-delete"
         type="button"
       >
         <span
-          class="btn__inner"
+          class="ons-btn__inner"
         >
           Cancel
         </span>

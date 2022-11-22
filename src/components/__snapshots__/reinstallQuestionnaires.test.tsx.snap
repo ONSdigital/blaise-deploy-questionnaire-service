@@ -137,13 +137,13 @@ Object {
             </fieldset>
             <br />
             <button
-              class="btn "
+              class="ons-btn "
               data-testid="button"
               id="confirm-install"
               type="button"
             >
               <span
-                class="btn__inner"
+                class="ons-btn__inner"
               >
                 Install selected questionnaire
               </span>
@@ -286,13 +286,13 @@ Object {
           </fieldset>
           <br />
           <button
-            class="btn "
+            class="ons-btn "
             data-testid="button"
             id="confirm-install"
             type="button"
           >
             <span
-              class="btn__inner"
+              class="ons-btn__inner"
             >
               Install selected questionnaire
             </span>

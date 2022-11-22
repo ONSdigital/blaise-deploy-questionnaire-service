@@ -21,9 +21,9 @@ export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004
         await flushPromises();
     });
 
-    userEvent.click(screen.getByText(/Deploy a questionnaire/i));
-
-    const input = screen.getByLabelText(/Select survey package/i);
+    userEvent.click(screen.getByRole("link", { name: /Deploy a questionnaire/i }));
+    
+    const input = await screen.findByLabelText(/Select survey package/i);
 
     const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, { type: "application/zip" });
 

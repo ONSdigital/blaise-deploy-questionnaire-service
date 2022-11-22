@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation, Link } from "react-router-dom";
 import QuestionnaireList from "./components/questionnaireList";
 import UploadPage from "./components/uploadPage/uploadPage";
 import DeploymentSummary from "./components/deploymentSummary";
@@ -91,7 +91,11 @@ function App(): ReactElement {
         }
 
         return (
+           <>
+           "content"
+           { location.pathname }
             <DefaultErrorBoundary>
+                "inside error"
                 <Switch>
                     <Route path="/status">
                         <StatusPage/>
@@ -134,17 +138,36 @@ function App(): ReactElement {
                         </main>
                     </Route>
                 </Switch>
-            </DefaultErrorBoundary>);
+            </DefaultErrorBoundary>
+           </>
+        );
     }
 
     return (
         <>
-            <a className="skip__link" href="#main-content">Skip to content</a>
+            {/* <a className="ons-skip-link" href="#main-content">Skip to content</a>
             {
                 isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
             }
-            <BetaBanner />
-            <Header title={"Deploy Questionnaire Service"} signOutButton={loggedIn} noSave={true} signOutFunction={signOut} />
+            <BetaBanner /> */}
+            <Header 
+                title={"Deploy Questionnaire Service"} 
+                signOutButton={loggedIn} 
+                noSave={true} 
+                signOutFunction={signOut}
+                navigationLinks={[
+                    { label: "Home", endpoint: "/" },
+                    { label: "Deploy a questionnaire", endpoint: "/upload" },
+                    { label: "View deployment history", endpoint: "/audit" },
+                    { label: "Check Blaise status", endpoint: "/status" },
+                ]}
+                currentLocation={location.pathname}
+                createNavLink={(label: string, endpoint: string) => (
+                    <Link to={endpoint} className="ons-navigation__link">
+                        {label}
+                    </Link>
+                )}    
+            />
             <div style={divStyle} className="ons-page__container ons-container">
                 <Loading />
                 <LoginPage />

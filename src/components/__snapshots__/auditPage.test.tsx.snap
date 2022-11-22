@@ -46,12 +46,12 @@ Object {
           Questionnaire deployment history
         </h1>
         <button
-          class="btn btn--small "
+          class="ons-btn  ons-btn--small"
           data-testid="button"
           type="button"
         >
           <span
-            class="btn__inner"
+            class="ons-btn__inner"
           >
             Reload
           </span>
@@ -153,12 +153,12 @@ Object {
         Questionnaire deployment history
       </h1>
       <button
-        class="btn btn--small "
+        class="ons-btn  ons-btn--small"
         data-testid="button"
         type="button"
       >
         <span
-          class="btn__inner"
+          class="ons-btn__inner"
         >
           Reload
         </span>
