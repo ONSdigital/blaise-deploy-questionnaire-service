@@ -6,7 +6,6 @@ import DeploymentSummary from "./components/deploymentSummary";
 import DeleteConfirmation from "./components/deletePage/deleteConfirmation";
 import StatusPage from "./components/statusPage";
 import {
-    BetaBanner,
     DefaultErrorBoundary,
     ErrorBoundary,
     Footer,
@@ -146,7 +145,6 @@ function App(): ReactElement {
             {
                 isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
             }
-            <BetaBanner />
             <Header 
                 title={"Deploy Questionnaire Service"} 
                 signOutButton={loggedIn} 

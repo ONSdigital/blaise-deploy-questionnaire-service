@@ -45,42 +45,6 @@ Object {
           </div>
         </div>
       </div>
-      <div
-        class="ons-phase-banner"
-      >
-        <div
-          class="ons-container "
-        >
-          <div
-            class="ons-grid ons-grid--flex ons-grid--gutterless ons-grid--vertical-center ons-grid--no-wrap"
-          >
-            <div
-              class="ons-grid__col ons-col-auto ons-u-flex-no-grow"
-            >
-              <h3
-                class="ons-phase-banner__badge"
-              >
-                BETA
-              </h3>
-            </div>
-            <div
-              class="ons-grid__col ons-col-auto ons-u-flex-shrink"
-            >
-              <p
-                class="ons-phase-banner__desc ons-u-fs-s ons-u-mb-no"
-              >
-                This is a new service – your 
-                <a
-                  href="https://ons.service-now.com/"
-                >
-                  feedback
-                </a>
-                 will help us improve it.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
       <header
         class="ons-header ons-header--internal"
       >
@@ -622,42 +586,6 @@ Object {
               class="ons-u-mb-no"
             >
               This environment is not a production environment. Do not upload any live data to this service.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="ons-phase-banner"
-    >
-      <div
-        class="ons-container "
-      >
-        <div
-          class="ons-grid ons-grid--flex ons-grid--gutterless ons-grid--vertical-center ons-grid--no-wrap"
-        >
-          <div
-            class="ons-grid__col ons-col-auto ons-u-flex-no-grow"
-          >
-            <h3
-              class="ons-phase-banner__badge"
-            >
-              BETA
-            </h3>
-          </div>
-          <div
-            class="ons-grid__col ons-col-auto ons-u-flex-shrink"
-          >
-            <p
-              class="ons-phase-banner__desc ons-u-fs-s ons-u-mb-no"
-            >
-              This is a new service – your 
-              <a
-                href="https://ons.service-now.com/"
-              >
-                feedback
-              </a>
-               will help us improve it.
             </p>
           </div>
         </div>
@@ -1232,42 +1160,6 @@ Object {
       >
         Skip to content
       </a>
-      <div
-        class="ons-phase-banner"
-      >
-        <div
-          class="ons-container "
-        >
-          <div
-            class="ons-grid ons-grid--flex ons-grid--gutterless ons-grid--vertical-center ons-grid--no-wrap"
-          >
-            <div
-              class="ons-grid__col ons-col-auto ons-u-flex-no-grow"
-            >
-              <h3
-                class="ons-phase-banner__badge"
-              >
-                BETA
-              </h3>
-            </div>
-            <div
-              class="ons-grid__col ons-col-auto ons-u-flex-shrink"
-            >
-              <p
-                class="ons-phase-banner__desc ons-u-fs-s ons-u-mb-no"
-              >
-                This is a new service – your 
-                <a
-                  href="https://ons.service-now.com/"
-                >
-                  feedback
-                </a>
-                 will help us improve it.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
       <header
         class="ons-header ons-header--internal"
       >
@@ -1780,42 +1672,6 @@ Object {
     >
       Skip to content
     </a>
-    <div
-      class="ons-phase-banner"
-    >
-      <div
-        class="ons-container "
-      >
-        <div
-          class="ons-grid ons-grid--flex ons-grid--gutterless ons-grid--vertical-center ons-grid--no-wrap"
-        >
-          <div
-            class="ons-grid__col ons-col-auto ons-u-flex-no-grow"
-          >
-            <h3
-              class="ons-phase-banner__badge"
-            >
-              BETA
-            </h3>
-          </div>
-          <div
-            class="ons-grid__col ons-col-auto ons-u-flex-shrink"
-          >
-            <p
-              class="ons-phase-banner__desc ons-u-fs-s ons-u-mb-no"
-            >
-              This is a new service – your 
-              <a
-                href="https://ons.service-now.com/"
-              >
-                feedback
-              </a>
-               will help us improve it.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
     <header
       class="ons-header ons-header--internal"
     >
