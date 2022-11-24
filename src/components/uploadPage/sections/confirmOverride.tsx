@@ -29,9 +29,9 @@ function ConfirmOverride({ questionnaireName }: SelectFilePageProps): ReactEleme
 
     return (
         <>
-            <h1 className="u-mb-l">
+            <h1 className="ons-u-mb-l">
                 Are you sure you want to overwrite the entire questionnaire <em
-                    className="highlight">{questionnaireName}</em>?
+                    className="ons-highlight">{questionnaireName}</em>?
             </h1>
 
             <ONSPanel status={"warn"}>

@@ -65,13 +65,13 @@ function AuditPage(): ReactElement {
                         {
                             auditLogs.map(({ id, timestamp, severity, message }: AuditLog) => {
                                 return (
-                                    <tr className="table__row" key={id}
+                                    <tr className="ons-table__row" key={id}
                                         data-testid={"questionnaire-table-row"}>
-                                        <td className="table__cell ">
+                                        <td className="ons-table__cell ">
                                             {dateFormatter(new Date(timestamp)).format("DD/MM/YYYY HH:mm:ss")}
                                         </td>
-                                        <td className="table__cell ">
-                                            <span className={`status status--${severity.toLowerCase()}`}>
+                                        <td className="ons-table__cell ">
+                                            <span className={`ons-status ons-status--${severity.toLowerCase()}`}>
                                                 {message}
                                             </span>
                                         </td>
@@ -93,8 +93,8 @@ function AuditPage(): ReactElement {
                 ]
             } />
 
-            <main id="main-content" className="page__main u-mt-no">
-                <h1 className="u-mb-l">Questionnaire deployment history</h1>
+            <main id="main-content" className="ons-page__main ons-u-mt-no">
+                <h1 className="ons-u-mb-l">Questionnaire deployment history</h1>
                 <ONSButton onClick={() => callAuditLogs()} label="Reload" primary={true} small={true} />
 
                 <DisplayAuditPage />

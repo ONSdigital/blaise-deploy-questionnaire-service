@@ -200,7 +200,7 @@ function UploadPage(): ReactElement {
                 ]
             } />
 
-            <main id="main-content" className="page__main u-mt-no">
+            <main id="main-content" className="ons-page__main ons-u-mt-no">
                 {activeStep >= stepLength() ? (
                     <Redirect
                         to={{
@@ -218,7 +218,7 @@ function UploadPage(): ReactElement {
                             <Form id={"formID"}>
                                 {_renderStepContent(activeStep)}
 
-                                <div className="btn-group u-mt-m">
+                                <div className="ons-btn-group ons-u-mt-m">
                                     <ONSButton
                                         id={"continue-deploy-button"}
                                         submit={true}
@@ -239,7 +239,7 @@ function UploadPage(): ReactElement {
                 {
                     uploading &&
                     <>
-                        <p className="u-mt-m">Uploading: {uploadPercentage}%</p>
+                        <p className="ons-u-mt-m">Uploading: {uploadPercentage}%</p>
                         <progress id="file"
                             value={uploadPercentage}
                             max="100"

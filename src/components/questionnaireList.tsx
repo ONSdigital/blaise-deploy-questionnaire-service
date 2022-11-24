@@ -163,15 +163,15 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     }
     return (
         <>
-            <div className={"elementToFadeIn u-pt-s"}>
-                <div className="field">
-                    <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
+            <div className={"elementToFadeIn ons-u-pt-s"}>
+                <div className="ons-field">
+                    <label className="ons-label" htmlFor="filter-by-name">Filter by questionnaire name
                     </label>
-                    <input type="text" id="filter-by-name" className="input input--text input-type__input"
+                    <input type="text" id="filter-by-name" className="ons-input ons-input--text ons-input-type__input"
                         onChange={(e) => filterList(e.target.value)} />
                 </div>
 
-                <div className="u-mt-s">
+                <div className="ons-u-mt-s">
                     {
                         questionnaires &&
                         <h3 aria-live="polite">{filteredList.length} results of {realQuestionnaireCount}</h3>

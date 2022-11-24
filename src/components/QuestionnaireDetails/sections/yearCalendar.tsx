@@ -36,7 +36,7 @@ function YearCalendar({ modes, surveyDays }: Props): ReactElement {
 
     return (
         <>
-            <h2 className={"u-mt-m"}>Survey days</h2>
+            <h2 className={"ons-u-mt-m"}>Survey days</h2>
             <CalendarControls
                 year={year}
                 onPrevYear={() => onPrevYear()}

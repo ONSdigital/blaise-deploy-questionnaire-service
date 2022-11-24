@@ -15,14 +15,14 @@ function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactEl
     function QuestionnaireFileName(): ReactElement {
         return (
             <>
-                <tbody className="summary__item">
-                    <tr className="summary__row summary__row--has-values">
-                        <td className="summary__item-title">
-                            <div className="summary__item--text">
+                <tbody className="ons-summary__item">
+                    <tr className="ons-summary__row ons-summary__row--has-values">
+                        <td className="ons-summary__item-title">
+                            <div className="ons-summary__item--text">
                             Questionnaire file name
                             </div>
                         </td>
-                        <td className="summary__values">
+                        <td className="ons-summary__values">
                             {file?.name}
                         </td>
                     </tr>
@@ -34,14 +34,14 @@ function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactEl
     function QuestionnaireLastModified(): ReactElement {
         return (
             <>
-                <tbody className="summary__item">
-                    <tr className="summary__row summary__row--has-values">
-                        <td className="summary__item-title">
-                            <div className="summary__item--text">
+                <tbody className="ons-summary__item">
+                    <tr className="ons-summary__row ons-summary__row--has-values">
+                        <td className="ons-summary__item-title">
+                            <div className="ons-summary__item--ons-text">
                             Questionnaire file last modified date
                             </div>
                         </td>
-                        <td className="summary__values">
+                        <td className="ons-summary__values">
                             {dateFormatter(file?.lastModified).format("DD/MM/YYYY HH:mm")}
                         </td>
                     </tr>
@@ -53,14 +53,14 @@ function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactEl
     function QuestionnaireFileSize(): ReactElement {
         return (
             <>
-                <tbody className="summary__item">
-                    <tr className="summary__row summary__row--has-values">
-                        <td className="summary__item-title">
-                            <div className="summary__item--text">
+                <tbody className="ons-summary__item">
+                    <tr className="ons-summary__row ons-summary__row--has-values">
+                        <td className="ons-summary__item-title">
+                            <div className="ons-summary__item--text">
                             Questionnaire file size
                             </div>
                         </td>
-                        <td className="summary__values">
+                        <td className="ons-summary__values">
                             {(file && roundUp(file.size / 1000000, 0))}MB
                         </td>
                     </tr>
@@ -72,14 +72,14 @@ function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactEl
     function QuestionnaireExistsInBlaise(): ReactElement {
         return (
             <>
-                <tbody className="summary__item">
-                    <tr className="summary__row summary__row--has-values">
-                        <td className="summary__item-title">
-                            <div className="summary__item--text">
+                <tbody className="ons-summary__item">
+                    <tr className="ons-summary__row ons-summary__row--has-values">
+                        <td className="ons-summary__item-title">
+                            <div className="ons-summary__item--text">
                             Does the questionnaire already exist in blaise?
                             </div>
                         </td>
-                        <td className="summary__values">
+                        <td className="ons-summary__values">
                             {
                                 foundQuestionnaire ?
                                     "Yes, overriding questionnaire" : "No"
@@ -94,14 +94,14 @@ function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactEl
     function TOStartDate(): ReactElement {
         return (
             <>
-                <tbody className="summary__item">
-                    <tr className="summary__row summary__row--has-values">
-                        <td className="summary__item-title">
-                            <div className="summary__item--text">
+                <tbody className="ons-summary__item">
+                    <tr className="ons-summary__row ons-summary__row--has-values">
+                        <td className="ons-summary__item-title">
+                            <div className="ons-summary__item--text">
                             Set a telephone operations start date for questionnaire?
                             </div>
                         </td>
-                        <td className="summary__values">
+                        <td className="ons-summary__values">
                             {
                                 formValues["set start date"] ?
                                     `Start date set to ${dateFormatter(formValues["set start date"]).format("DD/MM/YYYY")}`
@@ -123,14 +123,14 @@ function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactEl
 
         return (
             <>
-                <tbody className="summary__item">
-                    <tr className="summary__row summary__row--has-values">
-                        <td className="summary__item-title">
-                            <div className="summary__item--text">
+                <tbody className="ons-summary__item">
+                    <tr className="ons-summary__row ons-summary__row--has-values">
+                        <td className="ons-summary__item-title">
+                            <div className="ons-summary__item--text">
                             Set a totalmobile release date for questionnaire?
                             </div>
                         </td>
-                        <td className="summary__values">
+                        <td className="ons-summary__values">
                             {
                                 formValues["set release date"] ?
                                     `Release date set to ${dateFormatter(formValues["set release date"]).format("DD/MM/YYYY")}`
@@ -146,11 +146,11 @@ function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactEl
 
     return (
         <>
-            <div className="summary">
-                <div className="summary__group">
-                    <h1 className="summary__group-title">Deployment summary</h1>
-                    <table className="summary__items">
-                        <thead className="u-vh">
+            <div className="ons-summary">
+                <div className="ons-summary__group">
+                    <h1 className="ons-summary__group-title">Deployment summary</h1>
+                    <table className="ons-summary__items">
+                        <thead className="ons-u-vh">
                             <tr>
                                 <th>Question</th>
                                 <th>Answer given</th>

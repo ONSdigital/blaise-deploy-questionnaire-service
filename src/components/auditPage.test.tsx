@@ -8,7 +8,7 @@ import "@testing-library/jest-dom";
 import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
-import { Router } from "react-router";
+import { Router } from "react-router-dom";
 import AuditPage from "./auditPage";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";

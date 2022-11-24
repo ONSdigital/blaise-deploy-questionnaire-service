@@ -1,6 +1,6 @@
 import { createMemoryHistory } from "history";
 import { act, render, screen } from "@testing-library/react";
-import { Router } from "react-router";
+import { Router } from "react-router-dom";
 import App from "../../../app";
 import flushPromises from "../../../tests/utils";
 import React from "react";
@@ -21,9 +21,9 @@ export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004
         await flushPromises();
     });
 
-    userEvent.click(screen.getByText(/Deploy a questionnaire/i));
+    userEvent.click(screen.getByRole("link", { name: /Deploy a questionnaire/i }));
 
-    const input = screen.getByLabelText(/Select survey package/i);
+    const input = await screen.findByLabelText(/Select survey package/i);
 
     const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, { type: "application/zip" });
 

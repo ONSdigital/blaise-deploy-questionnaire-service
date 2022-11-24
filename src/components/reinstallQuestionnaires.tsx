@@ -98,27 +98,27 @@ function ReinstallQuestionnaires(): ReactElement {
                                 <ONSPanel spacious={true}>{listError}</ONSPanel>
                                 :
                                 <>
-                                    <fieldset className="fieldset">
-                                        <legend className="fieldset__legend">
+                                    <fieldset className="ons-fieldset">
+                                        <legend className="ons-fieldset__legend">
                                             Select a questionnaire to install
                                         </legend>
-                                        <div className="radios__items">
+                                        <div className="ons-radios__items">
                                             {
                                                 questionnaireList.map((item: string) => {
                                                     return (
                                                         <Fragment key={item}>
-                                                            <p className="radios__item">
-                                                                <span className="radio">
+                                                            <p className="ons-radios__item">
+                                                                <span className="ons-radio">
                                                                     <input
                                                                         type="radio"
                                                                         id={`install-${item}`}
-                                                                        className="radio__input js-radio "
+                                                                        className="ons-radio__input ons-js-radio "
                                                                         value={item}
                                                                         name="select-survey"
                                                                         aria-label="No"
                                                                         onChange={() => setQuestionnaireToInstall(item)}
                                                                     />
-                                                                    <label className="radio__label "
+                                                                    <label className="ons-radio__label "
                                                                         htmlFor={`install-${item}`}>
                                                                         {item}
                                                                     </label>
@@ -155,8 +155,8 @@ function ReinstallQuestionnaires(): ReactElement {
                 ]
             } />
 
-            <main id="main-content" className="page__main u-mt-no">
-                <h1 className="u-mb-l">Reinstall questionnaire</h1>
+            <main id="main-content" className="ons-page__main ons-u-mt-no">
+                <h1 className="ons-u-mb-l">Reinstall questionnaire</h1>
                 <p>
                     Reinstall a previously uploaded questionnaire.
                     <br />

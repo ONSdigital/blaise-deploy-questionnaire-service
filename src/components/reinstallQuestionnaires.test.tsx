@@ -8,7 +8,7 @@ import "@testing-library/jest-dom";
 import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
-import { Router } from "react-router";
+import { Router } from "react-router-dom";
 import { Questionnaire } from "blaise-api-node-client";
 import ReinstallQuestionnaires from "./reinstallQuestionnaires";
 import axios from "axios";
