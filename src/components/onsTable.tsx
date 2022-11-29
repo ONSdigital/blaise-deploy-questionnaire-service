@@ -15,7 +15,7 @@ export const ONSTable = ({ columns, children, tableCaption, tableID }: ONSTable)
     return (
         <>
             <table
-                className="table"
+                className="ons-table"
                 id={tableID}>
                 {tableCaption && <caption className="ons-table__caption">{tableCaption}</caption>}
                 <thead className="ons-table__head">

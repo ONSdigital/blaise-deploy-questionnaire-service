@@ -27,8 +27,8 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
     }
 
     return (
-        <tr className="table__row" key={questionnaire.name} data-testid={"questionnaire-table-row"}>
-            <td className="table__cell ">
+        <tr className="ons-table__row" key={questionnaire.name} data-testid={"questionnaire-table-row"}>
+            <td className="ons-table__cell ">
                 <Link
                     id={`info-${questionnaire.name}`}
                     data-testid={`info-${questionnaire.name}`}
@@ -40,16 +40,16 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
                     {questionnaireName(questionnaire)}
                 </Link>
             </td>
-            <td className="table__cell ">
+            <td className="ons-table__cell ">
                 {questionnaire.fieldPeriod}
             </td>
-            <td className="table__cell ">
+            <td className="ons-table__cell ">
                 <QuestionnaireStatus status={questionnaire.status ? questionnaire.status : ""} />
             </td>
-            <td className="table__cell ">
+            <td className="ons-table__cell ">
                 {dateFormatter(questionnaire.installDate).format("DD/MM/YYYY HH:mm")}
             </td>
-            <td className="table__cell ">
+            <td className="ons-table__cell ">
                 {questionnaire.dataRecordCount}
             </td>
         </tr>
