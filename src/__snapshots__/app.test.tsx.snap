@@ -231,7 +231,7 @@ Object {
                 3
               </h3>
               <table
-                class="table"
+                class="ons-table"
                 id="questionnaire-table"
               >
                 <thead
@@ -276,11 +276,11 @@ Object {
                   class="ons-table__body"
                 >
                   <tr
-                    class="table__row"
+                    class="ons-table__row"
                     data-testid="questionnaire-table-row"
                   >
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <a
                         aria-label="View more information for questionnaire OPN2101A"
@@ -292,12 +292,12 @@ Object {
                       </a>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       January 2021
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <span
                         class="ons-status ons-status--success"
@@ -306,22 +306,22 @@ Object {
                       </span>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       15/01/2021 14:41
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       0
                     </td>
                   </tr>
                   <tr
-                    class="table__row"
+                    class="ons-table__row"
                     data-testid="questionnaire-table-row"
                   >
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <a
                         aria-label="View more information for questionnaire OPN2007T"
@@ -333,12 +333,12 @@ Object {
                       </a>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       July 2020
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <span
                         class="ons-status ons-status--success"
@@ -347,22 +347,22 @@ Object {
                       </span>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       15/01/2021 15:18
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       10
                     </td>
                   </tr>
                   <tr
-                    class="table__row"
+                    class="ons-table__row"
                     data-testid="questionnaire-table-row"
                   >
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <a
                         aria-label="View more information for questionnaire OPN2004A"
@@ -374,12 +374,12 @@ Object {
                       </a>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       April 2020
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <span
                         class="ons-status ons-status--error"
@@ -388,12 +388,12 @@ Object {
                       </span>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       15/01/2021 15:26
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       0
                     </td>
@@ -777,7 +777,7 @@ Object {
               3
             </h3>
             <table
-              class="table"
+              class="ons-table"
               id="questionnaire-table"
             >
               <thead
@@ -822,11 +822,11 @@ Object {
                 class="ons-table__body"
               >
                 <tr
-                  class="table__row"
+                  class="ons-table__row"
                   data-testid="questionnaire-table-row"
                 >
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <a
                       aria-label="View more information for questionnaire OPN2101A"
@@ -838,12 +838,12 @@ Object {
                     </a>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     January 2021
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <span
                       class="ons-status ons-status--success"
@@ -852,22 +852,22 @@ Object {
                     </span>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     15/01/2021 14:41
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     0
                   </td>
                 </tr>
                 <tr
-                  class="table__row"
+                  class="ons-table__row"
                   data-testid="questionnaire-table-row"
                 >
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <a
                       aria-label="View more information for questionnaire OPN2007T"
@@ -879,12 +879,12 @@ Object {
                     </a>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     July 2020
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <span
                       class="ons-status ons-status--success"
@@ -893,22 +893,22 @@ Object {
                     </span>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     15/01/2021 15:18
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     10
                   </td>
                 </tr>
                 <tr
-                  class="table__row"
+                  class="ons-table__row"
                   data-testid="questionnaire-table-row"
                 >
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <a
                       aria-label="View more information for questionnaire OPN2004A"
@@ -920,12 +920,12 @@ Object {
                     </a>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     April 2020
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <span
                       class="ons-status ons-status--error"
@@ -934,12 +934,12 @@ Object {
                     </span>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     15/01/2021 15:26
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     0
                   </td>
@@ -1346,7 +1346,7 @@ Object {
                 3
               </h3>
               <table
-                class="table"
+                class="ons-table"
                 id="questionnaire-table"
               >
                 <thead
@@ -1391,11 +1391,11 @@ Object {
                   class="ons-table__body"
                 >
                   <tr
-                    class="table__row"
+                    class="ons-table__row"
                     data-testid="questionnaire-table-row"
                   >
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <a
                         aria-label="View more information for questionnaire OPN2101A"
@@ -1407,12 +1407,12 @@ Object {
                       </a>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       January 2021
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <span
                         class="ons-status ons-status--success"
@@ -1421,22 +1421,22 @@ Object {
                       </span>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       15/01/2021 14:41
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       0
                     </td>
                   </tr>
                   <tr
-                    class="table__row"
+                    class="ons-table__row"
                     data-testid="questionnaire-table-row"
                   >
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <a
                         aria-label="View more information for questionnaire OPN2007T"
@@ -1448,12 +1448,12 @@ Object {
                       </a>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       July 2020
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <span
                         class="ons-status ons-status--success"
@@ -1462,22 +1462,22 @@ Object {
                       </span>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       15/01/2021 15:18
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       10
                     </td>
                   </tr>
                   <tr
-                    class="table__row"
+                    class="ons-table__row"
                     data-testid="questionnaire-table-row"
                   >
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <a
                         aria-label="View more information for questionnaire OPN2004A"
@@ -1489,12 +1489,12 @@ Object {
                       </a>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       April 2020
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       <span
                         class="ons-status ons-status--error"
@@ -1503,12 +1503,12 @@ Object {
                       </span>
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       15/01/2021 15:26
                     </td>
                     <td
-                      class="table__cell "
+                      class="ons-table__cell "
                     >
                       0
                     </td>
@@ -1858,7 +1858,7 @@ Object {
               3
             </h3>
             <table
-              class="table"
+              class="ons-table"
               id="questionnaire-table"
             >
               <thead
@@ -1903,11 +1903,11 @@ Object {
                 class="ons-table__body"
               >
                 <tr
-                  class="table__row"
+                  class="ons-table__row"
                   data-testid="questionnaire-table-row"
                 >
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <a
                       aria-label="View more information for questionnaire OPN2101A"
@@ -1919,12 +1919,12 @@ Object {
                     </a>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     January 2021
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <span
                       class="ons-status ons-status--success"
@@ -1933,22 +1933,22 @@ Object {
                     </span>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     15/01/2021 14:41
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     0
                   </td>
                 </tr>
                 <tr
-                  class="table__row"
+                  class="ons-table__row"
                   data-testid="questionnaire-table-row"
                 >
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <a
                       aria-label="View more information for questionnaire OPN2007T"
@@ -1960,12 +1960,12 @@ Object {
                     </a>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     July 2020
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <span
                       class="ons-status ons-status--success"
@@ -1974,22 +1974,22 @@ Object {
                     </span>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     15/01/2021 15:18
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     10
                   </td>
                 </tr>
                 <tr
-                  class="table__row"
+                  class="ons-table__row"
                   data-testid="questionnaire-table-row"
                 >
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <a
                       aria-label="View more information for questionnaire OPN2004A"
@@ -2001,12 +2001,12 @@ Object {
                     </a>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     April 2020
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     <span
                       class="ons-status ons-status--error"
@@ -2015,12 +2015,12 @@ Object {
                     </span>
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     15/01/2021 15:26
                   </td>
                   <td
-                    class="table__cell "
+                    class="ons-table__cell "
                   >
                     0
                   </td>
