@@ -60,7 +60,7 @@ Object {
           class="elementToFadeIn"
         >
           <table
-            class="table"
+            class="ons-table"
             id="audit-table"
           >
             <thead
@@ -167,7 +167,7 @@ Object {
         class="elementToFadeIn"
       >
         <table
-          class="table"
+          class="ons-table"
           id="audit-table"
         >
           <thead
