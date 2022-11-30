@@ -155,6 +155,7 @@ Object {
                   <a
                     class="ons-navigation__link"
                     href="/"
+                    id="home-link"
                   >
                     Home
                   </a>
@@ -165,6 +166,7 @@ Object {
                   <a
                     class="ons-navigation__link"
                     href="/upload"
+                    id="deploy-questionnaire-link"
                   >
                     Deploy a questionnaire
                   </a>
@@ -175,6 +177,7 @@ Object {
                   <a
                     class="ons-navigation__link"
                     href="/audit"
+                    id="audit-logs-link"
                   >
                     View deployment history
                   </a>
@@ -185,6 +188,7 @@ Object {
                   <a
                     class="ons-navigation__link"
                     href="/status"
+                    id="blaise-status-link"
                   >
                     Check Blaise status
                   </a>
@@ -701,6 +705,7 @@ Object {
                 <a
                   class="ons-navigation__link"
                   href="/"
+                  id="home-link"
                 >
                   Home
                 </a>
@@ -711,6 +716,7 @@ Object {
                 <a
                   class="ons-navigation__link"
                   href="/upload"
+                  id="deploy-questionnaire-link"
                 >
                   Deploy a questionnaire
                 </a>
@@ -721,6 +727,7 @@ Object {
                 <a
                   class="ons-navigation__link"
                   href="/audit"
+                  id="audit-logs-link"
                 >
                   View deployment history
                 </a>
@@ -731,6 +738,7 @@ Object {
                 <a
                   class="ons-navigation__link"
                   href="/status"
+                  id="blaise-status-link"
                 >
                   Check Blaise status
                 </a>
@@ -1270,6 +1278,7 @@ Object {
                   <a
                     class="ons-navigation__link"
                     href="/"
+                    id="home-link"
                   >
                     Home
                   </a>
@@ -1280,6 +1289,7 @@ Object {
                   <a
                     class="ons-navigation__link"
                     href="/upload"
+                    id="deploy-questionnaire-link"
                   >
                     Deploy a questionnaire
                   </a>
@@ -1290,6 +1300,7 @@ Object {
                   <a
                     class="ons-navigation__link"
                     href="/audit"
+                    id="audit-logs-link"
                   >
                     View deployment history
                   </a>
@@ -1300,6 +1311,7 @@ Object {
                   <a
                     class="ons-navigation__link"
                     href="/status"
+                    id="blaise-status-link"
                   >
                     Check Blaise status
                   </a>
@@ -1782,6 +1794,7 @@ Object {
                 <a
                   class="ons-navigation__link"
                   href="/"
+                  id="home-link"
                 >
                   Home
                 </a>
@@ -1792,6 +1805,7 @@ Object {
                 <a
                   class="ons-navigation__link"
                   href="/upload"
+                  id="deploy-questionnaire-link"
                 >
                   Deploy a questionnaire
                 </a>
@@ -1802,6 +1816,7 @@ Object {
                 <a
                   class="ons-navigation__link"
                   href="/audit"
+                  id="audit-logs-link"
                 >
                   View deployment history
                 </a>
@@ -1812,6 +1827,7 @@ Object {
                 <a
                   class="ons-navigation__link"
                   href="/status"
+                  id="blaise-status-link"
                 >
                   Check Blaise status
                 </a>
