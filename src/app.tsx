@@ -151,14 +151,14 @@ function App(): ReactElement {
                 noSave={true} 
                 signOutFunction={signOut}
                 navigationLinks={[
-                    { label: "Home", endpoint: "/" },
-                    { label: "Deploy a questionnaire", endpoint: "/upload" },
-                    { label: "View deployment history", endpoint: "/audit" },
-                    { label: "Check Blaise status", endpoint: "/status" },
+                    { id: "home-link", label: "Home", endpoint: "/" },
+                    { id: "deploy-questionnaire-link", label: "Deploy a questionnaire", endpoint: "/upload" },
+                    { id: "audit-logs-link", label: "View deployment history", endpoint: "/audit" },
+                    { id: "blaise-status-link", label: "Check Blaise status", endpoint: "/status" },
                 ]}
                 currentLocation={location.pathname}
-                createNavLink={(label: string, endpoint: string) => (
-                    <Link to={endpoint} className="ons-navigation__link">
+                createNavLink={(id: string, label: string, endpoint: string) => (
+                    <Link to={endpoint} id={id} className="ons-navigation__link">
                         {label}
                     </Link>
                 )}    

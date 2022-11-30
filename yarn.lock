@@ -3442,6 +3442,15 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
     react-dom "^17.0.2"
     react-loader-spinner "^4.0.0"
 
+"blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components#0.13.1":
+  version "1.0.0"
+  resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#46827623f6f04a0e5e0d2089475299e2ddc93f49"
+  dependencies:
+    formik "^2.2.9"
+    react "^17.0.2"
+    react-dom "^17.0.2"
+    react-loader-spinner "^4.0.0"
+
 blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
   version "1.0.0"
   resolved "https://codeload.github.com/ONSdigital/blaise-iap-node-provider/tar.gz/16c9937771369c6cf51dd23af24f0e8755e58e26"
