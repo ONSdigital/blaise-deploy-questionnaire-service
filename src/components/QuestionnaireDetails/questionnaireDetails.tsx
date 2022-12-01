@@ -107,64 +107,64 @@ function QuestionnaireDetails(): ReactElement {
 
         return (
             <>
-                <h1 className="u-mb-l">
+                <h1 className="ons-u-mb-l">
                     {questionnaire.name}
                 </h1>
 
-                <div className="summary u-mb-m">
-                    <div className="summary__group">
-                        <h2 className="summary__group-title">Questionnaire details</h2>
-                        <table className="summary__items">
-                            <thead className="u-vh">
+                <div className="ons-summary ons-u-mb-m">
+                    <div className="ons-summary__group">
+                        <h2 className="ons-summary__group-title">Questionnaire details</h2>
+                        <table className="ons-summary__items">
+                            <thead className="ons-u-vh">
                                 <tr>
                                     <th>Detail</th>
                                     <th>Output</th>
                                 </tr>
                             </thead>
-                            <tbody className="summary__item">
-                                <tr className="summary__row summary__row--has-values">
-                                    <td className="summary__item-title">
-                                        <div className="summary__item--text">
+                            <tbody className="ons-summary__item">
+                                <tr className="ons-summary__row ons-summary__row--has-values">
+                                    <td className="ons-summary__item-title">
+                                        <div className="ons-summary__item--text">
                                         Questionnaire status
                                         </div>
                                     </td>
-                                    <td className="summary__values" colSpan={2}>
+                                    <td className="ons-summary__values" colSpan={2}>
                                         <QuestionnaireStatus status={questionnaire.status ? questionnaire.status : ""}/>
                                     </td>
                                 </tr>
                             </tbody>
-                            <tbody className="summary__item">
-                                <tr className="summary__row summary__row--has-values">
-                                    <td className="summary__item-title">
-                                        <div className="summary__item--text">
+                            <tbody className="ons-summary__item">
+                                <tr className="ons-summary__row ons-summary__row--has-values">
+                                    <td className="ons-summary__item-title">
+                                        <div className="ons-summary__item--text">
                                         Modes
                                         </div>
                                     </td>
-                                    <td className="summary__values" colSpan={2}>
+                                    <td className="ons-summary__values" colSpan={2}>
                                         {modes.join(", ")}
                                     </td>
                                 </tr>
                             </tbody>
-                            <tbody className="summary__item">
-                                <tr className="summary__row summary__row--has-values">
-                                    <td className="summary__item-title">
-                                        <div className="summary__item--text">
+                            <tbody className="ons-summary__item">
+                                <tr className="ons-summary__row ons-summary__row--has-values">
+                                    <td className="ons-summary__item-title">
+                                        <div className="ons-summary__item--text">
                                         Number of cases
                                         </div>
                                     </td>
-                                    <td className="summary__values" colSpan={2}>
+                                    <td className="ons-summary__values" colSpan={2}>
                                         {questionnaire.dataRecordCount}
                                     </td>
                                 </tr>
                             </tbody>
-                            <tbody className="summary__item">
-                                <tr className="summary__row summary__row--has-values">
-                                    <td className="summary__item-title">
-                                        <div className="summary__item--text">
+                            <tbody className="ons-summary__item">
+                                <tr className="ons-summary__row ons-summary__row--has-values">
+                                    <td className="ons-summary__item-title">
+                                        <div className="ons-summary__item--text">
                                         Install date
                                         </div>
                                     </td>
-                                    <td className="summary__values" colSpan={2}>
+                                    <td className="ons-summary__values" colSpan={2}>
                                         {dateFormatter(questionnaire.installDate).format("DD/MM/YYYY HH:mm")}
                                     </td>
                                 </tr>
@@ -203,7 +203,7 @@ function QuestionnaireDetails(): ReactElement {
                 ]
             }/>
 
-            <main id="main-content" className="page__main u-mt-no">
+            <main id="main-content" className="ons-page__main ons-u-mt-no">
                 <QuestionnaireDetails/>
             </main>
         </>

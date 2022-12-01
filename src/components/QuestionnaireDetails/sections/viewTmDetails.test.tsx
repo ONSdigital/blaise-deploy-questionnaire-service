@@ -9,7 +9,7 @@ import React from "react";
 import ViewTmDetails from "./viewTmDetails";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { Router } from "react-router";
+import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import "@testing-library/jest-dom";
 

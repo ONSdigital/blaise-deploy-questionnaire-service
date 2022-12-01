@@ -8,7 +8,7 @@ import { act, screen, render } from "@testing-library/react";
 import flushPromises from "../../tests/utils";
 import userEvent from "@testing-library/user-event";
 import { DefineStepFunction } from "jest-cucumber";
-import { Router } from "react-router";
+import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import App from "../../app";
 import { formatDateString, navigatePastSettingTOStartDateAndDeployQuestionnaire } from "./helpers/functions";

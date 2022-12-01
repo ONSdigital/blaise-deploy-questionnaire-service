@@ -7,23 +7,23 @@ Object {
     <div>
       <nav
         aria-label="Breadcrumb"
-        class="breadcrumb"
+        class="ons-breadcrumb"
       >
         <ol
-          class="breadcrumb__items u-fs-s"
+          class="ons-breadcrumb__items u-fs-s"
         >
           <li
-            class="breadcrumb__item"
+            class="ons-breadcrumb__item"
             id="breadcrumb-0"
           >
             <a
-              class="breadcrumb__link"
+              class="ons-breadcrumb__link"
               href="/"
             >
               Home
             </a>
             <svg
-              class="svg-icon"
+              class="ons-svg-icon"
               focusable="false"
               viewBox="0 0 8 13"
               xmlns="http://www.w3.org/2000/svg"
@@ -37,11 +37,11 @@ Object {
         </ol>
       </nav>
       <main
-        class="page__main u-mt-no"
+        class="ons-page__main ons-u-mt-no"
         id="main-content"
       >
         <h1
-          class="u-mb-l"
+          class="ons-u-mb-l"
         >
           Blaise connection status
         </h1>
@@ -50,65 +50,65 @@ Object {
         >
           <dl
             aria-label="Status information for connections to Blaise"
-            class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
+            class="ons-metadata ons-metadata__list ons-grid ons-grid--gutterless ons-u-cf u-mb-l"
             title="Status information for connections to Blaise"
           >
             <dt
-              class="metadata__term grid__col col-5@m"
+              class="ons-metadata__term ons-grid__col ons-col-5@m"
             >
               Connection model
               :
             </dt>
             <dd
-              class="metadata__value grid__col col-7@m"
+              class="ons-metadata__value ons-grid__col ons-col-7@m"
             >
               <span
-                class="status status--success"
+                class="ons-status ons-status--success"
               >
                 OK
               </span>
             </dd>
             <dt
-              class="metadata__term grid__col col-5@m"
+              class="ons-metadata__term ons-grid__col ons-col-5@m"
             >
               Blaise connection
               :
             </dt>
             <dd
-              class="metadata__value grid__col col-7@m"
+              class="ons-metadata__value ons-grid__col ons-col-7@m"
             >
               <span
-                class="status status--success"
+                class="ons-status ons-status--success"
               >
                 OK
               </span>
             </dd>
             <dt
-              class="metadata__term grid__col col-5@m"
+              class="ons-metadata__term ons-grid__col ons-col-5@m"
             >
               Remote data server connection
               :
             </dt>
             <dd
-              class="metadata__value grid__col col-7@m"
+              class="ons-metadata__value ons-grid__col ons-col-7@m"
             >
               <span
-                class="status status--success"
+                class="ons-status ons-status--success"
               >
                 OK
               </span>
             </dd>
             <dt
-              class="metadata__term grid__col col-5@m"
+              class="ons-metadata__term ons-grid__col ons-col-5@m"
             >
               Remote Cati management connection
               :
             </dt>
             <dd
-              class="metadata__value grid__col col-7@m"
+              class="ons-metadata__value ons-grid__col ons-col-7@m"
             >
               <span
-                class="status status--success"
+                class="ons-status ons-status--success"
               >
                 OK
               </span>
@@ -121,23 +121,23 @@ Object {
   "container": <div>
     <nav
       aria-label="Breadcrumb"
-      class="breadcrumb"
+      class="ons-breadcrumb"
     >
       <ol
-        class="breadcrumb__items u-fs-s"
+        class="ons-breadcrumb__items u-fs-s"
       >
         <li
-          class="breadcrumb__item"
+          class="ons-breadcrumb__item"
           id="breadcrumb-0"
         >
           <a
-            class="breadcrumb__link"
+            class="ons-breadcrumb__link"
             href="/"
           >
             Home
           </a>
           <svg
-            class="svg-icon"
+            class="ons-svg-icon"
             focusable="false"
             viewBox="0 0 8 13"
             xmlns="http://www.w3.org/2000/svg"
@@ -151,11 +151,11 @@ Object {
       </ol>
     </nav>
     <main
-      class="page__main u-mt-no"
+      class="ons-page__main ons-u-mt-no"
       id="main-content"
     >
       <h1
-        class="u-mb-l"
+        class="ons-u-mb-l"
       >
         Blaise connection status
       </h1>
@@ -164,65 +164,65 @@ Object {
       >
         <dl
           aria-label="Status information for connections to Blaise"
-          class="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
+          class="ons-metadata ons-metadata__list ons-grid ons-grid--gutterless ons-u-cf u-mb-l"
           title="Status information for connections to Blaise"
         >
           <dt
-            class="metadata__term grid__col col-5@m"
+            class="ons-metadata__term ons-grid__col ons-col-5@m"
           >
             Connection model
             :
           </dt>
           <dd
-            class="metadata__value grid__col col-7@m"
+            class="ons-metadata__value ons-grid__col ons-col-7@m"
           >
             <span
-              class="status status--success"
+              class="ons-status ons-status--success"
             >
               OK
             </span>
           </dd>
           <dt
-            class="metadata__term grid__col col-5@m"
+            class="ons-metadata__term ons-grid__col ons-col-5@m"
           >
             Blaise connection
             :
           </dt>
           <dd
-            class="metadata__value grid__col col-7@m"
+            class="ons-metadata__value ons-grid__col ons-col-7@m"
           >
             <span
-              class="status status--success"
+              class="ons-status ons-status--success"
             >
               OK
             </span>
           </dd>
           <dt
-            class="metadata__term grid__col col-5@m"
+            class="ons-metadata__term ons-grid__col ons-col-5@m"
           >
             Remote data server connection
             :
           </dt>
           <dd
-            class="metadata__value grid__col col-7@m"
+            class="ons-metadata__value ons-grid__col ons-col-7@m"
           >
             <span
-              class="status status--success"
+              class="ons-status ons-status--success"
             >
               OK
             </span>
           </dd>
           <dt
-            class="metadata__term grid__col col-5@m"
+            class="ons-metadata__term ons-grid__col ons-col-5@m"
           >
             Remote Cati management connection
             :
           </dt>
           <dd
-            class="metadata__value grid__col col-7@m"
+            class="ons-metadata__value ons-grid__col ons-col-7@m"
           >
             <span
-              class="status status--success"
+              class="ons-status ons-status--success"
             >
               OK
             </span>

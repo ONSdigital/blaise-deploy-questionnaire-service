@@ -27,8 +27,8 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
     }
 
     return (
-        <tr className="table__row" key={questionnaire.name} data-testid={"questionnaire-table-row"}>
-            <td className="table__cell ">
+        <tr className="ons-table__row" key={questionnaire.name} data-testid={"questionnaire-table-row"}>
+            <td className="ons-table__cell ">
                 <Link
                     id={`info-${questionnaire.name}`}
                     data-testid={`info-${questionnaire.name}`}
@@ -40,16 +40,16 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
                     {questionnaireName(questionnaire)}
                 </Link>
             </td>
-            <td className="table__cell ">
+            <td className="ons-table__cell ">
                 {questionnaire.fieldPeriod}
             </td>
-            <td className="table__cell ">
+            <td className="ons-table__cell ">
                 <QuestionnaireStatus status={questionnaire.status ? questionnaire.status : ""} />
             </td>
-            <td className="table__cell ">
+            <td className="ons-table__cell ">
                 {dateFormatter(questionnaire.installDate).format("DD/MM/YYYY HH:mm")}
             </td>
-            <td className="table__cell ">
+            <td className="ons-table__cell ">
                 {questionnaire.dataRecordCount}
             </td>
         </tr>
@@ -163,15 +163,15 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     }
     return (
         <>
-            <div className={"elementToFadeIn u-pt-s"}>
-                <div className="field">
-                    <label className="label" htmlFor="filter-by-name">Filter by questionnaire name
+            <div className={"elementToFadeIn ons-u-pt-s"}>
+                <div className="ons-field">
+                    <label className="ons-label" htmlFor="filter-by-name">Filter by questionnaire name
                     </label>
-                    <input type="text" id="filter-by-name" className="input input--text input-type__input"
+                    <input type="text" id="filter-by-name" className="ons-input ons-input--text ons-input-type__input"
                         onChange={(e) => filterList(e.target.value)} />
                 </div>
 
-                <div className="u-mt-s">
+                <div className="ons-u-mt-s">
                     {
                         questionnaires &&
                         <h3 aria-live="polite">{filteredList.length} results of {realQuestionnaireCount}</h3>

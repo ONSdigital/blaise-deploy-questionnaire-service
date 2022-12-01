@@ -19,7 +19,7 @@ function ConfirmOverride({
 
     return (
         <>
-            <h1 className="u-mb-l">
+            <h1 className="ons-u-mb-l">
                 Questionnaire settings for {questionnaireName} do not match recommendations
             </h1>
             <ONSPanel status={"error"}>

@@ -41,7 +41,7 @@ function ViewTmDetails({ questionnaireName }: Props): ReactElement {
 
     if (loading) {
         return (
-            <div className="u-mb-m" aria-busy="true">
+            <div className="ons-u-mb-m" aria-busy="true">
                 <ONSLoadingPanel message={"Getting Totalmobile release date"}/>
             </div>
         );
@@ -49,7 +49,7 @@ function ViewTmDetails({ questionnaireName }: Props): ReactElement {
 
     if (errored) {
         return (
-            <div className="u-mb-m">
+            <div className="ons-u-mb-m">
                 <ONSPanel status={"error"}>Failed to get Totalmobile release date</ONSPanel>
             </div>
         );
@@ -57,25 +57,25 @@ function ViewTmDetails({ questionnaireName }: Props): ReactElement {
 
     return (
         <>
-            <div className="summary u-mb-m elementToFadeIn">
-                <div className="summary__group">
-                    <h2 className="summary__group-title">Totalmobile details</h2>
-                    <table className="summary__items">
-                        <thead className="u-vh">
+            <div className="ons-summary ons-u-mb-m elementToFadeIn">
+                <div className="ons-summary__group">
+                    <h2 className="ons-summary__group-title">Totalmobile details</h2>
+                    <table className="ons-summary__items">
+                        <thead className="ons-u-vh">
                             <tr>
                                 <th>Questionnaire detail</th>
                                 <th>result</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                        <tbody className="ons-summary__item">
+                            <tr className="ons-summary__row ons-summary__row--has-values">
+                                <td className="ons-summary__item-title">
+                                    <div className="ons-summary__item--text">
                                     Totalmobile release date
                                     </div>
                                 </td>
-                                <td className="summary__values">
+                                <td className="ons-summary__values">
 
                                     {
                                         tmReleaseDate ?
@@ -88,13 +88,13 @@ function ViewTmDetails({ questionnaireName }: Props): ReactElement {
                                             "No release date specified"
                                     }
                                 </td>
-                                <td className="summary__actions">
+                                <td className="ons-summary__actions">
                                     {
                                         tmReleaseDate ?
                                             <Link to={{
                                                 pathname: "/questionnaire/release-date",
                                                 state: { questionnaireName: questionnaireName, tmReleaseDate: tmReleaseDateValue }
-                                            }} className="summary__button"
+                                            }} className="ons-summary__button"
                                             aria-label={`Change or delete release date for questionnaire ${questionnaireName}`}>
                                             Change or delete release date
                                             </Link>
@@ -102,7 +102,7 @@ function ViewTmDetails({ questionnaireName }: Props): ReactElement {
                                             <Link to={{
                                                 pathname: "/questionnaire/release-date",
                                                 state: { questionnaireName: questionnaireName }
-                                            }} className="summary__button"
+                                            }} className="ons-summary__button"
                                             aria-label={`Add a release date for questionnaire ${questionnaireName}`}>
                                             Add release date
                                             </Link>

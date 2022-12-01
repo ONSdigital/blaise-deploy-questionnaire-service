@@ -9,7 +9,7 @@ import "@testing-library/jest-dom";
 import flushPromises from "./tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
-import { Router } from "react-router";
+import { Router } from "react-router-dom";
 import { questionnaireList } from "./features/step_definitions/helpers/apiMockObjects";
 import _ from "lodash";
 import { AuthManager } from "blaise-login-react-client";

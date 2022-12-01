@@ -1,12 +1,11 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation, Link } from "react-router-dom";
 import QuestionnaireList from "./components/questionnaireList";
 import UploadPage from "./components/uploadPage/uploadPage";
 import DeploymentSummary from "./components/deploymentSummary";
 import DeleteConfirmation from "./components/deletePage/deleteConfirmation";
 import StatusPage from "./components/statusPage";
 import {
-    BetaBanner,
     DefaultErrorBoundary,
     ErrorBoundary,
     Footer,
@@ -23,7 +22,6 @@ import QuestionnaireDetails from "./components/QuestionnaireDetails/questionnair
 import ChangeTOStartDate from "./components/QuestionnaireDetails/changeTOStartDate";
 import ChangeTMReleaseDate from "./components/QuestionnaireDetails/changeTmReleaseDate";
 import "./style.css";
-import { NavigationLinks } from "./components/navigationLinks";
 import { isProduction } from "./client/env";
 import { LoginForm, AuthManager } from "blaise-login-react-client";
 import "./style.css";
@@ -92,66 +90,83 @@ function App(): ReactElement {
         }
 
         return (
-            <DefaultErrorBoundary>
-                <Switch>
-                    <Route path="/status">
-                        <StatusPage/>
-                    </Route>
-                    <Route path="/reinstall">
-                        <ReinstallQuestionnaires/>
-                    </Route>
-                    <Route path="/audit">
-                        <AuditPage/>
-                    </Route>
-                    <Route path="/UploadSummary">
-                        <DeploymentSummary/>
-                    </Route>
-                    <Route path="/upload/survey-live/:questionnaireName">
-                        <LiveSurveyWarning/>
-                    </Route>
-                    <Route path="/questionnaire/start-date">
-                        <ChangeTOStartDate/>
-                    </Route>
-                    <Route path="/questionnaire/release-date">
-                        <ChangeTMReleaseDate/>
-                    </Route>
-                    <Route path="/questionnaire/:questionnaireName">
-                        <QuestionnaireDetails/>
-                    </Route>
-                    <Route path="/upload">
-                        <UploadPage/>
-                    </Route>
-                    <Route path="/delete">
-                        <DeleteConfirmation onDelete={onDeleteQuestionnaire} onCancel={onCancelDeleteQuestionnaire} />
-                    </Route>
-                    <Route path="/">
-                        <main id="main-content" className="page__main u-mt-no">
-                            {successBanner()}
-                            {errored && <ONSErrorPanel/>}
-                            <ErrorBoundary
-                                errorMessageText={"Unable to load questionnaire table correctly"}>
-                                <QuestionnaireList setErrored={setErrored}/>
-                            </ErrorBoundary>
-                        </main>
-                    </Route>
-                </Switch>
-            </DefaultErrorBoundary>);
+            <>
+                <DefaultErrorBoundary>
+                    <Switch>
+                        <Route path="/status">
+                            <StatusPage/>
+                        </Route>
+                        <Route path="/reinstall">
+                            <ReinstallQuestionnaires/>
+                        </Route>
+                        <Route path="/audit">
+                            <AuditPage/>
+                        </Route>
+                        <Route path="/UploadSummary">
+                            <DeploymentSummary/>
+                        </Route>
+                        <Route path="/upload/survey-live/:questionnaireName">
+                            <LiveSurveyWarning/>
+                        </Route>
+                        <Route path="/questionnaire/start-date">
+                            <ChangeTOStartDate/>
+                        </Route>
+                        <Route path="/questionnaire/release-date">
+                            <ChangeTMReleaseDate/>
+                        </Route>
+                        <Route path="/questionnaire/:questionnaireName">
+                            <QuestionnaireDetails/>
+                        </Route>
+                        <Route path="/upload">
+                            <UploadPage/>
+                        </Route>
+                        <Route path="/delete">
+                            <DeleteConfirmation onDelete={onDeleteQuestionnaire} onCancel={onCancelDeleteQuestionnaire} />
+                        </Route>
+                        <Route path="/">
+                            <main id="main-content" className="ons-page__main ons-u-mt-no">
+                                {successBanner()}
+                                {errored && <ONSErrorPanel/>}
+                                <ErrorBoundary
+                                    errorMessageText={"Unable to load questionnaire table correctly"}>
+                                    <QuestionnaireList setErrored={setErrored}/>
+                                </ErrorBoundary>
+                            </main>
+                        </Route>
+                    </Switch>
+                </DefaultErrorBoundary>
+            </>
+        );
     }
 
     return (
         <>
-            <a className="skip__link" href="#main-content">Skip to content</a>
+            <a className="ons-skip-link" href="#main-content">Skip to content</a>
             {
                 isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
             }
-            <BetaBanner />
-            <Header title={"Deploy Questionnaire Service"} signOutButton={loggedIn} noSave={true} signOutFunction={signOut} />
-            <NavigationLinks />
-            <div style={divStyle} className="page__container container">
+            <Header 
+                title={"Deploy Questionnaire Service"} 
+                signOutButton={loggedIn} 
+                noSave={true} 
+                signOutFunction={signOut}
+                navigationLinks={[
+                    { id: "home-link", label: "Home", endpoint: "/" },
+                    { id: "deploy-questionnaire-link", label: "Deploy a questionnaire", endpoint: "/upload" },
+                    { id: "audit-logs-link", label: "View deployment history", endpoint: "/audit" },
+                    { id: "blaise-status-link", label: "Check Blaise status", endpoint: "/status" },
+                ]}
+                currentLocation={location.pathname}
+                createNavLink={(id: string, label: string, endpoint: string) => (
+                    <Link to={endpoint} id={id} className="ons-navigation__link">
+                        {label}
+                    </Link>
+                )}    
+            />
+            <div style={divStyle} className="ons-page__container ons-container">
                 <Loading />
                 <LoginPage />
                 <AppContent />
-
             </div>
             <Footer />
         </>

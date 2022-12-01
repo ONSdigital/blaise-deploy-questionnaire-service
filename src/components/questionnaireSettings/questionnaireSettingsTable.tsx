@@ -23,23 +23,23 @@ export default class QuestionnaireSettingsTable extends Component<QuestionnaireS
 
     formatSetting(property: string, value: any, invalid: boolean, correctValue: any): ReactElement {
         return (
-            <tbody className={`summary__item ${invalid ? "summary__item--error" : ""}`} key={property}>
+            <tbody className={`ons-summary__item ${invalid ? "ons-summary__item--error" : ""}`} key={property}>
                 {
                     invalid &&
-          <tr className="summary__row">
-              <th colSpan={3} className="summary__row-title u-fs-r">
+          <tr className="ons-summary__row">
+              <th colSpan={3} className="ons-summary__row-title ons-u-fs-r">
                   {formatText(property)} should
               be {(typeof correctValue === "boolean") ? (correctValue ? "True" : "False") : correctValue}
               </th>
           </tr>
                 }
-                <tr className="summary__row summary__row--has-values">
-                    <td className="summary__item-title">
-                        <div className="summary__item--text">
+                <tr className="ons-summary__row ons-summary__row--has-values">
+                    <td className="ons-summary__item-title">
+                        <div className="ons-summary__item--text">
                             {formatText(property)}
                         </div>
                     </td>
-                    <td className="summary__values" colSpan={2}>
+                    <td className="ons-summary__values" colSpan={2}>
                         {(typeof value === "boolean") ? (value ? "True" : "False") : value}
                     </td>
                 </tr>
@@ -65,10 +65,10 @@ export default class QuestionnaireSettingsTable extends Component<QuestionnaireS
         }
 
         return (
-            <div className="summary" >
-                <div className="summary__group">
+            <div className="ons-summary" >
+                <div className="ons-summary__group">
                     <h2>Questionnaire settings</h2>
-                    <table id="report-table" className="summary__items u-mt-s">
+                    <table id="report-table" className="ons-summary__items ons-u-mt-s">
                         {
                             newElements.map((element => {
                                 return element;

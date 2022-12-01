@@ -6,23 +6,23 @@ Object {
   "baseElement": <body>
     <div>
       <fieldset
-        class="fieldset"
+        class="ons-fieldset"
       >
         <legend
-          class="fieldset__legend"
+          class="ons-fieldset__legend"
         />
         <div
-          class="radios__items"
+          class="ons-radios__items"
           id="askToSetDate"
         >
           <p
-            class="radios__item"
+            class="ons-radios__item"
           >
             <span
-              class="radio"
+              class="ons-radio"
             >
               <input
-                class="radio__input js-radio"
+                class="ons-radio__input js-radio"
                 id="no"
                 name="askToSetDate"
                 props="[object Object]"
@@ -30,7 +30,7 @@ Object {
                 value="no"
               />
               <label
-                class="radio__label "
+                class="ons-radio__label "
                 for="no"
                 id="no-label"
               >
@@ -40,13 +40,13 @@ Object {
           </p>
           <br />
           <p
-            class="radios__item"
+            class="ons-radios__item"
           >
             <span
-              class="radio"
+              class="ons-radio"
             >
               <input
-                class="radio__input js-radio"
+                class="ons-radio__input js-radio"
                 id="yes"
                 name="askToSetDate"
                 props="[object Object]"
@@ -54,25 +54,25 @@ Object {
                 value="yes"
               />
               <label
-                class="radio__label "
+                class="ons-radio__label "
                 for="yes"
                 id="yes-label"
               >
                 Yes, let me specify a release date
               </label>
               <span
-                class="radio__other radio__other--open"
+                class="ons-radio__other ons-radio__other--open"
                 id="other-radio-other-wrap"
               >
                 <label
-                  class="label u-fs-s--b "
+                  class="ons-label ons-u-fs-s--b "
                   for="set-live-date"
                   id="other-textbox-label"
                 >
                   Please specify date
                 </label>
                 <input
-                  class="input input--text input-type__input input--w-auto"
+                  class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
                   id="set-live-date"
                   name="set release date"
                   type="date"
@@ -88,23 +88,23 @@ Object {
   </body>,
   "container": <div>
     <fieldset
-      class="fieldset"
+      class="ons-fieldset"
     >
       <legend
-        class="fieldset__legend"
+        class="ons-fieldset__legend"
       />
       <div
-        class="radios__items"
+        class="ons-radios__items"
         id="askToSetDate"
       >
         <p
-          class="radios__item"
+          class="ons-radios__item"
         >
           <span
-            class="radio"
+            class="ons-radio"
           >
             <input
-              class="radio__input js-radio"
+              class="ons-radio__input js-radio"
               id="no"
               name="askToSetDate"
               props="[object Object]"
@@ -112,7 +112,7 @@ Object {
               value="no"
             />
             <label
-              class="radio__label "
+              class="ons-radio__label "
               for="no"
               id="no-label"
             >
@@ -122,13 +122,13 @@ Object {
         </p>
         <br />
         <p
-          class="radios__item"
+          class="ons-radios__item"
         >
           <span
-            class="radio"
+            class="ons-radio"
           >
             <input
-              class="radio__input js-radio"
+              class="ons-radio__input js-radio"
               id="yes"
               name="askToSetDate"
               props="[object Object]"
@@ -136,25 +136,25 @@ Object {
               value="yes"
             />
             <label
-              class="radio__label "
+              class="ons-radio__label "
               for="yes"
               id="yes-label"
             >
               Yes, let me specify a release date
             </label>
             <span
-              class="radio__other radio__other--open"
+              class="ons-radio__other ons-radio__other--open"
               id="other-radio-other-wrap"
             >
               <label
-                class="label u-fs-s--b "
+                class="ons-label ons-u-fs-s--b "
                 for="set-live-date"
                 id="other-textbox-label"
               >
                 Please specify date
               </label>
               <input
-                class="input input--text input-type__input input--w-auto"
+                class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
                 id="set-live-date"
                 name="set release date"
                 type="date"
@@ -227,23 +227,23 @@ Object {
   "baseElement": <body>
     <div>
       <fieldset
-        class="fieldset"
+        class="ons-fieldset"
       >
         <legend
-          class="fieldset__legend"
+          class="ons-fieldset__legend"
         />
         <div
-          class="radios__items"
+          class="ons-radios__items"
           id="askToSetDate"
         >
           <p
-            class="radios__item"
+            class="ons-radios__item"
           >
             <span
-              class="radio"
+              class="ons-radio"
             >
               <input
-                class="radio__input js-radio"
+                class="ons-radio__input js-radio"
                 id="no"
                 name="askToSetDate"
                 props="[object Object]"
@@ -251,7 +251,7 @@ Object {
                 value="no"
               />
               <label
-                class="radio__label "
+                class="ons-radio__label "
                 for="no"
                 id="no-label"
               >
@@ -261,13 +261,13 @@ Object {
           </p>
           <br />
           <p
-            class="radios__item"
+            class="ons-radios__item"
           >
             <span
-              class="radio"
+              class="ons-radio"
             >
               <input
-                class="radio__input js-radio"
+                class="ons-radio__input js-radio"
                 id="yes"
                 name="askToSetDate"
                 props="[object Object]"
@@ -275,25 +275,25 @@ Object {
                 value="yes"
               />
               <label
-                class="radio__label "
+                class="ons-radio__label "
                 for="yes"
                 id="yes-label"
               >
                 Yes, let me specify a start date
               </label>
               <span
-                class="radio__other radio__other--open"
+                class="ons-radio__other ons-radio__other--open"
                 id="other-radio-other-wrap"
               >
                 <label
-                  class="label u-fs-s--b "
+                  class="ons-label ons-u-fs-s--b "
                   for="set-live-date"
                   id="other-textbox-label"
                 >
                   Please specify date
                 </label>
                 <input
-                  class="input input--text input-type__input input--w-auto"
+                  class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
                   id="set-live-date"
                   name="set start date"
                   type="date"
@@ -309,23 +309,23 @@ Object {
   </body>,
   "container": <div>
     <fieldset
-      class="fieldset"
+      class="ons-fieldset"
     >
       <legend
-        class="fieldset__legend"
+        class="ons-fieldset__legend"
       />
       <div
-        class="radios__items"
+        class="ons-radios__items"
         id="askToSetDate"
       >
         <p
-          class="radios__item"
+          class="ons-radios__item"
         >
           <span
-            class="radio"
+            class="ons-radio"
           >
             <input
-              class="radio__input js-radio"
+              class="ons-radio__input js-radio"
               id="no"
               name="askToSetDate"
               props="[object Object]"
@@ -333,7 +333,7 @@ Object {
               value="no"
             />
             <label
-              class="radio__label "
+              class="ons-radio__label "
               for="no"
               id="no-label"
             >
@@ -343,13 +343,13 @@ Object {
         </p>
         <br />
         <p
-          class="radios__item"
+          class="ons-radios__item"
         >
           <span
-            class="radio"
+            class="ons-radio"
           >
             <input
-              class="radio__input js-radio"
+              class="ons-radio__input js-radio"
               id="yes"
               name="askToSetDate"
               props="[object Object]"
@@ -357,25 +357,25 @@ Object {
               value="yes"
             />
             <label
-              class="radio__label "
+              class="ons-radio__label "
               for="yes"
               id="yes-label"
             >
               Yes, let me specify a start date
             </label>
             <span
-              class="radio__other radio__other--open"
+              class="ons-radio__other ons-radio__other--open"
               id="other-radio-other-wrap"
             >
               <label
-                class="label u-fs-s--b "
+                class="ons-label ons-u-fs-s--b "
                 for="set-live-date"
                 id="other-textbox-label"
               >
                 Please specify date
               </label>
               <input
-                class="input input--text input-type__input input--w-auto"
+                class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
                 id="set-live-date"
                 name="set start date"
                 type="date"
