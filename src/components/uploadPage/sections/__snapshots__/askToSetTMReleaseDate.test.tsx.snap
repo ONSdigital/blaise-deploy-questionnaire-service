@@ -85,7 +85,7 @@ Object {
                     id="other-radio-other-wrap"
                   >
                     <label
-                      class="label u-fs-s--b "
+                      class="ons-label ons-u-fs-s--b "
                       for="set-live-date"
                       id="other-textbox-label"
                     >
@@ -189,7 +189,7 @@ Object {
                   id="other-radio-other-wrap"
                 >
                   <label
-                    class="label u-fs-s--b "
+                    class="ons-label ons-u-fs-s--b "
                     for="set-live-date"
                     id="other-textbox-label"
                   >
