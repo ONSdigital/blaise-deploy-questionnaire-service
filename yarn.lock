@@ -3433,15 +3433,6 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
     blaise-iap-node-provider "https://github.com/ONSdigital/blaise-iap-node-provider.git"
     typescript "~4.2.2"
 
-"blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components#0.12.0":
-  version "1.0.0"
-  resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#01f717fc8aa60647894c90c72b98da5ed6a15168"
-  dependencies:
-    formik "^2.2.9"
-    react "^17.0.2"
-    react-dom "^17.0.2"
-    react-loader-spinner "^4.0.0"
-
 "blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components#0.13.1":
   version "1.0.0"
   resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#46827623f6f04a0e5e0d2089475299e2ddc93f49"
@@ -3475,13 +3466,13 @@ blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
     path-parse "^1.0.7"
     typescript "~4.2.2"
 
-"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?8a9a2c1c49de88bb1418821cf27e657d5d1c0bd2":
+"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?1f442bdbce330f2dfa2d72c893e6a535bf4da623":
   version "1.0.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?8a9a2c1c49de88bb1418821cf27e657d5d1c0bd2#ff69875eefe86b53c4be5eb1eecea8dac4fe1d5c"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?1f442bdbce330f2dfa2d72c893e6a535bf4da623#ab1dafcade78d7227273169ab096446cf25cd762"
   dependencies:
     axios "~0.21.0"
     blaise-api-node-client ONSDigital/blaise-api-node-client
-    blaise-design-system-react-components "git+https://github.com/ONSdigital/blaise-design-system-react-components#0.12.0"
+    blaise-design-system-react-components "git+https://github.com/ONSdigital/blaise-design-system-react-components#0.13.1"
     formik "^2.2.9"
     react "^17.0.1"
     react-dom "^17.0.0"
@@ -3489,9 +3480,9 @@ blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
     react-router-dom "^6.2.1"
     universal-cookie "^4.0.4"
 
-"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?8a9a2c1c49de88bb1418821cf27e657d5d1c0bd2":
+"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?1f442bdbce330f2dfa2d72c893e6a535bf4da623":
   version "1.1.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?8a9a2c1c49de88bb1418821cf27e657d5d1c0bd2#825ff940a6aea072908b18f578b2ab3d266f62bd"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?1f442bdbce330f2dfa2d72c893e6a535bf4da623#85120103a44c34215d2c30bdb050e8c5f155a071"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
