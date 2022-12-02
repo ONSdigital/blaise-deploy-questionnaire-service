@@ -42,7 +42,7 @@ function ViewCatiModeDetails({ questionnaireName, modes }: Props): ReactElement 
 
     if (loading) {
         return (
-            <div className="u-mb-m" aria-busy="true">
+            <div className="ons-u-mb-m" aria-busy="true">
                 <ONSLoadingPanel message={"Getting Telephone Operations start date"}/>
             </div>
         );
@@ -50,7 +50,7 @@ function ViewCatiModeDetails({ questionnaireName, modes }: Props): ReactElement 
 
     if (errored) {
         return (
-            <div className="u-mb-m">
+            <div className="ons-u-mb-m">
                 <ONSPanel status={"error"}>Failed to get Telephone Operations start date</ONSPanel>
             </div>
         );
@@ -58,25 +58,25 @@ function ViewCatiModeDetails({ questionnaireName, modes }: Props): ReactElement 
 
     return (
         <>
-            <div className="summary u-mb-m elementToFadeIn">
-                <div className="summary__group">
-                    <h2 className="summary__group-title">CATI mode details</h2>
-                    <table className="summary__items">
-                        <thead className="u-vh">
+            <div className="ons-summary ons-u-mb-m elementToFadeIn">
+                <div className="ons-summary__group">
+                    <h2 className="ons-summary__group-title">CATI mode details</h2>
+                    <table className="ons-summary__items">
+                        <thead className="ons-u-vh">
                             <tr>
                                 <th>Questionnaire detail</th>
                                 <th>result</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                        <tbody className="ons-summary__item">
+                            <tr className="ons-summary__row ons-summary__row--has-values">
+                                <td className="ons-summary__item-title">
+                                    <div className="ons-summary__item--text">
                                     Telephone Operations start date
                                     </div>
                                 </td>
-                                <td className="summary__values">
+                                <td className="ons-summary__values">
 
                                     {
                                         toStartDate ?
@@ -89,13 +89,13 @@ function ViewCatiModeDetails({ questionnaireName, modes }: Props): ReactElement 
                                             "No start date specified, using survey days"
                                     }
                                 </td>
-                                <td className="summary__actions">
+                                <td className="ons-summary__actions">
                                     {
                                         toStartDate ?
                                             <Link to={{
                                                 pathname: "/questionnaire/start-date",
                                                 state: { questionnaireName: questionnaireName, toStartDate: toStartDateValue }
-                                            }} className="summary__button"
+                                            }} className="ons-summary__button"
                                             aria-label={`Change or delete start date for questionnaire ${questionnaireName}`}>
                                             Change or delete start date
                                             </Link>
@@ -103,7 +103,7 @@ function ViewCatiModeDetails({ questionnaireName, modes }: Props): ReactElement 
                                             <Link to={{
                                                 pathname: "/questionnaire/start-date",
                                                 state: { questionnaireName: questionnaireName }
-                                            }} className="summary__button"
+                                            }} className="ons-summary__button"
                                             aria-label={`Add a start date for questionnaire ${questionnaireName}`}>
                                             Add start date
                                             </Link>

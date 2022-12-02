@@ -19,7 +19,7 @@ function QuestionnaireStatus({ status }: Props): ReactElement {
     return (
         <>
             <span
-                className={`status status--${getStatusColor(status)}`}>
+                className={`ons-status ons-status--${getStatusColor(status)}`}>
                 {status}
             </span>
         </>

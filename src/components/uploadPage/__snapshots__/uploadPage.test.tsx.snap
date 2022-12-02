@@ -7,23 +7,23 @@ Object {
     <div>
       <nav
         aria-label="Breadcrumb"
-        class="breadcrumb"
+        class="ons-breadcrumb"
       >
         <ol
-          class="breadcrumb__items u-fs-s"
+          class="ons-breadcrumb__items u-fs-s"
         >
           <li
-            class="breadcrumb__item"
+            class="ons-breadcrumb__item"
             id="breadcrumb-0"
           >
             <a
-              class="breadcrumb__link"
+              class="ons-breadcrumb__link"
               href="/"
             >
               Home
             </a>
             <svg
-              class="svg-icon"
+              class="ons-svg-icon"
               focusable="false"
               viewBox="0 0 8 13"
               xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +37,7 @@ Object {
         </ol>
       </nav>
       <main
-        class="page__main u-mt-no"
+        class="ons-page__main ons-u-mt-no"
         id="main-content"
       >
         <form
@@ -45,7 +45,7 @@ Object {
           id="formID"
         >
           <h1
-            class="u-mb-l"
+            class="ons-u-mb-l"
           >
             Deploy a questionnaire file
           </h1>
@@ -59,10 +59,10 @@ Object {
             .
           </p>
           <div
-            class="panel panel--info panel--no-title  u-mt-m"
+            class="ons-panel ons-panel--info ons-panel--no-title  ons-u-mt-m"
           >
             <div
-              class="panel__body "
+              class="ons-panel__body "
             >
               <p>
                 When a questionnaire file is selected and you continue to deploy this questionnaire file, 
@@ -81,23 +81,23 @@ Object {
             </div>
           </div>
           <div
-            class="field"
+            class="ons-field"
           >
             <label
-              class="label label--with-description"
+              class="ons-label ons-label--with-description"
               for="survey-selector"
             >
               Select survey package
             </label>
             <span
-              class="label__description  input--with-description"
+              class="ons-label__description  ons-input--with-description"
               id="description-hint"
             >
               File type accepted is .bpkg
             </span>
             <input
               accept=".bpkg"
-              class="input input--text input-type__input input--upload"
+              class="ons-input ons-input--text ons-input-type__input ons-input--upload"
               id="survey-selector"
               name="Select survey package"
               props="[object Object]"
@@ -106,28 +106,28 @@ Object {
             />
           </div>
           <div
-            class="btn-group u-mt-m"
+            class="ons-btn-group ons-u-mt-m"
           >
             <button
-              class="btn "
+              class="ons-btn "
               data-testid="button"
               id="continue-deploy-button"
               type="submit"
             >
               <span
-                class="btn__inner"
+                class="ons-btn__inner"
               >
                 Continue
               </span>
             </button>
             <button
-              class="btn btn--secondary "
+              class="ons-btn  ons-btn--secondary"
               data-testid="button"
               id="cancel-deploy-button"
               type="button"
             >
               <span
-                class="btn__inner"
+                class="ons-btn__inner"
               >
                 Cancel
               </span>
@@ -140,23 +140,23 @@ Object {
   "container": <div>
     <nav
       aria-label="Breadcrumb"
-      class="breadcrumb"
+      class="ons-breadcrumb"
     >
       <ol
-        class="breadcrumb__items u-fs-s"
+        class="ons-breadcrumb__items u-fs-s"
       >
         <li
-          class="breadcrumb__item"
+          class="ons-breadcrumb__item"
           id="breadcrumb-0"
         >
           <a
-            class="breadcrumb__link"
+            class="ons-breadcrumb__link"
             href="/"
           >
             Home
           </a>
           <svg
-            class="svg-icon"
+            class="ons-svg-icon"
             focusable="false"
             viewBox="0 0 8 13"
             xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +170,7 @@ Object {
       </ol>
     </nav>
     <main
-      class="page__main u-mt-no"
+      class="ons-page__main ons-u-mt-no"
       id="main-content"
     >
       <form
@@ -178,7 +178,7 @@ Object {
         id="formID"
       >
         <h1
-          class="u-mb-l"
+          class="ons-u-mb-l"
         >
           Deploy a questionnaire file
         </h1>
@@ -192,10 +192,10 @@ Object {
           .
         </p>
         <div
-          class="panel panel--info panel--no-title  u-mt-m"
+          class="ons-panel ons-panel--info ons-panel--no-title  ons-u-mt-m"
         >
           <div
-            class="panel__body "
+            class="ons-panel__body "
           >
             <p>
               When a questionnaire file is selected and you continue to deploy this questionnaire file, 
@@ -214,23 +214,23 @@ Object {
           </div>
         </div>
         <div
-          class="field"
+          class="ons-field"
         >
           <label
-            class="label label--with-description"
+            class="ons-label ons-label--with-description"
             for="survey-selector"
           >
             Select survey package
           </label>
           <span
-            class="label__description  input--with-description"
+            class="ons-label__description  ons-input--with-description"
             id="description-hint"
           >
             File type accepted is .bpkg
           </span>
           <input
             accept=".bpkg"
-            class="input input--text input-type__input input--upload"
+            class="ons-input ons-input--text ons-input-type__input ons-input--upload"
             id="survey-selector"
             name="Select survey package"
             props="[object Object]"
@@ -239,28 +239,28 @@ Object {
           />
         </div>
         <div
-          class="btn-group u-mt-m"
+          class="ons-btn-group ons-u-mt-m"
         >
           <button
-            class="btn "
+            class="ons-btn "
             data-testid="button"
             id="continue-deploy-button"
             type="submit"
           >
             <span
-              class="btn__inner"
+              class="ons-btn__inner"
             >
               Continue
             </span>
           </button>
           <button
-            class="btn btn--secondary "
+            class="ons-btn  ons-btn--secondary"
             data-testid="button"
             id="cancel-deploy-button"
             type="button"
           >
             <span
-              class="btn__inner"
+              class="ons-btn__inner"
             >
               Cancel
             </span>

@@ -9,11 +9,11 @@ interface SelectFilePageProps {
 function AskToSetTOStartDate({ questionnaireName }: SelectFilePageProps): ReactElement {
     return (
         <>
-            <div className="grid">
-                <div className="grid__col col-8@m">
-                    <h1 className="u-mb-l">
+            <div className="ons-grid">
+                <div className="ons-grid__col ons-col-8@m">
+                    <h1 className="ons-u-mb-l">
                         Would you like to set a telephone operations start date for questionnaire <em
-                            className="highlight">{questionnaireName}</em>?
+                            className="ons-highlight">{questionnaireName}</em>?
                     </h1>
 
                     <p>

@@ -3433,22 +3433,13 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
     blaise-iap-node-provider "https://github.com/ONSdigital/blaise-iap-node-provider.git"
     typescript "~4.2.2"
 
-blaise-design-system-react-components@ONSDigital/blaise-design-system-react-components:
+"blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components#0.13.2":
   version "1.0.0"
-  resolved "https://codeload.github.com/ONSDigital/blaise-design-system-react-components/tar.gz/2f0ddaedd23e32b46128bf51f17cca7491761fff"
+  resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#2150c7a402fa6efd5be82a32dda2e671fdeddd58"
   dependencies:
     formik "^2.2.9"
-    react "^17.0.1"
-    react-dom "^17.0.0"
-    react-loader-spinner "^4.0.0"
-
-"blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components#014a606b35c63d6fd703f7523918b8f9527bf2ff":
-  version "1.0.0"
-  resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#014a606b35c63d6fd703f7523918b8f9527bf2ff"
-  dependencies:
-    formik "^2.2.9"
-    react "^17.0.1"
-    react-dom "^17.0.0"
+    react "^17.0.2"
+    react-dom "^17.0.2"
     react-loader-spinner "^4.0.0"
 
 blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
@@ -3475,13 +3466,13 @@ blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
     path-parse "^1.0.7"
     typescript "~4.2.2"
 
-"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?2157644435f5938f13241f6e1f4170faa9c2581e":
+"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?6e3c678f5b5b5cc65c0275aa6d30380204998153":
   version "1.0.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?2157644435f5938f13241f6e1f4170faa9c2581e#fc7594c37473fb9667c44dcb5a96e2e3affa5ac6"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?6e3c678f5b5b5cc65c0275aa6d30380204998153#fb35103ee6a78bf698f8aea91b44dbcd72b216bf"
   dependencies:
     axios "~0.21.0"
     blaise-api-node-client ONSDigital/blaise-api-node-client
-    blaise-design-system-react-components ONSDigital/blaise-design-system-react-components
+    blaise-design-system-react-components "git+https://github.com/ONSdigital/blaise-design-system-react-components#0.13.2"
     formik "^2.2.9"
     react "^17.0.1"
     react-dom "^17.0.0"
@@ -3489,9 +3480,9 @@ blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
     react-router-dom "^6.2.1"
     universal-cookie "^4.0.4"
 
-"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?2157644435f5938f13241f6e1f4170faa9c2581e":
+"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?6e3c678f5b5b5cc65c0275aa6d30380204998153":
   version "1.1.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?2157644435f5938f13241f6e1f4170faa9c2581e#ef9fd40e08407724a26768e760e2bd3f0f557727"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?6e3c678f5b5b5cc65c0275aa6d30380204998153#2b505fb44df3be4a81351a8c9693fff9bab200e0"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
@@ -8401,19 +8392,19 @@ npmlog@^5.0.1:
     gauge "^3.0.0"
     set-blocking "^2.0.0"
 
+nth-check@2.1.1, nth-check@^2.0.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/nth-check/-/nth-check-2.1.1.tgz#c9eab428effce36cd6b92c924bdb000ef1f1ed1d"
+  integrity sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==
+  dependencies:
+    boolbase "^1.0.0"
+
 nth-check@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/nth-check/-/nth-check-1.0.2.tgz#b2bd295c37e3dd58a3bf0700376663ba4d9cf05c"
   integrity sha512-WeBOdju8SnzPN5vTUJYxYUxLeXpCaVP5i5e0LF8fg7WORF2Wd7wFX/pk0tYZk7s8T+J7VLy0Da6J1+wCT0AtHg==
   dependencies:
     boolbase "~1.0.0"
-
-nth-check@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/nth-check/-/nth-check-2.0.1.tgz#2efe162f5c3da06a28959fbd3db75dbeea9f0fc2"
-  integrity sha512-it1vE95zF6dTT9lBsYbxvqh0Soy4SPowchj0UBGj/V6cTPnXXtQOPUbhZ6CmGzAD/rW22LQK6E96pcdJXk4A4w==
-  dependencies:
-    boolbase "^1.0.0"
 
 nwsapi@^2.2.0:
   version "2.2.0"
@@ -9800,6 +9791,21 @@ react-router@6.2.2:
   integrity sha512-/MbxyLzd7Q7amp4gDOGaYvXwhEojkJD5BtExkuKmj39VEE0m3l/zipf6h2WIB2jyAO0lI6NGETh4RDcktRm4AQ==
   dependencies:
     history "^5.2.0"
+
+react-router@^5.2.0:
+  version "5.3.4"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-5.3.4.tgz#8ca252d70fcc37841e31473c7a151cf777887bb5"
+  integrity sha512-Ys9K+ppnJah3QuaRiLxk+jDWOR1MekYQrlytiXxC1RyfbdsZkS5pvKAzCCr031xHixZwpnsYNT5xysdFHQaYsA==
+  dependencies:
+    "@babel/runtime" "^7.12.13"
+    history "^4.9.0"
+    hoist-non-react-statics "^3.1.0"
+    loose-envify "^1.3.1"
+    path-to-regexp "^1.7.0"
+    prop-types "^15.6.2"
+    react-is "^16.6.0"
+    tiny-invariant "^1.0.2"
+    tiny-warning "^1.0.0"
 
 react-scripts@5.0.0:
   version "5.0.0"

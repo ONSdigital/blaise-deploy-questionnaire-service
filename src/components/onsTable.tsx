@@ -15,19 +15,19 @@ export const ONSTable = ({ columns, children, tableCaption, tableID }: ONSTable)
     return (
         <>
             <table
-                className="table"
+                className="ons-table"
                 id={tableID}>
-                {tableCaption && <caption className="table__caption">{tableCaption}</caption>}
-                <thead className="table__head">
-                    <tr className="table__row">
+                {tableCaption && <caption className="ons-table__caption">{tableCaption}</caption>}
+                <thead className="ons-table__head">
+                    <tr className="ons-table__row">
                         {
                             columns.map(({ title }: TableColumns, index: number) => (
-                                <th scope="col" className="table__header" key={index}>{title}</th>
+                                <th scope="col" className="ons-table__header" key={index}>{title}</th>
                             ))
                         }
                     </tr>
                 </thead>
-                <tbody className="table__body">
+                <tbody className="ons-table__body">
                     {children}
                 </tbody>
             </table>

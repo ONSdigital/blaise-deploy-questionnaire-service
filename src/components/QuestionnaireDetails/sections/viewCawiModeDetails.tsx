@@ -93,36 +93,36 @@ const ViewCawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
 
     if (cawiMode) {
         return (
-            <div className="summary u-mb-m elementToFadeIn u-mt-m">
-                <div className="summary__group">
-                    <h2 className="summary__group-title">CAWI mode details</h2>
-                    <table className="summary__items">
-                        <thead className="u-vh">
+            <div className="ons-summary ons-u-mb-m elementToFadeIn ons-u-mt-m">
+                <div className="ons-summary__group">
+                    <h2 className="ons-summary__group-title">CAWI mode details</h2>
+                    <table className="ons-summary__items">
+                        <thead className="ons-u-vh">
                             <tr>
                                 <th>Questionnaire detail</th>
                                 <th>result</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody className={`summary__item ${uacGenerationFailed == "" ? "" : "summary__item--error"}`}>
+                        <tbody className={`ons-summary__item ${uacGenerationFailed == "" ? "" : "ons-summary__item--error"}`}>
                             {
                                 uacGenerationFailed != "" &&
-                            <tr className="summary__row">
-                                <th colSpan={3} className="summary__row-title u-fs-r">
+                            <tr className="ons-summary__row">
+                                <th colSpan={3} className="ons-summary__row-title ons-u-fs-r">
                                     {uacGenerationFailed}
                                 </th>
                             </tr>
                             }
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                            <tr className="ons-summary__row ons-summary__row--has-values">
+                                <td className="ons-summary__item-title">
+                                    <div className="ons-summary__item--text">
                                     Unique Access Codes generated
                                     </div>
                                 </td>
-                                <td className="summary__values">
+                                <td className="ons-summary__values">
                                     {uacCount}
                                 </td>
-                                <td className="summary__actions">
+                                <td className="ons-summary__actions">
                                     {
                                         showGenerateUACsButton &&
                                     <>
@@ -147,24 +147,24 @@ const ViewCawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
 
     return (
         <>
-            <div className="summary u-mb-m elementToFadeIn u-mt-m">
-                <div className="summary__group">
-                    <h2 className="summary__group-title">Web mode details</h2>
-                    <table className="summary__items">
-                        <thead className="u-vh">
+            <div className="ons-summary ons-u-mb-m elementToFadeIn ons-u-mt-m">
+                <div className="ons-summary__group">
+                    <h2 className="ons-summary__group-title">Web mode details</h2>
+                    <table className="ons-summary__items">
+                        <thead className="ons-u-vh">
                             <tr>
                                 <th>Questionnaire detail</th>
                                 <th>result</th>
                             </tr>
                         </thead>
-                        <tbody className="summary__item">
-                            <tr className="summary__row summary__row--has-values">
-                                <td className="summary__item-title">
-                                    <div className="summary__item--text">
+                        <tbody className="ons-summary__item">
+                            <tr className="ons-summary__row ons-summary__row--has-values">
+                                <td className="ons-summary__item-title">
+                                    <div className="ons-summary__item--text">
                                     Does this questionnaire have a Web mode?
                                     </div>
                                 </td>
-                                <td className="summary__values">
+                                <td className="ons-summary__values">
                                 No
                                 </td>
                             </tr>

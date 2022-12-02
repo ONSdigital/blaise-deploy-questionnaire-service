@@ -27,7 +27,7 @@ function DeleteConfirmation({ onDelete, onCancel }: Props): ReactElement {
                 ]
             } />
 
-            <main id="main-content" className="page__main u-mt-no">
+            <main id="main-content" className="ons-page__main ons-u-mt-no">
                 {
                     (
                         questionnaire.status === "Failed"

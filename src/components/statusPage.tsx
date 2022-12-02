@@ -55,18 +55,18 @@ function StatusPage(): ReactElement {
         return (
             <ErrorBoundary errorMessageText={"Failed to load Blaise Status, best to assume its not working."}>
                 <div className={"elementToFadeIn"}>
-                    <dl className="metadata metadata__list grid grid--gutterless u-cf u-mb-l"
+                    <dl className="ons-metadata ons-metadata__list ons-grid ons-grid--gutterless ons-u-cf u-mb-l"
                         title="Status information for connections to Blaise"
                         aria-label="Status information for connections to Blaise">
                         {statusList.map((item: BlaiseStatus) => {
                             return (
                                 <Fragment key={item["health check type"]}>
-                                    <dt className="metadata__term grid__col col-5@m">
+                                    <dt className="ons-metadata__term ons-grid__col ons-col-5@m">
                                         {item["health check type"]}:
                                     </dt>
-                                    <dd className="metadata__value grid__col col-7@m">
+                                    <dd className="ons-metadata__value ons-grid__col ons-col-7@m">
                                         <span
-                                            className={`status status--${(item.status === "OK" ? "success" : "error")}`}>
+                                            className={`ons-status ons-status--${(item.status === "OK" ? "success" : "error")}`}>
                                             {item.status}
                                         </span>
                                     </dd>
@@ -87,8 +87,8 @@ function StatusPage(): ReactElement {
                 ]
             } />
 
-            <main id="main-content" className="page__main u-mt-no">
-                <h1 className="u-mb-l">Blaise connection status</h1>
+            <main id="main-content" className="ons-page__main ons-u-mt-no">
+                <h1 className="ons-u-mb-l">Blaise connection status</h1>
 
                 <DisplayBlaiseStatus />
             </main>
