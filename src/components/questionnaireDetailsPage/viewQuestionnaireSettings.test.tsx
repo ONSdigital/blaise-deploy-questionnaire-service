@@ -3,7 +3,7 @@
  */
 
 import flushPromises from "../../tests/utils";
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import React from "react";
 import ViewQuestionnaireSettings from "./viewQuestionnaireSettings";
@@ -34,8 +34,6 @@ describe("Given the API successfully loads the questionnaire mode and settings f
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -100,8 +98,6 @@ describe("Given the API successfully loads the questionnaire mode and settings f
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -169,8 +165,6 @@ describe("Given the API fails to load the questionnaire mode or settings", () =>
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -195,8 +189,6 @@ describe("Given the API returns an empty list for questionnaire mode or settings
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 

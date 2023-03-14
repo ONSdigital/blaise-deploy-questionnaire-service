@@ -4,7 +4,6 @@
 
 // Test modules
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
 import { Questionnaire } from "blaise-api-node-client";
@@ -42,9 +41,6 @@ const mocker = new MockAdapeter(axios);
 
 defineFeature(feature, test => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
-        cleanup();
         mocker.reset();
     });
 

@@ -3,7 +3,6 @@
  */
 
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { cleanup, } from "@testing-library/react";
 import { givenTheQuestionnaireHasCases, givenTheQuestionnaireHasModes, givenTheQuestionnaireHasUACs, givenTheQuestionnaireIsInstalled, givenUACGenerationIsBroken } from "../step_definitions/given";
 import { whenIClickGenerateCases, whenIGoToTheQuestionnaireDetailsPage } from "../step_definitions/when";
 import { thenAGenerateUacButtonIsAvailable, thenAGenerateUacButtonIsNotAvailable, thenICanSeeThatThatTheQuestionnaireHasCases, thenIReceiveAUACError, thenUACsAreGenerated } from "../step_definitions/then";
@@ -28,13 +27,9 @@ const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 defineFeature(feature, test => {
     beforeEach(() => {
         global.URL.createObjectURL = jest.fn();
-        cleanup();
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
-        cleanup();
         mocker.reset();
     });
 

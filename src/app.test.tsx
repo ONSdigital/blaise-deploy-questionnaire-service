@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import { render, waitFor, cleanup, screen } from "@testing-library/react";
+import { render, waitFor, screen } from "@testing-library/react";
 import App from "./app";
 import "@testing-library/jest-dom";
 import flushPromises from "./tests/utils";
@@ -35,8 +35,6 @@ describe("React homepage", () => {
     });
 
     afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -130,8 +128,6 @@ describe("Given the API returns malformed json", () => {
     });
 
     afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 });
@@ -142,8 +138,6 @@ describe("Given the API returns an empty list", () => {
     });
 
     afterAll(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 

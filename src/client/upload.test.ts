@@ -1,4 +1,3 @@
-import { cleanup } from "@testing-library/react";
 import { getAllQuestionnairesInBucket, validateUploadIsComplete } from "./upload";
 
 import axios from "axios";
@@ -8,8 +7,6 @@ const mock = new MockAdapter(axios);
 
 describe("Function validateUploadIsComplete(filename: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -46,8 +43,6 @@ describe("Function getAllQuestionnairesInBucket() ", () => {
     const questionnairesInBucket: string[] = ["OPN2101A.bpkg", "OPN2004A.bpkg", "LMS2101_BK2.bpkg"];
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 

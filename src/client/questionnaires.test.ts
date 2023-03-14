@@ -1,4 +1,3 @@
-import { cleanup } from "@testing-library/react";
 import { questionnaireList, opnQuestionnaire } from "../features/step_definitions/helpers/apiMockObjects";
 import {
     getQuestionnaire,
@@ -20,8 +19,6 @@ const mock = new MockAdapter(axios);
 
 describe("Function getQuestionnaire(questionnaireName: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -54,8 +51,6 @@ describe("Function getQuestionnaire(questionnaireName: string) ", () => {
 
 describe("Function getQuestionnaire(filename: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -87,8 +82,6 @@ describe("Function getQuestionnaire(filename: string) ", () => {
 
 describe("Function deleteQuestionnaire(questionnaireName: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -123,8 +116,6 @@ describe("Function deleteQuestionnaire(questionnaireName: string) ", () => {
 
 describe("Function activateQuestionnaire(questionnaireName: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -159,8 +150,6 @@ describe("Function activateQuestionnaire(questionnaireName: string) ", () => {
 
 describe("Function deactivateQuestionnaire(questionnaireName: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -195,8 +184,6 @@ describe("Function deactivateQuestionnaire(questionnaireName: string) ", () => {
 
 describe("Function installQuestionnaire(questionnaireName: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -231,8 +218,6 @@ describe("Function installQuestionnaire(questionnaireName: string) ", () => {
 
 describe("Function getQuestionnaireModes(questionnaireName: string)", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -264,8 +249,6 @@ describe("Function getQuestionnaireModes(questionnaireName: string)", () => {
 
 describe("Function getQuestionnaireSettings(questionnaireName: string)", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -297,8 +280,6 @@ describe("Function getQuestionnaireSettings(questionnaireName: string)", () => {
 
 describe("Function getQuestionnaireCaseIds(questionnaireName: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -330,8 +311,6 @@ describe("Function getQuestionnaireCaseIds(questionnaireName: string) ", () => {
 
 describe("Function getSurveyDays(questionnaireName: string)", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -363,8 +342,6 @@ describe("Function getSurveyDays(questionnaireName: string)", () => {
 
 describe("Function surveyIsActive(questionnaireName: string)", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
