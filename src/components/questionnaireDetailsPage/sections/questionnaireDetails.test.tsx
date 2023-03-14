@@ -25,56 +25,56 @@ describe("Questionnaire details happy path", () => {
     });
 
     it("should display 'Questionnaire details' as a header", async () => {
-            await act(async () => {
-                await flushPromises();
-            });
-
-            await waitFor(() => {
-                expect(screen.getByText("Questionnaire details")).toBeDefined();
-            });
+        await act(async () => {
+            await flushPromises();
         });
+
+        await waitFor(() => {
+            expect(screen.getByText("Questionnaire details")).toBeDefined();
+        });
+    });
 
     it("should display the questionnaire's 'Questionnaire status'", async () => {
-            await act(async () => {
-                await flushPromises();
-            });
-
-            await waitFor(() => {
-                expect(screen.getByText("Questionnaire status")).toBeDefined();
-                expect(screen.getByText("Active")).toBeDefined();
-            });
+        await act(async () => {
+            await flushPromises();
         });
+
+        await waitFor(() => {
+            expect(screen.getByText("Questionnaire status")).toBeDefined();
+            expect(screen.getByText("Active")).toBeDefined();
+        });
+    });
 
     it("should display the questionnaire's 'Modes'", async () => {
-            await act(async () => {
-                await flushPromises();
-            });
-
-            await waitFor(() => {
-                expect(screen.getByText("Modes")).toBeDefined();
-                expect(screen.getByText("CATI")).toBeDefined();
-            });
+        await act(async () => {
+            await flushPromises();
         });
+
+        await waitFor(() => {
+            expect(screen.getByText("Modes")).toBeDefined();
+            expect(screen.getByText("CATI")).toBeDefined();
+        });
+    });
 
     it("should display the questionnaire's 'Number of cases'", async () => {
-            await act(async () => {
-                await flushPromises();
-            });
-
-            await waitFor(() => {
-                expect(screen.getByText("Number of cases")).toBeDefined();
-                expect(screen.getByText("0")).toBeDefined();
-            });
+        await act(async () => {
+            await flushPromises();
         });
+
+        await waitFor(() => {
+            expect(screen.getByText("Number of cases")).toBeDefined();
+            expect(screen.getByText("0")).toBeDefined();
+        });
+    });
 
     it("should display the questionnaire's 'Install date'", async () => {
-            await act(async () => {
-                await flushPromises();
-            });
-
-            await waitFor(() => {
-                expect(screen.getByText("Install date")).toBeDefined();
-                expect(screen.getByText("15/01/2021 15:26")).toBeDefined();
-            });
+        await act(async () => {
+            await flushPromises();
         });
+
+        await waitFor(() => {
+            expect(screen.getByText("Install date")).toBeDefined();
+            expect(screen.getByText("15/01/2021 15:26")).toBeDefined();
+        });
+    });
 });
