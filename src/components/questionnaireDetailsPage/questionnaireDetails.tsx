@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { Link, Redirect, useHistory, useLocation, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import dateFormatter from "dayjs";
 import { Questionnaire } from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
