@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import QuestionnaireSettingsTable from "../../questionnaireDetails/questionnaireSettingsTable";
+import QuestionnaireSettingsTable from "../../questionnaireDetailsPage/questionnaireSettingsTable";
 import { QuestionnaireSettings } from "blaise-api-node-client";
 import { ONSPanel } from "blaise-design-system-react-components";
 
