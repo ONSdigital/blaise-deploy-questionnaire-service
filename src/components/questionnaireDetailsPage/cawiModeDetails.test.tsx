@@ -6,7 +6,7 @@ import flushPromises from "../../tests/utils";
 import { render, waitFor, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import React from "react";
-import ViewCawiModeDetails from "./viewCawiModeDetails";
+import CawiModeDetails from "./cawiModeDetails";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { opnQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
@@ -20,7 +20,7 @@ describe("View CAWI mode section", () => {
 
     it("should not render for non-CAWI questionnaires", async () => {
         const { container } = render(
-            <ViewCawiModeDetails questionnaire={opnQuestionnaire} modes={["CATI"]} />
+            <CawiModeDetails questionnaire={opnQuestionnaire} modes={["CATI"]} />
         );
 
         await act(async () => {
@@ -36,7 +36,7 @@ describe("View CAWI mode section", () => {
         const viewGeneratedUacsFailedMessage = /Failed to get Web mode details/i;
         mock.onGet("/api/uacs/questionnaire/OPN2004A/count").reply(500);
         render(
-            <ViewCawiModeDetails questionnaire={opnQuestionnaire} modes={["CAWI"]} />
+            <CawiModeDetails questionnaire={opnQuestionnaire} modes={["CAWI"]} />
         );
 
         await act(async () => {

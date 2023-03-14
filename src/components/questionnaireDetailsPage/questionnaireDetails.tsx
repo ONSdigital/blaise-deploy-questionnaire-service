@@ -5,9 +5,9 @@ import { Questionnaire } from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
 import QuestionnaireStatus from "../questionnaireStatus";
 import BlaiseNodeInfo from "./blaiseNodeInfo";
-import ViewCawiModeDetails from "./viewCawiModeDetails";
-import ViewCatiModeDetails from "./viewCatiModeDetails";
-import ViewTmDetails from "./viewTmDetails";
+import CawiModeDetails from "./cawiModeDetails";
+import CatiModeDetails from "./catiModeDetails";
+import TotalmobileDetails from "./totalmobileDetails";
 import YearCalendar from "./yearCalendar";
 import ViewQuestionnaireSettings from "./viewQuestionnaireSettings";
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
@@ -173,9 +173,9 @@ function QuestionnaireDetails(): ReactElement {
                     </div>
                 </div>
 
-                <ViewCatiModeDetails questionnaireName={questionnaire.name} modes={modes}/>
-                <ViewCawiModeDetails questionnaire={questionnaire} modes={modes}/>
-                <ViewTmDetails questionnaireName={questionnaire.name}/>
+                <CatiModeDetails questionnaireName={questionnaire.name} modes={modes}/>
+                <CawiModeDetails questionnaire={questionnaire} modes={modes}/>
+                <TotalmobileDetails questionnaireName={questionnaire.name}/>
                 <ViewQuestionnaireSettings questionnaire={questionnaire} modes={modes}/>
 
                 <YearCalendar modes={modes} surveyDays={surveyDays}/>
