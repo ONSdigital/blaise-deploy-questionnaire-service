@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
-import { getTMReleaseDate } from "../../../client/tmReleaseDate";
+import { getTMReleaseDate } from "../../client/tmReleaseDate";
 import dateFormatter from "dayjs";
 import TimeAgo from "react-timeago";
 import { Link } from "react-router-dom";

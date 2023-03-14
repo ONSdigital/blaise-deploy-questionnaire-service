@@ -4,12 +4,12 @@ import dateFormatter from "dayjs";
 import { Questionnaire } from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
 import QuestionnaireStatus from "../questionnaireStatus";
-import BlaiseNodeInfo from "./sections/blaiseNodeInfo";
-import ViewCawiModeDetails from "./sections/viewCawiModeDetails";
-import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
-import ViewTmDetails from "./sections/viewTmDetails";
-import YearCalendar from "./sections/yearCalendar";
-import ViewQuestionnaireSettings from "./sections/viewQuestionnaireSettings";
+import BlaiseNodeInfo from "./blaiseNodeInfo";
+import ViewCawiModeDetails from "./viewCawiModeDetails";
+import ViewCatiModeDetails from "./viewCatiModeDetails";
+import ViewTmDetails from "./viewTmDetails";
+import YearCalendar from "./yearCalendar";
+import ViewQuestionnaireSettings from "./viewQuestionnaireSettings";
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 

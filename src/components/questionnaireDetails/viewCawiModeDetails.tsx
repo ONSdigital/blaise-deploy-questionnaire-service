@@ -1,10 +1,10 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { getCountOfUACs } from "../../../client/uacCodes";
-import { getQuestionnaireModes } from "../../../client/questionnaires";
+import { getCountOfUACs } from "../../client/uacCodes";
+import { getQuestionnaireModes } from "../../client/questionnaires";
 import { Questionnaire } from "blaise-api-node-client";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import CsvDownloader from "react-csv-downloader";
-import { generateUACCodesAndCSVFileData } from "../../../client/componentProcesses";
+import { generateUACCodesAndCSVFileData } from "../../client/componentProcesses";
 
 interface Props {
     questionnaire: Questionnaire;

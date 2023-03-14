@@ -5,7 +5,7 @@
 import React from "react";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import flushPromises from "../../../tests/utils";
+import flushPromises from "../../tests/utils";
 import YearCalendar from "./yearCalendar";
 import userEvent from "@testing-library/user-event";
 

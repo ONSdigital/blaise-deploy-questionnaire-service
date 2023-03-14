@@ -2,12 +2,12 @@
  * @jest-environment jsdom
  */
 
-import flushPromises from "../../../tests/utils";
+import flushPromises from "../../tests/utils";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import React from "react";
 import ViewQuestionnaireSettings from "./viewQuestionnaireSettings";
-import { opnQuestionnaire } from "../../../features/step_definitions/helpers/apiMockObjects";
+import { opnQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
 import axios from "axios";
