@@ -18,9 +18,9 @@ import {
 import AuditPage from "./components/auditPage";
 import ReinstallQuestionnaires from "./components/reinstallQuestionnaires";
 import LiveSurveyWarning from "./components/uploadPage/liveSurveyWarning";
-import QuestionnaireDetails from "./components/QuestionnaireDetails/questionnaireDetails";
-import ChangeTOStartDate from "./components/QuestionnaireDetails/changeTOStartDate";
-import ChangeTMReleaseDate from "./components/QuestionnaireDetails/changeTmReleaseDate";
+import QuestionnaireDetails from "./components/questionnaireDetails/questionnaireDetails";
+import ChangeTOStartDate from "./components/questionnaireDetails/changeTOStartDate";
+import ChangeTMReleaseDate from "./components/questionnaireDetails/changeTmReleaseDate";
 import "./style.css";
 import { isProduction } from "./client/env";
 import { LoginForm, AuthManager } from "blaise-login-react-client";
