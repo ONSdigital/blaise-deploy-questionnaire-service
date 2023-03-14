@@ -4,11 +4,11 @@ import dateFormatter from "dayjs";
 import { Questionnaire } from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
 import QuestionnaireStatus from "../questionnaireStatus";
-import BlaiseNodeInfo from "./blaiseNodeInfo";
-import CawiModeDetails from "./cawiModeDetails";
-import CatiModeDetails from "./catiModeDetails";
-import TotalmobileDetails from "./totalmobileDetails";
-import YearCalendar from "./yearCalendar";
+import BlaiseNodeInfo from "./sections/blaiseNodeInfo";
+import CawiModeDetails from "./sections/cawiModeDetails";
+import CatiModeDetails from "./sections/catiModeDetails";
+import TotalmobileDetails from "./sections/totalmobileDetails";
+import YearCalendar from "./sections/yearCalendar";
 import ViewQuestionnaireSettings from "./viewQuestionnaireSettings";
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
@@ -21,7 +21,7 @@ interface Params {
     questionnaireName: string
 }
 
-function QuestionnaireDetails(): ReactElement {
+function QuestionnaireDetailsPage(): ReactElement {
     const location = useLocation<State>();
     const history = useHistory();
     const [questionnaire, setQuestionnaire] = useState<Questionnaire>();
@@ -210,4 +210,4 @@ function QuestionnaireDetails(): ReactElement {
     );
 }
 
-export default QuestionnaireDetails;
+export default QuestionnaireDetailsPage;

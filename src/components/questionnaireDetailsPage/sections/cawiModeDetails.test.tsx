@@ -2,14 +2,14 @@
  * @jest-environment jsdom
  */
 
-import flushPromises from "../../tests/utils";
+import flushPromises from "../../../tests/utils";
 import { render, waitFor, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import React from "react";
 import CawiModeDetails from "./cawiModeDetails";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { opnQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
+import { opnQuestionnaire } from "../../../features/step_definitions/helpers/apiMockObjects";
 
 const mock = new MockAdapter(axios);
 

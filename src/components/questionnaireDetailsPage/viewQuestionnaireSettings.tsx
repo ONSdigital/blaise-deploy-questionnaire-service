@@ -3,7 +3,7 @@ import { getQuestionnaireSettings } from "../../client/questionnaires";
 import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
 import { GetStrictInterviewingSettings, ValidateSettings } from "../../utilities/questionnaireSettings";
 import { GetQuestionnaireMode, QuestionnaireMode } from "../../utilities/questionnaireMode";
-import QuestionnaireSettingsTable from "./questionnaireSettingsTable";
+import QuestionnaireSettingsTable from "./sections/questionnaireSettingsTable";
 
 interface Props {
     questionnaire: Questionnaire;

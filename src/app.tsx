@@ -18,7 +18,7 @@ import {
 import AuditPage from "./components/auditPage";
 import ReinstallQuestionnaires from "./components/reinstallQuestionnaires";
 import LiveSurveyWarning from "./components/uploadPage/liveSurveyWarning";
-import QuestionnaireDetails from "./components/questionnaireDetailsPage/questionnaireDetails";
+import QuestionnaireDetailsPage from "./components/questionnaireDetailsPage/questionnaireDetailsPage";
 import ChangeTOStartDate from "./components/questionnaireDetailsPage/changeTOStartDate";
 import ChangeTMReleaseDate from "./components/questionnaireDetailsPage/changeTmReleaseDate";
 import "./style.css";
@@ -115,7 +115,7 @@ function App(): ReactElement {
                             <ChangeTMReleaseDate/>
                         </Route>
                         <Route path="/questionnaire/:questionnaireName">
-                            <QuestionnaireDetails/>
+                            <QuestionnaireDetailsPage/>
                         </Route>
                         <Route path="/upload">
                             <UploadPage/>
