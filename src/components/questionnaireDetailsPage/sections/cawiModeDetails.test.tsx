@@ -13,7 +13,7 @@ import { opnQuestionnaire } from "../../../features/step_definitions/helpers/api
 
 const mock = new MockAdapter(axios);
 
-describe("View CAWI mode section", () => {
+describe("CAWI mode details", () => {
     afterEach(() => {
         mock.reset();
     });

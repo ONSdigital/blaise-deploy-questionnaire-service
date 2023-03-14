@@ -12,7 +12,7 @@ import MockAdapter from "axios-mock-adapter";
 
 const mock = new MockAdapter(axios);
 
-describe("View TO Start Date section", () => {
+describe("CATI mode details", () => {
     afterEach(() => {
         mock.reset();
     });

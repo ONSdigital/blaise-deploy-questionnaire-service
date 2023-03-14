@@ -15,7 +15,7 @@ import "@testing-library/jest-dom";
 
 const mock = new MockAdapter(axios);
 
-describe("View Totalmobile details", () => {
+describe("Totalmobile details", () => {
     afterEach(() => {
         mock.reset();
     });

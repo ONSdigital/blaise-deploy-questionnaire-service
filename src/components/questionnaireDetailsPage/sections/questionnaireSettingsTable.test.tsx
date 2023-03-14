@@ -9,7 +9,7 @@ import { QuestionnaireSettings } from "blaise-api-node-client";
 
 const viewQuestionnaireSettingsFailedMessage = /Failed to get questionnaire settings/i;
 
-describe("Questionnaire settings table", () => {
+describe("Questionnaire settings", () => {
     const questionnaireSettingsValid: QuestionnaireSettings = {
         type: "StrictInterviewing",
         saveSessionOnTimeout: true,
