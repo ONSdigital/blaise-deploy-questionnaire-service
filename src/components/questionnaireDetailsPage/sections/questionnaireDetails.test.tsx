@@ -77,4 +77,15 @@ describe("Questionnaire details happy path", () => {
             expect(screen.getByText("15/01/2021 15:26")).toBeDefined();
         });
     });
+
+    it("should display the questionnaire's 'Blaise version'", async () => {
+        await act(async () => {
+            await flushPromises();
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText("Blaise version")).toBeDefined();
+            expect(screen.getByText("5.9.9.2735")).toBeDefined();
+        });
+    });
 });

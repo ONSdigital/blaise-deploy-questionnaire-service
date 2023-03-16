@@ -3416,7 +3416,6 @@ bindings@^1.2.1:
 
 blaise-api-node-client@ONSDigital/blaise-api-node-client:
   version "1.0.0"
-  uid f5f60e71df98197543a55ee14a25293a4287962b
   resolved "https://codeload.github.com/ONSDigital/blaise-api-node-client/tar.gz/f5f60e71df98197543a55ee14a25293a4287962b"
   dependencies:
     "@babel/preset-env" "^7.14.7"
@@ -3426,7 +3425,7 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
 
 "blaise-api-node-client@https://github.com/ONSdigital/blaise-api-node-client":
   version "1.0.0"
-  resolved "https://github.com/ONSdigital/blaise-api-node-client#f5f60e71df98197543a55ee14a25293a4287962b"
+  resolved "https://github.com/ONSdigital/blaise-api-node-client#1c084f67b5ddba60b6b933cce04133fad2108aac"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
