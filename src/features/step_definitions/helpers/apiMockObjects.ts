@@ -8,7 +8,8 @@ export const questionnaireList: Questionnaire[] = [{
     dataRecordCount: 0,
     hasData: false,
     active: false,
-    fieldPeriod: "January 2021"
+    fieldPeriod: "January 2021",
+    blaiseVersion: "5.9.9.2735"
 }, {
     name: "OPN2007T",
     serverParkName: "gusty",
@@ -17,7 +18,9 @@ export const questionnaireList: Questionnaire[] = [{
     dataRecordCount: 10,
     hasData: true,
     active: true,
-    fieldPeriod: "July 2020"
+    fieldPeriod: "July 2020",
+    blaiseVersion: "5.9.9.2735"
+
 }, {
     name: "OPN2004A",
     serverParkName: "gusty",
@@ -26,7 +29,9 @@ export const questionnaireList: Questionnaire[] = [{
     dataRecordCount: 0,
     hasData: false,
     active: false,
-    fieldPeriod: "April 2020"
+    fieldPeriod: "April 2020",
+    blaiseVersion: "5.9.9.2735"
+
 }];
 
 export const opnQuestionnaire: Questionnaire = {
@@ -37,7 +42,8 @@ export const opnQuestionnaire: Questionnaire = {
     dataRecordCount: 0,
     hasData: false,
     active: false,
-    fieldPeriod: "April 2020"
+    fieldPeriod: "April 2020",
+    blaiseVersion: "5.9.9.2735"
 };
 
 export const questionnaireWithName = (questionnaireName: string): Questionnaire => {
@@ -49,6 +55,7 @@ export const questionnaireWithName = (questionnaireName: string): Questionnaire 
         dataRecordCount: 0,
         hasData: false,
         active: false,
-        fieldPeriod: "April 2020"
+        fieldPeriod: "April 2020",
+        blaiseVersion: "5.9.9.2735"
     };
 };
