@@ -11,7 +11,6 @@ import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { questionnaireList } from "./features/step_definitions/helpers/apiMockObjects";
-import _ from "lodash";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";

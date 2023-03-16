@@ -2,10 +2,7 @@
  * @jest-environment jsdom
  */
 
-import navigateToDeployPageAndSelectFileAndContinue, {
-    clickContinue,
-    navigateToDeployPageAndSelectFile
-} from "../../../features/step_definitions/helpers/functions";
+import { clickContinue, navigateToDeployPageAndSelectFile } from "../../../features/step_definitions/helpers/functions";
 import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import flushPromises from "../../../tests/utils";
 import userEvent from "@testing-library/user-event";

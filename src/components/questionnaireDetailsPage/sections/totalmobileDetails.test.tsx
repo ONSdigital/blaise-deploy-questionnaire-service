@@ -23,7 +23,7 @@ describe("Totalmobile details", () => {
     it("should display the Totalmobile details for a LMS questionnaire with a release date", async () => {
         const history = createMemoryHistory();
         mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
-        const rerender = render(
+        render(
             <Router history={history}>
                 <TotalmobileDetails questionnaireName={"LMS2101_AA1"}/>
             </Router>
@@ -43,7 +43,7 @@ describe("Totalmobile details", () => {
     it("should display the add release date option for a LMS questionnaire with no release date", async () => {
         const history = createMemoryHistory();
         mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(404, { tmreleasedate: "" });
-        const rerender = render(
+        render(
             <Router history={history}>
                 <TotalmobileDetails questionnaireName={"LMS2101_AA1"}/>
             </Router>
@@ -62,7 +62,7 @@ describe("Totalmobile details", () => {
     it("should display an error message when it fails to load the Totalmobile release date", async () => {
         const history = createMemoryHistory();
         mock.onGet("/api/tmreleasedate/LMS2101A").reply(500);
-        const rerender = render(
+        render(
             <Router history={history}>
                 <TotalmobileDetails questionnaireName={"LMS2101A"}/>
             </Router>
@@ -77,9 +77,8 @@ describe("Totalmobile details", () => {
 
     it("should not display the Totalmobile details for a non-LMS questionnaire ", async () => {
         const history = createMemoryHistory();
-        const date = /27\/06\/2021/i;
         mock.onGet("/api/tmreleasedate/OPN2101_AA1").reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
-        const rerender = render(
+        render(
             <Router history={history}>
                 <TotalmobileDetails questionnaireName={"OPN2101_AA1"}/>
             </Router>
