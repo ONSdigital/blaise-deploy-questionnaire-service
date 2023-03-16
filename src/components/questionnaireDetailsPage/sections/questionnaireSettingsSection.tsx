@@ -1,9 +1,9 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { getQuestionnaireSettings } from "../../client/questionnaires";
+import { getQuestionnaireSettings } from "../../../client/questionnaires";
 import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
-import { GetStrictInterviewingSettings, ValidateSettings } from "../../utilities/questionnaireSettings";
-import { GetQuestionnaireMode, QuestionnaireMode } from "../../utilities/questionnaireMode";
-import QuestionnaireSettingsTable from "./sections/questionnaireSettingsTable";
+import { GetStrictInterviewingSettings, ValidateSettings } from "../../../utilities/questionnaireSettings";
+import { GetQuestionnaireMode, QuestionnaireMode } from "../../../utilities/questionnaireMode";
+import QuestionnaireSettingsTable from "./questionnaireSettingsTable";
 
 interface Props {
     questionnaire: Questionnaire;

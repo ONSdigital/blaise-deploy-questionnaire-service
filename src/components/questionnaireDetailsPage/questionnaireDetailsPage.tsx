@@ -7,7 +7,7 @@ import CawiModeDetails from "./sections/cawiModeDetails";
 import CatiModeDetails from "./sections/catiModeDetails";
 import TotalmobileDetails from "./sections/totalmobileDetails";
 import YearCalendar from "./sections/yearCalendar";
-import QuestionnaireSettingsSection from "./questionnaireSettingsSection";
+import QuestionnaireSettingsSection from "./sections/questionnaireSettingsSection";
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import QuestionnaireDetails from "./sections/questionnaireDetails";
