@@ -7,7 +7,7 @@ import CawiModeDetails from "./sections/cawiModeDetails";
 import CatiModeDetails from "./sections/catiModeDetails";
 import TotalmobileDetails from "./sections/totalmobileDetails";
 import YearCalendar from "./sections/yearCalendar";
-import ViewQuestionnaireSettings from "./viewQuestionnaireSettings";
+import QuestionnaireSettingsSection from "./questionnaireSettingsSection";
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import QuestionnaireDetails from "./sections/questionnaireDetails";
@@ -114,7 +114,7 @@ function QuestionnaireDetailsPage(): ReactElement {
                 <CatiModeDetails questionnaireName={questionnaire.name} modes={modes}/>
                 <CawiModeDetails questionnaire={questionnaire} modes={modes}/>
                 <TotalmobileDetails questionnaireName={questionnaire.name}/>
-                <ViewQuestionnaireSettings questionnaire={questionnaire} modes={modes}/>
+                <QuestionnaireSettingsSection questionnaire={questionnaire} modes={modes}/>
                 <YearCalendar modes={modes} surveyDays={surveyDays}/>
                 <BlaiseNodeInfo questionnaire={questionnaire}/>
 

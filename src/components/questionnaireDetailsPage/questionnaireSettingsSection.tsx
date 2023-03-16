@@ -10,7 +10,7 @@ interface Props {
     modes: string[];
 }
 
-function ViewQuestionnaireSettings({ questionnaire, modes }: Props): ReactElement {
+function QuestionnaireSettingsSection({ questionnaire, modes }: Props): ReactElement {
     const [mode, setMode] = useState<QuestionnaireMode>();
     const [setting, setSetting] = useState<QuestionnaireSettings>();
     const [errored, setErrored] = useState<boolean>(false);
@@ -49,4 +49,4 @@ function ViewQuestionnaireSettings({ questionnaire, modes }: Props): ReactElemen
     return <QuestionnaireSettingsTable questionnaireSettings={setting} invalidSettings={invalidSettings} errored={errored}/>;
 }
 
-export default ViewQuestionnaireSettings;
+export default QuestionnaireSettingsSection;
