@@ -70,16 +70,16 @@ function QuestionnaireDetails({ questionnaire, modes }: Props): ReactElement {
                             </tr>
                         </tbody>
                         <tbody className="ons-summary__item">
-                        <tr className="ons-summary__row ons-summary__row--has-values">
-                            <td className="ons-summary__item-title">
-                                <div className="ons-summary__item--text">
+                            <tr className="ons-summary__row ons-summary__row--has-values">
+                                <td className="ons-summary__item-title">
+                                    <div className="ons-summary__item--text">
                                     Blaise version
-                                </div>
-                            </td>
-                            <td className="ons-summary__values" colSpan={2}>
-                                {questionnaire.blaiseVersion}
-                            </td>
-                        </tr>
+                                    </div>
+                                </td>
+                                <td className="ons-summary__values" colSpan={2}>
+                                    {questionnaire.blaiseVersion}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
