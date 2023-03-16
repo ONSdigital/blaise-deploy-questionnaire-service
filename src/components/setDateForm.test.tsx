@@ -3,15 +3,11 @@
  */
 
 import { render } from "@testing-library/react";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
 import "@testing-library/jest-dom/extend-expect";
 import { AuthManager } from "blaise-login-react-client";
 import React from "react";
 import { Formik } from "formik";
-import SetDateForm from "./SetDateForm";
-
-const mock = new MockAdapter(axios);
+import SetDateForm from "./setDateForm";
 
 jest.mock("blaise-login-react-client");
 AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {

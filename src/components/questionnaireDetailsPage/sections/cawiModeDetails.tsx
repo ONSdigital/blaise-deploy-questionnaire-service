@@ -11,7 +11,7 @@ interface Props {
     modes: string[]
 }
 
-const ViewCawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
+const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
     if (!modes.includes("CAWI")) {
         return <></>;
     }
@@ -176,4 +176,4 @@ const ViewCawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
     );
 };
 
-export default ViewCawiModeDetails;
+export default CawiModeDetails;

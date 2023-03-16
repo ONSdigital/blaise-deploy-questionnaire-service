@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import { render, waitFor, cleanup } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
@@ -40,8 +40,6 @@ describe("Blaise Status page", () => {
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -93,8 +91,6 @@ describe("Given the API returns a 500 status", () => {
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -121,8 +117,6 @@ describe("Given the API returns malformed json", () => {
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -149,8 +143,6 @@ describe("Given the API returns an empty list", () => {
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 

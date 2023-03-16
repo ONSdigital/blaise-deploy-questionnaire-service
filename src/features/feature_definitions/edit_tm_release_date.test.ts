@@ -3,7 +3,6 @@
  */
 
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { cleanup, } from "@testing-library/react";
 import { Questionnaire } from "blaise-api-node-client";
 
 import { AuthManager } from "blaise-login-react-client";

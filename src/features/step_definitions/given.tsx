@@ -175,7 +175,7 @@ export function givenTheQuestionnaireHasNoTotalmobileReleaseDate(given: DefineSt
 }
 
 export function givenAllInstallsWillFail(given: DefineStepFunction, mocker: MockAdapter): void {
-    given(/All Questionnaire installs will fail for '(.*)'/, (questionnaire_matcher: string) => {
+    given(/All Questionnaire installs will fail for '(.*)'/, () => {
         mocker.onPost("/api/install").reply(500);
     });
 }

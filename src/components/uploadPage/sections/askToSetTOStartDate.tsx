@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { StyledFormErrorSummary } from "blaise-design-system-react-components";
-import SetDateForm from "../../SetDateForm";
+import SetDateForm from "../../setDateForm";
 
 interface SelectFilePageProps {
     questionnaireName: string;

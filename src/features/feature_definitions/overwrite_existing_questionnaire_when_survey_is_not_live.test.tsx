@@ -4,7 +4,6 @@
 
 // Test modules
 import "@testing-library/jest-dom";
-import { cleanup } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { defineFeature, loadFeature } from "jest-cucumber";
@@ -32,16 +31,12 @@ const questionnaireList: Questionnaire[] = [];
 
 defineFeature(feature, test => {
     beforeEach(() => {
-        cleanup();
         mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200,
             {},
         );
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
-        cleanup();
         mocker.reset();
     });
 

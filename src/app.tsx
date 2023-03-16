@@ -18,9 +18,9 @@ import {
 import AuditPage from "./components/auditPage";
 import ReinstallQuestionnaires from "./components/reinstallQuestionnaires";
 import LiveSurveyWarning from "./components/uploadPage/liveSurveyWarning";
-import QuestionnaireDetails from "./components/QuestionnaireDetails/questionnaireDetails";
-import ChangeTOStartDate from "./components/QuestionnaireDetails/changeTOStartDate";
-import ChangeTMReleaseDate from "./components/QuestionnaireDetails/changeTmReleaseDate";
+import QuestionnaireDetailsPage from "./components/questionnaireDetailsPage/questionnaireDetailsPage";
+import ChangeTOStartDate from "./components/questionnaireDetailsPage/changeTOStartDate";
+import ChangeTMReleaseDate from "./components/questionnaireDetailsPage/changeTmReleaseDate";
 import "./style.css";
 import { isProduction } from "./client/env";
 import { LoginForm, AuthManager } from "blaise-login-react-client";
@@ -115,7 +115,7 @@ function App(): ReactElement {
                             <ChangeTMReleaseDate/>
                         </Route>
                         <Route path="/questionnaire/:questionnaireName">
-                            <QuestionnaireDetails/>
+                            <QuestionnaireDetailsPage/>
                         </Route>
                         <Route path="/upload">
                             <UploadPage/>
