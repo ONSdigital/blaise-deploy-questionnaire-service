@@ -71,7 +71,7 @@ export function whenIGoToTheQuestionnaireDetailsPage(when: DefineStepFunction): 
 }
 
 export function whenIDeleteAQuestionnaire(when: DefineStepFunction): void {
-    when(/I select a link to delete the '(.*)' questionnaire/, async (questionnaire: string) => {
+    when(/I select a link to delete the '(.*)' questionnaire/, async () => {
         userEvent.click(screen.getByTestId(/delete-questionnaire/));
     });
 }

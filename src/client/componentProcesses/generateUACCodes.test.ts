@@ -1,6 +1,5 @@
 import { InstrumentUacDetails } from "bus-api-node-client";
 import { generateUACCodesAndCSVFileData, mapCasesToUACCodes } from "./generateUACCodes";
-import { cleanup } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
@@ -33,8 +32,6 @@ describe("generateUACCodesAndCSVFileData(instrumentName: string)", () => {
     };
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 

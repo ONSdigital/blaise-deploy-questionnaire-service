@@ -4,13 +4,12 @@
 
 // Test modules
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 // Mock elements
 import { Questionnaire } from "blaise-api-node-client";
 
 import { givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous, givenTheQuestionnaireIsErroneous, givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
-import { whenIConfirmDelete, whenIDeleteAQuestionnaire, whenIGoToTheQuestionnaireDetailsPage, whenILoadTheHomepage } from "../step_definitions/when";
+import { whenIConfirmDelete, whenIDeleteAQuestionnaire, whenIGoToTheQuestionnaireDetailsPage } from "../step_definitions/when";
 import { thenIAmPresentedWithACannotDeleteWarning, thenIAmPresentedWithAUnableDeleteWarning, thenIAmUnableToDeleteTheQuestionnaire, thenICanReturnToTheQuestionnaireList } from "../step_definitions/then";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
@@ -32,9 +31,6 @@ const mocker = new Mockadapter(axios);
 
 defineFeature(feature, test => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
-        cleanup();
         mocker.reset();
     });
 
@@ -48,7 +44,7 @@ defineFeature(feature, test => {
         thenICanReturnToTheQuestionnaireList(then);
     });
 
-    test("Select to deploy a new questionnaire", ({ given, when, and, then }) => {
+    test("Select to deploy a new questionnaire", ({ given, when, then }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
         givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(when, mocker);
         whenIGoToTheQuestionnaireDetailsPage(when);

@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises from "../../tests/utils";
 import { act } from "react-dom/test-utils";
@@ -34,8 +34,6 @@ describe("Upload Page", () => {
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -121,8 +119,6 @@ describe("Given the file fails to upload", () => {
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 

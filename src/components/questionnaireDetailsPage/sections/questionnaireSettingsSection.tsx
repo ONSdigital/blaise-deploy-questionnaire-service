@@ -3,14 +3,14 @@ import { getQuestionnaireSettings } from "../../../client/questionnaires";
 import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
 import { GetStrictInterviewingSettings, ValidateSettings } from "../../../utilities/questionnaireSettings";
 import { GetQuestionnaireMode, QuestionnaireMode } from "../../../utilities/questionnaireMode";
-import QuestionnaireSettingsTable from "../../questionnaireSettings/questionnaireSettingsTable";
+import QuestionnaireSettingsTable from "./questionnaireSettingsTable";
 
 interface Props {
     questionnaire: Questionnaire;
     modes: string[];
 }
 
-function ViewQuestionnaireSettings({ questionnaire, modes }: Props): ReactElement {
+function QuestionnaireSettingsSection({ questionnaire, modes }: Props): ReactElement {
     const [mode, setMode] = useState<QuestionnaireMode>();
     const [setting, setSetting] = useState<QuestionnaireSettings>();
     const [errored, setErrored] = useState<boolean>(false);
@@ -49,4 +49,4 @@ function ViewQuestionnaireSettings({ questionnaire, modes }: Props): ReactElemen
     return <QuestionnaireSettingsTable questionnaireSettings={setting} invalidSettings={invalidSettings} errored={errored}/>;
 }
 
-export default ViewQuestionnaireSettings;
+export default QuestionnaireSettingsSection;

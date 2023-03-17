@@ -3,7 +3,6 @@
  */
 
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { cleanup, } from "@testing-library/react";
 import { Questionnaire } from "blaise-api-node-client";
 
 import { thenICanViewTheTOStartDateIsSetTo, thenIHaveTheOptionToAddAToStartDate, thenIHaveTheOptionToChangeOrDeleteTheToStartDate, thenTheToStartDateIsDeleted, thenTheToStartDateIsStored } from "../step_definitions/then";
@@ -28,9 +27,6 @@ const mocker = new MockAdapeter(axios);
 
 defineFeature(feature, test => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
-        cleanup();
         mocker.reset();
     });
 

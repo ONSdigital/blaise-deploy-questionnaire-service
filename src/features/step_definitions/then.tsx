@@ -86,7 +86,7 @@ export function thenTheQuestionnaireDataIsDeleted(then: DefineStepFunction, mock
 }
 
 export function thenTheQuestionnaireDataIsNotDeleted(then: DefineStepFunction, mocker: MockAdapter): void {
-    then(/the questionnaire and data is not deleted from Blaise for '(.*)'/, async (questionnaire: string) => {
+    then(/the questionnaire and data is not deleted from Blaise for '(.*)'/, async () => {
         await act(async () => {
             await flushPromises();
         });
