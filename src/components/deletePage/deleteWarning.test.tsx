@@ -10,8 +10,6 @@ import { Questionnaire } from "blaise-api-node-client";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import userEvent from "@testing-library/user-event";
-import { createMemoryHistory } from "history";
-import { Router } from "react-router";
 
 const mockHttp = new MockAdapter(axios);
 

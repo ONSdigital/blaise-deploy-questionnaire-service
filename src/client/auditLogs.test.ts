@@ -1,4 +1,3 @@
-import { cleanup } from "@testing-library/react";
 import { getAuditLogs } from "./auditLogs";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -7,8 +6,6 @@ const mock = new MockAdapter(axios);
 
 describe("Function getAuditLogs(filename: string) ", () => {
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 

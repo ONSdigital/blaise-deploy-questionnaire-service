@@ -3,15 +3,11 @@
  */
 
 import React from "react";
-import { cleanup, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import QuestionnaireStatus from "./questionnaireStatus";
 
 describe("Questionnaire Status ", () => {
-    afterEach(() => {
-        cleanup();
-    });
-
     it("should render questionnaire with class 'ons-status--success' when the status is Active", async () => {
         const { container } = render(
             <QuestionnaireStatus status={"Active"} />

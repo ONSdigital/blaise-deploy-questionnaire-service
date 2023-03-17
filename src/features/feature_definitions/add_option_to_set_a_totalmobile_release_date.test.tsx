@@ -4,7 +4,6 @@
 
 // Test modules
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import { givenIHaveSelectedTheQuestionnairePackageToDeploy, givenNoQuestionnairesAreInstalled } from "../step_definitions/given";
@@ -39,9 +38,6 @@ const mocker = new MockAdapter(axios);
 
 defineFeature(feature, test => {
     afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetModules();
-        cleanup();
         mocker.reset();
     });
 

@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
@@ -36,8 +36,6 @@ describe("Reinstall questionnaires list", () => {
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -111,8 +109,6 @@ describe("Reinstall questionnaires", () => {
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -172,8 +168,6 @@ describe("Given the API returns a 500 status", () => {
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -199,8 +193,6 @@ describe("Given the API returns an empty list", () => {
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 

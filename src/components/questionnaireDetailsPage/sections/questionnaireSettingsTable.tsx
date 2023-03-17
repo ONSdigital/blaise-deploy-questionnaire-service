@@ -1,7 +1,7 @@
 import React, { Component, ReactElement } from "react";
 import { ONSPanel, ONSLoadingPanel } from "blaise-design-system-react-components";
 import { QuestionnaireSettings } from "blaise-api-node-client";
-import { formatText } from "../../utilities/textFormatting/textFormatting";
+import { formatText } from "../../../utilities/textFormatting/textFormatting";
 
 type QuestionnaireSettingsProps = {
   questionnaireSettings: QuestionnaireSettings | undefined

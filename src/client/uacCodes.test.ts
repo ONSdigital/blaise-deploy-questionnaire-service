@@ -1,4 +1,3 @@
-import { cleanup } from "@testing-library/react";
 import { getCountOfUACs, generateUACCodes, getUACCodesByCaseID } from "./uacCodes";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -9,8 +8,6 @@ describe("Function getCountOfUACs(questionnaireName: string) ", () => {
     const questionnaireName = "OPN2004A";
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -44,8 +41,6 @@ describe("Function generateUACCodes(questionnaireName: string) ", () => {
     const questionnaireName = "OPN2004A";
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 
@@ -75,8 +70,6 @@ describe("Function getUACCodesByCaseID(questionnaireName: string) ", () => {
     const questionnaireName = "OPN2004A";
 
     afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
         mock.reset();
     });
 

@@ -1,17 +1,16 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { Link, Redirect, useHistory, useLocation, useParams } from "react-router-dom";
-import dateFormatter from "dayjs";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { Questionnaire } from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
-import QuestionnaireStatus from "../questionnaireStatus";
 import BlaiseNodeInfo from "./sections/blaiseNodeInfo";
-import ViewCawiModeDetails from "./sections/viewCawiModeDetails";
-import ViewCatiModeDetails from "./sections/viewCatiModeDetails";
-import ViewTmDetails from "./sections/viewTmDetails";
+import CawiModeDetails from "./sections/cawiModeDetails";
+import CatiModeDetails from "./sections/catiModeDetails";
+import TotalmobileDetails from "./sections/totalmobileDetails";
 import YearCalendar from "./sections/yearCalendar";
-import ViewQuestionnaireSettings from "./sections/viewQuestionnaireSettings";
+import QuestionnaireSettingsSection from "./sections/questionnaireSettingsSection";
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
+import QuestionnaireDetails from "./sections/questionnaireDetails";
 
 interface State {
     questionnaire: Questionnaire | null;
@@ -21,7 +20,7 @@ interface Params {
     questionnaireName: string
 }
 
-function QuestionnaireDetails(): ReactElement {
+function QuestionnaireDetailsPage(): ReactElement {
     const location = useLocation<State>();
     const history = useHistory();
     const [questionnaire, setQuestionnaire] = useState<Questionnaire>();
@@ -91,7 +90,7 @@ function QuestionnaireDetails(): ReactElement {
         setQuestionnaire(fetchedQuestionnaire);
     }
 
-    function QuestionnaireDetails(): ReactElement {
+    function QuestionnaireDetailsFailed(): ReactElement {
         if (!loaded) {
             return <ONSLoadingPanel/>;
         }
@@ -111,75 +110,12 @@ function QuestionnaireDetails(): ReactElement {
                     {questionnaire.name}
                 </h1>
 
-                <div className="ons-summary ons-u-mb-m">
-                    <div className="ons-summary__group">
-                        <h2 className="ons-summary__group-title">Questionnaire details</h2>
-                        <table className="ons-summary__items">
-                            <thead className="ons-u-vh">
-                                <tr>
-                                    <th>Detail</th>
-                                    <th>Output</th>
-                                </tr>
-                            </thead>
-                            <tbody className="ons-summary__item">
-                                <tr className="ons-summary__row ons-summary__row--has-values">
-                                    <td className="ons-summary__item-title">
-                                        <div className="ons-summary__item--text">
-                                        Questionnaire status
-                                        </div>
-                                    </td>
-                                    <td className="ons-summary__values" colSpan={2}>
-                                        <QuestionnaireStatus status={questionnaire.status ? questionnaire.status : ""}/>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tbody className="ons-summary__item">
-                                <tr className="ons-summary__row ons-summary__row--has-values">
-                                    <td className="ons-summary__item-title">
-                                        <div className="ons-summary__item--text">
-                                        Modes
-                                        </div>
-                                    </td>
-                                    <td className="ons-summary__values" colSpan={2}>
-                                        {modes.join(", ")}
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tbody className="ons-summary__item">
-                                <tr className="ons-summary__row ons-summary__row--has-values">
-                                    <td className="ons-summary__item-title">
-                                        <div className="ons-summary__item--text">
-                                        Number of cases
-                                        </div>
-                                    </td>
-                                    <td className="ons-summary__values" colSpan={2}>
-                                        {questionnaire.dataRecordCount}
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tbody className="ons-summary__item">
-                                <tr className="ons-summary__row ons-summary__row--has-values">
-                                    <td className="ons-summary__item-title">
-                                        <div className="ons-summary__item--text">
-                                        Install date
-                                        </div>
-                                    </td>
-                                    <td className="ons-summary__values" colSpan={2}>
-                                        {dateFormatter(questionnaire.installDate).format("DD/MM/YYYY HH:mm")}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <ViewCatiModeDetails questionnaireName={questionnaire.name} modes={modes}/>
-                <ViewCawiModeDetails questionnaire={questionnaire} modes={modes}/>
-                <ViewTmDetails questionnaireName={questionnaire.name}/>
-                <ViewQuestionnaireSettings questionnaire={questionnaire} modes={modes}/>
-
+                <QuestionnaireDetails questionnaire={questionnaire} modes={modes}/>
+                <CatiModeDetails questionnaireName={questionnaire.name} modes={modes}/>
+                <CawiModeDetails questionnaire={questionnaire} modes={modes}/>
+                <TotalmobileDetails questionnaireName={questionnaire.name}/>
+                <QuestionnaireSettingsSection questionnaire={questionnaire} modes={modes}/>
                 <YearCalendar modes={modes} surveyDays={surveyDays}/>
-
                 <BlaiseNodeInfo questionnaire={questionnaire}/>
 
                 <br></br>
@@ -204,10 +140,10 @@ function QuestionnaireDetails(): ReactElement {
             }/>
 
             <main id="main-content" className="ons-page__main ons-u-mt-no">
-                <QuestionnaireDetails/>
+                <QuestionnaireDetailsFailed/>
             </main>
         </>
     );
 }
 
-export default QuestionnaireDetails;
+export default QuestionnaireDetailsPage;
