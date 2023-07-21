@@ -6,7 +6,7 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import "@testing-library/jest-dom";
 // Mock elements
-import {IQuestionnaire } from "blaise-api-node-client";
+import { IQuestionnaire } from "blaise-api-node-client";
 
 import {
     givenTheQuestionnaireIsInstalled,
