@@ -9,7 +9,7 @@ import "@testing-library/jest-dom";
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenILoadTheHomepage, whenISearchForAQuestionnaire } from "../step_definitions/when";
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires, thenIAmPresentedWithQuestionnaireNotFound } from "../step_definitions/then";
-import { Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaire } from "blaise-api-node-client";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -25,7 +25,7 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const questionnaireList: Questionnaire[] = [];
+const questionnaireList: IQuestionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
 defineFeature(feature, test => {

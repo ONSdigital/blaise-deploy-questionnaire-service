@@ -6,7 +6,7 @@ import { getQuestionnaires } from "../client/questionnaires";
 import { ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import { verifyAndInstallQuestionnaire } from "../client/componentProcesses";
 import Breadcrumbs from "./breadcrumbs";
-import { Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaire } from "blaise-api-node-client";
 
 function ReinstallQuestionnaires(): ReactElement {
     const [questionnaireList, setQuestionnaireList] = useState<string[]>([]);
@@ -22,7 +22,7 @@ function ReinstallQuestionnaires(): ReactElement {
     }, []);
 
     async function getInstalledQuestionnaireList() {
-        let questionnaires: Questionnaire[];
+        let questionnaires: IQuestionnaire[];
         try {
             questionnaires = await getQuestionnaires();
             console.log(`Response from get all questionnaires successful, data list length ${questionnaireList.length}`);

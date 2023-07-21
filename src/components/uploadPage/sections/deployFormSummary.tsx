@@ -1,12 +1,12 @@
 import React, { ReactElement } from "react";
 import { FormikContextType, useFormikContext } from "formik";
-import { Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaire } from "blaise-api-node-client";
 import dateFormatter from "dayjs";
 import { roundUp } from "../../../utilities/maths";
 
 interface PageFourProps {
     file: File | undefined
-    foundQuestionnaire: Questionnaire | null
+    foundQuestionnaire: IQuestionnaire | null
 }
 
 function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactElement {
