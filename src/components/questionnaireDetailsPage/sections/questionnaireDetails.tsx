@@ -1,10 +1,10 @@
 import React, { ReactElement } from "react";
 import dateFormatter from "dayjs";
 import QuestionnaireStatus from "../../questionnaireStatus";
-import { Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaire } from "blaise-api-node-client";
 
 interface Props {
-    questionnaire: Questionnaire;
+    questionnaire: IQuestionnaire;
     modes: string[]
 }
 

@@ -1,4 +1,4 @@
-import { Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaire } from "blaise-api-node-client";
 
 export const questionnaireListMockObject = [{
     name: "OPN2101A",
@@ -32,7 +32,7 @@ export const questionnaireMockObject = {
     hasData: false,
 };
 
-export const expectedQuestionnaireList: Questionnaire[] = [{
+export const expectedQuestionnaireList: IQuestionnaire[] = [{
     name: "OPN2101A",
     serverParkName: "gusty",
     installDate: "2021-01-15T14:41:29.4399898+00:00",

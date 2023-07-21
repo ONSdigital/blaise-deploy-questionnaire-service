@@ -1,12 +1,12 @@
 import { DefineStepFunction } from "jest-cucumber";
 import { questionnaireWithName } from "./helpers/apiMockObjects";
-import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaireSettings, IQuestionnaire } from "blaise-api-node-client";
 import { navigateToDeployPageAndSelectFile, formatDateString } from "./helpers/functions";
 import MockAdapter from "axios-mock-adapter";
 
 export function givenTheQuestionnaireIsInstalled(
     given: DefineStepFunction,
-    questionnaireList: Questionnaire[],
+    questionnaireList: IQuestionnaire[],
     mocker: MockAdapter
 ): void {
     given(/the questionnaire '(.*)' is installed/, (questionnaireName: string) => {
@@ -92,7 +92,7 @@ export function givenTheQuestionnaireHasModes(
 
 export function givenTheQuestionnaireHasCases(
     given: DefineStepFunction,
-    questionnaireList: Questionnaire[],
+    questionnaireList: IQuestionnaire[],
     mocker: MockAdapter
 ): void {
     given(/'(.*)' has (\d+) cases/, (questionnaireName: string, cases: string) => {
@@ -117,7 +117,7 @@ export function givenTheQuestionnaireHasUACs(
 
 export function givenTheQuestionnaireIsErroneous(
     given: DefineStepFunction,
-    questionnaireList: Questionnaire[],
+    questionnaireList: IQuestionnaire[],
 ): void {
     given(/'(.*)' is erroneous/, (questionnaireName: string) => {
         for (const questionnaire of questionnaireList) {
@@ -188,7 +188,7 @@ export function givenIHaveSelectedTheQuestionnairePackageToDeploy(given: DefineS
 
 export function givenTheQuestionnaireIsLive(
     given: DefineStepFunction,
-    questionnaireList: Questionnaire[],
+    questionnaireList: IQuestionnaire[],
     mocker: MockAdapter
 ): void {
     given(/'(.*)' is live/, (questionnaireName: string) => {
@@ -206,7 +206,7 @@ export function givenTheQuestionnaireIsLive(
 
 export function givenTheQuestionnaireIsActive(
     given: DefineStepFunction,
-    questionnaireList: Questionnaire[],
+    questionnaireList: IQuestionnaire[],
     mocker: MockAdapter
 ): void {
     given(/'(.*)' is active/, (questionnaireName: string) => {
@@ -223,7 +223,7 @@ export function givenTheQuestionnaireIsActive(
 
 export function givenTheQuestionnaireIsInactive(
     given: DefineStepFunction,
-    questionnaireList: Questionnaire[],
+    questionnaireList: IQuestionnaire[],
     mocker: MockAdapter
 ): void {
     given(/'(.*)' is inactive/, (questionnaireName: string) => {
@@ -240,7 +240,7 @@ export function givenTheQuestionnaireIsInactive(
 
 export function givenTheQuestionnaireHasActiveSurveyDays(
     given: DefineStepFunction,
-    questionnaireList: Questionnaire[],
+    questionnaireList: IQuestionnaire[],
     mocker: MockAdapter
 ): void {
     given(/'(.*)' has active survey days/, (questionnaireName: string) => {
@@ -255,7 +255,7 @@ export function givenTheQuestionnaireHasActiveSurveyDays(
 
 export function givenTheQuestionnareHasTheSettings(given: DefineStepFunction, mocker: MockAdapter): void {
     given(/'(.*)' has the settings:/, (questionnaireName: string, table: any[]) => {
-        const settings: QuestionnaireSettings[] = [];
+        const settings: IQuestionnaireSettings[] = [];
         table.forEach((row: any) => {
             settings.push({
                 type: row.type,
