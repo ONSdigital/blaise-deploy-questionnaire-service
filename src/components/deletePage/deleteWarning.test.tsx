@@ -6,7 +6,7 @@ import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import DeleteWarning from "./deleteWarning";
-import { Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaire } from "blaise-api-node-client";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import userEvent from "@testing-library/user-event";
@@ -17,7 +17,7 @@ describe("DeleteWarning", () => {
     const CATI_WARNING_MESSAGE = "Questionnaire has active Telephone Operations survey days";
     const CAWI_WARNING_MESSAGE = "Questionnaire is active for web collection";
 
-    const defaultQuestionnaire: Questionnaire = {
+    const defaultQuestionnaire: IQuestionnaire = {
         fieldPeriod: "",
         installDate: "",
         name: "",
@@ -30,7 +30,7 @@ describe("DeleteWarning", () => {
 
     describe("when CAWI mode is include", () => {
         it("should display CAWI warning for an active CAWI questionnaire", async () => {
-            const questionnaire: Questionnaire = {
+            const questionnaire: IQuestionnaire = {
                 ...defaultQuestionnaire,
                 status: "ACTIVE"
             };
@@ -45,7 +45,7 @@ describe("DeleteWarning", () => {
         });
 
         it("should not display CAWI warning for an inactive CAWI questionnaire", async () => {
-            const questionnaire: Questionnaire = {
+            const questionnaire: IQuestionnaire = {
                 ...defaultQuestionnaire,
                 status: "inactive"
             };
@@ -60,7 +60,7 @@ describe("DeleteWarning", () => {
         });
 
         it("should not display CAWI warning for an active non-CAWI questionnaire", async () => {
-            const questionnaire: Questionnaire = {
+            const questionnaire: IQuestionnaire = {
                 ...defaultQuestionnaire,
                 status: "active"
             };
@@ -76,7 +76,7 @@ describe("DeleteWarning", () => {
 
     describe("when CATI mode is present", () => {
         it("should display the loading page while waiting for the CATI status", async () => {
-            const questionnaire: Questionnaire = {
+            const questionnaire: IQuestionnaire = {
                 ...defaultQuestionnaire,
                 name: "LMS2201_AA1",
                 status: "active",
@@ -93,7 +93,7 @@ describe("DeleteWarning", () => {
         });
 
         it("should display the CATI warning for an active CATI questionnaire", async () => {
-            const questionnaire: Questionnaire = {
+            const questionnaire: IQuestionnaire = {
                 ...defaultQuestionnaire,
                 name: "LMS2201_AA1",
                 status: "active",
@@ -106,7 +106,7 @@ describe("DeleteWarning", () => {
         });
 
         it("should not fetch the active status more than once", async () => {
-            const questionnaire: Questionnaire = {
+            const questionnaire: IQuestionnaire = {
                 ...defaultQuestionnaire,
                 name: "LMS2201_AA1",
                 status: "active",
@@ -121,7 +121,7 @@ describe("DeleteWarning", () => {
         });
 
         it("should not display the CATI warning for an inactive CATI questionnaire", async () => {
-            const questionnaire: Questionnaire = {
+            const questionnaire: IQuestionnaire = {
                 ...defaultQuestionnaire,
                 name: "LMS2201_AA1",
                 status: "not-active",
@@ -135,7 +135,7 @@ describe("DeleteWarning", () => {
         });
 
         it("should not display the CATI warning for an inactive request CATI questionnaire", async () => {
-            const questionnaire: Questionnaire = {
+            const questionnaire: IQuestionnaire = {
                 ...defaultQuestionnaire,
                 name: "LMS2201_AA1",
                 status: "active",
@@ -149,7 +149,7 @@ describe("DeleteWarning", () => {
         });
 
         it("should not display the CATI warning for an active non-CATI questionnaire", async () => {
-            const questionnaire: Questionnaire = {
+            const questionnaire: IQuestionnaire = {
                 ...defaultQuestionnaire,
                 name: "LMS2201_AA1",
                 status: "active",
@@ -163,7 +163,7 @@ describe("DeleteWarning", () => {
         });
 
         it("should display an error when the CATI active check fails", async () => {
-            const questionnaire: Questionnaire = {
+            const questionnaire: IQuestionnaire = {
                 ...defaultQuestionnaire,
                 name: "LMS2201_AA1",
                 status: "active",

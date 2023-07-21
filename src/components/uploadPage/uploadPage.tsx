@@ -13,7 +13,7 @@ import { uploadAndInstallFile, validateSelectedQuestionnaireExists, checkQuestio
 import { roundUp } from "../../utilities/maths";
 import Breadcrumbs from "../breadcrumbs";
 import { activateQuestionnaire, deleteQuestionnaire } from "../../client/questionnaires";
-import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaireSettings, IQuestionnaire } from "blaise-api-node-client";
 
 enum Step {
     SelectFile,
@@ -28,15 +28,15 @@ enum Step {
 function UploadPage(): ReactElement {
     const [file, setFile] = useState<File>();
     const [questionnaireName, setQuestionnaireName] = useState<string>("");
-    const [foundQuestionnaire, setFoundQuestionnaire] = useState<Questionnaire | null>(null);
+    const [foundQuestionnaire, setFoundQuestionnaire] = useState<IQuestionnaire | null>(null);
     const [activeStep, setActiveStep] = useState<Step>(Step.SelectFile);
 
     const [uploading, setUploading] = useState<boolean>(false);
     const [uploadPercentage, setUploadPercentage] = useState<number>(0);
     const [uploadStatus, setUploadStatus] = useState<string>("");
 
-    const [questionnaireSettings, setQuestionnaireSettings] = useState<QuestionnaireSettings>();
-    const [invalidSettings, setInvalidSettings] = useState<Partial<QuestionnaireSettings>>({});
+    const [questionnaireSettings, setQuestionnaireSettings] = useState<IQuestionnaireSettings>();
+    const [invalidSettings, setInvalidSettings] = useState<Partial<IQuestionnaireSettings>>({});
     const [errored, setErrored] = useState<boolean>(false);
 
     const history = useHistory();

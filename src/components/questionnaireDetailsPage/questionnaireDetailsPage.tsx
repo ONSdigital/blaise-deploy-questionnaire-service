@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import { Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaire } from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
 import BlaiseNodeInfo from "./sections/blaiseNodeInfo";
 import CawiModeDetails from "./sections/cawiModeDetails";
@@ -13,7 +13,7 @@ import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react
 import QuestionnaireDetails from "./sections/questionnaireDetails";
 
 interface State {
-    questionnaire: Questionnaire | null;
+    questionnaire: IQuestionnaire | null;
 }
 
 interface Params {
@@ -23,7 +23,7 @@ interface Params {
 function QuestionnaireDetailsPage(): ReactElement {
     const location = useLocation<State>();
     const history = useHistory();
-    const [questionnaire, setQuestionnaire] = useState<Questionnaire>();
+    const [questionnaire, setQuestionnaire] = useState<IQuestionnaire>();
     const [modes, setModes] = useState<string[]>([]);
     const [surveyDays, setSurveyDays] = useState<string[]>([]);
     const [errored, setErrored] = useState<boolean>(false);

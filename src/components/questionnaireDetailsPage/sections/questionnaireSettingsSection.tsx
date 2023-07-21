@@ -1,20 +1,20 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { getQuestionnaireSettings } from "../../../client/questionnaires";
-import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaireSettings, IQuestionnaire } from "blaise-api-node-client";
 import { GetStrictInterviewingSettings, ValidateSettings } from "../../../utilities/questionnaireSettings";
 import { GetQuestionnaireMode, QuestionnaireMode } from "../../../utilities/questionnaireMode";
 import QuestionnaireSettingsTable from "./questionnaireSettingsTable";
 
 interface Props {
-    questionnaire: Questionnaire;
+    questionnaire: IQuestionnaire;
     modes: string[];
 }
 
 function QuestionnaireSettingsSection({ questionnaire, modes }: Props): ReactElement {
     const [mode, setMode] = useState<QuestionnaireMode>();
-    const [setting, setSetting] = useState<QuestionnaireSettings>();
+    const [setting, setSetting] = useState<IQuestionnaireSettings>();
     const [errored, setErrored] = useState<boolean>(false);
-    const [invalidSettings, setInvalidSettings] = useState<Partial<QuestionnaireSettings>>({});
+    const [invalidSettings, setInvalidSettings] = useState<Partial<IQuestionnaireSettings>>({});
 
     useEffect(() => {
         setMode(GetQuestionnaireMode(modes));
