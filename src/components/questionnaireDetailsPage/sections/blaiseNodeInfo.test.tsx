@@ -6,10 +6,10 @@ import flushPromises from "../../../tests/utils";
 import { render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import React from "react";
-import { Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaire } from "blaise-api-node-client";
 import BlaiseNodeInfo from "./blaiseNodeInfo";
 
-const questionnaireWithNodeInfo: Questionnaire = {
+const questionnaireWithNodeInfo: IQuestionnaire = {
     active: false,
     activeToday: false,
     dataRecordCount: 0,

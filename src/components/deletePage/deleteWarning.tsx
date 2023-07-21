@@ -1,11 +1,11 @@
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import React, { ReactElement, useEffect, useState } from "react";
-import { Questionnaire } from "blaise-api-node-client";
+import { IQuestionnaire } from "blaise-api-node-client";
 import { removeToStartDateAndDeleteQuestionnaire } from "../../client/componentProcesses";
 import { surveyIsActive } from "../../client/questionnaires";
 
 interface Props {
-    questionnaire: Questionnaire
+    questionnaire: IQuestionnaire
     modes: string[]
     onDelete: (message: string) => void
     onCancel: () => void
