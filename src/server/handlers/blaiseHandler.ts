@@ -16,7 +16,6 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
     router.get("/api/questionnaires/:questionnaireName/modes/:mode", auth.Middleware, blaiseHandler.DoesQuestionnaireHaveMode);
     router.get("/api/questionnaires/:questionnaireName/settings", auth.Middleware, blaiseHandler.GetSettings);
     router.get("/api/questionnaires/:questionnaireName/surveydays", auth.Middleware, blaiseHandler.GetSurveyDays);
-    // router.get("/api/questionnaires/:questionnaireName/active", auth.Middleware, blaiseHandler.GetSurveyIsActive);
     router.get("/api/questionnaires/:questionnaireName/cases/ids", auth.Middleware, blaiseHandler.GetCases);
     router.post("/api/install", auth.Middleware, blaiseHandler.InstallQuestionnaire);
     router.patch("/api/questionnaires/:questionnaireName/activate", auth.Middleware, blaiseHandler.ActivateQuestionnaire);
@@ -48,7 +47,6 @@ export class BlaiseHandler {
         this.GetModes = this.GetModes.bind(this);
         this.GetSettings = this.GetSettings.bind(this);
         this.GetSurveyDays = this.GetSurveyDays.bind(this);
-        // this.GetSurveyIsActive = this.GetSurveyIsActive.bind(this);
     }
 
     async GetHealth(req: Request, res: Response): Promise<Response> {
@@ -230,19 +228,6 @@ export class BlaiseHandler {
             return res.status(500).json(null);
         }
     }
-
-    // async GetSurveyIsActive(req: Request, res: Response): Promise<Response> {
-    //     const { questionnaireName } = req.params;
-    //     try {
-    //         const surveyDays = await this.blaiseApiClient.getSurveyDays(this.serverPark, questionnaireName);
-    //         const surveyActiveStatus = surveyIsActive(surveyDays);
-    //         req.log.info({ surveyActiveStatus }, `Successfully called get survey is active for ${questionnaireName}`);
-    //         return res.status(200).json(surveyActiveStatus);
-    //     } catch (error: any) {
-    //         req.log.error(error, `Get survey is active for ${questionnaireName}`);
-    //         return res.status(500).json(null);
-    //     }
-    // }
 
     errorNotFound(error: any): boolean {
         return (error?.isAxiosError && error.response.status === 404);
