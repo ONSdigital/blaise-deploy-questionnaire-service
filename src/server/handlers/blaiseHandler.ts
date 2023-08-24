@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { Auth } from "blaise-login-react-server";
-import BlaiseApiClient, { surveyIsActive, IInstallQuestionnaire, IQuestionnaire } from "blaise-api-node-client";
+import BlaiseApiClient, { surveyIsActive, InstallQuestionnaire, Questionnaire } from "blaise-api-node-client";
 import { fieldPeriodToText } from "../functions";
 import AuditLogger from "../auditLogging/logger";
 
@@ -82,7 +82,7 @@ export class BlaiseHandler {
     async InstallQuestionnaire(req: Request, res: Response): Promise<Response> {
         const filename: string = req.body.filename;
         const questionnaireName = filename?.toString().replace(/\.[a-zA-Z]*$/, "");
-        const installQuestionnaire: IInstallQuestionnaire = {
+        const installQuestionnaire: InstallQuestionnaire = {
             questionnaireFile: filename?.toString() || ""
         };
         try {
@@ -162,8 +162,8 @@ export class BlaiseHandler {
 
     async GetQuestionnaires(req: Request, res: Response): Promise<Response> {
         try {
-            const questionnaires: IQuestionnaire[] = await this.blaiseApiClient.getQuestionnaires(this.serverPark);
-            questionnaires.forEach(function (questionnaire: IQuestionnaire) {
+            const questionnaires: Questionnaire[] = await this.blaiseApiClient.getQuestionnaires(this.serverPark);
+            questionnaires.forEach(function (questionnaire: Questionnaire) {
                 if (questionnaire.status === "Erroneous") {
                     req.log.info(`Questionnaire ${questionnaire.name} returned erroneous.`);
                     questionnaire.status = "Failed";
