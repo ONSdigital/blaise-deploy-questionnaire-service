@@ -16,9 +16,9 @@ import {
 } from "../../utilities/questionnaireSettings";
 import { verifyAndInstallQuestionnaire } from ".";
 import { GetQuestionnaireMode } from "../../utilities/questionnaireMode";
-import { IQuestionnaireSettings, IQuestionnaire } from "blaise-api-node-client";
+import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
 
-export async function validateSelectedQuestionnaireExists(file: File | undefined, setQuestionnaireName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundQuestionnaire: (object: IQuestionnaire | null) => void): Promise<boolean | null> {
+export async function validateSelectedQuestionnaireExists(file: File | undefined, setQuestionnaireName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundQuestionnaire: (object: Questionnaire | null) => void): Promise<boolean | null> {
     if (file === undefined) {
         return null;
     }
@@ -28,7 +28,7 @@ export async function validateSelectedQuestionnaireExists(file: File | undefined
 
     setQuestionnaireName(questionnaireName);
 
-    let questionnaire: IQuestionnaire | undefined;
+    let questionnaire: Questionnaire | undefined;
     try {
         questionnaire = await getQuestionnaire(questionnaireName);
     } catch {
@@ -110,11 +110,11 @@ export async function uploadAndInstallFile(
 
 export async function checkQuestionnaireSettings(
     questionnaireName: string,
-    setQuestionnaireSettings: (questionnaireSettings: IQuestionnaireSettings) => void,
-    setInvalidSettings: (invalidSettings: Partial<IQuestionnaireSettings>) => void,
+    setQuestionnaireSettings: (questionnaireSettings: QuestionnaireSettings) => void,
+    setInvalidSettings: (invalidSettings: Partial<QuestionnaireSettings>) => void,
     setErrored: (errored: boolean) => void
 ): Promise<boolean> {
-    let questionnaireSettingsList: IQuestionnaireSettings[];
+    let questionnaireSettingsList: QuestionnaireSettings[];
     let questionnaireModes: string[];
     try {
         questionnaireSettingsList = await getQuestionnaireSettings(questionnaireName);

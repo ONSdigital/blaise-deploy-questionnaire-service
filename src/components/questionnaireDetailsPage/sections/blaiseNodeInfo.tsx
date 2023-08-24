@@ -1,10 +1,10 @@
-import { IQuestionnaire } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import { Collapsible } from "blaise-design-system-react-components";
 import QuestionnaireStatus from "../../questionnaireStatus";
 import React, { Fragment, ReactElement } from "react";
 
 interface NodeProps {
-    questionnaire: IQuestionnaire;
+    questionnaire: Questionnaire;
 }
 
 function BlaiseNodeInfo({ questionnaire }: NodeProps): ReactElement {

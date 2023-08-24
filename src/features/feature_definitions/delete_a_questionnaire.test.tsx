@@ -5,7 +5,7 @@
 // Test modules
 import { defineFeature, loadFeature } from "jest-cucumber";
 import "@testing-library/jest-dom";
-import { IQuestionnaire } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import {
     givenTheQuestionnaireHasActiveSurveyDays,
@@ -47,7 +47,7 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const questionnaireList: IQuestionnaire[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
 defineFeature(feature, test => {
