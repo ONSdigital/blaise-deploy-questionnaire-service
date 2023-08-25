@@ -6,7 +6,7 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import "@testing-library/jest-dom";
 // Mock elements
-import { IQuestionnaire } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import { givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous, givenTheQuestionnaireIsErroneous, givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenIConfirmDelete, whenIDeleteAQuestionnaire, whenIGoToTheQuestionnaireDetailsPage } from "../step_definitions/when";
@@ -26,7 +26,7 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const questionnaireList: IQuestionnaire[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new Mockadapter(axios);
 
 defineFeature(feature, test => {

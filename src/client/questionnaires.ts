@@ -1,8 +1,8 @@
-import { IQuestionnaireSettings, IQuestionnaire } from "blaise-api-node-client";
+import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
 import axios from "axios";
 import axiosConfig from "./axiosConfig";
 
-export async function getQuestionnaire(questionnaireName: string): Promise< IQuestionnaire | undefined> {
+export async function getQuestionnaire(questionnaireName: string): Promise< Questionnaire | undefined> {
     console.log(`Call to getQuestionnaire(${questionnaireName})`);
     const url = `/api/questionnaires/${questionnaireName}`;
 
@@ -19,7 +19,7 @@ export async function getQuestionnaire(questionnaireName: string): Promise< IQue
     }
 }
 
-export async function getQuestionnaires(): Promise<IQuestionnaire[]> {
+export async function getQuestionnaires(): Promise<Questionnaire[]> {
     console.log("Call to getQuestionnaires");
     const url = "/api/questionnaires";
 
@@ -94,7 +94,7 @@ export async function getQuestionnaireModes(questionnaireName: string): Promise<
     }
 }
 
-export async function getQuestionnaireSettings(questionnaireName: string): Promise<IQuestionnaireSettings[]> {
+export async function getQuestionnaireSettings(questionnaireName: string): Promise<QuestionnaireSettings[]> {
     console.log("Sending request get questionnaire settings");
     const url = `/api/questionnaires/${questionnaireName}/settings`;
 

@@ -36,7 +36,7 @@ describe("Test Health Endpoint", () => {
 describe("Given the API returns 2 questionnaires", () => {
     beforeEach(() => {
         mockGetQuestionnaires.mockImplementation(() => {
-            return Promise.resolve(apiQuestionnaireList);
+            return Promise.resolve(apQuestionnaireList);
         });
     });
 
@@ -45,7 +45,7 @@ describe("Given the API returns 2 questionnaires", () => {
         jest.resetModules();
     });
 
-    const apiQuestionnaireList = [
+    const apQuestionnaireList = [
         {
             installDate: "2020-12-11T11:53:55.5612856+00:00",
             name: "OPN2007T",

@@ -1,4 +1,4 @@
-import { IQuestionnaireSettings } from "blaise-api-node-client";
+import { QuestionnaireSettings } from "blaise-api-node-client";
 import { QuestionnaireMode } from "./questionnaireMode";
 import {
     GetStrictInterviewingSettings,
@@ -8,7 +8,7 @@ import {
 } from "./questionnaireSettings";
 
 describe("Function GetStrictInterviewingSettings()", () => {
-    const questionnaireSettingTestList: IQuestionnaireSettings[] = [
+    const questionnaireSettingTestList: QuestionnaireSettings[] = [
         {
             type: "FreeInterviewing",
             saveSessionOnTimeout: false,
