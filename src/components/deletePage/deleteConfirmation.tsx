@@ -1,12 +1,12 @@
 import React, { ReactElement } from "react";
 import { useLocation } from "react-router-dom";
-import { IQuestionnaire } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import ErroneousWarning from "./erroneousWarning";
 import DeleteWarning from "./deleteWarning";
 import Breadcrumbs from "../breadcrumbs";
 
 interface Location {
-    questionnaire: IQuestionnaire,
+    questionnaire: Questionnaire,
     modes : string[],
 }
 

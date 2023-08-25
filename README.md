@@ -29,7 +29,7 @@ storing Instrument Metadata like the Telephone Operations start date used
 by [Telephone Operations Blaise Interface (TOBI)](https://github.com/ONSdigital/telephone-operations-blaise-interface).
 
 [Blaise UAC Service (BUS)](https://github.com/ONSdigital/blaise-uac-service) handles the generation of Unique Access
-Codes (UACs) for IQuestionnaires.
+Codes (UACs) for Questionnaires.
 
 ### Setup
 
@@ -48,9 +48,14 @@ port `5011`:
 sudo gcloud compute start-iap-tunnel restapi-1 80 --local-host-port=localhost:5011 --zone europe-west2-a
 ```
 
-#### Setup locally steps
+### Local Setup
 
-Clone the Repo
+Prerequisites
+- [Node.js](https://nodejs.org/)
+- [Yarn](https://yarnpkg.com/)
+- [Cloud SDK](https://cloud.google.com/sdk/)
+
+Clone the repository:
 
 ```shell script
 git clone https://github.com/ONSdigital/blaise-deploy-questionnaire-service.git
@@ -74,6 +79,8 @@ To find the `X_CLIENT_ID`, navigate to the GCP console, search for `IAP`, click 
 
 The .env file should be setup as below
 
+Example .env file:
+
 ```.env
 BLAISE_API_URL=localhost:5011
 PROJECT_ID=ons-blaise-v2-dev-<sandbox>
@@ -85,22 +92,23 @@ BUS_API_URL=FOO
 BUS_CLIENT_ID=FOO
 ```
 
-Install required modules
+Install the project dependencies:
 
 ```shell script
 yarn
 ```
 
-##### Local access to GCP Bucket
+Authenticate with GCP:
+```shell
+gcloud auth login
+```
 
-To get the service working locally with a remote GCP Bucket, you need
-to [obtain a JSON service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys), this
-will need to be a service account with create and list permissions to the specified bucket. Save the service account key
-as  `keys.json` and place in the root of the project. Providing the NODE_ENV is not production, then the GCP storage
-config (Found at `server/storage/config.js`) will attempt to use this file.  **DO NOT COMMIT THIS FILE**
+Set your GCP project:
+```shell
+gcloud config set project ons-blaise-v2-dev-<sandbox-suffix>
+```
 
-
-To create a keys.json file:
+create a keys.json file:
 ```shell
 gcloud iam service-accounts keys create keys.json --iam-account ons-blaise-v2-dev-<sandbox>@appspot.gserviceaccount.com`
 ```
@@ -110,68 +118,38 @@ To export the `Google application credentials` as a runtime variable:
 export GOOGLE_APPLICATION_CREDENTIALS=keys.json
 ```
 
-##### Run commands
 
-The following run commands are available, these are all setup in the `package.json` under `scripts`.
-
-| Command             | Description                                                                                                                                                                              |
-|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `yarn server`       | Starts the complied express server (Used by App Engine to start the server), Note: The server will need to be complied and the React Project will need to be built first.                |
-| `yarn start-server` | Compiles Typescript and starts the express server, Note: For the website to be rendered the React Project will need to be built.                                                         |
-| `yarn start-react`  | Starts react project in local development setup with quick reloading on making changes. Note: For instruments to be shown the server needs to be running.                                |
-| `yarn build-react`  | Compiles build project ready to be served by express. The build in outputted to the the `build` directory which express points to with the var `buildFolder` in `server/server.js`.      |
-| `yarn test`         | Runs all tests for server and React Components and outputs coverage statistics.                                                                                                          |
-| `gcp-build`         | [App Engine custom build step](https://cloud.google.com/appengine/docs/standard/nodejs/running-custom-build-step) which builds the react application and complies the TypeScript server. |
-
-##### Simple setup for local development
-
-Setup express project to be call Blaise Questionnaire Checker. By default, will be running on PORT 5000.
-
-```shell script
-yarn start-server
+Open a tunnel to our Blaise RESTful API in your GCP project:
+```shell
+gcloud compute start-iap-tunnel restapi-1 80 --local-host-port=localhost:8011 --zone europe-west2-a
 ```
 
-Next, to make sure the React project make requests to the Express server make sure the proxy option is set to the right
-port in the 'package.json'
+Ensure the proxy is configured to the correct port in the 'package.json'
 
 ```.json
 "proxy": "http://localhost:5000",
 ```
 
-Run the React project for local development. By default, this will be running on PORT 3000
+In a new terminal, run Node.js server and React.js client via the following package.json script
 
 ```shell script
-yarn start-server
+yarn dev
 ```
 
-To test express sever serving the React project, you need to compile the React project, then you can see it running
-at [http://localhost:5000/](http://localhost:5000/)
+The UI should now be accessible via:
 
-```shell script
-yarn build-react
-```
+http://localhost:3000/
 
-### Tests
-
-The [Jest testing framework](https://jestjs.io/en/) has been setup in this project, all tests currently reside in
-the `tests` directory. This currently only running tests on the health check endpoint, haven't got the hang of mocking
-Axios yet.
-
-To run all tests run
+Tests can be run via the following package.json script:
 
 ```shell script
 yarn test
 ```
 
-Other test command can be seen in the Run Commands section above.
+Test snapshots can be updated via:
 
-Deploying to app engine
-
-To deploy the locally edited service to app engine in your environment, you can run trigger the cloudbuild trigger with
-the following line, changing the environment variables as needed.
-
-```.shell
-gcloud builds submit --substitutions=_PROJECT_ID=ons-blaise-v2-dev-matt56,_BLAISE_API_URL=/,_BUCKET_NAME=ons-blaise-dev-matt56-survey-bucket-44,_SERVER_PARK=gusty
+```shell script
+yarn test -u
 ```
 
 ### Dockerfile

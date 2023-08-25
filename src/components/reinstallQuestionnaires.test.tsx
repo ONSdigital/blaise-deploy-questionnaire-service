@@ -9,14 +9,14 @@ import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { IQuestionnaire } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import ReinstallQuestionnaires from "./reinstallQuestionnaires";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 const mock = new MockAdapter(axios);
 
-const questionnaireList: IQuestionnaire[] = [{
+const questionnaireList: Questionnaire[] = [{
     name: "OPN2101A",
     serverParkName: "gusty",
     installDate: "2021-01-15T14:41:29.4399898+00:00",

@@ -3,7 +3,7 @@
  */
 
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { IQuestionnaire } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import { thenICanViewTheTOStartDateIsSetTo, thenIHaveTheOptionToAddAToStartDate, thenIHaveTheOptionToChangeOrDeleteTheToStartDate, thenTheToStartDateIsDeleted, thenTheToStartDateIsStored } from "../step_definitions/then";
 import { whenIDeleteTheToStartDate, whenIHaveSelectedToAddAToStartDate, whenILoadTheHomepage, whenISelectTheContinueButton, whenISelectTheQuestionnaire, whenISelectToChangeOrDeleteTOStartDate, whenISpecifyATOStartDateOf } from "../step_definitions/when";
@@ -22,7 +22,7 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const questionnaireList: IQuestionnaire[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapeter(axios);
 
 defineFeature(feature, test => {

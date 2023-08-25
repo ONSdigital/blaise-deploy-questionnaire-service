@@ -1,12 +1,12 @@
 import React, { ReactElement } from "react";
 import QuestionnaireSettingsTable from "../../questionnaireDetailsPage/sections/questionnaireSettingsTable";
-import { IQuestionnaireSettings } from "blaise-api-node-client";
+import { QuestionnaireSettings } from "blaise-api-node-client";
 import { ONSPanel } from "blaise-design-system-react-components";
 
 interface SelectFilePageProps {
     questionnaireName: string;
-    questionnaireSettings: IQuestionnaireSettings | undefined
-    invalidSettings: Partial<IQuestionnaireSettings>
+    questionnaireSettings: QuestionnaireSettings | undefined
+    invalidSettings: Partial<QuestionnaireSettings>
     errored: boolean
 }
 

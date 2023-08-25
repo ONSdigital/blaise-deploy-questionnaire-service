@@ -1,11 +1,11 @@
 import React, { Component, ReactElement } from "react";
 import { ONSPanel, ONSLoadingPanel } from "blaise-design-system-react-components";
-import { IQuestionnaireSettings } from "blaise-api-node-client";
+import { QuestionnaireSettings } from "blaise-api-node-client";
 import { formatText } from "../../../utilities/textFormatting/textFormatting";
 
 type QuestionnaireSettingsProps = {
-  questionnaireSettings: IQuestionnaireSettings | undefined
-  invalidSettings: Partial<IQuestionnaireSettings>
+  questionnaireSettings: QuestionnaireSettings | undefined
+  invalidSettings: Partial<QuestionnaireSettings>
   errored: boolean
 }
 
@@ -55,7 +55,7 @@ export default class QuestionnaireSettingsTable extends Component<QuestionnaireS
                 let correctValue;
                 if (property in this.props.invalidSettings) {
                     invalid = true;
-                    correctValue = this.props.invalidSettings[property as keyof IQuestionnaireSettings];
+                    correctValue = this.props.invalidSettings[property as keyof QuestionnaireSettings];
                 }
 
                 newElements.push(

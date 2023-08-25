@@ -1,8 +1,8 @@
 
-import { IQuestionnaireSettings } from "blaise-api-node-client";
+import { QuestionnaireSettings } from "blaise-api-node-client";
 import { QuestionnaireMode } from "./questionnaireMode";
 
-export const ValidMixedModeSettings: Partial<IQuestionnaireSettings> = {
+export const ValidMixedModeSettings: Partial<QuestionnaireSettings> = {
     saveSessionOnTimeout: true,
     saveSessionOnQuit: true,
     deleteSessionOnTimeout: true,
@@ -10,40 +10,40 @@ export const ValidMixedModeSettings: Partial<IQuestionnaireSettings> = {
     applyRecordLocking: true,
 };
 
-export const ValidCatiModeSettings: Partial<IQuestionnaireSettings> = {
+export const ValidCatiModeSettings: Partial<QuestionnaireSettings> = {
     saveSessionOnTimeout: true,
     saveSessionOnQuit: true,
     applyRecordLocking: true,
 };
 
-export function GetStrictInterviewingSettings(questionnaireSettingsList: IQuestionnaireSettings[]): IQuestionnaireSettings {
+export function GetStrictInterviewingSettings(questionnaireSettingsList: QuestionnaireSettings[]): QuestionnaireSettings {
     for (const questionnaireSettings of questionnaireSettingsList) {
         if (questionnaireSettings.type === "StrictInterviewing") {
             return questionnaireSettings;
         }
     }
-    return {} as IQuestionnaireSettings;
+    return {} as QuestionnaireSettings;
 }
 
-export function ValidateSettings(questionnaireSettings: IQuestionnaireSettings, questionnaireMode: QuestionnaireMode): [boolean, Partial<IQuestionnaireSettings>] {
+export function ValidateSettings(questionnaireSettings: QuestionnaireSettings, questionnaireMode: QuestionnaireMode): [boolean, Partial<QuestionnaireSettings>] {
     if (questionnaireMode === QuestionnaireMode.Cati) {
         return ValidateCATIModeSettings(questionnaireSettings);
     }
     return ValidateMixedModeSettings(questionnaireSettings);
 }
 
-export function ValidateCATIModeSettings(questionnaireSettings: IQuestionnaireSettings): [boolean, Partial<IQuestionnaireSettings>] {
+export function ValidateCATIModeSettings(questionnaireSettings: QuestionnaireSettings): [boolean, Partial<QuestionnaireSettings>] {
     return validateSettings(questionnaireSettings, ValidCatiModeSettings);
 }
 
-export function ValidateMixedModeSettings(questionnaireSettings: IQuestionnaireSettings): [boolean, Partial<IQuestionnaireSettings>] {
+export function ValidateMixedModeSettings(questionnaireSettings: QuestionnaireSettings): [boolean, Partial<QuestionnaireSettings>] {
     return validateSettings(questionnaireSettings, ValidMixedModeSettings);
 }
 
-function validateSettings(questionnaireSettings: IQuestionnaireSettings, validationSettings: Partial<IQuestionnaireSettings>): [boolean, Partial<IQuestionnaireSettings>] {
+function validateSettings(questionnaireSettings: QuestionnaireSettings, validationSettings: Partial<QuestionnaireSettings>): [boolean, Partial<QuestionnaireSettings>] {
     const invalidSettings: any = {};
     for (const [property, value] of Object.entries(validationSettings)) {
-        if (questionnaireSettings[property as keyof IQuestionnaireSettings] != value) {
+        if (questionnaireSettings[property as keyof QuestionnaireSettings] != value) {
             invalidSettings[property] = value;
         }
     }

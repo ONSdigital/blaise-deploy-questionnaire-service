@@ -1,6 +1,6 @@
-import { IQuestionnaire } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
-export const questionnaireList: IQuestionnaire[] = [{
+export const questionnaireList: Questionnaire[] = [{
     name: "OPN2101A",
     serverParkName: "gusty",
     installDate: "2021-01-15T14:41:29.4399898+00:00",
@@ -34,7 +34,7 @@ export const questionnaireList: IQuestionnaire[] = [{
 
 }];
 
-export const opnQuestionnaire: IQuestionnaire = {
+export const opnQuestionnaire: Questionnaire = {
     name: "OPN2004A",
     serverParkName: "gusty",
     installDate: "2021-01-15T15:26:43.4233454+00:00",
@@ -46,7 +46,7 @@ export const opnQuestionnaire: IQuestionnaire = {
     blaiseVersion: "5.9.9.2735"
 };
 
-export const questionnaireWithName = (questionnaireName: string): IQuestionnaire => {
+export const questionnaireWithName = (questionnaireName: string): Questionnaire => {
     return {
         name: questionnaireName,
         serverParkName: "gusty",
