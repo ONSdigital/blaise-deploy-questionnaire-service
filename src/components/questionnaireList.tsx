@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import { filter } from "lodash";
-import { IQuestionnaire } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 import ONSTable, { TableColumns } from "./onsTable";
 import dateFormatter from "dayjs";
 import { Link } from "react-router-dom";
@@ -15,8 +15,8 @@ type Props = {
     setErrored: (errored: boolean) => void
 }
 
-function questionnaireTableRow(questionnaire: IQuestionnaire): ReactElement {
-    function questionnaireName(questionnaire: IQuestionnaire) {
+function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
+    function questionnaireName(questionnaire: Questionnaire) {
         if (questionnaire.name.toUpperCase().startsWith("DST")) {
             return (
                 <>
@@ -58,14 +58,14 @@ function questionnaireTableRow(questionnaire: IQuestionnaire): ReactElement {
 }
 
 export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
-    const [questionnaires, setQuestionnaires] = useState<IQuestionnaire[]>([]);
+    const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([]);
     const [realQuestionnaireCount, setRealQuestionnaireCount] = useState<number>(0);
     const [loaded, setLoaded] = useState<boolean>(false);
 
     const [message, setMessage] = useState<string>("");
-    const [filteredList, setFilteredList] = useState<IQuestionnaire[]>([]);
+    const [filteredList, setFilteredList] = useState<Questionnaire[]>([]);
 
-    function filterTestQuestionnaires(questionnairesToFilter: IQuestionnaire[], filterValue: string): IQuestionnaire[] {
+    function filterTestQuestionnaires(questionnairesToFilter: Questionnaire[], filterValue: string): Questionnaire[] {
         if (!filterValue.toUpperCase().startsWith("DST")) {
             questionnairesToFilter = filter(questionnairesToFilter, (questionnaire) => {
                 if (!questionnaire?.name) {
@@ -85,7 +85,7 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
         }
         const newFilteredList = filter(filterTestQuestionnaires(questionnaires, filterValue), (questionnaire) => questionnaire.name.includes(filterValue.toUpperCase()));
         // Order by date
-        newFilteredList.sort((a: IQuestionnaire, b: IQuestionnaire) => Date.parse(b.installDate) - Date.parse(a.installDate));
+        newFilteredList.sort((a: Questionnaire, b: Questionnaire) => Date.parse(b.installDate) - Date.parse(a.installDate));
         setFilteredList(newFilteredList);
 
         if (questionnaires.length > 0 && newFilteredList.length === 0) {
@@ -94,7 +94,7 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     }
 
     async function getQuestionnairesList() {
-        let questionnaires: IQuestionnaire[];
+        let questionnaires: Questionnaire[];
         try {
             questionnaires = await getQuestionnaires();
             console.log(`Response from get all questionnaires successful, data list length ${questionnaires.length}`);
@@ -113,7 +113,7 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     }
 
     useEffect(() => {
-        getQuestionnairesList().then((questionnaireList: IQuestionnaire[]) => {
+        getQuestionnairesList().then((questionnaireList: Questionnaire[]) => {
             setQuestionnaires(questionnaireList);
             const nonTestQuestionnaires = filterTestQuestionnaires(questionnaireList, "");
             setFilteredList(nonTestQuestionnaires);
@@ -130,7 +130,7 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
                 tableID={"questionnaire-table"}
             >
                 {
-                    filteredList.map((item: IQuestionnaire) => {
+                    filteredList.map((item: Questionnaire) => {
                         return questionnaireTableRow(item);
                     })
                 }

@@ -3,7 +3,7 @@
  */
 
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { IQuestionnaire } from "blaise-api-node-client";
+import { Questionnaire } from "blaise-api-node-client";
 
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
@@ -40,7 +40,7 @@ const feature = loadFeature(
     { tagFilter: "not @server and not @integration" }
 );
 
-const questionnaireList: IQuestionnaire[] = [];
+const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapeter(axios);
 
 defineFeature(feature, test => {

@@ -2100,10 +2100,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@remix-run/router@1.7.2":
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.7.2.tgz#cba1cf0a04bc04cb66027c51fa600e9cbc388bc8"
-  integrity sha512-7Lcn7IqGMV+vizMPoEl5F0XDshcdDYtMI6uJLQdQz5CfZAwy3vvGKYSUk789qndt5dEC4HfSjviSYlSoHGL2+A==
+"@remix-run/router@1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.8.0.tgz#e848d2f669f601544df15ce2a313955e4bf0bafc"
+  integrity sha512-mrfKqIHnSZRyIzBcanNJmVQELTnX+qagEDlcKO90RgRBVOZGSGvZKeDihTRfWcqoDn5N/NkUcwWTccnpN18Tfg==
 
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.1"
@@ -3756,8 +3756,8 @@ bindings@^1.2.1:
 
 blaise-api-node-client@ONSDigital/blaise-api-node-client:
   version "1.0.0"
-  uid "9487f2039496d8c22404073fc115cec1f4221442"
-  resolved "https://codeload.github.com/ONSDigital/blaise-api-node-client/tar.gz/9487f2039496d8c22404073fc115cec1f4221442"
+  uid dbc1474e320153e94a43673c8ecaa18ce1b7c65a
+  resolved "https://codeload.github.com/ONSDigital/blaise-api-node-client/tar.gz/dbc1474e320153e94a43673c8ecaa18ce1b7c65a"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
@@ -3766,7 +3766,7 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
 
 "blaise-api-node-client@https://github.com/ONSdigital/blaise-api-node-client":
   version "1.0.0"
-  resolved "https://github.com/ONSdigital/blaise-api-node-client#9487f2039496d8c22404073fc115cec1f4221442"
+  resolved "https://github.com/ONSdigital/blaise-api-node-client#dbc1474e320153e94a43673c8ecaa18ce1b7c65a"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
@@ -3784,7 +3784,6 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
 
 blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
   version "1.0.0"
-  uid "16c9937771369c6cf51dd23af24f0e8755e58e26"
   resolved "https://codeload.github.com/ONSdigital/blaise-iap-node-provider/tar.gz/16c9937771369c6cf51dd23af24f0e8755e58e26"
   dependencies:
     "@babel/preset-env" "^7.14.7"
@@ -3807,9 +3806,9 @@ blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
     path-parse "^1.0.7"
     typescript "~4.2.2"
 
-"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?6e3c678f5b5b5cc65c0275aa6d30380204998153":
+"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?ced09846ac3be3ebd9c5cc9ee75986187214695b":
   version "1.0.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?6e3c678f5b5b5cc65c0275aa6d30380204998153#fb35103ee6a78bf698f8aea91b44dbcd72b216bf"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?ced09846ac3be3ebd9c5cc9ee75986187214695b#49a2b8257b23d6ba1241de810541321ce985c771"
   dependencies:
     axios "~0.21.0"
     blaise-api-node-client ONSDigital/blaise-api-node-client
@@ -3821,9 +3820,9 @@ blaise-iap-node-provider@ONSdigital/blaise-iap-node-provider:
     react-router-dom "^6.2.1"
     universal-cookie "^4.0.4"
 
-"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?6e3c678f5b5b5cc65c0275aa6d30380204998153":
+"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?ced09846ac3be3ebd9c5cc9ee75986187214695b":
   version "1.1.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?6e3c678f5b5b5cc65c0275aa6d30380204998153#2b505fb44df3be4a81351a8c9693fff9bab200e0"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?ced09846ac3be3ebd9c5cc9ee75986187214695b#6921391d3f5f253d07e17c332f3e43fb4ce5e17c"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
@@ -10441,12 +10440,12 @@ react-router-dom@^5.2.0:
     tiny-warning "^1.0.0"
 
 react-router-dom@^6.2.1:
-  version "6.14.2"
-  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.14.2.tgz#88f520118b91aa60233bd08dbd3fdcaea3a68488"
-  integrity sha512-5pWX0jdKR48XFZBuJqHosX3AAHjRAzygouMTyimnBPOLdY3WjzUSKhus2FVMihUFWzeLebDgr4r8UeQFAct7Bg==
+  version "6.15.0"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.15.0.tgz#6da7db61e56797266fbbef0d5e324d6ac443ee40"
+  integrity sha512-aR42t0fs7brintwBGAv2+mGlCtgtFQeOzK0BM1/OiqEzRejOZtpMZepvgkscpMUnKb8YO84G7s3LsHnnDNonbQ==
   dependencies:
-    "@remix-run/router" "1.7.2"
-    react-router "6.14.2"
+    "@remix-run/router" "1.8.0"
+    react-router "6.15.0"
 
 react-router@5.3.4, react-router@^5.2.0:
   version "5.3.4"
@@ -10463,12 +10462,12 @@ react-router@5.3.4, react-router@^5.2.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-router@6.14.2:
-  version "6.14.2"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.14.2.tgz#1f60994d8c369de7b8ba7a78d8f7ec23df76b300"
-  integrity sha512-09Zss2dE2z+T1D03IheqAFtK4UzQyX8nFPWx6jkwdYzGLXd5ie06A6ezS2fO6zJfEb/SpG6UocN2O1hfD+2urQ==
+react-router@6.15.0:
+  version "6.15.0"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.15.0.tgz#bf2cb5a4a7ed57f074d4ea88db0d95033f39cac8"
+  integrity sha512-NIytlzvzLwJkCQj2HLefmeakxxWHWAP+02EGqWEZy+DgfHHKQMUoBBjUQLOtFInBMhWtb3hiUy6MfFgwLjXhqg==
   dependencies:
-    "@remix-run/router" "1.7.2"
+    "@remix-run/router" "1.8.0"
 
 react-scripts@5.0.0:
   version "5.0.0"

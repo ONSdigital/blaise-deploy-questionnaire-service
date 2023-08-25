@@ -5,12 +5,12 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import QuestionnaireSettingsTable from "./questionnaireSettingsTable";
-import { IQuestionnaireSettings } from "blaise-api-node-client";
+import { QuestionnaireSettings } from "blaise-api-node-client";
 
 const viewQuestionnaireSettingsFailedMessage = /Failed to get questionnaire settings/i;
 
 describe("Questionnaire settings table", () => {
-    const questionnaireSettingsValid: IQuestionnaireSettings = {
+    const questionnaireSettingsValid: QuestionnaireSettings = {
         type: "StrictInterviewing",
         saveSessionOnTimeout: true,
         saveSessionOnQuit: true,
@@ -20,7 +20,7 @@ describe("Questionnaire settings table", () => {
         applyRecordLocking: true
     };
 
-    const questionnaireSettingsInvalid: IQuestionnaireSettings = {
+    const questionnaireSettingsInvalid: QuestionnaireSettings = {
         type: "StrictInterviewing",
         saveSessionOnTimeout: false,
         saveSessionOnQuit: true,
@@ -30,7 +30,7 @@ describe("Questionnaire settings table", () => {
         applyRecordLocking: false
     };
 
-    const invalidSettings: Partial<IQuestionnaireSettings> = {
+    const invalidSettings: Partial<QuestionnaireSettings> = {
         saveSessionOnTimeout: true,
         deleteSessionOnQuit: true,
         deleteSessionOnTimeout: true,
