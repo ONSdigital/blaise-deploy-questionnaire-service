@@ -19,11 +19,8 @@ env_variables:
 
 automatic_scaling:
   target_cpu_utilization: 0.65
-  min_instances: 1
-  max_instances: 10 #@ if 'prod' in env.PROJECT_ID and 'preprod' not in env.PROJECT_ID
-basic_scaling:
-  idle_timeout: 10m
-  max_instances: 5 #@ else
+  min_instances: 0
+  max_instances: 10
 
 handlers:
 - url: /.*
