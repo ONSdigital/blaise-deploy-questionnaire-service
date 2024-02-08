@@ -38,7 +38,6 @@ export function whenISelectTo(when: DefineStepFunction): void {
 
 export function whenILoadTheHomepage(when: DefineStepFunction): void {
     when("I load the homepage", async () => {
-
         render(
             <MemoryRouter>
                 <App />
@@ -52,18 +51,18 @@ export function whenILoadTheHomepage(when: DefineStepFunction): void {
 
 export function whenIGoToTheQuestionnaireDetailsPage(when: DefineStepFunction): void {
     when(/I go to the questionnaire details page for '(.*)'/, async (questionnaire: string) => {
-
         render(
             <MemoryRouter>
                 <App />
             </MemoryRouter>
         );
+        
         await act(async () => {
             await flushPromises();
         });
-
-        userEvent.click(screen.getByText(questionnaire));
+    
         await act(async () => {
+            userEvent.click(screen.getByText(questionnaire));
             await flushPromises();
         });
     });
@@ -71,13 +70,18 @@ export function whenIGoToTheQuestionnaireDetailsPage(when: DefineStepFunction): 
 
 export function whenIDeleteAQuestionnaire(when: DefineStepFunction): void {
     when(/I select a link to delete the '(.*)' questionnaire/, async () => {
-        userEvent.click(screen.getByTestId(/delete-questionnaire/));
+        await act(async () => {
+            userEvent.click(screen.getByTestId(/delete-questionnaire-button/i));
+        })
     });
 }
 
 export function whenIConfirmDelete(when: DefineStepFunction): void {
     when("I confirm that I want to proceed", async () => {
-        userEvent.click(screen.getByTestId(/confirm-delete-button/i));
+        await act(async () => {
+            userEvent.click(screen.getByTestId(/confirm-delete-button/i));
+        })
+
         await act(async () => {
             await flushPromises();
         });
