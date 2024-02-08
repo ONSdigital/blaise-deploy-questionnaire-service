@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosProgressEvent } from "axios";
 import axiosConfig from "./axiosConfig";
 
 export async function initialiseUpload(filename: string): Promise<string> {
@@ -35,9 +35,9 @@ export async function validateUploadIsComplete(filename: string): Promise<boolea
     }
 }
 
-export async function uploadFile(url: string, file: File, onFileUploadProgress: (event: ProgressEvent) => void): Promise<boolean> {
+export async function uploadFile(url: string, file: File, onFileUploadProgress: (event: AxiosProgressEvent) => void): Promise<boolean> {
     const config = {
-        onUploadProgress: (progressEvent: ProgressEvent) => onFileUploadProgress(progressEvent),
+        onUploadProgress: onFileUploadProgress,
         headers: {
             "Content-Type": "application/octet-stream",
         }
