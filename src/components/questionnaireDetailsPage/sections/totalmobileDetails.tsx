@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import { getTMReleaseDate } from "../../../client/tmReleaseDate";
 import dateFormatter from "dayjs";
-import TimeAgo from "react-timeago";
+import TimeAgo from "timeago-react";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -42,7 +42,7 @@ function TotalmobileDetails({ questionnaireName }: Props): ReactElement {
     if (loading) {
         return (
             <div className="ons-u-mb-m" aria-busy="true">
-                <ONSLoadingPanel message={"Getting Totalmobile release date"}/>
+                <ONSLoadingPanel message={"Getting Totalmobile release date"} />
             </div>
         );
     }
@@ -72,7 +72,7 @@ function TotalmobileDetails({ questionnaireName }: Props): ReactElement {
                             <tr className="ons-summary__row ons-summary__row--has-values">
                                 <td className="ons-summary__item-title">
                                     <div className="ons-summary__item--text">
-                                    Totalmobile release date
+                                        Totalmobile release date
                                     </div>
                                 </td>
                                 <td className="ons-summary__values">
@@ -81,7 +81,7 @@ function TotalmobileDetails({ questionnaireName }: Props): ReactElement {
                                         tmReleaseDate ?
                                             <>
                                                 {dateFormatter(tmReleaseDateValue).format("DD/MM/YYYY")} ({<TimeAgo
-                                                    live={false} date={tmReleaseDateValue}/>})
+                                                    live={false} datetime={tmReleaseDateValue} />})
                                             </>
 
                                             :
@@ -91,20 +91,18 @@ function TotalmobileDetails({ questionnaireName }: Props): ReactElement {
                                 <td className="ons-summary__actions">
                                     {
                                         tmReleaseDate ?
-                                            <Link to={{
-                                                pathname: "/questionnaire/release-date",
-                                                state: { questionnaireName: questionnaireName, tmReleaseDate: tmReleaseDateValue }
-                                            }} className="ons-summary__button"
-                                            aria-label={`Change or delete release date for questionnaire ${questionnaireName}`}>
-                                            Change or delete release date
+                                            <Link to="/questionnaire/release-date"
+                                                state={{ questionnaireName: questionnaireName, tmReleaseDate: tmReleaseDateValue }}
+                                                className="ons-summary__button"
+                                                aria-label={`Change or delete release date for questionnaire ${questionnaireName}`}>
+                                                Change or delete release date
                                             </Link>
                                             :
-                                            <Link to={{
-                                                pathname: "/questionnaire/release-date",
-                                                state: { questionnaireName: questionnaireName }
-                                            }} className="ons-summary__button"
-                                            aria-label={`Add a release date for questionnaire ${questionnaireName}`}>
-                                            Add release date
+                                            <Link to="/questionnaire/release-date"
+                                                state={{ questionnaireName: questionnaireName }}
+                                                className="ons-summary__button"
+                                                aria-label={`Add a release date for questionnaire ${questionnaireName}`}>
+                                                Add release date
                                             </Link>
 
                                     }
@@ -113,7 +111,7 @@ function TotalmobileDetails({ questionnaireName }: Props): ReactElement {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

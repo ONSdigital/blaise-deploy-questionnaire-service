@@ -1,13 +1,13 @@
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 import React, { ReactElement } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     questionnaireName: string
 }
 
 function ErroneousWarning({ questionnaireName }: Props): ReactElement {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     return (
         <>
@@ -19,7 +19,7 @@ function ErroneousWarning({ questionnaireName }: Props): ReactElement {
             <br />
             <ONSButton label="Return to table of questionnaires"
                 primary={true}
-                onClick={() => history.push("/")} />
+                onClick={() => navigate("/")} />
         </>
     );
 }

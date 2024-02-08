@@ -7,8 +7,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
+import { Router, MemoryRouter } from "react-router-dom";
 import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
 import { Questionnaire } from "blaise-api-node-client";
 import ReinstallQuestionnaires from "./reinstallQuestionnaires";
 import axios from "axios";
@@ -40,11 +40,10 @@ describe("Reinstall questionnaires list", () => {
     });
 
     it("view Blaise Status page matches Snapshot", async () => {
-        const history = createMemoryHistory();
         const wrapper = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <ReinstallQuestionnaires />
-            </Router>
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -53,15 +52,15 @@ describe("Reinstall questionnaires list", () => {
 
         await waitFor(() => {
             expect(wrapper).toMatchSnapshot();
+            expect(wrapper);
         });
     });
 
     it("should render correctly", async () => {
-        const history = createMemoryHistory();
         render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <ReinstallQuestionnaires />
-            </Router>
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -82,11 +81,10 @@ describe("Reinstall questionnaires list", () => {
 
         mock.onGet("/api/questionnaires").reply(200, questionnaireList);
 
-        const history = createMemoryHistory();
         render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <ReinstallQuestionnaires />
-            </Router>
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -114,10 +112,12 @@ describe("Reinstall questionnaires", () => {
 
     it("should redirect to the success page after install", async () => {
         const history = createMemoryHistory();
+        const route = "/reinstall";
+        history.push(route);
         render(
-            <Router history={history}>
+            <Router location={history.location} navigator={history} >
                 <ReinstallQuestionnaires />
-            </Router>
+            </Router >
         );
 
         await act(async () => {
@@ -144,11 +144,10 @@ describe("Reinstall questionnaires", () => {
 
         mock.onGet("/api/questionnaires").reply(200, questionnaireList);
 
-        const history = createMemoryHistory();
         render(
-            <Router history={history}>
+            <MemoryRouter>
                 <ReinstallQuestionnaires />
-            </Router>
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -172,11 +171,10 @@ describe("Given the API returns a 500 status", () => {
     });
 
     it("it should render with the error message displayed", async () => {
-        const history = createMemoryHistory();
         render(
-            <Router history={history}>
+            <MemoryRouter>
                 <ReinstallQuestionnaires />
-            </Router>
+            </MemoryRouter>
         );
 
         await waitFor(() => {
@@ -197,11 +195,10 @@ describe("Given the API returns an empty list", () => {
     });
 
     it("it should render with a message to inform the user in the list", async () => {
-        const history = createMemoryHistory();
         render(
-            <Router history={history}>
+            <MemoryRouter>
                 <ReinstallQuestionnaires />
-            </Router>
+            </MemoryRouter>
         );
 
         await act(async () => {

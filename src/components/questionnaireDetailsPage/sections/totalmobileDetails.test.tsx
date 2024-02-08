@@ -9,8 +9,7 @@ import React from "react";
 import TotalmobileDetails from "./totalmobileDetails";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { Router } from "react-router-dom";
-import { createMemoryHistory } from "history";
+import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 
 const mock = new MockAdapter(axios);
@@ -21,12 +20,12 @@ describe("Totalmobile details", () => {
     });
 
     it("should display the Totalmobile details for a LMS questionnaire with a release date", async () => {
-        const history = createMemoryHistory();
+
         mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
         render(
-            <Router history={history}>
-                <TotalmobileDetails questionnaireName={"LMS2101_AA1"}/>
-            </Router>
+            <MemoryRouter>
+                <TotalmobileDetails questionnaireName={"LMS2101_AA1"} />
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -41,12 +40,12 @@ describe("Totalmobile details", () => {
     });
 
     it("should display the add release date option for a LMS questionnaire with no release date", async () => {
-        const history = createMemoryHistory();
+
         mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(404, { tmreleasedate: "" });
         render(
-            <Router history={history}>
-                <TotalmobileDetails questionnaireName={"LMS2101_AA1"}/>
-            </Router>
+            <MemoryRouter>
+                <TotalmobileDetails questionnaireName={"LMS2101_AA1"} />
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -60,12 +59,12 @@ describe("Totalmobile details", () => {
     });
 
     it("should display an error message when it fails to load the Totalmobile release date", async () => {
-        const history = createMemoryHistory();
+
         mock.onGet("/api/tmreleasedate/LMS2101A").reply(500);
         render(
-            <Router history={history}>
-                <TotalmobileDetails questionnaireName={"LMS2101A"}/>
-            </Router>
+            <MemoryRouter>
+                <TotalmobileDetails questionnaireName={"LMS2101A"} />
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -76,12 +75,12 @@ describe("Totalmobile details", () => {
     });
 
     it("should not display the Totalmobile details for a non-LMS questionnaire ", async () => {
-        const history = createMemoryHistory();
+
         mock.onGet("/api/tmreleasedate/OPN2101_AA1").reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
         render(
-            <Router history={history}>
-                <TotalmobileDetails questionnaireName={"OPN2101_AA1"}/>
-            </Router>
+            <MemoryRouter>
+                <TotalmobileDetails questionnaireName={"OPN2101_AA1"} />
+            </MemoryRouter>
         );
 
         await act(async () => {

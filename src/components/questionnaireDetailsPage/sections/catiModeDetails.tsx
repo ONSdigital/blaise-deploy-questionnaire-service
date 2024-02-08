@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import { getTOStartDate } from "../../../client/toStartDate";
 import dateFormatter from "dayjs";
-import TimeAgo from "react-timeago";
+import TimeAgo from "timeago-react";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -43,7 +43,7 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
     if (loading) {
         return (
             <div className="ons-u-mb-m" aria-busy="true">
-                <ONSLoadingPanel message={"Getting Telephone Operations start date"}/>
+                <ONSLoadingPanel message={"Getting Telephone Operations start date"} />
             </div>
         );
     }
@@ -73,7 +73,7 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
                             <tr className="ons-summary__row ons-summary__row--has-values">
                                 <td className="ons-summary__item-title">
                                     <div className="ons-summary__item--text">
-                                    Telephone Operations start date
+                                        Telephone Operations start date
                                     </div>
                                 </td>
                                 <td className="ons-summary__values">
@@ -81,8 +81,8 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
                                     {
                                         toStartDate ?
                                             <>
-                                                {dateFormatter(toStartDateValue).format("DD/MM/YYYY")} ({<TimeAgo
-                                                    live={false} date={toStartDateValue}/>})
+                                                {dateFormatter(toStartDateValue).format("DD/MM/YYYY")} (<TimeAgo
+                                                    live={false} datetime={toStartDateValue} />)
                                             </>
 
                                             :
@@ -92,20 +92,17 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
                                 <td className="ons-summary__actions">
                                     {
                                         toStartDate ?
-                                            <Link to={{
-                                                pathname: "/questionnaire/start-date",
-                                                state: { questionnaireName: questionnaireName, toStartDate: toStartDateValue }
-                                            }} className="ons-summary__button"
-                                            aria-label={`Change or delete start date for questionnaire ${questionnaireName}`}>
-                                            Change or delete start date
+                                            <Link to="/questionnaire/start-date" state={{ questionnaireName: questionnaireName, toStartDate: toStartDateValue }}
+                                                className="ons-summary__button"
+                                                aria-label={`Change or delete start date for questionnaire ${questionnaireName}`}>
+                                                Change or delete start date
                                             </Link>
                                             :
-                                            <Link to={{
-                                                pathname: "/questionnaire/start-date",
-                                                state: { questionnaireName: questionnaireName }
-                                            }} className="ons-summary__button"
-                                            aria-label={`Add a start date for questionnaire ${questionnaireName}`}>
-                                            Add start date
+                                            <Link to="/questionnaire/start-date"
+                                                state={{ questionnaireName: questionnaireName }}
+                                                className="ons-summary__button"
+                                                aria-label={`Add a start date for questionnaire ${questionnaireName}`}>
+                                                Add start date
                                             </Link>
 
                                     }
@@ -114,7 +111,7 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

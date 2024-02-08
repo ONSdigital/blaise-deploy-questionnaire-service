@@ -7,7 +7,7 @@ import Breadcrumbs from "../breadcrumbs";
 
 interface Location {
     questionnaire: Questionnaire,
-    modes : string[],
+    modes: string[],
 }
 
 type Props = {
@@ -16,8 +16,8 @@ type Props = {
 }
 
 function DeleteConfirmation({ onDelete, onCancel }: Props): ReactElement {
-    const location = useLocation<Location>();
-    const { questionnaire, modes } = location.state || { questionnaire: "", modes: "" };
+    const location = useLocation().state as Location;
+    const { questionnaire, modes } = location || { questionnaire: "", modes: "" };
 
     return (
         <>

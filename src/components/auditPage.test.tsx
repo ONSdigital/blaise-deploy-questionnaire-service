@@ -7,8 +7,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
-import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import AuditPage from "./auditPage";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
@@ -44,11 +43,10 @@ describe("Audit Logs page", () => {
     });
 
     it("view Audit Logs page matches Snapshot", async () => {
-        const history = createMemoryHistory();
         const wrapper = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <AuditPage />
-            </Router>
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -61,11 +59,10 @@ describe("Audit Logs page", () => {
     });
 
     it("should render correctly", async () => {
-        const history = createMemoryHistory();
         const { getByText, queryByText } = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <AuditPage />
-            </Router>
+            </MemoryRouter>
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
@@ -84,11 +81,10 @@ describe("Audit Logs page", () => {
     });
 
     it("should refresh the list when you press the Reload logs button", async () => {
-        const history = createMemoryHistory();
         const { getByText } = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <AuditPage />
-            </Router>
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -125,11 +121,10 @@ describe("Given the API returns a 500 status", () => {
     });
 
     it("it should render with the error message displayed", async () => {
-        const history = createMemoryHistory();
         const { getByText, queryByText } = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <AuditPage />
-            </Router>
+            </MemoryRouter>
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
@@ -151,11 +146,10 @@ describe("Given the API returns malformed json", () => {
     });
 
     it("it should render with the error message displayed", async () => {
-        const history = createMemoryHistory();
         const { getByText, queryByText } = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <AuditPage />
-            </Router>
+            </MemoryRouter>
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
@@ -177,11 +171,10 @@ describe("Given the API returns an empty list", () => {
     });
 
     it("it should render with a message to inform the user in the list", async () => {
-        const history = createMemoryHistory();
         const { getByText, queryByText } = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <AuditPage />
-            </Router>
+            </MemoryRouter>
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
