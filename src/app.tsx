@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { Route, Switch, useHistory, useLocation, Link } from "react-router-dom";
+import { Route, Routes, useNavigate, useLocation, Link } from "react-router-dom";
 import QuestionnaireList from "./components/questionnaireList";
 import UploadPage from "./components/uploadPage/uploadPage";
 import DeploymentSummary from "./components/deploymentSummary";
@@ -32,7 +32,7 @@ const divStyle = {
 
 function App(): ReactElement {
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const authManager = new AuthManager();
 
@@ -76,12 +76,12 @@ function App(): ReactElement {
     }
 
     function onDeleteQuestionnaire(status: string): void {
-        history.push("/");
+        navigate("/");
         setStatus(status);
     }
 
     function onCancelDeleteQuestionnaire(): void {
-        history.goBack();
+        navigate(-1);
     }
 
     function AppContent(): ReactElement {
@@ -92,48 +92,59 @@ function App(): ReactElement {
         return (
             <>
                 <DefaultErrorBoundary>
-                    <Switch>
-                        <Route path="/status">
-                            <StatusPage/>
+                    <Routes>
+                        <Route
+                            path="/status"
+                            element={<StatusPage />}>
                         </Route>
-                        <Route path="/reinstall">
-                            <ReinstallQuestionnaires/>
+                        <Route
+                            path="/reinstall"
+                            element={<ReinstallQuestionnaires />}>
                         </Route>
-                        <Route path="/audit">
-                            <AuditPage/>
+                        <Route
+                            path="/audit"
+                            element={<AuditPage />}>
                         </Route>
-                        <Route path="/UploadSummary">
-                            <DeploymentSummary/>
+                        <Route
+                            path="/UploadSummary"
+                            element={<DeploymentSummary />}>
                         </Route>
-                        <Route path="/upload/survey-live/:questionnaireName">
-                            <LiveSurveyWarning/>
+                        <Route
+                            path="/upload/survey-live/:questionnaireName"
+                            element={<LiveSurveyWarning />}>
                         </Route>
-                        <Route path="/questionnaire/start-date">
-                            <ChangeTOStartDate/>
+                        <Route
+                            path="/questionnaire/start-date"
+                            element={<ChangeTOStartDate />}>
                         </Route>
-                        <Route path="/questionnaire/release-date">
-                            <ChangeTMReleaseDate/>
+                        <Route
+                            path="/questionnaire/release-date"
+                            element={<ChangeTMReleaseDate />}>
                         </Route>
-                        <Route path="/questionnaire/:questionnaireName">
-                            <QuestionnaireDetailsPage/>
+                        <Route
+                            path="/questionnaire/:questionnaireName"
+                            element={<QuestionnaireDetailsPage />}>
                         </Route>
-                        <Route path="/upload">
-                            <UploadPage/>
+                        <Route
+                            path="/upload"
+                            element={<UploadPage />}>
                         </Route>
-                        <Route path="/delete">
-                            <DeleteConfirmation onDelete={onDeleteQuestionnaire} onCancel={onCancelDeleteQuestionnaire} />
+                        <Route
+                            path="/delete"
+                            element={<DeleteConfirmation onDelete={onDeleteQuestionnaire} onCancel={onCancelDeleteQuestionnaire} />}>
                         </Route>
-                        <Route path="/">
-                            <main id="main-content" className="ons-page__main ons-u-mt-no">
+                        <Route
+                            path="/"
+                            element={<main id="main-content" className="ons-page__main ons-u-mt-no">
                                 {successBanner()}
-                                {errored && <ONSErrorPanel/>}
+                                {errored && <ONSErrorPanel />}
                                 <ErrorBoundary
                                     errorMessageText={"Unable to load questionnaire table correctly"}>
-                                    <QuestionnaireList setErrored={setErrored}/>
+                                    <QuestionnaireList setErrored={setErrored} />
                                 </ErrorBoundary>
-                            </main>
+                            </main>}>
                         </Route>
-                    </Switch>
+                    </Routes>
                 </DefaultErrorBoundary>
             </>
         );
@@ -145,10 +156,10 @@ function App(): ReactElement {
             {
                 isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
             }
-            <Header 
-                title={"Deploy Questionnaire Service"} 
-                signOutButton={loggedIn} 
-                noSave={true} 
+            <Header
+                title={"Deploy Questionnaire Service"}
+                signOutButton={loggedIn}
+                noSave={true}
                 signOutFunction={signOut}
                 navigationLinks={[
                     { id: "home-link", label: "Home", endpoint: "/" },
@@ -161,7 +172,7 @@ function App(): ReactElement {
                     <Link to={endpoint} id={id} className="ons-navigation__link">
                         {label}
                     </Link>
-                )}    
+                )}
             />
             <div style={divStyle} className="ons-page__container ons-container">
                 <Loading />

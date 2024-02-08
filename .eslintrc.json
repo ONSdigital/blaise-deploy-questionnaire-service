@@ -1,5 +1,9 @@
 {
-    "ignorePatterns": ["node_modules/*","dist/*","build/*"],
+    "ignorePatterns": [
+        "node_modules/*",
+        "dist/*",
+        "build/*"
+    ],
     "env": {
         "browser": true,
         "es2021": true,
@@ -23,6 +27,8 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
         "linebreak-style": [
             "error",
             "unix"
@@ -31,22 +37,48 @@
             "error",
             "double"
         ],
-        "semi": ["error","always"],
+        "semi": [
+            "error",
+            "always"
+        ],
         "no-undef": "off",
         "@typescript-eslint/no-empty-function": "off",
-        "indent": ["error", 4],
-        "object-curly-spacing": ["error","always"],
-        "no-multiple-empty-lines": ["error", {
-            "max": 1
-        }],
-        "space-in-parens": ["error", "never"],
+        "indent": [
+            "error",
+            4
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1
+            }
+        ],
+        "space-in-parens": [
+            "error",
+            "never"
+        ],
         "no-multi-spaces": "error",
-        "comma-spacing": ["error", { "before": false, "after": true }],
-        "template-curly-spacing": ["error", "never"]
+        "comma-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "template-curly-spacing": [
+            "error",
+            "never"
+        ]
     },
     "overrides": [
         {
-            "files": ["*.js"],
+            "files": [
+                "*.js"
+            ],
             "rules": {
                 "@typescript-eslint/no-var-requires": "off"
             }
@@ -56,8 +88,8 @@
         "react": {
             "createClass": "createReactClass", // Regex for Component Factory to use,
             // default to "createReactClass"
-            "pragma": "React",  // Pragma to use, default to "React"
-            "fragment": "Fragment",  // Fragment to use (may be a property of <pragma>), default to "Fragment"
+            "pragma": "React", // Pragma to use, default to "React"
+            "fragment": "Fragment", // Fragment to use (may be a property of <pragma>), default to "Fragment"
             "version": "detect", // React version. "detect" automatically picks the version you have installed.
             // You can also use `16.0`, `16.3`, etc, if you want to override the detected value.
             // default to latest and warns if missing

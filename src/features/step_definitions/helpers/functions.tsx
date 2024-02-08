@@ -1,6 +1,5 @@
-import { createMemoryHistory } from "history";
 import { act, render, screen } from "@testing-library/react";
-import { Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import App from "../../../app";
 import flushPromises from "../../../tests/utils";
 import React from "react";
@@ -11,11 +10,10 @@ import userEvent from "@testing-library/user-event";
 * and then selects a mock OPN2004A.bpkg in the File select Input field.
 *  */
 export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004A"): Promise<void> {
-    const history = createMemoryHistory();
     render(
-        <Router history={history}>
+        <MemoryRouter>
             <App />
-        </Router>
+        </MemoryRouter>
     );
     await act(async () => {
         await flushPromises();

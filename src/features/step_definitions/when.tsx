@@ -8,8 +8,7 @@ import { act, screen, render } from "@testing-library/react";
 import flushPromises from "../../tests/utils";
 import userEvent from "@testing-library/user-event";
 import { DefineStepFunction } from "jest-cucumber";
-import { Router } from "react-router-dom";
-import { createMemoryHistory } from "history";
+import { MemoryRouter } from "react-router-dom";
 import App from "../../app";
 import { formatDateString, navigatePastSettingTOStartDateAndDeployQuestionnaire } from "./helpers/functions";
 
@@ -39,11 +38,11 @@ export function whenISelectTo(when: DefineStepFunction): void {
 
 export function whenILoadTheHomepage(when: DefineStepFunction): void {
     when("I load the homepage", async () => {
-        const history = createMemoryHistory();
+
         render(
-            <Router history={history}>
-                <App/>
-            </Router>
+            <MemoryRouter>
+                <App />
+            </MemoryRouter>
         );
         await act(async () => {
             await flushPromises();
@@ -53,11 +52,11 @@ export function whenILoadTheHomepage(when: DefineStepFunction): void {
 
 export function whenIGoToTheQuestionnaireDetailsPage(when: DefineStepFunction): void {
     when(/I go to the questionnaire details page for '(.*)'/, async (questionnaire: string) => {
-        const history = createMemoryHistory();
+
         render(
-            <Router history={history}>
-                <App/>
-            </Router>
+            <MemoryRouter>
+                <App />
+            </MemoryRouter>
         );
         await act(async () => {
             await flushPromises();

@@ -4,9 +4,8 @@
 
 import flushPromises from "../tests/utils";
 import { questionnaireList } from "../features/step_definitions/helpers/apiMockObjects";
-import { createMemoryHistory } from "history";
 import { render, waitFor, screen } from "@testing-library/react";
-import { Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import App from "../app";
 import { act } from "react-dom/test-utils";
 import React from "react";
@@ -31,13 +30,18 @@ describe("Questionnaire Details page ", () => {
     });
 
     it("should redirect to the homepage when no questionnaire has been provided ", async () => {
-        const history = createMemoryHistory();
+        //const history = createMemoryHistory();
         // Go direct to the questionnaire details page not from a link
-        history.push("/questionnaire");
+        //history.push("/questionnaire");
+
+        // const history = createMemoryHistory();
+        // const route = "/questionnaire";
+        // history.push(route);
+
         render(
-            <Router history={history}>
+            <MemoryRouter>
                 <App />
-            </Router>
+            </MemoryRouter>
         );
 
         await act(async () => {

@@ -1,5 +1,5 @@
 import React, { Fragment, ReactElement, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getAllQuestionnairesInBucket } from "../client/upload";
 import { getQuestionnaires } from "../client/questionnaires";
 
@@ -15,7 +15,7 @@ function ReinstallQuestionnaires(): ReactElement {
     const [questionnaireToInstall, setQuestionnaireToInstall] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
     const [installing, setInstalling] = useState<boolean>(false);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         getQuestionnairesToReinstall().then();
@@ -83,8 +83,10 @@ function ReinstallQuestionnaires(): ReactElement {
             setUploadStatus(message);
         }
 
-        history.push("/UploadSummary",
-            { questionnaireName: questionnaireToInstall.replace(/\.[a-zA-Z]*$/, ""), status: uploadStatus }
+        navigate("/UploadSummary",
+            {
+                state: { questionnaireName: questionnaireToInstall.replace(/\.[a-zA-Z]*$/, ""), status: uploadStatus }
+            }
         );
     }
 

@@ -8,8 +8,7 @@ import App from "./app";
 import "@testing-library/jest-dom";
 import flushPromises from "./tests/utils";
 import { act } from "react-dom/test-utils";
-import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { questionnaireList } from "./features/step_definitions/helpers/apiMockObjects";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
@@ -43,11 +42,10 @@ describe("React homepage", () => {
 
     it("view questionnaire page matches Snapshot in production", async () => {
         mockIsProduction.mockReturnValue(true);
-        const history = createMemoryHistory();
         const wrapper = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <App />
-            </Router>
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -62,11 +60,10 @@ describe("React homepage", () => {
     });
 
     it("view questionnaire page matches Snapshot in non-production environments", async () => {
-        const history = createMemoryHistory();
         const wrapper = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <App />
-            </Router>
+            </MemoryRouter>
         );
 
         await act(async () => {
@@ -81,11 +78,10 @@ describe("React homepage", () => {
     });
 
     it("should render correctly", async () => {
-        const history = createMemoryHistory();
         const { getByText, queryByText } = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <App />
-            </Router>
+            </MemoryRouter>
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
@@ -110,11 +106,10 @@ describe("Given the API returns malformed json", () => {
     });
 
     it("it should render with the error message displayed", async () => {
-        const history = createMemoryHistory();
         const { getByText, queryByText } = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <App />
-            </Router>
+            </MemoryRouter>
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
@@ -141,11 +136,10 @@ describe("Given the API returns an empty list", () => {
     });
 
     it("it should render with a message to inform the user in the list", async () => {
-        const history = createMemoryHistory();
         const { getByText, queryByText } = render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={["/"]}>
                 <App />
-            </Router>
+            </MemoryRouter>
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
