@@ -99,7 +99,9 @@ export function whenICancelDelete(when: DefineStepFunction): void {
 
 export function whenISelectTheQuestionnaire(when: DefineStepFunction): void {
     when(/I select the questionnaire '(.*)'/, async (questionnaire: string) => {
-        userEvent.click(screen.getByText(questionnaire));
+        await act(async () => {
+            userEvent.click(screen.getByText(questionnaire));
+        });
     });
 }
 

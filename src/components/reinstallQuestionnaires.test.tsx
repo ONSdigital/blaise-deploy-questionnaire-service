@@ -117,7 +117,7 @@ describe("Reinstall questionnaires", () => {
         render(
             <Router location={history.location} navigator={history} >
                 <ReinstallQuestionnaires />
-            </Router >
+            </Router>
         );
 
         await act(async () => {
