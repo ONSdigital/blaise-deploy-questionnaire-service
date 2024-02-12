@@ -1,3 +1,4 @@
+import { AxiosProgressEvent } from "axios";
 import React, { ReactElement, useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { ONSButton } from "blaise-design-system-react-components";
@@ -41,8 +42,8 @@ function UploadPage(): ReactElement {
 
     const history = useHistory();
 
-    function onFileUploadProgress(progressEvent: ProgressEvent) {
-        const percentage: number = roundUp((progressEvent.loaded / progressEvent.total) * 100, 2);
+    function onFileUploadProgress(progressEvent: AxiosProgressEvent) {
+        const percentage: number = progressEvent.total ? roundUp((progressEvent.loaded / progressEvent.total) * 100, 2) : 0;
         setUploadPercentage(percentage);
     }
 

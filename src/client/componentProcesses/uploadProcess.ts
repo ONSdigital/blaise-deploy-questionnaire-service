@@ -1,3 +1,4 @@
+import { AxiosProgressEvent } from "axios";
 import {
     getQuestionnaire,
     getQuestionnaireSettings,
@@ -52,7 +53,7 @@ export async function uploadAndInstallFile(
     file: File | undefined,
     setUploading: (boolean: boolean) => void,
     setUploadStatus: (status: string) => void,
-    onFileUploadProgress: (progressEvent: ProgressEvent) => void
+    onFileUploadProgress: (progressEvent: AxiosProgressEvent) => void
 ): Promise<boolean> {
     if (file === undefined) {
         return false;
