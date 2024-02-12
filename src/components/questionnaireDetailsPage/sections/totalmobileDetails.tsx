@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import { getTMReleaseDate } from "../../../client/tmReleaseDate";
 import dateFormatter from "dayjs";
-import TimeAgo from "timeago-react";
+import TimeAgo from "react-timeago";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -81,7 +81,7 @@ function TotalmobileDetails({ questionnaireName }: Props): ReactElement {
                                         tmReleaseDate ?
                                             <>
                                                 {dateFormatter(tmReleaseDateValue).format("DD/MM/YYYY")} ({<TimeAgo
-                                                    live={false} datetime={tmReleaseDateValue} />})
+                                                    live={false} date={tmReleaseDateValue} />})
                                             </>
 
                                             :

@@ -62,22 +62,25 @@ export function whenIGoToTheQuestionnaireDetailsPage(when: DefineStepFunction): 
             await flushPromises();
         });
 
-        userEvent.click(screen.getByText(questionnaire));
         await act(async () => {
-            await flushPromises();
+            userEvent.click(screen.getByText(questionnaire));
         });
     });
 }
 
 export function whenIDeleteAQuestionnaire(when: DefineStepFunction): void {
     when(/I select a link to delete the '(.*)' questionnaire/, async () => {
-        userEvent.click(screen.getByTestId(/delete-questionnaire/));
+        await act(async () => {
+            userEvent.click(screen.getByTestId(/delete-questionnaire-button/i));
+        })
     });
 }
 
 export function whenIConfirmDelete(when: DefineStepFunction): void {
     when("I confirm that I want to proceed", async () => {
-        userEvent.click(screen.getByTestId(/confirm-delete-button/i));
+        await act(async () => {
+            userEvent.click(screen.getByTestId(/confirm-delete-button/i));
+        })
         await act(async () => {
             await flushPromises();
         });
@@ -95,7 +98,9 @@ export function whenICancelDelete(when: DefineStepFunction): void {
 
 export function whenISelectTheQuestionnaire(when: DefineStepFunction): void {
     when(/I select the questionnaire '(.*)'/, async (questionnaire: string) => {
-        userEvent.click(screen.getByText(questionnaire));
+        await act(async () => {
+            userEvent.click(screen.getByText(questionnaire));
+        });
     });
 }
 
