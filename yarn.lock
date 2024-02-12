@@ -5450,9 +5450,9 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
     path-parse "^1.0.7"
     typescript "~4.2.2"
 
-"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?8ee35fd5a6f6b819e79593b263b11cc7f290a245":
+"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?79186a489067bc00c0b90f2e7cff37248a612b8d":
   version "1.0.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?8ee35fd5a6f6b819e79593b263b11cc7f290a245#1134c2e68ccd4ebe6ee706917e659065d1c3e089f036be6b9ab17e2379ba281c67450e445b1cf5e4ab724582aaada6400730115a2bd346de1025ec21038248e2"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?79186a489067bc00c0b90f2e7cff37248a612b8d#2a0e021c6a6b3ab26e501ea0034922e147a0dac0"
   dependencies:
     axios "~0.21.0"
     blaise-api-node-client ONSDigital/blaise-api-node-client
