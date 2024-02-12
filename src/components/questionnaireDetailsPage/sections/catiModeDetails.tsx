@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import { getTOStartDate } from "../../../client/toStartDate";
 import dateFormatter from "dayjs";
-import TimeAgo from "timeago-react";
+import TimeAgo from "react-timeago";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -82,7 +82,7 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
                                         toStartDate ?
                                             <>
                                                 {dateFormatter(toStartDateValue).format("DD/MM/YYYY")} (<TimeAgo
-                                                    live={false} datetime={toStartDateValue} />)
+                                                    live={false} date={toStartDateValue} />)
                                             </>
 
                                             :
