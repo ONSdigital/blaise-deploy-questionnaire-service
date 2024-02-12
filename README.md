@@ -116,7 +116,7 @@ gcloud config set project ons-blaise-v2-dev-<sandbox-suffix>
 
 create a keys.json file:
 ```shell
-gcloud iam service-accounts keys create keys.json --iam-account ons-blaise-v2-dev-<sandbox>@appspot.gserviceaccount.com`
+gcloud iam service-accounts keys create keys.json --iam-account ons-blaise-v2-dev-<sandbox>@appspot.gserviceaccount.com
 ```
 
 To export the `Google application credentials` as a runtime variable:
