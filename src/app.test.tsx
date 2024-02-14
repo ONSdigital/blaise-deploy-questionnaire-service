@@ -8,7 +8,7 @@ import App from "./app";
 import "@testing-library/jest-dom";
 import flushPromises from "./tests/utils";
 import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { questionnaireList } from "./features/step_definitions/helpers/apiMockObjects";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
@@ -42,11 +42,7 @@ describe("React homepage", () => {
 
     it("view questionnaire page matches Snapshot in production", async () => {
         mockIsProduction.mockReturnValue(true);
-        const wrapper = render(
-            <MemoryRouter initialEntries={["/"]}>
-                <App />
-            </MemoryRouter>
-        );
+        const wrapper = render(<App />, { wrapper: BrowserRouter });
 
         await act(async () => {
             await flushPromises();
@@ -60,11 +56,7 @@ describe("React homepage", () => {
     });
 
     it("view questionnaire page matches Snapshot in non-production environments", async () => {
-        const wrapper = render(
-            <MemoryRouter initialEntries={["/"]}>
-                <App />
-            </MemoryRouter>
-        );
+        const wrapper = render(<App />, { wrapper: BrowserRouter });
 
         await act(async () => {
             await flushPromises();
@@ -78,10 +70,7 @@ describe("React homepage", () => {
     });
 
     it("should render correctly", async () => {
-        const { getByText, queryByText } = render(
-            <MemoryRouter initialEntries={["/"]}>
-                <App />
-            </MemoryRouter>
+        const { getByText, queryByText } = render(<App />, { wrapper: BrowserRouter }
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
@@ -106,11 +95,8 @@ describe("Given the API returns malformed json", () => {
     });
 
     it("it should render with the error message displayed", async () => {
-        const { getByText, queryByText } = render(
-            <MemoryRouter initialEntries={["/"]}>
-                <App />
-            </MemoryRouter>
-        );
+
+        const { getByText, queryByText } = render(<App />, { wrapper: BrowserRouter });
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
 
@@ -136,11 +122,8 @@ describe("Given the API returns an empty list", () => {
     });
 
     it("it should render with a message to inform the user in the list", async () => {
-        const { getByText, queryByText } = render(
-            <MemoryRouter initialEntries={["/"]}>
-                <App />
-            </MemoryRouter>
-        );
+
+        const { getByText, queryByText } = render(<App />, { wrapper: BrowserRouter });
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
 

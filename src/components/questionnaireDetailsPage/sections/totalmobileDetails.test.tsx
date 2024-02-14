@@ -9,7 +9,7 @@ import React from "react";
 import TotalmobileDetails from "./totalmobileDetails";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { MemoryRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 
 const mock = new MockAdapter(axios);
@@ -23,9 +23,7 @@ describe("Totalmobile details", () => {
 
         mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
         render(
-            <MemoryRouter>
-                <TotalmobileDetails questionnaireName={"LMS2101_AA1"} />
-            </MemoryRouter>
+            <TotalmobileDetails questionnaireName={"LMS2101_AA1"} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -43,9 +41,7 @@ describe("Totalmobile details", () => {
 
         mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(404, { tmreleasedate: "" });
         render(
-            <MemoryRouter>
-                <TotalmobileDetails questionnaireName={"LMS2101_AA1"} />
-            </MemoryRouter>
+            <TotalmobileDetails questionnaireName={"LMS2101_AA1"} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -62,9 +58,7 @@ describe("Totalmobile details", () => {
 
         mock.onGet("/api/tmreleasedate/LMS2101A").reply(500);
         render(
-            <MemoryRouter>
-                <TotalmobileDetails questionnaireName={"LMS2101A"} />
-            </MemoryRouter>
+            <TotalmobileDetails questionnaireName={"LMS2101A"} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -78,9 +72,7 @@ describe("Totalmobile details", () => {
 
         mock.onGet("/api/tmreleasedate/OPN2101_AA1").reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
         render(
-            <MemoryRouter>
-                <TotalmobileDetails questionnaireName={"OPN2101_AA1"} />
-            </MemoryRouter>
+            <TotalmobileDetails questionnaireName={"OPN2101_AA1"} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
