@@ -9,7 +9,7 @@ import QuestionnaireSettingsSection from "./questionnaireSettingsSection";
 import { opnQuestionnaire } from "../../../features/step_definitions/helpers/apiMockObjects";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { MemoryRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 const viewQuestionnaireSettingsFailedMessage = /Failed to get questionnaire settings/i;
 const QuestionnaireSettingsMockList = [
@@ -38,9 +38,7 @@ describe("Given the API successfully loads the questionnaire mode and settings f
     it("matches Snapshot for the view Questionnaire Settings page", async () => {
 
         const wrapper = render(
-            <MemoryRouter>
-                <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI"]} />
-            </MemoryRouter>
+            <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI"]} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -54,9 +52,7 @@ describe("Given the API successfully loads the questionnaire mode and settings f
 
     it("should render correctly", async () => {
         render(
-            <MemoryRouter>
-                <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI"]} />
-            </MemoryRouter>
+            <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI"]} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -73,9 +69,7 @@ describe("Given the API successfully loads the questionnaire mode and settings f
 
     it("should highlight all invalid fields", async () => {
         render(
-            <MemoryRouter>
-                <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI"]} />
-            </MemoryRouter>
+            <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI"]} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -100,9 +94,7 @@ describe("Given the API successfully loads the questionnaire mode and settings f
     it("matches Snapshot for the view Questionnaire Settings page", async () => {
 
         const wrapper = render(
-            <MemoryRouter>
-                <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI", "CAWI"]} />
-            </MemoryRouter>
+            <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI", "CAWI"]} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -116,9 +108,7 @@ describe("Given the API successfully loads the questionnaire mode and settings f
 
     it("should render correctly", async () => {
         render(
-            <MemoryRouter>
-                <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI", "CAWI"]} />
-            </MemoryRouter>
+            <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI", "CAWI"]} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -135,9 +125,7 @@ describe("Given the API successfully loads the questionnaire mode and settings f
 
     it("should highlight all invalid fields", async () => {
         render(
-            <MemoryRouter>
-                <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI", "CAWI"]} />
-            </MemoryRouter>
+            <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI", "CAWI"]} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -164,7 +152,7 @@ describe("Given the API fails to load the questionnaire mode or settings", () =>
 
     it("should display an error message when it fails to load the Questionnaire Settings", async () => {
         render(
-            <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI"]} />
+            <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={["CATI"]} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -188,9 +176,7 @@ describe("Given the API returns an empty list for questionnaire mode or settings
 
     it("it should render an error message", async () => {
         render(
-            <MemoryRouter>
-                <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={[]} />
-            </MemoryRouter>
+            <QuestionnaireSettingsSection questionnaire={opnQuestionnaire} modes={[]} />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
