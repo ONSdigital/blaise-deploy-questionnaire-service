@@ -30,6 +30,8 @@ const divStyle = {
     minHeight: "calc(67vh)"
 };
 
+const testing = "hi";
+
 function App(): ReactElement {
     const location = useLocation();
     const history = useHistory();
