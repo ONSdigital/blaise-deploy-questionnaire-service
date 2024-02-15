@@ -1,5 +1,5 @@
 service: dqs-ui
-runtime: nodejs20
+runtime: nodejs18
 
 vpc_access_connector:
   name: projects/_PROJECT_ID/locations/europe-west2/connectors/vpcconnect
