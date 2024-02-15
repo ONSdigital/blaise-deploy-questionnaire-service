@@ -72,7 +72,7 @@ export function whenIDeleteAQuestionnaire(when: DefineStepFunction): void {
     when(/I select a link to delete the '(.*)' questionnaire/, async () => {
         await act(async () => {
             userEvent.click(screen.getByTestId(/delete-questionnaire-button/i));
-        })
+        });
     });
 }
 
@@ -80,7 +80,7 @@ export function whenIConfirmDelete(when: DefineStepFunction): void {
     when("I confirm that I want to proceed", async () => {
         await act(async () => {
             userEvent.click(screen.getByTestId(/confirm-delete-button/i));
-        })
+        });
         await act(async () => {
             await flushPromises();
         });
