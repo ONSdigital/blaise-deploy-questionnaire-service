@@ -7,8 +7,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
-import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
+import { BrowserRouter, RouterProvider, createMemoryRouter } from "react-router-dom";
 import { Questionnaire } from "blaise-api-node-client";
 import ReinstallQuestionnaires from "./reinstallQuestionnaires";
 import axios from "axios";
@@ -40,12 +39,7 @@ describe("Reinstall questionnaires list", () => {
     });
 
     it("view Blaise Status page matches Snapshot", async () => {
-        const history = createMemoryHistory();
-        const wrapper = render(
-            <Router history={history}>
-                <ReinstallQuestionnaires />
-            </Router>
-        );
+        const wrapper = render(<ReinstallQuestionnaires />, { wrapper: BrowserRouter });
 
         await act(async () => {
             await flushPromises();
@@ -53,16 +47,12 @@ describe("Reinstall questionnaires list", () => {
 
         await waitFor(() => {
             expect(wrapper).toMatchSnapshot();
+            expect(wrapper);
         });
     });
 
     it("should render correctly", async () => {
-        const history = createMemoryHistory();
-        render(
-            <Router history={history}>
-                <ReinstallQuestionnaires />
-            </Router>
-        );
+        render(<ReinstallQuestionnaires />, { wrapper: BrowserRouter });
 
         await act(async () => {
             await flushPromises();
@@ -82,12 +72,7 @@ describe("Reinstall questionnaires list", () => {
 
         mock.onGet("/api/questionnaires").reply(200, questionnaireList);
 
-        const history = createMemoryHistory();
-        render(
-            <Router history={history}>
-                <ReinstallQuestionnaires />
-            </Router>
-        );
+        render(<ReinstallQuestionnaires />, { wrapper: BrowserRouter });
 
         await act(async () => {
             await flushPromises();
@@ -113,12 +98,19 @@ describe("Reinstall questionnaires", () => {
     });
 
     it("should redirect to the success page after install", async () => {
-        const history = createMemoryHistory();
-        render(
-            <Router history={history}>
-                <ReinstallQuestionnaires />
-            </Router>
-        );
+        const routes = [
+            {
+                path: "/reinstall",
+                element: <ReinstallQuestionnaires />
+            }
+        ];
+
+        const router = createMemoryRouter(routes, {
+            initialEntries: ["/reinstall"],
+            initialIndex: 0,
+        });
+
+        render(<RouterProvider router={router} />);
 
         await act(async () => {
             await flushPromises();
@@ -133,9 +125,9 @@ describe("Reinstall questionnaires", () => {
 
         await waitFor(() => {
             // Check page has been redirected to summary page
-            expect(history.location.pathname).toEqual("/UploadSummary");
+            expect(router.state.location.pathname).toEqual("/UploadSummary");
             // State should be blank as its successful
-            expect(history.location.state).toEqual({ questionnaireName: "OPN2004A", status: "" });
+            expect(router.state.location.state).toEqual({ questionnaireName: "OPN2004A", status: "" });
         });
     });
 
@@ -144,12 +136,7 @@ describe("Reinstall questionnaires", () => {
 
         mock.onGet("/api/questionnaires").reply(200, questionnaireList);
 
-        const history = createMemoryHistory();
-        render(
-            <Router history={history}>
-                <ReinstallQuestionnaires />
-            </Router>
-        );
+        render(<ReinstallQuestionnaires />, { wrapper: BrowserRouter });
 
         await act(async () => {
             await flushPromises();
@@ -172,12 +159,7 @@ describe("Given the API returns a 500 status", () => {
     });
 
     it("it should render with the error message displayed", async () => {
-        const history = createMemoryHistory();
-        render(
-            <Router history={history}>
-                <ReinstallQuestionnaires />
-            </Router>
-        );
+        render(<ReinstallQuestionnaires />, { wrapper: BrowserRouter });
 
         await waitFor(() => {
             expect(screen.getByText(/Unable to load questionnaires./i)).toBeDefined();
@@ -197,12 +179,7 @@ describe("Given the API returns an empty list", () => {
     });
 
     it("it should render with a message to inform the user in the list", async () => {
-        const history = createMemoryHistory();
-        render(
-            <Router history={history}>
-                <ReinstallQuestionnaires />
-            </Router>
-        );
+        render(<ReinstallQuestionnaires />, { wrapper: BrowserRouter });
 
         await act(async () => {
             await flushPromises();

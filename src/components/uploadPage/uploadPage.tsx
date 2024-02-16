@@ -1,6 +1,6 @@
 import { AxiosProgressEvent } from "axios";
 import React, { ReactElement, useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { ONSButton } from "blaise-design-system-react-components";
 import { Form, Formik } from "formik";
 import SelectFile from "./sections/selectFile";
@@ -40,7 +40,7 @@ function UploadPage(): ReactElement {
     const [invalidSettings, setInvalidSettings] = useState<Partial<QuestionnaireSettings>>({});
     const [errored, setErrored] = useState<boolean>(false);
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     function onFileUploadProgress(progressEvent: AxiosProgressEvent) {
         const percentage: number = progressEvent.total ? roundUp((progressEvent.loaded / progressEvent.total) * 100, 2) : 0;
@@ -76,7 +76,7 @@ function UploadPage(): ReactElement {
             console.log(`Cancelling partial install, uninstalling questionnaire ${questionnaireName}`);
             await deleteQuestionnaire(questionnaireName);
         }
-        history.push("/");
+        navigate("/");
     }
 
     function _renderStepContent(step: Step) {
@@ -153,18 +153,18 @@ function UploadPage(): ReactElement {
         case Step.AlreadyExists:
             if (values.override === "cancel") {
                 actions.setSubmitting(false);
-                history.push("/");
+                navigate("/");
                 return;
             }
             if (foundQuestionnaire?.active && foundQuestionnaire.status?.toLowerCase() !== "inactive") {
                 actions.setSubmitting(false);
-                history.push(`/upload/survey-live/${questionnaireName}`);
+                navigate(`/upload/survey-live/${questionnaireName}`);
             }
             break;
         case Step.ConfirmOverride:
             if (values.override === "cancel") {
                 actions.setSubmitting(false);
-                history.push("/");
+                navigate("/");
                 return;
             }
             break;
@@ -203,11 +203,10 @@ function UploadPage(): ReactElement {
 
             <main id="main-content" className="ons-page__main ons-u-mt-no">
                 {activeStep >= stepLength() ? (
-                    <Redirect
-                        to={{
-                            pathname: "/UploadSummary",
-                            state: { questionnaireName: questionnaireName, status: uploadStatus }
-                        }} />
+                    <Navigate
+                        to="/UploadSummary"
+                        state={{ questionnaireName: questionnaireName, status: uploadStatus }} replace={true}
+                    />
                 ) : (
                     <Formik
                         validateOnBlur={false}

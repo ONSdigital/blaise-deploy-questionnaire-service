@@ -41,9 +41,8 @@ describe("Year calendar for mixed and CATI mode", () => {
 
         await act(async () => {
             await flushPromises();
+            userEvent.click(screen.getByText("«"));
         });
-
-        userEvent.click(screen.getByText("«"));
 
         await waitFor(() => {
             expect(screen.getByText(/1996/i)).toBeDefined();

@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 
 interface Location {
@@ -8,9 +8,9 @@ interface Location {
 }
 
 function DeploymentSummary(): ReactElement {
-    const location = useLocation<Location>();
-    const history = useHistory();
-    const { questionnaireName, status } = location.state || { questionnaireName: "/" };
+    const location = useLocation().state as Location;
+    const navigate = useNavigate();
+    const { questionnaireName, status } = location || { questionnaireName: "/" };
 
     return (
         <>
@@ -59,10 +59,10 @@ function DeploymentSummary(): ReactElement {
                 <br />
                 {(status !== "" && <ONSButton label="Return to select survey package page"
                     primary={true}
-                    onClick={() => history.push("/upload")} />)}
+                    onClick={() => navigate("/upload")} />)}
                 <ONSButton label="Go to table of questionnaires"
                     primary={(status === "")}
-                    onClick={() => history.push("/")} />
+                    onClick={() => navigate("/")} />
             </main>
         </>
     );
