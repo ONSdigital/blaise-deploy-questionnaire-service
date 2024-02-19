@@ -4486,10 +4486,9 @@ bl@^4.0.3, bl@^4.1.0:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-blaise-api-node-client@ONSDigital/blaise-api-node-client:
+blaise-api-node-client@ONSDigital/blaise-api-node-client#BL5FRS-67:
   version "1.0.0"
-  uid c02d31547ebe40ef0c07b214106cd3023b8a05d6
-  resolved "https://codeload.github.com/ONSDigital/blaise-api-node-client/tar.gz/c02d31547ebe40ef0c07b214106cd3023b8a05d6"
+  resolved "https://codeload.github.com/ONSDigital/blaise-api-node-client/tar.gz/d5e538c232828a39740ea9a73184470efc89e8f2"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
@@ -4554,7 +4553,7 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
   resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?8ee35fd5a6f6b819e79593b263b11cc7f290a245#bd695d65576b14de72ad0b8688e46e5d34f49392"
   dependencies:
     axios "~0.21.0"
-    blaise-api-node-client ONSDigital/blaise-api-node-client
+    blaise-api-node-client ONSDigital/blaise-api-node-client#BL5FRS-67
     blaise-design-system-react-components "git+https://github.com/ONSdigital/blaise-design-system-react-components#0.14.0"
     formik "^2.2.9"
     react "^18.2.0"
@@ -4563,13 +4562,13 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
     react-router-dom "^6.21.3"
     universal-cookie "^4.0.4"
 
-"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?9159efa4f6c5a9dab7952b29d8c55e8d9378ebd8":
+"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?2b70b386d80e06cf1fcf2b4932510051d021d9a9":
   version "1.1.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?9159efa4f6c5a9dab7952b29d8c55e8d9378ebd8#9bdc1ab0bac27f66e6be5923046a8bf51136896f"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?2b70b386d80e06cf1fcf2b4932510051d021d9a9#87ea9d8526bf8109a226024bf98f2c015a4f169c"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
-    blaise-api-node-client ONSDigital/blaise-api-node-client
+    blaise-api-node-client ONSDigital/blaise-api-node-client#BL5FRS-67
     express "^4.17.2"
     jsonwebtoken "^8.5.1"
     typescript "~4.2.2"
