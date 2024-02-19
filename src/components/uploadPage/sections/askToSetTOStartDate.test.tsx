@@ -11,12 +11,13 @@ import MockAdapter from "axios-mock-adapter";
 
 const mock = new MockAdapter(axios);
 
-import { AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react-client";
 
+// mock login
 jest.mock("blaise-login-react-client");
-AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
-});
+const { MockAuthenticate } = jest.requireActual('blaise-login-react-client');
+Authenticate.prototype.render = MockAuthenticate.prototype.render;
+MockAuthenticate.OverrideReturnValues(null, true);
 
 describe("Ask to set TO start date page", () => {
     beforeEach(() => {

@@ -4,16 +4,17 @@
 
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import { AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react-client";
 import React from "react";
 import { Formik } from "formik";
 import DeployFormSummary from "./deployFormSummary";
 import { questionnaireWithName } from "../../../features/step_definitions/helpers/apiMockObjects";
 
+// mock login
 jest.mock("blaise-login-react-client");
-AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
-});
+const { MockAuthenticate } = jest.requireActual('blaise-login-react-client');
+Authenticate.prototype.render = MockAuthenticate.prototype.render;
+MockAuthenticate.OverrideReturnValues(null, true);
 
 describe("Deploy form summary page", () => {
     const lmsQuestionnaireName = "LMS2004A";

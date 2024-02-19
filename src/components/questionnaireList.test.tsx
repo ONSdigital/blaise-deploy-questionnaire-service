@@ -7,17 +7,18 @@ import { render, waitFor, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { act } from "react-dom/test-utils";
 import React from "react";
-import { AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import QuestionnaireList from "./questionnaireList";
 
 const mock = new MockAdapter(axios);
 
+// mock login
 jest.mock("blaise-login-react-client");
-AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
-});
+const { MockAuthenticate } = jest.requireActual('blaise-login-react-client');
+Authenticate.prototype.render = MockAuthenticate.prototype.render;
+MockAuthenticate.OverrideReturnValues(null, true);
 
 describe("Questionnaire Details page ", () => {
     beforeEach(() => {

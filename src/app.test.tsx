@@ -10,16 +10,17 @@ import flushPromises from "./tests/utils";
 import { act } from "react-dom/test-utils";
 import { BrowserRouter } from "react-router-dom";
 import { questionnaireList } from "./features/step_definitions/helpers/apiMockObjects";
-import { AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 const mock = new MockAdapter(axios);
 
+// mock login
 jest.mock("blaise-login-react-client");
-AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
-});
+const { MockAuthenticate } = jest.requireActual('blaise-login-react-client');
+Authenticate.prototype.render = MockAuthenticate.prototype.render;
+MockAuthenticate.OverrideReturnValues(null, true);
 
 const mockIsProduction = jest.fn();
 

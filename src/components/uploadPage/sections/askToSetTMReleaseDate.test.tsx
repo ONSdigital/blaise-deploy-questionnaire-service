@@ -4,15 +4,16 @@
 
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import { AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react-client";
 import React from "react";
 import AskToSetTMReleaseDate from "./askToSetTMReleaseDate";
 import { Formik } from "formik";
 
+// mock login
 jest.mock("blaise-login-react-client");
-AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
-});
+const { MockAuthenticate } = jest.requireActual('blaise-login-react-client');
+Authenticate.prototype.render = MockAuthenticate.prototype.render;
+MockAuthenticate.OverrideReturnValues(null, true);
 
 describe("Ask to set TM release date page", () => {
     it("should match the Snapshot", async () => {
