@@ -22,7 +22,7 @@ import ChangeTOStartDate from "./components/questionnaireDetailsPage/changeTOSta
 import ChangeTMReleaseDate from "./components/questionnaireDetailsPage/changeTmReleaseDate";
 import "./style.css";
 import { isProduction } from "./client/env";
-import { AuthManager, Authenticate } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react-client";
 import "./style.css";
 
 const divStyle = {
