@@ -116,7 +116,7 @@ function App(): ReactElement {
 
     return (
         <Authenticate title="Blaise editing service">
-            {(user, loggedIn, logOutFunction) => (        
+            {(_user, loggedIn, logOutFunction) => (        
                 <>
                     <a className="ons-skip-link" href="#main-content">Skip to content</a>
                     {
