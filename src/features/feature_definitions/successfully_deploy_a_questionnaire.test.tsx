@@ -15,7 +15,7 @@ import { Authenticate } from "blaise-login-react-client";
 
 // mock login
 jest.mock("blaise-login-react-client");
-const { MockAuthenticate } = jest.requireActual('blaise-login-react-client');
+const { MockAuthenticate } = jest.requireActual("blaise-login-react-client");
 Authenticate.prototype.render = MockAuthenticate.prototype.render;
 MockAuthenticate.OverrideReturnValues(null, true);
 
