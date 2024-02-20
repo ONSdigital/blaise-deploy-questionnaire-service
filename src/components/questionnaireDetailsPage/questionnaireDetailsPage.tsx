@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { Questionnaire } from "blaise-api-node-client";
 import Breadcrumbs from "../breadcrumbs";
 import BlaiseNodeInfo from "./sections/blaiseNodeInfo";
@@ -16,20 +16,16 @@ interface State {
     questionnaire: Questionnaire | null;
 }
 
-interface Params {
-    questionnaireName: string
-}
-
 function QuestionnaireDetailsPage(): ReactElement {
-    const location = useLocation<State>();
-    const history = useHistory();
+    const location = useLocation().state as State;
+    const navigate = useNavigate();
     const [questionnaire, setQuestionnaire] = useState<Questionnaire>();
     const [modes, setModes] = useState<string[]>([]);
     const [surveyDays, setSurveyDays] = useState<string[]>([]);
     const [errored, setErrored] = useState<boolean>(false);
     const [loaded, setLoaded] = useState<boolean>(false);
-    const initialState = location.state || { questionnaire: null };
-    const { questionnaireName }: Params = useParams();
+    const initialState = location || { questionnaire: null };
+    const { questionnaireName } = useParams();
 
     useEffect(() => {
         if (initialState.questionnaire === null) {
@@ -43,56 +39,59 @@ function QuestionnaireDetailsPage(): ReactElement {
         } else {
             setQuestionnaire(initialState.questionnaire);
         }
-        getQuestionnaireModes(questionnaireName)
-            .then((modes) => {
-                if (modes.length === 0) {
-                    console.error("returned questionnaire mode was empty");
+        if (questionnaireName)
+            getQuestionnaireModes(questionnaireName)
+                .then((modes) => {
+                    if (modes.length === 0) {
+                        console.error("returned questionnaire mode was empty");
+                        setErrored(true);
+                        setLoaded(true);
+                        return;
+                    }
+                    if (modes.includes("CATI")) {
+                        getSurveyDays(questionnaireName)
+                            .then((surveyDays) => {
+                                if (surveyDays.length === 0) {
+                                    console.log("returned questionnaire survey days was empty");
+                                    setSurveyDays(surveyDays);
+                                    setLoaded(true);
+                                    return;
+                                }
+                                console.log(`returned questionnaire survey days: ${surveyDays}`);
+                                setSurveyDays(surveyDays);
+                                setLoaded(true);
+                            }).catch((error: unknown) => {
+                                console.error(`Error getting questionnaire survey days ${error}`);
+                                setErrored(true);
+                                setLoaded(true);
+                                return;
+                            });
+                    }
+                    console.log(`returned questionnaire mode: ${modes}`);
+                    setModes(modes);
+                    setLoaded(true);
+                }).catch((error: unknown) => {
+                    console.error(`Error getting questionnaire modes ${error}`);
                     setErrored(true);
                     setLoaded(true);
                     return;
-                }
-                if (modes.includes("CATI")) {
-                    getSurveyDays(questionnaireName)
-                        .then((surveyDays) => {
-                            if (surveyDays.length === 0) {
-                                console.log("returned questionnaire survey days was empty");
-                                setSurveyDays(surveyDays);
-                                setLoaded(true);
-                                return;
-                            }
-                            console.log(`returned questionnaire survey days: ${surveyDays}`);
-                            setSurveyDays(surveyDays);
-                            setLoaded(true);
-                        }).catch((error: unknown) => {
-                            console.error(`Error getting questionnaire survey days ${error}`);
-                            setErrored(true);
-                            setLoaded(true);
-                            return;
-                        });
-                }
-                console.log(`returned questionnaire mode: ${modes}`);
-                setModes(modes);
-                setLoaded(true);
-            }).catch((error: unknown) => {
-                console.error(`Error getting questionnaire modes ${error}`);
-                setErrored(true);
-                setLoaded(true);
-                return;
-            });
+                });
     }, []);
 
     async function loadQuestionnaire(): Promise<void> {
         setLoaded(false);
-        const fetchedQuestionnaire = await getQuestionnaire(questionnaireName);
-        if (!fetchedQuestionnaire) {
-            history.push("/");
+        if (questionnaireName) {
+            const fetchedQuestionnaire = await getQuestionnaire(questionnaireName);
+            if (!fetchedQuestionnaire) {
+                navigate("/");
+            }
+            setQuestionnaire(fetchedQuestionnaire);
         }
-        setQuestionnaire(fetchedQuestionnaire);
     }
 
     function QuestionnaireDetailsFailed(): ReactElement {
         if (!loaded) {
-            return <ONSLoadingPanel/>;
+            return <ONSLoadingPanel />;
         }
 
         console.log(questionnaire);
@@ -110,13 +109,13 @@ function QuestionnaireDetailsPage(): ReactElement {
                     {questionnaire.name}
                 </h1>
 
-                <QuestionnaireDetails questionnaire={questionnaire} modes={modes}/>
-                <CatiModeDetails questionnaireName={questionnaire.name} modes={modes}/>
-                <CawiModeDetails questionnaire={questionnaire} modes={modes}/>
-                <TotalmobileDetails questionnaireName={questionnaire.name}/>
-                <QuestionnaireSettingsSection questionnaire={questionnaire} modes={modes}/>
-                <YearCalendar modes={modes} surveyDays={surveyDays}/>
-                <BlaiseNodeInfo questionnaire={questionnaire}/>
+                <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
+                <CatiModeDetails questionnaireName={questionnaire.name} modes={modes} />
+                <CawiModeDetails questionnaire={questionnaire} modes={modes} />
+                <TotalmobileDetails questionnaireName={questionnaire.name} />
+                <QuestionnaireSettingsSection questionnaire={questionnaire} modes={modes} />
+                <YearCalendar modes={modes} surveyDays={surveyDays} />
+                <BlaiseNodeInfo questionnaire={questionnaire} />
 
                 <br></br>
 
@@ -126,7 +125,8 @@ function QuestionnaireDetailsPage(): ReactElement {
                     aria-label={`Delete questionnaire ${questionnaire.name}`}
                     id="delete-questionnaire"
                     testid="delete-questionnaire"
-                    onClick={() => history.push("/delete", { questionnaire, modes })}/>
+                    onClick={() => navigate("/delete", { state: { questionnaire, modes } }
+                    )} />
             </>
         );
     }
@@ -137,10 +137,10 @@ function QuestionnaireDetailsPage(): ReactElement {
                 [
                     { link: "/", title: "Home" },
                 ]
-            }/>
+            } />
 
             <main id="main-content" className="ons-page__main ons-u-mt-no">
-                <QuestionnaireDetailsFailed/>
+                <QuestionnaireDetailsFailed />
             </main>
         </>
     );
