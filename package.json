@@ -21,6 +21,7 @@
   "pre-commit": [
     "lint-fix"
   ],
+  "resolutions": { "formik": "2.4.2" },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.0.0",
@@ -44,7 +45,7 @@
     "dotenv": "^10.0.0",
     "ejs": "^3.1.7",
     "express": "^4.17.1",
-    "formik": "^2.2.9",
+    "formik": "2.4.2",
     "identity-obj-proxy": "^3.0.0",
     "jest-cucumber": "^3.0.1",
     "jsonwebtoken": "^9.0.0",
