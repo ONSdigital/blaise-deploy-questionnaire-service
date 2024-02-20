@@ -4500,6 +4500,19 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
     regenerator-runtime "^0.14.1"
     typescript "~4.2.2"
 
+blaise-api-node-client@ONSDigital/blaise-api-node-client#BL5FRS-67:
+  version "1.0.0"
+  resolved "https://codeload.github.com/ONSDigital/blaise-api-node-client/tar.gz/d5e538c232828a39740ea9a73184470efc89e8f2"
+  dependencies:
+    "@babel/preset-env" "^7.14.7"
+    axios "^0.21.1"
+    blaise-iap-node-provider "git+https://github.com/ONSdigital/blaise-iap-node-provider.git"
+    browserslist "^4.22.2"
+    eslint-config-airbnb-base "^15.0.0"
+    eslint-plugin-import "^2.29.1"
+    regenerator-runtime "^0.14.1"
+    typescript "~4.2.2"
+
 "blaise-api-node-client@https://github.com/ONSdigital/blaise-api-node-client":
   version "1.0.0"
   resolved "https://github.com/ONSdigital/blaise-api-node-client#c02d31547ebe40ef0c07b214106cd3023b8a05d6"
@@ -4516,6 +4529,17 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
 "blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components#0.14.0":
   version "1.0.0"
   resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#30ea96f77c024cb0cec27e05e5c1c1c10dd4eca0"
+  dependencies:
+    formik "^2.2.9"
+    react "^18.2.0"
+    react-csv "^2.2.2"
+    react-dom "^18.2.0"
+    react-loader-spinner "^4.0.0"
+    storybook "^7.6.10"
+
+"blaise-design-system-react-components@git+https://github.com/ONSdigital/blaise-design-system-react-components#f4c43ba35ca986af5c0fa7c3c87fe66e44e6d6ae":
+  version "1.0.0"
+  resolved "git+https://github.com/ONSdigital/blaise-design-system-react-components#f4c43ba35ca986af5c0fa7c3c87fe66e44e6d6ae"
   dependencies:
     formik "^2.2.9"
     react "^18.2.0"
@@ -4549,13 +4573,13 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
     path-parse "^1.0.7"
     typescript "~4.2.2"
 
-"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?8ee35fd5a6f6b819e79593b263b11cc7f290a245":
+"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?aecb636a64fe08d6bf266d8517226cca35ceb4c7":
   version "1.0.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?8ee35fd5a6f6b819e79593b263b11cc7f290a245#bd695d65576b14de72ad0b8688e46e5d34f49392"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?aecb636a64fe08d6bf266d8517226cca35ceb4c7#656440f5f358d7eaae5a63f8385b2a57fb5e0668"
   dependencies:
     axios "~0.21.0"
-    blaise-api-node-client ONSDigital/blaise-api-node-client
-    blaise-design-system-react-components "git+https://github.com/ONSdigital/blaise-design-system-react-components#0.14.0"
+    blaise-api-node-client ONSDigital/blaise-api-node-client#BL5FRS-67
+    blaise-design-system-react-components "git+https://github.com/ONSdigital/blaise-design-system-react-components#f4c43ba35ca986af5c0fa7c3c87fe66e44e6d6ae"
     formik "^2.2.9"
     react "^18.2.0"
     react-dom "^18.2.0"
