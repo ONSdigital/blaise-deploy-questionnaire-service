@@ -4549,9 +4549,9 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
     path-parse "^1.0.7"
     typescript "~4.2.2"
 
-"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?79186a489067bc00c0b90f2e7cff37248a612b8d":
+"blaise-login-react-client@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?8ee35fd5a6f6b819e79593b263b11cc7f290a245":
   version "1.0.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?79186a489067bc00c0b90f2e7cff37248a612b8d#2a0e021c6a6b3ab26e501ea0034922e147a0dac0"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-client?8ee35fd5a6f6b819e79593b263b11cc7f290a245#bd695d65576b14de72ad0b8688e46e5d34f49392"
   dependencies:
     axios "~0.21.0"
     blaise-api-node-client ONSDigital/blaise-api-node-client
@@ -4563,9 +4563,9 @@ blaise-api-node-client@ONSDigital/blaise-api-node-client:
     react-router-dom "^6.21.3"
     universal-cookie "^4.0.4"
 
-"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?9159efa4f6c5a9dab7952b29d8c55e8d9378ebd8":
+"blaise-login-react-server@https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?8ee35fd5a6f6b819e79593b263b11cc7f290a245":
   version "1.1.0"
-  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?9159efa4f6c5a9dab7952b29d8c55e8d9378ebd8#9bdc1ab0bac27f66e6be5923046a8bf51136896f"
+  resolved "https://gitpkg.now.sh/ONSdigital/blaise-login-react/blaise-login-react-server?8ee35fd5a6f6b819e79593b263b11cc7f290a245#96deb616ea169d3fb53f1e787995129a1c9e0ab6"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     axios "^0.21.1"
