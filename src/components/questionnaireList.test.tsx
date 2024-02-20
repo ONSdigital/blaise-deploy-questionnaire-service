@@ -3,16 +3,14 @@
  */
 
 import flushPromises from "../tests/utils";
-import { questionnaireList } from "../features/step_definitions/helpers/apiMockObjects";
-import { createMemoryHistory } from "history";
 import { render, waitFor, screen } from "@testing-library/react";
-import { Router } from "react-router-dom";
-import App from "../app";
+import { MemoryRouter } from "react-router-dom";
 import { act } from "react-dom/test-utils";
 import React from "react";
 import { AuthManager } from "blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
+import QuestionnaireList from "./questionnaireList";
 
 const mock = new MockAdapter(axios);
 
@@ -23,7 +21,7 @@ AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
 
 describe("Questionnaire Details page ", () => {
     beforeEach(() => {
-        mock.onGet("/api/questionnaires").reply(200, questionnaireList);
+        mock.onGet("/api/questionnaires").reply(200, []);
     });
 
     afterEach(() => {
@@ -31,13 +29,12 @@ describe("Questionnaire Details page ", () => {
     });
 
     it("should redirect to the homepage when no questionnaire has been provided ", async () => {
-        const history = createMemoryHistory();
+
         // Go direct to the questionnaire details page not from a link
-        history.push("/questionnaire");
         render(
-            <Router history={history}>
-                <App />
-            </Router>
+            <MemoryRouter initialEntries={["/questionnaire/"]}>
+                <QuestionnaireList setErrored={jest.fn()} />
+            </MemoryRouter >
         );
 
         await act(async () => {
@@ -45,6 +42,7 @@ describe("Questionnaire Details page ", () => {
         });
 
         await waitFor(() => {
+            expect(screen.queryByText("Questionnaire settings")).toEqual(null);
             expect(screen.getByText(/Filter by questionnaire name/i)).toBeDefined();
             expect(screen.queryByText(/Questionnaire details/i)).toEqual(null);
         });

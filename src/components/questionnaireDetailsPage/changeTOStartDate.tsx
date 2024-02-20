@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import { ONSButton } from "blaise-design-system-react-components";
 import { setTOStartDate } from "../../client/toStartDate";
 import dateFormatter from "dayjs";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";
 import AskToSetTOStartDate from "../uploadPage/sections/askToSetTOStartDate";
 import Breadcrumbs from "../breadcrumbs";
@@ -13,9 +13,9 @@ interface LocationState {
 }
 
 function ChangeTOStartDate(): ReactElement {
-    const history = useHistory();
-    const location = useLocation<LocationState>();
-    const { toStartDate, questionnaireName } = location.state || { toStartDate: null, questionnaireName: null };
+    const navigate = useNavigate();
+    const location = useLocation().state as LocationState;
+    const { toStartDate, questionnaireName } = location || { toStartDate: null, questionnaireName: null };
 
     async function _handleSubmit(values: any, actions: any) {
         if (values.askToSetDate === "no") {
@@ -27,7 +27,7 @@ function ChangeTOStartDate(): ReactElement {
             return;
         }
         actions.setSubmitting(false);
-        history.goBack();
+        navigate(-1);
     }
 
     let initialValues = {
@@ -70,7 +70,7 @@ function ChangeTOStartDate(): ReactElement {
                                 {!isSubmitting && (
                                     <ONSButton
                                         id={"cancel-deploy-button"}
-                                        onClick={() => history.goBack()}
+                                        onClick={() => navigate(-1)}
                                         primary={false} label={"Cancel"} />
                                 )}
                             </div>

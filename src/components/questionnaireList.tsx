@@ -34,10 +34,9 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
                     id={`info-${questionnaire.name}`}
                     data-testid={`info-${questionnaire.name}`}
                     aria-label={`View more information for questionnaire ${questionnaire.name}`}
-                    to={{
-                        pathname: `/questionnaire/${questionnaire.name}`,
-                        state: { questionnaire: questionnaire }
-                    }}>
+                    to={`/questionnaire/${questionnaire.name}`}
+                    state={{ questionnaire: questionnaire }}
+                >
                     {questionnaireName(questionnaire)}
                 </Link>
             </td>
@@ -53,7 +52,7 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
             <td className="ons-table__cell ">
                 {questionnaire.dataRecordCount}
             </td>
-        </tr>
+        </tr >
     );
 }
 

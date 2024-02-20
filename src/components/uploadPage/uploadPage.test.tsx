@@ -7,8 +7,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises from "../../tests/utils";
 import { act } from "react-dom/test-utils";
-import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { questionnaireList } from "../../features/step_definitions/helpers/apiMockObjects";
 import {
     clickContinue,
@@ -38,11 +37,9 @@ describe("Upload Page", () => {
     });
 
     it("select file page matches Snapshot", async () => {
-        const history = createMemoryHistory();
+
         const wrapper = render(
-            <Router history={history}>
-                <UploadPage />
-            </Router>
+            <UploadPage />, { wrapper: BrowserRouter }
         );
 
         await act(async () => {
@@ -55,11 +52,9 @@ describe("Upload Page", () => {
     });
 
     it("should render correctly", async () => {
-        const history = createMemoryHistory();
+
         const { getByText, queryByText } = render(
-            <Router history={history}>
-                <UploadPage />
-            </Router>
+            <UploadPage />, { wrapper: BrowserRouter }
         );
 
         await waitFor(() => {
@@ -70,11 +65,9 @@ describe("Upload Page", () => {
     });
 
     it("should display a message if you dont select a file", async () => {
-        const history = createMemoryHistory();
+
         render(
-            <Router history={history}>
-                <UploadPage />
-            </Router>
+            <UploadPage />, { wrapper: BrowserRouter }
         );
 
         userEvent.click(screen.getByText(/Continue/));
@@ -85,11 +78,9 @@ describe("Upload Page", () => {
     });
 
     it("should display a message if select a file that is a .bpkg", async () => {
-        const history = createMemoryHistory();
+
         render(
-            <Router history={history}>
-                <UploadPage />
-            </Router>
+            <UploadPage />, { wrapper: BrowserRouter }
         );
 
         const input = screen.getByLabelText(/Select survey package/i);

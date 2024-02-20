@@ -1,15 +1,13 @@
 /**
  * @jest-environment jsdom
  */
-
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import flushPromises from "../tests/utils";
 import { act } from "react-dom/test-utils";
-import { createMemoryHistory } from "history";
 import StatusPage from "./statusPage";
-import { Router } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
@@ -44,12 +42,8 @@ describe("Blaise Status page", () => {
     });
 
     it("view Blaise Status page matches Snapshot", async () => {
-        const history = createMemoryHistory();
-        const wrapper = render(
-            <Router history={history}>
-                <StatusPage />
-            </Router>
-        );
+
+        const wrapper = render(<StatusPage />, { wrapper: BrowserRouter });
 
         await act(async () => {
             await flushPromises();
@@ -61,12 +55,7 @@ describe("Blaise Status page", () => {
     });
 
     it("should render correctly", async () => {
-        const history = createMemoryHistory();
-        const { getByText, queryByText } = render(
-            <Router history={history}>
-                <StatusPage />
-            </Router>
-        );
+        const { getByText, queryByText } = render(<StatusPage />, { wrapper: BrowserRouter });
 
         expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
@@ -95,12 +84,7 @@ describe("Given the API returns a 500 status", () => {
     });
 
     it("it should render with the error message displayed", async () => {
-        const history = createMemoryHistory();
-        const { getByText, queryByText } = render(
-            <Router history={history}>
-                <StatusPage />
-            </Router>
-        );
+        const { getByText, queryByText } = render(<StatusPage />, { wrapper: BrowserRouter });
 
         expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
@@ -121,12 +105,8 @@ describe("Given the API returns malformed json", () => {
     });
 
     it("it should render with the error message displayed", async () => {
-        const history = createMemoryHistory();
-        const { getByText, queryByText } = render(
-            <Router history={history}>
-                <StatusPage />
-            </Router>
-        );
+
+        const { getByText, queryByText } = render(<StatusPage />, { wrapper: BrowserRouter });
 
         expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
@@ -147,12 +127,7 @@ describe("Given the API returns an empty list", () => {
     });
 
     it("it should render with a message to inform the user in the list", async () => {
-        const history = createMemoryHistory();
-        const { getByText, queryByText } = render(
-            <Router history={history}>
-                <StatusPage />
-            </Router>
-        );
+        const { getByText, queryByText } = render(<StatusPage />, { wrapper: BrowserRouter });
 
         expect(queryByText(/Checking Blaise status/i)).toBeInTheDocument();
 
