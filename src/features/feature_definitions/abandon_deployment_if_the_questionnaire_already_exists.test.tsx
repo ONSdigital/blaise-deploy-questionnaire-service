@@ -21,16 +21,16 @@ import {
     thenIAmPresentedWithTheOptionsToCancelOrOverwrite,
     thenIAmReturnedToTheLandingPage
 } from "../step_definitions/then";
-import { Authenticate } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 // mock login
-jest.mock("blaise-login-react-client");
-const { MockAuthenticate } = jest.requireActual("blaise-login-react-client");
+jest.mock("blaise-login-react/blaise-login-react-client");
+const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
 Authenticate.prototype.render = MockAuthenticate.prototype.render;
 MockAuthenticate.OverrideReturnValues(null, true);
-  
+
 // Load in feature details from .feature file
 const feature = loadFeature(
     "./src/features/abandon_deployment_if_the_questionnaire_already_exists.feature",

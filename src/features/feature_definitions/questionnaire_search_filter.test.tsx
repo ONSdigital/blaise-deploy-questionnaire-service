@@ -10,13 +10,13 @@ import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenILoadTheHomepage, whenISearchForAQuestionnaire } from "../step_definitions/when";
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires, thenIAmPresentedWithQuestionnaireNotFound } from "../step_definitions/then";
 import { Questionnaire } from "blaise-api-node-client";
-import { Authenticate } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 // mock login
-jest.mock("blaise-login-react-client");
-const { MockAuthenticate } = jest.requireActual("blaise-login-react-client");
+jest.mock("blaise-login-react/blaise-login-react-client");
+const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
 Authenticate.prototype.render = MockAuthenticate.prototype.render;
 MockAuthenticate.OverrideReturnValues(null, true);
 

@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { AuthConfig } from "blaise-login-react-server";
+import { AuthConfig } from "blaise-login-react/blaise-login-react-server";
 
 export interface Config extends AuthConfig {
     Port: number;

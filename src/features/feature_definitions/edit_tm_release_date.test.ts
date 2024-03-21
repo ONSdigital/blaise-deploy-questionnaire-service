@@ -5,7 +5,7 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import { Questionnaire } from "blaise-api-node-client";
 
-import { Authenticate } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import axios from "axios";
 import MockAdapeter from "axios-mock-adapter";
 import {
@@ -31,8 +31,8 @@ import {
 } from "../step_definitions/then";
 
 // mock login
-jest.mock("blaise-login-react-client");
-const { MockAuthenticate } = jest.requireActual("blaise-login-react-client");
+jest.mock("blaise-login-react/blaise-login-react-client");
+const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
 Authenticate.prototype.render = MockAuthenticate.prototype.render;
 MockAuthenticate.OverrideReturnValues(null, true);
 

@@ -22,7 +22,7 @@ import ChangeTOStartDate from "./components/questionnaireDetailsPage/changeTOSta
 import ChangeTMReleaseDate from "./components/questionnaireDetailsPage/changeTmReleaseDate";
 import "./style.css";
 import { isProduction } from "./client/env";
-import { Authenticate } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import "./style.css";
 
 const divStyle = {
@@ -115,8 +115,8 @@ function App(): ReactElement {
     }
 
     return (
-        <Authenticate title="Blaise editing service">
-            {(_user, loggedIn, logOutFunction) => (        
+        <Authenticate title="Deploy Questionnaire Service">
+            {(_user, loggedIn, logOutFunction) => (
                 <>
                     <a className="ons-skip-link" href="#main-content">Skip to content</a>
                     {
@@ -146,7 +146,7 @@ function App(): ReactElement {
                     <Footer />
                 </>
             )}
-        </Authenticate>            
+        </Authenticate>
     );
 }
 

@@ -18,11 +18,11 @@ import axios from "axios";
 import UploadPage from "./uploadPage";
 import userEvent from "@testing-library/user-event";
 
-import { Authenticate } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 
 // mock login
-jest.mock("blaise-login-react-client");
-const { MockAuthenticate } = jest.requireActual("blaise-login-react-client");
+jest.mock("blaise-login-react/blaise-login-react-client");
+const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
 Authenticate.prototype.render = MockAuthenticate.prototype.render;
 MockAuthenticate.OverrideReturnValues(null, true);
 

@@ -32,13 +32,13 @@ import {
     whenIGoToTheQuestionnaireDetailsPage,
     whenILoadTheHomepage
 } from "../step_definitions/when";
-import { Authenticate, AuthManager } from "blaise-login-react-client";
+import { Authenticate, AuthManager } from "blaise-login-react/blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 // mock login
-jest.mock("blaise-login-react-client");
-const { MockAuthenticate } = jest.requireActual("blaise-login-react-client");
+jest.mock("blaise-login-react/blaise-login-react-client");
+const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
 Authenticate.prototype.render = MockAuthenticate.prototype.render;
 MockAuthenticate.OverrideReturnValues(null, true);
 
@@ -69,7 +69,7 @@ defineFeature(feature, test => {
 
     test("Delete a questionnaire not available from the homepage", ({ given, when, then, }) => {
         givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        whenILoadTheHomepage(when);        
+        whenILoadTheHomepage(when);
         thenIWillNotHaveTheOptionToDelete(then);
     });
 
