@@ -1,4 +1,4 @@
-import { Auth } from "blaise-login-react-server";
+import { Auth } from "blaise-login-react/blaise-login-react-server";
 import express, { Router, Request, Response } from "express";
 import AuditLogger from "../auditLogging/logger";
 import StorageManager from "../storage/storage";

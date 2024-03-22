@@ -12,12 +12,13 @@ import { Questionnaire } from "blaise-api-node-client";
 import { givenIHaveSelectedTheQuestionnairePackageToDeploy, givenTheQuestionnaireIsInstalled, givenTheQuestionnaireIsLive } from "../step_definitions/given";
 import { thenIAmPresentedWithAConfirmOverwriteWarning, thenIAmPresentedWithASuccessfullyDeployedBanner, thenIAmPresentedWithTheOptionsToCancelOrOverwrite, thenIAmReturnedToTheLandingPage, thenICanOnlyReturnToTheLandingPage, thenIGetTheQuestionnaireIsLiveWarningBanner, thenTheQuestionnaireIsInstalled } from "../step_definitions/then";
 import { whenIConfirmMySelection, whenIConfirmNotToOverwrite, whenIConfirmToOverwrite, whenISelectToOverwrite } from "../step_definitions/when";
-import { AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 
-jest.mock("blaise-login-react-client");
-AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
-});
+// mock login
+jest.mock("blaise-login-react/blaise-login-react-client");
+const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
+Authenticate.prototype.render = MockAuthenticate.prototype.render;
+MockAuthenticate.OverrideReturnValues(null, true);
 
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 

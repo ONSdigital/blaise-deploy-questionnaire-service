@@ -11,14 +11,15 @@ import { Questionnaire } from "blaise-api-node-client";
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { whenILoadTheHomepage } from "../step_definitions/when";
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires } from "../step_definitions/then";
-import { AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import axios from "axios";
 import MockAdapeter from "axios-mock-adapter";
 
-jest.mock("blaise-login-react-client");
-AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
-});
+// mock login
+jest.mock("blaise-login-react/blaise-login-react-client");
+const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
+Authenticate.prototype.render = MockAuthenticate.prototype.render;
+MockAuthenticate.OverrideReturnValues(null, true);
 
 // Load in feature details from .feature file
 const feature = loadFeature(

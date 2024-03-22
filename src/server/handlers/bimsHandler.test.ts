@@ -3,13 +3,13 @@ import supertest, { Response } from "supertest";
 
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import { Auth } from "blaise-login-react-server";
+import { Auth } from "blaise-login-react/blaise-login-react-server";
 import { getConfigFromEnv } from "../config";
 import createLogger, { HttpLogger } from "pino-http";
 import pino from "pino";
 
-jest.mock("blaise-login-react-server", () => {
-    const loginReact = jest.requireActual("blaise-login-react-server");
+jest.mock("blaise-login-react/blaise-login-react-server", () => {
+    const loginReact = jest.requireActual("blaise-login-react/blaise-login-react-server");
     return {
         ...loginReact,
     };

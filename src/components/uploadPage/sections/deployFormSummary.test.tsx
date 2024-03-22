@@ -4,16 +4,17 @@
 
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import { AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import React from "react";
 import { Formik } from "formik";
 import DeployFormSummary from "./deployFormSummary";
 import { questionnaireWithName } from "../../../features/step_definitions/helpers/apiMockObjects";
 
-jest.mock("blaise-login-react-client");
-AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
-});
+// mock login
+jest.mock("blaise-login-react/blaise-login-react-client");
+const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
+Authenticate.prototype.render = MockAuthenticate.prototype.render;
+MockAuthenticate.OverrideReturnValues(null, true);
 
 describe("Deploy form summary page", () => {
     const lmsQuestionnaireName = "LMS2004A";
@@ -34,7 +35,7 @@ describe("Deploy form summary page", () => {
         const wrapper = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
+                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
             </Formik>
         );
 
@@ -45,7 +46,7 @@ describe("Deploy form summary page", () => {
         const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
+                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
             </Formik>
         );
 
@@ -56,7 +57,7 @@ describe("Deploy form summary page", () => {
         const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
+                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
             </Formik>
         );
 
@@ -67,7 +68,7 @@ describe("Deploy form summary page", () => {
         const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
+                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
             </Formik>
         );
 
@@ -78,7 +79,7 @@ describe("Deploy form summary page", () => {
         const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
+                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
             </Formik>
         );
 
@@ -89,7 +90,7 @@ describe("Deploy form summary page", () => {
         const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
+                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
             </Formik>
         );
 
@@ -100,7 +101,7 @@ describe("Deploy form summary page", () => {
         const { getByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire}/>
+                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
             </Formik>
         );
 
@@ -111,7 +112,7 @@ describe("Deploy form summary page", () => {
         const { queryByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>
-                <DeployFormSummary file={opnFile} foundQuestionnaire={opnQuestionnaire}/>
+                <DeployFormSummary file={opnFile} foundQuestionnaire={opnQuestionnaire} />
             </Formik>
         );
 

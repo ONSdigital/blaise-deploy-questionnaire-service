@@ -10,16 +10,15 @@ import flushPromises from "./tests/utils";
 import { act } from "react-dom/test-utils";
 import { BrowserRouter } from "react-router-dom";
 import { questionnaireList } from "./features/step_definitions/helpers/apiMockObjects";
-import { AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 const mock = new MockAdapter(axios);
 
-jest.mock("blaise-login-react-client");
-AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
-});
+jest.mock("blaise-login-react/blaise-login-react-client");
+const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
+Authenticate.prototype.render = MockAuthenticate.prototype.render;
 
 const mockIsProduction = jest.fn();
 
@@ -27,7 +26,7 @@ jest.mock("./client/env", () => ({
     isProduction: () => mockIsProduction()
 }));
 
-describe("React homepage", () => {
+describe("DQS homepage", () => {
     beforeAll(() => {
         mock.onGet("/api/questionnaires").reply(200, questionnaireList);
     });
@@ -38,9 +37,10 @@ describe("React homepage", () => {
 
     beforeEach(() => {
         mockIsProduction.mockReturnValue(false);
+        MockAuthenticate.OverrideReturnValues(null, true);
     });
 
-    it("view questionnaire page matches Snapshot in production", async () => {
+    it("should not show 'not a production environment banner' when in production", async () => {
         mockIsProduction.mockReturnValue(true);
         const wrapper = render(<App />, { wrapper: BrowserRouter });
 
@@ -55,7 +55,7 @@ describe("React homepage", () => {
         });
     });
 
-    it("view questionnaire page matches Snapshot in non-production environments", async () => {
+    it("should show 'not a production environment banner' when not in production", async () => {
         const wrapper = render(<App />, { wrapper: BrowserRouter });
 
         await act(async () => {
@@ -69,23 +69,30 @@ describe("React homepage", () => {
         });
     });
 
-    it("should render correctly", async () => {
-        const { getByText, queryByText } = render(<App />, { wrapper: BrowserRouter }
+    it.only("should render the login page when a user is not signed in", async () => {
+        MockAuthenticate.OverrideReturnValues(null, false);
+
+        const { getByText } = render(
+            <App />, { wrapper: BrowserRouter }
+        );
+
+        await waitFor(() => {
+            expect(getByText(/Enter your Blaise username and password/i)).toBeInTheDocument();
+        });
+    });
+
+    it("should render the homepage when a user is signed in", async () => {
+        const { getByText, queryByText } = render(
+            <App />, { wrapper: BrowserRouter }
         );
 
         expect(queryByText(/Loading/i)).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(getByText(/Deploy Questionnaire Service/i)).toBeDefined();
+            expect(getByText(/Deploy Questionnaire Service/i)).toBeInTheDocument();
+            expect(getByText(/OPN2007T/i)).toBeInTheDocument();
             expect(queryByText(/Loading/i)).not.toBeInTheDocument();
         });
-
-        await waitFor(() => {
-            expect(getByText(/Deploy Questionnaire Service/i)).toBeDefined();
-            expect(getByText(/OPN2007T/i)).toBeDefined();
-            expect(queryByText(/Loading/i)).not.toBeInTheDocument();
-        });
-
     });
 });
 

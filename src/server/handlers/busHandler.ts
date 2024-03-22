@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { Auth } from "blaise-login-react-server";
+import { Auth } from "blaise-login-react/blaise-login-react-server";
 import BusApiClient from "bus-api-node-client";
 
 export default function NewBusHandler(busApiClient: BusApiClient, auth: Auth): Router {
