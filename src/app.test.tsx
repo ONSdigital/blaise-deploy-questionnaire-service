@@ -81,7 +81,7 @@ describe("DQS homepage", () => {
         });
     });
 
-    it("should render the homepage when signed is signed in", async () => {
+    it("should render the homepage when a user is signed in", async () => {
         const { getByText, queryByText } = render(
             <App />, { wrapper: BrowserRouter }
         );
