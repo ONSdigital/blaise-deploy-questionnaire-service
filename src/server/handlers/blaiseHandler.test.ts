@@ -2,12 +2,12 @@ import supertest, { Response } from "supertest";
 import {
     questionnaireListMockObject, questionnaireMockObject, expectedQuestionnaireList
 } from "./mockObjects";
-import { Auth } from "blaise-login-react-server";
+import { Auth } from "blaise-login-react/blaise-login-react-server";
 import { newServer } from "../server";
 import { getConfigFromEnv } from "../config";
 
-jest.mock("blaise-login-react-server", () => {
-    const loginReact = jest.requireActual("blaise-login-react-server");
+jest.mock("blaise-login-react/blaise-login-react-server", () => {
+    const loginReact = jest.requireActual("blaise-login-react/blaise-login-react-server");
     return {
         ...loginReact
     };

@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { Auth } from "blaise-login-react-server";
+import { Auth } from "blaise-login-react/blaise-login-react-server";
 import BlaiseApiClient, { InstallQuestionnaire, Questionnaire } from "blaise-api-node-client";
 import { fieldPeriodToText } from "../functions";
 import AuditLogger from "../auditLogging/logger";

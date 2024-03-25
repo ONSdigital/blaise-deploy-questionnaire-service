@@ -3,7 +3,7 @@ import path from "path";
 import ejs from "ejs";
 import dotenv from "dotenv";
 import { Config } from "./config";
-import { newLoginHandler, Auth } from "blaise-login-react-server";
+import { newLoginHandler, Auth } from "blaise-login-react/blaise-login-react-server";
 import BlaiseApiClient from "blaise-api-node-client";
 import newBimsHandler from "./handlers/bimsHandler";
 import { BimsApi } from "./bimsApi/bimsApi";
