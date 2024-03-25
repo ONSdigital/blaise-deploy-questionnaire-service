@@ -6,11 +6,11 @@ import supertest from "supertest";
 
 jest.mock("blaise-api-node-client");
 import BlaiseApiRest from "blaise-api-node-client";
-import { Auth } from "blaise-login-react-server";
+import { Auth } from "blaise-login-react/blaise-login-react-server";
 import { getConfigFromEnv } from "./config";
 
-jest.mock("blaise-login-react-server", () => {
-    const loginReact = jest.requireActual("blaise-login-react-server");
+jest.mock("blaise-login-react/blaise-login-react-server", () => {
+    const loginReact = jest.requireActual("blaise-login-react/blaise-login-react-server");
     return {
         ...loginReact
     };

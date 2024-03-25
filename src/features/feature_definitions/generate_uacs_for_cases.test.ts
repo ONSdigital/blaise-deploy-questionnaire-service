@@ -7,14 +7,15 @@ import { givenTheQuestionnaireHasCases, givenTheQuestionnaireHasModes, givenTheQ
 import { whenIClickGenerateCases, whenIGoToTheQuestionnaireDetailsPage } from "../step_definitions/when";
 import { thenAGenerateUacButtonIsAvailable, thenAGenerateUacButtonIsNotAvailable, thenICanSeeThatThatTheQuestionnaireHasCases, thenIReceiveAUACError, thenUACsAreGenerated } from "../step_definitions/then";
 import { Questionnaire } from "blaise-api-node-client";
-import { AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
-jest.mock("blaise-login-react-client");
-AuthManager.prototype.loggedIn = jest.fn().mockImplementation(() => {
-    return Promise.resolve(true);
-});
+// mock login
+jest.mock("blaise-login-react/blaise-login-react-client");
+const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
+Authenticate.prototype.render = MockAuthenticate.prototype.render;
+MockAuthenticate.OverrideReturnValues(null, true);
 
 const feature = loadFeature(
     "./src/features/generate_uacs_for_cases.feature",

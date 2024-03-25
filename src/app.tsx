@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Routes, Route, useNavigate, useLocation, Link } from "react-router-dom";
 import QuestionnaireList from "./components/questionnaireList";
 import UploadPage from "./components/uploadPage/uploadPage";
@@ -12,7 +12,6 @@ import {
     Header,
     NotProductionWarning,
     ONSPanel,
-    ONSLoadingPanel,
     ONSErrorPanel
 } from "blaise-design-system-react-components";
 import AuditPage from "./components/auditPage";
@@ -23,7 +22,7 @@ import ChangeTOStartDate from "./components/questionnaireDetailsPage/changeTOSta
 import ChangeTMReleaseDate from "./components/questionnaireDetailsPage/changeTmReleaseDate";
 import "./style.css";
 import { isProduction } from "./client/env";
-import { LoginForm, AuthManager } from "blaise-login-react-client";
+import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import "./style.css";
 
 const divStyle = {
@@ -34,39 +33,8 @@ function App(): ReactElement {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const authManager = new AuthManager();
-
-    const [loaded, setLoaded] = useState(false);
-    const [loggedIn, setLoggedIn] = useState(false);
     const [errored, setErrored] = useState(false);
     const [status, setStatus] = useState("");
-
-    useEffect(() => {
-        console.log(location);
-        authManager.loggedIn().then((isLoggedIn: boolean) => {
-            setLoggedIn(isLoggedIn);
-            setLoaded(true);
-        });
-    }, []);
-
-    function LoginPage(): ReactElement {
-        if (loaded && loggedIn) {
-            return <></>;
-        }
-        return <LoginForm authManager={authManager} setLoggedIn={setLoggedIn} />;
-    }
-
-    function Loading(): ReactElement {
-        if (loaded) {
-            return <></>;
-        }
-        return <ONSLoadingPanel />;
-    }
-
-    function signOut(): void {
-        authManager.clearToken();
-        setLoggedIn(false);
-    }
 
     function successBanner(): ReactElement {
         if (status !== "") {
@@ -85,10 +53,6 @@ function App(): ReactElement {
     }
 
     function AppContent(): ReactElement {
-        if (!loaded || !loggedIn) {
-            return <></>;
-        }
-
         return (
             <>
                 <DefaultErrorBoundary>
@@ -151,36 +115,38 @@ function App(): ReactElement {
     }
 
     return (
-        <>
-            <a className="ons-skip-link" href="#main-content">Skip to content</a>
-            {
-                isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
-            }
-            <Header
-                title={"Deploy Questionnaire Service"}
-                signOutButton={loggedIn}
-                noSave={true}
-                signOutFunction={signOut}
-                navigationLinks={[
-                    { id: "home-link", label: "Home", endpoint: "/" },
-                    { id: "deploy-questionnaire-link", label: "Deploy a questionnaire", endpoint: "/upload" },
-                    { id: "audit-logs-link", label: "View deployment history", endpoint: "/audit" },
-                    { id: "blaise-status-link", label: "Check Blaise status", endpoint: "/status" },
-                ]}
-                currentLocation={location.pathname}
-                createNavLink={(id: string, label: string, endpoint: string) => (
-                    <Link to={endpoint} id={id} className="ons-navigation__link">
-                        {label}
-                    </Link>
-                )}
-            />
-            <div style={divStyle} className="ons-page__container ons-container">
-                <Loading />
-                <LoginPage />
-                <AppContent />
-            </div>
-            <Footer />
-        </>
+        <Authenticate title="Deploy Questionnaire Service">
+            {(_user, loggedIn, logOutFunction) => (
+                <>
+                    <a className="ons-skip-link" href="#main-content">Skip to content</a>
+                    {
+                        isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
+                    }
+                    <Header
+                        title={"Deploy Questionnaire Service"}
+                        signOutButton={loggedIn}
+                        noSave={true}
+                        signOutFunction={logOutFunction}
+                        navigationLinks={[
+                            { id: "home-link", label: "Home", endpoint: "/" },
+                            { id: "deploy-questionnaire-link", label: "Deploy a questionnaire", endpoint: "/upload" },
+                            { id: "audit-logs-link", label: "View deployment history", endpoint: "/audit" },
+                            { id: "blaise-status-link", label: "Check Blaise status", endpoint: "/status" },
+                        ]}
+                        currentLocation={location.pathname}
+                        createNavLink={(id: string, label: string, endpoint: string) => (
+                            <Link to={endpoint} id={id} className="ons-navigation__link">
+                                {label}
+                            </Link>
+                        )}
+                    />
+                    <div style={divStyle} className="ons-page__container ons-container">
+                        <AppContent />
+                    </div>
+                    <Footer />
+                </>
+            )}
+        </Authenticate>
     );
 }
 
