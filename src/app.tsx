@@ -132,6 +132,7 @@ function App(): ReactElement {
                             { id: "deploy-questionnaire-link", label: "Deploy a questionnaire", endpoint: "/upload" },
                             { id: "audit-logs-link", label: "View deployment history", endpoint: "/audit" },
                             { id: "blaise-status-link", label: "Check Blaise status", endpoint: "/status" },
+                            { id: "fake-link", label: "Testing", endpoint: "/status" },
                         ]}
                         currentLocation={location.pathname}
                         createNavLink={(id: string, label: string, endpoint: string) => (
