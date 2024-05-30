@@ -24,6 +24,7 @@ import "./style.css";
 import { isProduction } from "./client/env";
 import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import "./style.css";
+import CreateDonorCasesConfirmation from "./components/createDonorCasePage/createDonotCaseConfirmation";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -96,6 +97,10 @@ function App(): ReactElement {
                         <Route
                             path="/delete"
                             element={<DeleteConfirmation onDelete={onDeleteQuestionnaire} onCancel={onCancelDeleteQuestionnaire} />}>
+                        </Route>
+                        <Route
+                            path="/createDonorCasesConfirmation"
+                            element={<CreateDonorCasesConfirmation />}>
                         </Route>
                         <Route
                             path="/"

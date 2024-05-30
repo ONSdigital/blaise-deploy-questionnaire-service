@@ -11,6 +11,7 @@ import QuestionnaireSettingsSection from "./sections/questionnaireSettingsSectio
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import QuestionnaireDetails from "./sections/questionnaireDetails";
+import CreateDonorCases from "./sections/createDonorCases";
 
 interface State {
     questionnaire: Questionnaire | null;
@@ -110,6 +111,7 @@ function QuestionnaireDetailsPage(): ReactElement {
                 </h1>
 
                 <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
+                {questionnaire.name.includes("IPS") && <CreateDonorCases questionnaire={questionnaire} />}
                 <CatiModeDetails questionnaireName={questionnaire.name} modes={modes} />
                 <CawiModeDetails questionnaire={questionnaire} modes={modes} />
                 <TotalmobileDetails questionnaireName={questionnaire.name} />
