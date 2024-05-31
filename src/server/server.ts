@@ -44,7 +44,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     const busHandler = newBusHandler(busApiClient, auth);
     const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
     const auditHandler = newAuditHandler(auditLogger);
-    const cloudFunctionHandler = newCloudFunctionHandler();
+    // const cloudFunctionHandler = newCloudFunctionHandler();
 
     const server = express();
 
@@ -67,7 +67,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     server.use("/", bimsHandler);
     server.use("/", busHandler);
     server.use("/", auditHandler);
-    server.use("/", cloudFunctionHandler);
+    // server.use("/", cloudFunctionHandler);
     server.use("/", HealthCheckHandler());
 
     server.get("*", function (req: Request, res: Response) {
