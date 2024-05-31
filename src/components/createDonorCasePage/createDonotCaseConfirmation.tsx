@@ -12,9 +12,6 @@ interface Location {
     role: string;
 }
 
-//just testing. might need to take this from env variables. to make it more safe.
-const CLOUD_FUNCTION_URL = "u will need to get it from GCP. i removed it so that its not publicly available on github";
-
 function CreateDonorCasesConfirmation(): ReactElement {
     const location = useLocation().state as Location;
     const { questionnaire, role } = location || { questionnaire: "", role: "" };
@@ -24,7 +21,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
         const payload = { questionnaire_name: questionnaire.name, role: role }; // Your payload data here
 
         try {
-            const response = await axios.post(CLOUD_FUNCTION_URL, payload, {
+            const response = await axios.post("/api/cloudFunction/createDonorCases", payload, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -49,9 +46,9 @@ function CreateDonorCasesConfirmation(): ReactElement {
                 {
                     (
                         <>
-                            <p>
+                            <h1 className="u-mb-l">
                                 Create {role} donor cases for {questionnaire.name}?
-                            </p>
+                            </h1>
                             <ONSButton
                                 label="Continue"
                                 onClick={callCreateDonorCasesCloudFunction}
