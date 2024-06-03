@@ -33,6 +33,8 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
     const auth = new Auth(config);
 
+    console.log(config.CreateDonorCasesCloudFunctionUrl.valueOf());
+    console.log(config.CreateDonorCasesCloudFunctionUrl);
     const bimsAPI = new BimsApi(config.BimsApiUrl, config.BimsClientId);
     const busApiClient = new BusApiClient(config.BusApiUrl, config.BusClientId);
     const storageManager = new StorageManager(config);
