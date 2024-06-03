@@ -31,8 +31,9 @@ export class CloudFunctionHandler {
     async CallCloudFunction(req: Request, res: Response): Promise<Response> {
         const reqData = req.body;
         const config = getConfigFromEnv();
-        const token = await getIdTokenFromMetadataServer(config.CreateDonorCasesCloudFunctionUrl);
 
+        const token = await getIdTokenFromMetadataServer(config.CreateDonorCasesCloudFunctionUrl);
+        req.log.info(`${config.CreateDonorCasesCloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
         try {
             const response = await axios.post(config.CreateDonorCasesCloudFunctionUrl, reqData, {
                 headers: {

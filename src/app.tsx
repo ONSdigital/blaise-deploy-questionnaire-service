@@ -24,7 +24,7 @@ import "./style.css";
 import { isProduction } from "./client/env";
 import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import "./style.css";
-import CreateDonorCasesConfirmation from "./components/createDonorCasePage/createDonotCaseConfirmation";
+import CreateDonorCasesConfirmation from "./components/createDonorCasePage/createDonorCaseConfirmation";
 
 const divStyle = {
     minHeight: "calc(67vh)"
