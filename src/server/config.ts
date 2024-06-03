@@ -25,7 +25,7 @@ export function getConfigFromEnv(): Config {
         BUS_API_URL,
         BUS_CLIENT_ID,
         SESSION_TIMEOUT,
-        CREATE_DONOR_CASES_URL
+        CREATE_DONOR_CASES_CLOUD_FUNCTION_URL
     } = process.env;
 
     const {
@@ -79,9 +79,9 @@ export function getConfigFromEnv(): Config {
         SESSION_TIMEOUT = "12h";
     }
 
-    if (CREATE_DONOR_CASES_URL === undefined) {
+    if (CREATE_DONOR_CASES_CLOUD_FUNCTION_URL === undefined) {
         console.error("CLOUD_FUNCTION_URL environment variable has not been set");
-        CREATE_DONOR_CASES_URL = "ENV_VAR_NOT_SET";
+        CREATE_DONOR_CASES_CLOUD_FUNCTION_URL = "ENV_VAR_NOT_SET";
     }
     let port = 5000;
     if (PORT !== undefined) {
@@ -101,7 +101,7 @@ export function getConfigFromEnv(): Config {
         SessionTimeout: SESSION_TIMEOUT,
         SessionSecret: sessionSecret(SESSION_SECRET),
         Roles: loadRoles(ROLES),
-        CreateDonorCasesCloudFunctionUrl: CREATE_DONOR_CASES_URL
+        CreateDonorCasesCloudFunctionUrl: CREATE_DONOR_CASES_CLOUD_FUNCTION_URL
     };
 }
 
