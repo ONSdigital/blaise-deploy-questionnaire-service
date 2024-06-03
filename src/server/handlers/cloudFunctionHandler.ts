@@ -1,11 +1,10 @@
 import express, { Request, Response, Router } from "express";
-import { getConfigFromEnv } from "../config";
 import axios from "axios";
 import { GoogleAuth } from "google-auth-library";
 
-export default function newCloudFunctionHandler(): Router {
+export default function newCloudFunctionHandler(CreateDonorCasesCloudFunctionUrl: string): Router {
     const router = express.Router();
-    const cloudFunctionHandler = new CloudFunctionHandler();
+    const cloudFunctionHandler = new CloudFunctionHandler(CreateDonorCasesCloudFunctionUrl);
     router.post("/api/cloudFunction/createDonorCases", cloudFunctionHandler.CallCloudFunction);
 
     return router;
@@ -23,19 +22,20 @@ async function getIdTokenFromMetadataServer(targetAudience: string) {
     return token;
 }
 export class CloudFunctionHandler {
+    CreateDonorCasesCloudFunctionUrl: string;
 
-    constructor() {
+    constructor(CreateDonorCasesCloudFunctionUrl: string) {
+        this.CreateDonorCasesCloudFunctionUrl = CreateDonorCasesCloudFunctionUrl;
         this.CallCloudFunction = this.CallCloudFunction.bind(this);
     }
 
     async CallCloudFunction(req: Request, res: Response): Promise<Response> {
         const reqData = req.body;
-        const config = getConfigFromEnv();
 
-        const token = await getIdTokenFromMetadataServer(config.CreateDonorCasesCloudFunctionUrl);
-        req.log.info(`${config.CreateDonorCasesCloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
+        const token = await getIdTokenFromMetadataServer(this.CreateDonorCasesCloudFunctionUrl);
+        req.log.info(`${this.CreateDonorCasesCloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
         try {
-            const response = await axios.post(config.CreateDonorCasesCloudFunctionUrl, reqData, {
+            const response = await axios.post(this.CreateDonorCasesCloudFunctionUrl, reqData, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`

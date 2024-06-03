@@ -44,7 +44,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     const busHandler = newBusHandler(busApiClient, auth);
     const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
     const auditHandler = newAuditHandler(auditLogger);
-    const cloudFunctionHandler = newCloudFunctionHandler();
+    const cloudFunctionHandler = newCloudFunctionHandler(config.CreateDonorCasesCloudFunctionUrl);
 
     const server = express();
 
