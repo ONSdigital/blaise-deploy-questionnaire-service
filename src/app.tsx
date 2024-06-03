@@ -114,7 +114,7 @@ function App(): ReactElement {
                             </main>}>
                         </Route>
                     </Routes>
-                </DefaultErrorBoundary>
+                </DefaultErrorBoundary >
             </>
         );
     }

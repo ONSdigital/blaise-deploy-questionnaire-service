@@ -1,34 +1,32 @@
 import React, { ReactElement } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Questionnaire } from "blaise-api-node-client";
-import ErroneousWarning from "../deletePage/erroneousWarning";
-import DeleteWarning from "../deletePage/deleteWarning";
 import Breadcrumbs from "../breadcrumbs";
 import { ONSButton } from "blaise-design-system-react-components";
 import axios from "axios";
 
 interface Location {
-    questionnaire: Questionnaire;
+    questionnaire: string;
     role: string;
 }
 
 function CreateDonorCasesConfirmation(): ReactElement {
     const location = useLocation().state as Location;
-    const { questionnaire, role } = location || { questionnaire: "", role: "" };
+    const { questionnaire, role } = location || { questionnaire: "" };
+
     const navigate = useNavigate();
 
     async function callCreateDonorCasesCloudFunction() {
-        const payload = { questionnaire_name: questionnaire.name, role: role }; // Your payload data here
+        const payload = { questionnaire_name: questionnaire, role: role }; // Your payload data here
 
         try {
             const response = await axios.post("/api/cloudFunction/createDonorCases", payload, {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
             });
             console.log("Response:", response.data);
-            // Navigate to the target page after successful API call
-            navigate("/home");
+            // Navigate to the Response page after API call based on success or failure, TBD
+            navigate("/");
         } catch (error) {
             console.error("Error:", error);
         }
@@ -47,7 +45,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
                     (
                         <>
                             <h1 className="u-mb-l">
-                                Create {role} donor cases for {questionnaire.name}?
+                                Create {role} donor cases for {questionnaire}?
                             </h1>
                             <ONSButton
                                 label="Continue"
