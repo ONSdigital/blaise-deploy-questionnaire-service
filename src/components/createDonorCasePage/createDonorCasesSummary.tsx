@@ -5,9 +5,10 @@ import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 interface Props {
     donorCasesResponseMessage: string;
     donorCasesStatusCode: number;
+    role: string;
 }
 
-function createDonorCasesSummary({ donorCasesResponseMessage, donorCasesStatusCode }: Props): ReactElement {
+function createDonorCasesSummary({ donorCasesResponseMessage, donorCasesStatusCode, role }: Props): ReactElement {
 
     return (
         <>
@@ -16,24 +17,18 @@ function createDonorCasesSummary({ donorCasesResponseMessage, donorCasesStatusCo
                     (donorCasesStatusCode === 200 ?
                         <ONSPanel status="success" bigIcon={true}>
                             <h1>
-                            Donor cases created successfully for {donorCasesResponseMessage}
+                                Donor cases created successfully for {role}
                             </h1>
                         </ONSPanel>
                         :
-                        <>
-                            <h1 className="ons-u-mb-l ons-u-mt-m">
-                                Questionnaire
-                                file <em>{donorCasesResponseMessage}</em> deploy failed
-                            </h1>
-                            <ONSPanel status="error">
-                                <p>
-                                    Error creating donor cases for {donorCasesResponseMessage}
-                                </p>
-                                <p>
-                                    Reason: {status}
-                                </p>
-                            </ONSPanel>
-                        </>
+                        <ONSPanel status="error">
+                            <p>
+                                Error creating donor cases for {role}
+                            </p>
+                            <p>
+                                Reason: {donorCasesResponseMessage}
+                            </p>
+                        </ONSPanel>
                     )
                 }
             </main>

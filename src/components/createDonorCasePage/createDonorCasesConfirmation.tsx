@@ -3,9 +3,10 @@ import { json, useLocation, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../breadcrumbs";
 import { ONSButton } from "blaise-design-system-react-components";
 import axios from "axios";
+import { Questionnaire } from "blaise-api-node-client";
 
 interface Location {
-    questionnaire: string;
+    questionnaire: Questionnaire;
     role: string;
 }
 
@@ -27,9 +28,11 @@ function CreateDonorCasesConfirmation(): ReactElement {
             console.log("Response:", response.data);
             console.log("JSON stringify:", JSON.stringify(response));
             // Navigate to the Response page after API call based on success or failure, TBD
-            navigate(`/questionnaire/${questionnaire}`, { state: { donorCasesResponseMessage: response.data, donorCasesStatusCode: response.status } }); } catch (error) {
+            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: response.data, donorCasesStatusCode: response.status, questionnaire: questionnaire, role: role } }); 
+        } catch (error) {
             console.error("Error:", error);
-        }
+            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: "Error invoking cloud function", donorCasesStatusCode: 500, questionnaire: questionnaire, role: role } }); 
+        }         
     }
 
     return (
@@ -45,7 +48,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
                     (
                         <>
                             <h1 className="u-mb-l">
-                                Create {role} donor cases for {questionnaire}?
+                                Create {role} donor cases for {questionnaire.name}?
                             </h1>
                             <ONSButton
                                 label="Continue"

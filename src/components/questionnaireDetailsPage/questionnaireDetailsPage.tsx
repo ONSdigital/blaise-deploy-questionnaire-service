@@ -18,6 +18,7 @@ interface State {
     questionnaire: Questionnaire | null;
     donorCasesResponseMessage?: string;
     donorCasesStatusCode?: number;
+    role?: string;
 }
 
 function QuestionnaireDetailsPage(): ReactElement {
@@ -30,7 +31,7 @@ function QuestionnaireDetailsPage(): ReactElement {
     const [loaded, setLoaded] = useState<boolean>(false);
     const initialState = location || { questionnaire: null };
     const { questionnaireName } = useParams();
-    const { donorCasesResponseMessage, donorCasesStatusCode } = location || { donorCasesResponseMessage: "", donorCasesStatusCode: 0 };
+    const { donorCasesResponseMessage, donorCasesStatusCode, role } = location || { donorCasesResponseMessage: "", donorCasesStatusCode: 0, role: "" };
 
     useEffect(() => {
         console.log(questionnaireName);
@@ -116,7 +117,7 @@ function QuestionnaireDetailsPage(): ReactElement {
                     {questionnaire.name}
                 </h1>
 
-                {donorCasesResponseMessage && donorCasesStatusCode && <CreateDonorCasesSummary donorCasesResponseMessage={donorCasesResponseMessage} donorCasesStatusCode={donorCasesStatusCode}/>}
+                {donorCasesResponseMessage && donorCasesStatusCode && role && <CreateDonorCasesSummary donorCasesResponseMessage={donorCasesResponseMessage} donorCasesStatusCode={donorCasesStatusCode} role={role}/>}
                 <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
                 {questionnaire.name.includes("IPS") && <CreateDonorCases questionnaire={questionnaire} />}
                 <CatiModeDetails questionnaireName={questionnaire.name} modes={modes} />
