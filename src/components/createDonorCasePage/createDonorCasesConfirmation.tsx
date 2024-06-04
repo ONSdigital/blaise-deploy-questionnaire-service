@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { json, useLocation, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../breadcrumbs";
 import { ONSButton } from "blaise-design-system-react-components";
 import axios from "axios";
@@ -25,9 +25,9 @@ function CreateDonorCasesConfirmation(): ReactElement {
                 },
             });
             console.log("Response:", response.data);
+            console.log("JSON stringify:", JSON.stringify(response));
             // Navigate to the Response page after API call based on success or failure, TBD
-            navigate(`/questionnaire/${questionnaire}`);
-        } catch (error) {
+            navigate(`/questionnaire/${questionnaire}`, { state: { donorCasesResponseMessage: response.data, donorCasesStatusCode: response.status } }); } catch (error) {
             console.error("Error:", error);
         }
     }
