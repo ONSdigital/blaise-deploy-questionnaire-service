@@ -29,6 +29,8 @@ function QuestionnaireDetailsPage(): ReactElement {
     const { questionnaireName } = useParams();
 
     useEffect(() => {
+        console.log(questionnaireName);
+        console.log("asdasdiasdasd");
         if (initialState.questionnaire === null) {
             loadQuestionnaire().then(() => {
                 console.log(`Loaded questionnaire: ${questionnaireName}`);

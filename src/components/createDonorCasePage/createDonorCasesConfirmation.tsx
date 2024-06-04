@@ -26,7 +26,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
             });
             console.log("Response:", response.data);
             // Navigate to the Response page after API call based on success or failure, TBD
-            navigate("/");
+            navigate(`/questionnaire/${questionnaire}`);
         } catch (error) {
             console.error("Error:", error);
         }
@@ -54,7 +54,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
                             />
                             <ONSButton
                                 label="Cancel"
-                                onClick={function willImplementLater() { }} primary={false} />
+                                onClick={() => navigate(-1)} primary={false} />
                         </>
 
                     )

@@ -3,32 +3,25 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 
 interface Location {
+    questionnaireName: string
     message: string
     status: string
 }
 
-function CreateDonorCasesResult(): ReactElement {
+function createDonorCasesSummary(): ReactElement {
     const location = useLocation().state as Location;
     const navigate = useNavigate();
-    const { message, status } = location || { questionnaireName: "/" };
+    const { message, status, questionnaireName } = location || { questionnaireName: "/" };
 
     return (
         <>
             <main id="main-content" className="ons-page__main ons-u-mt-no">
                 {
-                    (status === "" ?
+                    (status === "200" ?
                         <ONSPanel status="success" bigIcon={true}>
                             <h1>
-                                Questionnaire
-                                file <em>{message}</em> deployed
+                            Donor cases created successfully for {questionnaireName}
                             </h1>
-                            <p>
-                                The questionnaire file has been successfully deployed and will be displayed within
-                                the
-                                table
-                                of
-                                questionnaires.
-                            </p>
                         </ONSPanel>
                         :
                         <>
@@ -38,14 +31,7 @@ function CreateDonorCasesResult(): ReactElement {
                             </h1>
                             <ONSPanel status="error">
                                 <p>
-                                    <b>File deploy failed</b>
-
-                                    <br />
-                                    <br />
-                                    Questionnaire {message} has failed to deploy. When reporting the issue
-                                    to
-                                    Service
-                                    Desk provide the questionnaire name, time and date of failure.
+                                    Error creating donor cases for {questionnaireName}
                                 </p>
                                 <p>
                                     Reason: {status}
@@ -68,4 +54,4 @@ function CreateDonorCasesResult(): ReactElement {
     );
 }
 
-export default CreateDonorCasesResult;
+export default createDonorCasesSummary;
