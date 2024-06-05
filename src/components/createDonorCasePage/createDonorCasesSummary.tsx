@@ -8,7 +8,7 @@ interface Props {
     role: string;
 }
 
-function createDonorCasesSummary({ donorCasesResponseMessage, donorCasesStatusCode, role }: Props): ReactElement {
+function CreateDonorCasesSummary({ donorCasesResponseMessage, donorCasesStatusCode, role }: Props): ReactElement {
 
     return (
         <>
@@ -36,4 +36,4 @@ function createDonorCasesSummary({ donorCasesResponseMessage, donorCasesStatusCo
     );
 }
 
-export default createDonorCasesSummary;
+export default CreateDonorCasesSummary;
