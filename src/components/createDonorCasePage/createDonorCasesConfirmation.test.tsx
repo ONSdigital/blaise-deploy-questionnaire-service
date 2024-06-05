@@ -6,7 +6,7 @@ import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, RouterProvider, Routes, createMemoryRouter, useNavigate } from "react-router-dom";
 import CreateDonorCasesConfirmation from "./createDonorCasesConfirmation";
-import flushPromises from "../../tests/utils"
+import flushPromises from "../../tests/utils";
 import "@testing-library/jest-dom";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
@@ -35,8 +35,6 @@ describe("CreateDonorCasesConfirmation rendering and elements are rendered corre
         expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
     });
 
-
-
 });
 
 describe("CreateDonorCasesConfirmation rendering and paths taken on button clicks", () => {
@@ -57,7 +55,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
         render(<RouterProvider router={router} />);
 
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: /Cancel/i }))
+            fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
             await flushPromises();
         });
 
@@ -85,7 +83,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
         render(<RouterProvider router={router} />);
 
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: /Continue/i }))
+            fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
             await flushPromises();
         });
 
@@ -118,7 +116,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
         });
 
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: /Continue/i }))
+            fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
             await flushPromises();
         });
 

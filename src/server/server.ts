@@ -3,7 +3,10 @@ import path from "path";
 import ejs from "ejs";
 import dotenv from "dotenv";
 import { Config } from "./config";
-import { newLoginHandler, Auth } from "blaise-login-react/blaise-login-react-server";
+import {
+    newLoginHandler,
+    Auth,
+} from "blaise-login-react/blaise-login-react-server";
 import BlaiseApiClient from "blaise-api-node-client";
 import newBimsHandler from "./handlers/bimsHandler";
 import { BimsApi } from "./bimsApi/bimsApi";
@@ -29,7 +32,10 @@ if (process.env.NODE_ENV === "production") {
     dotenv.config();
 }
 
-export function newServer(config: Config, logger: HttpLogger = createLogger()): Express {
+export function newServer(
+    config: Config,
+    logger: HttpLogger = createLogger()
+): Express {
     const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
     const auth = new Auth(config);
 
@@ -42,11 +48,18 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
 
     const loginHandler = newLoginHandler(auth, blaiseApiClient);
     const bimsHandler = newBimsHandler(bimsAPI, auth, auditLogger);
-    const blaiseHandler = newBlaiseHandler(blaiseApiClient, config.ServerPark, auth, auditLogger);
+    const blaiseHandler = newBlaiseHandler(
+        blaiseApiClient,
+        config.ServerPark,
+        auth,
+        auditLogger
+    );
     const busHandler = newBusHandler(busApiClient, auth);
     const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
     const auditHandler = newAuditHandler(auditLogger);
-    const cloudFunctionHandler = newCloudFunctionHandler(config.CreateDonorCasesCloudFunctionUrl);
+    const cloudFunctionHandler = newCloudFunctionHandler(
+        config.CreateDonorCasesCloudFunctionUrl
+    );
 
     const server = express();
 
@@ -62,7 +75,10 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     // treat the index.html as a template and substitute the values at runtime
     server.set("views", path.join(__dirname, buildFolder));
     server.engine("html", ejs.renderFile);
-    server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static`)));
+    server.use(
+        "/static",
+        express.static(path.join(__dirname, `${buildFolder}/static`))
+    );
 
     server.use("/", uploadHandler);
     server.use("/", blaiseHandler);
@@ -76,7 +92,12 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
         res.render("index.html");
     });
 
-    server.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
+    server.use(function (
+        err: Error,
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         req.log.error(err, err.message);
         res.render("../src/views/500.html", {});
     });
