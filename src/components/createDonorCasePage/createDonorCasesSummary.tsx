@@ -22,9 +22,9 @@ function CreateDonorCasesSummary({ donorCasesResponseMessage, donorCasesStatusCo
                         </ONSPanel>
                         :
                         <ONSPanel status="error">
-                            <p>
+                            <h1>
                                 Error creating donor cases for {role}
-                            </p>
+                            </h1>
                             <p>
                                 Reason: {donorCasesResponseMessage}
                             </p>

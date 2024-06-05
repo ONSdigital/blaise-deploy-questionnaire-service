@@ -28,11 +28,11 @@ function CreateDonorCasesConfirmation(): ReactElement {
             console.log("Response:", response.data);
             console.log("JSON stringify:", JSON.stringify(response));
             // Navigate to the Response page after API call based on success or failure, TBD
-            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: response.data, donorCasesStatusCode: response.status, questionnaire: questionnaire, role: role } }); 
+            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: response.data, donorCasesStatusCode: response.status, questionnaire: questionnaire, role: role } });
         } catch (error) {
             console.error("Error:", error);
-            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: "Error invoking cloud function", donorCasesStatusCode: 500, questionnaire: questionnaire, role: role } }); 
-        }         
+            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: "Error invoking cloud function", donorCasesStatusCode: 500, questionnaire: questionnaire, role: role } });
+        }
     }
 
     return (
@@ -57,7 +57,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
                             />
                             <ONSButton
                                 label="Cancel"
-                                onClick={() => navigate(-1)} primary={false} />
+                                onClick={() => navigate("/questionnaire/" + questionnaire.name)} primary={false} />
                         </>
 
                     )
