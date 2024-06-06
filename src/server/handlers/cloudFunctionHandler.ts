@@ -42,7 +42,7 @@ export async function callCloudFunctionToCreateDonorCases(token: string, url: an
         return "success";
     } catch (error) {
         console.error("Error:", error);
-        return "error"
+        return "error";
     }
 }
 
