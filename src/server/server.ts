@@ -32,10 +32,7 @@ if (process.env.NODE_ENV === "production") {
     dotenv.config();
 }
 
-export function newServer(
-    config: Config,
-    logger: HttpLogger = createLogger()
-): Express {
+export function newServer(config: Config, logger: HttpLogger = createLogger()): Express {
     const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
     const auth = new Auth(config);
 

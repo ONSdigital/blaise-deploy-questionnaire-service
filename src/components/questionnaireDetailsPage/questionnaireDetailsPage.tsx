@@ -35,7 +35,6 @@ function QuestionnaireDetailsPage(): ReactElement {
 
     useEffect(() => {
         console.log(questionnaireName);
-        console.log("asdasdiasdasd");
         if (initialState.questionnaire === null) {
             loadQuestionnaire().then(() => {
                 console.log(`Loaded questionnaire: ${questionnaireName}`);
@@ -117,7 +116,7 @@ function QuestionnaireDetailsPage(): ReactElement {
                     {questionnaire.name}
                 </h1>
 
-                {donorCasesResponseMessage && donorCasesStatusCode && role && <CreateDonorCasesSummary donorCasesResponseMessage={donorCasesResponseMessage} donorCasesStatusCode={donorCasesStatusCode} role={role}/>}
+                {donorCasesResponseMessage && donorCasesStatusCode && role && <CreateDonorCasesSummary donorCasesResponseMessage={donorCasesResponseMessage} donorCasesStatusCode={donorCasesStatusCode} role={role} />}
                 <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
                 {questionnaire.name.includes("IPS") && <CreateDonorCases questionnaire={questionnaire} />}
                 <CatiModeDetails questionnaireName={questionnaire.name} modes={modes} />
