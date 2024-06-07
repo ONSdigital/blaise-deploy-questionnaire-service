@@ -6,11 +6,14 @@ import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, RouterProvider, Routes, createMemoryRouter, useNavigate } from "react-router-dom";
 import CreateDonorCasesConfirmation from "./createDonorCasesConfirmation";
+import { ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
 import flushPromises from "../../tests/utils";
 import "@testing-library/jest-dom";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import { Questionnaire } from "blaise-api-node-client";
+import QuestionnaireDetails from "../questionnaireDetailsPage/sections/questionnaireDetails";
+import QuestionnaireDetailsPage from "../questionnaireDetailsPage/questionnaireDetailsPage";
 jest.mock('axios');
 
 jest.mock("react-router-dom", () => ({
@@ -50,7 +53,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
         jest.restoreAllMocks(); // Restore original implementations after each test
     });
 
-    it("should redirect back to the questionnaire details page if user clicks Cancel", async () => {
+    it("should correctly navigate back a page if the user clicks Cancel", async () => {
 
         jest.spyOn(require('react-router-dom'), 'useNavigate').mockImplementation(actualUseNavigate);
 
@@ -67,9 +70,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
         expect(navigate).toHaveBeenCalledWith(-1);
     });
 
-    it("should go back to the questionnaire details page if user clicks Continue and success pannel is shown", async () => {
-
-        // axios.post.mockResolvedValue({ data: {} });
+    it("calls the API endpoint correctly when the continue button is clicked", async () => {
         mock.onPost("/api/cloudFunction/createDonorCases").reply(200, "Success");
         const routes = [
             {
@@ -79,7 +80,12 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
         ];
 
         const router = createMemoryRouter(routes, {
-            initialEntries: ["/createDonorCasesConfirmation"],
+            initialEntries: [
+                {
+                    pathname: "/createDonorCasesConfirmation",
+                    state: { questionnaire: ipsQuestionnaire, role: 'IPS Manager' }
+                }
+            ],
             initialIndex: 0,
         });
 
@@ -91,43 +97,45 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
         });
 
         await waitFor(() => {
-            // Check page has been redirected to summary page
-            expect(axios.post).toHaveBeenCalledWith('/some-endpoint');
-            // expect(router.state.location.pathname).toContain("/questionnaire");
-            // expect(screen.findByText("Donor cases created successfully for")).toBeDefined();
+            expect(axios.post).toHaveBeenCalledWith(
+                '/api/cloudFunction/createDonorCases',
+                { questionnaire_name: ipsQuestionnaire, role: 'IPS Manager' },
+                { headers: { "Content-Type": "application/json" } }
+            );
         });
     });
 
-    it.skip("should go back to the questionnaire details page if user clicks Continue and error pannel is shown", async () => {
+    it("should go back to the questionnaire details page if user clicks Continue and the function returns a 200", async () => {
+            mock.onPost("/api/cloudFunction/createDonorCases").reply(200, "Success");
+            const routes = [
+                {
+                    path: "/createDonorCasesConfirmation",
+                    element: <CreateDonorCasesConfirmation />
+                },
+                {
+                    path: "/questionnaire/:questionnaireName",
+                    element: <QuestionnaireDetailsPage />
+    
+                }
+            ];
+            const router = createMemoryRouter(routes, {
+                initialEntries: [
+                    {
+                        pathname: "/createDonorCasesConfirmation",
+                        state: { questionnaire: ipsQuestionnaire, role: 'IPS Manager' }
+                    },
+                    {
+                        pathname: "/questionnaire/:questionnaireName",
+                        state: { questionnaire: ipsQuestionnaire, role: 'IPS Manager' }
+                    }
+                ],
+                initialIndex: 0,
+            });
+            render(<RouterProvider router={router} />);
+            const cancelButton = screen.getByRole("button", { name: "Continue" });
+            fireEvent.click(cancelButton);
 
-        mock.onPost("/api/cloudFunction/createDonorCases").reply(500, "Failed to create donor cases");
-        const routes = [
-            {
-                path: "/createDonorCasesConfirmation",
-                element: <CreateDonorCasesConfirmation />
-            }
-        ];
-
-        const router = createMemoryRouter(routes, {
-            initialEntries: ["/createDonorCasesConfirmation"],
-            initialIndex: 0,
+            expect(screen.getByText("Questionnaire Details")).toBeInTheDocument();
+            
         });
-
-        render(<RouterProvider router={router} />);
-
-        await act(async () => {
-            await flushPromises();
-        });
-
-        await act(async () => {
-            fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
-            await flushPromises();
-        });
-
-        await waitFor(() => {
-            // Check page has been redirected to summary page
-            expect(router.state.location.pathname).toContain("/questionnaire");
-            expect(screen.findByText("Error creating donor cases for")).toBeDefined();
-        });
-    });
 });

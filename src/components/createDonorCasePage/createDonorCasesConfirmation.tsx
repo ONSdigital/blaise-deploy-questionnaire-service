@@ -4,6 +4,7 @@ import Breadcrumbs from "../breadcrumbs";
 import { ONSButton } from "blaise-design-system-react-components";
 import axios from "axios";
 import { Questionnaire } from "blaise-api-node-client";
+import { response } from "express";
 
 interface Location {
     questionnaire: Questionnaire;
@@ -26,10 +27,11 @@ function CreateDonorCasesConfirmation(): ReactElement {
                 },
             });
             // Navigate to the Response page after API call based on success or failure, TBD
-            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: response.data, donorCasesStatusCode: response.status, questionnaire: questionnaire, role: role } });
+            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: response?.data, donorCasesStatusCode: response?.status, questionnaire: questionnaire, role: role } });
         } catch (error) {
             console.error("Error:", error);
-            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: "Error invoking cloud function", donorCasesStatusCode: 500, questionnaire: questionnaire, role: role } });
+            
+            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: error, donorCasesStatusCode: 500, questionnaire: questionnaire, role: role } });
         }
     }
 

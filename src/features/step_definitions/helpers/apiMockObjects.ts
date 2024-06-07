@@ -49,13 +49,7 @@ export const opnQuestionnaire: Questionnaire = {
 export const ipsQuestionnaire: Questionnaire = {
     name: "IPS1337a",
     serverParkName: "gusty",
-    installDate: "2021-01-15T15:26:43.4233454+00:00",
-    status: "Active",
-    dataRecordCount: 0,
-    hasData: false,
-    active: false,
-    fieldPeriod: "April 2020",
-    blaiseVersion: "5.9.9.2735"
+    installDate: "2021-01-15T15:26:43.4233454+00:00"
 };
 
 export const questionnaireWithName = (questionnaireName: string): Questionnaire => {
