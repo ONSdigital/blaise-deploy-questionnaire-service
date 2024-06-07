@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
-import axios from "axios";
-import { GoogleAuth } from "google-auth-library";
+import { callCloudFunctionToCreateDonorCases } from "../helpers/cloudFunctionCallerHelper";
+
 
 export default function newCloudFunctionHandler(
     CreateDonorCasesCloudFunctionUrl: string
@@ -9,42 +9,11 @@ export default function newCloudFunctionHandler(
     const cloudFunctionHandler = new CloudFunctionHandler(
         CreateDonorCasesCloudFunctionUrl
     );
-    router.post(
-        "/api/cloudFunction/createDonorCases",
-        cloudFunctionHandler.CallCloudFunction
-    );
+    router.post("/api/cloudFunction/createDonorCases", cloudFunctionHandler.CallCloudFunction);
 
     return router;
 }
 
-async function getIdTokenFromMetadataServer(targetAudience: string) {
-    const googleAuth = new GoogleAuth();
-
-    const client = await googleAuth.getIdTokenClient(targetAudience);
-
-    // Get the ID token.
-    // Once you've obtained the ID token, you can use it to make an authenticated call
-    // to the target audience.
-    const token = await client.idTokenProvider.fetchIdToken(targetAudience);
-    return token;
-}
-
-export async function callCloudFunctionToCreateDonorCases(token: string, url: any, payload: any) {
-
-    try {
-        const response = await axios.post(url, payload, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        console.log("Response:", (await response).data);
-        return "success";
-    } catch (error) {
-        console.error("Error:", error);
-        return "error"
-    }
-}
 
 export class CloudFunctionHandler {
     CreateDonorCasesCloudFunctionUrl: string;
@@ -56,15 +25,12 @@ export class CloudFunctionHandler {
 
     async CallCloudFunction(req: Request, res: Response): Promise<Response> {
         const reqData = req.body;
-
-        const token = await getIdTokenFromMetadataServer(this.CreateDonorCasesCloudFunctionUrl);
         req.log.info(`${this.CreateDonorCasesCloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
         try {
-            callCloudFunctionToCreateDonorCases(token, this.CreateDonorCasesCloudFunctionUrl, reqData);
-            return res.status(200).json("success");
+            return res.status(200).json(await callCloudFunctionToCreateDonorCases(this.CreateDonorCasesCloudFunctionUrl, reqData));
         } catch (error) {
             console.error("Error:", error);
-            return res.status(500).json();
+            return res.status(500).json("error");
         }
     }
 }

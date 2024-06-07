@@ -2,57 +2,40 @@
 
 import { newServer } from "../server";
 import supertest from "supertest";
-import CloudFunctionHandler, { callCloudFunctionToCreateDonorCases } from "./cloudFunctionHandler";
 import { getConfigFromEnv } from "../config";
 import createLogger from "../pino";
+import { callCloudFunctionToCreateDonorCases } from "../helpers/cloudFunctionCallerHelper";
 
-interface myInterface {
-    message: string;
-    status: number;
-}
-
+jest.mock('../helpers/cloudFunctionCallerHelper');
 const successResponse = "success";
-const errorResponse = "fail";
+const errorResponse = "error";
 
 const config = getConfigFromEnv();
+const callCloudFunctionToCreateDonorCasesMock = callCloudFunctionToCreateDonorCases as jest.Mock<Promise<string>>;
 
-jest.mock("./cloudFunctionHandler", () => {
-    const original = jest.requireActual("./cloudFunctionHandler");
-    return {
-        ...original,
-        CallCloudFunction: jest.fn(),
-    };
-});
+describe("Call Cloud Function to create donor cases and return responses", () => {
 
-const CallCloudFunctionMock = callCloudFunctionToCreateDonorCases as jest.Mock<Promise<string>>;
+    it("should return a 200 status and a json object with message and status if successfully created donor cases", async () => {
 
-describe("Get all uptime checks from API", () => {
-    it("should return a 200 status and a json object with message and status", async () => {
-        process.env.GOOGLE_CLOUD_PROJECT = "example-project-id";
-        console.log(CallCloudFunctionMock);
-        CallCloudFunctionMock.mockImplementation(() => {
-            return Promise.resolve(successResponse);
-        });
+        const request = supertest(newServer(config, createLogger()));
 
-        const server = newServer(config, createLogger());
-        const request = supertest(server);
-        const response = await request.get("/api/cloudFunction/createDonorCases");
+        callCloudFunctionToCreateDonorCasesMock.mockResolvedValue(successResponse);
+
+        const response = await request.post("/api/cloudFunction/createDonorCases");
 
         expect(response.status).toEqual(200);
         expect(response.body).toEqual(successResponse);
     });
 
-    // it("should return a 500 status if API fails", async () => {
-    //     CallCloudFunctionMock.mockReturnValue(Promise.resolve(errorResponse));
+    it("should return a 500 status and a json object with message and status if cloud function failed creating donor cases", async () => {
 
-    //     const server = newServer(config, createLogger());
-    //     const request = supertest(server);
-    //     const response = await request.get("/api/cloudFunction/createDonorCases");
-    //     expect(response.status).toEqual(500);
-    //     expect(response.body).toEqual("Error invoking Cloud function");
-    // });
+        const request = supertest(newServer(config, createLogger()));
 
-    // afterEach(() => {
-    //     jest.clearAllMocks();
-    // });
+        callCloudFunctionToCreateDonorCasesMock.mockRejectedValue(errorResponse);
+
+        const response = await request.post("/api/cloudFunction/createDonorCases");
+
+        expect(response.status).toEqual(500);
+        expect(response.body).toEqual(errorResponse);
+    });
 });

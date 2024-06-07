@@ -36,8 +36,6 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
     const auth = new Auth(config);
 
-    console.log(config.CreateDonorCasesCloudFunctionUrl.valueOf());
-    console.log(config.CreateDonorCasesCloudFunctionUrl);
     const bimsAPI = new BimsApi(config.BimsApiUrl, config.BimsClientId);
     const busApiClient = new BusApiClient(config.BusApiUrl, config.BusClientId);
     const storageManager = new StorageManager(config);
@@ -45,18 +43,11 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
 
     const loginHandler = newLoginHandler(auth, blaiseApiClient);
     const bimsHandler = newBimsHandler(bimsAPI, auth, auditLogger);
-    const blaiseHandler = newBlaiseHandler(
-        blaiseApiClient,
-        config.ServerPark,
-        auth,
-        auditLogger
-    );
+    const blaiseHandler = newBlaiseHandler(blaiseApiClient, config.ServerPark, auth, auditLogger);
     const busHandler = newBusHandler(busApiClient, auth);
     const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
     const auditHandler = newAuditHandler(auditLogger);
-    const cloudFunctionHandler = newCloudFunctionHandler(
-        config.CreateDonorCasesCloudFunctionUrl
-    );
+    const cloudFunctionHandler = newCloudFunctionHandler(config.CreateDonorCasesCloudFunctionUrl);
 
     const server = express();
 
