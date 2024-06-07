@@ -12,6 +12,11 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import { Questionnaire } from "blaise-api-node-client";
 
+jest.mock("react-router-dom", () => ({
+    ...jest.requireActual("react-router-dom"),
+    // useNavigate: jest.fn(), // Directly return a jest mock function
+  }));
+
 const mock = new MockAdapter(axios);
 
 describe("CreateDonorCasesConfirmation rendering and elements are rendered correctly", () => {
@@ -38,31 +43,24 @@ describe("CreateDonorCasesConfirmation rendering and elements are rendered corre
 });
 
 describe("CreateDonorCasesConfirmation rendering and paths taken on button clicks", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        });
 
     it("should redirect back to the questionnaire details page if user clicks Cancel", async () => {
-        const routes = [
-            {
-                path: "/createDonorCasesConfirmation",
-                element: <CreateDonorCasesConfirmation />
-            }
-        ];
+        
+        const useNavigateMock = useNavigate as typeof jest.fn;
+        const mockNavigate = jest.fn();
+        (useNavigateMock as jest.Mock).mockReturnValue(mockNavigate);
 
-        const router = createMemoryRouter(routes, {
-            initialEntries: ["/createDonorCasesConfirmation"],
-            initialIndex: 0,
-        });
+        render(<MemoryRouter>
+                    <CreateDonorCasesConfirmation />
+                </MemoryRouter>);
 
-        render(<RouterProvider router={router} />);
+        const cancelButton = screen.getByRole("button", { name: "Cancel" });
+        fireEvent.click(cancelButton);
 
-        await act(async () => {
-            fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
-            await flushPromises();
-        });
-
-        await waitFor(() => {
-            // Check page has been redirected to summary page
-            expect(router.state.location.pathname).toContain("/questionnaire");
-        });
+        expect(mockNavigate).toHaveBeenCalledWith(-1);
     });
 
     it("should go back to the questionnaire details page if user clicks Continue and success pannel is shown", async () => {
@@ -93,7 +91,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
             expect(screen.findByText("Donor cases created successfully for")).toBeDefined();
         });
     });
-
+    
     it("should go back to the questionnaire details page if user clicks Continue and error pannel is shown", async () => {
 
         mock.onPost("/api/cloudFunction/createDonorCases").reply(500, "Failed to create donor cases");
