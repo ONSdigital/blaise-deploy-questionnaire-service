@@ -4,7 +4,6 @@ import Breadcrumbs from "../breadcrumbs";
 import { ONSButton } from "blaise-design-system-react-components";
 import axios from "axios";
 import { Questionnaire } from "blaise-api-node-client";
-import { response } from "express";
 
 interface Location {
     questionnaire: Questionnaire;
@@ -19,20 +18,21 @@ function CreateDonorCasesConfirmation(): ReactElement {
 
     async function callCreateDonorCasesCloudFunction() {
         const payload = { questionnaire_name: questionnaire, role: role }; // Your payload data here
-
+        let res;
         try {
-            const response = await axios.post("/api/cloudFunction/createDonorCases", payload, {
+            res = await axios.post("/api/cloudFunction/createDonorCases", payload, {
                 headers: {
                     "Content-Type": "application/json"
                 },
             });
-            // Navigate to the Response page after API call based on success or failure, TBD
-            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: response?.data, donorCasesStatusCode: response?.status, questionnaire: questionnaire, role: role } });
         } catch (error) {
-            console.error("Error:", error);
-            
-            navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: error, donorCasesStatusCode: 500, questionnaire: questionnaire, role: role } });
+            console.error("Error:" + error);
+            res = {
+                data: "Error invoking cloud function",
+                status: 100
+            };
         }
+        navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: res.data, donorCasesStatusCode: res.status, questionnaire: questionnaire, role: role } });
     }
 
     return (

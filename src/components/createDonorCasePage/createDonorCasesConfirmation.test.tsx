@@ -4,24 +4,28 @@
 
 import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter, Route, RouterProvider, Routes, createMemoryRouter, useNavigate } from "react-router-dom";
+import { MemoryRouter, Route, RouterProvider, Routes, createMemoryRouter, useNavigate, useParams } from "react-router-dom";
 import CreateDonorCasesConfirmation from "./createDonorCasesConfirmation";
-import { ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
 import flushPromises from "../../tests/utils";
 import "@testing-library/jest-dom";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import { Questionnaire } from "blaise-api-node-client";
-import QuestionnaireDetails from "../questionnaireDetailsPage/sections/questionnaireDetails";
 import QuestionnaireDetailsPage from "../questionnaireDetailsPage/questionnaireDetailsPage";
-jest.mock('axios');
+import { ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
+
+jest.mock("axios");
 
 jest.mock("react-router-dom", () => ({
     ...jest.requireActual("react-router-dom"),
     useNavigate: jest.fn(), // Directly return a jest mock function
+    useParams: jest.fn(),
 }));
 
 const mock = new MockAdapter(axios);
+
+
+const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedUseParams = useParams as jest.Mock;
 
 describe("CreateDonorCasesConfirmation rendering and elements are rendered correctly", () => {
     beforeEach(() => {
@@ -47,15 +51,12 @@ describe("CreateDonorCasesConfirmation rendering and elements are rendered corre
 });
 
 describe("CreateDonorCasesConfirmation rendering and paths taken on button clicks", () => {
-    const actualUseNavigate = jest.requireActual('react-router-dom').useNavigate;
 
     afterEach(() => {
         jest.restoreAllMocks(); // Restore original implementations after each test
     });
 
-    it("should correctly navigate back a page if the user clicks Cancel", async () => {
-
-        jest.spyOn(require('react-router-dom'), 'useNavigate').mockImplementation(actualUseNavigate);
+    it("should redirect back to the questionnaire details page if user clicks Cancel", async () => {
 
         const navigate = jest.fn();
         (useNavigate as jest.Mock).mockReturnValue(navigate);
@@ -71,7 +72,11 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
     });
 
     it("calls the API endpoint correctly when the continue button is clicked", async () => {
-        mock.onPost("/api/cloudFunction/createDonorCases").reply(200, "Success");
+
+        const navigate = jest.fn();
+
+        (useNavigate as jest.Mock).mockImplementation(() => navigate);
+
         const routes = [
             {
                 path: "/createDonorCasesConfirmation",
@@ -91,51 +96,92 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
 
         render(<RouterProvider router={router} />);
 
+        const mockResponseFromCallCloudFunctionAPI = {
+            data: { message: "Success" },
+            status: 200,
+        };
+        mockedAxios.post.mockResolvedValueOnce(mockResponseFromCallCloudFunctionAPI);
+
+        await act(async () => {
+            fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+            await flushPromises();
+        });
+        await waitFor(() => {
+
+            expect(mockedAxios.post).toHaveBeenCalledWith(
+                "/api/cloudFunction/createDonorCases",
+                { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" },
+                { headers: { "Content-Type": "application/json" } }
+            );
+            // Check page has been redirected to Details page
+            expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
+                {
+                    state: {
+                        donorCasesResponseMessage: mockResponseFromCallCloudFunctionAPI.data,
+                        donorCasesStatusCode: mockResponseFromCallCloudFunctionAPI.status,
+                        questionnaire: ipsQuestionnaire,
+                        role: "IPS Manager"
+                    }
+                });
+            expect(router.state.location.state).toEqual({ questionnaire: ipsQuestionnaire, role: "IPS Manager" });
+
+            //expect(screen.getByText("Donor cases created successfully for IPS Interviewer")).toBeDefined();
+        });
+
+        // Assuming you have a way to mock the route and render NewComponent for the test
+
+        mockedUseParams.mockReturnValue({ questionnaireName: "IPS1337a" });
+        render(
+            <MemoryRouter initialEntries={[{
+                pathname: '/questinnaire/IPS1337a', state: {
+                    donorCasesResponseMessage: mockResponseFromCallCloudFunctionAPI.data,
+                    donorCasesStatusCode: mockResponseFromCallCloudFunctionAPI.status,
+                    questionnaire: ipsQuestionnaire,
+                    role: 'IPS Manager'
+                }
+            }]} initialIndex={1}>
+                <Routes>
+                    <Route path="/questinnaire/:questionnaireName" element={<QuestionnaireDetailsPage />} />
+                </Routes>
+            </MemoryRouter>
+        );
+        await act(async () => {
+            await flushPromises();
+            expect(screen.getByText(/Donor cases created successfully for/i)).toBeInTheDocument();
+        });
+
+    });
+
+    it.skip("should go back to the questionnaire details page if user clicks Continue and error pannel is shown", async () => {
+
+        mock.onPost("/api/cloudFunction/createDonorCases").reply(500, "Failed to create donor cases");
+        const routes = [
+            {
+                path: "/createDonorCasesConfirmation",
+                element: <CreateDonorCasesConfirmation />
+            }
+        ];
+
+        const router = createMemoryRouter(routes, {
+            initialEntries: ["/createDonorCasesConfirmation"],
+            initialIndex: 0,
+        });
+
+        render(<RouterProvider router={router} />);
+
+        await act(async () => {
+            await flushPromises();
+        });
+
         await act(async () => {
             fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
             await flushPromises();
         });
 
         await waitFor(() => {
-            expect(axios.post).toHaveBeenCalledWith(
-                '/api/cloudFunction/createDonorCases',
-                { questionnaire_name: ipsQuestionnaire, role: 'IPS Manager' },
-                { headers: { "Content-Type": "application/json" } }
-            );
+            // Check page has been redirected to summary page
+            expect(router.state.location.pathname).toContain("/questionnaire");
+            expect(screen.findByText("Error creating donor cases for")).toBeDefined();
         });
     });
-
-    it("should go back to the questionnaire details page if user clicks Continue and the function returns a 200", async () => {
-            mock.onPost("/api/cloudFunction/createDonorCases").reply(200, "Success");
-            const routes = [
-                {
-                    path: "/createDonorCasesConfirmation",
-                    element: <CreateDonorCasesConfirmation />
-                },
-                {
-                    path: "/questionnaire/:questionnaireName",
-                    element: <QuestionnaireDetailsPage />
-    
-                }
-            ];
-            const router = createMemoryRouter(routes, {
-                initialEntries: [
-                    {
-                        pathname: "/createDonorCasesConfirmation",
-                        state: { questionnaire: ipsQuestionnaire, role: 'IPS Manager' }
-                    },
-                    {
-                        pathname: "/questionnaire/:questionnaireName",
-                        state: { questionnaire: ipsQuestionnaire, role: 'IPS Manager' }
-                    }
-                ],
-                initialIndex: 0,
-            });
-            render(<RouterProvider router={router} />);
-            const cancelButton = screen.getByRole("button", { name: "Continue" });
-            fireEvent.click(cancelButton);
-
-            expect(screen.getByText("Questionnaire Details")).toBeInTheDocument();
-            
-        });
 });
