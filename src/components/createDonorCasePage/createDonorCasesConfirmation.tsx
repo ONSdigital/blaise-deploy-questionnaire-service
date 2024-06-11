@@ -26,9 +26,8 @@ function CreateDonorCasesConfirmation(): ReactElement {
                 },
             });
         } catch (error) {
-            console.error("Error:" + error);
             res = {
-                data: "Error invoking the function",
+                data: "Error invoking the cloud function",
                 status: 500
             };
         }

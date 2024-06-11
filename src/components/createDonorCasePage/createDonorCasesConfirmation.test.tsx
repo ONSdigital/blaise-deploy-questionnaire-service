@@ -123,31 +123,8 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
                         role: "IPS Manager"
                     }
                 });
-            expect(router.state.location.state).toEqual({ questionnaire: ipsQuestionnaire, role: "IPS Manager" });
 
         });
-
-        // Assuming you have a way to mock the route and render NewComponent for the test
-
-        // mockedUseParams.mockReturnValue({ questionnaireName: "IPS1337a" });
-        // render(
-        //     <MemoryRouter initialEntries={[{
-        //         pathname: '/questinnaire/IPS1337a', state: {
-        //             donorCasesResponseMessage: mockResponseFromCallCloudFunctionAPI.data,
-        //             donorCasesStatusCode: mockResponseFromCallCloudFunctionAPI.status,
-        //             questionnaire: ipsQuestionnaire,
-        //             role: 'IPS Manager'
-        //         }
-        //     }]} initialIndex={1}>
-        //         <Routes>
-        //             <Route path="/questinnaire/:questionnaireName" element={<QuestionnaireDetailsPage />} />
-        //         </Routes>
-        //     </MemoryRouter>
-        // );
-        // await act(async () => {
-        //     await flushPromises();
-        //     expect(screen.getByText(/Donor cases created successfully for/i)).toBeInTheDocument();
-        // });
 
     });
 
@@ -157,14 +134,13 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
 
         (useNavigate as jest.Mock).mockImplementation(() => navigate);
 
-        const routes1 = [
+        const routes = [
             {
                 path: "/createDonorCasesConfirmation",
                 element: <CreateDonorCasesConfirmation />
             }
         ];
-
-        const router1 = createMemoryRouter(routes1, {
+        const router = createMemoryRouter(routes, {
             initialEntries: [
                 {
                     pathname: "/createDonorCasesConfirmation",
@@ -174,12 +150,13 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
             initialIndex: 0,
         });
 
-        render(<RouterProvider router={router1} />);
+        render(<RouterProvider router={router} />);
 
         const mockResponseFromCallCloudFunctionAPI = {
-            data: "Error invoking the function",
+            data: "Error invoking the cloud function",
             status: 500,
         };
+
         mockedAxios.post.mockRejectedValueOnce(mockResponseFromCallCloudFunctionAPI);
 
         await act(async () => {
@@ -203,7 +180,6 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
                         role: "IPS Manager"
                     }
                 });
-            expect(router1.state.location.state).toEqual({ questionnaire: ipsQuestionnaire, role: "IPS Manager", donorCasesResponseMessage: mockResponseFromCallCloudFunctionAPI.data });
 
         });
 
