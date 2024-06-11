@@ -28,8 +28,8 @@ function CreateDonorCasesConfirmation(): ReactElement {
         } catch (error) {
             console.error("Error:" + error);
             res = {
-                data: "Error invoking cloud function",
-                status: 100
+                data: "Error invoking the function",
+                status: 500
             };
         }
         navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: res.data, donorCasesStatusCode: res.status, questionnaire: questionnaire, role: role } });
