@@ -1,41 +1,58 @@
-it.skip("placeholder", () => { });
+// it.skip("placeholder", () => { });
 
-// import { newServer } from "../server";
-// import supertest from "supertest";
-// import { getConfigFromEnv } from "../config";
-// import createLogger from "../pino";
-// import { getIdTokenFromMetadataServer } from "./cloudFunctionCallerHelper";
+import { newServer } from "../server";
+import supertest from "supertest";
+import { getConfigFromEnv } from "../config";
+import createLogger from "../pino";
+import { callCloudFunctionToCreateDonorCases, getIdTokenFromMetadataServer } from "./cloudFunctionCallerHelper";
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
+import { ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
 
-// jest.mock('.cloudFunctionCallerHelper');
-// const successResponse = "success";
-// const errorResponse = "error";
+jest.mock('./cloudFunctionCallerHelper');
+jest.mock("./cloudFunctionCallerHelper", () => ({
+    ...jest.requireActual("./cloudFunctionCallerHelper"),
+    callCloudFunctionToCreateDonorCases: jest.fn(), // Directly return a jest mock function
+    getIdTokenFromMetadataServer: jest.fn(),
 
-// const config = getConfigFromEnv();
-// const callCloudFunctionToCreateDonorCasesMock = callCloudFunctionToCreateDonorCases as jest.Mock<Promise<string>>;
+}));
+jest.mock('axios');
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-// describe("Call Cloud Function to create donor cases and return responses", () => {
+const config = getConfigFromEnv();
 
-//     it("should return a 200 status and a json object with message and status if successfully created donor cases", async () => {
+const callCloudFunctionToCreateDonorCasesMock = callCloudFunctionToCreateDonorCases as jest.Mock<Promise<string>>;
 
-//         const request = supertest(newServer(config, createLogger()));
+const getIdTokenFromMetadataServerMock = getIdTokenFromMetadataServer as jest.Mock<Promise<string>>;
 
-//         callCloudFunctionToCreateDonorCasesMock.mockResolvedValue(successResponse);
 
-//         const response = await request.post("/api/cloudFunction/createDonorCases");
+describe("Call Cloud Function to create donor cases and return responses", () => {
 
-//         expect(response.status).toEqual(200);
-//         expect(response.body).toEqual(successResponse);
-//     });
+    it("should return a 200 status and a json object with message and status if successfully created donor cases", async () => {
 
-//     it("should return a 500 status and a json object with message and status if cloud function failed creating donor cases", async () => {
+        const dummyToken = "dummy-token";
+        getIdTokenFromMetadataServerMock.mockResolvedValue(dummyToken);
 
-//         const request = supertest(newServer(config, createLogger()));
+        const mockResponse = {
+            data: 'Success',
+            status: 200,
+        };
 
-//         callCloudFunctionToCreateDonorCasesMock.mockRejectedValue(errorResponse);
+        mockedAxios.post.mockResolvedValueOnce(mockResponse);
 
-//         const response = await request.post("/api/cloudFunction/createDonorCases");
 
-//         expect(response.status).toEqual(500);
-//         expect(response.body).toEqual(errorResponse);
-//     });
-// });
+        const dummyUrl = config.CreateDonorCasesCloudFunctionUrl;
+        //callCloudFunctionToCreateDonorCasesMock.mockImplementation(() => Promise.resolve("Success"));
+
+
+        // const response = 
+        callCloudFunctionToCreateDonorCasesMock(dummyUrl, { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" });
+        // expect(response).toEqual("Success");
+
+        expect(mockedAxios.post).toHaveBeenCalledWith(
+            dummyUrl,
+            { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" },
+            { headers: { "Content-Type": "application/json", Authorization: `Bearer ${dummyToken}` } }
+        );
+    });
+});
