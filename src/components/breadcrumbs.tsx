@@ -17,7 +17,7 @@ function Breadcrumbs({ BreadcrumbList }: Props): ReactElement {
                 {
                     BreadcrumbList.map(({ link, title }: BreadcrumbItem, index) => {
                         return (
-                            <li className="ons-breadcrumb__item" id={`breadcrumb-${index}`} key={title}>
+                            <li className="ons-breadcrumb__item" id={`breadcrumb-${index}`} data-testid={`breadcrumb-${index}`} key={title}>
                                 <Link className="ons-breadcrumb__link" to={link}>{title}</Link>
                                 <svg className="ons-svg-icon" viewBox="0 0 8 13" xmlns="http://www.w3.org/2000/svg"
                                     focusable="false">

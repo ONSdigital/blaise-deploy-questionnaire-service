@@ -38,7 +38,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
         <>
             <Breadcrumbs BreadcrumbList={
                 [
-                    { link: "/", title: "Home" },
+                    { link: "/", title: "Home" }, { link: `/questionnaire/${questionnaire.name}`, title: questionnaire.name }
                 ]
             } />
 

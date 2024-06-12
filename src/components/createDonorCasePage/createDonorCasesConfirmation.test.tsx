@@ -29,7 +29,7 @@ const mockedUseParams = useParams as jest.Mock;
 
 describe("CreateDonorCasesConfirmation rendering and elements are rendered correctly", () => {
     beforeEach(() => {
-        render(
+        const dom = render(
             <MemoryRouter>
                 <CreateDonorCasesConfirmation />
             </MemoryRouter>
@@ -40,8 +40,11 @@ describe("CreateDonorCasesConfirmation rendering and elements are rendered corre
         expect(screen.getByText("Create donor cases for ?")).toBeInTheDocument();
     });
 
-    it("displays the correct breadcrumb", () => {
-        expect(screen.getByText("Home")).toBeInTheDocument();
+    it("displays the correct breadcrumbs", () => {
+        expect.assertions(2);
+
+        expect(screen.getByTestId("breadcrumb-0")).toBeInTheDocument();
+        expect(screen.getByTestId("breadcrumb-1")).toBeInTheDocument();
     });
 
     it("displays a button to navigate back to create donor case page", () => {
