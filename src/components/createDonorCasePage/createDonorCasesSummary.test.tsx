@@ -8,7 +8,7 @@ import "@testing-library/jest-dom"; // Make sure to import jest-dom matchers
 import CreateDonorCasesSummary from "./createDonorCasesSummary";
 
 describe("CreateDonorCasesSummary", () => {
-    it("displays success message when receiving a successful response with status code 200 or 201", () => {
+    it("displays a success message when receiving a successful response from the cloud function", () => {
         const props = {
             donorCasesResponseMessage: "Success",
             donorCasesStatusCode: 200,
@@ -22,7 +22,7 @@ describe("CreateDonorCasesSummary", () => {
         expect(getByText(/Success/i)).toBeInTheDocument();
     });
 
-    it("displays received error message from cloud function API when receiving a failed response", () => {
+    it("displays an error message when receiving a failed response from the cloud function", () => {
         const props = {
             donorCasesResponseMessage: "Internal Server Error",
             donorCasesStatusCode: 500,
