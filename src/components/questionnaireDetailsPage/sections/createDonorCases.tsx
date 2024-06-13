@@ -42,7 +42,7 @@ function CreateDonorCases({ questionnaire }: Props): ReactElement {
                             <tr className="ons-summary__row ons-summary__row--has-values">
                                 <td className="ons-summary__item-title">
                                     <div className="ons-summary__item--text">
-                                        IPS Interviewer
+                                        IPS Field Interviewer
                                     </div>
                                 </td>
                                 <td className="ons-summary__values" colSpan={2}>

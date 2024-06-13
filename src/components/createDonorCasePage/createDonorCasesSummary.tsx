@@ -26,7 +26,7 @@ function CreateDonorCasesSummary({ donorCasesResponseMessage, donorCasesStatusCo
                                 Error creating donor cases for {role}
                             </h1>
                             <p>
-                                Reason: {donorCasesResponseMessage}
+                                {donorCasesResponseMessage}
                             </p>
                         </ONSPanel>
                     )

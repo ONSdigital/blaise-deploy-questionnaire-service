@@ -25,26 +25,26 @@ describe("IPS questionnaire", () => {
     beforeEach(() => {
         render(
             <MemoryRouter initialEntries={["/questionnaire/"]}>
-                <CreateDonorCases questionnaire={ipsQuestionnaire}/>
+                <CreateDonorCases questionnaire={ipsQuestionnaire} />
             </MemoryRouter >
         );
-    });    
+    });
 
     afterEach(() => {
         mock.reset();
     });
 
-    it("should display the option to create donor cases for IPS Manager and IPS Interviewer", async () => {
+    it("should display the option to create donor cases for IPS Manager and IPS Field Interviewer", async () => {
         await act(async () => {
             await flushPromises();
         });
 
         await waitFor(() => {
             expect(screen.getByText("IPS Manager")).toBeDefined();
-            expect(screen.getByText("IPS Interviewer")).toBeDefined();
+            expect(screen.getByText("IPS Field Interviewer")).toBeDefined();
             const createCasesElements = screen.getAllByText("Create cases");
             expect(createCasesElements.length).toBe(2);
-                      
+
         });
     });
 });
