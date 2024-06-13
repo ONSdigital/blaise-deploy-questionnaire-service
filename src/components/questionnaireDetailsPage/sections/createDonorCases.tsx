@@ -47,7 +47,7 @@ function CreateDonorCases({ questionnaire }: Props): ReactElement {
                                 </td>
                                 <td className="ons-summary__values" colSpan={2}>
                                     <Link to="/createDonorCasesConfirmation"
-                                        state={{ questionnaire: questionnaire, role: "IPS Interviewer" }}
+                                        state={{ questionnaire: questionnaire, role: "IPS Field Interviewer" }}
                                         className="ons-summary__button"
                                         aria-label={`Create donor cases for questionnaire ${questionnaire.name}`}>
                                         Create cases

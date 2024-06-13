@@ -1,58 +1,95 @@
-// it.skip("placeholder", () => { });
-
-import { newServer } from "../server";
-import supertest from "supertest";
 import { getConfigFromEnv } from "../config";
-import createLogger from "../pino";
-import { callCloudFunctionToCreateDonorCases, getIdTokenFromMetadataServer } from "./cloudFunctionCallerHelper";
-import MockAdapter from "axios-mock-adapter";
+import { callCloudFunctionToCreateDonorCases } from "./cloudFunctionCallerHelper";
 import axios from "axios";
 import { ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
+import { GoogleAuth } from "google-auth-library";
 
-jest.mock('./cloudFunctionCallerHelper');
-jest.mock("./cloudFunctionCallerHelper", () => ({
-    ...jest.requireActual("./cloudFunctionCallerHelper"),
-    callCloudFunctionToCreateDonorCases: jest.fn(), // Directly return a jest mock function
-    getIdTokenFromMetadataServer: jest.fn(),
 
-}));
+jest.mock('google-auth-library');
 jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 const config = getConfigFromEnv();
 
-const callCloudFunctionToCreateDonorCasesMock = callCloudFunctionToCreateDonorCases as jest.Mock<Promise<string>>;
-
-const getIdTokenFromMetadataServerMock = getIdTokenFromMetadataServer as jest.Mock<Promise<string>>;
-
-
 describe("Call Cloud Function to create donor cases and return responses", () => {
+
+    let mockGetIdTokenClient: jest.Mock;
+    let mockFetchIdToken: jest.Mock;
+    const dummyToken = "dummy-token";
+
+    beforeEach(() => {
+        mockFetchIdToken = jest.fn().mockResolvedValue(dummyToken);
+        mockGetIdTokenClient = jest.fn().mockResolvedValue({
+            idTokenProvider: {
+                fetchIdToken: mockFetchIdToken,
+            },
+        });
+        (GoogleAuth as unknown as jest.Mock).mockImplementation(() => ({
+            getIdTokenClient: mockGetIdTokenClient,
+        }));
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
 
     it("should return a 200 status and a json object with message and status if successfully created donor cases", async () => {
 
-        const dummyToken = "dummy-token";
-        getIdTokenFromMetadataServerMock.mockResolvedValue(dummyToken);
+        const dummyUrl = config.CreateDonorCasesCloudFunctionUrl;
 
-        const mockResponse = {
-            data: 'Success',
+        const payload = { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" };
+
+        const mockSuccessResponse = {
+            message: 'Success',
             status: 200,
         };
+        (axios.post as jest.Mock).mockResolvedValue({ data: mockSuccessResponse });
 
-        mockedAxios.post.mockResolvedValueOnce(mockResponse);
+        const result = await callCloudFunctionToCreateDonorCases(dummyUrl, payload);
 
+        expect(mockGetIdTokenClient).toHaveBeenCalledWith(dummyUrl);
+        expect(mockFetchIdToken).toHaveBeenCalledWith(dummyUrl);
+
+        expect(result).toEqual({
+            message: 'Success',
+            status: 200,
+        });
+
+        expect(axios.post).toHaveBeenCalledWith(dummyUrl, payload, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${dummyToken}`
+            },
+        });
+
+    });
+
+    it("should return a 500 status and a json object with message and status if failed in creating donor cases", async () => {
 
         const dummyUrl = config.CreateDonorCasesCloudFunctionUrl;
-        //callCloudFunctionToCreateDonorCasesMock.mockImplementation(() => Promise.resolve("Success"));
 
+        const payload = { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" };
+        const mockErrorResponse = {
+            message: 'Error invoking the cloud function',
+            status: 500,
+        };
+        (axios.post as jest.Mock).mockResolvedValue({ data: mockErrorResponse });
 
-        // const response = 
-        callCloudFunctionToCreateDonorCasesMock(dummyUrl, { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" });
-        // expect(response).toEqual("Success");
+        const result = await callCloudFunctionToCreateDonorCases(dummyUrl, payload);
 
-        expect(mockedAxios.post).toHaveBeenCalledWith(
-            dummyUrl,
-            { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" },
-            { headers: { "Content-Type": "application/json", Authorization: `Bearer ${dummyToken}` } }
-        );
+        expect(mockGetIdTokenClient).toHaveBeenCalledWith(dummyUrl);
+        expect(mockFetchIdToken).toHaveBeenCalledWith(dummyUrl);
+
+        expect(result).toEqual({
+            message: 'Error invoking the cloud function',
+            status: 500,
+        });
+
+        expect(axios.post).toHaveBeenCalledWith(dummyUrl, payload, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${dummyToken}`
+            },
+        });
+
     });
 });

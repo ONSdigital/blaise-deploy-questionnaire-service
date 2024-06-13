@@ -27,10 +27,18 @@ export class CloudFunctionHandler {
         const reqData = req.body;
         req.log.info(`${this.CreateDonorCasesCloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
         try {
-            return res.status(200).json(await callCloudFunctionToCreateDonorCases(this.CreateDonorCasesCloudFunctionUrl, reqData));
+            let cloudfunctionResponse = await callCloudFunctionToCreateDonorCases(this.CreateDonorCasesCloudFunctionUrl, reqData);
+            if (cloudfunctionResponse.status == 200)
+                return res.status(200).json(cloudfunctionResponse);
+            else
+                return res.status(cloudfunctionResponse.status).json(cloudfunctionResponse);
+
         } catch (error) {
             console.error("Error:", error);
-            return res.status(500).json("error");
+            return res.status(500).json({
+                message: 'Error invoking the cloud function',
+                status: 500,
+            });
         }
     }
 }

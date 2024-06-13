@@ -156,7 +156,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
         render(<RouterProvider router={router} />);
 
         const mockResponseFromCallCloudFunctionAPI = {
-            data: "Error invoking the cloud function",
+            data: "When reporting this issue to the Service Desk, please provide the questionnaire name, time and date of the failure.",
             status: 500,
         };
 

@@ -7,11 +7,17 @@ import createLogger from "../pino";
 import { callCloudFunctionToCreateDonorCases } from "../helpers/cloudFunctionCallerHelper";
 
 jest.mock('../helpers/cloudFunctionCallerHelper');
-const successResponse = "success";
-const errorResponse = "error";
+const successResponse = {
+    message: 'Success',
+    status: 200,
+};
+const errorResponse = {
+    message: 'Error invoking the cloud function',
+    status: 500,
+};
 
 const config = getConfigFromEnv();
-const callCloudFunctionToCreateDonorCasesMock = callCloudFunctionToCreateDonorCases as jest.Mock<Promise<string>>;
+const callCloudFunctionToCreateDonorCasesMock = callCloudFunctionToCreateDonorCases as jest.Mock<Promise<{ message: string, status: number }>>;
 
 describe("Call Cloud Function to create donor cases and return responses", () => {
 

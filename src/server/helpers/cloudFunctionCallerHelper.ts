@@ -13,21 +13,26 @@ export async function getIdTokenFromMetadataServer(targetAudience: string) {
     return token;
 }
 
-export async function callCloudFunctionToCreateDonorCases(url: string, payload: any): Promise<string> {
+export async function callCloudFunctionToCreateDonorCases(url: string, payload: any): Promise<{ message: string, status: number }> {
 
     const token = await getIdTokenFromMetadataServer(url);
-    //  try {
-    const response = await axios.post(url, payload, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    return "Success";//(await response).data;
-    // } catch (error) {
-    //     console.error("Error:", error);
-    //     return "Error"
-    // }
+    let response = { message: "", status: 0 };
+    try {
+        const res = await axios.post(url, payload, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(JSON.stringify(res));
+        response.message = (await res).data.message;
+        response.status = (await res).data.status;
+    } catch (error) {
+        console.error("Error:", error);
+        response.message = "Error invoking cloud function";
+        response.status = 500;
+    }
+    return response;
 
 
 

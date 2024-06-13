@@ -26,8 +26,9 @@ function CreateDonorCasesConfirmation(): ReactElement {
                 },
             });
         } catch (error) {
+            console.error(error);
             res = {
-                data: "Error invoking the cloud function",
+                data: "When reporting this issue to the Service Desk, please provide the questionnaire name, time and date of the failure.",
                 status: 500
             };
         }
