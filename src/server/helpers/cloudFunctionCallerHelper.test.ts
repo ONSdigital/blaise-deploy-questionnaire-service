@@ -13,7 +13,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
 
     let mockGetIdTokenClient: jest.Mock;
     let mockFetchIdToken: jest.Mock;
-    const dummyToken = "dummy-token";
+    const dummyToken = process.env.AUTH_TOKEN;
 
     beforeEach(() => {
         mockFetchIdToken = jest.fn().mockResolvedValue(dummyToken);
