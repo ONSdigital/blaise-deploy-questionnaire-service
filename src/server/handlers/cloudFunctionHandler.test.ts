@@ -6,13 +6,13 @@ import { getConfigFromEnv } from "../config";
 import createLogger from "../pino";
 import { callCloudFunctionToCreateDonorCases } from "../helpers/cloudFunctionCallerHelper";
 
-jest.mock('../helpers/cloudFunctionCallerHelper');
+jest.mock("../helpers/cloudFunctionCallerHelper");
 const successResponse = {
-    message: 'Success',
+    message: "Success",
     status: 200,
 };
 const errorResponse = {
-    message: 'Error invoking the cloud function',
+    message: "Error invoking the cloud function",
     status: 500,
 };
 

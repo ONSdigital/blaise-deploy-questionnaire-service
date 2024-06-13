@@ -1,7 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { callCloudFunctionToCreateDonorCases } from "../helpers/cloudFunctionCallerHelper";
 
-
 export default function newCloudFunctionHandler(
     CreateDonorCasesCloudFunctionUrl: string
 ): Router {
@@ -13,7 +12,6 @@ export default function newCloudFunctionHandler(
 
     return router;
 }
-
 
 export class CloudFunctionHandler {
     CreateDonorCasesCloudFunctionUrl: string;
@@ -27,7 +25,7 @@ export class CloudFunctionHandler {
         const reqData = req.body;
         req.log.info(`${this.CreateDonorCasesCloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
         try {
-            let cloudfunctionResponse = await callCloudFunctionToCreateDonorCases(this.CreateDonorCasesCloudFunctionUrl, reqData);
+            const cloudfunctionResponse = await callCloudFunctionToCreateDonorCases(this.CreateDonorCasesCloudFunctionUrl, reqData);
             if (cloudfunctionResponse.status == 200)
                 return res.status(200).json(cloudfunctionResponse);
             else
@@ -36,7 +34,7 @@ export class CloudFunctionHandler {
         } catch (error) {
             console.error("Error:", error);
             return res.status(500).json({
-                message: 'Error invoking the cloud function',
+                message: "Error invoking the cloud function",
                 status: 500,
             });
         }

@@ -23,7 +23,6 @@ jest.mock("react-router-dom", () => ({
 
 const mock = new MockAdapter(axios);
 
-
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const mockedUseParams = useParams as jest.Mock;
 
@@ -91,7 +90,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
             initialEntries: [
                 {
                     pathname: "/createDonorCasesConfirmation",
-                    state: { questionnaire: ipsQuestionnaire, role: 'IPS Manager' }
+                    state: { questionnaire: ipsQuestionnaire, role: "IPS Manager" }
                 }
             ],
             initialIndex: 0,
@@ -147,7 +146,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
             initialEntries: [
                 {
                     pathname: "/createDonorCasesConfirmation",
-                    state: { questionnaire: ipsQuestionnaire, role: 'IPS Manager' }
+                    state: { questionnaire: ipsQuestionnaire, role: "IPS Manager" }
                 }
             ],
             initialIndex: 0,
@@ -185,7 +184,6 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
                 });
 
         });
-
 
     });
 });

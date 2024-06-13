@@ -4,9 +4,8 @@ import axios from "axios";
 import { ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
 import { GoogleAuth } from "google-auth-library";
 
-
-jest.mock('google-auth-library');
-jest.mock('axios');
+jest.mock("google-auth-library");
+jest.mock("axios");
 
 const config = getConfigFromEnv();
 
@@ -39,7 +38,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
         const payload = { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" };
 
         const mockSuccessResponse = {
-            message: 'Success',
+            message: "Success",
             status: 200,
         };
         (axios.post as jest.Mock).mockResolvedValue({ data: mockSuccessResponse });
@@ -50,7 +49,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
         expect(mockFetchIdToken).toHaveBeenCalledWith(dummyUrl);
 
         expect(result).toEqual({
-            message: 'Success',
+            message: "Success",
             status: 200,
         });
 
@@ -69,7 +68,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
 
         const payload = { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" };
         const mockErrorResponse = {
-            message: 'Error invoking the cloud function',
+            message: "Error invoking the cloud function",
             status: 500,
         };
         (axios.post as jest.Mock).mockResolvedValue({ data: mockErrorResponse });
@@ -80,7 +79,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
         expect(mockFetchIdToken).toHaveBeenCalledWith(dummyUrl);
 
         expect(result).toEqual({
-            message: 'Error invoking the cloud function',
+            message: "Error invoking the cloud function",
             status: 500,
         });
 
