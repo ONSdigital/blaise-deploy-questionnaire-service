@@ -68,7 +68,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
 
         const payload = { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" };
         const mockErrorResponse = {
-            message: "Error invoking the cloud function",
+            data: "Error invoking the cloud function",
             status: 500,
         };
         (axios.post as jest.Mock).mockResolvedValue({ data: mockErrorResponse });
@@ -79,7 +79,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
         expect(mockFetchIdToken).toHaveBeenCalledWith(dummyUrl);
 
         expect(result).toEqual({
-            message: "Error invoking the cloud function",
+            data: "Error invoking cloud function",
             status: 500,
         });
 

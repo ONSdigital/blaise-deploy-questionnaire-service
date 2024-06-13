@@ -17,7 +17,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
     const navigate = useNavigate();
 
     async function callCreateDonorCasesCloudFunction() {
-        const payload = { questionnaire_name: questionnaire, role: role }; // Your payload data here
+        const payload = { questionnaire_name: questionnaire.name, role: role }; // Your payload data here
         let res;
         try {
             res = await axios.post("/api/cloudFunction/createDonorCases", payload, {

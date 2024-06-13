@@ -112,7 +112,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
                 "/api/cloudFunction/createDonorCases",
-                { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" },
+                { questionnaire_name: ipsQuestionnaire.name, role: "IPS Manager" },
                 { headers: { "Content-Type": "application/json" } }
             );
             // Check page has been redirected to Details page
@@ -169,7 +169,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
                 "/api/cloudFunction/createDonorCases",
-                { questionnaire_name: ipsQuestionnaire, role: "IPS Manager" },
+                { questionnaire_name: ipsQuestionnaire.name, role: "IPS Manager" },
                 { headers: { "Content-Type": "application/json" } }
             );
             // Check page has been redirected to Details page

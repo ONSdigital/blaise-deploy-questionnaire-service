@@ -16,6 +16,7 @@ export async function getIdTokenFromMetadataServer(targetAudience: string) {
 export async function callCloudFunctionToCreateDonorCases(url: string, payload: any): Promise<{ message: string, status: number }> {
 
     const token = await getIdTokenFromMetadataServer(url);
+
     try {
         const res = await axios.post(url, payload, {
             headers: {
@@ -23,10 +24,10 @@ export async function callCloudFunctionToCreateDonorCases(url: string, payload: 
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(JSON.stringify(res));
+
         return {
-            message: res.data.message,
-            status: res.data.status
+            message: res.data,
+            status: res.status
         };
     } catch (error) {
         console.error("Error:", error);

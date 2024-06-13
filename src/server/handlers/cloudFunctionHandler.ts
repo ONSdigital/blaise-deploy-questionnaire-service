@@ -26,6 +26,7 @@ export class CloudFunctionHandler {
         req.log.info(`${this.CreateDonorCasesCloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
         try {
             const cloudfunctionResponse = await callCloudFunctionToCreateDonorCases(this.CreateDonorCasesCloudFunctionUrl, reqData);
+            console.log(cloudfunctionResponse);
             if (cloudfunctionResponse.status == 200)
                 return res.status(200).json(cloudfunctionResponse);
             else
