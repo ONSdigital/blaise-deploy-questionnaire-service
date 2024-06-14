@@ -64,14 +64,37 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
         const navigate = jest.fn();
         (useNavigate as jest.Mock).mockReturnValue(navigate);
 
-        render(<MemoryRouter>
-            <CreateDonorCasesConfirmation />
-        </MemoryRouter>);
+        const routes = [
+            {
+                path: "/createDonorCasesConfirmation",
+                element: <CreateDonorCasesConfirmation />
+            }
+        ];
+
+        const router = createMemoryRouter(routes, {
+            initialEntries: [
+                {
+                    pathname: "/createDonorCasesConfirmation",
+                    state: { questionnaire: ipsQuestionnaire, role: "IPS Manager" }
+                }
+            ],
+            initialIndex: 0,
+        });
+
+        render(<RouterProvider router={router} />);
 
         const cancelButton = screen.getByRole("button", { name: "Cancel" });
         fireEvent.click(cancelButton);
 
-        expect(navigate).toHaveBeenCalledWith(-1);
+        expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
+            {
+                state: {
+                    donorCasesResponseMessage: "",
+                    donorCasesStatusCode: 0,
+                    role: "",
+                    questionnaire: ipsQuestionnaire
+                }
+            });
     });
 
     it("calls the API endpoint correctly when the continue button is clicked", async () => {

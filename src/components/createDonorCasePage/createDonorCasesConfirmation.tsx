@@ -57,7 +57,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
                             />
                             <ONSButton
                                 label="Cancel"
-                                onClick={() => navigate(-1)} primary={false} />
+                                onClick={() => navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: "", donorCasesStatusCode: 0, questionnaire: questionnaire, role: "" } })} primary={false} />
                         </>
 
                     )
