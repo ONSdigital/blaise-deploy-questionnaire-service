@@ -1,3 +1,4 @@
+import { AxiosError, AxiosHeaders } from "axios";
 import { Questionnaire } from "blaise-api-node-client";
 
 export const questionnaireList: Questionnaire[] = [{
@@ -64,4 +65,15 @@ export const questionnaireWithName = (questionnaireName: string): Questionnaire 
         fieldPeriod: "April 2020",
         blaiseVersion: "5.9.9.2735"
     };
+};
+
+export const cloudFunctionAxiosError: AxiosError = new AxiosError();
+cloudFunctionAxiosError.response = {
+    status: 500,
+    statusText: "Internal Server Error",
+    data: "Error creating IPS donor cases: No users found with role 'IPS Manager'",
+    headers: {},
+    config: {
+        headers: new AxiosHeaders(),
+    },
 };

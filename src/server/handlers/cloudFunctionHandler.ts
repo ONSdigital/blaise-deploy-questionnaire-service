@@ -35,7 +35,7 @@ export class CloudFunctionHandler {
         } catch (error) {
             console.error("Error:", error);
             return res.status(500).json({
-                message: "Error invoking the cloud function",
+                message: (error as any)?.response.data,
                 status: 500,
             });
         }

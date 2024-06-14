@@ -32,7 +32,7 @@ export async function callCloudFunctionToCreateDonorCases(url: string, payload: 
     } catch (error) {
         console.error("Error:", error);
         return {
-            message: "Error invoking cloud function",
+            message: (error as any).response.data,
             status: 500
         };
     }

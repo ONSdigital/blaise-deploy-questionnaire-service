@@ -5,15 +5,12 @@ import supertest from "supertest";
 import { getConfigFromEnv } from "../config";
 import createLogger from "../pino";
 import { callCloudFunctionToCreateDonorCases } from "../helpers/cloudFunctionCallerHelper";
+import { cloudFunctionAxiosError } from "../../features/step_definitions/helpers/apiMockObjects";
 
 jest.mock("../helpers/cloudFunctionCallerHelper");
 const successResponse = {
     message: "Success",
     status: 200,
-};
-const errorResponse = {
-    message: "Error invoking the cloud function",
-    status: 500,
 };
 
 const config = getConfigFromEnv();
@@ -37,11 +34,11 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
 
         const request = supertest(newServer(config, createLogger()));
 
-        callCloudFunctionToCreateDonorCasesMock.mockRejectedValue(errorResponse);
+        callCloudFunctionToCreateDonorCasesMock.mockRejectedValue(cloudFunctionAxiosError);
 
         const response = await request.post("/api/cloudFunction/createDonorCases");
 
         expect(response.status).toEqual(500);
-        expect(response.body).toEqual(errorResponse);
+        expect(response.body.message).toEqual((cloudFunctionAxiosError as any).response.data);
     });
 });

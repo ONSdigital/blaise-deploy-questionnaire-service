@@ -28,6 +28,9 @@ function CreateDonorCasesSummary({ donorCasesResponseMessage, donorCasesStatusCo
                             <p>
                                 {donorCasesResponseMessage}
                             </p>
+                            <p>
+                                When reporting this issue to the Service Desk, please provide the questionnaire name, time and date of the failure.!
+                            </p>
                         </ONSPanel>
                     )
                 }

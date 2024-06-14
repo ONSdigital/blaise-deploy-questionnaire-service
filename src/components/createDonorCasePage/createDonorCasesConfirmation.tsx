@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { json, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../breadcrumbs";
 import { ONSButton } from "blaise-design-system-react-components";
 import axios from "axios";
@@ -26,9 +26,9 @@ function CreateDonorCasesConfirmation(): ReactElement {
                 },
             });
         } catch (error) {
-            console.error(error);
+            const errorMessage = JSON.stringify((error as any).response.data.message);
             res = {
-                data: "When reporting this issue to the Service Desk, please provide the questionnaire name, time and date of the failure.",
+                data: errorMessage,
                 status: 500
             };
         }

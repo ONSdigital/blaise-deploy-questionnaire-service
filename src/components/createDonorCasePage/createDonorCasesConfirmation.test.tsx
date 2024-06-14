@@ -9,9 +9,9 @@ import CreateDonorCasesConfirmation from "./createDonorCasesConfirmation";
 import flushPromises from "../../tests/utils";
 import "@testing-library/jest-dom";
 import MockAdapter from "axios-mock-adapter";
-import axios from "axios";
+import axios, { AxiosError, AxiosHeaders, AxiosResponse } from "axios";
 import QuestionnaireDetailsPage from "../questionnaireDetailsPage/questionnaireDetailsPage";
-import { ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
+import { cloudFunctionAxiosError, ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
 
 jest.mock("axios");
 
@@ -24,6 +24,7 @@ jest.mock("react-router-dom", () => ({
 const mock = new MockAdapter(axios);
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+
 const mockedUseParams = useParams as jest.Mock;
 
 describe("CreateDonorCasesConfirmation rendering and elements are rendered correctly", () => {
@@ -154,12 +155,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
 
         render(<RouterProvider router={router} />);
 
-        const mockResponseFromCallCloudFunctionAPI = {
-            data: "When reporting this issue to the Service Desk, please provide the questionnaire name, time and date of the failure.",
-            status: 500,
-        };
-
-        mockedAxios.post.mockRejectedValueOnce(mockResponseFromCallCloudFunctionAPI);
+        mockedAxios.post.mockRejectedValue(cloudFunctionAxiosError);
 
         await act(async () => {
             fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
@@ -176,8 +172,8 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
-                        donorCasesResponseMessage: mockResponseFromCallCloudFunctionAPI.data,
-                        donorCasesStatusCode: mockResponseFromCallCloudFunctionAPI.status,
+                        donorCasesResponseMessage: (cloudFunctionAxiosError as any).response.data.message,
+                        donorCasesStatusCode: 500,
                         questionnaire: ipsQuestionnaire,
                         role: "IPS Manager"
                     }
