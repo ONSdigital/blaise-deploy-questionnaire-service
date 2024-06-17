@@ -20,7 +20,6 @@ jest.mock("react-router-dom", () => ({
     useParams: jest.fn(),
 }));
 
-const mock = new MockAdapter(axios);
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
@@ -57,84 +56,59 @@ describe("CreateDonorCasesConfirmation rendering", () => {
 });
 
 describe("CreateDonorCasesConfirmation navigation", () => {
+    let navigate: jest.Mock;
+    const routes = [
+        {
+            path: "/createDonorCasesConfirmation",
+            element: <CreateDonorCasesConfirmation />,
+        },
+    ];
+
+    const initialEntries = [
+        {
+            pathname: "/createDonorCasesConfirmation",
+            state: { questionnaire: ipsQuestionnaire, role: "IPS Manager" },
+        },
+    ];
+    beforeEach(() => {
+        navigate = jest.fn();
+        (useNavigate as jest.Mock).mockReturnValue(navigate);
+
+        const router = createMemoryRouter(routes, {
+            initialEntries,
+            initialIndex: 0,
+        });
+
+        render(<RouterProvider router={router} />);
+    });
 
     afterEach(() => {
-        jest.restoreAllMocks();
+        jest.clearAllMocks();
     });
 
     it("should redirect back to the questionnaire details page if user clicks Cancel", async () => {
-
-        const navigate = jest.fn();
-        (useNavigate as jest.Mock).mockReturnValue(navigate);
-
-        const routes = [
-            {
-                path: "/createDonorCasesConfirmation",
-                element: <CreateDonorCasesConfirmation />
-            }
-        ];
-
-        const router = createMemoryRouter(routes, {
-            initialEntries: [
-                {
-                    pathname: "/createDonorCasesConfirmation",
-                    state: { questionnaire: ipsQuestionnaire, role: "IPS Manager" }
-                }
-            ],
-            initialIndex: 0,
+        fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    
+        expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a", {
+          state: {
+            donorCasesResponseMessage: "",
+            donorCasesStatusCode: 0,
+            role: "",
+            questionnaire: ipsQuestionnaire,
+          },
         });
-
-        render(<RouterProvider router={router} />);
-
-        const cancelButton = screen.getByRole("button", { name: "Cancel" });
-        fireEvent.click(cancelButton);
-
-        expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
-            {
-                state: {
-                    donorCasesResponseMessage: "",
-                    donorCasesStatusCode: 0,
-                    role: "",
-                    questionnaire: ipsQuestionnaire
-                }
-            });
-    });
+      });
 
     it("calls the API endpoint correctly when the continue button is clicked", async () => {
-
-        const navigate = jest.fn();
-
-        (useNavigate as jest.Mock).mockImplementation(() => navigate);
-
-        const routes = [
-            {
-                path: "/createDonorCasesConfirmation",
-                element: <CreateDonorCasesConfirmation />
-            }
-        ];
-
-        const router = createMemoryRouter(routes, {
-            initialEntries: [
-                {
-                    pathname: "/createDonorCasesConfirmation",
-                    state: { questionnaire: ipsQuestionnaire, role: "IPS Manager" }
-                }
-            ],
-            initialIndex: 0,
-        });
-
-        render(<RouterProvider router={router} />);
 
         const mockResponseFromCallCloudFunctionAPI = {
             data: "Success",
             status: 200,
         };
         mockedAxios.post.mockResolvedValueOnce(mockResponseFromCallCloudFunctionAPI);
+        
+        fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
 
-        await act(async () => {
-            fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
-            await flushPromises();
-        });
         await waitFor(() => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
@@ -159,34 +133,10 @@ describe("CreateDonorCasesConfirmation navigation", () => {
 
     it("should go back to the questionnaire details page if user clicks Continue and error panel is shown", async () => {
 
-        const navigate = jest.fn();
-
-        (useNavigate as jest.Mock).mockImplementation(() => navigate);
-
-        const routes = [
-            {
-                path: "/createDonorCasesConfirmation",
-                element: <CreateDonorCasesConfirmation />
-            }
-        ];
-        const router = createMemoryRouter(routes, {
-            initialEntries: [
-                {
-                    pathname: "/createDonorCasesConfirmation",
-                    state: { questionnaire: ipsQuestionnaire, role: "IPS Manager" }
-                }
-            ],
-            initialIndex: 0,
-        });
-
-        render(<RouterProvider router={router} />);
-
         mockedAxios.post.mockRejectedValue(cloudFunctionAxiosError);
 
-        await act(async () => {
-            fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
-            await flushPromises();
-        });
+        fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+
         await waitFor(() => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
@@ -194,7 +144,7 @@ describe("CreateDonorCasesConfirmation navigation", () => {
                 { questionnaire_name: ipsQuestionnaire.name, role: "IPS Manager" },
                 { headers: { "Content-Type": "application/json" } }
             );
-            
+
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
@@ -204,7 +154,6 @@ describe("CreateDonorCasesConfirmation navigation", () => {
                         role: "IPS Manager"
                     }
                 });
-
         });
 
     });
