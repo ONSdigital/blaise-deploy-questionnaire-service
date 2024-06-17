@@ -25,7 +25,6 @@ import "./style.css";
 import { isProduction } from "./client/env";
 import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 
-
 const divStyle = {
     minHeight: "calc(67vh)"
 };

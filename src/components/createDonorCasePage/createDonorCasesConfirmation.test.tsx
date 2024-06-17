@@ -20,7 +20,6 @@ jest.mock("react-router-dom", () => ({
     useParams: jest.fn(),
 }));
 
-
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 useParams as jest.Mock;
@@ -90,14 +89,14 @@ describe("CreateDonorCasesConfirmation navigation", () => {
         fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
     
         expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a", {
-          state: {
-            donorCasesResponseMessage: "",
-            donorCasesStatusCode: 0,
-            role: "",
-            questionnaire: ipsQuestionnaire,
-          },
+            state: {
+                donorCasesResponseMessage: "",
+                donorCasesStatusCode: 0,
+                role: "",
+                questionnaire: ipsQuestionnaire,
+            },
         });
-      });
+    });
 
     it("calls the API endpoint correctly when the continue button is clicked", async () => {
 
