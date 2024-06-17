@@ -4,20 +4,19 @@
 
 import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter, Route, RouterProvider, Routes, createMemoryRouter, useNavigate, useParams } from "react-router-dom";
+import { MemoryRouter, RouterProvider, createMemoryRouter, useNavigate, useParams } from "react-router-dom";
 import CreateDonorCasesConfirmation from "./createDonorCasesConfirmation";
 import flushPromises from "../../tests/utils";
 import "@testing-library/jest-dom";
 import MockAdapter from "axios-mock-adapter";
-import axios, { AxiosError, AxiosHeaders, AxiosResponse } from "axios";
-import QuestionnaireDetailsPage from "../questionnaireDetailsPage/questionnaireDetailsPage";
+import axios from "axios";
 import { cloudFunctionAxiosError, ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
 
 jest.mock("axios");
 
 jest.mock("react-router-dom", () => ({
     ...jest.requireActual("react-router-dom"),
-    useNavigate: jest.fn(), // Directly return a jest mock function
+    useNavigate: jest.fn(),
     useParams: jest.fn(),
 }));
 
@@ -25,7 +24,7 @@ const mock = new MockAdapter(axios);
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-const mockedUseParams = useParams as jest.Mock;
+useParams as jest.Mock;
 
 describe("CreateDonorCasesConfirmation rendering and elements are rendered correctly", () => {
     beforeEach(() => {
@@ -56,7 +55,7 @@ describe("CreateDonorCasesConfirmation rendering and elements are rendered corre
 describe("CreateDonorCasesConfirmation rendering and paths taken on button clicks", () => {
 
     afterEach(() => {
-        jest.restoreAllMocks(); // Restore original implementations after each test
+        jest.restoreAllMocks();
     });
 
     it("should redirect back to the questionnaire details page if user clicks Cancel", async () => {
@@ -139,7 +138,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
                 { questionnaire_name: ipsQuestionnaire.name, role: "IPS Manager" },
                 { headers: { "Content-Type": "application/json" } }
             );
-            // Check page has been redirected to Details page
+            
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
@@ -191,7 +190,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
                 { questionnaire_name: ipsQuestionnaire.name, role: "IPS Manager" },
                 { headers: { "Content-Type": "application/json" } }
             );
-            // Check page has been redirected to Details page
+            
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
