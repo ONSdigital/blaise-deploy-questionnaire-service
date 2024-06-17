@@ -26,24 +26,28 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 useParams as jest.Mock;
 
-describe("CreateDonorCasesConfirmation rendering and elements are rendered correctly", () => {
+describe("CreateDonorCasesConfirmation rendering", () => {
     beforeEach(() => {
-        const dom = render(
+        render(
             <MemoryRouter>
                 <CreateDonorCasesConfirmation />
             </MemoryRouter>
         );
     });
 
-    it("renders without error", () => {
+    it("displays correct prompt to create donor cases", () => {
         expect(screen.getByText("Create donor cases for ?")).toBeInTheDocument();
     });
 
-    it("displays the correct breadcrumbs", () => {
+    it("displays the correct number of breadcrumbs", () => {
         expect.assertions(2);
 
         expect(screen.getByTestId("breadcrumb-0")).toBeInTheDocument();
         expect(screen.getByTestId("breadcrumb-1")).toBeInTheDocument();
+    });
+
+    it("displays a button continue to create donor cases", () => {
+        expect(screen.getByRole("button", { name: "Continue" })).toBeInTheDocument();
     });
 
     it("displays a button to navigate back to create donor case page", () => {
@@ -52,7 +56,7 @@ describe("CreateDonorCasesConfirmation rendering and elements are rendered corre
 
 });
 
-describe("CreateDonorCasesConfirmation rendering and paths taken on button clicks", () => {
+describe("CreateDonorCasesConfirmation navigation", () => {
 
     afterEach(() => {
         jest.restoreAllMocks();
@@ -153,7 +157,7 @@ describe("CreateDonorCasesConfirmation rendering and paths taken on button click
 
     });
 
-    it("should go back to the questionnaire details page if user clicks Continue and error pannel is shown", async () => {
+    it("should go back to the questionnaire details page if user clicks Continue and error panel is shown", async () => {
 
         const navigate = jest.fn();
 
