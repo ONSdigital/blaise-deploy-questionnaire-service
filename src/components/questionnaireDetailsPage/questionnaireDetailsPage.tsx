@@ -146,7 +146,7 @@ function QuestionnaireDetailsPage(): ReactElement {
                     id="signoff-questionnaire"
                     testid="signoff-questionnaire"
                     onClick={() => signOffQuestionnaireStage(questionnaire.name) }
-                    />                    
+                />                    
             </>
         );
     }
