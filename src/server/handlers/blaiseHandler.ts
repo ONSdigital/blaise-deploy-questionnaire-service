@@ -19,7 +19,7 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
     router.get("/api/questionnaires/:questionnaireName/surveydays", auth.Middleware, blaiseHandler.GetSurveyDays);
     router.get("/api/questionnaires/:questionnaireName/cases/ids", auth.Middleware, blaiseHandler.GetCases);
     router.post("/api/install", auth.Middleware, blaiseHandler.InstallQuestionnaire);
-    router.post("/api/questionnaires/:questionnaireName/signoff", auth.Middleware, blaiseHandler.ActivateQuestionnaire);
+    router.post("/api/questionnaires/:questionnaireName/signoff", auth.Middleware, blaiseHandler.SignOffQuestionnaire);
     router.patch("/api/questionnaires/:questionnaireName/activate", auth.Middleware, blaiseHandler.ActivateQuestionnaire);
     router.patch("/api/questionnaires/:questionnaireName/deactivate", auth.Middleware, blaiseHandler.DeactivateQuestionnaire);
     router.delete("/api/questionnaires/:questionnaireName", auth.Middleware, blaiseHandler.DeleteQuestionnaire);

@@ -17,7 +17,6 @@ import createLogger from "./pino";
 import { HttpLogger } from "pino-http";
 import AuditLogger from "./auditLogging/logger";
 import newAuditHandler from "./handlers/auditHandler";
-import newSignOffHandlerr from "./handlers/signOffHandler";
 
 if (process.env.NODE_ENV === "production") {
     import("@google-cloud/profiler").then((profiler) => {
@@ -44,7 +43,6 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     const busHandler = newBusHandler(busApiClient, auth);
     const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
     const auditHandler = newAuditHandler(auditLogger);
-    const signOffHandler = newSignOffHandlerr();
 
     const server = express();
 
