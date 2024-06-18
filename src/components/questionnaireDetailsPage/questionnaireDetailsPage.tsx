@@ -28,12 +28,12 @@ function QuestionnaireDetailsPage(): ReactElement {
     const { questionnaireName } = useParams();
 
     async function signOffQuestionnaireStage(questionnaireName: string) {
-        let result = await signOffQuestionnaire(questionnaireName);
+        const result = await signOffQuestionnaire(questionnaireName);
         if(result === true)
-            {
-                console.log("signOffQuestionnaire successful");
-                return;
-            }
+        {
+            console.log("signOffQuestionnaire successful");
+            return;
+        }
               
         setErrored(true);
     } 
