@@ -34,7 +34,6 @@ function QuestionnaireDetailsPage(): ReactElement {
     const { donorCasesResponseMessage, donorCasesStatusCode, role } = location || { donorCasesResponseMessage: "", donorCasesStatusCode: 0, role: "" };
 
     useEffect(() => {
-        console.log(questionnaireName);
         if (initialState.questionnaire === null) {
             loadQuestionnaire().then(() => {
                 console.log(`Loaded questionnaire: ${questionnaireName}`);

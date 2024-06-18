@@ -3,26 +3,22 @@
  */
 
 import React from "react";
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, RouterProvider, createMemoryRouter, useNavigate, useParams } from "react-router-dom";
 import CreateDonorCasesConfirmation from "./createDonorCasesConfirmation";
-import flushPromises from "../../tests/utils";
 import "@testing-library/jest-dom";
-import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import { cloudFunctionAxiosError, ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
+import { cloudFunctionAxiosError, ipsQuestionnaire, mockSuccessResponseForDonorCasesCreation } from "../../features/step_definitions/helpers/apiMockObjects";
 
 jest.mock("axios");
 
 jest.mock("react-router-dom", () => ({
     ...jest.requireActual("react-router-dom"),
-    useNavigate: jest.fn(),
-    useParams: jest.fn(),
+    useNavigate: jest.fn()
 }));
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-useParams as jest.Mock;
 
 describe("CreateDonorCasesConfirmation rendering", () => {
     beforeEach(() => {
@@ -87,7 +83,7 @@ describe("CreateDonorCasesConfirmation navigation", () => {
 
     it("should redirect back to the questionnaire details page if user clicks Cancel", async () => {
         fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    
+
         expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a", {
             state: {
                 donorCasesResponseMessage: "",
@@ -100,12 +96,8 @@ describe("CreateDonorCasesConfirmation navigation", () => {
 
     it("calls the API endpoint correctly when the continue button is clicked", async () => {
 
-        const mockResponseFromCallCloudFunctionAPI = {
-            data: "Success",
-            status: 200,
-        };
-        mockedAxios.post.mockResolvedValueOnce(mockResponseFromCallCloudFunctionAPI);
-        
+        mockedAxios.post.mockResolvedValueOnce(mockSuccessResponseForDonorCasesCreation);
+
         fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
 
         await waitFor(() => {
@@ -115,12 +107,12 @@ describe("CreateDonorCasesConfirmation navigation", () => {
                 { questionnaire_name: ipsQuestionnaire.name, role: "IPS Manager" },
                 { headers: { "Content-Type": "application/json" } }
             );
-            
+
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
-                        donorCasesResponseMessage: mockResponseFromCallCloudFunctionAPI.data,
-                        donorCasesStatusCode: mockResponseFromCallCloudFunctionAPI.status,
+                        donorCasesResponseMessage: mockSuccessResponseForDonorCasesCreation.data,
+                        donorCasesStatusCode: mockSuccessResponseForDonorCasesCreation.status,
                         questionnaire: ipsQuestionnaire,
                         role: "IPS Manager"
                     }

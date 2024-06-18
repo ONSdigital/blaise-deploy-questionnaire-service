@@ -77,3 +77,8 @@ cloudFunctionAxiosError.response = {
         headers: new AxiosHeaders(),
     },
 };
+
+export const mockSuccessResponseForDonorCasesCreation = {
+    data: "Success",
+    status: 200,
+};
