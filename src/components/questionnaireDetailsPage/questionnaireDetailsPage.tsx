@@ -28,14 +28,14 @@ function QuestionnaireDetailsPage(): ReactElement {
     const { questionnaireName } = useParams();
 
     async function signOffQuestionnaireStage(questionnaireName: string) {
-        try {
-            await signOffQuestionnaire(questionnaireName);
-            console.log("signOffQuestionnaire successful");
-        } catch (error: unknown) {
-            console.log("Response from signOffQuestionnaire failed");
-            setErrored(true);
-            return [];
-        }
+        let result = await signOffQuestionnaire(questionnaireName);
+        if(result === true)
+            {
+                console.log("signOffQuestionnaire successful");
+                return;
+            }
+              
+        setErrored(true);
     } 
     
     useEffect(() => {
