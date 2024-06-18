@@ -65,7 +65,6 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     server.use("/", bimsHandler);
     server.use("/", busHandler);
     server.use("/", auditHandler);
-    server.use("/", signOffHandler);
     server.use("/", HealthCheckHandler());
 
     server.get("*", function (req: Request, res: Response) {
