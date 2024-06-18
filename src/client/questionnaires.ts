@@ -147,15 +147,28 @@ export async function surveyIsActive(questionnaireName: string): Promise<boolean
 }
 
 export async function signOffQuestionnaire(questionnaireName: string): Promise<boolean> {
-    console.log("Sending request to cloud function to sign off questionnaire");
-    const url = `https://${process.env.REACT_APP_FUNCTION_URL}`;
-    console.log(`Url is: ${url}`);
+    console.log("Call to signOffQuestionnaire");
+    const url = `/api/signoff/${questionnaireName}`;
 
     try {
-        const response = await axios.post(url, { questionnaire_name: questionnaireName }, axiosConfig());
-        return response.status === 201;
+        const response = await axios.get(url, axiosConfig());
+        return response.status === 201;   
     } catch (error: unknown) {
         console.error(`Failed to sign off questionnaire, Error ${error}`);
         return false;
-    }
+    }  
 }
+
+// export async function signOffQuestionnaire(questionnaireName: string): Promise<boolean> {
+//     console.log("Sending request to cloud function to sign off questionnaire");
+//     const url = `https://${process.env.REACT_APP_FUNCTION_URL}`;
+//     console.log(`Url is: ${url}`);
+
+//     try {
+//         const response = await axios.post(url, { questionnaire_name: questionnaireName }, axiosConfig());
+//         return response.status === 201;
+//     } catch (error: unknown) {
+//         console.error(`Failed to sign off questionnaire, Error ${error}`);
+//         return false;
+//     }
+// }
