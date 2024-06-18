@@ -72,7 +72,7 @@ export async function signOffQuestionnaire(questionnaireName: string): Promise<b
 
     try {
         console.log("Call via axios");
-        const response = await axios.post(url, {questionnaireName: questionnaireName}, axiosConfig());
+        const response = await axios.post(url, { questionnaireName: questionnaireName }, axiosConfig());
         console.log(`Call via axios response = ${response.status}`);
         return response.status === 201;   
     } catch (error: unknown) {
