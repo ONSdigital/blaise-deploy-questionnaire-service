@@ -31,7 +31,7 @@ function QuestionnaireDetailsPage(): ReactElement {
         const result = await signOffQuestionnaire(questionnaireName);
         if(result === true)
         {
-            console.log("signOffQuestionnaire successful");
+            console.log("signOff Questionnaire successful");
             return;
         }
               
@@ -145,7 +145,7 @@ function QuestionnaireDetailsPage(): ReactElement {
                     aria-label={`Sign off questionnaire ${questionnaire.name}`}
                     id="signoff-questionnaire"
                     testid="signoff-questionnaire"
-                    onClick={() => signOffQuestionnaireStage(questionnaire.name) }
+                    onClick={async () => await signOffQuestionnaireStage(questionnaire.name) }
                 />                    
             </>
         );

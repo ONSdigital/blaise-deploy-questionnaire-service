@@ -151,7 +151,9 @@ export async function signOffQuestionnaire(questionnaireName: string): Promise<b
     const url = `/api/signoff/${questionnaireName}`;
 
     try {
+        console.log("Call via axios");
         const response = await axios.post(url, axiosConfig());
+        console.log(`Call via axios response = ${response.status}`);
         return response.status === 201;   
     } catch (error: unknown) {
         console.error(`Failed to sign off questionnaire, Error ${error}`);
