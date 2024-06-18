@@ -109,7 +109,7 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
         }
 
         return questionnaires;
-    }
+    } 
 
     useEffect(() => {
         getQuestionnairesList().then((questionnaireList: Questionnaire[]) => {

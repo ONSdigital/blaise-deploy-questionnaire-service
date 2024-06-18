@@ -145,3 +145,19 @@ export async function surveyIsActive(questionnaireName: string): Promise<boolean
         throw error;
     }
 }
+
+export async function signOffQuestionnaire(questionnaireName: string): Promise<boolean> {
+    console.log("Sending request to cloud function to sign off questionnaire");
+    const project = process.env.PROJECT_ID;
+    console.log(`Current project is: ${project}`);
+    const url = `https://europe-west2-${project}.cloudfunctions.net/start-editing-stage`;
+    console.log(`Url is: ${url}`);
+
+    try {
+        const response = await axios.post(url, { questionnaire_name: questionnaireName }, axiosConfig());
+        return response.status === 201;
+    } catch (error: unknown) {
+        console.error(`Failed to sign off questionnaire, Error ${error}`);
+        return false;
+    }
+}
