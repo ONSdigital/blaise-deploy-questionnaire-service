@@ -3,6 +3,7 @@ import { Auth } from "blaise-login-react/blaise-login-react-server";
 import BlaiseApiClient, { InstallQuestionnaire, Questionnaire } from "blaise-api-node-client";
 import { fieldPeriodToText } from "../functions";
 import AuditLogger from "../auditLogging/logger";
+import axios, { AxiosRequestConfig } from "axios";
 
 export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serverPark: string, auth: Auth, auditLogger: AuditLogger): Router {
     const router = express.Router();
@@ -18,11 +19,20 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
     router.get("/api/questionnaires/:questionnaireName/surveydays", auth.Middleware, blaiseHandler.GetSurveyDays);
     router.get("/api/questionnaires/:questionnaireName/cases/ids", auth.Middleware, blaiseHandler.GetCases);
     router.post("/api/install", auth.Middleware, blaiseHandler.InstallQuestionnaire);
+    router.post("/api/questionnaires/:questionnaireName/signoff", auth.Middleware, blaiseHandler.ActivateQuestionnaire);
     router.patch("/api/questionnaires/:questionnaireName/activate", auth.Middleware, blaiseHandler.ActivateQuestionnaire);
     router.patch("/api/questionnaires/:questionnaireName/deactivate", auth.Middleware, blaiseHandler.DeactivateQuestionnaire);
     router.delete("/api/questionnaires/:questionnaireName", auth.Middleware, blaiseHandler.DeleteQuestionnaire);
 
     return router;
+}
+
+function axiosConfig(): AxiosRequestConfig {
+    return {
+        headers: {
+            "Content-Type": "application/json",
+        }
+    };
 }
 
 export class BlaiseHandler {
@@ -39,6 +49,7 @@ export class BlaiseHandler {
         this.GetQuestionnaire = this.GetQuestionnaire.bind(this);
         this.InstallQuestionnaire = this.InstallQuestionnaire.bind(this);
         this.DeleteQuestionnaire = this.DeleteQuestionnaire.bind(this);
+        this.SignOffQuestionnaire = this.SignOffQuestionnaire.bind(this);
         this.ActivateQuestionnaire = this.ActivateQuestionnaire.bind(this);
         this.DeactivateQuestionnaire = this.DeactivateQuestionnaire.bind(this);
         this.DoesQuestionnaireHaveMode = this.DoesQuestionnaireHaveMode.bind(this);
@@ -226,6 +237,21 @@ export class BlaiseHandler {
         } catch (error: any) {
             req.log.error(error, `Get survey days for ${questionnaireName}`);
             return res.status(500).json(null);
+        }
+    }
+
+    async SignOffQuestionnaire(req: Request, res: Response): Promise<Response> {
+        const { questionnaireName } = req.params;
+        console.log(`Questionnaire is: ${questionnaireName}`);
+        const url = `https://${process.env.REACT_APP_FUNCTION_URL}`;
+        console.log(`Url is: ${url}`);
+
+        try {
+            await axios.post(url, { questionnaire_name: questionnaireName }, axiosConfig());
+            return res.status(200).json();
+        } catch (error: any) {
+            req.log.error(error, "Failed calling getAuditLogs");
+            return res.status(500).json(error);
         }
     }
 

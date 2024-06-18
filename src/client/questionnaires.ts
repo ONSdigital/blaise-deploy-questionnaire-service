@@ -148,7 +148,7 @@ export async function surveyIsActive(questionnaireName: string): Promise<boolean
 
 export async function signOffQuestionnaire(questionnaireName: string): Promise<boolean> {
     console.log("Call to signOffQuestionnaire");
-    const url = `/api/signoff/${questionnaireName}`;
+    const url = `/api/questionnaires/${questionnaireName}/signoff`;
 
     try {
         console.log("Call via axios");
