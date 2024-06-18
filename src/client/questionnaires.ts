@@ -66,6 +66,21 @@ export async function deactivateQuestionnaire(questionnaireName: string): Promis
     }
 }
 
+export async function signOffQuestionnaire(questionnaireName: string): Promise<boolean> {
+    console.log("Call to signOffQuestionnaire");
+    const url = `/api/questionnaires/${questionnaireName}/signoff`;
+
+    try {
+        console.log("Call via axios");
+        const response = await axios.post(url, {questionnaireName: questionnaireName}, axiosConfig());
+        console.log(`Call via axios response = ${response.status}`);
+        return response.status === 201;   
+    } catch (error: unknown) {
+        console.error(`Failed to sign off questionnaire, Error ${error}`);
+        return false;
+    }  
+}
+
 export async function installQuestionnaire(filename: string): Promise<boolean> {
     console.log("Sending request to start install");
     const url = "/api/install";
@@ -144,21 +159,6 @@ export async function surveyIsActive(questionnaireName: string): Promise<boolean
         console.error(`Failed to get survey is active, Error ${error}`);
         throw error;
     }
-}
-
-export async function signOffQuestionnaire(questionnaireName: string): Promise<boolean> {
-    console.log("Call to signOffQuestionnaire");
-    const url = `/api/questionnaires/${questionnaireName}/signoff`;
-
-    try {
-        console.log("Call via axios");
-        const response = await axios.post(url, axiosConfig());
-        console.log(`Call via axios response = ${response.status}`);
-        return response.status === 201;   
-    } catch (error: unknown) {
-        console.error(`Failed to sign off questionnaire, Error ${error}`);
-        return false;
-    }  
 }
 
 // export async function signOffQuestionnaire(questionnaireName: string): Promise<boolean> {
