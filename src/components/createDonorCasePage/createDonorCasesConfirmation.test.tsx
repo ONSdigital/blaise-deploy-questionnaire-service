@@ -19,7 +19,6 @@ jest.mock("react-router-dom", () => ({
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-
 describe("CreateDonorCasesConfirmation rendering", () => {
     beforeEach(() => {
         render(
