@@ -148,7 +148,7 @@ export async function surveyIsActive(questionnaireName: string): Promise<boolean
 
 export async function signOffQuestionnaire(questionnaireName: string): Promise<boolean> {
     console.log("Sending request to cloud function to sign off questionnaire");
-    const url = `https://${process.env.REACT_APP_EDITING_FUNCTION_URL}`;
+    const url = `https://${process.env.REACT_APP_FUNCTION_URL}`;
     console.log(`Url is: ${url}`);
 
     try {
