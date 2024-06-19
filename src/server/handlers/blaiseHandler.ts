@@ -3,7 +3,7 @@ import { Auth } from "blaise-login-react/blaise-login-react-server";
 import BlaiseApiClient, { InstallQuestionnaire, Questionnaire } from "blaise-api-node-client";
 import { fieldPeriodToText } from "../functions";
 import AuditLogger from "../auditLogging/logger";
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import axiosConfig from "../../client/axiosConfig";
 
 export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serverPark: string, auth: Auth, auditLogger: AuditLogger): Router {
