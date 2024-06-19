@@ -1,20 +1,22 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { Questionnaire } from "blaise-api-node-client";
 import { getQuestionnaire, signOffQuestionnaire } from "../../../client/questionnaires";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Props {
     questionnaire: Questionnaire;
 }
 
 async function signOffQuestionnaireStage(questionnaireName: string) {
+    const navigate = useNavigate();
     const result = await signOffQuestionnaire(questionnaireName);
     if(result === true)
     {
         console.log("signOff Questionnaire successful");
-        return;
     }        
     console.log("signOff Questionnaire unsuccessful");
+
+    navigate(`/questionnaire/${questionnaireName}`);
 } 
 
 function SignOffQuestionnaire({ questionnaire }: Props): ReactElement {
@@ -28,7 +30,10 @@ function SignOffQuestionnaire({ questionnaire }: Props): ReactElement {
                         setSignedOff(true);
                     }
                 }
-            });
+            }).catch(() => {
+                setErrored(true);
+                return;
+            }).finally(() => setLoading(false));
     }, []);
 
     return (
@@ -52,7 +57,7 @@ function SignOffQuestionnaire({ questionnaire }: Props): ReactElement {
                                 </td>
                                 <td className="ons-summary__values" colSpan={2}>
                                     {signedOff 
-                                        ? <span>Stage has been signedOff</span>
+                                        ? <span>Stage has been signed off</span>
                                         : <Link to="#" onClick={async () => await signOffQuestionnaireStage(questionnaire.name) }>Sign off stage</Link>
                                     }
                                 </td>
