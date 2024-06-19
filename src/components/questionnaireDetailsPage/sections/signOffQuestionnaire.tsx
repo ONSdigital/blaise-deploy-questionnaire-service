@@ -30,10 +30,7 @@ function SignOffQuestionnaire({ questionnaire }: Props): ReactElement {
                         setSignedOff(true);
                     }
                 }
-            }).catch(() => {
-                setErrored(true);
-                return;
-            }).finally(() => setLoading(false));
+            });
     }, []);
 
     return (
