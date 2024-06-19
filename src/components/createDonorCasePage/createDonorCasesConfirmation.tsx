@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../breadcrumbs";
-import { ONSButton } from "blaise-design-system-react-components";
+import { ONSButton, ONSLoadingPanel } from "blaise-design-system-react-components";
 import axios from "axios";
 import { Questionnaire } from "blaise-api-node-client";
 
@@ -16,7 +16,10 @@ function CreateDonorCasesConfirmation(): ReactElement {
 
     const navigate = useNavigate();
 
+    const [loading, isLoading] = React.useState(false);
+    
     async function callCreateDonorCasesCloudFunction() {
+        isLoading(true);
         const payload = { questionnaire_name: questionnaire.name, role: role }; // Your payload data here
         let res;
         try {
@@ -32,9 +35,12 @@ function CreateDonorCasesConfirmation(): ReactElement {
                 status: 500
             };
         }
+        isLoading(false);
         navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: res.data, donorCasesStatusCode: res.status, questionnaire: questionnaire, role: role } });
     }
-
+    if (loading) {
+        return <ONSLoadingPanel />;
+    }
     return (
         <>
             <Breadcrumbs BreadcrumbList={
@@ -54,12 +60,13 @@ function CreateDonorCasesConfirmation(): ReactElement {
                                 label="Continue"
                                 onClick={callCreateDonorCasesCloudFunction}
                                 primary
+                                disabled={loading}
                             />
                             <ONSButton
                                 label="Cancel"
                                 onClick={() => navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: "", donorCasesStatusCode: 0, questionnaire: questionnaire, role: "" } })} primary={false} />
+                            {loading && <div>Loading...</div>}
                         </>
-
                     )
                 }
             </main>
