@@ -83,7 +83,7 @@ describe("CreateDonorCasesConfirmation navigation", () => {
     it("should redirect back to the questionnaire details page if user clicks Cancel", async () => {
         
         act(() => {
-        fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+            fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
         });
 
         expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a", {
@@ -100,7 +100,7 @@ describe("CreateDonorCasesConfirmation navigation", () => {
 
         mockedAxios.post.mockResolvedValueOnce(mockSuccessResponseForDonorCasesCreation);
         act(() => {
-        fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+            fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
         });
         await waitFor(() => {
 
@@ -128,7 +128,7 @@ describe("CreateDonorCasesConfirmation navigation", () => {
 
         mockedAxios.post.mockRejectedValue(cloudFunctionAxiosError);
         act(() => {
-        fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+            fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
         });
         await waitFor(() => {
 
