@@ -66,6 +66,21 @@ export async function deactivateQuestionnaire(questionnaireName: string): Promis
     }
 }
 
+export async function signOffQuestionnaire(questionnaireName: string): Promise<boolean> {
+    console.log("Call to signOffQuestionnaire");
+    const url = `/api/questionnaires/${questionnaireName}/signoff`;
+
+    try {
+        console.log("Call via axios");
+        const response = await axios.post(url, { questionnaireName: questionnaireName }, axiosConfig());
+        console.log(`Call via axios response = ${response.status}`);
+        return response.status === 201;   
+    } catch (error: unknown) {
+        console.error(`Failed to sign off questionnaire, Error ${error}`);
+        return false;
+    }  
+}
+
 export async function installQuestionnaire(filename: string): Promise<boolean> {
     console.log("Sending request to start install");
     const url = "/api/install";
@@ -145,3 +160,17 @@ export async function surveyIsActive(questionnaireName: string): Promise<boolean
         throw error;
     }
 }
+
+// export async function signOffQuestionnaire(questionnaireName: string): Promise<boolean> {
+//     console.log("Sending request to cloud function to sign off questionnaire");
+//     const url = `https://${process.env.REACT_APP_FUNCTION_URL}`;
+//     console.log(`Url is: ${url}`);
+
+//     try {
+//         const response = await axios.post(url, { questionnaire_name: questionnaireName }, axiosConfig());
+//         return response.status === 201;
+//     } catch (error: unknown) {
+//         console.error(`Failed to sign off questionnaire, Error ${error}`);
+//         return false;
+//     }
+// }
