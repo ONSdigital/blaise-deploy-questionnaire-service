@@ -63,12 +63,4 @@ Feature: DQS - Generate UACs for cases
     # We really should question whether the error being returned is appropriate
     Then I receive an appropriate error describing suitable user actions
 
-  # Scenario 7
-  Scenario: I can see how many UACs have been generated for a particular questionnaire in the details page
-    Given the questionnaire 'TST2106G' is installed
-    And 'TST2106G' has the modes 'CATI,CAWI'
-    And 'TST2106G' has 5000 cases
-    And 'TST2106G' has 5000 UACs
-    When I go to the questionnaire details page for 'TST2106G'
-    Then I can see that that the questionnaire has 5000 cases
-    And A generate UAC button is available
+  

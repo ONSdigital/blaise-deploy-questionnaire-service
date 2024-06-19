@@ -1,7 +1,6 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Questionnaire } from "blaise-api-node-client";
-import { ONSButton } from "blaise-design-system-react-components";
-import { signOffQuestionnaire } from "../../../client/questionnaires";
+import { getQuestionnaire, signOffQuestionnaire } from "../../../client/questionnaires";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -19,6 +18,19 @@ async function signOffQuestionnaireStage(questionnaireName: string) {
 } 
 
 function SignOffQuestionnaire({ questionnaire }: Props): ReactElement {
+    const [signedOff, setSignedOff] = useState<boolean>(false);
+
+    useEffect(() => {
+        getQuestionnaire(`${questionnaire.name}_EDIT`)
+            .then((questionnaire: Questionnaire | undefined) => {
+                if(questionnaire && questionnaire.dataRecordCount) {
+                    if (questionnaire.dataRecordCount > 0) {
+                        setSignedOff(true);
+                    }
+                }
+            });
+    }, []);
+
     return (
         <>
             <div className="ons-summary ons-u-mb-m">
@@ -39,15 +51,10 @@ function SignOffQuestionnaire({ questionnaire }: Props): ReactElement {
                                     </div>
                                 </td>
                                 <td className="ons-summary__values" colSpan={2}>
-                                    <Link to="#" onClick={async () => await signOffQuestionnaireStage(questionnaire.name) }>Sign off stage</Link>
-                                    {/* <ONSButton
-                                        label={"Sign off Questionnaire"}
-                                        primary={false}
-                                        aria-label={`Sign off questionnaire ${questionnaire.name}`}
-                                        id="signoff-questionnaire"
-                                        testid="signoff-questionnaire"
-                                        onClick={async () => await signOffQuestionnaireStage(questionnaire.name) }
-                                    />                                      */}
+                                    {signedOff 
+                                        ? <span>Stage has been signedOff</span>
+                                        : <Link to="#" onClick={async () => await signOffQuestionnaireStage(questionnaire.name) }>Sign off stage</Link>
+                                    }
                                 </td>
                             </tr>
                         </tbody>
@@ -60,3 +67,11 @@ function SignOffQuestionnaire({ questionnaire }: Props): ReactElement {
 }
 
 export default SignOffQuestionnaire;
+function setErrored(arg0: boolean) {
+    throw new Error("Function not implemented.");
+}
+
+function setLoading(arg0: boolean): void {
+    throw new Error("Function not implemented.");
+}
+
