@@ -6,7 +6,6 @@ import AuditLogger from "../auditLogging/logger";
 import axios, { AxiosRequestConfig } from "axios";
 import { AuthManager } from "blaise-login-react/blaise-login-react-client";
 
-
 export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serverPark: string, auth: Auth, auditLogger: AuditLogger): Router {
     const router = express.Router();
 
@@ -245,6 +244,7 @@ export class BlaiseHandler {
     }
 
     async SignOffQuestionnaire(req: Request, res: Response): Promise<Response> {
+        
         const { questionnaireName } = req.params;
         console.log(`Questionnaire is: ${questionnaireName}`);
         const url = `https://${process.env.REACT_APP_FUNCTION_URL}`;

@@ -8,9 +8,10 @@ import CatiModeDetails from "./sections/catiModeDetails";
 import TotalmobileDetails from "./sections/totalmobileDetails";
 import YearCalendar from "./sections/yearCalendar";
 import QuestionnaireSettingsSection from "./sections/questionnaireSettingsSection";
-import { getQuestionnaire, getQuestionnaireModes, getSurveyDays, signOffQuestionnaire } from "../../client/questionnaires";
+import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import QuestionnaireDetails from "./sections/questionnaireDetails";
+import SignOffQuestionnaire from "./sections/signOffQuestionnaire";
 
 interface State {
     questionnaire: Questionnaire | null;
@@ -26,17 +27,6 @@ function QuestionnaireDetailsPage(): ReactElement {
     const [loaded, setLoaded] = useState<boolean>(false);
     const initialState = location || { questionnaire: null };
     const { questionnaireName } = useParams();
-
-    async function signOffQuestionnaireStage(questionnaireName: string) {
-        const result = await signOffQuestionnaire(questionnaireName);
-        if(result === true)
-        {
-            console.log("signOff Questionnaire successful");
-            return;
-        }
-              
-        setErrored(true);
-    } 
     
     useEffect(() => {
         if (initialState.questionnaire === null) {
@@ -121,6 +111,7 @@ function QuestionnaireDetailsPage(): ReactElement {
                 </h1>
 
                 <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
+                <SignOffQuestionnaire questionnaire={questionnaire} />
                 <CatiModeDetails questionnaireName={questionnaire.name} modes={modes} />
                 <CawiModeDetails questionnaire={questionnaire} modes={modes} />
                 <TotalmobileDetails questionnaireName={questionnaire.name} />
@@ -137,16 +128,7 @@ function QuestionnaireDetailsPage(): ReactElement {
                     id="delete-questionnaire"
                     testid="delete-questionnaire"
                     onClick={() => navigate("/delete", { state: { questionnaire, modes } }
-                    )} />
-
-                <ONSButton
-                    label={"Sign off Questionnaire"}
-                    primary={false}
-                    aria-label={`Sign off questionnaire ${questionnaire.name}`}
-                    id="signoff-questionnaire"
-                    testid="signoff-questionnaire"
-                    onClick={async () => await signOffQuestionnaireStage(questionnaire.name) }
-                />                    
+                    )} />                  
             </>
         );
     }
