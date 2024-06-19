@@ -4,7 +4,7 @@ import BlaiseApiClient, { InstallQuestionnaire, Questionnaire } from "blaise-api
 import { fieldPeriodToText } from "../functions";
 import AuditLogger from "../auditLogging/logger";
 import axios from "axios";
-import axiosConfig from "../../client/axiosConfig";
+
 
 export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serverPark: string, auth: Auth, auditLogger: AuditLogger): Router {
     const router = express.Router();
@@ -240,7 +240,7 @@ export class BlaiseHandler {
         console.log(`Url is: ${url}`);
 
         try {
-            await axios.post(url, { questionnaire_name: questionnaireName }, axiosConfig());
+            await axios.post(url, { questionnaire_name: questionnaireName });
             return res.status(200).json();
         } catch (error: any) {
             req.log.error(error, "Failed calling getAuditLogs");
