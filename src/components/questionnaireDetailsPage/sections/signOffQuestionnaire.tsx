@@ -39,7 +39,7 @@ function SignOffQuestionnaire({ questionnaire }: Props): ReactElement {
                                     </div>
                                 </td>
                                 <td className="ons-summary__values" colSpan={2}>
-                                    <Link to="#" onClick={async () => await signOffQuestionnaireStage(questionnaire.name) }>Home</Link>
+                                    <a href="#" onClick={async () => await signOffQuestionnaireStage(questionnaire.name) }>Sign off stage</a>
                                     {/* <ONSButton
                                         label={"Sign off Questionnaire"}
                                         primary={false}
