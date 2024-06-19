@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, RouterProvider, createMemoryRouter, useNavigate, useParams } from "react-router-dom";
 import CreateDonorCasesConfirmation from "./createDonorCasesConfirmation";
 import "@testing-library/jest-dom";
@@ -81,7 +81,10 @@ describe("CreateDonorCasesConfirmation navigation", () => {
     });
 
     it("should redirect back to the questionnaire details page if user clicks Cancel", async () => {
+        
+        act(() => {
         fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+        });
 
         expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a", {
             state: {
@@ -96,9 +99,9 @@ describe("CreateDonorCasesConfirmation navigation", () => {
     it("calls the API endpoint correctly when the continue button is clicked", async () => {
 
         mockedAxios.post.mockResolvedValueOnce(mockSuccessResponseForDonorCasesCreation);
-
+        act(() => {
         fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
-
+        });
         await waitFor(() => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
@@ -124,9 +127,9 @@ describe("CreateDonorCasesConfirmation navigation", () => {
     it("should go back to the questionnaire details page if user clicks Continue and error panel is shown", async () => {
 
         mockedAxios.post.mockRejectedValue(cloudFunctionAxiosError);
-
+        act(() => {
         fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
-
+        });
         await waitFor(() => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
