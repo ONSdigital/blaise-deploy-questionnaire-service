@@ -4,6 +4,7 @@ import BlaiseApiClient, { InstallQuestionnaire, Questionnaire } from "blaise-api
 import { fieldPeriodToText } from "../functions";
 import AuditLogger from "../auditLogging/logger";
 import axios, { AxiosRequestConfig } from "axios";
+import axiosConfig from "../../client/axiosConfig";
 
 export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serverPark: string, auth: Auth, auditLogger: AuditLogger): Router {
     const router = express.Router();
@@ -25,14 +26,6 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
     router.delete("/api/questionnaires/:questionnaireName", auth.Middleware, blaiseHandler.DeleteQuestionnaire);
 
     return router;
-}
-
-function axiosConfig(): AxiosRequestConfig {
-    return {
-        headers: {
-            "Content-Type": "application/json",
-        }
-    };
 }
 
 export class BlaiseHandler {
