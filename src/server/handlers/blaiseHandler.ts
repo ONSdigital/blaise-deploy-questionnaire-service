@@ -3,7 +3,8 @@ import { Auth } from "blaise-login-react/blaise-login-react-server";
 import BlaiseApiClient, { InstallQuestionnaire, Questionnaire } from "blaise-api-node-client";
 import { fieldPeriodToText } from "../functions";
 import AuditLogger from "../auditLogging/logger";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
+import { AuthManager } from "blaise-login-react/blaise-login-react-client";
 
 
 export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serverPark: string, auth: Auth, auditLogger: AuditLogger): Router {
@@ -26,6 +27,16 @@ export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serve
     router.delete("/api/questionnaires/:questionnaireName", auth.Middleware, blaiseHandler.DeleteQuestionnaire);
 
     return router;
+}
+
+function axiosConfig(): AxiosRequestConfig {
+    const authManager = new AuthManager();
+    return {
+        headers: {
+            "Content-Type": "application/json",
+            ...authManager.authHeader()
+        }
+    };
 }
 
 export class BlaiseHandler {
@@ -240,7 +251,7 @@ export class BlaiseHandler {
         console.log(`Url is: ${url}`);
 
         try {
-            await axios.post(url, { questionnaire_name: questionnaireName });
+            await axios.post(url, { questionnaire_name: questionnaireName }, axiosConfig());
             return res.status(200).json();
         } catch (error: any) {
             req.log.error(error, "Failed calling getAuditLogs");
