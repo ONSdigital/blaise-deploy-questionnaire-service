@@ -20,10 +20,10 @@ import LiveSurveyWarning from "./components/uploadPage/liveSurveyWarning";
 import QuestionnaireDetailsPage from "./components/questionnaireDetailsPage/questionnaireDetailsPage";
 import ChangeTOStartDate from "./components/questionnaireDetailsPage/changeTOStartDate";
 import ChangeTMReleaseDate from "./components/questionnaireDetailsPage/changeTmReleaseDate";
+import CreateDonorCasesConfirmation from "./components/createDonorCasePage/createDonorCasesConfirmation";
 import "./style.css";
 import { isProduction } from "./client/env";
 import { Authenticate } from "blaise-login-react/blaise-login-react-client";
-import "./style.css";
 
 const divStyle = {
     minHeight: "calc(67vh)"
@@ -98,6 +98,10 @@ function App(): ReactElement {
                             element={<DeleteConfirmation onDelete={onDeleteQuestionnaire} onCancel={onCancelDeleteQuestionnaire} />}>
                         </Route>
                         <Route
+                            path="/createDonorCasesConfirmation"
+                            element={<CreateDonorCasesConfirmation />}>
+                        </Route>
+                        <Route
                             path="/"
                             element={<main id="main-content" className="ons-page__main ons-u-mt-no">
                                 {successBanner()}
@@ -109,7 +113,7 @@ function App(): ReactElement {
                             </main>}>
                         </Route>
                     </Routes>
-                </DefaultErrorBoundary>
+                </DefaultErrorBoundary >
             </>
         );
     }
