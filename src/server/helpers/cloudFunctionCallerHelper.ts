@@ -6,9 +6,6 @@ export async function getIdTokenFromMetadataServer(targetAudience: string) {
 
     const client = await googleAuth.getIdTokenClient(targetAudience);
 
-    // Get the ID token.
-    // Once you've obtained the ID token, you can use it to make an authenticated call
-    // to the target audience.
     const token = await client.idTokenProvider.fetchIdToken(targetAudience);
     return token;
 }

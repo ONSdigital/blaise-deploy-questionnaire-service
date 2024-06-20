@@ -4,7 +4,7 @@
 
 import React from "react";
 import { render } from "@testing-library/react";
-import "@testing-library/jest-dom"; // Make sure to import jest-dom matchers
+import "@testing-library/jest-dom";
 import CreateDonorCasesSummary from "./createDonorCasesSummary";
 
 describe("CreateDonorCasesSummary", () => {
