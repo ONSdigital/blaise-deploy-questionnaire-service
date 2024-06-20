@@ -11,9 +11,14 @@ import QuestionnaireSettingsSection from "./sections/questionnaireSettingsSectio
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import QuestionnaireDetails from "./sections/questionnaireDetails";
+import CreateDonorCases from "./sections/createDonorCases";
+import CreateDonorCasesSummary from "../createDonorCasePage/createDonorCasesSummary";
 
 interface State {
     questionnaire: Questionnaire | null;
+    donorCasesResponseMessage?: string;
+    donorCasesStatusCode?: number;
+    role?: string;
 }
 
 function QuestionnaireDetailsPage(): ReactElement {
@@ -26,6 +31,7 @@ function QuestionnaireDetailsPage(): ReactElement {
     const [loaded, setLoaded] = useState<boolean>(false);
     const initialState = location || { questionnaire: null };
     const { questionnaireName } = useParams();
+    const { donorCasesResponseMessage, donorCasesStatusCode, role } = location || { donorCasesResponseMessage: "", donorCasesStatusCode: 0, role: "" };
 
     useEffect(() => {
         if (initialState.questionnaire === null) {
@@ -109,7 +115,9 @@ function QuestionnaireDetailsPage(): ReactElement {
                     {questionnaire.name}
                 </h1>
 
+                {donorCasesResponseMessage && donorCasesStatusCode && role && <CreateDonorCasesSummary donorCasesResponseMessage={donorCasesResponseMessage} donorCasesStatusCode={donorCasesStatusCode} role={role} />}
                 <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
+                {questionnaire.name.includes("IPS") && <CreateDonorCases questionnaire={questionnaire} />}
                 <CatiModeDetails questionnaireName={questionnaire.name} modes={modes} />
                 <CawiModeDetails questionnaire={questionnaire} modes={modes} />
                 <TotalmobileDetails questionnaireName={questionnaire.name} />

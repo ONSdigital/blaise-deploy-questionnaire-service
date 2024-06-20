@@ -8,7 +8,7 @@ import { act } from "react-dom/test-utils";
 import React from "react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { opnQuestionnaire } from "../../../features/step_definitions/helpers/apiMockObjects";
+import { opnQuestionnaire, ipsQuestionnaire } from "../../../features/step_definitions/helpers/apiMockObjects";
 import QuestionnaireDetails from "./questionnaireDetails";
 
 const mock = new MockAdapter(axios);

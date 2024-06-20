@@ -11,6 +11,7 @@ export interface Config extends AuthConfig {
     BimsClientId: string;
     BusApiUrl: string;
     BusClientId: string;
+    CreateDonorCasesCloudFunctionUrl: string;
 }
 
 export function getConfigFromEnv(): Config {
@@ -24,6 +25,7 @@ export function getConfigFromEnv(): Config {
         BUS_API_URL,
         BUS_CLIENT_ID,
         SESSION_TIMEOUT,
+        CREATE_DONOR_CASES_CLOUD_FUNCTION_URL
     } = process.env;
 
     const {
@@ -77,6 +79,10 @@ export function getConfigFromEnv(): Config {
         SESSION_TIMEOUT = "12h";
     }
 
+    if (CREATE_DONOR_CASES_CLOUD_FUNCTION_URL === undefined) {
+        console.error("CLOUD_FUNCTION_URL environment variable has not been set");
+        CREATE_DONOR_CASES_CLOUD_FUNCTION_URL = "ENV_VAR_NOT_SET";
+    }
     let port = 5000;
     if (PORT !== undefined) {
         port = +PORT;
@@ -94,7 +100,8 @@ export function getConfigFromEnv(): Config {
         BusClientId: BUS_CLIENT_ID,
         SessionTimeout: SESSION_TIMEOUT,
         SessionSecret: sessionSecret(SESSION_SECRET),
-        Roles: loadRoles(ROLES)
+        Roles: loadRoles(ROLES),
+        CreateDonorCasesCloudFunctionUrl: CREATE_DONOR_CASES_CLOUD_FUNCTION_URL
     };
 }
 

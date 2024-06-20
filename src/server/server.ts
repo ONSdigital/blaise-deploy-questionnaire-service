@@ -17,6 +17,7 @@ import createLogger from "./pino";
 import { HttpLogger } from "pino-http";
 import AuditLogger from "./auditLogging/logger";
 import newAuditHandler from "./handlers/auditHandler";
+import newCloudFunctionHandler from "./handlers/cloudFunctionHandler";
 
 if (process.env.NODE_ENV === "production") {
     import("@google-cloud/profiler").then((profiler) => {
@@ -43,6 +44,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     const busHandler = newBusHandler(busApiClient, auth);
     const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
     const auditHandler = newAuditHandler(auditLogger);
+    const cloudFunctionHandler = newCloudFunctionHandler(config.CreateDonorCasesCloudFunctionUrl);
 
     const server = express();
 
@@ -58,20 +60,24 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     // treat the index.html as a template and substitute the values at runtime
     server.set("views", path.join(__dirname, buildFolder));
     server.engine("html", ejs.renderFile);
-    server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static`)));
+    server.use(
+        "/static",
+        express.static(path.join(__dirname, `${buildFolder}/static`))
+    );
 
     server.use("/", uploadHandler);
     server.use("/", blaiseHandler);
     server.use("/", bimsHandler);
     server.use("/", busHandler);
     server.use("/", auditHandler);
+    server.use("/", cloudFunctionHandler);
     server.use("/", HealthCheckHandler());
 
     server.get("*", function (req: Request, res: Response) {
         res.render("index.html");
     });
 
-    server.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
+    server.use(function (err: Error, req: Request, res: Response, _next: NextFunction) {
         req.log.error(err, err.message);
         res.render("../src/views/500.html", {});
     });

@@ -14,6 +14,7 @@ Object {
         >
           <li
             class="ons-breadcrumb__item"
+            data-testid="breadcrumb-0"
             id="breadcrumb-0"
           >
             <a
@@ -36,6 +37,7 @@ Object {
           </li>
           <li
             class="ons-breadcrumb__item"
+            data-testid="breadcrumb-1"
             id="breadcrumb-1"
           >
             <a
@@ -163,6 +165,7 @@ Object {
       >
         <li
           class="ons-breadcrumb__item"
+          data-testid="breadcrumb-0"
           id="breadcrumb-0"
         >
           <a
@@ -185,6 +188,7 @@ Object {
         </li>
         <li
           class="ons-breadcrumb__item"
+          data-testid="breadcrumb-1"
           id="breadcrumb-1"
         >
           <a
