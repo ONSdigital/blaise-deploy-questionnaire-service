@@ -3,6 +3,7 @@ import { FormikContextType, useFormikContext } from "formik";
 import { Questionnaire } from "blaise-api-node-client";
 import dateFormatter from "dayjs";
 import { roundUp } from "../../../utilities/maths";
+import { totalmobileReleaseDateSurveyTLAs } from "../../../utilities/totalmobileReleaseDateSurveyTLAs";
 
 interface PageFourProps {
     file: File | undefined
@@ -117,7 +118,7 @@ function DeployFormSummary({ file, foundQuestionnaire }: PageFourProps): ReactEl
     }
 
     function TMReleaseDate(): ReactElement {
-        if (!file?.name.startsWith("LMS")) {
+        if (!totalmobileReleaseDateSurveyTLAs.some(tla => file?.name.startsWith(tla))) {
             return <></>;
         }
 
