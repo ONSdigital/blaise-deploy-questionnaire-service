@@ -18,6 +18,7 @@ import {
 import { verifyAndInstallQuestionnaire } from ".";
 import { GetQuestionnaireMode } from "../../utilities/questionnaireMode";
 import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
+import { totalmobileReleaseDateSurveyTLAs } from "../../utilities/totalmobileReleaseDateSurveyTLAs";
 
 export async function validateSelectedQuestionnaireExists(file: File | undefined, setQuestionnaireName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundQuestionnaire: (object: Questionnaire | null) => void): Promise<boolean | null> {
     if (file === undefined) {
@@ -68,7 +69,7 @@ export async function uploadAndInstallFile(
         return false;
     }
 
-    if (questionnaireName.startsWith("LMS")) {
+    if (totalmobileReleaseDateSurveyTLAs.some(tla => questionnaireName.startsWith(tla))) {
         console.log(`releaseDate ${tmReleaseDate}`);
         const releaseDateCreated = await setTMReleaseDate(questionnaireName, tmReleaseDate);
 
