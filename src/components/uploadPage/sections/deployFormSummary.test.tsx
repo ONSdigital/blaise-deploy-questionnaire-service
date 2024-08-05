@@ -18,68 +18,72 @@ MockAuthenticate.OverrideReturnValues(null, true);
 
 describe("Deploy form summary page", () => {
     const lmsQuestionnaireName = "LMS2004A";
+    const frsQuestionnaireName = "FRS2004A";
     const opnQuestionnaireName = "OPN2004A";
     const lastModified = new Date("2022-01-24T01:02:03").getTime();
 
-    const lmsFile = new File(["龴ↀ◡ↀ龴"], `${lmsQuestionnaireName}.bpkg`, {
-        type: "application/pdf", lastModified: lastModified
-    });
+    const validFiles = [
+        { file: new File(["龴ↀ◡ↀ龴"], `${lmsQuestionnaireName}.bpkg`, { type: "application/pdf", lastModified: lastModified }), questionnaire: questionnaireWithName(lmsQuestionnaireName) },
+        { file: new File(["(♥_♥)"], `${frsQuestionnaireName}.bpkg`, { type: "application/pdf", lastModified: lastModified }), questionnaire: questionnaireWithName(frsQuestionnaireName) }
+    ];
+
     const opnFile = new File(["(♥_♥)"], `${opnQuestionnaireName}.bpkg`, {
         type: "application/pdf", lastModified: lastModified
     });
 
-    const lmsQuestionnaire = questionnaireWithName(lmsQuestionnaireName);
     const opnQuestionnaire = questionnaireWithName(opnQuestionnaireName);
 
-    it("should match the Snapshot", async () => {
-        const wrapper = render(
-            <Formik initialValues={{}} onSubmit={() => {
-            }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
-            </Formik>
-        );
+    validFiles.forEach(({ file, questionnaire }) => {
+        it(`should match the Snapshot for ${file.name}`, async () => {
+            const wrapper = render(
+                <Formik initialValues={{}} onSubmit={() => { }}>
+                    <DeployFormSummary file={file} foundQuestionnaire={questionnaire} />
+                </Formik>
+            );
 
-        expect(wrapper).toMatchSnapshot();
+            expect(wrapper).toMatchSnapshot();
+        });
     });
 
-    it("should display the questionnaire file name", async () => {
-        const { getByText } = render(
-            <Formik initialValues={{}} onSubmit={() => {
-            }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
-            </Formik>
-        );
-
-        expect(getByText(/Questionnaire file name/i)).toBeInTheDocument();
+    validFiles.forEach(({ file, questionnaire }) => {
+        it(`should display the questionnaire file name for ${file.name}`, async () => {
+            const { getByText } = render(
+                <Formik initialValues={{}} onSubmit={() => { }}>
+                    <DeployFormSummary file={file} foundQuestionnaire={questionnaire} />
+                </Formik>
+            );
+    
+            expect(getByText(/Questionnaire file name/i)).toBeInTheDocument();
+        });
     });
 
     it("should display when the file was last modified", async () => {
+        const { file, questionnaire } = validFiles[0];
         const { getByText } = render(
-            <Formik initialValues={{}} onSubmit={() => {
-            }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
+            <Formik initialValues={{}} onSubmit={() => { }}>
+                <DeployFormSummary file={file} foundQuestionnaire={questionnaire} />
             </Formik>
         );
-
+    
         expect(getByText(/Questionnaire file last modified date/i)).toBeInTheDocument();
     });
 
     it("should display the questionnaire file size", async () => {
+        const { file, questionnaire } = validFiles[0];
         const { getByText } = render(
-            <Formik initialValues={{}} onSubmit={() => {
-            }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
+            <Formik initialValues={{}} onSubmit={() => { }}>
+                <DeployFormSummary file={file} foundQuestionnaire={questionnaire} />
             </Formik>
         );
-
+    
         expect(getByText(/Questionnaire file size/i)).toBeInTheDocument();
     });
 
     it("should display if the questionnaire exists in Blaise", async () => {
+        const { file, questionnaire } = validFiles[0];
         const { getByText } = render(
-            <Formik initialValues={{}} onSubmit={() => {
-            }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
+            <Formik initialValues={{}} onSubmit={() => { }}>
+                <DeployFormSummary file={file} foundQuestionnaire={questionnaire} />
             </Formik>
         );
 
@@ -87,28 +91,29 @@ describe("Deploy form summary page", () => {
     });
 
     it("should display the telephone operation start date", async () => {
+        const { file, questionnaire } = validFiles[0];
         const { getByText } = render(
-            <Formik initialValues={{}} onSubmit={() => {
-            }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
+            <Formik initialValues={{}} onSubmit={() => { }}>
+                <DeployFormSummary file={file} foundQuestionnaire={questionnaire} />
             </Formik>
         );
-
+    
         expect(getByText(/Set a telephone operations start date for questionnaire?/i)).toBeInTheDocument();
     });
 
-    it("should display the totalmobile release date for LMS questionnaires", async () => {
-        const { getByText } = render(
-            <Formik initialValues={{}} onSubmit={() => {
-            }}>
-                <DeployFormSummary file={lmsFile} foundQuestionnaire={lmsQuestionnaire} />
-            </Formik>
-        );
+    validFiles.forEach(({ file, questionnaire }) => {
+        it(`should display the totalmobile release date for ${file.name} questionnaires`, async () => {
+            const { getByText } = render(
+                <Formik initialValues={{}} onSubmit={() => { }}>
+                    <DeployFormSummary file={file} foundQuestionnaire={questionnaire} />
+                </Formik>
+            );
+    
+            expect(getByText(/Set a totalmobile release date for questionnaire?/i)).toBeInTheDocument();
+        });
+    });    
 
-        expect(getByText(/Set a totalmobile release date for questionnaire?/i)).toBeInTheDocument();
-    });
-
-    it("should not display the totalmobile release date for non-LMS questionnaires", async () => {
+    it("should not display the totalmobile release date for non-LMS, non-FRS questionnaires", async () => {
         const { queryByText } = render(
             <Formik initialValues={{}} onSubmit={() => {
             }}>

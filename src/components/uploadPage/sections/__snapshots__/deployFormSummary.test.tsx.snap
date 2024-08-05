@@ -1,6 +1,393 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Deploy form summary page should match the Snapshot 1`] = `
+exports[`Deploy form summary page should match the Snapshot for FRS2004A.bpkg 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="ons-summary"
+      >
+        <div
+          class="ons-summary__group"
+        >
+          <h1
+            class="ons-summary__group-title"
+          >
+            Deployment summary
+          </h1>
+          <table
+            class="ons-summary__items"
+          >
+            <thead
+              class="ons-u-vh"
+            >
+              <tr>
+                <th>
+                  Question
+                </th>
+                <th>
+                  Answer given
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="ons-summary__item"
+            >
+              <tr
+                class="ons-summary__row ons-summary__row--has-values"
+              >
+                <td
+                  class="ons-summary__item-title"
+                >
+                  <div
+                    class="ons-summary__item--text"
+                  >
+                    Questionnaire file name
+                  </div>
+                </td>
+                <td
+                  class="ons-summary__values"
+                >
+                  FRS2004A.bpkg
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="ons-summary__item"
+            >
+              <tr
+                class="ons-summary__row ons-summary__row--has-values"
+              >
+                <td
+                  class="ons-summary__item-title"
+                >
+                  <div
+                    class="ons-summary__item--ons-text"
+                  >
+                    Questionnaire file last modified date
+                  </div>
+                </td>
+                <td
+                  class="ons-summary__values"
+                >
+                  24/01/2022 01:02
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="ons-summary__item"
+            >
+              <tr
+                class="ons-summary__row ons-summary__row--has-values"
+              >
+                <td
+                  class="ons-summary__item-title"
+                >
+                  <div
+                    class="ons-summary__item--text"
+                  >
+                    Questionnaire file size
+                  </div>
+                </td>
+                <td
+                  class="ons-summary__values"
+                >
+                  1
+                  MB
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="ons-summary__item"
+            >
+              <tr
+                class="ons-summary__row ons-summary__row--has-values"
+              >
+                <td
+                  class="ons-summary__item-title"
+                >
+                  <div
+                    class="ons-summary__item--text"
+                  >
+                    Does the questionnaire already exist in blaise?
+                  </div>
+                </td>
+                <td
+                  class="ons-summary__values"
+                >
+                  Yes, overriding questionnaire
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="ons-summary__item"
+            >
+              <tr
+                class="ons-summary__row ons-summary__row--has-values"
+              >
+                <td
+                  class="ons-summary__item-title"
+                >
+                  <div
+                    class="ons-summary__item--text"
+                  >
+                    Set a telephone operations start date for questionnaire?
+                  </div>
+                </td>
+                <td
+                  class="ons-summary__values"
+                >
+                  Start date not specified
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              class="ons-summary__item"
+            >
+              <tr
+                class="ons-summary__row ons-summary__row--has-values"
+              >
+                <td
+                  class="ons-summary__item-title"
+                >
+                  <div
+                    class="ons-summary__item--text"
+                  >
+                    Set a totalmobile release date for questionnaire?
+                  </div>
+                </td>
+                <td
+                  class="ons-summary__values"
+                >
+                  Release date not specified
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="ons-summary"
+    >
+      <div
+        class="ons-summary__group"
+      >
+        <h1
+          class="ons-summary__group-title"
+        >
+          Deployment summary
+        </h1>
+        <table
+          class="ons-summary__items"
+        >
+          <thead
+            class="ons-u-vh"
+          >
+            <tr>
+              <th>
+                Question
+              </th>
+              <th>
+                Answer given
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="ons-summary__item"
+          >
+            <tr
+              class="ons-summary__row ons-summary__row--has-values"
+            >
+              <td
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Questionnaire file name
+                </div>
+              </td>
+              <td
+                class="ons-summary__values"
+              >
+                FRS2004A.bpkg
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="ons-summary__item"
+          >
+            <tr
+              class="ons-summary__row ons-summary__row--has-values"
+            >
+              <td
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--ons-text"
+                >
+                  Questionnaire file last modified date
+                </div>
+              </td>
+              <td
+                class="ons-summary__values"
+              >
+                24/01/2022 01:02
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="ons-summary__item"
+          >
+            <tr
+              class="ons-summary__row ons-summary__row--has-values"
+            >
+              <td
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Questionnaire file size
+                </div>
+              </td>
+              <td
+                class="ons-summary__values"
+              >
+                1
+                MB
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="ons-summary__item"
+          >
+            <tr
+              class="ons-summary__row ons-summary__row--has-values"
+            >
+              <td
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Does the questionnaire already exist in blaise?
+                </div>
+              </td>
+              <td
+                class="ons-summary__values"
+              >
+                Yes, overriding questionnaire
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="ons-summary__item"
+          >
+            <tr
+              class="ons-summary__row ons-summary__row--has-values"
+            >
+              <td
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Set a telephone operations start date for questionnaire?
+                </div>
+              </td>
+              <td
+                class="ons-summary__values"
+              >
+                Start date not specified
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            class="ons-summary__item"
+          >
+            <tr
+              class="ons-summary__row ons-summary__row--has-values"
+            >
+              <td
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Set a totalmobile release date for questionnaire?
+                </div>
+              </td>
+              <td
+                class="ons-summary__values"
+              >
+                Release date not specified
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Deploy form summary page should match the Snapshot for LMS2004A.bpkg 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
