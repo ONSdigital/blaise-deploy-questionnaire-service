@@ -15,6 +15,7 @@ import { roundUp } from "../../utilities/maths";
 import Breadcrumbs from "../breadcrumbs";
 import { activateQuestionnaire, deleteQuestionnaire } from "../../client/questionnaires";
 import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
+import { totalmobileReleaseDateSurveyTLAs } from "../../utilities/totalmobileReleaseDateSurveyTLAs";
 
 enum Step {
     SelectFile,
@@ -94,7 +95,7 @@ function UploadPage(): ReactElement {
         case Step.SetLiveDate:
             return <AskToSetTOStartDate questionnaireName={questionnaireName} />;
         case Step.SetReleaseDate:
-            if (questionnaireName.startsWith("LMS")) {
+            if (totalmobileReleaseDateSurveyTLAs.some(tla => questionnaireName.startsWith(tla))) {
                 return <AskToSetTMReleaseDate questionnaireName={questionnaireName} />;
             }
             setActiveStep(Step.Summary);
