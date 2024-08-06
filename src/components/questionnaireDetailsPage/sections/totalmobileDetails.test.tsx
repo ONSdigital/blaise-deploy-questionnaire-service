@@ -14,44 +14,49 @@ import "@testing-library/jest-dom";
 
 const mock = new MockAdapter(axios);
 
+const questionnaires = [
+    { name: "LMS2101_AA1" },
+    { name: "FRS2101_AA1" }
+];
+
 describe("Totalmobile details", () => {
     afterEach(() => {
         mock.reset();
     });
 
-    it("should display the Totalmobile details for a LMS questionnaire with a release date", async () => {
+    questionnaires.forEach(({ name }) => {
+        it(`should display the Totalmobile details for a ${name} questionnaire with a release date`, async () => {
+            mock.onGet(`/api/tmreleasedate/${name}`).reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
+            render(
+                <TotalmobileDetails questionnaireName={name} />, { wrapper: BrowserRouter }
+            );
 
-        mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
-        render(
-            <TotalmobileDetails questionnaireName={"LMS2101_AA1"} />, { wrapper: BrowserRouter }
-        );
+            await act(async () => {
+                await flushPromises();
+            });
 
-        await act(async () => {
-            await flushPromises();
+            expect(await screen.findByText(/Totalmobile details/i)).toBeInTheDocument();
+            expect(await screen.findByText(/Totalmobile release date/i)).toBeInTheDocument();
+            expect(await screen.findByText(/Change or delete release date/i)).toBeInTheDocument();
+            expect(await screen.findByText(/27\/06\/2021/i)).toBeInTheDocument();
         });
-
-        expect(await screen.findByText(/Totalmobile details/i)).toBeInTheDocument();
-        expect(await screen.findByText(/Totalmobile release date/i)).toBeInTheDocument();
-        expect(await screen.findByText(/Change or delete release date/i)).toBeInTheDocument();
-        expect(await screen.findByText(/27\/06\/2021/i)).toBeInTheDocument();
-
     });
+    
+    questionnaires.forEach(({ name }) => {
+        it(`should display the add release date option for a ${name} questionnaire with no release date`, async () => {
+            mock.onGet(`/api/tmreleasedate/${name}`).reply(404, { tmreleasedate: "" });
+            render(
+                <TotalmobileDetails questionnaireName={name} />, { wrapper: BrowserRouter }
+            );
 
-    it("should display the add release date option for a LMS questionnaire with no release date", async () => {
+            await act(async () => {
+                await flushPromises();
+            });
 
-        mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(404, { tmreleasedate: "" });
-        render(
-            <TotalmobileDetails questionnaireName={"LMS2101_AA1"} />, { wrapper: BrowserRouter }
-        );
-
-        await act(async () => {
-            await flushPromises();
+            expect(await screen.findByText(/Totalmobile details/i)).toBeInTheDocument();
+            expect(await screen.findByText(/No release date specified/i)).toBeInTheDocument();
+            expect(await screen.findByText(/Add release date/i)).toBeInTheDocument();
         });
-
-        expect(await screen.findByText(/Totalmobile details/i)).toBeInTheDocument();
-        expect(await screen.findByText(/No release date specified/i)).toBeInTheDocument();
-        expect(await screen.findByText(/Add release date/i)).toBeInTheDocument();
-
     });
 
     it("should display an error message when it fails to load the Totalmobile release date", async () => {
@@ -68,7 +73,7 @@ describe("Totalmobile details", () => {
         expect(await screen.findByText(/Failed to get Totalmobile release date/i)).toBeInTheDocument();
     });
 
-    it("should not display the Totalmobile details for a non-LMS questionnaire ", async () => {
+    it("should not display the Totalmobile details for a non-LMS, non-FRS questionnaire ", async () => {
 
         mock.onGet("/api/tmreleasedate/OPN2101_AA1").reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
         render(

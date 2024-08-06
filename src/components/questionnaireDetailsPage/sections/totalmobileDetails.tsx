@@ -4,13 +4,14 @@ import { getTMReleaseDate } from "../../../client/tmReleaseDate";
 import dateFormatter from "dayjs";
 import TimeAgo from "react-timeago";
 import { Link } from "react-router-dom";
+import { totalmobileReleaseDateSurveyTLAs } from "../../../utilities/totalmobileReleaseDateSurveyTLAs";
 
 interface Props {
     questionnaireName: string
 }
 
 function TotalmobileDetails({ questionnaireName }: Props): ReactElement {
-    if (!questionnaireName.includes("LMS")) {
+    if (!totalmobileReleaseDateSurveyTLAs.some(tla => questionnaireName.includes(tla))) {
         return <></>;
     }
 
