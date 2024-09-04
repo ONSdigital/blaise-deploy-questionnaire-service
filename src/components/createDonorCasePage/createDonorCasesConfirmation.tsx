@@ -19,16 +19,16 @@ function CreateDonorCasesConfirmation(): ReactElement {
 
     const [loading, isLoading] = React.useState(false);
 
-    // Configure axios-retry to retry failed requests.
-    // This is a ChatGPT solution which was verified against https://www.npmjs.com/package/axios-retry
+    // Configure axios-retry to retry failed requests. This is a ChatGPT solution which was verified against 
+    // https://www.npmjs.com/package/axios-retry and geshan.com.np/blog/2023/09/axios-retry/
     axiosRetry(axios, {
         retries: 3, // Number of retry attempts
         retryDelay: (retryCount) => {
-            return retryCount * 1000;   // Delay between retries (in milliseconds)
+            return retryCount * 1000; // Delay between retries (in milliseconds)
         },
         retryCondition: (error) => {
             // Retry only if the request fails with a status of 500 or higher
-            // @ts-ignore
+            // @ts-expect-error because
             return error.response?.status >= 500;
         },
     });
