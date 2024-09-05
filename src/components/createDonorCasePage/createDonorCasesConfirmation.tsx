@@ -4,7 +4,7 @@ import Breadcrumbs from "../breadcrumbs";
 import { ONSButton, ONSLoadingPanel } from "blaise-design-system-react-components";
 import axios from "axios";
 import { Questionnaire } from "blaise-api-node-client";
-import axiosRetry from "axios-retry";
+import axiosConfig from "../../client/axiosConfig";
 
 interface Location {
     questionnaire: Questionnaire;
@@ -19,30 +19,12 @@ function CreateDonorCasesConfirmation(): ReactElement {
 
     const [loading, isLoading] = React.useState(false);
 
-    // Configure axios-retry to retry failed requests. This is a ChatGPT solution which was verified against 
-    // https://www.npmjs.com/package/axios-retry and geshan.com.np/blog/2023/09/axios-retry/
-    axiosRetry(axios, {
-        retries: 3, // Number of retry attempts
-        retryDelay: (retryCount) => {
-            return retryCount * 1000; // Delay between retries (in milliseconds)
-        },
-        retryCondition: (error) => {
-            // Retry only if the request fails with a status of 500 or higher
-            // @ts-expect-error because
-            return error.response?.status >= 500;
-        },
-    });
-    
     async function callCreateDonorCasesCloudFunction() {
         isLoading(true);
         const payload = { questionnaire_name: questionnaire.name, role: role };
         let res;
         try {
-            res = await axios.post("/api/cloudFunction/createDonorCases", payload, {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            });
+            res = await axios.post("/api/cloudFunction/createDonorCases", payload, axiosConfig());
         } catch (error) {
             const errorMessage = JSON.stringify((error as any).response.data.message);
             res = {
