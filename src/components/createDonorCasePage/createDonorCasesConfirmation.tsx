@@ -4,6 +4,7 @@ import Breadcrumbs from "../breadcrumbs";
 import { ONSButton, ONSLoadingPanel } from "blaise-design-system-react-components";
 import axios from "axios";
 import { Questionnaire } from "blaise-api-node-client";
+import axiosConfig from "../../client/axiosConfig";
 
 interface Location {
     questionnaire: Questionnaire;
@@ -17,17 +18,13 @@ function CreateDonorCasesConfirmation(): ReactElement {
     const navigate = useNavigate();
 
     const [loading, isLoading] = React.useState(false);
-    
+
     async function callCreateDonorCasesCloudFunction() {
         isLoading(true);
         const payload = { questionnaire_name: questionnaire.name, role: role };
         let res;
         try {
-            res = await axios.post("/api/cloudFunction/createDonorCases", payload, {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            });
+            res = await axios.post("/api/cloudFunction/createDonorCases", payload, axiosConfig());
         } catch (error) {
             const errorMessage = JSON.stringify((error as any).response.data.message);
             res = {
