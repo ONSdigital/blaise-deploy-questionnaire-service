@@ -6,7 +6,7 @@ interface Props {
     questionnaire: Questionnaire;
 }
 
-// TODO: Call getUserRoles from the REST API and filter for IPS roles only
+// Temporarily hardcoding of roles that can create donor cases
 const VALID_IPS_ROLES = ["IPS Manager", "IPS Field Interviewer", "IPS Pilot Interviewer"];
 
 function CreateDonorCases({ questionnaire }: Props): ReactElement {
