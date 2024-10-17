@@ -66,14 +66,15 @@ Create a new .env file and add the following variables.
 | Variable       | Description                                                                                                                                                                                                                                                                            | Var Example               |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
 | PORT           | **Optional variable**, specify the Port for express server to run on. If not passed in this is set as 5000 by default. <br><br>It's best not to set this as the react project will try and use the variable as well and conflict. By default, React project locally runs on port 3000  | 5009                      |
-| BLAISE_API_URL | Url that the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) is running on to send calls to                                                                                                                                                                           | localhost:90              |
+| BLAISE_API_URL | URL that the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) is running on to send calls to                                                                                                                                                                           | localhost:90              |
 | PROJECT_ID     | GCP Project ID                                                                                                                                                                                                                                                                         | ons-blaise-dev-matt55     |
 | BUCKET_NAME    | GCP Bucket name for the Questionnaire file to be put in                                                                                                                                                                                                                                   | ons-blaise-dev-matt55-dqs |
 | SERVER_PARK    | Name of Blaise Server Park                                                                                                                                                                                                                                                             | gusty                     |
-| BIMS_API_URL   | Url that the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service) is running on to send calls to set and get the live date                                                                                                                                 | localhost:5011            |
+| BIMS_API_URL   | URL that the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service) is running on to send calls to set and get the live date                                                                                                                                 | localhost:5011            |
 | BIMS_CLIENT_ID | GCP IAP ID for the [BIMS Service](https://github.com/ONSdigital/blaise-instrument-metadata-service)                                                                                                                                                                                    | randomKey0112             |
 | BUS_API_CLIENT | Not needed for local development but the config will look for this variables in the .env file and throw an error if it is not found. Hence, give them a random string                                                                                                                  | FOO                       |
 | BUS_CLIENT_ID  | Not needed for local development but the config will look for this variables in the .env file and throw an error if it is not found. Hence, give them a random string                                                                                                                  | FOO                       |
+| CREATE_DONOR_CASES_CLOUD_FUNCTION_URL  | URL to trigger the Create Donor Cases Cloud Function in GCP. This is needed when you want to deploy donor cases for an IPS questionnaire. **The Cloud Function needs to be deployed in GCP**.                                                                                                                    | https://example-cloud-function-url.com                       |
 
 To find the `X_CLIENT_ID`, navigate to the GCP console, search for `IAP`, click the three dots on right of the service and select `OAuth`. `Client Id` will be on the right.
 
@@ -90,6 +91,7 @@ BIMS_API_URL=localhost:5000
 BIMS_CLIENT_ID=randomKey0778
 BUS_API_URL=FOO
 BUS_CLIENT_ID=FOO
+CREATE_DONOR_CASES_CLOUD_FUNCTION_URL=<cloud-function-url>
 ```
 
 Install the project dependencies:
