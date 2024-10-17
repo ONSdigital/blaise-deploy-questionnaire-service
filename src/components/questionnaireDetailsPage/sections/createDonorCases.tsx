@@ -13,7 +13,7 @@ function CreateDonorCases({ questionnaire }: Props): ReactElement {
     const ipsPilotQuestionnairePattern = /^IPS\d{2}00[A-Za-z]$/;
     const isIPSPilotQuestionnaire = ipsPilotQuestionnairePattern.test(questionnaire.name);
 
-    const rolesToRender = isIPSPilotQuestionnaire
+    const rolesToRender = !isIPSPilotQuestionnaire
         ? ["IPS Pilot Interviewer"]
         : VALID_IPS_ROLES.filter(role => role !== "IPS Pilot Interviewer");
 
