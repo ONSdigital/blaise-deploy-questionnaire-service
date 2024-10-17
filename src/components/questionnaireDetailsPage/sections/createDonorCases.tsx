@@ -6,7 +6,6 @@ interface Props {
     questionnaire: Questionnaire;
 }
 
-// Temporarily hardcoding IPS roles that can create donor cases (business logic)
 const VALID_IPS_ROLES = ["IPS Manager", "IPS Field Interviewer", "IPS Pilot Interviewer"];
 
 function CreateDonorCases({ questionnaire }: Props): ReactElement {
