@@ -93,6 +93,7 @@ BUS_API_URL=FOO
 BUS_CLIENT_ID=FOO
 CREATE_DONOR_CASES_CLOUD_FUNCTION_URL=<cloud-function-url>
 ```
+**NB** DQS environment variables for sandboxes can be found within GCP > App Engine > Versions > DQS service > Config
 
 Install the project dependencies:
 
