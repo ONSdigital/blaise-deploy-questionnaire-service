@@ -10,7 +10,8 @@ interface Props {
 const VALID_IPS_ROLES = ["IPS Manager", "IPS Field Interviewer", "IPS Pilot Interviewer"];
 
 function CreateDonorCases({ questionnaire }: Props): ReactElement {
-    const isIPSPilotQuestionnaire = /^IPS\d{2}00[A-Za-z]$/.test(questionnaire.name);
+    const ipsPilotQuestionnairePattern = /^IPS\d{2}00[A-Za-z]$/;
+    const isIPSPilotQuestionnaire = ipsPilotQuestionnairePattern.test(questionnaire.name);
 
     const rolesToRender = isIPSPilotQuestionnaire
         ? ["IPS Pilot Interviewer"]
