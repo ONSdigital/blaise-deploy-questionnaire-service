@@ -53,6 +53,12 @@ export const ipsQuestionnaire: Questionnaire = {
     installDate: "2021-01-15T15:26:43.4233454+00:00"
 };
 
+export const ipsPilotQuestionnaire: Questionnaire = {
+    name: "IPS2500a",
+    serverParkName: "gusty",
+    installDate: "2022-01-15T15:26:43.4233454+00:00"
+};
+
 export const questionnaireWithName = (questionnaireName: string): Questionnaire => {
     return {
         name: questionnaireName,
