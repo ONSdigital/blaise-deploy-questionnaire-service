@@ -1,6 +1,4 @@
 import React, { ReactElement } from "react";
-import dateFormatter from "dayjs";
-import QuestionnaireStatus from "../../questionnaireStatus";
 import { Questionnaire } from "blaise-api-node-client";
 import { Link } from "react-router-dom";
 
@@ -8,7 +6,16 @@ interface Props {
     questionnaire: Questionnaire;
 }
 
+const VALID_IPS_ROLES = ["IPS Manager", "IPS Field Interviewer", "IPS Pilot Interviewer"];
+
 function CreateDonorCases({ questionnaire }: Props): ReactElement {
+    const ipsPilotQuestionnairePattern = /^IPS\d{2}00[A-Za-z]$/;
+    const isIPSPilotQuestionnaire = ipsPilotQuestionnairePattern.test(questionnaire.name);
+
+    const rolesToRender = isIPSPilotQuestionnaire
+        ? ["IPS Pilot Interviewer"]
+        : VALID_IPS_ROLES.filter(role => role !== "IPS Pilot Interviewer");
+
     return (
         <>
             <div className="ons-summary ons-u-mb-m">
@@ -21,40 +28,25 @@ function CreateDonorCases({ questionnaire }: Props): ReactElement {
                                 <th>Output</th>
                             </tr>
                         </thead>
-                        <tbody className="ons-summary__item">
-                            <tr className="ons-summary__row ons-summary__row--has-values">
-                                <td className="ons-summary__item-title">
-                                    <div className="ons-summary__item--text">
-                                        IPS Manager
-                                    </div>
-                                </td>
-                                <td className="ons-summary__values" colSpan={2}>
-                                    <Link to="/createDonorCasesConfirmation"
-                                        state={{ questionnaire: questionnaire, role: "IPS Manager" }}
-                                        className="ons-summary__button"
-                                        aria-label={`Create donor cases for questionnaire ${questionnaire.name}`}>
-                                        Create cases
-                                    </Link>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody className="ons-summary__item">
-                            <tr className="ons-summary__row ons-summary__row--has-values">
-                                <td className="ons-summary__item-title">
-                                    <div className="ons-summary__item--text">
-                                        IPS Field Interviewer
-                                    </div>
-                                </td>
-                                <td className="ons-summary__values" colSpan={2}>
-                                    <Link to="/createDonorCasesConfirmation"
-                                        state={{ questionnaire: questionnaire, role: "IPS Field Interviewer" }}
-                                        className="ons-summary__button"
-                                        aria-label={`Create donor cases for questionnaire ${questionnaire.name}`}>
-                                        Create cases
-                                    </Link>
-                                </td>
-                            </tr>
-                        </tbody>
+                        {rolesToRender.map((role, index) => (
+                            <tbody key={index} className="ons-summary__item">
+                                <tr className="ons-summary__row ons-summary__row--has-values">
+                                    <td className="ons-summary__item-title">
+                                        <div className="ons-summary__item--text">
+                                            {role}
+                                        </div>
+                                    </td>
+                                    <td className="ons-summary__values" colSpan={2}>
+                                        <Link to="/createDonorCasesConfirmation"
+                                            state={{ questionnaire: questionnaire, role: role }}
+                                            className="ons-summary__button"
+                                            aria-label={`Create donor cases for questionnaire ${questionnaire.name}`}>
+                                            Create cases
+                                        </Link>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        ))}
                     </table>
                 </div>
             </div >
