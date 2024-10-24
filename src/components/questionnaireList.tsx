@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
-import { filter } from "lodash";
+import { filter, get } from "lodash";
 import { Questionnaire } from "blaise-api-node-client";
 import ONSTable, { TableColumns } from "./onsTable";
 import dateFormatter from "dayjs";
@@ -15,14 +15,13 @@ type Props = {
     setErrored: (errored: boolean) => void
 }
 
-const QUESTIONNAIRES_HIDDEN_BY_DEFAULT = ["DST", "ContactInfo", "Attempts"];
+function containsHiddenWord(text: string): boolean {
+    const QUESTIONNAIRE_KEYWORDS = ["DST", "CONTACTINFO", "ATTEMPTS"];
+    return QUESTIONNAIRE_KEYWORDS.some(keyword => text.toUpperCase().includes(keyword));
+} 
 
 function questionnaireName(questionnaire: Questionnaire) {
-    const isHiddenByDefault = QUESTIONNAIRES_HIDDEN_BY_DEFAULT.some(prefix =>
-        questionnaire.name.toUpperCase().startsWith(prefix)
-    );
-
-    if (isHiddenByDefault) {
+    if (containsHiddenWord(questionnaire.name)) {
         return (
             <>
                 <>{questionnaire.name}</> <FontAwesomeIcon icon={faVial as IconProp} />
@@ -70,26 +69,25 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     const [message, setMessage] = useState<string>("");
     const [filteredList, setFilteredList] = useState<Questionnaire[]>([]);
 
-    function filterTestQuestionnaires(questionnairesToFilter: Questionnaire[], filterValue: string): Questionnaire[] {
-        if (!QUESTIONNAIRES_HIDDEN_BY_DEFAULT.some(hiddenQuestionnaire => filterValue.toUpperCase().startsWith(hiddenQuestionnaire))) {
+    function filterQuestionnaires(questionnairesToFilter: Questionnaire[], filterValue: string): Questionnaire[] {
+        if (!containsHiddenWord(filterValue)) {
             questionnairesToFilter = filter(questionnairesToFilter, (questionnaire) => {
                 if (!questionnaire?.name) {
                     return false;
                 }
-                return !QUESTIONNAIRES_HIDDEN_BY_DEFAULT.some(hiddenQuestionnaire => questionnaire.name.toUpperCase().startsWith(hiddenQuestionnaire));
+                return !containsHiddenWord(questionnaire.name);
             });
             setRealQuestionnaireCount(questionnairesToFilter.length);
         }
-        
         return questionnairesToFilter;
     }
 
     function filterList(filterValue: string) {
         // Filter by the search field
         if (filterValue === "") {
-            setFilteredList(filterTestQuestionnaires(questionnaires, filterValue));
+            setFilteredList(filterQuestionnaires(questionnaires, filterValue));
         }
-        const newFilteredList = filter(filterTestQuestionnaires(questionnaires, filterValue), (questionnaire) => questionnaire.name.includes(filterValue.toUpperCase()));
+        const newFilteredList = filter(filterQuestionnaires(questionnaires, filterValue), (questionnaire) => questionnaire.name.includes(filterValue.toUpperCase()));
         // Order by date
         newFilteredList.sort((a: Questionnaire, b: Questionnaire) => Date.parse(b.installDate) - Date.parse(a.installDate));
         setFilteredList(newFilteredList);
@@ -121,9 +119,9 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     useEffect(() => {
         getQuestionnairesList().then((questionnaireList: Questionnaire[]) => {
             setQuestionnaires(questionnaireList);
-            const nonTestQuestionnaires = filterTestQuestionnaires(questionnaireList, "");
-            setFilteredList(nonTestQuestionnaires);
-            if (nonTestQuestionnaires.length === 0) {
+            const filteredQuestionnaireList = filterQuestionnaires(questionnaireList, "");
+            setFilteredList(filteredQuestionnaireList);
+            if (filteredQuestionnaireList.length === 0) {
                 setMessage("No installed questionnaires found.");
             }
             setLoaded(true);
