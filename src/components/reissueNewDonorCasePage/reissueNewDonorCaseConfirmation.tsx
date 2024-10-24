@@ -8,23 +8,24 @@ import axiosConfig from "../../client/axiosConfig";
 
 interface Location {
     questionnaire: Questionnaire;
-    role: string;
+    user: string;
 }
 
-function CreateDonorCasesConfirmation(): ReactElement {
+function ReissueNewDonorCaseConfirmation(): ReactElement {
     const location = useLocation().state as Location;
-    const { questionnaire, role } = location || { questionnaire: "" };
+    const { questionnaire, user } = location || { questionnaire: "", user: "" };
 
     const navigate = useNavigate();
 
     const [loading, isLoading] = React.useState(false);
 
-    async function callCreateDonorCasesCloudFunction() {
+    async function callReissueNewDonorCaseCloudFunction() {
         isLoading(true);
-        const payload = { questionnaire_name: questionnaire.name, role: role };
+        console.log(questionnaire.name, user);
+        const payload = { questionnaire_name: questionnaire.name, user: user };
         let res;
         try {
-            res = await axios.post("/api/cloudFunction/createDonorCases", payload, axiosConfig());
+            res = await axios.post("/api/cloudFunction/reissueNewDonorCase", payload, axiosConfig());
         } catch (error) {
             const errorMessage = JSON.stringify((error as any).response.data.message);
             res = {
@@ -33,7 +34,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
             };
         }
         isLoading(false);
-        navigate(`/questionnaire/${questionnaire.name}`, { state: { section: "createDonorCases", responseMessage: res.data, statusCode: res.status, questionnaire: questionnaire, role: role } });
+        navigate(`/questionnaire/${questionnaire.name}`, { state: { section: "reissueNewDonorCase", responseMessage: res.data, statusCode: res.status, questionnaire: questionnaire, role: user } });
     }
     if (loading) {
         return <ONSLoadingPanel />;
@@ -51,17 +52,17 @@ function CreateDonorCasesConfirmation(): ReactElement {
                     (
                         <>
                             <h1 className="u-mb-l">
-                                Create {role} donor cases for {questionnaire.name}?
+                                Reissue a new donor case for <em>{questionnaire.name}</em> on behalf of <em>{user}</em>?
                             </h1>
                             <ONSButton
                                 label="Continue"
-                                onClick={callCreateDonorCasesCloudFunction}
+                                onClick={callReissueNewDonorCaseCloudFunction}
                                 primary
                                 disabled={loading}
                             />
                             <ONSButton
                                 label="Cancel"
-                                onClick={() => navigate(`/questionnaire/${questionnaire.name}`, { state: { section: "createDonorCases", responseMessage: "", statusCode: 0, questionnaire: questionnaire, role: "" } })} primary={false} />
+                                onClick={() => navigate(`/questionnaire/${questionnaire.name}`, { state: { section: "reissueNewDonorCase", responseMessage: "", statusCode: 0, questionnaire: questionnaire, role: "" } })} primary={false} />
                         </>
                     )
                 }
@@ -70,4 +71,4 @@ function CreateDonorCasesConfirmation(): ReactElement {
     );
 }
 
-export default CreateDonorCasesConfirmation;
+export default ReissueNewDonorCaseConfirmation;

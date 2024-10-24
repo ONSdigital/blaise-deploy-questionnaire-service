@@ -84,7 +84,20 @@ cloudFunctionAxiosError.response = {
     },
 };
 
+export const mockSectionForDonorCasesCreation = {
+    data: "createDonorCases"
+};
+
+export const mockSectionForReissueNewDonorCase = {
+    data: "reissueNewDonorCase"
+};
+
 export const mockSuccessResponseForDonorCasesCreation = {
+    data: "Success",
+    status: 200,
+};
+
+export const mockSuccessResponseForReissueNewDonorCase = {
     data: "Success",
     status: 200,
 };
