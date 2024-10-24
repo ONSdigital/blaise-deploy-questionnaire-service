@@ -88,3 +88,8 @@ export const mockSuccessResponseForDonorCasesCreation = {
     data: "Success",
     status: 200,
 };
+
+export const mockSuccessResponseForReissueNewDonorCase = {
+    data: "Success",
+    status: 200,
+};
