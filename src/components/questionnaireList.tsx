@@ -15,18 +15,24 @@ type Props = {
     setErrored: (errored: boolean) => void
 }
 
-function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
-    function questionnaireName(questionnaire: Questionnaire) {
-        if (questionnaire.name.toUpperCase().startsWith("DST")) {
-            return (
-                <>
-                    <>{questionnaire.name}</> <FontAwesomeIcon icon={faVial as IconProp} />
-                </>
-            );
-        }
-        return <>{questionnaire.name}</>;
-    }
+const QUESTIONNAIRES_HIDDEN_BY_DEFAULT = ["DST", "ContactInfo", "Attempts"];
 
+function questionnaireName(questionnaire: Questionnaire) {
+    const isHiddenByDefault = QUESTIONNAIRES_HIDDEN_BY_DEFAULT.some(prefix =>
+        questionnaire.name.toUpperCase().startsWith(prefix)
+    );
+
+    if (isHiddenByDefault) {
+        return (
+            <>
+                <>{questionnaire.name}</> <FontAwesomeIcon icon={faVial as IconProp} />
+            </>
+        );
+    }
+    return <>{questionnaire.name}</>;
+}
+
+function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
     return (
         <tr className="ons-table__row" key={questionnaire.name} data-testid={"questionnaire-table-row"}>
             <td className="ons-table__cell ">
@@ -65,15 +71,16 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     const [filteredList, setFilteredList] = useState<Questionnaire[]>([]);
 
     function filterTestQuestionnaires(questionnairesToFilter: Questionnaire[], filterValue: string): Questionnaire[] {
-        if (!filterValue.toUpperCase().startsWith("DST")) {
+        if (!QUESTIONNAIRES_HIDDEN_BY_DEFAULT.some(hiddenQuestionnaire => filterValue.toUpperCase().startsWith(hiddenQuestionnaire))) {
             questionnairesToFilter = filter(questionnairesToFilter, (questionnaire) => {
                 if (!questionnaire?.name) {
                     return false;
                 }
-                return !questionnaire.name.toUpperCase().startsWith("DST");
+                return !QUESTIONNAIRES_HIDDEN_BY_DEFAULT.some(hiddenQuestionnaire => questionnaire.name.toUpperCase().startsWith(hiddenQuestionnaire));
             });
             setRealQuestionnaireCount(questionnairesToFilter.length);
         }
+        
         return questionnairesToFilter;
     }
 
