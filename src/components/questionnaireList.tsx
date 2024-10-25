@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
-import { filter, get } from "lodash";
+import { filter } from "lodash";
 import { Questionnaire } from "blaise-api-node-client";
 import ONSTable, { TableColumns } from "./onsTable";
 import dateFormatter from "dayjs";
@@ -17,7 +17,12 @@ type Props = {
 
 function containsHiddenWord(text: string): boolean {
     const QUESTIONNAIRE_KEYWORDS = ["DST", "CONTACTINFO", "ATTEMPTS"];
-    return QUESTIONNAIRE_KEYWORDS.some(keyword => text.toUpperCase().includes(keyword));
+    const textUpperCase = text.toUpperCase();
+    return QUESTIONNAIRE_KEYWORDS.some(keyword => {
+        console.log(`Checking for keyword: ${keyword}, within text: ${textUpperCase}`);
+        console.log(`Result: ${textUpperCase.includes(keyword)}`);
+        return textUpperCase.includes(keyword);
+    });
 } 
 
 function questionnaireName(questionnaire: Questionnaire) {
@@ -61,6 +66,22 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
     );
 }
 
+function questionnaireTable(filteredList: Questionnaire[], tableColumns: TableColumns[], message: string): ReactElement {
+    if (filteredList && filteredList.length > 0) {
+        return <ONSTable columns={tableColumns}
+            tableID={"questionnaire-table"}
+        >
+            {
+                filteredList.map((item: Questionnaire) => {
+                    return questionnaireTableRow(item);
+                })
+            }
+        </ONSTable>;
+    }
+    return <ONSPanel spacious={true}
+        status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>;
+}
+
 export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([]);
     const [realQuestionnaireCount, setRealQuestionnaireCount] = useState<number>(0);
@@ -69,25 +90,19 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     const [message, setMessage] = useState<string>("");
     const [filteredList, setFilteredList] = useState<Questionnaire[]>([]);
 
-    function filterQuestionnaires(questionnairesToFilter: Questionnaire[], filterValue: string): Questionnaire[] {
-        if (!containsHiddenWord(filterValue)) {
-            questionnairesToFilter = filter(questionnairesToFilter, (questionnaire) => {
-                if (!questionnaire?.name) {
-                    return false;
-                }
-                return !containsHiddenWord(questionnaire.name);
-            });
-            setRealQuestionnaireCount(questionnairesToFilter.length);
+    function filterListFromState(filterValue: string) {
+        if (questionnaires.length === 0) {
+            setMessage("No installed questionnaires found.");
+            return [];
         }
-        return questionnairesToFilter;
-    }
-
-    function filterList(filterValue: string) {
         // Filter by the search field
-        if (filterValue === "") {
-            setFilteredList(filterQuestionnaires(questionnaires, filterValue));
-        }
-        const newFilteredList = filter(filterQuestionnaires(questionnaires, filterValue), (questionnaire) => questionnaire.name.includes(filterValue.toUpperCase()));
+        const newFilteredList = filter(questionnaires, (questionnaire) => {
+            if (filterValue === "") {
+                return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase()) && !containsHiddenWord(questionnaire.name);
+            }
+            return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase());
+        });
+        setRealQuestionnaireCount(newFilteredList.length);
         // Order by date
         newFilteredList.sort((a: Questionnaire, b: Questionnaire) => Date.parse(b.installDate) - Date.parse(a.installDate));
         setFilteredList(newFilteredList);
@@ -95,6 +110,7 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
         if (questionnaires.length > 0 && newFilteredList.length === 0) {
             setMessage(`No questionnaires containing ${filterValue} found`);
         }
+        return newFilteredList;
     }
 
     async function getQuestionnairesList() {
@@ -119,30 +135,11 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     useEffect(() => {
         getQuestionnairesList().then((questionnaireList: Questionnaire[]) => {
             setQuestionnaires(questionnaireList);
-            const filteredQuestionnaireList = filterQuestionnaires(questionnaireList, "");
+            const filteredQuestionnaireList = filterListFromState("");
             setFilteredList(filteredQuestionnaireList);
-            if (filteredQuestionnaireList.length === 0) {
-                setMessage("No installed questionnaires found.");
-            }
             setLoaded(true);
         });
     }, []);
-
-    function QuestionnaireTable(): ReactElement {
-        if (filteredList && filteredList.length > 0) {
-            return <ONSTable columns={tableColumns}
-                tableID={"questionnaire-table"}
-            >
-                {
-                    filteredList.map((item: Questionnaire) => {
-                        return questionnaireTableRow(item);
-                    })
-                }
-            </ONSTable>;
-        }
-        return <ONSPanel spacious={true}
-            status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>;
-    }
 
     const tableColumns: TableColumns[] =
         [
@@ -173,7 +170,7 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
                     <label className="ons-label" htmlFor="filter-by-name">Filter by questionnaire name
                     </label>
                     <input type="text" id="filter-by-name" className="ons-input ons-input--text ons-input-type__input"
-                        onChange={(e) => filterList(e.target.value)} />
+                        onChange={(e) => filterListFromState(e.target.value)} />
                 </div>
 
                 <div className="ons-u-mt-s">
@@ -181,8 +178,9 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
                         questionnaires &&
                         <h3 aria-live="polite">{filteredList.length} results of {realQuestionnaireCount}</h3>
                     }
-
-                    <QuestionnaireTable />
+                    {
+                        questionnaireTable(filteredList, tableColumns, message)
+                    }
                 </div>
             </div>
         </>
