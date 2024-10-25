@@ -7,7 +7,7 @@ interface Props {
 }
 
 function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
-    const [username, setUsername] = useState("");
+    const [user, setUser] = useState("");
 
     return (
         <>
@@ -25,25 +25,25 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                             <tr className="ons-summary__row ons-summary__row--has-values">
                                 <td className="ons-summary__item-title">
                                     <div className="ons-summary__item--text">
-                                        <label htmlFor="username">Enter Username:</label>
-                                        <input
-                                            type="text"
-                                            id="username"
-                                            value={username}
-                                            onChange={(e) => setUsername(e.target.value)}
-                                            placeholder="Username"
-                                        />
+                                        <div className="ons-field">
+                                            <label className="ons-label" htmlFor="user">
+                                                User to issues new donor case for
+                                            </label>
+                                            <input type="text" id="user" className="ons-input ons-input--text ons-input-type__input" onChange={(e) => setUser(e.target.value)}/>
+                                        </div>
                                     </div>
                                 </td>
-                                <td className="ons-summary__values" colSpan={2}>
+                                <td className="ons-summary__values" colSpan={2} rowSpan={2}>
+                                    <br/>
+                                    <br/>
                                     <Link
                                         to="/reissueNewDonorCaseConfirmation"
-                                        state= {{
+                                        state={{
                                             questionnaire: questionnaire,
-                                            role: username
+                                            user: user
                                         }}
                                         className="ons-summary__button"
-                                        aria-label={`Reissue new donor case for questionnaire ${questionnaire.name} on behalf of username ${username}`}
+                                        aria-label={`Reissue new donor case for ${questionnaire.name} on behalf of ${user}`}
                                     >
                                         Reissue Donor case
                                     </Link>
