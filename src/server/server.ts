@@ -45,6 +45,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
     const auditHandler = newAuditHandler(auditLogger);
     const cloudFunctionHandler = newCloudFunctionHandler(config.CreateDonorCasesCloudFunctionUrl);
+    const reissueNewDonorCaseHandler = newCloudFunctionHandler(config.ReissueNewDonorCaseCloudFunctionUrl);
 
     const server = express();
 
@@ -71,6 +72,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     server.use("/", busHandler);
     server.use("/", auditHandler);
     server.use("/", cloudFunctionHandler);
+    server.use("/", reissueNewDonorCaseHandler);
     server.use("/", HealthCheckHandler());
 
     server.get("*", function (req: Request, res: Response) {

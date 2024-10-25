@@ -83,7 +83,7 @@ The .env file should be setup as below
 Example .env file:
 
 ```.env
-BLAISE_API_URL=localhost:5011
+BLAISE_API_URL=localhost:8011
 PROJECT_ID=ons-blaise-v2-dev-<sandbox>
 BUCKET_NAME=ons-blaise-v2-dev-<sandbox>-dqs
 SERVER_PARK=gusty

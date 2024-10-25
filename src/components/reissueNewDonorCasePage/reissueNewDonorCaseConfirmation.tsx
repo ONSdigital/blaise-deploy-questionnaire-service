@@ -8,12 +8,12 @@ import axiosConfig from "../../client/axiosConfig";
 
 interface Location {
     questionnaire: Questionnaire;
-    role: string;
+    user: string;
 }
 
 function ReissueNewDonorCaseConfirmation(): ReactElement {
     const location = useLocation().state as Location;
-    const { questionnaire, role } = location || { questionnaire: "" };
+    const { questionnaire, user } = location || { questionnaire: "", user: "" };
 
     const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ function ReissueNewDonorCaseConfirmation(): ReactElement {
 
     async function callReissueNewDonorCaseCloudFunction() {
         isLoading(true);
-        const payload = { questionnaire_name: questionnaire.name, role: role };
+        const payload = { questionnaire_name: questionnaire.name, role: user };
         let res;
         try {
             res = await axios.post("/api/cloudFunction/reissueNewDonorCase", payload, axiosConfig());
@@ -33,7 +33,7 @@ function ReissueNewDonorCaseConfirmation(): ReactElement {
             };
         }
         isLoading(false);
-        navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: res.data, donorCasesStatusCode: res.status, questionnaire: questionnaire, role: role } });
+        navigate(`/questionnaire/${questionnaire.name}`, { state: { reissueNewDonorCaseResponseMessage: res.data, reissueNewDonorCaseStatusCode: res.status, questionnaire: questionnaire, user: user } });
     }
     if (loading) {
         return <ONSLoadingPanel />;
@@ -51,7 +51,7 @@ function ReissueNewDonorCaseConfirmation(): ReactElement {
                     (
                         <>
                             <h1 className="u-mb-l">
-                                Reissue new donor case for {role} - {questionnaire.name}?
+                                Reissue a new donor case for {questionnaire.name} on behalf of {user}?
                             </h1>
                             <ONSButton
                                 label="Continue"
@@ -61,7 +61,7 @@ function ReissueNewDonorCaseConfirmation(): ReactElement {
                             />
                             <ONSButton
                                 label="Cancel"
-                                onClick={() => navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: "", donorCasesStatusCode: 0, questionnaire: questionnaire, role: "" } })} primary={false} />
+                                onClick={() => navigate(`/questionnaire/${questionnaire.name}`, { state: { reissueNewDonorCaseResponseMessage: "", reissueNewDonorCaseStatusCode: 0, questionnaire: questionnaire, user: "" } })} primary={false} />
                         </>
                     )
                 }
