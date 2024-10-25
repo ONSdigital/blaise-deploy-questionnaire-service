@@ -17,11 +17,8 @@ type Props = {
 
 function containsHiddenWord(text: string): boolean {
     const QUESTIONNAIRE_KEYWORDS = ["DST", "CONTACTINFO", "ATTEMPTS"];
-    const textUpperCase = text.toUpperCase();
     return QUESTIONNAIRE_KEYWORDS.some(keyword => {
-        console.log(`Checking for keyword: ${keyword}, within text: ${textUpperCase}`);
-        console.log(`Result: ${textUpperCase.includes(keyword)}`);
-        return textUpperCase.includes(keyword);
+        return text.toUpperCase().includes(keyword);
     });
 } 
 
@@ -90,30 +87,32 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     const [message, setMessage] = useState<string>("");
     const [filteredList, setFilteredList] = useState<Questionnaire[]>([]);
 
-    function filterListFromState(filterValue: string) {
-        if (questionnaires.length === 0) {
+    const filterQuestionnaireList = (questionnaireList: Questionnaire[], filterValue: string) =>{
+        if (questionnaireList.length === 0) {
             setMessage("No installed questionnaires found.");
             return [];
         }
-        // Filter by the search field
-        const newFilteredList = filter(questionnaires, (questionnaire) => {
+
+        const newFilteredList = filter(questionnaireList, (questionnaire) => {
             if (filterValue === "") {
                 return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase()) && !containsHiddenWord(questionnaire.name);
             }
             return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase());
         });
-        setRealQuestionnaireCount(newFilteredList.length);
+        
         // Order by date
         newFilteredList.sort((a: Questionnaire, b: Questionnaire) => Date.parse(b.installDate) - Date.parse(a.installDate));
         setFilteredList(newFilteredList);
-
-        if (questionnaires.length > 0 && newFilteredList.length === 0) {
+        setRealQuestionnaireCount(newFilteredList.length);
+        
+        if (questionnaireList.length > 0 && newFilteredList.length === 0) {
             setMessage(`No questionnaires containing ${filterValue} found`);
+            return [];
         }
         return newFilteredList;
-    }
+    };
 
-    async function getQuestionnairesList() {
+    const getQuestionnairesList = async () => {
         let questionnaires: Questionnaire[];
         try {
             questionnaires = await getQuestionnaires();
@@ -130,56 +129,56 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
         }
 
         return questionnaires;
-    }
+    };
 
     useEffect(() => {
         getQuestionnairesList().then((questionnaireList: Questionnaire[]) => {
             setQuestionnaires(questionnaireList);
-            const filteredQuestionnaireList = filterListFromState("");
+            const filteredQuestionnaireList = filterQuestionnaireList(questionnaireList, "");
             setFilteredList(filteredQuestionnaireList);
             setLoaded(true);
         });
     }, []);
 
-    const tableColumns: TableColumns[] =
-        [
-            {
-                title: "Questionnaire"
-            },
-            {
-                title: "Field period"
-            },
-            {
-                title: "Status"
-            },
-            {
-                title: "Install date"
-            },
-            {
-                title: "Cases"
-            }
-        ];
-
     if (!loaded) {
         return <ONSLoadingPanel />;
     }
+
     return (
         <>
             <div className={"elementToFadeIn ons-u-pt-s"}>
                 <div className="ons-field">
-                    <label className="ons-label" htmlFor="filter-by-name">Filter by questionnaire name
+                    <label className="ons-label" htmlFor="filter-by-name">
+                        Filter by questionnaire name
                     </label>
-                    <input type="text" id="filter-by-name" className="ons-input ons-input--text ons-input-type__input"
-                        onChange={(e) => filterListFromState(e.target.value)} />
+                    <input type="text" id="filter-by-name" 
+                        className="ons-input ons-input--text ons-input-type__input"
+                        onChange={(e) => filterQuestionnaireList(questionnaires, e.target.value)} 
+                    />
                 </div>
-
                 <div className="ons-u-mt-s">
                     {
                         questionnaires &&
                         <h3 aria-live="polite">{filteredList.length} results of {realQuestionnaireCount}</h3>
                     }
                     {
-                        questionnaireTable(filteredList, tableColumns, message)
+                        questionnaireTable(filteredList, [
+                            {
+                                title: "Questionnaire"
+                            },
+                            {
+                                title: "Field period"
+                            },
+                            {
+                                title: "Status"
+                            },
+                            {
+                                title: "Install date"
+                            },
+                            {
+                                title: "Cases"
+                            }
+                        ], message)
                     }
                 </div>
             </div>
