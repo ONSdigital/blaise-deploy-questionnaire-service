@@ -178,8 +178,8 @@ export class BimsHandler {
             error: (message: string) => this.auditLogger.error(req.log, message),
         };
 
-        const username = this.auth.GetUser(this.auth.GetToken(req)).name;
-        return new LoggingReleaseDateManager(this.bimsApiClient, logger, username);
+        const username = this.auth.GetUser(this.auth.GetToken(req))?.name;
+        return new LoggingReleaseDateManager(this.bimsApiClient, logger, username ? username : "Unknown user");
     }
 }
 
