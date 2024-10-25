@@ -27,7 +27,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                     <div className="ons-summary__item--text">
                                         <div className="ons-field">
                                             <label className="ons-label" htmlFor="user">
-                                                User to issues new donor case for
+                                                User to issue new donor case for
                                             </label>
                                             <input type="text" id="user" className="ons-input ons-input--text ons-input-type__input" onChange={(e) => setUser(e.target.value)}/>
                                         </div>

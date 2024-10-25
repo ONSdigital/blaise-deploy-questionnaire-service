@@ -10,9 +10,9 @@ import ReissueNewDonorCaseSummary from "./reissueNewDonorCaseSummary";
 describe("ReissueNewDonorCaseSummary", () => {
     it("displays a success message when receiving a successful response from the cloud function", () => {
         const props = {
-            reissueNewDonorCaseResponseMessage: "Success",
-            reissueNewDonorCaseStatusCode: 200,
-            user: "testuser1",
+            responseMessage: "Success",
+            statusCode: 200,
+            role: "testuser1",
         };
 
         const { getByText } = render(<ReissueNewDonorCaseSummary {...props} />);
@@ -24,9 +24,9 @@ describe("ReissueNewDonorCaseSummary", () => {
 
     it("displays an error message when receiving a failed response from the cloud function", () => {
         const props = {
-            reissueNewDonorCaseResponseMessage: "Internal Server Error",
-            reissueNewDonorCaseStatusCode: 500,
-            user: "testuser1",
+            responseMessage: "Internal Server Error",
+            statusCode: 500,
+            role: "testuser1",
         };
 
         const { getByText } = render(<ReissueNewDonorCaseSummary {...props} />);

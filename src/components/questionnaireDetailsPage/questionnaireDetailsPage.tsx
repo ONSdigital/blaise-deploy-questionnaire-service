@@ -18,21 +18,13 @@ import ReissueNewDonorCaseSummary from "../reissueNewDonorCasePage/reissueNewDon
 
 interface State {
     questionnaire: Questionnaire | null;
-    donorCasesResponseMessage?: string;
-    donorCasesStatusCode?: number;
+    responseMessage?: string;
+    statusCode?: number;
     role?: string;
-}
-
-interface ReissueNewDonorCaseState {
-    questionnaire: Questionnaire | null;
-    reissueNewDonorCaseResponseMessage?: string;
-    reissueNewDonorCaseStatusCode?: number;
-    user?: string;
 }
 
 function QuestionnaireDetailsPage(): ReactElement {
     const location = useLocation().state as State;
-    const reissueNewDonorCaseState = useLocation().state as ReissueNewDonorCaseState;
     const navigate = useNavigate();
     const [questionnaire, setQuestionnaire] = useState<Questionnaire>();
     const [modes, setModes] = useState<string[]>([]);
@@ -41,8 +33,7 @@ function QuestionnaireDetailsPage(): ReactElement {
     const [loaded, setLoaded] = useState<boolean>(false);
     const initialState = location || { questionnaire: null };
     const { questionnaireName } = useParams();
-    const { donorCasesResponseMessage, donorCasesStatusCode, role } = location || { donorCasesResponseMessage: "", donorCasesStatusCode: 0, role: "" };
-    const { reissueNewDonorCaseResponseMessage, reissueNewDonorCaseStatusCode, user } = reissueNewDonorCaseState || { reissueNewDonorCaseResponseMessage: "", reissueNewDonorCaseStatusCode: 0, user: "" };
+    const { responseMessage, statusCode, role } = location || { responseMessage: "", statusCode: 0, role: "" };
 
     useEffect(() => {
         if (initialState.questionnaire === null) {
@@ -126,8 +117,8 @@ function QuestionnaireDetailsPage(): ReactElement {
                     {questionnaire.name}
                 </h1>
 
-                {donorCasesResponseMessage && donorCasesStatusCode && role && <CreateDonorCasesSummary donorCasesResponseMessage={donorCasesResponseMessage} donorCasesStatusCode={donorCasesStatusCode} role={role} />}
-                {reissueNewDonorCaseResponseMessage && reissueNewDonorCaseStatusCode && user && <ReissueNewDonorCaseSummary reissueNewDonorCaseResponseMessage={reissueNewDonorCaseResponseMessage} reissueNewDonorCaseStatusCode={reissueNewDonorCaseStatusCode} user={user} />}
+                {responseMessage && statusCode && role && <CreateDonorCasesSummary donorCasesResponseMessage={responseMessage} donorCasesStatusCode={statusCode} role={role} />}
+                {responseMessage && statusCode && role && <ReissueNewDonorCaseSummary responseMessage={responseMessage} statusCode={statusCode} role={role} />}
                 <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
                 {questionnaire.name.includes("IPS") && <CreateDonorCases questionnaire={questionnaire} />}
                 <ReissueNewDonorCase questionnaire={questionnaire} />
