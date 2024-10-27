@@ -15,15 +15,15 @@ type Props = {
     setErrored: (errored: boolean) => void
 }
 
-function containsHiddenWord(text: string): boolean {
+function isHiddenQuestionnaire(questionnaireName: string): boolean {
     const QUESTIONNAIRE_KEYWORDS = ["DST", "CONTACTINFO", "ATTEMPTS"];
     return QUESTIONNAIRE_KEYWORDS.some(keyword => {
-        return text.toUpperCase().includes(keyword);
+        return questionnaireName.toUpperCase().includes(keyword);
     });
 } 
 
 function questionnaireName(questionnaire: Questionnaire) {
-    if (containsHiddenWord(questionnaire.name)) {
+    if (isHiddenQuestionnaire(questionnaire.name)) {
         return (
             <>
                 <>{questionnaire.name}</> <FontAwesomeIcon icon={faVial as IconProp} />
@@ -85,7 +85,13 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     const [loaded, setLoaded] = useState<boolean>(false);
 
     const [message, setMessage] = useState<string>("");
+    const [filterText, setFilterText] = useState<string>("");
     const [filteredList, setFilteredList] = useState<Questionnaire[]>([]);
+
+    const handleFilterChange = (value: string) => {
+        setFilterText(value);
+        filterQuestionnaireList(questionnaires, value);
+    };
 
     const filterQuestionnaireList = (questionnaireList: Questionnaire[], filterValue: string) =>{
         if (questionnaireList.length === 0) {
@@ -95,7 +101,7 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
 
         const newFilteredList = filter(questionnaireList, (questionnaire) => {
             if (filterValue === "") {
-                return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase()) && !containsHiddenWord(questionnaire.name);
+                return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase()) && !isHiddenQuestionnaire(questionnaire.name);
             }
             return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase());
         });
@@ -151,9 +157,11 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
                     <label className="ons-label" htmlFor="filter-by-name">
                         Filter by questionnaire name
                     </label>
-                    <input type="text" id="filter-by-name" 
+                    <input type="text" id="filter-by-name"
+                        data-testid="filter-by-name"
                         className="ons-input ons-input--text ons-input-type__input"
-                        onChange={(e) => filterQuestionnaireList(questionnaires, e.target.value)} 
+                        onChange={(e) => handleFilterChange(e.target.value)} 
+                        value={filterText}
                     />
                 </div>
                 <div className="ons-u-mt-s">
