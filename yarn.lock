@@ -4516,9 +4516,9 @@ bl@^4.0.3, bl@^4.1.0:
     path-parse "^1.0.7"
     typescript "~4.2.2"
 
-"blaise-login-react@git+https://github.com/ONSdigital/blaise-login-react#login-auth-test-4":
+"blaise-login-react@git+https://github.com/ONSdigital/blaise-login-react#login-auth-test-5":
   version "0.0.0"
-  resolved "git+https://github.com/ONSdigital/blaise-login-react#6a747198319e35d5625607c3aa06b987423ea408"
+  resolved "git+https://github.com/ONSdigital/blaise-login-react#5dc684c87a152d51e8c69f6d48ca7b2288eccd23"
 
 bluebird@^3.7.2:
   version "3.7.2"
