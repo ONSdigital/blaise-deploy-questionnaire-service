@@ -4,7 +4,7 @@
 
 import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter, RouterProvider, createMemoryRouter, useNavigate, useParams } from "react-router-dom";
+import { MemoryRouter, RouterProvider, createMemoryRouter, useNavigate } from "react-router-dom";
 import ReissueNewDonorCaseConfirmation from "./reissueNewDonorCaseConfirmation";
 import "@testing-library/jest-dom";
 import axios from "axios";
@@ -112,7 +112,7 @@ describe("ReissueNewDonorCaseConfirmation navigation", () => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
                 "/api/cloudFunction/reissueNewDonorCase",
-                { questionnaire_name: ipsQuestionnaire.name, role: "testuser" },
+                { questionnaire_name: ipsQuestionnaire.name, user: "testuser" },
                 { headers: { "Content-Type": "application/json" } }
             );
 
@@ -141,7 +141,7 @@ describe("ReissueNewDonorCaseConfirmation navigation", () => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
                 "/api/cloudFunction/reissueNewDonorCase",
-                { questionnaire_name: ipsQuestionnaire.name, role: "testuser" },
+                { questionnaire_name: ipsQuestionnaire.name, user: "testuser" },
                 { headers: { "Content-Type": "application/json" } }
             );
 
