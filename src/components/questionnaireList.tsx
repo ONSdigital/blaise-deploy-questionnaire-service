@@ -15,18 +15,25 @@ type Props = {
     setErrored: (errored: boolean) => void
 }
 
-function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
-    function questionnaireName(questionnaire: Questionnaire) {
-        if (questionnaire.name.toUpperCase().startsWith("DST")) {
-            return (
-                <>
-                    <>{questionnaire.name}</> <FontAwesomeIcon icon={faVial as IconProp} />
-                </>
-            );
-        }
-        return <>{questionnaire.name}</>;
-    }
+function isHiddenQuestionnaire(questionnaireName: string): boolean {
+    const QUESTIONNAIRE_KEYWORDS = ["DST", "CONTACTINFO", "ATTEMPTS"];
+    return QUESTIONNAIRE_KEYWORDS.some(keyword => {
+        return questionnaireName.toUpperCase().includes(keyword);
+    });
+} 
 
+function questionnaireName(questionnaire: Questionnaire) {
+    if (isHiddenQuestionnaire(questionnaire.name)) {
+        return (
+            <>
+                <>{questionnaire.name}</> <FontAwesomeIcon icon={faVial as IconProp} />
+            </>
+        );
+    }
+    return <>{questionnaire.name}</>;
+}
+
+function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
     return (
         <tr className="ons-table__row" key={questionnaire.name} data-testid={"questionnaire-table-row"}>
             <td className="ons-table__cell ">
@@ -56,43 +63,62 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
     );
 }
 
+function questionnaireTable(filteredList: Questionnaire[], tableColumns: TableColumns[], message: string): ReactElement {
+    if (filteredList && filteredList.length > 0) {
+        return <ONSTable columns={tableColumns}
+            tableID={"questionnaire-table"}
+        >
+            {
+                filteredList.map((item: Questionnaire) => {
+                    return questionnaireTableRow(item);
+                })
+            }
+        </ONSTable>;
+    }
+    return <ONSPanel spacious={true}
+        status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>;
+}
+
 export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
     const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([]);
     const [realQuestionnaireCount, setRealQuestionnaireCount] = useState<number>(0);
     const [loaded, setLoaded] = useState<boolean>(false);
 
     const [message, setMessage] = useState<string>("");
+    const [filterText, setFilterText] = useState<string>("");
     const [filteredList, setFilteredList] = useState<Questionnaire[]>([]);
 
-    function filterTestQuestionnaires(questionnairesToFilter: Questionnaire[], filterValue: string): Questionnaire[] {
-        if (!filterValue.toUpperCase().startsWith("DST")) {
-            questionnairesToFilter = filter(questionnairesToFilter, (questionnaire) => {
-                if (!questionnaire?.name) {
-                    return false;
-                }
-                return !questionnaire.name.toUpperCase().startsWith("DST");
-            });
-            setRealQuestionnaireCount(questionnairesToFilter.length);
-        }
-        return questionnairesToFilter;
-    }
+    const handleFilterChange = (value: string) => {
+        setFilterText(value);
+        filterQuestionnaireList(questionnaires, value);
+    };
 
-    function filterList(filterValue: string) {
-        // Filter by the search field
-        if (filterValue === "") {
-            setFilteredList(filterTestQuestionnaires(questionnaires, filterValue));
+    const filterQuestionnaireList = (questionnaireList: Questionnaire[], filterValue: string) =>{
+        if (questionnaireList.length === 0) {
+            setMessage("No installed questionnaires found.");
+            return [];
         }
-        const newFilteredList = filter(filterTestQuestionnaires(questionnaires, filterValue), (questionnaire) => questionnaire.name.includes(filterValue.toUpperCase()));
+
+        const newFilteredList = filter(questionnaireList, (questionnaire) => {
+            if (filterValue === "") {
+                return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase()) && !isHiddenQuestionnaire(questionnaire.name);
+            }
+            return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase());
+        });
+        
         // Order by date
         newFilteredList.sort((a: Questionnaire, b: Questionnaire) => Date.parse(b.installDate) - Date.parse(a.installDate));
         setFilteredList(newFilteredList);
-
-        if (questionnaires.length > 0 && newFilteredList.length === 0) {
+        setRealQuestionnaireCount(newFilteredList.length);
+        
+        if (questionnaireList.length > 0 && newFilteredList.length === 0) {
             setMessage(`No questionnaires containing ${filterValue} found`);
+            return [];
         }
-    }
+        return newFilteredList;
+    };
 
-    async function getQuestionnairesList() {
+    const getQuestionnairesList = async () => {
         let questionnaires: Questionnaire[];
         try {
             questionnaires = await getQuestionnaires();
@@ -109,75 +135,59 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
         }
 
         return questionnaires;
-    }
+    };
 
     useEffect(() => {
         getQuestionnairesList().then((questionnaireList: Questionnaire[]) => {
             setQuestionnaires(questionnaireList);
-            const nonTestQuestionnaires = filterTestQuestionnaires(questionnaireList, "");
-            setFilteredList(nonTestQuestionnaires);
-            if (nonTestQuestionnaires.length === 0) {
-                setMessage("No installed questionnaires found.");
-            }
+            const filteredQuestionnaireList = filterQuestionnaireList(questionnaireList, "");
+            setFilteredList(filteredQuestionnaireList);
             setLoaded(true);
         });
     }, []);
 
-    function QuestionnaireTable(): ReactElement {
-        if (filteredList && filteredList.length > 0) {
-            return <ONSTable columns={tableColumns}
-                tableID={"questionnaire-table"}
-            >
-                {
-                    filteredList.map((item: Questionnaire) => {
-                        return questionnaireTableRow(item);
-                    })
-                }
-            </ONSTable>;
-        }
-        return <ONSPanel spacious={true}
-            status={message.includes("Unable") ? "error" : "info"}>{message}</ONSPanel>;
-    }
-
-    const tableColumns: TableColumns[] =
-        [
-            {
-                title: "Questionnaire"
-            },
-            {
-                title: "Field period"
-            },
-            {
-                title: "Status"
-            },
-            {
-                title: "Install date"
-            },
-            {
-                title: "Cases"
-            }
-        ];
-
     if (!loaded) {
         return <ONSLoadingPanel />;
     }
+
     return (
         <>
             <div className={"elementToFadeIn ons-u-pt-s"}>
                 <div className="ons-field">
-                    <label className="ons-label" htmlFor="filter-by-name">Filter by questionnaire name
+                    <label className="ons-label" htmlFor="filter-by-name">
+                        Filter by questionnaire name
                     </label>
-                    <input type="text" id="filter-by-name" className="ons-input ons-input--text ons-input-type__input"
-                        onChange={(e) => filterList(e.target.value)} />
+                    <input type="text" id="filter-by-name"
+                        data-testid="filter-by-name"
+                        className="ons-input ons-input--text ons-input-type__input"
+                        onChange={(e) => handleFilterChange(e.target.value)} 
+                        value={filterText}
+                    />
                 </div>
-
                 <div className="ons-u-mt-s">
                     {
                         questionnaires &&
                         <h3 aria-live="polite">{filteredList.length} results of {realQuestionnaireCount}</h3>
                     }
-
-                    <QuestionnaireTable />
+                    {
+                        questionnaireTable(filteredList, [
+                            {
+                                title: "Questionnaire"
+                            },
+                            {
+                                title: "Field period"
+                            },
+                            {
+                                title: "Status"
+                            },
+                            {
+                                title: "Install date"
+                            },
+                            {
+                                title: "Cases"
+                            }
+                        ], message)
+                    }
                 </div>
             </div>
         </>
