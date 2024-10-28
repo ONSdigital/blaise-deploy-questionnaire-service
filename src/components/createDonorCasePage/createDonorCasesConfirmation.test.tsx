@@ -8,7 +8,12 @@ import { MemoryRouter, RouterProvider, createMemoryRouter, useNavigate, useParam
 import CreateDonorCasesConfirmation from "./createDonorCasesConfirmation";
 import "@testing-library/jest-dom";
 import axios from "axios";
-import { cloudFunctionAxiosError, ipsQuestionnaire, mockSuccessResponseForDonorCasesCreation } from "../../features/step_definitions/helpers/apiMockObjects";
+import {
+    cloudFunctionAxiosError,
+    ipsQuestionnaire,
+    mockSectionForDonorCasesCreation,
+    mockSuccessResponseForDonorCasesCreation
+} from "../../features/step_definitions/helpers/apiMockObjects";
 
 jest.mock("axios");
 
@@ -81,15 +86,16 @@ describe("CreateDonorCasesConfirmation navigation", () => {
     });
 
     it("should redirect back to the questionnaire details page if user clicks Cancel", async () => {
-        
+
         act(() => {
             fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
         });
 
         expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a", {
             state: {
-                donorCasesResponseMessage: "",
-                donorCasesStatusCode: 0,
+                section: "createDonorCases",
+                responseMessage: "",
+                statusCode: 0,
                 role: "",
                 questionnaire: ipsQuestionnaire,
             },
@@ -113,8 +119,9 @@ describe("CreateDonorCasesConfirmation navigation", () => {
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
-                        donorCasesResponseMessage: mockSuccessResponseForDonorCasesCreation.data,
-                        donorCasesStatusCode: mockSuccessResponseForDonorCasesCreation.status,
+                        section: mockSectionForDonorCasesCreation.data,
+                        responseMessage: mockSuccessResponseForDonorCasesCreation.data,
+                        statusCode: mockSuccessResponseForDonorCasesCreation.status,
                         questionnaire: ipsQuestionnaire,
                         role: "IPS Manager"
                     }
@@ -141,8 +148,9 @@ describe("CreateDonorCasesConfirmation navigation", () => {
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
-                        donorCasesResponseMessage: (cloudFunctionAxiosError as any).response.data.message,
-                        donorCasesStatusCode: 500,
+                        section: "createDonorCases",
+                        responseMessage: (cloudFunctionAxiosError as any).response.data.message,
+                        statusCode: 500,
                         questionnaire: ipsQuestionnaire,
                         role: "IPS Manager"
                     }

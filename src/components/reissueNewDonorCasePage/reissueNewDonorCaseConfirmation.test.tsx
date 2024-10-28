@@ -8,7 +8,12 @@ import { MemoryRouter, RouterProvider, createMemoryRouter, useNavigate, useParam
 import ReissueNewDonorCaseConfirmation from "./reissueNewDonorCaseConfirmation";
 import "@testing-library/jest-dom";
 import axios from "axios";
-import { cloudFunctionAxiosError, ipsQuestionnaire, mockSuccessResponseForReissueNewDonorCase } from "../../features/step_definitions/helpers/apiMockObjects";
+import {
+    cloudFunctionAxiosError,
+    ipsQuestionnaire,
+    mockSectionForReissueNewDonorCase,
+    mockSuccessResponseForReissueNewDonorCase
+} from "../../features/step_definitions/helpers/apiMockObjects";
 
 jest.mock("axios");
 
@@ -29,7 +34,7 @@ describe("ReissueNewDonorCaseConfirmation rendering", () => {
     });
 
     it("displays correct prompt to reissue new donor case", () => {
-        expect(screen.getByText("Reissue new donor case for ?")).toBeInTheDocument();
+        expect(screen.getByText("Reissue a new donor case for on behalf of ?")).toBeInTheDocument();
     });
 
     it("displays the correct number of breadcrumbs", () => {
@@ -61,7 +66,7 @@ describe("ReissueNewDonorCaseConfirmation navigation", () => {
     const initialEntries = [
         {
             pathname: "/reissueNewDonorCaseConfirmation",
-            state: { questionnaire: ipsQuestionnaire, role: "IPS Manager" },
+            state: { questionnaire: ipsQuestionnaire, user: "testuser" },
         },
     ];
     beforeEach(() => {
@@ -88,8 +93,9 @@ describe("ReissueNewDonorCaseConfirmation navigation", () => {
 
         expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a", {
             state: {
-                donorCasesResponseMessage: "",
-                donorCasesStatusCode: 0,
+                section: "reissueNewDonorCase",
+                responseMessage: "",
+                statusCode: 0,
                 role: "",
                 questionnaire: ipsQuestionnaire,
             },
@@ -106,17 +112,18 @@ describe("ReissueNewDonorCaseConfirmation navigation", () => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
                 "/api/cloudFunction/reissueNewDonorCase",
-                { questionnaire_name: ipsQuestionnaire.name, role: "IPS Manager" },
+                { questionnaire_name: ipsQuestionnaire.name, role: "testuser" },
                 { headers: { "Content-Type": "application/json" } }
             );
 
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
-                        donorCasesResponseMessage: mockSuccessResponseForReissueNewDonorCase.data,
-                        donorCasesStatusCode: mockSuccessResponseForReissueNewDonorCase.status,
+                        section: mockSectionForReissueNewDonorCase.data,
+                        responseMessage: mockSuccessResponseForReissueNewDonorCase.data,
+                        statusCode: mockSuccessResponseForReissueNewDonorCase.status,
                         questionnaire: ipsQuestionnaire,
-                        role: "IPS Manager"
+                        role: "testuser"
                     }
                 });
 
@@ -134,17 +141,18 @@ describe("ReissueNewDonorCaseConfirmation navigation", () => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
                 "/api/cloudFunction/reissueNewDonorCase",
-                { questionnaire_name: ipsQuestionnaire.name, role: "IPS Manager" },
+                { questionnaire_name: ipsQuestionnaire.name, role: "testuser" },
                 { headers: { "Content-Type": "application/json" } }
             );
 
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
-                        donorCasesResponseMessage: (cloudFunctionAxiosError as any).response.data.message,
-                        donorCasesStatusCode: 500,
+                        section: "reissueNewDonorCase",
+                        responseMessage: (cloudFunctionAxiosError as any).response.data.message,
+                        statusCode: 500,
                         questionnaire: ipsQuestionnaire,
-                        role: "IPS Manager"
+                        role: "testuser"
                     }
                 });
         });
