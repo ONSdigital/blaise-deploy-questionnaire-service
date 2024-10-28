@@ -21,7 +21,7 @@ function ReissueNewDonorCaseConfirmation(): ReactElement {
 
     async function callReissueNewDonorCaseCloudFunction() {
         isLoading(true);
-        const payload = { questionnaire_name: questionnaire.name, role: user };
+        const payload = { questionnaire_name: questionnaire.name, user: user };
         let res;
         try {
             res = await axios.post("/api/cloudFunction/reissueNewDonorCase", payload, axiosConfig());

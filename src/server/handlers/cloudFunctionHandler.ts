@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { callCloudFunctionToCreateDonorCases } from "../helpers/cloudFunctionCallerHelper";
+import { callCloudFunction } from "../helpers/cloudFunctionCallerHelper";
 
 export default function newCloudFunctionHandler(
     CreateDonorCasesCloudFunctionUrl: string
@@ -13,19 +13,31 @@ export default function newCloudFunctionHandler(
     return router;
 }
 
+export function reissueNewDonorCaseCloudFunctionHandler(
+    CloudFunctionUrl: string
+): Router {
+    const router = express.Router();
+    const cloudFunctionHandler = new CloudFunctionHandler(
+        CloudFunctionUrl
+    );
+    router.post("/api/cloudFunction/reissueNewDonorCase", cloudFunctionHandler.CallCloudFunction);
+
+    return router;
+}
+
 export class CloudFunctionHandler {
-    CreateDonorCasesCloudFunctionUrl: string;
+    CloudFunctionUrl: string;
 
     constructor(CreateDonorCasesCloudFunctionUrl: string) {
-        this.CreateDonorCasesCloudFunctionUrl = CreateDonorCasesCloudFunctionUrl;
+        this.CloudFunctionUrl = CreateDonorCasesCloudFunctionUrl;
         this.CallCloudFunction = this.CallCloudFunction.bind(this);
     }
 
     async CallCloudFunction(req: Request, res: Response): Promise<Response> {
         const reqData = req.body;
-        req.log.info(`${this.CreateDonorCasesCloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
+        req.log.info(`${this.CloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
         try {
-            const cloudfunctionResponse = await callCloudFunctionToCreateDonorCases(this.CreateDonorCasesCloudFunctionUrl, reqData);
+            const cloudfunctionResponse = await callCloudFunction(this.CloudFunctionUrl, reqData);
             return res.status(cloudfunctionResponse.status).json(cloudfunctionResponse);
 
         } catch (error) {
