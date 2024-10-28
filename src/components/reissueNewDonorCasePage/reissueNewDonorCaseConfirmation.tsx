@@ -33,7 +33,7 @@ function ReissueNewDonorCaseConfirmation(): ReactElement {
             };
         }
         isLoading(false);
-        navigate(`/questionnaire/${questionnaire.name}`, { state: { reissueNewDonorCaseResponseMessage: res.data, reissueNewDonorCaseStatusCode: res.status, questionnaire: questionnaire, user: user } });
+        navigate(`/questionnaire/${questionnaire.name}`, { state: { section: "reissueNewDonorCase", responseMessage: res.data, statusCode: res.status, questionnaire: questionnaire, role: user } });
     }
     if (loading) {
         return <ONSLoadingPanel />;
@@ -61,7 +61,7 @@ function ReissueNewDonorCaseConfirmation(): ReactElement {
                             />
                             <ONSButton
                                 label="Cancel"
-                                onClick={() => navigate(`/questionnaire/${questionnaire.name}`, { state: { reissueNewDonorCaseResponseMessage: "", reissueNewDonorCaseStatusCode: 0, questionnaire: questionnaire, user: "" } })} primary={false} />
+                                onClick={() => navigate(`/questionnaire/${questionnaire.name}`, { state: { section: "reissueNewDonorCase", responseMessage: "", statusCode: 0, questionnaire: questionnaire, role: "" } })} primary={false} />
                         </>
                     )
                 }

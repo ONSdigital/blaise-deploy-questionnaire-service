@@ -15,12 +15,6 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                 <div className="ons-summary__group">
                     <h2 className="ons-summary__group-title">Reissue New Donor Case for User</h2>
                     <table className="ons-summary__items">
-                        <thead className="ons-u-vh">
-                            <tr>
-                                <th>Detail</th>
-                                <th>Output</th>
-                            </tr>
-                        </thead>
                         <tbody className="ons-summary__item">
                             <tr className="ons-summary__row ons-summary__row--has-values">
                                 <td className="ons-summary__item-title">
@@ -39,6 +33,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                     <Link
                                         to="/reissueNewDonorCaseConfirmation"
                                         state={{
+                                            section: "reissueNewDonorCase",
                                             questionnaire: questionnaire,
                                             user: user
                                         }}

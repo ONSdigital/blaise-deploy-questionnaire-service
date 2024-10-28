@@ -33,7 +33,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
             };
         }
         isLoading(false);
-        navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: res.data, donorCasesStatusCode: res.status, questionnaire: questionnaire, role: role } });
+        navigate(`/questionnaire/${questionnaire.name}`, { state: { section: "createDonorCases", responseMessage: res.data, statusCode: res.status, questionnaire: questionnaire, role: role } });
     }
     if (loading) {
         return <ONSLoadingPanel />;
@@ -61,7 +61,7 @@ function CreateDonorCasesConfirmation(): ReactElement {
                             />
                             <ONSButton
                                 label="Cancel"
-                                onClick={() => navigate(`/questionnaire/${questionnaire.name}`, { state: { donorCasesResponseMessage: "", donorCasesStatusCode: 0, questionnaire: questionnaire, role: "" } })} primary={false} />
+                                onClick={() => navigate(`/questionnaire/${questionnaire.name}`, { state: { section: "createDonorCases", responseMessage: "", statusCode: 0, questionnaire: questionnaire, role: "" } })} primary={false} />
                         </>
                     )
                 }
