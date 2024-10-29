@@ -1,12 +1,12 @@
 import express, { Request, Response, Router } from "express";
 import { callCloudFunction } from "../helpers/cloudFunctionCallerHelper";
 
-export default function newCloudFunctionHandler(
-    CreateDonorCasesCloudFunctionUrl: string
+export default function createDonorCasesCloudFunctionHandler(
+    CloudFunctionUrl: string
 ): Router {
     const router = express.Router();
     const cloudFunctionHandler = new CloudFunctionHandler(
-        CreateDonorCasesCloudFunctionUrl
+        CloudFunctionUrl
     );
     router.post("/api/cloudFunction/createDonorCases", cloudFunctionHandler.CallCloudFunction);
 
@@ -28,17 +28,17 @@ export function reissueNewDonorCaseCloudFunctionHandler(
 export class CloudFunctionHandler {
     CloudFunctionUrl: string;
 
-    constructor(CreateDonorCasesCloudFunctionUrl: string) {
-        this.CloudFunctionUrl = CreateDonorCasesCloudFunctionUrl;
+    constructor(CloudFunctionUrl: string) {
+        this.CloudFunctionUrl = CloudFunctionUrl;
         this.CallCloudFunction = this.CallCloudFunction.bind(this);
     }
 
     async CallCloudFunction(req: Request, res: Response): Promise<Response> {
         const reqData = req.body;
-        req.log.info(`${this.CloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
+        req.log.info(`${this.CloudFunctionUrl} URL to invoke for Cloud Function.`);
         try {
-            const cloudfunctionResponse = await callCloudFunction(this.CloudFunctionUrl, reqData);
-            return res.status(cloudfunctionResponse.status).json(cloudfunctionResponse);
+            const cloudFunctionResponse = await callCloudFunction(this.CloudFunctionUrl, reqData);
+            return res.status(cloudFunctionResponse.status).json(cloudFunctionResponse);
 
         } catch (error) {
             console.error("Error:", error);

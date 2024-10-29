@@ -17,7 +17,7 @@ import createLogger from "./pino";
 import { HttpLogger } from "pino-http";
 import AuditLogger from "./auditLogging/logger";
 import newAuditHandler from "./handlers/auditHandler";
-import newCloudFunctionHandler from "./handlers/cloudFunctionHandler";
+import createDonorCasesCloudFunctionHandler from "./handlers/cloudFunctionHandler";
 import { reissueNewDonorCaseCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
 
 if (process.env.NODE_ENV === "production") {
@@ -45,7 +45,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     const busHandler = newBusHandler(busApiClient, auth);
     const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
     const auditHandler = newAuditHandler(auditLogger);
-    const cloudFunctionHandler = newCloudFunctionHandler(config.CreateDonorCasesCloudFunctionUrl);
+    const createDonorCasesHandler = createDonorCasesCloudFunctionHandler(config.CreateDonorCasesCloudFunctionUrl);
     const reissueNewDonorCaseHandler = reissueNewDonorCaseCloudFunctionHandler(config.ReissueNewDonorCaseCloudFunctionUrl);
 
     const server = express();
@@ -72,7 +72,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     server.use("/", bimsHandler);
     server.use("/", busHandler);
     server.use("/", auditHandler);
-    server.use("/", cloudFunctionHandler);
+    server.use("/", createDonorCasesHandler);
     server.use("/", reissueNewDonorCaseHandler);
     server.use("/", HealthCheckHandler());
 
