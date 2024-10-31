@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import { Questionnaire } from "blaise-api-node-client";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ONSButton } from "blaise-design-system-react-components";
 
 interface Props {
     questionnaire: Questionnaire;
@@ -8,6 +9,25 @@ interface Props {
 
 function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
     const [user, setUser] = useState("");
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const navigate = useNavigate();
+
+    function reissueNewDonorCaseButtonClicked() {
+        const trimmedUser = user.trim();
+        setUser(trimmedUser);
+
+        // Check if input is empty after trimming
+        if (trimmedUser === "") {
+            setErrorMessage("User input cannot be empty or contain only spaces");
+            setError(true);
+        } else {
+            setError(false);
+            setErrorMessage("");
+            navigate("/reissueNewDonorCaseConfirmation", { state: { section: "reissueNewDonorCase", questionnaire: questionnaire, user: trimmedUser } });
+        }
+    }
 
     return (
         <>
@@ -23,25 +43,18 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                             <label className="ons-label" htmlFor="user">
                                                 User to issue new donor case for
                                             </label>
-                                            <input type="text" id="user" className="ons-input ons-input--text ons-input-type__input" onChange={(e) => setUser(e.target.value)}/>
+                                            <input type="text" id="user" className="ons-input ons-input--text ons-input-type__input" value={user} onChange={(e) => setUser(e.target.value)}/>
                                         </div>
+                                        {error && <p className="ons-summary__item--error">{errorMessage}</p>}
                                     </div>
                                 </td>
                                 <td className="ons-summary__values" colSpan={2} rowSpan={2}>
                                     <br/>
-                                    <br/>
-                                    <Link
-                                        to="/reissueNewDonorCaseConfirmation"
-                                        state={{
-                                            section: "reissueNewDonorCase",
-                                            questionnaire: questionnaire,
-                                            user: user
-                                        }}
-                                        className="ons-summary__button"
-                                        aria-label={`Reissue new donor case for ${questionnaire.name} on behalf of ${user}`}
-                                    >
-                                        Reissue Donor case
-                                    </Link>
+                                    <ONSButton
+                                        label="Reissue Donor Case"
+                                        primary={false}
+                                        onClick={reissueNewDonorCaseButtonClicked}
+                                    />
                                 </td>
                             </tr>
                         </tbody>

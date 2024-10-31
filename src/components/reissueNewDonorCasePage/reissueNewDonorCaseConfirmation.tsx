@@ -21,6 +21,7 @@ function ReissueNewDonorCaseConfirmation(): ReactElement {
 
     async function callReissueNewDonorCaseCloudFunction() {
         isLoading(true);
+        console.log(questionnaire.name, user);
         const payload = { questionnaire_name: questionnaire.name, user: user };
         let res;
         try {
@@ -51,7 +52,7 @@ function ReissueNewDonorCaseConfirmation(): ReactElement {
                     (
                         <>
                             <h1 className="u-mb-l">
-                                Reissue a new donor case for {questionnaire.name} on behalf of {user}?
+                                Reissue a new donor case for <em>{questionnaire.name}</em> on behalf of <em>{user}</em>?
                             </h1>
                             <ONSButton
                                 label="Continue"

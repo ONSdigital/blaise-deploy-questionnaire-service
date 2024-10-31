@@ -7,7 +7,7 @@ interface Props {
     role: string;
 }
 
-function ReissueNewDonorCaseSummary({ responseMessage, statusCode, role }: Props): ReactElement {
+function ReissueNewDonorCaseSummary({ statusCode, role }: Props): ReactElement {
 
     return (
         <>
@@ -24,9 +24,6 @@ function ReissueNewDonorCaseSummary({ responseMessage, statusCode, role }: Props
                             <h1>
                                 Error reissuing new donor case for {role}
                             </h1>
-                            <p>
-                                {responseMessage}
-                            </p>
                             <p>
                                 When reporting this issue to the Service Desk, please provide the questionnaire name, time and date of the failure.
                             </p>
