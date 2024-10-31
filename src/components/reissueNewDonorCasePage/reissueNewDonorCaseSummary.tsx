@@ -25,7 +25,7 @@ function ReissueNewDonorCaseSummary({ statusCode, role }: Props): ReactElement {
                                 Error reissuing new donor case for {role}
                             </h1>
                             <p>
-                                When reporting this issue to the Service Desk, please provide the questionnaire name, user,  time and date of the failure.
+                                When reporting this issue to the Service Desk, please provide the questionnaire name, user, time and date of the failure.
                             </p>
                         </ONSPanel>
                     )
