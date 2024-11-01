@@ -6,11 +6,10 @@ export async function getIdTokenFromMetadataServer(targetAudience: string) {
 
     const client = await googleAuth.getIdTokenClient(targetAudience);
 
-    const token = await client.idTokenProvider.fetchIdToken(targetAudience);
-    return token;
+    return await client.idTokenProvider.fetchIdToken(targetAudience);
 }
 
-export async function callCloudFunctionToCreateDonorCases(url: string, payload: any): Promise<{ message: string, status: number }> {
+export async function callCloudFunction(url: string, payload: any): Promise<{ message: string, status: number }> {
 
     const token = await getIdTokenFromMetadataServer(url);
 
@@ -33,5 +32,4 @@ export async function callCloudFunctionToCreateDonorCases(url: string, payload: 
             status: 500
         };
     }
-
 }

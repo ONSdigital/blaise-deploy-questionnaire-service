@@ -1,5 +1,5 @@
 import { getConfigFromEnv } from "../config";
-import { callCloudFunctionToCreateDonorCases } from "./cloudFunctionCallerHelper";
+import { callCloudFunction } from "./cloudFunctionCallerHelper";
 import axios from "axios";
 import { ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
 import { GoogleAuth } from "google-auth-library";
@@ -47,7 +47,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
             status: mockSuccessResponse.status,
         });
 
-        const result = await callCloudFunctionToCreateDonorCases(
+        const result = await callCloudFunction(
             dummyUrl,
             payload
         );
@@ -84,7 +84,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
             status: mockErrorResponse.status,
         });
 
-        const result = await callCloudFunctionToCreateDonorCases(
+        const result = await callCloudFunction(
             dummyUrl,
             payload
         );
