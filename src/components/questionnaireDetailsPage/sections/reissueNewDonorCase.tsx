@@ -33,7 +33,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
         <>
             <div className="ons-summary ons-u-mb-m">
                 <div className="ons-summary__group">
-                    <h2 className="ons-summary__group-title">Reissue New Donor Case for User</h2>
+                    <h2 className="ons-summary__group-title">Reissue New Donor Case</h2>
                     <table className="ons-summary__items">
                         <tbody className="ons-summary__item">
                             <tr className="ons-summary__row ons-summary__row--has-values">
@@ -45,7 +45,6 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                             </label>
                                             <input type="text" id="user" className="ons-input ons-input--text ons-input-type__input" value={user} onChange={(e) => setUser(e.target.value)}/>
                                         </div>
-                                        {error && <p className="ons-summary__item--error">{errorMessage}</p>}
                                     </div>
                                 </td>
                                 <td className="ons-summary__values" colSpan={2} rowSpan={2}>
@@ -57,6 +56,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                     />
                                 </td>
                             </tr>
+                            {error && <p className="ons-summary__item--error">{errorMessage}</p>}
                         </tbody>
                     </table>
                 </div>

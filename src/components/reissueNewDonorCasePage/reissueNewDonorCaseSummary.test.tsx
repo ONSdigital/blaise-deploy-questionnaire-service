@@ -33,6 +33,6 @@ describe("ReissueNewDonorCaseSummary", () => {
         expect(
             getByText(/Error reissuing new donor case for testuser1/i)
         ).toBeInTheDocument();
-        expect(getByText(/When reporting this issue to the Service Desk, please provide the questionnaire name, user, yarn testtime and date of the failure./i)).toBeInTheDocument();
+        expect(getByText(/When reporting this issue to the Service Desk, please provide the questionnaire name, user, time and date of the failure./i)).toBeInTheDocument();
     });
 });
