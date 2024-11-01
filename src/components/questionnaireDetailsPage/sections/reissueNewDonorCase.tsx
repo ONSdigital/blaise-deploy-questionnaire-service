@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import { Questionnaire } from "blaise-api-node-client";
 import { useNavigate } from "react-router-dom";
-import { ONSButton } from "blaise-design-system-react-components";
+import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
 
 interface Props {
     questionnaire: Questionnaire;
@@ -47,9 +47,13 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                                 className="ons-input ons-input--text ons-input-type__input"
                                                 value={user} onChange={(e) => setUser(e.target.value)}/>
                                         </div>
-                                        <div className="ons-field">
+                                        <div className="ons-field ons-input--text">
                                             {error &&
-                                                <p className="ons-summary__item--error ons-input--text">{errorMessage}</p>}
+                                                <ONSPanel status="error">
+                                                    <p className="">
+                                                        {errorMessage}
+                                                    </p>
+                                                </ONSPanel>}
                                         </div>
                                     </div>
                                 </td>
