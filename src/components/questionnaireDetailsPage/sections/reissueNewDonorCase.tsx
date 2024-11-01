@@ -43,7 +43,13 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                             <label className="ons-label" htmlFor="user">
                                                 User to issue new donor case for
                                             </label>
-                                            <input type="text" id="user" className="ons-input ons-input--text ons-input-type__input" value={user} onChange={(e) => setUser(e.target.value)}/>
+                                            <input type="text" id="user"
+                                                className="ons-input ons-input--text ons-input-type__input"
+                                                value={user} onChange={(e) => setUser(e.target.value)}/>
+                                        </div>
+                                        <div className="ons-field">
+                                            {error &&
+                                                <p className="ons-summary__item--error ons-input--text">{errorMessage}</p>}
                                         </div>
                                     </div>
                                 </td>
@@ -56,7 +62,6 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                     />
                                 </td>
                             </tr>
-                            {error && <p className="ons-summary__item--error">{errorMessage}</p>}
                         </tbody>
                     </table>
                 </div>
