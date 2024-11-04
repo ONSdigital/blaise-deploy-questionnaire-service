@@ -13,11 +13,14 @@ import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react
 import QuestionnaireDetails from "./sections/questionnaireDetails";
 import CreateDonorCases from "./sections/createDonorCases";
 import CreateDonorCasesSummary from "../createDonorCasePage/createDonorCasesSummary";
+import ReissueNewDonorCase from "./sections/reissueNewDonorCase";
+import ReissueNewDonorCaseSummary from "../reissueNewDonorCasePage/reissueNewDonorCaseSummary";
 
 interface State {
+    section?: string;
     questionnaire: Questionnaire | null;
-    donorCasesResponseMessage?: string;
-    donorCasesStatusCode?: number;
+    responseMessage?: string;
+    statusCode?: number;
     role?: string;
 }
 
@@ -31,7 +34,7 @@ function QuestionnaireDetailsPage(): ReactElement {
     const [loaded, setLoaded] = useState<boolean>(false);
     const initialState = location || { questionnaire: null };
     const { questionnaireName } = useParams();
-    const { donorCasesResponseMessage, donorCasesStatusCode, role } = location || { donorCasesResponseMessage: "", donorCasesStatusCode: 0, role: "" };
+    const { section, responseMessage, statusCode, role } = location || { section: "", responseMessage: "", statusCode: 0, role: "" };
 
     useEffect(() => {
         if (initialState.questionnaire === null) {
@@ -115,9 +118,11 @@ function QuestionnaireDetailsPage(): ReactElement {
                     {questionnaire.name}
                 </h1>
 
-                {donorCasesResponseMessage && donorCasesStatusCode && role && <CreateDonorCasesSummary donorCasesResponseMessage={donorCasesResponseMessage} donorCasesStatusCode={donorCasesStatusCode} role={role} />}
+                {section === "createDonorCases" && responseMessage && statusCode && role && <CreateDonorCasesSummary donorCasesResponseMessage={responseMessage} donorCasesStatusCode={statusCode} role={role} />}
+                {section === "reissueNewDonorCase" && responseMessage && statusCode && role && <ReissueNewDonorCaseSummary responseMessage={responseMessage} statusCode={statusCode} role={role} />}
                 <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
                 {questionnaire.name.includes("IPS") && <CreateDonorCases questionnaire={questionnaire} />}
+                {questionnaire.name.includes("IPS") && <ReissueNewDonorCase questionnaire={questionnaire} />}
                 <CatiModeDetails questionnaireName={questionnaire.name} modes={modes} />
                 <CawiModeDetails questionnaire={questionnaire} modes={modes} />
                 <TotalmobileDetails questionnaireName={questionnaire.name} />

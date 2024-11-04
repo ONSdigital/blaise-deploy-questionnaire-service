@@ -4,15 +4,15 @@
 
 import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter, RouterProvider, createMemoryRouter, useNavigate, useParams } from "react-router-dom";
-import CreateDonorCasesConfirmation from "./createDonorCasesConfirmation";
+import { MemoryRouter, RouterProvider, createMemoryRouter, useNavigate } from "react-router-dom";
+import ReissueNewDonorCaseConfirmation from "./reissueNewDonorCaseConfirmation";
 import "@testing-library/jest-dom";
 import axios from "axios";
 import {
     cloudFunctionAxiosError,
     ipsQuestionnaire,
-    mockSectionForDonorCasesCreation,
-    mockSuccessResponseForDonorCasesCreation
+    mockSectionForReissueNewDonorCase,
+    mockSuccessResponseForReissueNewDonorCase
 } from "../../features/step_definitions/helpers/apiMockObjects";
 
 jest.mock("axios");
@@ -24,17 +24,17 @@ jest.mock("react-router-dom", () => ({
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe("CreateDonorCasesConfirmation rendering", () => {
+describe("ReissueNewDonorCaseConfirmation rendering", () => {
     beforeEach(() => {
         render(
             <MemoryRouter>
-                <CreateDonorCasesConfirmation />
+                <ReissueNewDonorCaseConfirmation />
             </MemoryRouter>
         );
     });
 
-    it("displays correct prompt to create donor cases", () => {
-        expect(screen.getByText("Create donor cases for ?")).toBeInTheDocument();
+    it("displays correct prompt to reissue new donor case", () => {
+        expect(screen.getByText("Reissue a new donor case for on behalf of ?")).toBeInTheDocument();
     });
 
     it("displays the correct number of breadcrumbs", () => {
@@ -44,29 +44,29 @@ describe("CreateDonorCasesConfirmation rendering", () => {
         expect(screen.getByTestId("breadcrumb-1")).toBeInTheDocument();
     });
 
-    it("displays a button continue to create donor cases", () => {
+    it("displays a button continue to reissue new donor case", () => {
         expect(screen.getByRole("button", { name: "Continue" })).toBeInTheDocument();
     });
 
-    it("displays a button to navigate back to create donor case page", () => {
+    it("displays a button to navigate back to reissue new donor case page", () => {
         expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
     });
 
 });
 
-describe("CreateDonorCasesConfirmation navigation", () => {
+describe("ReissueNewDonorCaseConfirmation navigation", () => {
     let navigate: jest.Mock;
     const routes = [
         {
-            path: "/createDonorCasesConfirmation",
-            element: <CreateDonorCasesConfirmation />,
+            path: "/reissueNewDonorCaseConfirmation",
+            element: <ReissueNewDonorCaseConfirmation />,
         },
     ];
 
     const initialEntries = [
         {
-            pathname: "/createDonorCasesConfirmation",
-            state: { questionnaire: ipsQuestionnaire, role: "IPS Manager" },
+            pathname: "/reissueNewDonorCaseConfirmation",
+            state: { questionnaire: ipsQuestionnaire, user: "testuser" },
         },
     ];
     beforeEach(() => {
@@ -93,7 +93,7 @@ describe("CreateDonorCasesConfirmation navigation", () => {
 
         expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a", {
             state: {
-                section: "createDonorCases",
+                section: "reissueNewDonorCase",
                 responseMessage: "",
                 statusCode: 0,
                 role: "",
@@ -104,26 +104,26 @@ describe("CreateDonorCasesConfirmation navigation", () => {
 
     it("calls the API endpoint correctly when the continue button is clicked", async () => {
 
-        mockedAxios.post.mockResolvedValueOnce(mockSuccessResponseForDonorCasesCreation);
+        mockedAxios.post.mockResolvedValueOnce(mockSuccessResponseForReissueNewDonorCase);
         act(() => {
             fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
         });
         await waitFor(() => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
-                "/api/cloudFunction/createDonorCases",
-                { questionnaire_name: ipsQuestionnaire.name, role: "IPS Manager" },
+                "/api/cloudFunction/reissueNewDonorCase",
+                { questionnaire_name: ipsQuestionnaire.name, user: "testuser" },
                 { headers: { "Content-Type": "application/json" } }
             );
 
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
-                        section: mockSectionForDonorCasesCreation.data,
-                        responseMessage: mockSuccessResponseForDonorCasesCreation.data,
-                        statusCode: mockSuccessResponseForDonorCasesCreation.status,
+                        section: mockSectionForReissueNewDonorCase.data,
+                        responseMessage: mockSuccessResponseForReissueNewDonorCase.data,
+                        statusCode: mockSuccessResponseForReissueNewDonorCase.status,
                         questionnaire: ipsQuestionnaire,
-                        role: "IPS Manager"
+                        role: "testuser"
                     }
                 });
 
@@ -140,19 +140,19 @@ describe("CreateDonorCasesConfirmation navigation", () => {
         await waitFor(() => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
-                "/api/cloudFunction/createDonorCases",
-                { questionnaire_name: ipsQuestionnaire.name, role: "IPS Manager" },
+                "/api/cloudFunction/reissueNewDonorCase",
+                { questionnaire_name: ipsQuestionnaire.name, user: "testuser" },
                 { headers: { "Content-Type": "application/json" } }
             );
 
             expect(navigate).toHaveBeenCalledWith("/questionnaire/IPS1337a",
                 {
                     state: {
-                        section: "createDonorCases",
+                        section: "reissueNewDonorCase",
                         responseMessage: (cloudFunctionAxiosError as any).response.data.message,
                         statusCode: 500,
                         questionnaire: ipsQuestionnaire,
-                        role: "IPS Manager"
+                        role: "testuser"
                     }
                 });
         });

@@ -21,6 +21,7 @@ import QuestionnaireDetailsPage from "./components/questionnaireDetailsPage/ques
 import ChangeTOStartDate from "./components/questionnaireDetailsPage/changeTOStartDate";
 import ChangeTMReleaseDate from "./components/questionnaireDetailsPage/changeTmReleaseDate";
 import CreateDonorCasesConfirmation from "./components/createDonorCasePage/createDonorCasesConfirmation";
+import ReissueNewDonorCaseConfirmation from "./components/reissueNewDonorCasePage/reissueNewDonorCaseConfirmation";
 import "./style.css";
 import { isProduction } from "./client/env";
 import { Authenticate } from "blaise-login-react/blaise-login-react-client";
@@ -102,6 +103,10 @@ function App(): ReactElement {
                             element={<CreateDonorCasesConfirmation />}>
                         </Route>
                         <Route
+                            path="/reissueNewDonorCaseConfirmation"
+                            element={<ReissueNewDonorCaseConfirmation />}>
+                        </Route>
+                        <Route
                             path="/"
                             element={<main id="main-content" className="ons-page__main ons-u-mt-no">
                                 {successBanner()}
@@ -122,7 +127,7 @@ function App(): ReactElement {
         <Authenticate title="Deploy Questionnaire Service">
             {(_user, loggedIn, logOutFunction) => (
                 <>
-                    <a className="ons-skip-link" href="#main-content">Skip to content</a>
+                    <a className="ons-skip-link">Skip to content</a>
                     {
                         isProduction(window.location.hostname) ? <></> : <NotProductionWarning />
                     }
