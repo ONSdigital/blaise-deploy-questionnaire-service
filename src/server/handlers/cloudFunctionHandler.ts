@@ -1,32 +1,44 @@
 import express, { Request, Response, Router } from "express";
-import { callCloudFunctionToCreateDonorCases } from "../helpers/cloudFunctionCallerHelper";
+import { callCloudFunction } from "../helpers/cloudFunctionCallerHelper";
 
-export default function newCloudFunctionHandler(
-    CreateDonorCasesCloudFunctionUrl: string
+export default function createDonorCasesCloudFunctionHandler(
+    CloudFunctionUrl: string
 ): Router {
     const router = express.Router();
     const cloudFunctionHandler = new CloudFunctionHandler(
-        CreateDonorCasesCloudFunctionUrl
+        CloudFunctionUrl
     );
     router.post("/api/cloudFunction/createDonorCases", cloudFunctionHandler.CallCloudFunction);
 
     return router;
 }
 
-export class CloudFunctionHandler {
-    CreateDonorCasesCloudFunctionUrl: string;
+export function reissueNewDonorCaseCloudFunctionHandler(
+    CloudFunctionUrl: string
+): Router {
+    const router = express.Router();
+    const cloudFunctionHandler = new CloudFunctionHandler(
+        CloudFunctionUrl
+    );
+    router.post("/api/cloudFunction/reissueNewDonorCase", cloudFunctionHandler.CallCloudFunction);
 
-    constructor(CreateDonorCasesCloudFunctionUrl: string) {
-        this.CreateDonorCasesCloudFunctionUrl = CreateDonorCasesCloudFunctionUrl;
+    return router;
+}
+
+export class CloudFunctionHandler {
+    CloudFunctionUrl: string;
+
+    constructor(CloudFunctionUrl: string) {
+        this.CloudFunctionUrl = CloudFunctionUrl;
         this.CallCloudFunction = this.CallCloudFunction.bind(this);
     }
 
     async CallCloudFunction(req: Request, res: Response): Promise<Response> {
         const reqData = req.body;
-        req.log.info(`${this.CreateDonorCasesCloudFunctionUrl} URL to invoke for Creating Donor Cases.`);
+        req.log.info(`${this.CloudFunctionUrl} URL to invoke for Cloud Function.`);
         try {
-            const cloudfunctionResponse = await callCloudFunctionToCreateDonorCases(this.CreateDonorCasesCloudFunctionUrl, reqData);
-            return res.status(cloudfunctionResponse.status).json(cloudfunctionResponse);
+            const cloudFunctionResponse = await callCloudFunction(this.CloudFunctionUrl, reqData);
+            return res.status(cloudFunctionResponse.status).json(cloudFunctionResponse);
 
         } catch (error) {
             console.error("Error:", error);
