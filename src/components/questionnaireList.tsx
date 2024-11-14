@@ -35,7 +35,7 @@ function questionnaireName(questionnaire: Questionnaire) {
     if (isHiddenQuestionnaire(questionnaire.name)) {
         return (
             <>
-                <>{questionnaire.name} </><FontAwesomeIcon icon={getQuestionnaireIcon(questionnaire.name)} />
+                <>{questionnaire.name} </><FontAwesomeIcon icon={getQuestionnaireIcon(questionnaire.name) as IconProp} />
             </>
         );
     }
