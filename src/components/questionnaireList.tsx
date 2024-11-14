@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import QuestionnaireStatus from "./questionnaireStatus";
 import { getQuestionnaires } from "../client/questionnaires";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVial } from "@fortawesome/free-solid-svg-icons";
+import { faVial, faGear } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type Props = {
@@ -20,13 +20,22 @@ function isHiddenQuestionnaire(questionnaireName: string): boolean {
     return QUESTIONNAIRE_KEYWORDS.some(keyword => {
         return questionnaireName.toUpperCase().includes(keyword);
     });
-} 
+}
+
+function getQuestionnaireIcon(questionnaireName: string): IconProp {
+    if (questionnaireName.toUpperCase().includes("DST")) {
+        return faVial;
+    } else if (questionnaireName.toUpperCase().includes("CONTACTINFO") || questionnaireName.toUpperCase().includes("ATTEMPTS")) {
+        return faGear;
+    }
+    return faGear;
+}
 
 function questionnaireName(questionnaire: Questionnaire) {
     if (isHiddenQuestionnaire(questionnaire.name)) {
         return (
             <>
-                <>{questionnaire.name}</> <FontAwesomeIcon icon={faVial as IconProp} />
+                <>{questionnaire.name} </><FontAwesomeIcon icon={getQuestionnaireIcon(questionnaire.name)} />
             </>
         );
     }
