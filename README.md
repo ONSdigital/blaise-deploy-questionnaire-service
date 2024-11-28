@@ -147,6 +147,8 @@ In a new terminal, run Node.js server and React.js client via the following pack
 yarn dev
 ```
 
+WOAH A CHANGE!
+
 The UI should now be accessible via:
 
 http://localhost:3000/
