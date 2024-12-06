@@ -110,6 +110,7 @@ function App(): ReactElement {
                             path="/"
                             element={<main id="main-content" className="ons-page__main ons-u-mt-no">
                                 {successBanner()}
+                                <p>Testing new deployment</p>
                                 {errored && <ONSErrorPanel />}
                                 <ErrorBoundary
                                     errorMessageText={"Unable to load questionnaire table correctly"}>
