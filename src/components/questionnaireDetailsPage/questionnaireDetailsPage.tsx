@@ -36,6 +36,8 @@ function QuestionnaireDetailsPage(): ReactElement {
     const { questionnaireName } = useParams();
     const { section, responseMessage, statusCode, role } = location || { section: "", responseMessage: "", statusCode: 0, role: "" };
 
+    const testingMessage = "Testing Artifact Registry";
+
     useEffect(() => {
         if (initialState.questionnaire === null) {
             loadQuestionnaire().then(() => {
@@ -117,7 +119,9 @@ function QuestionnaireDetailsPage(): ReactElement {
                 <h1 className="ons-u-mb-l">
                     {questionnaire.name}
                 </h1>
-
+                <h2>
+                    {testingMessage}
+                </h2>
                 {section === "createDonorCases" && responseMessage && statusCode && role && <CreateDonorCasesSummary donorCasesResponseMessage={responseMessage} donorCasesStatusCode={statusCode} role={role} />}
                 {section === "reissueNewDonorCase" && responseMessage && statusCode && role && <ReissueNewDonorCaseSummary responseMessage={responseMessage} statusCode={statusCode} role={role} />}
                 <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
