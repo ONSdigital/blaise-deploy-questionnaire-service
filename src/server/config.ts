@@ -123,7 +123,7 @@ function fixURL(url: string): string {
 
 function loadRoles(roles: string | undefined): string[] {
     if (!roles || roles === "" || roles === "_ROLES") {
-        return ["DST", "BDSS", "Researcher", "IPS Researcher"];
+        return ["DST", "BDSS", "Researcher", "IPS Researcher", "IPS Support"];
     }
     return roles.split(",");
 }
