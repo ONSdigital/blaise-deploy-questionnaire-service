@@ -4487,9 +4487,9 @@ bl@^4.0.3, bl@^4.1.0:
     react-loader-spinner "^4.0.0"
     storybook "^7.6.10"
 
-"blaise-iap-node-provider@git+https://github.com/ONSdigital/blaise-iap-node-provider":
+"blaise-iap-node-provider@git+https://github.com/ONSdigital/blaise-iap-node-provider#1.0.0":
   version "1.0.0"
-  resolved "git+https://github.com/ONSdigital/blaise-iap-node-provider#16c9937771369c6cf51dd23af24f0e8755e58e26"
+  resolved "git+https://github.com/ONSdigital/blaise-iap-node-provider#3184e5c462b7ae3f6728aae78eecf8e196bb4ed2"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     "@types/jsonwebtoken" "^8.5.5"
@@ -4666,9 +4666,9 @@ builtin-modules@^3.1.0:
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-3.3.0.tgz#cae62812b89801e9656336e46223e030386be7b6"
   integrity sha512-zhaCDicdLuWN5UbN5IMnFqNMhNfo919sH85y2/ea+5Yg9TsTkeZxpL+JLbp6cgYFS4sRLp3YV4S6yDuqVWHYOw==
 
-"bus-api-node-client@git+https://github.com/ONSdigital/blaise-uac-service-node-client":
+"bus-api-node-client@git+https://github.com/ONSdigital/blaise-uac-service-node-client#1.0.0":
   version "1.0.0"
-  resolved "git+https://github.com/ONSdigital/blaise-uac-service-node-client#1628de8dce695131b2c2bcc1f225a4b6ec9b0fb7"
+  resolved "git+https://github.com/ONSdigital/blaise-uac-service-node-client#9eef584a9b1a5263bc9f13cac397aa67a8cc2932"
   dependencies:
     "@babel/preset-env" "^7.14.7"
     "@types/jsonwebtoken" "^8.5.5"
