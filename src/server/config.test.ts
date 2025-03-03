@@ -30,6 +30,6 @@ describe("Config setup", () => {
         expect(config.BucketName).toBe("ENV_VAR_NOT_SET");
         expect(config.BimsApiUrl).toBe("ENV_VAR_NOT_SET");
         expect(config.BimsClientId).toBe("ENV_VAR_NOT_SET");
-        expect(config.Roles).toStrictEqual(["DST", "BDSS", "Researcher", "IPS Researcher", "IPS Support"]);
+        expect(config.Roles).toStrictEqual(["DST", "BDSS", "Researcher", "IPS Researcher", "IPS Support", "Survey Researcher"]);
     });
 });
