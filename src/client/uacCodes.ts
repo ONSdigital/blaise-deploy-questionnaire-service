@@ -9,7 +9,7 @@ export async function generateUACCodes(instrumentName: string): Promise<boolean>
     const authManager = new AuthManager();
 
     try {
-        const response = await axios.post(url, null, { headers: authManager.authHeader() });
+        const response = await axios.post(url, null, axiosConfig());
         return response.status === 200;
     } catch {
         return false;
