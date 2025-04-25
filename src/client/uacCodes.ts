@@ -16,7 +16,8 @@ export async function generateUACCodes(instrumentName: string): Promise<boolean>
             }
         });
         return response.status === 200;
-    } catch (error) {
+    } catch (error: any) {
+        console.error('POST request failed:', error.response?.data || error.message);
         return false;
     }
 }
