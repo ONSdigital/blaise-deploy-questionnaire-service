@@ -15,6 +15,7 @@ export async function generateUACCodes(instrumentName: string): Promise<boolean>
                 "Content-Type": "application/json",
             }
         });
+        console.log("PRINTING GENERATE UAC CODES: response" + JSON.stringify(response));
         return response.status === 200;
     } catch (error: any) {
         console.error("POST request failed:", error.response?.data || error.message);
