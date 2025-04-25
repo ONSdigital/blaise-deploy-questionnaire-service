@@ -12,12 +12,12 @@ export async function generateUACCodes(instrumentName: string): Promise<boolean>
         const response = await axios.post(url, {}, {
             headers: {
                 ...authManager.authHeader(),
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             }
         });
         return response.status === 200;
     } catch (error: any) {
-        console.error('POST request failed:', error.response?.data || error.message);
+        console.error("POST request failed:", error.response?.data || error.message);
         return false;
     }
 }
