@@ -4600,7 +4600,7 @@ bl@^4.0.3, bl@^4.1.0:
 
 "blaise-login-react@git+https://github.com/ONSdigital/blaise-login-react#1.1.3":
   version "0.0.0"
-  resolved "git+https://github.com/ONSdigital/blaise-login-react#7954d6231c84b03e9751572856bfe9b80ecebc33"
+  resolved "git+https://github.com/ONSdigital/blaise-login-react#c613cef74f14799a4e9a318e8aac07b787291d8c"
 
 bluebird@^3.7.2:
   version "3.7.2"
