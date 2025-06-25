@@ -1,1 +1,1 @@
-export const totalmobileReleaseDateSurveyTLAs = ["LMS", "FRS"];
+export const totalmobileReleaseDateSurveyTLAs = ["LMS", "LMT", "FRS"];
