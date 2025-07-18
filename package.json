@@ -35,7 +35,7 @@
     "blaise-api-node-client": "git+https://github.com/ONSdigital/blaise-api-node-client#1.1.0",
     "blaise-design-system-react-components": "git+https://github.com/ONSdigital/blaise-design-system-react-components#0.14.0",
     "blaise-iap-node-provider": "git+https://github.com/ONSdigital/blaise-iap-node-provider#1.0.0",
-    "blaise-login-react": "git+https://github.com/ONSdigital/blaise-login-react#1.1.3",
+    "blaise-login-react": "git+https://github.com/ONSdigital/blaise-login-react#1.1.4",
     "bus-api-node-client": "git+https://github.com/ONSdigital/blaise-uac-service-node-client#1.0.0",
     "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
