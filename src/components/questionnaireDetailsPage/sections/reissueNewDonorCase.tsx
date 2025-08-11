@@ -2,6 +2,7 @@ import React, { ReactElement, useState } from "react";
 import { Questionnaire } from "blaise-api-node-client";
 import { useNavigate } from "react-router-dom";
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
+import FindUserComponent from "./findUserComponent";
 
 interface Props {
     questionnaire: Questionnaire;
@@ -11,8 +12,12 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
     const [user, setUser] = useState("");
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-
     const navigate = useNavigate();
+
+    function onSetUser(user: string) {
+        console.log("Inside setUser");
+        setUser(user);
+    }
 
     function reissueNewDonorCaseButtonClicked() {
         const trimmedUser = user.trim();
@@ -40,12 +45,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                 <td className="ons-summary__item-title">
                                     <div className="ons-summary__item--text">
                                         <div className="ons-field">
-                                            <label className="ons-label" htmlFor="user">
-                                                User to issue new donor case for
-                                            </label>
-                                            <input type="text" id="user"
-                                                className="ons-input ons-input--text ons-input-type__input"
-                                                value={user} onChange={(e) => setUser(e.target.value)}/>
+                                            <FindUserComponent label="User to issue new donor case for" onItemSelected={onSetUser} />
                                         </div>
                                         <div className="ons-field ons-input--text">
                                             {error &&
