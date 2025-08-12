@@ -5,27 +5,30 @@ import axiosConfig from "../../../client/axiosConfig";
 
 interface Props {
     label: string;
+    roles: string[];
     onItemSelected?: (user: string) => void;
     onError?: (message: string) => void;
 }
 
-function FindUserComponent({ label = "Search user", onItemSelected, onError }: Props): ReactElement {
-    const [dummyUsers, setDummyUsers] = useState<string[]>([]);
+function FindUserComponent({ label = "Search user", roles, onItemSelected, onError }: Props): ReactElement {
+    const [users, setUsers] = useState<string[]>([]);
     const [search, setSearch] = useState("");
     const [filteredUsers, setFilteredUsers] = useState<string[]>([]);
-    const [selectedUser, setSelectedUser] = useState<string>("");
     const [searchDisabled, setSearchDisabled] = useState<boolean>(true);
 
     useEffect(() => {
-        fetchUsers().then(users => {
-            setDummyUsers(users);
+        fetchUsers(roles).then(users => {
+            setUsers(users);
             setFilteredUsers(users);
         });
     }, []);
 
-    async function fetchUsers(): Promise<string[]> {
-        const result = await callGetUsersByRoleCloudFunction();
-        return result;
+    async function fetchUsers(roles: string[]): Promise<string[]> {
+        const results = await Promise.all(
+            roles.map(role => callGetUsersByRoleCloudFunction(role))
+        );
+        // Flatten and sort alphabetically
+        return results.flat().sort((a, b) => a.localeCompare(b));
     }
 
     function findUsers(user: string, users: string[]): string[] {
@@ -33,13 +36,13 @@ function FindUserComponent({ label = "Search user", onItemSelected, onError }: P
     }
 
     useEffect(() => {
-        setFilteredUsers(findUsers(search, dummyUsers));
-    }, [search, dummyUsers]);
+        setFilteredUsers(findUsers(search, users));
+    }, [search, users, filteredUsers]);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
 
-        if(onItemSelected && dummyUsers.includes(e.target.value))
+        if(onItemSelected && users.includes(e.target.value))
         {
             onItemSelected(e.target.value);
         }
@@ -47,9 +50,9 @@ function FindUserComponent({ label = "Search user", onItemSelected, onError }: P
 
     const [loading, isLoading] = React.useState(false);
 
-    async function callGetUsersByRoleCloudFunction(): Promise<string[]> {
+    async function callGetUsersByRoleCloudFunction(userRole: string): Promise<string[]> {
         isLoading(true);
-        const payload = { role: "IPS Field Interviewer" };
+        const payload = { role: userRole };
         let res;
         try {
             res = await axios.post("/api/cloudFunction/getUsersByRole", payload, axiosConfig());
@@ -89,7 +92,7 @@ function FindUserComponent({ label = "Search user", onItemSelected, onError }: P
                     autoComplete="off"
                     onChange={onChange}
                     onBlur={() => {
-                        if (onItemSelected && !dummyUsers.includes(search)) {
+                        if (onItemSelected && !users.includes(search)) {
                             setSearch("");
                             onItemSelected("");
                         } 

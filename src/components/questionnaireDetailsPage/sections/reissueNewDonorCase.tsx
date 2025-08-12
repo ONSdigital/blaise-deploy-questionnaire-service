@@ -14,6 +14,8 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
+    const roles: string[] = ["IPS Field Interviewer", "IPS Manager", "IPS Pilot Interviewer"];
+
     function onSetUser(user: string) {
         setUser(user);
     }
@@ -49,7 +51,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                 <td className="ons-summary__item-title">
                                     <div className="ons-summary__item--text">
                                         <div className="ons-field">
-                                            <FindUserComponent label="User to issue new donor case for" onItemSelected={onSetUser} onError={onError} />
+                                            <FindUserComponent label="User to issue new donor case for" onItemSelected={onSetUser} onError={onError} roles={roles} />
                                         </div>
                                         <div className="ons-field ons-input--text">
                                             {error &&
