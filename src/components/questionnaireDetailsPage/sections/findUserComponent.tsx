@@ -6,13 +6,15 @@ import axiosConfig from "../../../client/axiosConfig";
 interface Props {
     label: string;
     onItemSelected?: (user: string) => void;
+    onError?: (message: string) => void;
 }
 
-function FindUserComponent({ label = "Search user", onItemSelected }: Props): ReactElement {
+function FindUserComponent({ label = "Search user", onItemSelected, onError }: Props): ReactElement {
     const [dummyUsers, setDummyUsers] = useState<string[]>([]);
     const [search, setSearch] = useState("");
     const [filteredUsers, setFilteredUsers] = useState<string[]>([]);
     const [selectedUser, setSelectedUser] = useState<string>("");
+    const [searchDisabled, setSearchDisabled] = useState<boolean>(true);
 
     useEffect(() => {
         fetchUsers().then(users => {
@@ -55,10 +57,17 @@ function FindUserComponent({ label = "Search user", onItemSelected }: Props): Re
             res = await axios.post("/api/cloudFunction/getUsersByRole", payload, axiosConfig());
             console.log(res.data.message);
             isLoading(false);
+            setSearchDisabled(false);
             return res.data.message;
         } catch (error) {
             const errorMessage = JSON.stringify((error as any).response.data.message);
             console.log(errorMessage);
+            if(onError)
+            {
+                onError("Unable to get users");
+                setSearchDisabled(true);
+            }
+            isLoading(false);
             res = {
                 data: errorMessage,
                 status: 500
@@ -80,6 +89,7 @@ function FindUserComponent({ label = "Search user", onItemSelected }: Props): Re
                     type="text"
                     list="user-list"
                     value={search}
+                    disabled={searchDisabled}
                     autoComplete="off"
                     onChange={onChange}
                     onBlur={() => {

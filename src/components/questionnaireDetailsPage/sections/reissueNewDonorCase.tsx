@@ -19,6 +19,11 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
         setUser(user);
     }
 
+    function onError(message: string) {
+        setErrorMessage(message);
+        setError(true);
+    }
+
     function reissueNewDonorCaseButtonClicked() {
         const trimmedUser = user.trim();
         setUser(trimmedUser);
@@ -45,7 +50,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                 <td className="ons-summary__item-title">
                                     <div className="ons-summary__item--text">
                                         <div className="ons-field">
-                                            <FindUserComponent label="User to issue new donor case for" onItemSelected={onSetUser} />
+                                            <FindUserComponent label="User to issue new donor case for" onItemSelected={onSetUser} onError={onError} />
                                         </div>
                                         <div className="ons-field ons-input--text">
                                             {error &&
