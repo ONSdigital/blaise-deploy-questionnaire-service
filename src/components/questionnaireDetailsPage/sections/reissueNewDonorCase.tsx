@@ -15,7 +15,6 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
     const navigate = useNavigate();
 
     function onSetUser(user: string) {
-        console.log("Inside setUser");
         setUser(user);
     }
 
@@ -45,7 +44,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                 <div className="ons-summary__group">
                     <h2 className="ons-summary__group-title">Reissue New Donor Case</h2>
                     <table className="ons-summary__items">
-                        <tbody className="ons-summary__item">
+                        <tbody>
                             <tr className="ons-summary__row ons-summary__row--has-values">
                                 <td className="ons-summary__item-title">
                                     <div className="ons-summary__item--text">

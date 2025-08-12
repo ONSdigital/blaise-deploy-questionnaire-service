@@ -37,14 +37,12 @@ function FindUserComponent({ label = "Search user", onItemSelected, onError }: P
     }, [search, dummyUsers]);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value);
         setSearch(e.target.value);
 
         if(onItemSelected && dummyUsers.includes(e.target.value))
         {
             onItemSelected(e.target.value);
         }
-        //setSelectedUser("");
     };
 
     const [loading, isLoading] = React.useState(false);
@@ -55,13 +53,11 @@ function FindUserComponent({ label = "Search user", onItemSelected, onError }: P
         let res;
         try {
             res = await axios.post("/api/cloudFunction/getUsersByRole", payload, axiosConfig());
-            console.log(res.data.message);
             isLoading(false);
             setSearchDisabled(false);
             return res.data.message;
         } catch (error) {
             const errorMessage = JSON.stringify((error as any).response.data.message);
-            console.log(errorMessage);
             if(onError)
             {
                 onError("Unable to get users");
