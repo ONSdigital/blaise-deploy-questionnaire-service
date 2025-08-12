@@ -76,6 +76,7 @@ Create a new .env file and add the following variables.
 | BUS_CLIENT_ID                             | Not needed for local development but the config will look for this variables in the .env file and throw an error if it is not found. Hence, give them a random string                                                                                                                | FOO                       |
 | CREATE_DONOR_CASES_CLOUD_FUNCTION_URL     | URL to trigger the Create Donor Cases Cloud Function in GCP. This is needed when you want to deploy donor cases for an IPS questionnaire. **The Cloud Function needs to be deployed in GCP**.                                                                                        | https://example-cloud-function-url.com                       |
 | REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL | URL to trigger the Reissue New Donor Case Cloud Function in GCP. This is needed when you want to reissue a new donor case for an IPS questionnaire. **The Cloud Function needs to be deployed in GCP**.                                                                              | https://example-cloud-function-url.com                       |
+| GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL | URL to trigger the Get Users By Role Cloud Function in GCP. This is needed when you want to retrieve a list of users which have a specific role. **The Cloud Function needs to be deployed in GCP**.                                                                              | https://example-cloud-function-url.com                       |
 
 To find the `X_CLIENT_ID`, navigate to the GCP console, search for `IAP`, click the three dots on right of the service and select `OAuth`. `Client Id` will be on the right.
 
@@ -94,6 +95,7 @@ BUS_API_URL=FOO
 BUS_CLIENT_ID=FOO
 CREATE_DONOR_CASES_CLOUD_FUNCTION_URL=<cloud-function-url>
 REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL=<cloud-function-url>
+GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL=<cloud-function-url>
 ```
 **NB** DQS environment variables for sandboxes can be found within GCP > App Engine > Versions > DQS service > Config
 

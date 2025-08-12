@@ -1,31 +1,14 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { ONSPanel } from "blaise-design-system-react-components";
-
-async function fetchUsers(): Promise<string[]> {
-    return [
-        "Fred", "Tim", "Erica", "Borris", "Lena", "Tom", "Nina", "Gus", "Zoe", "Cal",
-        "Maya", "Leo", "Tina", "Derek", "Jill", "Nate", "Sophie", "Hank", "Clara", "Ben",
-        "Liam", "Nora", "Owen", "Rita", "Jake", "Emma", "Todd", "Milo", "Dana", "Faye",
-        "Wes", "Isla", "Reed", "Ava", "Carl", "Lila", "Ivy", "Vince", "Ruby",
-        "Matt", "Ellie", "Sean", "Willa", "Zack", "Grace", "Dean", "Lola", "Finn", "Beth",
-        "Troy", "Mira", "Drew", "Eli", "Mona", "Kyle", "Tess", "Brad", "Paige",
-        "Gabe", "Kira", "Lou", "Maddie", "Roy", "Anya", "Mark", "Juno", "Trent", "Skye",
-        "Ron", "Vera", "Chad", "Gia", "Kurt", "Thea", "Doug", "Luz", "Saul", "Indie",
-        "Jed", "Lacy", "Rick", "Hope", "Neal", "Blair", "Walt", "Romy", "Joel", "Cleo",
-        "Miles", "Dina", "Ralph", "Joy", "Glenn", "Nia", "Curt", "Bea", "Bryce", "Talia"
-    ];
-}
-
-function findUsers(user: string, users: string[]): string[] {
-    return users.filter(u => u.toLowerCase().includes(user.toLowerCase()));
-}
+import { ONSPanel, ONSLoadingPanel } from "blaise-design-system-react-components";
+import axios from "axios";
+import axiosConfig from "../../../client/axiosConfig";
 
 interface Props {
     label: string;
     onItemSelected?: (user: string) => void;
 }
 
-function FindUserComponent({ label, onItemSelected }: Props): ReactElement {
+function FindUserComponent({ label = "Search user", onItemSelected }: Props): ReactElement {
     const [dummyUsers, setDummyUsers] = useState<string[]>([]);
     const [search, setSearch] = useState("");
     const [filteredUsers, setFilteredUsers] = useState<string[]>([]);
@@ -37,6 +20,15 @@ function FindUserComponent({ label, onItemSelected }: Props): ReactElement {
             setFilteredUsers(users);
         });
     }, []);
+
+    async function fetchUsers(): Promise<string[]> {
+        const result = await callGetUsersByRoleCloudFunction();
+        return result;
+    }
+
+    function findUsers(user: string, users: string[]): string[] {
+        return users.filter(u => u.toLowerCase().includes(user.toLowerCase()));
+    }
 
     useEffect(() => {
         setFilteredUsers(findUsers(search, dummyUsers));
@@ -52,6 +44,31 @@ function FindUserComponent({ label, onItemSelected }: Props): ReactElement {
         }
         //setSelectedUser("");
     };
+
+    const [loading, isLoading] = React.useState(false);
+
+    async function callGetUsersByRoleCloudFunction(): Promise<string[]> {
+        isLoading(true);
+        const payload = { role: "IPS Field Interviewer" };
+        let res;
+        try {
+            res = await axios.post("/api/cloudFunction/getUsersByRole", payload, axiosConfig());
+            console.log(res.data.message);
+            isLoading(false);
+            return res.data.message;
+        } catch (error) {
+            const errorMessage = JSON.stringify((error as any).response.data.message);
+            console.log(errorMessage);
+            res = {
+                data: errorMessage,
+                status: 500
+            };
+            return [];
+        }
+    }
+    if (loading) {
+        return <ONSLoadingPanel message="Getting list of users" />;
+    }
 
     return (
         <>

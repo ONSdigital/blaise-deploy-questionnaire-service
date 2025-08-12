@@ -25,6 +25,18 @@ export function reissueNewDonorCaseCloudFunctionHandler(
     return router;
 }
 
+export function getUsersByRoleCloudFunctionHandler(
+    CloudFunctionUrl: string
+): Router {
+    const router = express.Router();
+    const cloudFunctionHandler = new CloudFunctionHandler(
+        CloudFunctionUrl
+    );
+    router.post("/api/cloudFunction/getUsersByRole", cloudFunctionHandler.CallCloudFunction);
+
+    return router;
+}
+
 export class CloudFunctionHandler {
     CloudFunctionUrl: string;
 

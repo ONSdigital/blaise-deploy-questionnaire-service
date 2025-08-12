@@ -18,5 +18,6 @@ process.env = Object.assign(process.env, {
     BIMS_CLIENT_ID: "mock-client-id",
     CREATE_DONOR_CASES_CLOUD_FUNCTION_URL: "mock-cloud-function-url",
     REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL: "mock-cloud-function-url",
+    GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL: "mock-cloud-function-url",
     AUTH_TOKEN: "mock-dummy-token"
 });
