@@ -23,6 +23,10 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
         });
     }, []);
 
+    useEffect(() => {
+        setFilteredUsers(findUsers(search, users));
+    }, [search, users]);
+
     async function fetchUsers(roles: string[]): Promise<string[]> {
         const results = await Promise.all(
             roles.map(role => callGetUsersByRoleCloudFunction(role))
@@ -44,10 +48,6 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
         return users.filter(u => u.toLowerCase().includes(user.toLowerCase()));
     }
 
-    useEffect(() => {
-        setFilteredUsers(findUsers(search, users));
-    }, [search, users, filteredUsers]);
-
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
 
@@ -68,7 +68,7 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
             res = await axios.post("/api/cloudFunction/getUsersByRole", payload, axiosConfig());
             return Array.isArray(res.data.message) ? res.data.message : [];
         } catch (error) {
-            const errorMessage = JSON.stringify((error as any).response.data.message);
+            const errorMessage = JSON.stringify((error as any)?.response?.data?.message || "Unknown error");
             console.log(errorMessage);
             return [];
         } finally {
