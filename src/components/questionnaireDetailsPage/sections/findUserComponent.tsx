@@ -27,8 +27,17 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
         const results = await Promise.all(
             roles.map(role => callGetUsersByRoleCloudFunction(role))
         );
-        // Flatten and sort alphabetically
-        return results.flat().sort((a, b) => a.localeCompare(b));
+        
+        const sortedArray: string[] = results.filter(Boolean).flat().sort((a, b) => a.localeCompare(b));
+
+        if(onError && sortedArray.length == 0) {
+            onError("Unable to get users");
+            setSearchDisabled(true);
+            return [];
+        }
+        else {
+            return sortedArray;
+        }
     }
 
     function findUsers(user: string, users: string[]): string[] {
@@ -52,26 +61,19 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
 
     async function callGetUsersByRoleCloudFunction(userRole: string): Promise<string[]> {
         isLoading(true);
+        setSearchDisabled(true);
         const payload = { role: userRole };
         let res;
         try {
             res = await axios.post("/api/cloudFunction/getUsersByRole", payload, axiosConfig());
-            isLoading(false);
-            setSearchDisabled(false);
-            return res.data.message;
+            return Array.isArray(res.data.message) ? res.data.message : [];
         } catch (error) {
             const errorMessage = JSON.stringify((error as any).response.data.message);
-            if(onError)
-            {
-                onError("Unable to get users");
-                setSearchDisabled(true);
-            }
-            isLoading(false);
-            res = {
-                data: errorMessage,
-                status: 500
-            };
+            console.log(errorMessage);
             return [];
+        } finally {
+            isLoading(false);
+            setSearchDisabled(false);
         }
     }
     if (loading) {
