@@ -47,11 +47,16 @@ describe("FindUserComponent happy path", () => {
             expect(screen.getByLabelText("Test Label")).not.toBeDisabled();
         });
 
-        const datalist = screen.getByRole("combobox").getAttribute("list");
-        const options = document.getElementById(datalist).querySelectorAll("option");
-        const optionValues = Array.from(options).map(opt => opt.getAttribute("value"));
-        expect(optionValues).toContain("Jimmy");
-        expect(optionValues).toContain("Timmy");
+        if (document != null) {
+            const datalistId = screen.getByRole("combobox").getAttribute("list")!;
+            const datalist = document.getElementById(datalistId)!;
+            const options = Array.from(datalist.querySelectorAll("option"));
+            const optionValues = options.map(opt => opt.getAttribute("value"));
+            expect(optionValues).toContain("Jimmy");
+            expect(optionValues).toContain("Timmy");
+        } else {
+            throw new Error("Datalist not found");
+        }
     });
 
     it("calls onItemSelected when a valid user is selected", async () => {
