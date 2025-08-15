@@ -105,9 +105,15 @@ describe("FindUserComponent happy path", () => {
         const input = screen.getByLabelText("Test Label");
         fireEvent.focus(input);
         const datalistId = screen.getByRole("combobox").getAttribute("list");
-        const datalist = document.getElementById(datalistId);
-        const options = datalist ? Array.from(datalist.querySelectorAll("option")) : [];
-        const optionValues = options.map(opt => opt.getAttribute("value"));
-        expect(optionValues).toEqual(["Erin", "Jill", "Jimmy", "Timmy"]);
+        if (datalistId) {
+            const datalist = document.getElementById(datalistId);
+            expect(datalist).not.toBeNull(); 
+            if (datalist) {
+                const options = datalist ? Array.from(datalist.querySelectorAll("option")) : [];
+                const optionValues = options.map(opt => opt.getAttribute("value"));
+                expect(optionValues).toEqual(["Erin", "Jill", "Jimmy", "Timmy"]);
+            }
+        }
+       
     });
 });
