@@ -19,6 +19,7 @@ import AuditLogger from "./auditLogging/logger";
 import newAuditHandler from "./handlers/auditHandler";
 import createDonorCasesCloudFunctionHandler from "./handlers/cloudFunctionHandler";
 import { reissueNewDonorCaseCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
+import { getUsersByRoleCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
 
 if (process.env.NODE_ENV === "production") {
     import("@google-cloud/profiler").then((profiler) => {
@@ -47,6 +48,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     const auditHandler = newAuditHandler(auditLogger);
     const createDonorCasesHandler = createDonorCasesCloudFunctionHandler(config.CreateDonorCasesCloudFunctionUrl);
     const reissueNewDonorCaseHandler = reissueNewDonorCaseCloudFunctionHandler(config.ReissueNewDonorCaseCloudFunctionUrl);
+    const getUsersByRoleHandler = getUsersByRoleCloudFunctionHandler(config.GetUsersByRoleCloudFunctionUrl);
 
     const server = express();
 
@@ -74,6 +76,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     server.use("/", auditHandler);
     server.use("/", createDonorCasesHandler);
     server.use("/", reissueNewDonorCaseHandler);
+    server.use("/", getUsersByRoleHandler);
     server.use("/", HealthCheckHandler());
 
     server.get("*", function (req: Request, res: Response) {
