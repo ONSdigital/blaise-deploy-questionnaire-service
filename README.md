@@ -49,7 +49,7 @@ Open a tunnel to our Blaise RESTful API in your GCP project:
 gcloud compute start-iap-tunnel restapi-1 80 --local-host-port=localhost:8080 --zone europe-west2-a
 ```
 
-You should see `Listening on port [9090]` in the terminal output, leave this terminal running.
+You should see `Listening on port [8080]` in the terminal output, leave this terminal running.
 
 Create an .env file in the project root with the following variables:
 
