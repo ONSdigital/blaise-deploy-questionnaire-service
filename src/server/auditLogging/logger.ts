@@ -30,7 +30,8 @@ export default class AuditLogger {
     async getLogs(): Promise<AuditLog[]> {
         const auditLogs: AuditLog[] = [];
         const log = this.logger.log(this.logName);
-        const [entries] = await log.getEntries({ filter: "jsonPayload.message=~\"^AUDIT_LOG: \"", maxResults: 50 });
+        const filter = 'jsonPayload.message=~"^AUDIT_LOG: " AND resource.labels.module_id="dqs-ui"';
+        const [entries] = await log.getEntries({ filter: filter, maxResults: 50 });
         for (const entry of entries) {
             let id = "";
             let timestamp = "";
