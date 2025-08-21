@@ -68,6 +68,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                     <ONSButton
                                         label="Reissue Donor Case"
                                         primary={false}
+                                        disabled={error}
                                         onClick={reissueNewDonorCaseButtonClicked}
                                     />
                                 </td>

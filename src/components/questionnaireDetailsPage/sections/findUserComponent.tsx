@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState, useRef } from "react";
 import { ONSPanel, ONSLoadingPanel } from "blaise-design-system-react-components";
 import axios from "axios";
 import axiosConfig from "../../../client/axiosConfig";
@@ -15,13 +15,28 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
     const [search, setSearch] = useState("");
     const [filteredUsers, setFilteredUsers] = useState<string[]>([]);
     const [searchDisabled, setSearchDisabled] = useState<boolean>(true);
+    const [loading, setLoading] = useState(false);
+    const hasInitialized = useRef<string[] | null>(null);
 
     useEffect(() => {
+        if (hasInitialized.current && JSON.stringify(roles) === JSON.stringify(hasInitialized.current)) {
+            return;
+        }
+        
+        if (roles.length === 0) return;
+        
+        hasInitialized.current = roles; 
+
+        setLoading(true);
+        setSearchDisabled(true);
+
         fetchUsers(roles).then(users => {
             setUsers(users);
             setFilteredUsers(users);
+        }).finally(() => {
+            setLoading(false);
         });
-    }, []);
+    }, [roles]);
 
     useEffect(() => {
         setFilteredUsers(findUsers(search, users));
@@ -40,6 +55,7 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
             return [];
         }
         else {
+            setSearchDisabled(false);
             return sortedArray;
         }
     }
@@ -57,11 +73,7 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
         }
     };
 
-    const [loading, isLoading] = React.useState(false);
-
     async function callGetUsersByRoleCloudFunction(userRole: string): Promise<string[]> {
-        isLoading(true);
-        setSearchDisabled(true);
         const payload = { role: userRole };
         let res;
         try {
@@ -71,9 +83,6 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
             const errorMessage = JSON.stringify((error as any)?.response?.data?.message || "Unknown error");
             console.log(errorMessage);
             return [];
-        } finally {
-            isLoading(false);
-            setSearchDisabled(false);
         }
     }
     if (loading) {
