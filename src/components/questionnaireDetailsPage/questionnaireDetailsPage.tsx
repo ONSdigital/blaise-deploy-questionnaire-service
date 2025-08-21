@@ -122,7 +122,7 @@ function QuestionnaireDetailsPage(): ReactElement {
                 <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
                 {questionnaire.name.includes("IPS") && <CreateDonorCases questionnaire={questionnaire} />}
                 {questionnaire.name.includes("IPS") && <ReissueNewDonorCase questionnaire={questionnaire} />}
-                <ONSPanel>
+                {questionnaire.name.includes("IPS") && <ONSPanel>
                     When a questionnaire file is uploaded and you wish for interviewers to receive donor cases to perform interviews, you select <b>Create Cases</b> under the Donor Cases section. 
                     <br />
                     <br />
@@ -132,6 +132,7 @@ function QuestionnaireDetailsPage(): ReactElement {
                     However, if an interviewer requires a new donor case that was already been assigned an initial donor case, you need to reissue one to them individually by specifying their username and selecting <b>Reissue a Donor Case</b>.
                     
                 </ONSPanel>
+                }
                 <br />
                 <CatiModeDetails questionnaireName={questionnaire.name} modes={modes} />
                 <CawiModeDetails questionnaire={questionnaire} modes={modes} />
