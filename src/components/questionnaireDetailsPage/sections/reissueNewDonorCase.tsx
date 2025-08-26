@@ -10,7 +10,7 @@ interface Props {
 
 function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
     const [user, setUser] = useState("");
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
@@ -18,6 +18,14 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
 
     function onSetUser(user: string) {
         setUser(user);
+        if(user.trim().length > 0){
+            setError(false);
+            setErrorMessage("");
+        }
+        else
+        {
+            setError(true);
+        }
     }
 
     function onError(message: string) {
@@ -54,7 +62,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                             <FindUserComponent label="User to issue new donor case for" onItemSelected={onSetUser} onError={onError} roles={roles} />
                                         </div>
                                         <div className="ons-field ons-input--text">
-                                            {error &&
+                                            {errorMessage &&
                                                 <ONSPanel status="error">
                                                     <p className="">
                                                         {errorMessage}
@@ -68,6 +76,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                     <ONSButton
                                         label="Reissue Donor Case"
                                         primary={false}
+                                        disabled={error}
                                         onClick={reissueNewDonorCaseButtonClicked}
                                     />
                                 </td>

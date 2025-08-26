@@ -71,6 +71,9 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
         {
             onItemSelected(e.target.value);
         }
+        else if(onItemSelected) {
+            onItemSelected("");
+        }
     };
 
     async function callGetUsersByRoleCloudFunction(userRole: string): Promise<string[]> {
@@ -104,6 +107,7 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
                     onChange={onChange}
                     onBlur={() => {
                         if (onItemSelected && !users.includes(search)) {
+                            if(onError && search.trim().length > 0) onError("Username does not exist");
                             setSearch("");
                             onItemSelected("");
                         } 
