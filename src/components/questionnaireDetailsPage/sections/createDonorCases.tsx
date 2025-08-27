@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import { Questionnaire } from "blaise-api-node-client";
 import { Link } from "react-router-dom";
+import { ONSPanel } from "blaise-design-system-react-components";
 
 interface Props {
     questionnaire: Questionnaire;
@@ -20,7 +21,14 @@ function CreateDonorCases({ questionnaire }: Props): ReactElement {
         <>
             <div className="ons-summary ons-u-mb-m">
                 <div className="ons-summary__group">
-                    <h2 className="ons-summary__group-title">Donor Cases</h2>
+                    <h2 className="ons-summary__group-title">Donor case</h2>
+                    <ONSPanel>
+                        To create initial donor cases for the interviewers, click <b>Create cases</b>.
+                        <br />
+                        <br />
+                        If new interviewers without initial donor cases are added, use <b>Create cases</b> again; only those without a case will receive one.
+                        <br />
+                    </ONSPanel>
                     <table className="ons-summary__items">
                         <thead className="ons-u-vh">
                             <tr>

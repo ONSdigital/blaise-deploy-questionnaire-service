@@ -9,7 +9,7 @@ interface Props {
 
 function ReissueNewDonorCaseSummary({ statusCode, role, responseMessage }: Props): ReactElement {
 
-    const message = (typeof responseMessage === "string" && responseMessage.includes("User has no existing donor cases.")) ? "User has not been issued with an initial donor case. Please select 'create cases' under Donor Case section." : "When reporting this issue to the Service Desk, please provide the questionnaire name, user, time and date of the failure.";
+    const message = (typeof responseMessage === "string" && responseMessage.includes("User has no existing donor cases.")) ? "User has not been issued with an initial donor case. Please click 'Create cases' under Donor case section." : "When reporting this issue to the Service Desk, please provide the questionnaire name, user, time and date of the failure.";
 
     return (
         <>
@@ -25,7 +25,7 @@ function ReissueNewDonorCaseSummary({ statusCode, role, responseMessage }: Props
                         <ONSPanel status="error">
                             
                             <h1>
-                                Error reissuing new donor case for {role}.
+                                Error reissuing donor case for {role}.
                             </h1>
                             <p>
                                 {message}

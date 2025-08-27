@@ -95,7 +95,6 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
     return (
         <>
             <div className="ons-field">
-                <label className="ons-label" htmlFor="search">{label}</label>
                 <input
                     className="ons-input ons-input--text ons-input-type__input"
                     id="search"
@@ -105,6 +104,7 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
                     disabled={searchDisabled}
                     autoComplete="off"
                     onChange={onChange}
+                    placeholder={label}
                     onBlur={() => {
                         if (onItemSelected && !users.includes(search)) {
                             if(onError && search.trim().length > 0) onError("Username does not exist");

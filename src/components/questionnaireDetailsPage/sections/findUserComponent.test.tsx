@@ -24,27 +24,27 @@ describe("FindUserComponent happy path", () => {
     });
 
     it("renders input and label", async () => {
-        render(<FindUserComponent label="Test Label" roles={roles} />);
+        render(<FindUserComponent label="Enter Username" roles={roles} />);
         await waitFor(() => {
-            expect(screen.getByText("Test Label")).toBeDefined();
+            expect(screen.getByPlaceholderText("Enter Username")).toBeInTheDocument();
         });
     });
 
     it("does not disable input while loading", async () => {
         mockedAxios.post.mockResolvedValueOnce({ data: { message: users } }); // mock before render
-        render(<FindUserComponent label="Test Label" roles={roles} />);
+        render(<FindUserComponent label="Enter Username" roles={roles} />);
         await waitFor(() => {
-            expect(screen.getByLabelText("Test Label")).not.toBeDisabled();
+            expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled();
         });
     });
 
     it("filters users as you type", async () => {
 
         mockedAxios.post.mockResolvedValueOnce({ data: { message: users } }); // mock before render
-        render(<FindUserComponent label="Test Label" roles={roles} />);
+        render(<FindUserComponent label="Enter Username" roles={roles} />);
 
         await waitFor(() => {
-            expect(screen.getByLabelText("Test Label")).not.toBeDisabled();
+            expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled();
         });
 
         if (document != null) {
@@ -62,9 +62,9 @@ describe("FindUserComponent happy path", () => {
     it("calls onItemSelected when a valid user is selected", async () => {
         mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
         const onItemSelected = jest.fn();
-        render(<FindUserComponent label="Test Label" roles={roles} onItemSelected={onItemSelected} />);
-        await waitFor(() => expect(screen.getByLabelText("Test Label")).not.toBeDisabled());
-        const input = screen.getByLabelText("Test Label");
+        render(<FindUserComponent label="Enter Username" roles={roles} onItemSelected={onItemSelected} />);
+        await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
+        const input = screen.getByPlaceholderText("Enter Username");
         fireEvent.change(input, { target: { value: "Jill" } });
         expect(onItemSelected).toHaveBeenCalledWith("Jill");
     });
@@ -72,16 +72,16 @@ describe("FindUserComponent happy path", () => {
     it("calls onError if API fails", async () => {
         mockedAxios.post.mockRejectedValueOnce(new Error("API error"));
         const onError = jest.fn();
-        render(<FindUserComponent label="Test Label" roles={roles} onError={onError} />);
+        render(<FindUserComponent label="Enter Username" roles={roles} onError={onError} />);
         await waitFor(() => expect(onError).toHaveBeenCalled());
     });
 
     it("clears input and calls onItemSelected with empty string on blur if input is not a user", async () => {
         mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
         const onItemSelected = jest.fn();
-        render(<FindUserComponent label="Test Label" roles={roles} onItemSelected={onItemSelected} />);
-        await waitFor(() => expect(screen.getByLabelText("Test Label")).not.toBeDisabled());
-        const input = screen.getByLabelText("Test Label");
+        render(<FindUserComponent label="Enter Username" roles={roles} onItemSelected={onItemSelected} />);
+        await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
+        const input = screen.getByPlaceholderText("Enter Username");
         fireEvent.change(input, { target: { value: "NotAUser" } });
         fireEvent.blur(input);
         expect(input).toHaveValue("");
@@ -90,9 +90,9 @@ describe("FindUserComponent happy path", () => {
 
     it("shows no options if filter matches no users", async () => {
         mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
-        render(<FindUserComponent label="Test Label" roles={roles} />);
-        await waitFor(() => expect(screen.getByLabelText("Test Label")).not.toBeDisabled());
-        const input = screen.getByLabelText("Test Label");
+        render(<FindUserComponent label="Enter Username" roles={roles} />);
+        await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
+        const input = screen.getByPlaceholderText("Enter Username");
         fireEvent.change(input, { target: { value: "zzz" } });
         expect(screen.queryAllByRole("option")).toHaveLength(0);
     });
@@ -100,9 +100,9 @@ describe("FindUserComponent happy path", () => {
     it("returns users in alphabetical order", async () => {
         const unordered = ["Timmy", "Jill", "Erin", "Jimmy"];
         mockedAxios.post.mockResolvedValueOnce({ data: { message: unordered } });
-        render(<FindUserComponent label="Test Label" roles={roles} />);
-        await waitFor(() => expect(screen.getByLabelText("Test Label")).not.toBeDisabled());
-        const input = screen.getByLabelText("Test Label");
+        render(<FindUserComponent label="Enter Username" roles={roles} />);
+        await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
+        const input = screen.getByPlaceholderText("Enter Username");
         fireEvent.focus(input);
         const datalistId = screen.getByRole("combobox").getAttribute("list");
         if (datalistId) {

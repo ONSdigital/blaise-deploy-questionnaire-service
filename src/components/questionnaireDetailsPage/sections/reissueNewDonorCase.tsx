@@ -52,14 +52,16 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
         <>
             <div className="ons-summary ons-u-mb-m">
                 <div className="ons-summary__group">
-                    <h2 className="ons-summary__group-title">Reissue New Donor Case</h2>
+                    <ONSPanel>
+                        To assign a new donor case to an interviewer who already has one, select their username and click <b>Reissue Donor Case</b>.
+                    </ONSPanel>
                     <table className="ons-summary__items">
                         <tbody>
                             <tr className="ons-summary__row ons-summary__row--has-values">
                                 <td className="ons-summary__item-title">
                                     <div className="ons-summary__item--text">
                                         <div className="ons-field">
-                                            <FindUserComponent label="User to issue new donor case for" onItemSelected={onSetUser} onError={onError} roles={roles} />
+                                            <FindUserComponent label="Enter Username" onItemSelected={onSetUser} onError={onError} roles={roles} />
                                         </div>
                                         <div className="ons-field ons-input--text">
                                             {errorMessage &&
@@ -71,8 +73,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                         </div>
                                     </div>
                                 </td>
-                                <td className="ons-summary__values" colSpan={2} rowSpan={2}>
-                                    <br/>
+                                <td className="ons-summary__values" colSpan={1} rowSpan={1}>
                                     <ONSButton
                                         label="Reissue Donor Case"
                                         primary={false}
