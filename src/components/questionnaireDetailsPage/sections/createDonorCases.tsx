@@ -26,7 +26,7 @@ function CreateDonorCases({ questionnaire }: Props): ReactElement {
                         To create initial donor cases for the interviewers, click <b>Create cases</b>.
                         <br />
                         <br />
-                        If new interviewers without initial donor cases are added, use <b>Create cases</b> again; only those without a case will receive one.
+                        If new interviewers without initial donor cases are added, click <b>Create cases</b> again; only those without a case will receive one.
                         <br />
                     </ONSPanel>
                     <table className="ons-summary__items">

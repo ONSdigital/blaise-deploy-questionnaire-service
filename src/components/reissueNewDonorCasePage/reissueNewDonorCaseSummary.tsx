@@ -18,7 +18,7 @@ function ReissueNewDonorCaseSummary({ statusCode, role, responseMessage }: Props
                     (statusCode === 200 ?
                         <ONSPanel status="success" bigIcon={true}>
                             <h1>
-                                Reissued donor case created successfully for {role}
+                                Reissued donor case successfully for {role}
                             </h1>
                         </ONSPanel>
                         :

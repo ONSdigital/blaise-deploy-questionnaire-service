@@ -17,7 +17,7 @@ describe("ReissueNewDonorCaseSummary", () => {
 
         const { getByText } = render(<ReissueNewDonorCaseSummary {...props} />);
         expect(
-            getByText(/Reissued donor case created successfully for testuser1/i)
+            getByText(/Reissued donor case successfully for testuser1/i)
         ).toBeInTheDocument();
         expect(getByText(/Success/i)).toBeInTheDocument();
     });
