@@ -74,6 +74,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                     </div>
                                 </td>
                                 <td className="ons-summary__values" colSpan={1} rowSpan={1}>
+                                    <br />
                                     <ONSButton
                                         label="Reissue Donor Case"
                                         primary={false}

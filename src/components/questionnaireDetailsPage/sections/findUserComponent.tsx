@@ -94,6 +94,7 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
 
     return (
         <>
+            <br />
             <div className="ons-field">
                 <input
                     className="ons-input ons-input--text ons-input-type__input"
