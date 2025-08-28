@@ -17,7 +17,7 @@ describe("ReissueNewDonorCaseSummary", () => {
 
         const { getByText } = render(<ReissueNewDonorCaseSummary {...props} />);
         expect(
-            getByText(/Reissued donor case created successfully for testuser1/i)
+            getByText(/Reissued donor case successfully for testuser1/i)
         ).toBeInTheDocument();
         expect(getByText(/Success/i)).toBeInTheDocument();
     });
@@ -31,7 +31,7 @@ describe("ReissueNewDonorCaseSummary", () => {
 
         const { getByText } = render(<ReissueNewDonorCaseSummary {...props} />);
         expect(
-            getByText(/Error reissuing new donor case for testuser1/i)
+            getByText(/Error reissuing donor case for testuser1/i)
         ).toBeInTheDocument();
         expect(getByText(/When reporting this issue to the Service Desk, please provide the questionnaire name, user, time and date of the failure./i)).toBeInTheDocument();
     });

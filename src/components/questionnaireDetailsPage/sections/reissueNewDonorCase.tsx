@@ -2,6 +2,7 @@ import React, { ReactElement, useState } from "react";
 import { Questionnaire } from "blaise-api-node-client";
 import { useNavigate } from "react-router-dom";
 import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
+import FindUserComponent from "./findUserComponent";
 
 interface Props {
     questionnaire: Questionnaire;
@@ -9,10 +10,28 @@ interface Props {
 
 function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
     const [user, setUser] = useState("");
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
-
     const navigate = useNavigate();
+
+    const roles: string[] = ["IPS Field Interviewer", "IPS Manager", "IPS Pilot Interviewer"];
+
+    function onSetUser(user: string) {
+        setUser(user);
+        if(user.trim().length > 0){
+            setError(false);
+            setErrorMessage("");
+        }
+        else
+        {
+            setError(true);
+        }
+    }
+
+    function onError(message: string) {
+        setErrorMessage(message);
+        setError(true);
+    }
 
     function reissueNewDonorCaseButtonClicked() {
         const trimmedUser = user.trim();
@@ -33,22 +52,19 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
         <>
             <div className="ons-summary ons-u-mb-m">
                 <div className="ons-summary__group">
-                    <h2 className="ons-summary__group-title">Reissue New Donor Case</h2>
+                    <ONSPanel>
+                        To assign a new donor case to an interviewer who already has one, select their username and click <b>Reissue Donor Case</b>.
+                    </ONSPanel>
                     <table className="ons-summary__items">
-                        <tbody className="ons-summary__item">
+                        <tbody>
                             <tr className="ons-summary__row ons-summary__row--has-values">
                                 <td className="ons-summary__item-title">
                                     <div className="ons-summary__item--text">
                                         <div className="ons-field">
-                                            <label className="ons-label" htmlFor="user">
-                                                User to issue new donor case for
-                                            </label>
-                                            <input type="text" id="user"
-                                                className="ons-input ons-input--text ons-input-type__input"
-                                                value={user} onChange={(e) => setUser(e.target.value)}/>
+                                            <FindUserComponent label="Enter Username" onItemSelected={onSetUser} onError={onError} roles={roles} />
                                         </div>
                                         <div className="ons-field ons-input--text">
-                                            {error &&
+                                            {errorMessage &&
                                                 <ONSPanel status="error">
                                                     <p className="">
                                                         {errorMessage}
@@ -57,11 +73,12 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                                         </div>
                                     </div>
                                 </td>
-                                <td className="ons-summary__values" colSpan={2} rowSpan={2}>
-                                    <br/>
+                                <td className="ons-summary__values" colSpan={1} rowSpan={1}>
+                                    <br />
                                     <ONSButton
                                         label="Reissue Donor Case"
                                         primary={false}
+                                        disabled={error}
                                         onClick={reissueNewDonorCaseButtonClicked}
                                     />
                                 </td>

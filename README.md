@@ -65,6 +65,7 @@ Create an .env file in the project root with the following variables:
 | BUS_CLIENT_ID | IAP client ID for [BUS](https://github.com/ONSdigital/blaise-uac-service)| blah.apps.googleusercontent.com |
 | CREATE_DONOR_CASES_CLOUD_FUNCTION_URL | Address to trigger create donor cases cloud function | https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/create-donor-cases |
 | REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL | Address to trigger reissue new donor case cloud function | https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/reissue-new-donor-case |
+| GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL | Address to trigger get users by role cloud function | https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/get-users-by-role |
 
 To find the IAP client IDs, navigate to the GCP console, search for `IAP`, click the three dots to the right of the service and select `Settings`.
 
@@ -83,6 +84,7 @@ BUS_API_URL=https://dev-sandbox123-bus.social-surveys.gcp.onsdigital.uk
 BUS_CLIENT_ID=blah.apps.googleusercontent.com
 CREATE_DONOR_CASES_CLOUD_FUNCTION_URL=https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/create-donor-cases
 REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL=https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/reissue-new-donor-case
+GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL=https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/get-users-by-role
 ```
 
 In a new terminal, install the JavaScript dependencies:
