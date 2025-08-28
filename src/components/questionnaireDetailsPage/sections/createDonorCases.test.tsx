@@ -41,7 +41,7 @@ describe("IPS questionnaires", () => {
             expect(screen.getByText("IPS Manager")).toBeDefined();
             expect(screen.getByText("IPS Field Interviewer")).toBeDefined();
             const createCasesElements = screen.getAllByText("Create cases");
-            expect(createCasesElements.length).toBe(2);
+            expect(createCasesElements.length).toBe(4);
 
         });
     });
@@ -60,7 +60,7 @@ describe("IPS questionnaires", () => {
         await waitFor(() => {
             expect(screen.getByText("IPS Pilot Interviewer")).toBeDefined();
             const createCasesElements = screen.getAllByText("Create cases");
-            expect(createCasesElements.length).toBe(1);
+            expect(createCasesElements.length).toBe(3);
         });
     });
 });
