@@ -117,7 +117,6 @@ function QuestionnaireDetailsPage(): ReactElement {
                 <h1 className="ons-u-mb-l">
                     {questionnaire.name}
                 </h1>
-
                 {section === "createDonorCases" && responseMessage && statusCode && role && <CreateDonorCasesSummary donorCasesResponseMessage={responseMessage} donorCasesStatusCode={statusCode} role={role} />}
                 {section === "reissueNewDonorCase" && responseMessage && statusCode && role && <ReissueNewDonorCaseSummary responseMessage={responseMessage} statusCode={statusCode} role={role} />}
                 <QuestionnaireDetails questionnaire={questionnaire} modes={modes} />
