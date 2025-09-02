@@ -54,7 +54,7 @@ export const ipsQuestionnaire: Questionnaire = {
 };
 
 export const ipsPilotQuestionnaire: Questionnaire = {
-    name: "IPS2500a",
+    name: "IPS2505_PILOT",
     serverParkName: "gusty",
     installDate: "2022-01-15T15:26:43.4233454+00:00"
 };
