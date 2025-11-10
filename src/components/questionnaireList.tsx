@@ -129,15 +129,9 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
 
     const getQuestionnairesList = async () => {
         let questionnaires: Questionnaire[];
-        try {
-            questionnaires = await getQuestionnaires();
-            console.log(`Response from get all questionnaires successful, data list length ${questionnaires.length}`);
-        } catch (error: unknown) {
-            console.log("Response from get all questionnaires failed");
-            setMessage("Unable to load questionnaires");
-            setErrored(true);
-            return [];
-        }
+        // eslint-disable-next-line prefer-const
+        questionnaires = await getQuestionnaires();
+        console.log(`Response from get all questionnaires successful, data list length ${questionnaires.length}`);
 
         if (questionnaires.length === 0) {
             setMessage("No installed questionnaires found.");
