@@ -45,7 +45,6 @@ function App(): ReactElement {
     }
 
     function onDeleteQuestionnaire(status: string): void {
-        navigate("/");
         setStatus(status);
     }
 
