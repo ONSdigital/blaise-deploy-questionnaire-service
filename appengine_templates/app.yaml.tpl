@@ -1,5 +1,5 @@
 service: dqs-ui
-runtime: nodejs26
+runtime: nodejs24
 
 vpc_access_connector:
   name: _VPC_CONNECTOR
