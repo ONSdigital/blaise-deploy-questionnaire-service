@@ -21,16 +21,6 @@ import createDonorCasesCloudFunctionHandler from "./handlers/cloudFunctionHandle
 import { reissueNewDonorCaseCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
 import { getUsersByRoleCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
 
-// if (process.env.NODE_ENV === "production") {
-//     import("@google-cloud/profiler").then((profiler) => {
-//         profiler.start({ logLevel: 4 }).catch((err: unknown) => {
-//             console.log(`Failed to start profiler: ${err}`);
-//         });
-//     });
-// } else {
-//     dotenv.config();
-// }
-
 if (process.env.NODE_ENV !== "production") {
     dotenv.config();
 }
