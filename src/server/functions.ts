@@ -30,7 +30,7 @@ export function fieldPeriodToText(questionnaireName: string): string {
     try {
         return fieldPeriodFromQuestionnare(questionnaireName);
     } catch (error: unknown) {
-        console.error("Error getting field period");
+        clientLogger.error("Error getting field period");
         return "Field period unknown";
     }
 }

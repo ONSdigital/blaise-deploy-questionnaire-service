@@ -17,6 +17,7 @@ import createLogger from "./pino";
 import { HttpLogger } from "pino-http";
 import AuditLogger from "./auditLogging/logger";
 import newAuditHandler from "./handlers/auditHandler";
+import newClientLogHandler from "./handlers/clientLogHandler";
 import createDonorCasesCloudFunctionHandler from "./handlers/cloudFunctionHandler";
 import { reissueNewDonorCaseCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
 import { getUsersByRoleCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
@@ -46,6 +47,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     const busHandler = newBusHandler(busApiClient, auth);
     const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
     const auditHandler = newAuditHandler(auditLogger);
+    const clientLogHandler = newClientLogHandler(auth);
     const createDonorCasesHandler = createDonorCasesCloudFunctionHandler(config.CreateDonorCasesCloudFunctionUrl);
     const reissueNewDonorCaseHandler = reissueNewDonorCaseCloudFunctionHandler(config.ReissueNewDonorCaseCloudFunctionUrl);
     const getUsersByRoleHandler = getUsersByRoleCloudFunctionHandler(config.GetUsersByRoleCloudFunctionUrl);
@@ -74,6 +76,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     server.use("/", bimsHandler);
     server.use("/", busHandler);
     server.use("/", auditHandler);
+    server.use("/", clientLogHandler);
     server.use("/", createDonorCasesHandler);
     server.use("/", reissueNewDonorCaseHandler);
     server.use("/", getUsersByRoleHandler);

@@ -3,6 +3,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { Questionnaire } from "blaise-api-node-client";
 import { removeToStartDateAndDeleteQuestionnaire } from "../../client/componentProcesses";
 import { surveyIsActive } from "../../client/questionnaires";
+import { clientLogger } from "../../client/logger";
 
 interface Props {
     questionnaire: Questionnaire
@@ -21,11 +22,11 @@ function DeleteWarning({ questionnaire, modes, onDelete, onCancel }: Props): Rea
     useEffect(() => {
         if (modes.includes("CATI")) {
             surveyIsActive(questionnaire.name).then((isActive: boolean) => {
-                console.log(`Survey has active survey days: ${isActive}`);
+                clientLogger.info(`Survey has active survey days: ${isActive}`);
                 setActive(isActive);
                 setLoaded(true);
             }).catch((error: unknown) => {
-                console.error(`Failed to get survey is active: ${error}`);
+                clientLogger.error(`Failed to get survey is active: ${error}`);
                 setErrored(true);
                 setLoaded(true);
             });

@@ -10,6 +10,7 @@ import { getQuestionnaires } from "../client/questionnaires";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVial, faGear } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { clientLogger } from "../client/logger";
 
 type Props = {
     setErrored: (errored: boolean) => void
@@ -131,9 +132,9 @@ export const QuestionnaireList = ({ setErrored }: Props): ReactElement => {
         let questionnaires: Questionnaire[];
         try {
             questionnaires = await getQuestionnaires();
-            console.log(`Response from get all questionnaires successful, data list length ${questionnaires.length}`);
+            clientLogger.info(`Response from get all questionnaires successful, data list length ${questionnaires.length}`);
         } catch (error: unknown) {
-            console.log("Response from get all questionnaires failed");
+            clientLogger.info("Response from get all questionnaires failed");
             setMessage("Unable to load questionnaires");
             setErrored(true);
             return [];

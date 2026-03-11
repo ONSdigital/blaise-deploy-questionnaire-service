@@ -1,8 +1,9 @@
 import axios, { AxiosProgressEvent } from "axios";
 import axiosConfig from "./axiosConfig";
+import { clientLogger } from "../client/logger";
 
 export async function initialiseUpload(filename: string): Promise<string> {
-    console.log(`Call to initialiseUpload(${filename})`);
+    clientLogger.info(`Call to initialiseUpload(${filename})`);
     const url = `/upload/init?filename=${filename}`;
 
     try {
@@ -17,20 +18,20 @@ export async function initialiseUpload(filename: string): Promise<string> {
         }
         return response.data;
     } catch (error: unknown) {
-        console.error(`Response from initialise Upload: Error ${error}`);
+        clientLogger.error(`Response from initialise Upload: Error ${error}`);
         throw error;
     }
 }
 
 export async function validateUploadIsComplete(filename: string): Promise<boolean> {
-    console.log(`Call to validateUploadIsComplete(${filename})`);
+    clientLogger.info(`Call to validateUploadIsComplete(${filename})`);
     const url = `/upload/verify?filename=${filename}`;
 
     try {
         const response = await axios.get(url, axiosConfig());
         return response.data.name === filename;
     } catch (error: unknown) {
-        console.error(`Response from check bucket Failed: Error ${error}`);
+        clientLogger.error(`Response from check bucket Failed: Error ${error}`);
         return false;
     }
 }
@@ -43,19 +44,19 @@ export async function uploadFile(url: string, file: File, onFileUploadProgress: 
         }
     };
 
-    console.log("Uploading to bucket");
+    clientLogger.info("Uploading to bucket");
     try {
         await axios.put(url, file, config);
-        console.log("File successfully uploaded");
+        clientLogger.info("File successfully uploaded");
         return true;
     } catch (error: unknown) {
-        console.error(`File failed to upload ${error}`);
+        clientLogger.error(`File failed to upload ${error}`);
         return false;
     }
 }
 
 export async function getAllQuestionnairesInBucket(): Promise<string[]> {
-    console.log("Call to getAllQuestionnairesInBucket");
+    clientLogger.info("Call to getAllQuestionnairesInBucket");
     const url = "/bucket/files";
 
     const response = await axios.get(url, axiosConfig());

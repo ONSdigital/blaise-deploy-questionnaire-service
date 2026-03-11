@@ -3,6 +3,7 @@ import { ErrorBoundary, ONSLoadingPanel, ONSPanel } from "blaise-design-system-r
 import React, { Fragment, ReactElement, useEffect, useState } from "react";
 import axiosConfig from "../client/axiosConfig";
 import Breadcrumbs from "./breadcrumbs";
+import { clientLogger } from "../client/logger";
 
 interface BlaiseStatus {
     "health check type": string;
@@ -40,7 +41,7 @@ function StatusPage(): ReactElement {
             setStatusList(response.data);
             setListError("");
         }).catch((error) => {
-            console.error("Failed to retrieve Blaise status, error: " + error);
+            clientLogger.error("Failed to retrieve Blaise status, error: " + error);
             setListError("Unable to get Blaise status");
         }).finally(() => setLoading(false));
     }, []);

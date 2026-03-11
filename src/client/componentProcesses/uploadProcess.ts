@@ -19,6 +19,7 @@ import { verifyAndInstallQuestionnaire } from ".";
 import { GetQuestionnaireMode } from "../../utilities/questionnaireMode";
 import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
 import { totalmobileReleaseDateSurveyTLAs } from "../../utilities/totalmobileReleaseDateSurveyTLAs";
+import { clientLogger } from "../../client/logger";
 
 export async function validateSelectedQuestionnaireExists(file: File | undefined, setQuestionnaireName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundQuestionnaire: (object: Questionnaire | null) => void): Promise<boolean | null> {
     if (file === undefined) {
@@ -34,7 +35,7 @@ export async function validateSelectedQuestionnaireExists(file: File | undefined
     try {
         questionnaire = await getQuestionnaire(questionnaireName);
     } catch {
-        console.log("Failed to validate if questionnaire already exists");
+        clientLogger.info("Failed to validate if questionnaire already exists");
         setUploadStatus("Failed to validate if questionnaire already exists");
         return null;
     }
@@ -59,9 +60,9 @@ export async function uploadAndInstallFile(
     if (file === undefined) {
         return false;
     }
-    console.log("Start uploading the file");
+    clientLogger.info("Start uploading the file");
 
-    console.log(`liveDate ${toStartDate}`);
+    clientLogger.info(`liveDate ${toStartDate}`);
     const liveDateCreated = await setTOStartDate(questionnaireName, toStartDate);
     if (!liveDateCreated) {
         setUploadStatus("Failed to store telephone operations start date specified");
@@ -70,7 +71,7 @@ export async function uploadAndInstallFile(
     }
 
     if (totalmobileReleaseDateSurveyTLAs.some(tla => questionnaireName.startsWith(tla))) {
-        console.log(`releaseDate ${tmReleaseDate}`);
+        clientLogger.info(`releaseDate ${tmReleaseDate}`);
         const releaseDateCreated = await setTMReleaseDate(questionnaireName, tmReleaseDate);
 
         if (!releaseDateCreated) {
@@ -85,7 +86,7 @@ export async function uploadAndInstallFile(
     try {
         signedUrl = await initialiseUpload(file.name);
     } catch {
-        console.error("Failed to initialiseUpload");
+        clientLogger.error("Failed to initialiseUpload");
         setUploadStatus("Failed to upload questionnaire");
         setUploading(false);
         return false;
@@ -97,7 +98,7 @@ export async function uploadAndInstallFile(
     const uploaded = await uploadFile(signedUrl, file, onFileUploadProgress);
     setUploading(false);
     if (!uploaded) {
-        console.error("Failed to Upload file");
+        clientLogger.error("Failed to Upload file");
         setUploadStatus("Failed to upload questionnaire");
         return false;
     }
