@@ -12,20 +12,20 @@ jest.mock("../../client/tmReleaseDate", () => ({
     setTMReleaseDate: jest.fn(),
 }));
 
-const info = jest.fn();
+const mockInfo = jest.fn();
 jest.mock("../../client/logger", () => ({
     clientLogger: {
-        info: (...args: any[]) => info(...args),
+        info: (...args: any[]) => mockInfo(...args),
         error: jest.fn(),
     },
 }));
 
-const navigate = jest.fn();
+const mockNavigate = jest.fn();
 jest.mock("react-router-dom", () => {
     const actual = jest.requireActual("react-router-dom");
     return {
         ...actual,
-        useNavigate: () => navigate,
+        useNavigate: () => mockNavigate,
     };
 });
 
@@ -38,7 +38,7 @@ describe("ChangeTMReleaseDate", () => {
         (setTMReleaseDate as jest.Mock).mockResolvedValue(false);
 
         render(
-            <MemoryRouter initialEntries={[{ pathname: "/change", state: { tmReleaseDate: null, questionnaireName: "OPN2004A" } }]}>
+            <MemoryRouter initialEntries={[{ pathname: "/change", state: { tmReleaseDate: "2026-01-01", questionnaireName: "OPN2004A" } }]}>
                 <Routes>
                     <Route path="/change" element={<ChangeTMReleaseDate />} />
                 </Routes>
@@ -48,8 +48,8 @@ describe("ChangeTMReleaseDate", () => {
         fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
 
         await waitFor(() => {
-            expect(info).toHaveBeenCalledWith("Failed to store Totalmobile release date specified");
+            expect(mockInfo).toHaveBeenCalledWith("Failed to store Totalmobile release date specified");
         });
-        expect(navigate).not.toHaveBeenCalledWith(-1);
+        expect(mockNavigate).not.toHaveBeenCalledWith(-1);
     });
 });

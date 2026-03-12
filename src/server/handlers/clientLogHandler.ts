@@ -16,17 +16,17 @@ export interface ClientLogPayload {
 
 function normaliseLevel(level: string): Exclude<ClientLogLevel, "log"> | "info" | null {
     switch (level) {
-        case "log":
-        case "info":
-            return "info";
-        case "warn":
-            return "warn";
-        case "error":
-            return "error";
-        case "debug":
-            return "debug";
-        default:
-            return null;
+    case "log":
+    case "info":
+        return "info";
+    case "warn":
+        return "warn";
+    case "error":
+        return "error";
+    case "debug":
+        return "debug";
+    default:
+        return null;
     }
 }
 

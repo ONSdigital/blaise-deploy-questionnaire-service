@@ -24,11 +24,15 @@ jest.mock("../../../client/logger", () => ({
 
 // Make CsvDownloader clickable in tests and call datas() when clicked.
 jest.mock("react-csv-downloader", () => {
-    return ({ datas, children }: any) => (
-        <div data-testid="csv-downloader" onClick={() => datas()}>
-            {children}
-        </div>
-    );
+    function CsvDownloaderMock({ datas, children }: any) {
+        return (
+            <div data-testid="csv-downloader" onClick={() => datas()}>
+                {children}
+            </div>
+        );
+    }
+
+    return CsvDownloaderMock;
 });
 
 const mock = new MockAdapter(axios);
@@ -54,7 +58,7 @@ describe("CAWI mode details", () => {
 
     it("should display an error message when it fails to load the generated UACs", async () => {
         const viewGeneratedUacsFailedMessage = /Failed to get Web mode details/i;
-        mock.onGet("/api/uacs/questionnaire/OPN2004A/count").reply(500);
+        mock.onGet("/api/uacs/instrument/OPN2004A/count").reply(500);
         render(
             <CawiModeDetails questionnaire={opnQuestionnaire} modes={["CAWI"]} />
         );
@@ -69,11 +73,16 @@ describe("CAWI mode details", () => {
     });
 
     it("should generate UAC codes successfully", async () => {
-        mock.onGet("/api/uacs/questionnaire/OPN2004A/count").reply(200, 1);
+        mock.onGet("/api/uacs/instrument/OPN2004A/count").reply(200, { count: 1 });
         mock.onGet("/api/questionnaires/OPN2004A/modes").reply(200, ["CAWI"]);
 
+        const questionnaireWithDataRecords = {
+            ...opnQuestionnaire,
+            dataRecordCount: 1,
+        };
+
         render(
-            <CawiModeDetails questionnaire={opnQuestionnaire} modes={['CAWI']} />
+            <CawiModeDetails questionnaire={questionnaireWithDataRecords} modes={["CAWI"]} />
         );
 
         await act(async () => {

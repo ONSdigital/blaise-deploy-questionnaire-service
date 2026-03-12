@@ -38,7 +38,7 @@ describe("ChangeTOStartDate", () => {
         (setTOStartDate as jest.Mock).mockResolvedValue(false);
 
         render(
-            <MemoryRouter initialEntries={[{ pathname: "/change", state: { toStartDate: null, questionnaireName: "OPN2004A" } }]}>
+            <MemoryRouter initialEntries={[{ pathname: "/change", state: { toStartDate: "2026-01-01", questionnaireName: "OPN2004A" } }]}>
                 <Routes>
                     <Route path="/change" element={<ChangeTOStartDate />} />
                 </Routes>

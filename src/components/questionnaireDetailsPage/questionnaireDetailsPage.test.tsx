@@ -5,6 +5,20 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+
+jest.mock("../breadcrumbs", () => () => null);
+jest.mock("./sections/blaiseNodeInfo", () => () => null);
+jest.mock("./sections/cawiModeDetails", () => () => null);
+jest.mock("./sections/catiModeDetails", () => () => null);
+jest.mock("./sections/totalmobileDetails", () => () => null);
+jest.mock("./sections/yearCalendar", () => () => null);
+jest.mock("./sections/questionnaireSettingsSection", () => () => null);
+jest.mock("./sections/questionnaireDetails", () => () => null);
+jest.mock("./sections/createDonorCases", () => () => null);
+jest.mock("../createDonorCasePage/createDonorCasesSummary", () => () => null);
+jest.mock("./sections/reissueNewDonorCase", () => () => null);
+jest.mock("../reissueNewDonorCasePage/reissueNewDonorCaseSummary", () => () => null);
+
 import QuestionnaireDetailsPage from "./questionnaireDetailsPage";
 
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../client/questionnaires";
