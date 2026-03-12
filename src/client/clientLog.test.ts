@@ -21,4 +21,24 @@ describe("sendClientLog", () => {
         expect(payload.args).toEqual(["{\"a\":1}"]);
         expect(payload.timestamp).toBeTruthy();
     });
+
+    it("handles empty args and stringification edge cases", async () => {
+        mock.onPost("/api/client-log").reply(204);
+
+        await sendClientLog("info");
+        const payload1 = JSON.parse(mock.history.post[0].data);
+        expect(payload1.message).toEqual("");
+
+        // JSON.stringify(BigInt) throws; we should fall back to String(value)
+        await sendClientLog("info", BigInt(1) as any);
+        const payload2 = JSON.parse(mock.history.post[1].data);
+        expect(payload2.message).toEqual("1");
+
+        // Error with no stack should still stringify to message / fallback
+        const err = new Error("boom");
+        (err as any).stack = undefined;
+        await sendClientLog("info", err);
+        const payload3 = JSON.parse(mock.history.post[2].data);
+        expect(payload3.message).toContain("boom");
+    });
 });

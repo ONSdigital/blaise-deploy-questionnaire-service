@@ -24,6 +24,7 @@ logger.child = jest.fn(() => logger); // pino-http uses child logger
 const logInfo = jest.spyOn(logger, "info");
 const logWarn = jest.spyOn(logger, "warn");
 const logError = jest.spyOn(logger, "error");
+const logDebug = jest.spyOn(logger, "debug");
 const httpLogger: HttpLogger = createLogger({ logger: logger, autoLogging: false });
 
 const config = getConfigFromEnv();
@@ -69,5 +70,50 @@ describe("Client log forwarding", () => {
         expect(logInfo).not.toHaveBeenCalled();
         expect(logWarn).not.toHaveBeenCalled();
         expect(logError).not.toHaveBeenCalled();
+    });
+
+    it("rejects missing level", async () => {
+        const response: Response = await request
+            .post("/api/client-log")
+            .send({ message: "hello" });
+
+        expect(response.status).toEqual(400);
+    });
+
+    it("rejects missing message", async () => {
+        const response: Response = await request
+            .post("/api/client-log")
+            .send({ level: "info" });
+
+        expect(response.status).toEqual(400);
+    });
+
+    it("normalises level=log to info", async () => {
+        const response: Response = await request
+            .post("/api/client-log")
+            .send({ level: "log", message: "hello" });
+
+        expect(response.status).toEqual(204);
+        expect(logInfo).toHaveBeenCalled();
+    });
+
+    it("accepts debug level", async () => {
+        const response: Response = await request
+            .post("/api/client-log")
+            .send({ level: "debug", message: "dbg" });
+
+        expect(response.status).toEqual(204);
+        expect(logDebug).toHaveBeenCalled();
+    });
+
+    it("falls back to request user-agent when none provided", async () => {
+        const response: Response = await request
+            .post("/api/client-log")
+            .set("user-agent", "test-agent")
+            .send({ level: "info", message: "hello" });
+
+        expect(response.status).toEqual(204);
+        const lastCall = logInfo.mock.calls[logInfo.mock.calls.length - 1];
+        expect(lastCall[0].clientLog.userAgent).toEqual("test-agent");
     });
 });
