@@ -114,6 +114,7 @@ describe("Client log forwarding", () => {
 
         expect(response.status).toEqual(204);
         const lastCall = logInfo.mock.calls[logInfo.mock.calls.length - 1];
-        expect(lastCall[0].clientLog.userAgent).toEqual("test-agent");
+        const payload = lastCall[0] as unknown as { clientLog?: { userAgent?: string } };
+        expect(payload.clientLog?.userAgent).toEqual("test-agent");
     });
 });
