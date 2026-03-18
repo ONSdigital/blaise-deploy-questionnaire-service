@@ -92,7 +92,9 @@ describe("CAWI mode details", () => {
         // Clicking the downloader wrapper triggers datas() in our mock.
         const downloader = await screen.findByTestId("csv-downloader");
         downloader.click();
-
+        await waitFor(() => {
+            expect(screen.getByText("Generating Unique Access Codes for cases")).toBeDefined();
+        });
         await act(async () => {
             await flushPromises();
         });
