@@ -1,9 +1,16 @@
-import { getAllQuestionnairesInBucket, validateUploadIsComplete } from "./upload";
+import { getAllQuestionnairesInBucket, initialiseUpload, validateUploadIsComplete } from "./upload";
 
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 const mock = new MockAdapter(axios);
+
+jest.mock("../client/logger", () => ({
+    clientLogger: {
+        info: jest.fn(),
+        error: jest.fn(),
+    },
+}));
 
 describe("Function validateUploadIsComplete(filename: string) ", () => {
     afterEach(() => {
@@ -36,6 +43,18 @@ describe("Function validateUploadIsComplete(filename: string) ", () => {
 
         const fileFound = await validateUploadIsComplete("OPN2004A.bpkg");
         expect(fileFound).toBeFalsy();
+    });
+});
+
+describe("Function initialiseUpload(filename: string)", () => {
+    afterEach(() => {
+        mock.reset();
+    });
+
+    it("throws when signed URL host is not allowed", async () => {
+        mock.onGet("/upload/init?filename=OPN2004A.bpkg").reply(200, "https://evil.example.com/signed");
+
+        await expect(initialiseUpload("OPN2004A.bpkg")).rejects.toBeTruthy();
     });
 });
 

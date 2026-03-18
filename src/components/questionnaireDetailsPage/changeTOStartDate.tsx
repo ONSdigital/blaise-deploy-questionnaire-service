@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";
 import AskToSetTOStartDate from "../uploadPage/sections/askToSetTOStartDate";
 import Breadcrumbs from "../breadcrumbs";
+import { clientLogger } from "../../client/logger";
 
 interface LocationState {
     toStartDate: string | null;
@@ -23,7 +24,7 @@ function ChangeTOStartDate(): ReactElement {
         }
         const liveDateCreated = await setTOStartDate(questionnaireName, values["set start date"]);
         if (!liveDateCreated) {
-            console.log("Failed to store telephone operations start date specified");
+            clientLogger.info("Failed to store telephone operations start date specified");
             return;
         }
         actions.setSubmitting(false);

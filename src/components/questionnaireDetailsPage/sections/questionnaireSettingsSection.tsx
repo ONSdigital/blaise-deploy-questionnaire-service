@@ -4,6 +4,7 @@ import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
 import { GetStrictInterviewingSettings, ValidateSettings } from "../../../utilities/questionnaireSettings";
 import { GetQuestionnaireMode, QuestionnaireMode } from "../../../utilities/questionnaireMode";
 import QuestionnaireSettingsTable from "./questionnaireSettingsTable";
+import { clientLogger } from "../../../client/logger";
 
 interface Props {
     questionnaire: Questionnaire;
@@ -22,14 +23,14 @@ function QuestionnaireSettingsSection({ questionnaire, modes }: Props): ReactEle
         getQuestionnaireSettings(questionnaire.name)
             .then((questionnaireSettingsList) => {
                 if (questionnaireSettingsList.length === 0) {
-                    console.error("returned questionnaire settings were null/empty");
+                    clientLogger.error("returned questionnaire settings were null/empty");
                     setErrored(true);
                     return;
                 }
-                console.log("returned questionnaire settings: ", questionnaireSettingsList);
+                clientLogger.info("returned questionnaire settings: ", questionnaireSettingsList);
                 setSetting(GetStrictInterviewingSettings(questionnaireSettingsList));
             }).catch((error: unknown) => {
-                console.error(`Error getting questionnaire settings ${error}`);
+                clientLogger.error(`Error getting questionnaire settings ${error}`);
                 setErrored(true);
                 return;
             });
