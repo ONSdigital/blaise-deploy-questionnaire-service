@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";
 import AskToSetTMReleaseDate from "../uploadPage/sections/askToSetTMReleaseDate";
 import Breadcrumbs from "../breadcrumbs";
+import { clientLogger } from "../../client/logger";
 
 interface LocationState {
     tmReleaseDate: string | null;
@@ -23,7 +24,7 @@ function ChangeTMReleaseDate(): ReactElement {
         }
         const liveDateCreated = await setTMReleaseDate(questionnaireName, values["set release date"]);
         if (!liveDateCreated) {
-            console.log("Failed to store Totalmobile release date specified");
+            clientLogger.info("Failed to store Totalmobile release date specified");
             return;
         }
         actions.setSubmitting(false);

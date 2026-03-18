@@ -5,6 +5,7 @@ import { Questionnaire } from "blaise-api-node-client";
 import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
 import CsvDownloader from "react-csv-downloader";
 import { generateUACCodesAndCSVFileData } from "../../../client/componentProcesses";
+import { clientLogger } from "../../../client/logger";
 
 interface Props {
     questionnaire: Questionnaire;
@@ -27,7 +28,7 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
     function getUACCount() {
         getCountOfUACs(questionnaire.name)
             .then((count) => {
-                console.log(`count: ${count}`);
+                clientLogger.info(`count: ${count}`);
                 if (count !== null) setUacCount(count);
             }).catch(() => {
                 setErrored(true);
@@ -41,14 +42,14 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
 
         return generateUACCodesAndCSVFileData(questionnaire.name)
             .then((uacList) => {
-                console.log("Generated UAC Codes");
+                clientLogger.info("Generated UAC Codes");
                 getUACCount();
                 return uacList;
             }).catch((error) => {
                 const userFriendlyError = "Error occurred while generating Unique Access Codes";
                 setUacGenerationFailed(userFriendlyError);
-                console.error(error);
-                console.error(userFriendlyError);
+                clientLogger.error(error);
+                clientLogger.error(userFriendlyError);
                 return [{ error: userFriendlyError }];
             }).finally(() => setLoading(false));
     }

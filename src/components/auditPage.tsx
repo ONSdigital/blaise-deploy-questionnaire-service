@@ -5,6 +5,7 @@ import { getAuditLogs } from "../client/auditLogs";
 import { AuditLog } from "../server/auditLogging/logger";
 import ONSTable, { TableColumns } from "./onsTable";
 import Breadcrumbs from "./breadcrumbs";
+import { clientLogger } from "../client/logger";
 
 function AuditPage(): ReactElement {
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
@@ -12,7 +13,7 @@ function AuditPage(): ReactElement {
     const [listError, setListError] = useState<string>("");
 
     useEffect(() => {
-        callAuditLogs().then(() => console.log("callAuditLogs Complete"));
+        callAuditLogs().then(() => clientLogger.info("callAuditLogs Complete"));
     }, []);
 
     async function callAuditLogs() {
@@ -24,14 +25,14 @@ function AuditPage(): ReactElement {
         try {
             fetchedAuditLogs = await getAuditLogs();
         } catch (error: unknown) {
-            console.log(`Error getting audit logs: ${error}`);
-            console.log(`Response from get audit logs failed, data list length ${fetchedAuditLogs.length}`);
+            clientLogger.info(`Error getting audit logs: ${error}`);
+            clientLogger.info(`Response from get audit logs failed, data list length ${fetchedAuditLogs.length}`);
             setListError("Unable to load deployment history.");
             setLoading(false);
             return;
         }
-        console.log(`Response from get audit logs successful, data list length ${fetchedAuditLogs.length}`);
-        console.log(fetchedAuditLogs);
+        clientLogger.info(`Response from get audit logs successful, data list length ${fetchedAuditLogs.length}`);
+        clientLogger.info(fetchedAuditLogs);
 
         if (fetchedAuditLogs.length === 0) {
             setListError("No recent deployment history found.");

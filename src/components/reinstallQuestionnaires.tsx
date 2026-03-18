@@ -7,6 +7,7 @@ import { ErrorBoundary, ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-desi
 import { verifyAndInstallQuestionnaire } from "../client/componentProcesses";
 import Breadcrumbs from "./breadcrumbs";
 import { Questionnaire } from "blaise-api-node-client";
+import { clientLogger } from "../client/logger";
 
 function ReinstallQuestionnaires(): ReactElement {
     const [questionnaireList, setQuestionnaireList] = useState<string[]>([]);
@@ -25,10 +26,10 @@ function ReinstallQuestionnaires(): ReactElement {
         let questionnaires: Questionnaire[];
         try {
             questionnaires = await getQuestionnaires();
-            console.log(`Response from get all questionnaires successful, data list length ${questionnaireList.length}`);
-            console.log(questionnaires);
+            clientLogger.info(`Response from get all questionnaires successful, data list length ${questionnaireList.length}`);
+            clientLogger.info(questionnaires);
         } catch (error: unknown) {
-            console.log(`Response from get all questionnaires failed, data list length ${questionnaireList.length}`);
+            clientLogger.info(`Response from get all questionnaires failed, data list length ${questionnaireList.length}`);
             setListError("Unable to load questionnaires");
             setLoading(false);
             return [];
@@ -44,16 +45,16 @@ function ReinstallQuestionnaires(): ReactElement {
 
     async function getQuestionnairesToReinstall() {
         setLoading(true);
-        console.log("getQuestionnairesToReinstall");
+        clientLogger.info("getQuestionnairesToReinstall");
         const list: string[] = [];
         setListError("");
 
         let bucketQuestionnaireList: string[];
         try {
             bucketQuestionnaireList = await getAllQuestionnairesInBucket();
-            console.log(`Response from get all questionnaires in bucket successful, data list length ${bucketQuestionnaireList.length}`);
+            clientLogger.info(`Response from get all questionnaires in bucket successful, data list length ${bucketQuestionnaireList.length}`);
         } catch {
-            console.log("Response from get all questionnaires in bucket failed");
+            clientLogger.info("Response from get all questionnaires in bucket failed");
             setListError("Unable to load questionnaires.");
             setLoading(false);
             return;
