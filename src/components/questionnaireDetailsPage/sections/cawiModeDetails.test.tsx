@@ -95,8 +95,5 @@ describe("CAWI mode details", () => {
         await waitFor(() => {
             expect(screen.getByText("Generating Unique Access Codes for cases")).toBeDefined();
         });
-        await act(async () => {
-            await flushPromises();
-        });
     });
 });
