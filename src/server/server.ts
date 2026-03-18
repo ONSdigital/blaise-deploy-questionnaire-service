@@ -22,7 +22,9 @@ import createDonorCasesCloudFunctionHandler from "./handlers/cloudFunctionHandle
 import { reissueNewDonorCaseCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
 import { getUsersByRoleCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+    dotenv.config();
+}
 
 export function newServer(config: Config, logger: HttpLogger = createLogger()): Express {
     const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
