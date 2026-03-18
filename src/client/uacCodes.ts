@@ -2,9 +2,10 @@ import { InstrumentUacDetailsByCaseId } from "bus-api-node-client";
 import axios from "axios";
 import axiosConfig from "./axiosConfig";
 import { AuthManager } from "blaise-login-react/blaise-login-react-client";
+import { clientLogger } from "../client/logger";
 
 export async function generateUACCodes(instrumentName: string): Promise<boolean> {
-    console.log("Sending request generate UAC codes");
+    clientLogger.info("Sending request generate UAC codes");
     const url = `/api/uacs/instrument/${instrumentName}`;
     const authManager = new AuthManager();
 
@@ -17,7 +18,7 @@ export async function generateUACCodes(instrumentName: string): Promise<boolean>
 }
 
 export async function getCountOfUACs(instrumentName: string): Promise<number> {
-    console.log(`Sending request to get UAC code count for ${instrumentName}`);
+    clientLogger.info(`Sending request to get UAC code count for ${instrumentName}`);
     const url = `/api/uacs/instrument/${instrumentName}/count`;
 
     try {
@@ -27,20 +28,20 @@ export async function getCountOfUACs(instrumentName: string): Promise<number> {
         }
         return response.data.count;
     } catch (error: unknown) {
-        console.error(`Failed to get UAC code count, Error ${error}`);
+        clientLogger.error(`Failed to get UAC code count, Error ${error}`);
         throw error;
     }
 }
 
 export async function getUACCodesByCaseID(instrumentName: string): Promise<InstrumentUacDetailsByCaseId> {
-    console.log(`Sending request to get UAC codes by case ID ${instrumentName}`);
+    clientLogger.info(`Sending request to get UAC codes by case ID ${instrumentName}`);
     const url = `/api/uacs/instrument/${instrumentName}/bycaseid`;
 
     try {
         const response = await axios.get(url, axiosConfig());
         return response.data;
     } catch (error: unknown) {
-        console.error(`Failed to get UAC codes by case ID, Error ${error}`);
+        clientLogger.error(`Failed to get UAC codes by case ID, Error ${error}`);
         throw new Error("Failed to get UAC codes by case ID");
     }
 }

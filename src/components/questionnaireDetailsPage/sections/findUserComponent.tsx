@@ -2,6 +2,7 @@ import React, { ReactElement, useEffect, useState, useRef } from "react";
 import { ONSPanel, ONSLoadingPanel } from "blaise-design-system-react-components";
 import axios from "axios";
 import axiosConfig from "../../../client/axiosConfig";
+import { clientLogger } from "../../../client/logger";
 
 interface Props {
     label: string;
@@ -84,7 +85,7 @@ function FindUserComponent({ label = "Search user", roles, onItemSelected, onErr
             return Array.isArray(res.data.message) ? res.data.message : [];
         } catch (error) {
             const errorMessage = JSON.stringify((error as any)?.response?.data?.message || "Unknown error");
-            console.log(errorMessage);
+            clientLogger.info(errorMessage);
             return [];
         }
     }

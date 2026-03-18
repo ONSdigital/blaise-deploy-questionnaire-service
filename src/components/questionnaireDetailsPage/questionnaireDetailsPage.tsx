@@ -15,6 +15,7 @@ import CreateDonorCases from "./sections/createDonorCases";
 import CreateDonorCasesSummary from "../createDonorCasePage/createDonorCasesSummary";
 import ReissueNewDonorCase from "./sections/reissueNewDonorCase";
 import ReissueNewDonorCaseSummary from "../reissueNewDonorCasePage/reissueNewDonorCaseSummary";
+import { clientLogger } from "../../client/logger";
 
 interface State {
     section?: string;
@@ -39,9 +40,9 @@ function QuestionnaireDetailsPage(): ReactElement {
     useEffect(() => {
         if (initialState.questionnaire === null) {
             loadQuestionnaire().then(() => {
-                console.log(`Loaded questionnaire: ${questionnaireName}`);
+                clientLogger.info(`Loaded questionnaire: ${questionnaireName}`);
             }).catch((error: unknown) => {
-                console.log(`Failed to get questionnaire ${error}`);
+                clientLogger.info(`Failed to get questionnaire ${error}`);
                 setErrored(true);
                 setLoaded(true);
             });
@@ -52,7 +53,7 @@ function QuestionnaireDetailsPage(): ReactElement {
             getQuestionnaireModes(questionnaireName)
                 .then((modes) => {
                     if (modes.length === 0) {
-                        console.error("returned questionnaire mode was empty");
+                        clientLogger.error("returned questionnaire mode was empty");
                         setErrored(true);
                         setLoaded(true);
                         return;
@@ -61,26 +62,26 @@ function QuestionnaireDetailsPage(): ReactElement {
                         getSurveyDays(questionnaireName)
                             .then((surveyDays) => {
                                 if (surveyDays.length === 0) {
-                                    console.log("returned questionnaire survey days was empty");
+                                    clientLogger.info("returned questionnaire survey days was empty");
                                     setSurveyDays(surveyDays);
                                     setLoaded(true);
                                     return;
                                 }
-                                console.log(`returned questionnaire survey days: ${surveyDays}`);
+                                clientLogger.info(`returned questionnaire survey days: ${surveyDays}`);
                                 setSurveyDays(surveyDays);
                                 setLoaded(true);
                             }).catch((error: unknown) => {
-                                console.error(`Error getting questionnaire survey days ${error}`);
+                                clientLogger.error(`Error getting questionnaire survey days ${error}`);
                                 setErrored(true);
                                 setLoaded(true);
                                 return;
                             });
                     }
-                    console.log(`returned questionnaire mode: ${modes}`);
+                    clientLogger.info(`returned questionnaire mode: ${modes}`);
                     setModes(modes);
                     setLoaded(true);
                 }).catch((error: unknown) => {
-                    console.error(`Error getting questionnaire modes ${error}`);
+                    clientLogger.error(`Error getting questionnaire modes ${error}`);
                     setErrored(true);
                     setLoaded(true);
                     return;
@@ -103,7 +104,7 @@ function QuestionnaireDetailsPage(): ReactElement {
             return <ONSLoadingPanel />;
         }
 
-        console.log(questionnaire);
+        clientLogger.info(questionnaire);
         if (errored || !questionnaire) {
             return (
                 <ONSPanel status="error">

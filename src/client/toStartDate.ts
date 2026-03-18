@@ -1,8 +1,9 @@
 import axios from "axios";
 import axiosConfig from "./axiosConfig";
+import { clientLogger } from "../client/logger";
 
 export async function setTOStartDate(questionnaireName: string, toStartDate: string | undefined): Promise<boolean> {
-    console.log(`Call to setTOStartDate(${questionnaireName}, ${toStartDate})`);
+    clientLogger.info(`Call to setTOStartDate(${questionnaireName}, ${toStartDate})`);
     const url = `/api/tostartdate/${questionnaireName}`;
     const data = { "tostartdate": toStartDate };
 
@@ -11,19 +12,19 @@ export async function setTOStartDate(questionnaireName: string, toStartDate: str
 
         return response.status === 200 || response.status === 201;
     } catch (error: unknown) {
-        console.error(`Response from set start date Failed: Error ${error}`);
+        clientLogger.error(`Response from set start date Failed: Error ${error}`);
         return false;
     }
 }
 
 export async function getTOStartDate(questionnaireName: string): Promise<string> {
-    console.log(`Call to getTOStartDate(${questionnaireName})`);
+    clientLogger.info(`Call to getTOStartDate(${questionnaireName})`);
     const url = `/api/tostartdate/${questionnaireName}`;
 
     try {
         const response = await axios.get(url, axiosConfig());
         if (!response.data.tostartdate) {
-            console.log("throw that error");
+            clientLogger.info("throw that error");
             throw new Error("No tostartdate in response");
         }
         return response.data.tostartdate;
@@ -31,20 +32,20 @@ export async function getTOStartDate(questionnaireName: string): Promise<string>
         if (error?.isAxiosError && error.response.status === 404) {
             return "";
         }
-        console.error(`Response from set start date Failed: Error ${error}`);
+        clientLogger.error(`Response from set start date Failed: Error ${error}`);
         throw error;
     }
 }
 
 export async function deleteTOStartDate(questionnaireName: string): Promise<boolean> {
-    console.log(`Call to deleteTOStartDate(${questionnaireName})`);
+    clientLogger.info(`Call to deleteTOStartDate(${questionnaireName})`);
     const url = `/api/tostartdate/${questionnaireName}`;
 
     try {
         const response = await axios.delete(url, axiosConfig());
         return response.status === 204;
     } catch (error: unknown) {
-        console.error(`Response from delete TO start date Failed: Error ${error}`);
+        clientLogger.error(`Response from delete TO start date Failed: Error ${error}`);
         return false;
     }
 }
