@@ -1,120 +1,145 @@
-import React, { ReactElement, useEffect, useState } from "react";
-import { ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
-import { getTMReleaseDate } from "../../../client/tmReleaseDate";
+import { LoadingPanel, Panel } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
-import TimeAgo from "react-timeago";
+import React, { type ReactElement, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
+import { getTmReleaseDate } from "../../../client/tmReleaseDate";
 import { totalmobileReleaseDateSurveyTLAs } from "../../../utilities/totalmobileReleaseDateSurveyTLAs";
+import { formatRelativeDate } from "../../../utilities/formatRelativeDate";
 
 interface Props {
-    questionnaireName: string
+  questionnaireName: string;
 }
 
 function TotalmobileDetails({ questionnaireName }: Props): ReactElement {
-    if (!totalmobileReleaseDateSurveyTLAs.some(tla => questionnaireName.includes(tla))) {
-        return <></>;
-    }
+  const shouldShowTotalmobileDetails = totalmobileReleaseDateSurveyTLAs.some((tla) =>
+    questionnaireName.includes(tla),
+  );
 
-    const [loading, setLoading] = useState<boolean>(true);
-    const [errored, setErrored] = useState<boolean>(false);
-    const [tmReleaseDate, setTmReleaseDate] = useState<boolean>(false);
-    const [tmReleaseDateValue, setTmReleaseDateValue] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [errored, setErrored] = useState<boolean>(false);
+  const [tmReleaseDate, setTmReleaseDate] = useState<boolean>(false);
+  const [tmReleaseDateValue, setTmReleaseDateValue] = useState<string>("");
 
-    useEffect(() => {
-        getTMReleaseDateForQuestionnaire().then(() => setLoading(false));
-    }, []);
+  function renderReleaseDate(): ReactElement | string {
+    const parsedReleaseDate = dateFormatter(tmReleaseDateValue);
 
-    async function getTMReleaseDateForQuestionnaire() {
-        setLoading(true);
-        try {
-            const tmReleaseDate = await getTMReleaseDate(questionnaireName);
-            if (tmReleaseDate == "") {
-                setTmReleaseDate(false);
-                return;
-            }
-
-            setTmReleaseDate(true);
-            setTmReleaseDateValue(tmReleaseDate);
-        } catch {
-            setErrored(true);
-        }
-    }
-
-    if (loading) {
-        return (
-            <div className="ons-u-mb-m" aria-busy="true">
-                <ONSLoadingPanel message={"Getting Totalmobile release date"} />
-            </div>
-        );
-    }
-
-    if (errored) {
-        return (
-            <div className="ons-u-mb-m">
-                <ONSPanel status={"error"}>Failed to get Totalmobile release date</ONSPanel>
-            </div>
-        );
+    if (!parsedReleaseDate.isValid()) {
+      return tmReleaseDateValue;
     }
 
     return (
-        <>
-            <div className="ons-summary ons-u-mb-m elementToFadeIn">
-                <div className="ons-summary__group">
-                    <h2 className="ons-summary__group-title">Totalmobile details</h2>
-                    <table className="ons-summary__items">
-                        <thead className="ons-u-vh">
-                            <tr>
-                                <th>Questionnaire detail</th>
-                                <th>result</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody className="ons-summary__item">
-                            <tr className="ons-summary__row ons-summary__row--has-values">
-                                <td className="ons-summary__item-title">
-                                    <div className="ons-summary__item--text">
-                                        Totalmobile release date
-                                    </div>
-                                </td>
-                                <td className="ons-summary__values">
-
-                                    {
-                                        tmReleaseDate ?
-                                            <>
-                                                {dateFormatter(tmReleaseDateValue).format("DD/MM/YYYY")} ({<TimeAgo
-                                                    live={false} date={tmReleaseDateValue} />})
-                                            </>
-
-                                            :
-                                            "No release date specified"
-                                    }
-                                </td>
-                                <td className="ons-summary__actions">
-                                    {
-                                        tmReleaseDate ?
-                                            <Link to="/questionnaire/release-date"
-                                                state={{ questionnaireName: questionnaireName, tmReleaseDate: tmReleaseDateValue }}
-                                                className="ons-summary__button"
-                                                aria-label={`Change or delete release date for questionnaire ${questionnaireName}`}>
-                                                Change or delete release date
-                                            </Link>
-                                            :
-                                            <Link to="/questionnaire/release-date"
-                                                state={{ questionnaireName: questionnaireName }}
-                                                className="ons-summary__button"
-                                                aria-label={`Add a release date for questionnaire ${questionnaireName}`}>
-                                                Add release date
-                                            </Link>
-
-                                    }
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div >
-        </>
+      <>
+        {parsedReleaseDate.format("DD/MM/YYYY")} (
+        {formatRelativeDate(parsedReleaseDate.toDate())}
+        )
+      </>
     );
+  }
+
+  const getTmReleaseDateForQuestionnaire = useCallback(async () => {
+    setLoading(true);
+    setErrored(false);
+
+    try {
+      // CHANGED: Renamed local variable to 'fetchedTmReleaseDate' to prevent shadowing the 'tmReleaseDate' state boolean
+      const fetchedTmReleaseDate = await getTmReleaseDate(questionnaireName);
+
+      if (fetchedTmReleaseDate === "") {
+        setTmReleaseDate(false);
+
+        return;
+      }
+
+      setTmReleaseDate(true);
+      setTmReleaseDateValue(fetchedTmReleaseDate);
+    } catch {
+      setErrored(true);
+    }
+  }, [questionnaireName]);
+
+  useEffect(() => {
+    if (!shouldShowTotalmobileDetails) {
+      return;
+    }
+
+    getTmReleaseDateForQuestionnaire().then(() => setLoading(false));
+  }, [getTmReleaseDateForQuestionnaire, shouldShowTotalmobileDetails]);
+
+  if (!shouldShowTotalmobileDetails) {
+    return <></>;
+  }
+
+  if (loading) {
+    return (
+      <div
+        className="ons-u-mb-m"
+        aria-busy="true"
+      >
+        <LoadingPanel message={"Getting Totalmobile release date"} />
+      </div>
+    );
+  }
+
+  if (errored) {
+    return (
+      <div className="ons-u-mb-m">
+        <Panel status={"error"}>Failed to get Totalmobile release date</Panel>
+      </div>
+    );
+  }
+
+  return (
+    <div className="ons-summary ons-u-mb-m elementToFadeIn">
+      <div className="ons-summary__group">
+        <h2 className="ons-summary__group-title">Totalmobile details</h2>
+
+        {/* CHANGED: Replaced the legacy table markup with the strict 2-column <dl> grid, matching CAWI and CATI */}
+        <dl className="ons-summary__items">
+          <div className="ons-summary__item">
+            {/* Column 1: Title AND Action Link (Forces link to the left) */}
+            <dt className="ons-summary__item-title">
+              <div className="ons-summary__item--text">Totalmobile release date</div>
+
+              {/* CHANGED: Placed the action links underneath the title text to left-align them */}
+              <div className="ons-u-mt-m ons-u-mb-s">
+                {tmReleaseDate ? (
+                  <Link
+                    to="/questionnaire/release-date"
+                    state={{
+                      questionnaireName: questionnaireName,
+                      tmReleaseDate: tmReleaseDateValue,
+                    }}
+                    className="ons-summary__button"
+                    aria-label={`Change or delete release date for questionnaire ${questionnaireName}`}
+                  >
+                    Change or delete release date
+                  </Link>
+                ) : (
+                  <Link
+                    to="/questionnaire/release-date"
+                    state={{ questionnaireName: questionnaireName }}
+                    className="ons-summary__button"
+                    aria-label={`Add a release date for questionnaire ${questionnaireName}`}
+                  >
+                    Add release date
+                  </Link>
+                )}
+              </div>
+            </dt>
+
+            {/* Column 2: Values (Bolded text) */}
+            <dd className="ons-summary__values">
+              {/* CHANGED: Added ons-u-fw-b to bold the resulting data text to match the layout */}
+              <span className="ons-summary__text ons-u-fw-b">
+                {tmReleaseDate ? renderReleaseDate() : "No release date specified"}
+              </span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  );
 }
 
 export default TotalmobileDetails;

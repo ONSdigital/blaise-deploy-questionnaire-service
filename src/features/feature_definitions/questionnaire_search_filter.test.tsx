@@ -1,5 +1,6 @@
+/* eslint-disable import-x/order */
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
 // Test modules
@@ -7,86 +8,93 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import "@testing-library/jest-dom";
 
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
+import {
+  thenIAmPresentedWithAListOfDeployedQuestionnaires,
+  thenIAmPresentedWithQuestionnaireNotFound,
+} from "../step_definitions/then";
 import { whenILoadTheHomepage, whenISearchForAQuestionnaire } from "../step_definitions/when";
-import { thenIAmPresentedWithAListOfDeployedQuestionnaires, thenIAmPresentedWithQuestionnaireNotFound } from "../step_definitions/then";
-import { Questionnaire } from "blaise-api-node-client";
-import { Authenticate } from "blaise-login-react/blaise-login-react-client";
+
+import type { Questionnaire } from "blaise-api-node-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 // mock login
-jest.mock("blaise-login-react/blaise-login-react-client");
-const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
-Authenticate.prototype.render = MockAuthenticate.prototype.render;
+vi.mock("blaise-login-react-client", async () => {
+  const { mockLoginReactClientModule } =
+    await import("blaise-login-react/blaise-login-react-client");
+
+  return mockLoginReactClientModule();
+});
+const { MockAuthenticate } = await import("blaise-login-react/blaise-login-react-client");
+
 MockAuthenticate.OverrideReturnValues(null, true);
 
 // Load in feature details from .feature file
-const feature = loadFeature(
-    "./src/features/questionnaire_search_filter.feature",
-    { tagFilter: "not @server and not @integration" }
-);
+const feature = loadFeature("./src/features/questionnaire_search_filter.feature", {
+  tagFilter: "not @server and not @integration",
+});
 
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
-defineFeature(feature, test => {
-    afterEach(() => {
-        mocker.reset();
-    });
+defineFeature(feature, (test) => {
+  afterEach(() => {
+    mocker.reset();
+  });
 
-    test("Search for a questionnaire", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+  test("Search for a questionnaire", ({ given, when, then }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
 
-        whenILoadTheHomepage(when);
-        whenISearchForAQuestionnaire(when);
+    whenILoadTheHomepage(when);
+    whenISearchForAQuestionnaire(when);
 
-        thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
-    });
+    thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
+  });
 
-    test("Questionnaire not found", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+  test("Questionnaire not found", ({ given, when, then }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
 
-        whenILoadTheHomepage(when);
-        whenISearchForAQuestionnaire(when);
+    whenILoadTheHomepage(when);
+    whenISearchForAQuestionnaire(when);
 
-        thenIAmPresentedWithQuestionnaireNotFound(then);
-    });
+    thenIAmPresentedWithQuestionnaireNotFound(then);
+  });
 
-    test("DST questionnaires do not show up by default", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+  test("DST questionnaires do not show up by default", ({ given, when, then }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
 
-        whenILoadTheHomepage(when);
-        whenISearchForAQuestionnaire(when);
+    whenILoadTheHomepage(when);
+    whenISearchForAQuestionnaire(when);
 
-        thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
-    });
+    thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
+  });
 
-    test("I can search for DST questinnaires", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+  test("I can search for DST questinnaires", ({ given, when, then }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
 
-        whenILoadTheHomepage(when);
-        whenISearchForAQuestionnaire(when);
+    whenILoadTheHomepage(when);
+    whenISearchForAQuestionnaire(when);
 
-        thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
-    });
+    thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
+  });
 });

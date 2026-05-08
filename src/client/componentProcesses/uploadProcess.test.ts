@@ -1,92 +1,100 @@
-import { uploadAndInstallFile, validateSelectedQuestionnaireExists } from "./uploadProcess";
 import { totalmobileReleaseDateSurveyTLAs } from "../../utilities/totalmobileReleaseDateSurveyTLAs";
+import { setTmReleaseDate } from "../tmReleaseDate";
+import { setToStartDate } from "../toStartDate";
 
-import { getQuestionnaire } from "../questionnaires";
-import { setTOStartDate } from "../toStartDate";
-import { setTMReleaseDate } from "../tmReleaseDate";
+import { uploadAndInstallFile, validateSelectedQuestionnaireExists } from "./uploadProcess";
 
-jest.mock("../questionnaires", () => ({
-    getQuestionnaire: jest.fn(),
-    getQuestionnaireSettings: jest.fn(),
-    getQuestionnaireModes: jest.fn(),
-    deactivateQuestionnaire: jest.fn(),
+vi.mock("../questionnaires", () => ({
+  getQuestionnaire: vi.fn(),
+  getQuestionnaireSettings: vi.fn(),
+  getQuestionnaireModes: vi.fn(),
+  deactivateQuestionnaire: vi.fn(),
 }));
 
-jest.mock("../upload", () => ({
-    initialiseUpload: jest.fn(),
-    uploadFile: jest.fn(),
+vi.mock("../upload", () => ({
+  initialiseUpload: vi.fn(),
+  uploadFile: vi.fn(),
 }));
 
-jest.mock("../toStartDate", () => ({
-    setTOStartDate: jest.fn(),
+vi.mock("../toStartDate", () => ({
+  setToStartDate: vi.fn(),
 }));
 
-jest.mock("../tmReleaseDate", () => ({
-    setTMReleaseDate: jest.fn(),
+vi.mock("../tmReleaseDate", () => ({
+  setTmReleaseDate: vi.fn(),
 }));
 
-jest.mock("./index", () => ({
-    verifyAndInstallQuestionnaire: jest.fn().mockResolvedValue([true, "ok"]),
+vi.mock("./index", () => ({
+  verifyAndInstallQuestionnaire: vi.fn().mockResolvedValue([true, "ok"]),
 }));
 
-jest.mock("../../client/logger", () => ({
-    clientLogger: {
-        info: jest.fn(),
-        error: jest.fn(),
-    },
+vi.mock("../../client/logger", () => ({
+  clientLogger: {
+    info: vi.fn(),
+    error: vi.fn(),
+  },
 }));
 
 describe("uploadProcess", () => {
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
-    it("returns null when no file selected", async () => {
-        const setQuestionnaireName = jest.fn();
-        const setUploadStatus = jest.fn();
-        const setFoundQuestionnaire = jest.fn();
+  it("returns null when no file selected", async () => {
+    const setQuestionnaireName = vi.fn();
+    const setUploadStatus = vi.fn();
+    const setFoundQuestionnaire = vi.fn();
 
-        const result = await validateSelectedQuestionnaireExists(undefined, setQuestionnaireName, setUploadStatus, setFoundQuestionnaire);
-        expect(result).toBeNull();
-    });
+    const result = await validateSelectedQuestionnaireExists(
+      undefined,
+      setQuestionnaireName,
+      setUploadStatus,
+      setFoundQuestionnaire,
+    );
 
-    it("returns false when uploadAndInstallFile has no file", async () => {
-        const result = await uploadAndInstallFile(
-            "OPN2004A",
-            undefined,
-            undefined,
-            undefined,
-            jest.fn(),
-            jest.fn(),
-            jest.fn()
-        );
-        expect(result).toEqual(false);
-    });
+    expect(result).toBeNull();
+  });
 
-    it("handles Totalmobile release date failure", async () => {
-        const tla = totalmobileReleaseDateSurveyTLAs[0] || "OPN";
-        const questionnaireName = `${tla}2004A`;
+  it("returns false when uploadAndInstallFile has no file", async () => {
+    const result = await uploadAndInstallFile(
+      "OPN2004A",
+      undefined,
+      undefined,
+      undefined,
+      vi.fn(),
+      vi.fn(),
+      vi.fn(),
+    );
 
-        (setTOStartDate as jest.Mock).mockResolvedValue(true);
-        (setTMReleaseDate as jest.Mock).mockResolvedValue(false);
+    expect(result).toEqual(false);
+  });
 
-        const setUploading = jest.fn();
-        const setUploadStatus = jest.fn();
+  it("handles Totalmobile release date failure", async () => {
+    const tla = totalmobileReleaseDateSurveyTLAs[0] || "OPN";
+    const questionnaireName = `${tla}2004A`;
 
-        const file = { name: `${questionnaireName}.bpkg` } as any as File;
+    vi.mocked(setToStartDate).mockResolvedValue(true);
+    vi.mocked(setTmReleaseDate).mockResolvedValue(false);
 
-        const result = await uploadAndInstallFile(
-            questionnaireName,
-            "2022-12-31",
-            "2022-12-31",
-            file,
-            setUploading,
-            setUploadStatus,
-            jest.fn()
-        );
+    const setUploading = vi.fn();
+    const setUploadStatus = vi.fn();
 
-        expect(result).toEqual(false);
-        expect(setUploadStatus).toHaveBeenCalledWith("Failed to store Totalmobile release date specified");
-        expect(setUploading).toHaveBeenCalledWith(false);
-    });
+    const file = { name: `${questionnaireName}.bpkg` } as unknown as File;
+
+    const result = await uploadAndInstallFile(
+      questionnaireName,
+      "2022-12-31",
+      "2022-12-31",
+      file,
+      setUploading,
+      setUploadStatus,
+      vi.fn(),
+    );
+
+    expect(result).toEqual(false);
+    expect(setUploadStatus).toHaveBeenCalledWith(
+      "Failed to store Totalmobile release date specified",
+    );
+    expect(setUploading).toHaveBeenCalledWith(false);
+  });
 });

@@ -1,7 +1,7 @@
 {
-  "short_name": "DQS",
-  "name": "Deploy Questionnaire Service",
+  "background_color": "#033e58",
   "description": "Deploy and manage installed questionnaires in Blaise",
+  "display": "standalone",
   "icons": [
     {
       "src": "/static/android-chrome-icon-192x192.png",
@@ -26,11 +26,9 @@
       "purpose": "maskable"
     }
   ],
-  "start_url": "/",
-  "background_color": "#033e58",
-  "display": "standalone",
+  "name": "Deploy Questionnaire Service",
   "scope": "/",
-  "theme_color": "#3b7a9e",
+  "short_name": "DQS",
   "shortcuts": [
     {
       "name": "Deploy new questionnaire",
@@ -80,5 +78,7 @@
         }
       ]
     }
-  ]
+  ],
+  "start_url": "/",
+  "theme_color": "#3b7a9e"
 }

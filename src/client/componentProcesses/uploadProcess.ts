@@ -1,143 +1,169 @@
-import { AxiosProgressEvent } from "axios";
-import {
-    getQuestionnaire,
-    getQuestionnaireSettings,
-    getQuestionnaireModes,
-    deactivateQuestionnaire,
-} from "../questionnaires";
-import {
-    initialiseUpload,
-    uploadFile
-} from "../upload";
-import { setTOStartDate } from "../toStartDate";
-import { setTMReleaseDate } from "../tmReleaseDate";
-import {
-    GetStrictInterviewingSettings,
-    ValidateSettings,
-} from "../../utilities/questionnaireSettings";
-import { verifyAndInstallQuestionnaire } from ".";
-import { GetQuestionnaireMode } from "../../utilities/questionnaireMode";
-import { QuestionnaireSettings, Questionnaire } from "blaise-api-node-client";
-import { totalmobileReleaseDateSurveyTLAs } from "../../utilities/totalmobileReleaseDateSurveyTLAs";
+import { type AxiosProgressEvent } from "axios";
+import type { Questionnaire, QuestionnaireSettings } from "blaise-api-node-client";
+
 import { clientLogger } from "../../client/logger";
+import { GetQuestionnaireMode } from "../../utilities/questionnaireMode";
+import {
+  GetStrictInterviewingSettings,
+  ValidateSettings,
+} from "../../utilities/questionnaireSettings";
+import { totalmobileReleaseDateSurveyTLAs } from "../../utilities/totalmobileReleaseDateSurveyTLAs";
+import {
+  deactivateQuestionnaire,
+  getQuestionnaire,
+  getQuestionnaireModes,
+  getQuestionnaireSettings,
+} from "../questionnaires";
+import { setTmReleaseDate } from "../tmReleaseDate";
+import { setToStartDate } from "../toStartDate";
+import { initialiseUpload, uploadFile } from "../upload";
 
-export async function validateSelectedQuestionnaireExists(file: File | undefined, setQuestionnaireName: (status: string) => void, setUploadStatus: (status: string) => void, setFoundQuestionnaire: (object: Questionnaire | null) => void): Promise<boolean | null> {
-    if (file === undefined) {
-        return null;
-    }
+import { verifyAndInstallQuestionnaire } from ".";
 
-    const fileName = file.name;
-    const questionnaireName = fileName.replace(/\.[a-zA-Z]*$/, "");
+export async function validateSelectedQuestionnaireExists(
+  file: File | undefined,
+  setQuestionnaireName: (status: string) => void,
+  setUploadStatus: (status: string) => void,
+  setFoundQuestionnaire: (object: Questionnaire | null) => void,
+): Promise<boolean | null> {
+  if (file === undefined) {
+    return null;
+  }
 
-    setQuestionnaireName(questionnaireName);
+  const fileName = file.name;
+  const questionnaireName = fileName.replace(/\.[a-zA-Z]*$/, "");
 
-    let questionnaire: Questionnaire | undefined;
-    try {
-        questionnaire = await getQuestionnaire(questionnaireName);
-    } catch {
-        clientLogger.info("Failed to validate if questionnaire already exists");
-        setUploadStatus("Failed to validate if questionnaire already exists");
-        return null;
-    }
+  setQuestionnaireName(questionnaireName);
 
-    if (questionnaire) {
-        setFoundQuestionnaire(questionnaire);
-        return true;
-    }
+  let questionnaire: Questionnaire | undefined;
 
-    return false;
+  try {
+    questionnaire = await getQuestionnaire(questionnaireName);
+  } catch {
+    clientLogger.info("Failed to validate if questionnaire already exists");
+    setUploadStatus("Failed to validate if questionnaire already exists");
+
+    return null;
+  }
+
+  if (questionnaire) {
+    setFoundQuestionnaire(questionnaire);
+
+    return true;
+  }
+
+  return false;
 }
 
 export async function uploadAndInstallFile(
-    questionnaireName: string,
-    toStartDate: string | undefined,
-    tmReleaseDate: string | undefined,
-    file: File | undefined,
-    setUploading: (boolean: boolean) => void,
-    setUploadStatus: (status: string) => void,
-    onFileUploadProgress: (progressEvent: AxiosProgressEvent) => void
+  questionnaireName: string,
+  toStartDate: string | undefined,
+  tmReleaseDate: string | undefined,
+  file: File | undefined,
+  setUploading: (boolean: boolean) => void,
+  setUploadStatus: (status: string) => void,
+  onFileUploadProgress: (progressEvent: AxiosProgressEvent) => void,
 ): Promise<boolean> {
-    if (file === undefined) {
-        return false;
-    }
-    clientLogger.info("Start uploading the file");
+  if (file === undefined) {
+    return false;
+  }
 
-    clientLogger.info(`liveDate ${toStartDate}`);
-    const liveDateCreated = await setTOStartDate(questionnaireName, toStartDate);
-    if (!liveDateCreated) {
-        setUploadStatus("Failed to store telephone operations start date specified");
-        setUploading(false);
-        return false;
-    }
+  clientLogger.info("Start uploading the file");
 
-    if (totalmobileReleaseDateSurveyTLAs.some(tla => questionnaireName.startsWith(tla))) {
-        clientLogger.info(`releaseDate ${tmReleaseDate}`);
-        const releaseDateCreated = await setTMReleaseDate(questionnaireName, tmReleaseDate);
+  clientLogger.info(`liveDate ${toStartDate}`);
+  const liveDateCreated = await setToStartDate(questionnaireName, toStartDate);
 
-        if (!releaseDateCreated) {
-            setUploadStatus("Failed to store Totalmobile release date specified");
-            setUploading(false);
-            return false;
-        }
-    }
-
-    // Get the signed url to allow access to the bucket
-    let signedUrl: string;
-    try {
-        signedUrl = await initialiseUpload(file.name);
-    } catch {
-        clientLogger.error("Failed to initialiseUpload");
-        setUploadStatus("Failed to upload questionnaire");
-        setUploading(false);
-        return false;
-    }
-
-    setUploading(true);
-
-    // Upload the file using the GCP bucket url
-    const uploaded = await uploadFile(signedUrl, file, onFileUploadProgress);
+  if (!liveDateCreated) {
+    setUploadStatus("Failed to store telephone operations start date specified");
     setUploading(false);
-    if (!uploaded) {
-        clientLogger.error("Failed to Upload file");
-        setUploadStatus("Failed to upload questionnaire");
-        return false;
-    }
 
-    // Validate the file is in the bucket and call the rest API to install
-    const [installed, message] = await verifyAndInstallQuestionnaire(file.name);
-    if (!installed) {
-        setUploadStatus(message);
+    return false;
+  }
+
+  if (totalmobileReleaseDateSurveyTLAs.some((tla) => questionnaireName.startsWith(tla))) {
+    clientLogger.info(`releaseDate ${tmReleaseDate}`);
+    const releaseDateCreated = await setTmReleaseDate(questionnaireName, tmReleaseDate);
+
+    if (!releaseDateCreated) {
+      setUploadStatus("Failed to store Totalmobile release date specified");
+      setUploading(false);
+
+      return false;
     }
-    return installed;
+  }
+
+  // Get the signed url to allow access to the bucket
+  let signedUrl: string;
+
+  try {
+    signedUrl = await initialiseUpload(file.name);
+  } catch {
+    clientLogger.error("Failed to initialiseUpload");
+    setUploadStatus("Failed to upload questionnaire");
+    setUploading(false);
+
+    return false;
+  }
+
+  setUploading(true);
+
+  // Upload the file using the GCP bucket url
+  const uploaded = await uploadFile(signedUrl, file, onFileUploadProgress);
+
+  setUploading(false);
+  if (!uploaded) {
+    clientLogger.error("Failed to Upload file");
+    setUploadStatus("Failed to upload questionnaire");
+
+    return false;
+  }
+
+  // Validate the file is in the bucket and call the rest API to install
+  const [installed, message] = await verifyAndInstallQuestionnaire(file.name);
+
+  if (!installed) {
+    setUploadStatus(message);
+  }
+
+  return installed;
 }
 
 export async function checkQuestionnaireSettings(
-    questionnaireName: string,
-    setQuestionnaireSettings: (questionnaireSettings: QuestionnaireSettings) => void,
-    setInvalidSettings: (invalidSettings: Partial<QuestionnaireSettings>) => void,
-    setErrored: (errored: boolean) => void
+  questionnaireName: string,
+  setQuestionnaireSettings: (questionnaireSettings: QuestionnaireSettings) => void,
+  setInvalidSettings: (invalidSettings: Partial<QuestionnaireSettings>) => void,
+  setErrored: (errored: boolean) => void,
 ): Promise<boolean> {
-    let questionnaireSettingsList: QuestionnaireSettings[];
-    let questionnaireModes: string[];
-    try {
-        questionnaireSettingsList = await getQuestionnaireSettings(questionnaireName);
-        questionnaireModes = await getQuestionnaireModes(questionnaireName);
-        if (questionnaireSettingsList.length == 0 || questionnaireModes.length == 0) {
-            setErrored(true);
-            return false;
-        }
-    } catch {
-        setErrored(true);
-        return false;
-    }
-    const questionnaireSettings = GetStrictInterviewingSettings(questionnaireSettingsList);
-    setQuestionnaireSettings(questionnaireSettings);
-    const [valid, invalidSettings] = ValidateSettings(questionnaireSettings, GetQuestionnaireMode(questionnaireModes));
-    setInvalidSettings(invalidSettings);
+  let questionnaireSettingsList: QuestionnaireSettings[];
+  let questionnaireModes: string[];
 
-    if (!valid) {
-        deactivateQuestionnaire(questionnaireName);
-    }
+  try {
+    questionnaireSettingsList = await getQuestionnaireSettings(questionnaireName);
+    questionnaireModes = await getQuestionnaireModes(questionnaireName);
+    if (questionnaireSettingsList.length == 0 || questionnaireModes.length == 0) {
+      setErrored(true);
 
-    return valid;
+      return false;
+    }
+  } catch {
+    setErrored(true);
+
+    return false;
+  }
+
+  const questionnaireSettings = GetStrictInterviewingSettings(questionnaireSettingsList);
+
+  setQuestionnaireSettings(questionnaireSettings);
+  const [valid, invalidSettings] = ValidateSettings(
+    questionnaireSettings,
+    GetQuestionnaireMode(questionnaireModes),
+  );
+
+  setInvalidSettings(invalidSettings);
+
+  if (!valid) {
+    deactivateQuestionnaire(questionnaireName);
+  }
+
+  return valid;
 }

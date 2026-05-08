@@ -1,30 +1,26 @@
-import React, { ReactElement } from "react";
+import React, { type ReactElement } from "react";
 
 interface Props {
-    status: string
+  status: string;
 }
 
 function getStatusColor(status: string | undefined) {
-    switch (status) {
+  switch (status) {
     case "Active":
-        return "success";
+      return "success";
     case "Failed":
-        return "error";
+      return "error";
     default:
-        return "info";
-    }
+      return "info";
+  }
 }
 
 function QuestionnaireStatus({ status }: Props): ReactElement {
-    return (
-        <>
-            <span
-                className={`ons-status ons-status--${getStatusColor(status)}`}>
-                {status}
-            </span>
-        </>
-    );
+  return (
+    <>
+      <span className={`ons-status ons-status--${getStatusColor(status)}`}>{status}</span>
+    </>
+  );
 }
 
 export default QuestionnaireStatus;
-

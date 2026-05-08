@@ -1,31 +1,35 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Reinstall questionnaires list view Blaise Status page matches Snapshot 1`] = `
-Object {
+exports[`Reinstall questionnaires list > view Blaise Status page matches Snapshot 1`] = `
+{
   "asFragment": [Function],
   "baseElement": <body>
     <div>
       <nav
-        aria-label="Breadcrumb"
-        class="ons-breadcrumb"
+        aria-label="Breadcrumbs"
+        class="ons-breadcrumbs"
       >
         <ol
-          class="ons-breadcrumb__items u-fs-s"
+          class="ons-breadcrumbs__items ons-u-fs-s"
         >
           <li
-            class="ons-breadcrumb__item"
-            data-testid="breadcrumb-0"
-            id="breadcrumb-0"
+            class="ons-breadcrumbs__item"
+            data-testid="breadcrumb---Home"
+            id="breadcrumb---Home"
           >
             <a
-              class="ons-breadcrumb__link"
+              class="ons-breadcrumbs__link"
+              data-discover="true"
               href="/"
             >
               Home
             </a>
             <svg
-              class="ons-svg-icon"
+              aria-hidden="true"
+              class="ons-icon"
+              fill="currentColor"
               focusable="false"
+              role="img"
               viewBox="0 0 8 13"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -36,19 +40,23 @@ Object {
             </svg>
           </li>
           <li
-            class="ons-breadcrumb__item"
-            data-testid="breadcrumb-1"
-            id="breadcrumb-1"
+            class="ons-breadcrumbs__item"
+            data-testid="breadcrumb--upload-Deploy-a-questionnaire"
+            id="breadcrumb--upload-Deploy-a-questionnaire"
           >
             <a
-              class="ons-breadcrumb__link"
+              class="ons-breadcrumbs__link"
+              data-discover="true"
               href="/upload"
             >
               Deploy a questionnaire
             </a>
             <svg
-              class="ons-svg-icon"
+              aria-hidden="true"
+              class="ons-icon"
+              fill="currentColor"
               focusable="false"
+              role="img"
               viewBox="0 0 8 13"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -139,15 +147,19 @@ Object {
             </fieldset>
             <br />
             <button
-              class="ons-btn "
-              data-testid="button"
+              class="ons-btn"
+              data-testid="confirm-install-button"
               id="confirm-install"
               type="button"
             >
               <span
                 class="ons-btn__inner"
               >
-                Install selected questionnaire
+                <span
+                  class="ons-btn__text"
+                >
+                  Install selected questionnaire
+                </span>
               </span>
             </button>
           </form>
@@ -157,26 +169,30 @@ Object {
   </body>,
   "container": <div>
     <nav
-      aria-label="Breadcrumb"
-      class="ons-breadcrumb"
+      aria-label="Breadcrumbs"
+      class="ons-breadcrumbs"
     >
       <ol
-        class="ons-breadcrumb__items u-fs-s"
+        class="ons-breadcrumbs__items ons-u-fs-s"
       >
         <li
-          class="ons-breadcrumb__item"
-          data-testid="breadcrumb-0"
-          id="breadcrumb-0"
+          class="ons-breadcrumbs__item"
+          data-testid="breadcrumb---Home"
+          id="breadcrumb---Home"
         >
           <a
-            class="ons-breadcrumb__link"
+            class="ons-breadcrumbs__link"
+            data-discover="true"
             href="/"
           >
             Home
           </a>
           <svg
-            class="ons-svg-icon"
+            aria-hidden="true"
+            class="ons-icon"
+            fill="currentColor"
             focusable="false"
+            role="img"
             viewBox="0 0 8 13"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -187,19 +203,23 @@ Object {
           </svg>
         </li>
         <li
-          class="ons-breadcrumb__item"
-          data-testid="breadcrumb-1"
-          id="breadcrumb-1"
+          class="ons-breadcrumbs__item"
+          data-testid="breadcrumb--upload-Deploy-a-questionnaire"
+          id="breadcrumb--upload-Deploy-a-questionnaire"
         >
           <a
-            class="ons-breadcrumb__link"
+            class="ons-breadcrumbs__link"
+            data-discover="true"
             href="/upload"
           >
             Deploy a questionnaire
           </a>
           <svg
-            class="ons-svg-icon"
+            aria-hidden="true"
+            class="ons-icon"
+            fill="currentColor"
             focusable="false"
+            role="img"
             viewBox="0 0 8 13"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -290,15 +310,19 @@ Object {
           </fieldset>
           <br />
           <button
-            class="ons-btn "
-            data-testid="button"
+            class="ons-btn"
+            data-testid="confirm-install-button"
             id="confirm-install"
             type="button"
           >
             <span
               class="ons-btn__inner"
             >
-              Install selected questionnaire
+              <span
+                class="ons-btn__text"
+              >
+                Install selected questionnaire
+              </span>
             </span>
           </button>
         </form>

@@ -1,5 +1,5 @@
-import { getConfigFromEnv } from "./config";
-import { newServer } from "./server";
+import { getConfigFromEnv } from "./config.js";
+import { newServer } from "./server.js";
 
 const config = getConfigFromEnv();
 const app = newServer(config);

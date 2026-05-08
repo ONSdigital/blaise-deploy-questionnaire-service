@@ -1,48 +1,52 @@
-import React, { ReactElement } from "react";
-import { ONSPanel, StyledFormErrorSummary, StyledFormField } from "blaise-design-system-react-components";
+import {
+  Panel,
+  StyledFormErrorSummary,
+  StyledFormField,
+} from "blaise-design-system-react-components";
+import React, { type ReactElement } from "react";
 
 interface SelectFilePageProps {
-    questionnaireName: string;
+  questionnaireName: string;
 }
 
 function ConfirmOverride({ questionnaireName }: SelectFilePageProps): ReactElement {
-    function validateRadio(value: string) {
-        let error;
-        if (!value) {
-            error = "Select an option";
-        }
-        return error;
+  function validateRadio(value: string) {
+    let error;
+
+    if (!value) {
+      error = "Select an option";
     }
 
-    const field = {
-        name: "override",
-        description: "",
-        type: "radio",
-        autoFocus: true,
-        validate: validateRadio,
-        radioOptions: [
-            { id: "yes", label: "Yes, overwrite questionnaire", value: "yes" },
-            { id: "cancel", label: "No, do not overwrite questionnaire", value: "cancel" },
-        ],
-        props: {}
-    };
+    return error;
+  }
 
-    return (
-        <>
-            <h1 className="ons-u-mb-l">
-                Are you sure you want to overwrite the entire questionnaire <em
-                    className="ons-highlight">{questionnaireName}</em>?
-            </h1>
+  const field = {
+    name: "override",
+    description: "",
+    type: "radio",
+    autoFocus: true,
+    validate: validateRadio,
+    radioOptions: [
+      { id: "yes", label: "Yes, overwrite questionnaire", value: "yes" },
+      { id: "cancel", label: "No, do not overwrite questionnaire", value: "cancel" },
+    ],
+    props: {},
+  };
 
-            <ONSPanel status={"warn"}>
-                All existing questionnaire information will be deleted
-            </ONSPanel>
+  return (
+    <>
+      <h1 className="ons-u-mb-l">
+        Are you sure you want to overwrite the entire questionnaire{" "}
+        <em className="ons-highlight">{questionnaireName}</em>?
+      </h1>
 
-            <StyledFormErrorSummary />
+      <Panel status={"warn"}>All existing questionnaire information will be deleted</Panel>
 
-            <StyledFormField {...field} />
-        </>
-    );
+      <StyledFormErrorSummary />
+
+      <StyledFormField {...field} />
+    </>
+  );
 }
 
 export default ConfirmOverride;

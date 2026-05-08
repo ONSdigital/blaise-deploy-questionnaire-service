@@ -1,81 +1,104 @@
+/* eslint-disable import-x/order */
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
 import { render } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
-import { Authenticate } from "blaise-login-react/blaise-login-react-client";
-import React from "react";
+import "@testing-library/jest-dom";
+
 import { Formik } from "formik";
+
 import SetDateForm from "./setDateForm";
 
 // mock login
-jest.mock("blaise-login-react/blaise-login-react-client");
-const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
-Authenticate.prototype.render = MockAuthenticate.prototype.render;
+vi.mock("blaise-login-react-client", async () => {
+  const { mockLoginReactClientModule } =
+    await import("blaise-login-react/blaise-login-react-client");
+
+  return mockLoginReactClientModule();
+});
+const { MockAuthenticate } = await import("blaise-login-react/blaise-login-react-client");
+
 MockAuthenticate.OverrideReturnValues(null, true);
 
 describe("SetDateForm for TO Start Date", () => {
-    it("should match the Snapshot", async () => {
-        const wrapper = render(
-            <Formik initialValues={{}} onSubmit={() => { }} >
-                <SetDateForm dateType={"start"} />
-            </Formik>
-        );
+  it("should match the Snapshot", async () => {
+    const wrapper = render(
+      <Formik
+        initialValues={{}}
+        onSubmit={() => {}}
+      >
+        <SetDateForm dateType={"start"} />
+      </Formik>,
+    );
 
-        expect(wrapper).toMatchSnapshot();
-    });
+    expect(wrapper).toMatchSnapshot();
+  });
 
-    it("display 'No start date'", async () => {
-        const { queryByText } = render(
-            <Formik initialValues={{}} onSubmit={() => { }} >
-                <SetDateForm dateType={"start"} />
-            </Formik>
-        );
+  it("display 'No start date'", async () => {
+    const { queryByText } = render(
+      <Formik
+        initialValues={{}}
+        onSubmit={() => {}}
+      >
+        <SetDateForm dateType={"start"} />
+      </Formik>,
+    );
 
-        expect(queryByText(/No start date/i)).toBeInTheDocument();
-    });
+    expect(queryByText(/No start date/i)).toBeInTheDocument();
+  });
 
-    it("display 'Yes let me specify a start date'", async () => {
-        const { queryByText } = render(
-            <Formik initialValues={{}} onSubmit={() => { }} >
-                <SetDateForm dateType={"start"} />
-            </Formik>
-        );
+  it("display 'Yes let me specify a start date'", async () => {
+    const { queryByText } = render(
+      <Formik
+        initialValues={{}}
+        onSubmit={() => {}}
+      >
+        <SetDateForm dateType={"start"} />
+      </Formik>,
+    );
 
-        expect(queryByText(/Yes, let me specify a start date/i)).toBeInTheDocument();
-    });
+    expect(queryByText(/Yes, let me specify a start date/i)).toBeInTheDocument();
+  });
 });
 
 describe("SetDateForm for TM Release Date", () => {
-    it("should match the Snapshot", async () => {
-        const wrapper = render(
-            <Formik initialValues={{}} onSubmit={() => { }} >
-                <SetDateForm dateType={"release"} />
-            </Formik>
-        );
+  it("should match the Snapshot", async () => {
+    const wrapper = render(
+      <Formik
+        initialValues={{}}
+        onSubmit={() => {}}
+      >
+        <SetDateForm dateType={"release"} />
+      </Formik>,
+    );
 
-        expect(wrapper).toMatchSnapshot();
-    });
+    expect(wrapper).toMatchSnapshot();
+  });
 
-    it("display 'No release date'", async () => {
-        const { queryByText } = render(
-            <Formik initialValues={{}} onSubmit={() => { }} >
-                <SetDateForm dateType={"release"} />
-            </Formik>
-        );
+  it("display 'No release date'", async () => {
+    const { queryByText } = render(
+      <Formik
+        initialValues={{}}
+        onSubmit={() => {}}
+      >
+        <SetDateForm dateType={"release"} />
+      </Formik>,
+    );
 
-        expect(queryByText(/No release date/i)).toBeInTheDocument();
-    });
+    expect(queryByText(/No release date/i)).toBeInTheDocument();
+  });
 
-    it("display 'Yes let me specify a release date'", async () => {
-        const { queryByText } = render(
-            <Formik initialValues={{}} onSubmit={() => { }} >
-                <SetDateForm dateType={"release"} />
-            </Formik>
-        );
+  it("display 'Yes let me specify a release date'", async () => {
+    const { queryByText } = render(
+      <Formik
+        initialValues={{}}
+        onSubmit={() => {}}
+      >
+        <SetDateForm dateType={"release"} />
+      </Formik>,
+    );
 
-        expect(queryByText(/Yes, let me specify a release date/i)).toBeInTheDocument();
-    });
+    expect(queryByText(/Yes, let me specify a release date/i)).toBeInTheDocument();
+  });
 });
-

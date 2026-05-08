@@ -1,45 +1,50 @@
+/* eslint-disable import-x/order */
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
 // Test modules
 import { defineFeature, loadFeature } from "jest-cucumber";
 import "@testing-library/jest-dom";
 // Mock elements
-import { Questionnaire } from "blaise-api-node-client";
+import type { Questionnaire } from "blaise-api-node-client";
 
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
-import { whenILoadTheHomepage } from "../step_definitions/when";
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires } from "../step_definitions/then";
-import { Authenticate } from "blaise-login-react/blaise-login-react-client";
+import { whenILoadTheHomepage } from "../step_definitions/when";
+
 import axios from "axios";
 import MockAdapeter from "axios-mock-adapter";
 
 // mock login
-jest.mock("blaise-login-react/blaise-login-react-client");
-const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
-Authenticate.prototype.render = MockAuthenticate.prototype.render;
+vi.mock("blaise-login-react-client", async () => {
+  const { mockLoginReactClientModule } =
+    await import("blaise-login-react/blaise-login-react-client");
+
+  return mockLoginReactClientModule();
+});
+const { MockAuthenticate } = await import("blaise-login-react/blaise-login-react-client");
+
 MockAuthenticate.OverrideReturnValues(null, true);
 
 // Load in feature details from .feature file
-const feature = loadFeature(
-    "./src/features/display_list_of_questionnaires.feature",
-    { tagFilter: "not @server and not @integration" }
-);
+const feature = loadFeature("./src/features/display_list_of_questionnaires.feature", {
+  tagFilter: "not @server and not @integration",
+});
 
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapeter(axios);
 
-defineFeature(feature, test => {
-    afterEach(() => {
-        mocker.reset();
-    });
+defineFeature(feature, (test) => {
+  afterEach(() => {
+    mocker.reset();
+  });
 
-    test("List all questionnaires in Blaise", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        whenILoadTheHomepage(when);
-        thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
-    });
+  test("List all questionnaires in Blaise", ({ given, when, then }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    whenILoadTheHomepage(when);
+    thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
+  });
 });

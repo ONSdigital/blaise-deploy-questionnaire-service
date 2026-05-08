@@ -1,45 +1,48 @@
-import React, { ReactElement } from "react";
 import { StyledFormErrorSummary, StyledFormField } from "blaise-design-system-react-components";
+import React, { type ReactElement } from "react";
 
 interface SelectFilePageProps {
-    questionnaireName: string;
+  questionnaireName: string;
 }
 
 function AlreadyExists({ questionnaireName }: SelectFilePageProps): ReactElement {
-    function validateRadio(value: string) {
-        let error;
-        if (!value) {
-            error = "Select an option";
-        }
-        return error;
+  function validateRadio(value: string) {
+    let error;
+
+    if (!value) {
+      error = "Select an option";
     }
 
-    const field = {
-        name: "override",
-        description: "",
-        type: "radio",
-        autoFocus: true,
-        validate: validateRadio,
-        radioOptions: [
-            { id: "cancel", label: "Cancel and keep original questionnaire", value: "cancel" },
-            { id: "continue", label: "Overwrite the entire questionnaire", value: "continue" },
-        ],
-        props: {}
-    };
+    return error;
+  }
 
-    return (
-        <>
-            <h1 className="ons-u-mb-l">
-                Questionnaire file <em className="ons-highlight">{questionnaireName}</em> already exists in the system.
-                <br />
-                What action do you want to take?
-            </h1>
+  const field = {
+    name: "override",
+    description: "",
+    type: "radio",
+    autoFocus: true,
+    validate: validateRadio,
+    radioOptions: [
+      { id: "cancel", label: "Cancel and keep original questionnaire", value: "cancel" },
+      { id: "continue", label: "Overwrite the entire questionnaire", value: "continue" },
+    ],
+    props: {},
+  };
 
-            <StyledFormErrorSummary />
+  return (
+    <>
+      <h1 className="ons-u-mb-l">
+        Questionnaire file <em className="ons-highlight">{questionnaireName}</em> already exists in
+        the system.
+        <br />
+        What action do you want to take?
+      </h1>
 
-            <StyledFormField {...field} />
-        </>
-    );
+      <StyledFormErrorSummary />
+
+      <StyledFormField {...field} />
+    </>
+  );
 }
 
 export default AlreadyExists;

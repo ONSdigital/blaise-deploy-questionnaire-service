@@ -1,112 +1,124 @@
-import { deleteTOStartDate, getTOStartDate, setTOStartDate } from "./toStartDate";
-
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
+import { deleteToStartDate, getToStartDate, setToStartDate } from "./toStartDate";
+
 const mock = new MockAdapter(axios);
 
-describe("Function setTOStartDate(questionnaireName: string, toStartDate: string) ", () => {
-    afterEach(() => {
-        mock.reset();
-    });
+describe("Function setToStartDate(questionnaireName: string, toStartDate: string) ", () => {
+  afterEach(() => {
+    mock.reset();
+  });
 
-    it("should return true if created 201 response is returned", async () => {
-        mock.onPost("/api/tostartdate/OPN2004A").reply(201);
+  it("should return true if created 201 response is returned", async () => {
+    mock.onPost("/api/tostartdate/OPN2004A").reply(201);
 
-        const success = await setTOStartDate("OPN2004A", "2020-01-01");
-        expect(success).toBeTruthy();
-    });
+    const success = await setToStartDate("OPN2004A", "2020-01-01");
 
-    it("should return false if a 404 is returned from the server", async () => {
-        mock.onPost("/api/tostartdate/OPN2004A").reply(404);
+    expect(success).toBeTruthy();
+  });
 
-        const success = await setTOStartDate("OPN2004A", "2020-01-01");
-        expect(success).toBeFalsy();
-    });
+  it("should return false if a 404 is returned from the server", async () => {
+    mock.onPost("/api/tostartdate/OPN2004A").reply(404);
 
-    it("should return false if request returns an error code", async () => {
-        mock.onPost("/api/tostartdate/OPN2004A").reply(500);
+    const success = await setToStartDate("OPN2004A", "2020-01-01");
 
-        const success = await setTOStartDate("OPN2004A", "2020-01-01");
-        expect(success).toEqual(false);
-    });
+    expect(success).toBeFalsy();
+  });
 
-    it("should return false object if request call fails", async () => {
-        mock.onPost("/api/tostartdate/OPN2004A").networkError();
+  it("should return false if request returns an error code", async () => {
+    mock.onPost("/api/tostartdate/OPN2004A").reply(500);
 
-        const success = await setTOStartDate("OPN2004A", "2020-01-01");
-        expect(success).toEqual(false);
-    });
+    const success = await setToStartDate("OPN2004A", "2020-01-01");
+
+    expect(success).toEqual(false);
+  });
+
+  it("should return false object if request call fails", async () => {
+    mock.onPost("/api/tostartdate/OPN2004A").networkError();
+
+    const success = await setToStartDate("OPN2004A", "2020-01-01");
+
+    expect(success).toEqual(false);
+  });
 });
 
-describe("Function getTOStartDate(questionnaireName: string) ", () => {
-    afterEach(() => {
-        mock.reset();
-    });
+describe("Function getToStartDate(questionnaireName: string) ", () => {
+  afterEach(() => {
+    mock.reset();
+  });
 
-    it("should return true and a TO start date string if object with the correct name returned", async () => {
-        mock.onGet("/api/tostartdate/OPN2004A").reply(200, { "tostartdate": "1997-12-24" });
+  it("should return true and a TO start date string if object with the correct name returned", async () => {
+    mock.onGet("/api/tostartdate/OPN2004A").reply(200, { tostartdate: "1997-12-24" });
 
-        const toStartDate = await getTOStartDate("OPN2004A");
-        expect(toStartDate).toEqual("1997-12-24");
-    });
+    const toStartDate = await getToStartDate("OPN2004A");
 
-    it("should throw an error if object with without a To start date is returned", async () => {
-        mock.onGet("/api/tostartdate/OPN2004A").reply(200, { name: "BACON" });
+    expect(toStartDate).toEqual("1997-12-24");
+  });
 
-        await expect(getTOStartDate("OPN2004A")).rejects.toThrow("No tostartdate in response");
-    });
+  it("should return an empty string if object without a TO start date is returned", async () => {
+    mock.onGet("/api/tostartdate/OPN2004A").reply(200, { name: "BACON" });
 
-    it("should throw an error if a 404 is returned from the server", async () => {
-        mock.onGet("/api/tostartdate/OPN2004A").reply(404);
+    const toStartDate = await getToStartDate("OPN2004A");
 
-        const toStartDate = await getTOStartDate("OPN2004A");
-        expect(toStartDate).toEqual("");
-    });
+    expect(toStartDate).toEqual("");
+  });
 
-    it("should throw an error if request returns an error code", async () => {
-        mock.onGet("/api/tostartdate/OPN2004A").reply(500);
+  it("should return an empty string if a 404 is returned from the server", async () => {
+    mock.onGet("/api/tostartdate/OPN2004A").reply(404);
 
-        await expect(getTOStartDate("OPN2004A")).rejects.toThrow();
-    });
+    const toStartDate = await getToStartDate("OPN2004A");
 
-    it("should throw an error if request call fails", async () => {
-        mock.onGet("/api/tostartdate/OPN2004A").networkError();
+    expect(toStartDate).toEqual("");
+  });
 
-        await expect(getTOStartDate("OPN2004A")).rejects.toThrow();
-    });
+  it("should throw an error if request returns an error code", async () => {
+    mock.onGet("/api/tostartdate/OPN2004A").reply(500);
+
+    await expect(getToStartDate("OPN2004A")).rejects.toThrow();
+  });
+
+  it("should throw an error if request call fails", async () => {
+    mock.onGet("/api/tostartdate/OPN2004A").networkError();
+
+    await expect(getToStartDate("OPN2004A")).rejects.toThrow();
+  });
 });
 
-describe("Function deleteTOStartDate(questionnaireName: string, toStartDate: string) ", () => {
-    afterEach(() => {
-        mock.reset();
-    });
+describe("Function deleteToStartDate(questionnaireName: string, toStartDate: string) ", () => {
+  afterEach(() => {
+    mock.reset();
+  });
 
-    it("should return true if created 204 response is returned", async () => {
-        mock.onDelete("/api/tostartdate/OPN2004A").reply(204);
+  it("should return true if created 204 response is returned", async () => {
+    mock.onDelete("/api/tostartdate/OPN2004A").reply(204);
 
-        const success = await deleteTOStartDate("OPN2004A");
-        expect(success).toBeTruthy();
-    });
+    const success = await deleteToStartDate("OPN2004A");
 
-    it("should return false if a 404 is returned from the server", async () => {
-        mock.onDelete("/api/tostartdate/OPN2004A").reply(404);
+    expect(success).toBeTruthy();
+  });
 
-        const success = await deleteTOStartDate("OPN2004A");
-        expect(success).toBeFalsy();
-    });
+  it("should return false if a 404 is returned from the server", async () => {
+    mock.onDelete("/api/tostartdate/OPN2004A").reply(404);
 
-    it("should return false if request returns an error code", async () => {
-        mock.onDelete("/api/tostartdate/OPN2004A").reply(500);
+    const success = await deleteToStartDate("OPN2004A");
 
-        const success = await deleteTOStartDate("OPN2004A");
-        expect(success).toEqual(false);
-    });
+    expect(success).toBeFalsy();
+  });
 
-    it("should return false object if request call fails", async () => {
-        mock.onDelete("/api/tostartdate/OPN2004A").networkError();
+  it("should return false if request returns an error code", async () => {
+    mock.onDelete("/api/tostartdate/OPN2004A").reply(500);
 
-        const success = await deleteTOStartDate("OPN2004A");
-        expect(success).toEqual(false);
-    });
+    const success = await deleteToStartDate("OPN2004A");
+
+    expect(success).toEqual(false);
+  });
+
+  it("should return false object if request call fails", async () => {
+    mock.onDelete("/api/tostartdate/OPN2004A").networkError();
+
+    const success = await deleteToStartDate("OPN2004A");
+
+    expect(success).toEqual(false);
+  });
 });

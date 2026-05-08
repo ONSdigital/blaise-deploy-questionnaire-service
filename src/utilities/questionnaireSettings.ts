@@ -1,51 +1,77 @@
+import type { QuestionnaireSettings } from "blaise-api-node-client";
 
-import { QuestionnaireSettings } from "blaise-api-node-client";
-import { QuestionnaireMode } from "./questionnaireMode";
+import { QuestionnaireMode } from "./questionnaireMode.js";
 
-export const ValidMixedModeSettings: Partial<QuestionnaireSettings> = {
-    saveSessionOnTimeout: true,
-    saveSessionOnQuit: true,
-    deleteSessionOnTimeout: true,
-    deleteSessionOnQuit: true,
-    applyRecordLocking: true,
+const ValidMixedModeSettings: Partial<QuestionnaireSettings> = {
+  saveSessionOnTimeout: true,
+  saveSessionOnQuit: true,
+  deleteSessionOnTimeout: true,
+  deleteSessionOnQuit: true,
+  applyRecordLocking: true,
 };
 
-export const ValidCatiModeSettings: Partial<QuestionnaireSettings> = {
-    saveSessionOnTimeout: true,
-    saveSessionOnQuit: true,
-    applyRecordLocking: true,
+const ValidCatiModeSettings: Partial<QuestionnaireSettings> = {
+  saveSessionOnTimeout: true,
+  saveSessionOnQuit: true,
+  applyRecordLocking: true,
 };
 
-export function GetStrictInterviewingSettings(questionnaireSettingsList: QuestionnaireSettings[]): QuestionnaireSettings {
-    for (const questionnaireSettings of questionnaireSettingsList) {
-        if (questionnaireSettings.type === "StrictInterviewing") {
-            return questionnaireSettings;
-        }
+export function GetStrictInterviewingSettings(
+  questionnaireSettingsList: QuestionnaireSettings[],
+): QuestionnaireSettings {
+  for (const questionnaireSettings of questionnaireSettingsList) {
+    if (questionnaireSettings.type === "StrictInterviewing") {
+      return questionnaireSettings;
     }
-    return {} as QuestionnaireSettings;
+  }
+
+  return {} as QuestionnaireSettings;
 }
 
-export function ValidateSettings(questionnaireSettings: QuestionnaireSettings, questionnaireMode: QuestionnaireMode): [boolean, Partial<QuestionnaireSettings>] {
-    if (questionnaireMode === QuestionnaireMode.Cati) {
-        return ValidateCATIModeSettings(questionnaireSettings);
+export function ValidateSettings(
+  questionnaireSettings: QuestionnaireSettings,
+  questionnaireMode: QuestionnaireMode,
+): [boolean, Partial<QuestionnaireSettings>] {
+  if (questionnaireMode === QuestionnaireMode.Cati) {
+    return ValidateCATIModeSettings(questionnaireSettings);
+  }
+
+  return ValidateMixedModeSettings(questionnaireSettings);
+}
+
+export function ValidateCATIModeSettings(
+  questionnaireSettings: QuestionnaireSettings,
+): [boolean, Partial<QuestionnaireSettings>] {
+  return validateSettings(questionnaireSettings, ValidCatiModeSettings);
+}
+
+export function ValidateMixedModeSettings(
+  questionnaireSettings: QuestionnaireSettings,
+): [boolean, Partial<QuestionnaireSettings>] {
+  return validateSettings(questionnaireSettings, ValidMixedModeSettings);
+}
+
+function setInvalidSetting<K extends keyof QuestionnaireSettings>(
+  invalidSettings: Partial<QuestionnaireSettings>,
+  property: K,
+  value: QuestionnaireSettings[K] | undefined,
+): void {
+  invalidSettings[property] = value;
+}
+
+function validateSettings(
+  questionnaireSettings: QuestionnaireSettings,
+  validationSettings: Partial<QuestionnaireSettings>,
+): [boolean, Partial<QuestionnaireSettings>] {
+  const invalidSettings: Partial<QuestionnaireSettings> = {};
+
+  for (const property of Object.keys(validationSettings) as Array<keyof QuestionnaireSettings>) {
+    const value = validationSettings[property];
+
+    if (questionnaireSettings[property] != value) {
+      setInvalidSetting(invalidSettings, property, value);
     }
-    return ValidateMixedModeSettings(questionnaireSettings);
-}
+  }
 
-export function ValidateCATIModeSettings(questionnaireSettings: QuestionnaireSettings): [boolean, Partial<QuestionnaireSettings>] {
-    return validateSettings(questionnaireSettings, ValidCatiModeSettings);
-}
-
-export function ValidateMixedModeSettings(questionnaireSettings: QuestionnaireSettings): [boolean, Partial<QuestionnaireSettings>] {
-    return validateSettings(questionnaireSettings, ValidMixedModeSettings);
-}
-
-function validateSettings(questionnaireSettings: QuestionnaireSettings, validationSettings: Partial<QuestionnaireSettings>): [boolean, Partial<QuestionnaireSettings>] {
-    const invalidSettings: any = {};
-    for (const [property, value] of Object.entries(validationSettings)) {
-        if (questionnaireSettings[property as keyof QuestionnaireSettings] != value) {
-            invalidSettings[property] = value;
-        }
-    }
-    return [Object.keys(invalidSettings).length === 0, invalidSettings];
+  return [Object.keys(invalidSettings).length === 0, invalidSettings];
 }

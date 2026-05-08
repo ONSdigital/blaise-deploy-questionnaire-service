@@ -1,141 +1,110 @@
-import { ONSButton, ONSLoadingPanel, ONSPanel } from "blaise-design-system-react-components";
-import React, { ReactElement, useEffect, useState } from "react";
-import { Questionnaire } from "blaise-api-node-client";
+import type { Questionnaire } from "blaise-api-node-client";
+import { Button, LoadingPanel, Panel } from "blaise-design-system-react-components";
+import React, { type ReactElement, useEffect, useState } from "react";
+
 import { removeToStartDateAndDeleteQuestionnaire } from "../../client/componentProcesses";
-import { surveyIsActive } from "../../client/questionnaires";
 import { clientLogger } from "../../client/logger";
+import { surveyIsActive } from "../../client/questionnaires";
 
 interface Props {
-    questionnaire: Questionnaire
-    modes: string[]
-    onDelete: (message: string) => void
-    onCancel: () => void
+  questionnaire: Questionnaire;
+  modes: string[];
+  onDelete: (message: string) => void;
+  onCancel: () => void;
 }
 
 function DeleteWarning({ questionnaire, modes, onDelete, onCancel }: Props): ReactElement {
-    const [message, setMessage] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);
-    const [loaded, setLoaded] = useState<boolean>(false);
-    const [active, setActive] = useState<boolean>(false);
-    const [errored, setErrored] = useState<boolean>(false);
+  const needsCatiCheck = modes.includes("CATI");
+  const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(!needsCatiCheck);
+  const [active, setActive] = useState<boolean>(false);
+  const [errored, setErrored] = useState<boolean>(false);
 
-    useEffect(() => {
-        if (modes.includes("CATI")) {
-            surveyIsActive(questionnaire.name).then((isActive: boolean) => {
-                clientLogger.info(`Survey has active survey days: ${isActive}`);
-                setActive(isActive);
-                setLoaded(true);
-            }).catch((error: unknown) => {
-                clientLogger.error(`Failed to get survey is active: ${error}`);
-                setErrored(true);
-                setLoaded(true);
-            });
-        } else {
-            setLoaded(true);
-        }
-    }, []);
-
-    function ErrorMessage(): ReactElement {
-        if (message !== "") {
-            return <ONSPanel status="error">
-                {message}
-            </ONSPanel>;
-        }
-        return <></>;
+  useEffect(() => {
+    if (!needsCatiCheck) {
+      return;
     }
 
-    async function confirmDelete() {
-        setLoading(true);
+    surveyIsActive(questionnaire.name)
+      .then((isActive: boolean) => {
+        clientLogger.info(`Survey has active survey days: ${isActive}`);
+        setActive(isActive);
+        setLoaded(true);
+      })
+      .catch((error: unknown) => {
+        clientLogger.error(`Failed to get survey is active: ${error}`);
+        setErrored(true);
+        setLoaded(true);
+      });
+  }, [needsCatiCheck, questionnaire.name]);
 
-        const [deleted, message] = await removeToStartDateAndDeleteQuestionnaire(questionnaire.name);
-        if (!deleted) {
-            setMessage(message);
-            setLoading(false);
-            return;
-        }
+  async function confirmDelete() {
+    setMessage("");
+    setLoading(true);
 
-        setLoading(false);
-        onDelete(`Questionnaire: ${questionnaire.name} Successfully deleted`);
+    const [deleted, message] = await removeToStartDateAndDeleteQuestionnaire(questionnaire.name);
+
+    if (!deleted) {
+      setMessage(message);
+      setLoading(false);
+
+      return;
     }
 
-    function CatiWarning(): ReactElement {
-        if (modes.includes("CATI") && questionnaire.status?.toLowerCase() === "active" && active) {
-            return (
-                <ONSPanel status={"error"}>
-                    Questionnaire has active Telephone Operations survey days
-                </ONSPanel>
-            );
-        }
-        return <></>;
-    }
+    setLoading(false);
+    onDelete(`Questionnaire: ${questionnaire.name} Successfully deleted`);
+  }
 
-    function CawiWarning(): ReactElement {
-        if (modes.includes("CAWI") && questionnaire.status?.toLowerCase() === "active") {
-            return (
-                <ONSPanel status={"error"}>
-                    Questionnaire is active for web collection
-                </ONSPanel>
-            );
-        }
-        return <></>;
-    }
+  if (!loaded) {
+    return <LoadingPanel />;
+  }
 
-    function DeleteWarning(): ReactElement {
-        if (!loaded) {
-            return <ONSLoadingPanel/>;
-        }
+  if (errored) {
+    return <Panel status="error">Could not get warning details, please try again</Panel>;
+  }
 
-        if (errored) {
-            return (
-                <ONSPanel status="error">
-                    Could not get warning details, please try again
-                </ONSPanel>
-            );
-        }
+  return (
+    <>
+      <h1 className="ons-u-mb-l">
+        Are you sure you want to delete the questionnaire{" "}
+        <em className="highlight">{questionnaire.name}</em>?
+      </h1>
 
-        return (
-            <>
-                <h1 className="u-mb-l">
-                    Are you sure you want to delete the questionnaire <em
-                        className="highlight">{questionnaire.name}</em>?
-                </h1>
+      {modes.includes("CATI") && questionnaire.status?.toLowerCase() === "active" && active && (
+        <Panel status="error">Questionnaire has active Telephone Operations survey days</Panel>
+      )}
 
-                <CatiWarning />
-                <CawiWarning />
+      {modes.includes("CAWI") && questionnaire.status?.toLowerCase() === "active" && (
+        <Panel status="error">Questionnaire is active for web collection</Panel>
+      )}
 
-                <ONSPanel status={"warn"}>
-                    The questionnaire and all associated respondent data will be deleted
-                </ONSPanel>
+      <Panel status="warn">
+        The questionnaire and all associated respondent data will be deleted
+      </Panel>
 
-                <ErrorMessage />
+      {message !== "" && <Panel status="error">{message}</Panel>}
 
-                <form>
-                    <br />
-                    <ONSButton
-                        label={"Delete"}
-                        primary={true}
-                        loading={loading}
-                        id="confirm-delete"
-                        testid="confirm-delete"
-                        onClick={() => confirmDelete()} />
-                    {!loading &&
-                    <ONSButton
-                        label={"Cancel"}
-                        primary={false}
-                        id="cancel-delete"
-                        testid="cancel-delete"
-                        onClick={() => onCancel()} />
-                    }
-                </form>
-            </>
-        );
-    }
-
-    return (
-        <>
-            <DeleteWarning/>
-        </>
-    );
+      <form>
+        <br />
+        <Button
+          label="Delete"
+          primary={true}
+          loading={loading}
+          id="confirm-delete"
+          onClick={() => confirmDelete()}
+        />
+        {!loading && (
+          <Button
+            label="Cancel"
+            primary={false}
+            id="cancel-delete"
+            onClick={() => onCancel()}
+          />
+        )}
+      </form>
+    </>
+  );
 }
 
 export default DeleteWarning;

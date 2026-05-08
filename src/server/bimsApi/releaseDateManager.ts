@@ -1,8 +1,8 @@
-import { tmReleaseDate } from "./bimsApi";
+import { type TmReleaseDate } from "./bimsApi.js";
 
 export interface ReleaseDateManager {
-    getReleaseDate(questionnaireName: string): Promise<tmReleaseDate | undefined>;
-    deleteReleaseDate(questionnaireName: string): Promise<void>;
-    createReleaseDate(questionnaireName: string, releaseDate: string): Promise<tmReleaseDate>;
-    updateReleaseDate(questionnaireName: string, releaseDate: string): Promise<tmReleaseDate>;
+  getReleaseDate(questionnaireName: string): Promise<TmReleaseDate | undefined>;
+  deleteReleaseDate(questionnaireName: string): Promise<void>;
+  createReleaseDate(questionnaireName: string, releaseDate: string): Promise<TmReleaseDate>;
+  updateReleaseDate(questionnaireName: string, releaseDate: string): Promise<TmReleaseDate>;
 }

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Ask to set TM release date page should match the Snapshot 1`] = `
-Object {
+exports[`Ask to set Tm release date page > should match the Snapshot 1`] = `
+{
   "asFragment": [Function],
   "baseElement": <body>
     <div>
@@ -14,7 +14,8 @@ Object {
           <h1
             class="ons-u-mb-l"
           >
-            Would you like to set a Totalmobile release date for questionnaire 
+            Would you like to set a Totalmobile release date for questionnaire
+             
             <em
               class="ons-highlight"
             >
@@ -25,85 +26,97 @@ Object {
           <p>
             This is used to determine the date that selected cases will be sent to Totalmobile for field allocation. If a date is not selected, then no cases will be sent to Totalmobile.
           </p>
-          <fieldset
-            class="ons-fieldset"
+          <div
+            class="ons-field ons-u-mb-m"
+            id="radio-_r_2_"
           >
-            <legend
-              class="ons-fieldset__legend"
-            />
-            <div
-              class="ons-radios__items"
-              id="askToSetDate"
+            <fieldset
+              class="ons-fieldset"
             >
-              <p
-                class="ons-radios__item"
+              <legend
+                class="ons-fieldset__legend ons-u-fs-r--b"
+              />
+              <div
+                class="ons-grid"
               >
-                <span
-                  class="ons-radio"
+                <div
+                  class="ons-grid__col ons-col-8@m ons-col-6@l"
                 >
-                  <input
-                    class="ons-radio__input js-radio"
-                    id="no"
-                    name="askToSetDate"
-                    props="[object Object]"
-                    type="radio"
-                    value="no"
-                  />
-                  <label
-                    class="ons-radio__label "
-                    for="no"
-                    id="no-label"
+                  <div
+                    class="ons-input-items"
                   >
-                    No release date
-                  </label>
-                </span>
-              </p>
-              <br />
-              <p
-                class="ons-radios__item"
-              >
-                <span
-                  class="ons-radio"
-                >
-                  <input
-                    class="ons-radio__input js-radio"
-                    id="yes"
-                    name="askToSetDate"
-                    props="[object Object]"
-                    type="radio"
-                    value="yes"
-                  />
-                  <label
-                    class="ons-radio__label "
-                    for="yes"
-                    id="yes-label"
-                  >
-                    Yes, let me specify a release date
-                  </label>
-                  <span
-                    class="ons-radio__other ons-radio__other--open"
-                    id="other-radio-other-wrap"
-                  >
-                    <label
-                      class="ons-label ons-u-fs-s--b "
-                      for="set-live-date"
-                      id="other-textbox-label"
+                    <div
+                      class="ons-radios__items"
                     >
-                      Please specify date
-                    </label>
-                    <input
-                      class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                      id="set-live-date"
-                      name="set release date"
-                      type="date"
-                      value=""
-                    />
-                  </span>
-                </span>
-              </p>
-              <br />
-            </div>
-          </fieldset>
+                      <span
+                        class="ons-radios__item"
+                      >
+                        <span
+                          class="ons-radio"
+                        >
+                          <input
+                            class="ons-radio__input"
+                            id="no"
+                            name="askToSetDate"
+                            props="[object Object]"
+                            type="radio"
+                            value="no"
+                          />
+                          <label
+                            class="ons-radio__label "
+                            for="no"
+                          >
+                            No release date
+                          </label>
+                        </span>
+                      </span>
+                      <br />
+                      <span
+                        class="ons-radios__item"
+                      >
+                        <span
+                          class="ons-radio"
+                        >
+                          <input
+                            class="ons-radio__input"
+                            id="yes"
+                            name="askToSetDate"
+                            props="[object Object]"
+                            type="radio"
+                            value="yes"
+                          />
+                          <label
+                            class="ons-radio__label "
+                            for="yes"
+                          >
+                            Yes, let me specify a release date
+                          </label>
+                          <span
+                            class="ons-radio__other ons-radio__other--open"
+                            id="yes-other-wrap"
+                          >
+                            <label
+                              class="ons-label ons-u-fs-s--b"
+                              for="set-live-date"
+                            >
+                              Please specify date
+                            </label>
+                            <input
+                              class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
+                              id="set-live-date"
+                              name="set release date"
+                              type="date"
+                            />
+                          </span>
+                        </span>
+                      </span>
+                      <br />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
         </div>
       </div>
     </div>
@@ -118,7 +131,8 @@ Object {
         <h1
           class="ons-u-mb-l"
         >
-          Would you like to set a Totalmobile release date for questionnaire 
+          Would you like to set a Totalmobile release date for questionnaire
+           
           <em
             class="ons-highlight"
           >
@@ -129,85 +143,97 @@ Object {
         <p>
           This is used to determine the date that selected cases will be sent to Totalmobile for field allocation. If a date is not selected, then no cases will be sent to Totalmobile.
         </p>
-        <fieldset
-          class="ons-fieldset"
+        <div
+          class="ons-field ons-u-mb-m"
+          id="radio-_r_2_"
         >
-          <legend
-            class="ons-fieldset__legend"
-          />
-          <div
-            class="ons-radios__items"
-            id="askToSetDate"
+          <fieldset
+            class="ons-fieldset"
           >
-            <p
-              class="ons-radios__item"
+            <legend
+              class="ons-fieldset__legend ons-u-fs-r--b"
+            />
+            <div
+              class="ons-grid"
             >
-              <span
-                class="ons-radio"
+              <div
+                class="ons-grid__col ons-col-8@m ons-col-6@l"
               >
-                <input
-                  class="ons-radio__input js-radio"
-                  id="no"
-                  name="askToSetDate"
-                  props="[object Object]"
-                  type="radio"
-                  value="no"
-                />
-                <label
-                  class="ons-radio__label "
-                  for="no"
-                  id="no-label"
+                <div
+                  class="ons-input-items"
                 >
-                  No release date
-                </label>
-              </span>
-            </p>
-            <br />
-            <p
-              class="ons-radios__item"
-            >
-              <span
-                class="ons-radio"
-              >
-                <input
-                  class="ons-radio__input js-radio"
-                  id="yes"
-                  name="askToSetDate"
-                  props="[object Object]"
-                  type="radio"
-                  value="yes"
-                />
-                <label
-                  class="ons-radio__label "
-                  for="yes"
-                  id="yes-label"
-                >
-                  Yes, let me specify a release date
-                </label>
-                <span
-                  class="ons-radio__other ons-radio__other--open"
-                  id="other-radio-other-wrap"
-                >
-                  <label
-                    class="ons-label ons-u-fs-s--b "
-                    for="set-live-date"
-                    id="other-textbox-label"
+                  <div
+                    class="ons-radios__items"
                   >
-                    Please specify date
-                  </label>
-                  <input
-                    class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                    id="set-live-date"
-                    name="set release date"
-                    type="date"
-                    value=""
-                  />
-                </span>
-              </span>
-            </p>
-            <br />
-          </div>
-        </fieldset>
+                    <span
+                      class="ons-radios__item"
+                    >
+                      <span
+                        class="ons-radio"
+                      >
+                        <input
+                          class="ons-radio__input"
+                          id="no"
+                          name="askToSetDate"
+                          props="[object Object]"
+                          type="radio"
+                          value="no"
+                        />
+                        <label
+                          class="ons-radio__label "
+                          for="no"
+                        >
+                          No release date
+                        </label>
+                      </span>
+                    </span>
+                    <br />
+                    <span
+                      class="ons-radios__item"
+                    >
+                      <span
+                        class="ons-radio"
+                      >
+                        <input
+                          class="ons-radio__input"
+                          id="yes"
+                          name="askToSetDate"
+                          props="[object Object]"
+                          type="radio"
+                          value="yes"
+                        />
+                        <label
+                          class="ons-radio__label "
+                          for="yes"
+                        >
+                          Yes, let me specify a release date
+                        </label>
+                        <span
+                          class="ons-radio__other ons-radio__other--open"
+                          id="yes-other-wrap"
+                        >
+                          <label
+                            class="ons-label ons-u-fs-s--b"
+                            for="set-live-date"
+                          >
+                            Please specify date
+                          </label>
+                          <input
+                            class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
+                            id="set-live-date"
+                            name="set release date"
+                            type="date"
+                          />
+                        </span>
+                      </span>
+                    </span>
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
       </div>
     </div>
   </div>,

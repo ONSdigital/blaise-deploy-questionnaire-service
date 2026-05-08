@@ -1,42 +1,43 @@
-import React, { ReactElement } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { ONSButton, ONSPanel } from "blaise-design-system-react-components";
+import { Panel } from "blaise-design-system-react-components";
+import { type ReactElement } from "react";
 
 interface Props {
-    donorCasesResponseMessage: string;
-    donorCasesStatusCode: number;
-    role: string;
+  donorCasesResponseMessage: string;
+  donorCasesStatusCode: number;
+  role: string;
 }
 
-function CreateDonorCasesSummary({ donorCasesResponseMessage, donorCasesStatusCode, role }: Props): ReactElement {
-
-    return (
-        <>
-            <main id="main-content" className="ons-page__main ons-u-mt-no">
-                {
-                    (donorCasesStatusCode === 200 ?
-                        <ONSPanel status="success" bigIcon={true}>
-                            <h1>
-                                Donor cases created successfully for {role}
-                            </h1>
-                        </ONSPanel>
-                        :
-                        <ONSPanel status="error">
-                            <h1>
-                                Error creating donor cases for {role}
-                            </h1>
-                            <p>
-                                {donorCasesResponseMessage}
-                            </p>
-                            <p>
-                                When reporting this issue to the Service Desk, please provide the questionnaire name, time and date of the failure.
-                            </p>
-                        </ONSPanel>
-                    )
-                }
-            </main>
-        </>
-    );
+function CreateDonorCasesSummary({
+  donorCasesResponseMessage,
+  donorCasesStatusCode,
+  role,
+}: Props): ReactElement {
+  return (
+    <>
+      <main
+        id="main-content"
+        className="ons-page__main ons-u-mt-no"
+      >
+        {donorCasesStatusCode === 200 ? (
+          <Panel
+            status="success"
+            bigIcon={true}
+          >
+            <h1>Donor cases created successfully for {role}</h1>
+          </Panel>
+        ) : (
+          <Panel status="error">
+            <h1>Error creating donor cases for {role}</h1>
+            <p>{donorCasesResponseMessage}</p>
+            <p>
+              When reporting this issue to the Service Desk, please provide the questionnaire name,
+              time and date of the failure.
+            </p>
+          </Panel>
+        )}
+      </main>
+    </>
+  );
 }
 
 export default CreateDonorCasesSummary;

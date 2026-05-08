@@ -1,111 +1,149 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-import { defineFeature, loadFeature } from "jest-cucumber";
-import { givenTheQuestionnaireHasCases, givenTheQuestionnaireHasModes, givenTheQuestionnaireHasUACs, givenTheQuestionnaireIsInstalled, givenUACGenerationIsBroken } from "../step_definitions/given";
-import { whenIClickGenerateCases, whenIGoToTheQuestionnaireDetailsPage } from "../step_definitions/when";
-import { thenAGenerateUacButtonIsAvailable, thenAGenerateUacButtonIsNotAvailable, thenICanSeeThatThatTheQuestionnaireHasCases, thenIReceiveAUACError, thenUACsAreGenerated } from "../step_definitions/then";
-import { Questionnaire } from "blaise-api-node-client";
-import { Authenticate } from "blaise-login-react/blaise-login-react-client";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
+import type { Questionnaire } from "blaise-api-node-client";
+import { defineFeature, loadFeature } from "jest-cucumber";
+
+import {
+  givenTheQuestionnaireHasCases,
+  givenTheQuestionnaireHasModes,
+  givenTheQuestionnaireHasUACs,
+  givenTheQuestionnaireIsInstalled,
+  givenUACGenerationIsBroken,
+} from "../step_definitions/given";
+import {
+  thenAGenerateUacButtonIsAvailable,
+  thenAGenerateUacButtonIsNotAvailable,
+  thenICanSeeThatThatTheQuestionnaireHasCases,
+  thenIReceiveAUACError,
+  thenUACsAreGenerated,
+} from "../step_definitions/then";
+import {
+  whenIClickGenerateCases,
+  whenIGoToTheQuestionnaireDetailsPage,
+} from "../step_definitions/when";
 
 // mock login
-jest.mock("blaise-login-react/blaise-login-react-client");
-const { MockAuthenticate } = jest.requireActual("blaise-login-react/blaise-login-react-client");
-Authenticate.prototype.render = MockAuthenticate.prototype.render;
+vi.mock("blaise-login-react-client", async () => {
+  const { mockLoginReactClientModule } =
+    await import("blaise-login-react/blaise-login-react-client");
+
+  return mockLoginReactClientModule();
+});
+const { MockAuthenticate } = await import("blaise-login-react/blaise-login-react-client");
+
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature(
-    "./src/features/generate_uacs_for_cases.feature",
-    { tagFilter: "not @server and not @integration" }
-);
+const feature = loadFeature("./src/features/generate_uacs_for_cases.feature", {
+  tagFilter: "not @server and not @integration",
+});
 
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
-defineFeature(feature, test => {
-    beforeEach(() => {
-        global.URL.createObjectURL = jest.fn();
-    });
+defineFeature(feature, (test) => {
+  beforeEach(() => {
+    global.URL.createObjectURL = vi.fn();
+  });
 
-    afterEach(() => {
-        mocker.reset();
-    });
+  afterEach(() => {
+    mocker.reset();
+  });
 
-    test("Generate button exists for questionnaires with CAWI mode and cases", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
+  test("Generate button exists for questionnaires with CAWI mode and cases", ({
+    given,
+    when,
+    then,
+  }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireHasModes(given, mocker);
+    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
 
-        whenIGoToTheQuestionnaireDetailsPage(when);
+    whenIGoToTheQuestionnaireDetailsPage(when);
 
-        thenAGenerateUacButtonIsAvailable(then);
-    });
+    thenAGenerateUacButtonIsAvailable(then);
+  });
 
-    test("Generate button does not exist for questionnaires in CAWI mode without cases", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
+  test("Generate button does not exist for questionnaires in CAWI mode without cases", ({
+    given,
+    when,
+    then,
+  }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireHasModes(given, mocker);
+    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
 
-        whenIGoToTheQuestionnaireDetailsPage(when);
+    whenIGoToTheQuestionnaireDetailsPage(when);
 
-        thenAGenerateUacButtonIsNotAvailable(then);
-    });
+    thenAGenerateUacButtonIsNotAvailable(then);
+  });
 
-    test("Generate button does not exist for questionnaires in CATI mode without cases", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
+  test("Generate button does not exist for questionnaires in CATI mode without cases", ({
+    given,
+    when,
+    then,
+  }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireHasModes(given, mocker);
+    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
 
-        whenIGoToTheQuestionnaireDetailsPage(when);
+    whenIGoToTheQuestionnaireDetailsPage(when);
 
-        thenAGenerateUacButtonIsNotAvailable(then);
-    });
+    thenAGenerateUacButtonIsNotAvailable(then);
+  });
 
-    test("Generate button does not exist for questionnaires in CATI mode with cases", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
+  test("Generate button does not exist for questionnaires in CATI mode with cases", ({
+    given,
+    when,
+    then,
+  }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireHasModes(given, mocker);
+    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
 
-        whenIGoToTheQuestionnaireDetailsPage(when);
+    whenIGoToTheQuestionnaireDetailsPage(when);
 
-        thenAGenerateUacButtonIsNotAvailable(then);
-    });
+    thenAGenerateUacButtonIsNotAvailable(then);
+  });
 
-    test("I get a confirmation message when generating UACs", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
+  test("I get a confirmation message when generating UACs", ({ given, when, then }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireHasModes(given, mocker);
+    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
 
-        whenIGoToTheQuestionnaireDetailsPage(when);
-        whenIClickGenerateCases(when);
+    whenIGoToTheQuestionnaireDetailsPage(when);
+    whenIClickGenerateCases(when);
 
-        thenUACsAreGenerated(then, mocker);
-    });
+    thenUACsAreGenerated(then, mocker);
+  });
 
-    test("I get a error message when generating UACs", ({ given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
-        givenUACGenerationIsBroken(given, mocker);
+  test("I get a error message when generating UACs", ({ given, when, then }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireHasModes(given, mocker);
+    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
+    givenUACGenerationIsBroken(given, mocker);
 
-        whenIGoToTheQuestionnaireDetailsPage(when);
-        whenIClickGenerateCases(when);
+    whenIGoToTheQuestionnaireDetailsPage(when);
+    whenIClickGenerateCases(when);
 
-        thenIReceiveAUACError(then);
-    });
+    thenIReceiveAUACError(then);
+  });
 
-    test("I can see how many UACs have been generated for a particular questionnaire in the details page", (
-        { given, when, then }) => {
-        givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasModes(given, mocker);
-        givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
-        givenTheQuestionnaireHasUACs(given, mocker);
+  test("I can see how many UACs have been generated for a particular questionnaire in the details page", ({
+    given,
+    when,
+    then,
+  }) => {
+    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+    givenTheQuestionnaireHasModes(given, mocker);
+    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
+    givenTheQuestionnaireHasUACs(given, mocker);
 
-        whenIGoToTheQuestionnaireDetailsPage(when);
-        thenICanSeeThatThatTheQuestionnaireHasCases(then);
-        thenAGenerateUacButtonIsAvailable(then);
-    });
+    whenIGoToTheQuestionnaireDetailsPage(when);
+    thenICanSeeThatThatTheQuestionnaireHasCases(then);
+    thenAGenerateUacButtonIsAvailable(then);
+  });
 });

@@ -1,87 +1,110 @@
-import React, { ReactElement } from "react";
-import { ONSButton } from "blaise-design-system-react-components";
-import { setTMReleaseDate } from "../../client/tmReleaseDate";
+import { Button } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Form, Formik } from "formik";
-import AskToSetTMReleaseDate from "../uploadPage/sections/askToSetTMReleaseDate";
-import Breadcrumbs from "../breadcrumbs";
+import { Form, Formik, type FormikHelpers } from "formik";
+import React, { type ReactElement } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import { clientLogger } from "../../client/logger";
+import { setTmReleaseDate } from "../../client/tmReleaseDate";
+import Breadcrumbs from "../breadcrumbs";
+import AskToSetTmReleaseDate from "../uploadPage/sections/askToSetTmReleaseDate";
 
 interface LocationState {
-    tmReleaseDate: string | null;
-    questionnaireName: string;
+  tmReleaseDate: string | null;
+  questionnaireName: string;
 }
 
-function ChangeTMReleaseDate(): ReactElement {
-    const navigate = useNavigate();
-    const location = useLocation().state as LocationState;
-    const { tmReleaseDate, questionnaireName } = location || { tmReleaseDate: null, questionnaireName: null };
+type TmReleaseDateFormValues = {
+  askToSetDate: string;
+  "set release date": string;
+};
 
-    async function _handleSubmit(values: any, actions: any) {
-        if (values.askToSetDate === "no") {
-            values["set release date"] = "";
-        }
-        const liveDateCreated = await setTMReleaseDate(questionnaireName, values["set release date"]);
-        if (!liveDateCreated) {
-            clientLogger.info("Failed to store Totalmobile release date specified");
-            return;
-        }
-        actions.setSubmitting(false);
-        navigate(-1);
+function ChangeTmReleaseDate(): ReactElement {
+  const navigate = useNavigate();
+  const location = useLocation().state as LocationState;
+  const { tmReleaseDate, questionnaireName } = location || {
+    tmReleaseDate: null,
+    questionnaireName: null,
+  };
+
+  async function handleSubmit(
+    values: TmReleaseDateFormValues,
+    actions: FormikHelpers<TmReleaseDateFormValues>,
+  ) {
+    if (values.askToSetDate === "no") {
+      values["set release date"] = "";
     }
 
-    let initialValues = {
-        askToSetDate: "",
-        "set release date": ""
+    const liveDateCreated = await setTmReleaseDate(questionnaireName, values["set release date"]);
+
+    if (!liveDateCreated) {
+      clientLogger.info("Failed to store Totalmobile release date specified");
+
+      return;
+    }
+
+    actions.setSubmitting(false);
+    navigate(-1);
+  }
+
+  let initialValues = {
+    askToSetDate: "",
+    "set release date": "",
+  };
+
+  if (tmReleaseDate != null) {
+    initialValues = {
+      askToSetDate: "yes",
+      "set release date": dateFormatter(tmReleaseDate).format("YYYY-MM-DD"),
     };
+  }
 
-    if (tmReleaseDate != null) {
-        initialValues = {
-            askToSetDate: "yes",
-            "set release date": dateFormatter(tmReleaseDate).format("YYYY-MM-DD")
-        };
-    }
+  return (
+    <>
+      <Breadcrumbs
+        breadcrumbList={[
+          { link: "/", title: "Home" },
+          { link: `/questionnaire/${questionnaireName}`, title: questionnaireName },
+        ]}
+      />
 
-    return (
-        <>
-            <Breadcrumbs BreadcrumbList={
-                [
-                    { link: "/", title: "Home" }, { link: `/questionnaire/${questionnaireName}`, title: questionnaireName }
-                ]
-            } />
+      <main
+        id="main-content"
+        className="ons-page__main ons-u-mt-no"
+      >
+        <Formik
+          validateOnBlur={false}
+          validateOnChange={false}
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form id={"formID"}>
+              <AskToSetTmReleaseDate questionnaireName={questionnaireName} />
 
-            <main id="main-content" className="ons-page__main ons-u-mt-no">
-                <Formik
-                    validateOnBlur={false}
-                    validateOnChange={false}
-                    initialValues={initialValues}
-                    onSubmit={_handleSubmit}
-                >
-                    {({ isSubmitting }) => (
-                        <Form id={"formID"}>
-                            <AskToSetTMReleaseDate questionnaireName={questionnaireName} />
-
-                            <div className="ons-btn-group ons-u-mt-m">
-                                <ONSButton
-                                    id={"continue-deploy-button"}
-                                    submit={true}
-                                    loading={isSubmitting}
-                                    primary={true} label={"Continue"} />
-                                {!isSubmitting && (
-                                    <ONSButton
-                                        id={"cancel-deploy-button"}
-                                        onClick={() => navigate(-1)}
-                                        primary={false} label={"Cancel"} />
-                                )}
-                            </div>
-
-                        </Form>
-                    )}
-                </Formik>
-            </main>
-        </>
-    );
+              <div className="ons-btn-group ons-u-mt-m">
+                <Button
+                  id={"continue-deploy-button"}
+                  submit={true}
+                  loading={isSubmitting}
+                  primary={true}
+                  label={"Continue"}
+                />
+                {!isSubmitting && (
+                  <Button
+                    id={"cancel-deploy-button"}
+                    onClick={() => navigate(-1)}
+                    primary={false}
+                    label={"Cancel"}
+                  />
+                )}
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </main>
+    </>
+  );
 }
 
-export default ChangeTMReleaseDate;
+export default ChangeTmReleaseDate;

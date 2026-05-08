@@ -1,120 +1,160 @@
+/* eslint-disable import-x/order */
+import supertest, { type Response } from "supertest";
+
 import { newServer } from "../server";
-import supertest, { Response } from "supertest";
 
-import { Auth } from "blaise-login-react/blaise-login-react-server";
-import { getConfigFromEnv } from "../config";
-import createLogger, { HttpLogger } from "pino-http";
-import pino from "pino";
+vi.mock("blaise-uac-service-node-client", () => ({
+  __esModule: true,
+  default: class MockBusClient {
+    constructor(_url?: string, _clientId?: string) {
+      // Intentionally empty for tests.
+    }
+  },
+}));
+vi.mock("@google-cloud/logging", () => ({
+  Logging: class MockLogging {
+    constructor(_options?: unknown) {
+      // Intentionally empty for tests.
+    }
 
-jest.mock("blaise-login-react/blaise-login-react-server", () => {
-    const loginReact = jest.requireActual("blaise-login-react/blaise-login-react-server");
-    return {
-        ...loginReact,
-    };
+    public log(_logName: string) {
+      return {
+        getEntries: async () => [[]],
+      };
+    }
+  },
+}));
+vi.mock("@google-cloud/storage", () => ({
+  Storage: class MockStorage {
+    constructor(_options?: unknown) {
+      // Intentionally empty for tests.
+    }
+
+    public bucket(_bucketName: string) {
+      return {
+        file: (_fileName: string) => ({
+          getSignedUrl: async () => [""],
+          getMetadata: async () => [{}],
+        }),
+        getFiles: async () => [[]],
+      };
+    }
+  },
+}));
+vi.mock("blaise-login-react-server", async () => {
+  const { mockLoginReactServerModule } = await import("../../tests/utils/mockLoginReactServer");
+
+  return mockLoginReactServerModule();
 });
+import { Auth } from "blaise-login-react-server";
+import pino from "pino";
+import createLogger, { type HttpLogger } from "pino-http";
 
-Auth.prototype.ValidateToken = jest.fn().mockReturnValue(true);
-Auth.prototype.GetUser = jest.fn().mockReturnValue({ name: "rich" });
-Auth.prototype.GetToken = jest.fn().mockReturnValue("example-token");
+import { getConfigFromEnv } from "../config";
 
-jest.mock("blaise-iap-node-provider");
+Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
+Auth.prototype.GetUser = vi.fn().mockReturnValue({ name: "rich" });
+Auth.prototype.GetToken = vi.fn().mockReturnValue("example-token");
+
+vi.mock("blaise-iap-node-provider");
 
 const logger: pino.Logger = pino();
-logger.child = jest.fn(() => logger); // pino-http uses child logger
-const logInfo = jest.spyOn(logger, "info");
-const logWarn = jest.spyOn(logger, "warn");
-const logError = jest.spyOn(logger, "error");
-const logDebug = jest.spyOn(logger, "debug");
+
+logger.child = vi.fn(() => logger); // pino-http uses child logger
+const logInfo = vi.spyOn(logger, "info");
+const logWarn = vi.spyOn(logger, "warn");
+const logError = vi.spyOn(logger, "error");
+const logDebug = vi.spyOn(logger, "debug");
 const httpLogger: HttpLogger = createLogger({ logger: logger, autoLogging: false });
 
 const config = getConfigFromEnv();
 const request = supertest(newServer(config, httpLogger));
 
 describe("Client log forwarding", () => {
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
-    it("accepts an info client log and writes it to server logs", async () => {
-        const response: Response = await request
-            .post("/api/client-log")
-            .send({ level: "info", message: "hello from browser", args: ["extra"], pathname: "/audit" });
+  it("accepts an info client log and writes it to server logs", async () => {
+    const response: Response = await request
+      .post("/api/client-log")
+      .send({ level: "info", message: "hello from browser", args: ["extra"], pathname: "/audit" });
 
-        expect(response.status).toEqual(204);
-        expect(logInfo).toHaveBeenCalled();
-        const lastCall = logInfo.mock.calls[logInfo.mock.calls.length - 1];
-        expect(lastCall[1]).toEqual("CLIENT_LOG: hello from browser");
-        expect(lastCall[0]).toHaveProperty("clientLog");
-    });
+    expect(response.status).toEqual(204);
+    expect(logInfo).toHaveBeenCalled();
+    const lastCall = logInfo.mock.calls[logInfo.mock.calls.length - 1];
 
-    it("accepts warn/error levels and routes to the correct pino method", async () => {
-        const warnRes: Response = await request
-            .post("/api/client-log")
-            .send({ level: "warn", message: "a warning" });
-        expect(warnRes.status).toEqual(204);
-        expect(logWarn).toHaveBeenCalled();
+    expect(lastCall[1]).toEqual("CLIENT_LOG: hello from browser");
+    expect(lastCall[0]).toHaveProperty("clientLog");
+  });
 
-        const errRes: Response = await request
-            .post("/api/client-log")
-            .send({ level: "error", message: "an error" });
-        expect(errRes.status).toEqual(204);
-        expect(logError).toHaveBeenCalled();
-    });
+  it("accepts warn/error levels and routes to the correct pino method", async () => {
+    const warnRes: Response = await request
+      .post("/api/client-log")
+      .send({ level: "warn", message: "a warning" });
 
-    it("rejects an invalid level", async () => {
-        const response: Response = await request
-            .post("/api/client-log")
-            .send({ level: "verbose", message: "nope" });
+    expect(warnRes.status).toEqual(204);
+    expect(logWarn).toHaveBeenCalled();
 
-        expect(response.status).toEqual(400);
-        expect(logInfo).not.toHaveBeenCalled();
-        expect(logWarn).not.toHaveBeenCalled();
-        expect(logError).not.toHaveBeenCalled();
-    });
+    const errRes: Response = await request
+      .post("/api/client-log")
+      .send({ level: "error", message: "an error" });
 
-    it("rejects missing level", async () => {
-        const response: Response = await request
-            .post("/api/client-log")
-            .send({ message: "hello" });
+    expect(errRes.status).toEqual(204);
+    expect(logError).toHaveBeenCalled();
+  });
 
-        expect(response.status).toEqual(400);
-    });
+  it("rejects an invalid level", async () => {
+    const response: Response = await request
+      .post("/api/client-log")
+      .send({ level: "verbose", message: "nope" });
 
-    it("rejects missing message", async () => {
-        const response: Response = await request
-            .post("/api/client-log")
-            .send({ level: "info" });
+    expect(response.status).toEqual(400);
+    expect(logInfo).not.toHaveBeenCalled();
+    expect(logWarn).not.toHaveBeenCalled();
+    expect(logError).not.toHaveBeenCalled();
+  });
 
-        expect(response.status).toEqual(400);
-    });
+  it("rejects missing level", async () => {
+    const response: Response = await request.post("/api/client-log").send({ message: "hello" });
 
-    it("normalises level=log to info", async () => {
-        const response: Response = await request
-            .post("/api/client-log")
-            .send({ level: "log", message: "hello" });
+    expect(response.status).toEqual(400);
+  });
 
-        expect(response.status).toEqual(204);
-        expect(logInfo).toHaveBeenCalled();
-    });
+  it("rejects missing message", async () => {
+    const response: Response = await request.post("/api/client-log").send({ level: "info" });
 
-    it("accepts debug level", async () => {
-        const response: Response = await request
-            .post("/api/client-log")
-            .send({ level: "debug", message: "dbg" });
+    expect(response.status).toEqual(400);
+  });
 
-        expect(response.status).toEqual(204);
-        expect(logDebug).toHaveBeenCalled();
-    });
+  it("normalises level=log to info", async () => {
+    const response: Response = await request
+      .post("/api/client-log")
+      .send({ level: "log", message: "hello" });
 
-    it("falls back to request user-agent when none provided", async () => {
-        const response: Response = await request
-            .post("/api/client-log")
-            .set("user-agent", "test-agent")
-            .send({ level: "info", message: "hello" });
+    expect(response.status).toEqual(204);
+    expect(logInfo).toHaveBeenCalled();
+  });
 
-        expect(response.status).toEqual(204);
-        const lastCall = logInfo.mock.calls[logInfo.mock.calls.length - 1];
-        const payload = lastCall[0] as unknown as { clientLog?: { userAgent?: string } };
-        expect(payload.clientLog?.userAgent).toEqual("test-agent");
-    });
+  it("accepts debug level", async () => {
+    const response: Response = await request
+      .post("/api/client-log")
+      .send({ level: "debug", message: "dbg" });
+
+    expect(response.status).toEqual(204);
+    expect(logDebug).toHaveBeenCalled();
+  });
+
+  it("falls back to request user-agent when none provided", async () => {
+    const response: Response = await request
+      .post("/api/client-log")
+      .set("user-agent", "test-agent")
+      .send({ level: "info", message: "hello" });
+
+    expect(response.status).toEqual(204);
+    const lastCall = logInfo.mock.calls[logInfo.mock.calls.length - 1];
+    const payload = lastCall[0] as unknown as { clientLog?: { userAgent?: string } };
+
+    expect(payload.clientLog?.userAgent).toEqual("test-agent");
+  });
 });

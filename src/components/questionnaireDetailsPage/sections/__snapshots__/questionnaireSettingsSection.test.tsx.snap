@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Given the API successfully loads the questionnaire mode and settings for CATI only mode matches Snapshot for the view Questionnaire Settings page 1`] = `
-Object {
+exports[`Given the API successfully loads the questionnaire mode and settings for CATI only mode > matches Snapshot for the view Questionnaire Settings page 1`] = `
+{
   "asFragment": [Function],
   "baseElement": <body>
     <div>
@@ -52,7 +52,8 @@ Object {
                   colspan="3"
                 >
                   SaveSessionOnTimeout
-                   should be 
+                   should be
+                   
                   True
                 </th>
               </tr>
@@ -179,7 +180,8 @@ Object {
                   colspan="3"
                 >
                   ApplyRecordLocking
-                   should be 
+                   should be
+                   
                   True
                 </th>
               </tr>
@@ -256,7 +258,8 @@ Object {
                 colspan="3"
               >
                 SaveSessionOnTimeout
-                 should be 
+                 should be
+                 
                 True
               </th>
             </tr>
@@ -383,7 +386,8 @@ Object {
                 colspan="3"
               >
                 ApplyRecordLocking
-                 should be 
+                 should be
+                 
                 True
               </th>
             </tr>
@@ -465,8 +469,8 @@ Object {
 }
 `;
 
-exports[`Given the API successfully loads the questionnaire mode and settings for mixed mode matches Snapshot for the view Questionnaire Settings page 1`] = `
-Object {
+exports[`Given the API successfully loads the questionnaire mode and settings for mixed mode > matches Snapshot for the view Questionnaire Settings page 1`] = `
+{
   "asFragment": [Function],
   "baseElement": <body>
     <div>
@@ -517,7 +521,8 @@ Object {
                   colspan="3"
                 >
                   SaveSessionOnTimeout
-                   should be 
+                   should be
+                   
                   True
                 </th>
               </tr>
@@ -575,7 +580,8 @@ Object {
                   colspan="3"
                 >
                   DeleteSessionOnTimeout
-                   should be 
+                   should be
+                   
                   True
                 </th>
               </tr>
@@ -610,7 +616,8 @@ Object {
                   colspan="3"
                 >
                   DeleteSessionOnQuit
-                   should be 
+                   should be
+                   
                   True
                 </th>
               </tr>
@@ -668,7 +675,8 @@ Object {
                   colspan="3"
                 >
                   ApplyRecordLocking
-                   should be 
+                   should be
+                   
                   True
                 </th>
               </tr>
@@ -745,7 +753,8 @@ Object {
                 colspan="3"
               >
                 SaveSessionOnTimeout
-                 should be 
+                 should be
+                 
                 True
               </th>
             </tr>
@@ -803,7 +812,8 @@ Object {
                 colspan="3"
               >
                 DeleteSessionOnTimeout
-                 should be 
+                 should be
+                 
                 True
               </th>
             </tr>
@@ -838,7 +848,8 @@ Object {
                 colspan="3"
               >
                 DeleteSessionOnQuit
-                 should be 
+                 should be
+                 
                 True
               </th>
             </tr>
@@ -896,7 +907,8 @@ Object {
                 colspan="3"
               >
                 ApplyRecordLocking
-                 should be 
+                 should be
+                 
                 True
               </th>
             </tr>

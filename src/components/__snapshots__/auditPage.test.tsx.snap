@@ -1,31 +1,35 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Audit Logs page view Audit Logs page matches Snapshot 1`] = `
-Object {
+exports[`Audit Logs page > view Audit Logs page matches Snapshot 1`] = `
+{
   "asFragment": [Function],
   "baseElement": <body>
     <div>
       <nav
-        aria-label="Breadcrumb"
-        class="ons-breadcrumb"
+        aria-label="Breadcrumbs"
+        class="ons-breadcrumbs"
       >
         <ol
-          class="ons-breadcrumb__items u-fs-s"
+          class="ons-breadcrumbs__items ons-u-fs-s"
         >
           <li
-            class="ons-breadcrumb__item"
-            data-testid="breadcrumb-0"
-            id="breadcrumb-0"
+            class="ons-breadcrumbs__item"
+            data-testid="breadcrumb---Home"
+            id="breadcrumb---Home"
           >
             <a
-              class="ons-breadcrumb__link"
+              class="ons-breadcrumbs__link"
+              data-discover="true"
               href="/"
             >
               Home
             </a>
             <svg
-              class="ons-svg-icon"
+              aria-hidden="true"
+              class="ons-icon"
+              fill="currentColor"
               focusable="false"
+              role="img"
               viewBox="0 0 8 13"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -47,14 +51,17 @@ Object {
           Questionnaire deployment history
         </h1>
         <button
-          class="ons-btn  ons-btn--small"
-          data-testid="button"
+          class="ons-btn ons-btn--small"
           type="button"
         >
           <span
             class="ons-btn__inner"
           >
-            Reload
+            <span
+              class="ons-btn__text"
+            >
+              Reload
+            </span>
           </span>
         </button>
         <div
@@ -114,26 +121,30 @@ Object {
   </body>,
   "container": <div>
     <nav
-      aria-label="Breadcrumb"
-      class="ons-breadcrumb"
+      aria-label="Breadcrumbs"
+      class="ons-breadcrumbs"
     >
       <ol
-        class="ons-breadcrumb__items u-fs-s"
+        class="ons-breadcrumbs__items ons-u-fs-s"
       >
         <li
-          class="ons-breadcrumb__item"
-          data-testid="breadcrumb-0"
-          id="breadcrumb-0"
+          class="ons-breadcrumbs__item"
+          data-testid="breadcrumb---Home"
+          id="breadcrumb---Home"
         >
           <a
-            class="ons-breadcrumb__link"
+            class="ons-breadcrumbs__link"
+            data-discover="true"
             href="/"
           >
             Home
           </a>
           <svg
-            class="ons-svg-icon"
+            aria-hidden="true"
+            class="ons-icon"
+            fill="currentColor"
             focusable="false"
+            role="img"
             viewBox="0 0 8 13"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -155,14 +166,17 @@ Object {
         Questionnaire deployment history
       </h1>
       <button
-        class="ons-btn  ons-btn--small"
-        data-testid="button"
+        class="ons-btn ons-btn--small"
         type="button"
       >
         <span
           class="ons-btn__inner"
         >
-          Reload
+          <span
+            class="ons-btn__text"
+          >
+            Reload
+          </span>
         </span>
       </button>
       <div

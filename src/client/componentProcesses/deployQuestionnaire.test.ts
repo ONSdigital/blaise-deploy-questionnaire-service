@@ -1,43 +1,44 @@
-import { verifyAndInstallQuestionnaire } from "./deployQuestionnaire";
-import { validateUploadIsComplete } from "../upload";
 import { installQuestionnaire } from "../questionnaires";
+import { validateUploadIsComplete } from "../upload";
 
-jest.mock("../upload", () => ({
-    validateUploadIsComplete: jest.fn(),
+import { verifyAndInstallQuestionnaire } from "./deployQuestionnaire";
+
+vi.mock("../upload", () => ({
+  validateUploadIsComplete: vi.fn(),
 }));
 
-jest.mock("../questionnaires", () => ({
-    installQuestionnaire: jest.fn(),
+vi.mock("../questionnaires", () => ({
+  installQuestionnaire: vi.fn(),
 }));
 
-jest.mock("../../client/logger", () => ({
-    clientLogger: {
-        error: jest.fn(),
-    },
+vi.mock("../../client/logger", () => ({
+  clientLogger: {
+    error: vi.fn(),
+  },
 }));
 
 describe("verifyAndInstallQuestionnaire", () => {
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
-    it("returns failure when upload validation fails", async () => {
-        (validateUploadIsComplete as jest.Mock).mockResolvedValue(false);
+  it("returns failure when upload validation fails", async () => {
+    vi.mocked(validateUploadIsComplete).mockResolvedValue(false);
 
-        await expect(verifyAndInstallQuestionnaire("OPN2004A.bpkg")).resolves.toEqual([
-            false,
-            "Failed to validate if file has been uploaded successfully",
-        ]);
-        expect(installQuestionnaire).not.toHaveBeenCalled();
-    });
+    await expect(verifyAndInstallQuestionnaire("OPN2004A.bpkg")).resolves.toEqual([
+      false,
+      "Failed to validate if file has been uploaded successfully",
+    ]);
+    expect(installQuestionnaire).not.toHaveBeenCalled();
+  });
 
-    it("returns failure when install fails", async () => {
-        (validateUploadIsComplete as jest.Mock).mockResolvedValue(true);
-        (installQuestionnaire as jest.Mock).mockResolvedValue(false);
+  it("returns failure when install fails", async () => {
+    vi.mocked(validateUploadIsComplete).mockResolvedValue(true);
+    vi.mocked(installQuestionnaire).mockResolvedValue(false);
 
-        await expect(verifyAndInstallQuestionnaire("OPN2004A.bpkg")).resolves.toEqual([
-            false,
-            "Failed to install the questionnaire",
-        ]);
-    });
+    await expect(verifyAndInstallQuestionnaire("OPN2004A.bpkg")).resolves.toEqual([
+      false,
+      "Failed to install the questionnaire",
+    ]);
+  });
 });
