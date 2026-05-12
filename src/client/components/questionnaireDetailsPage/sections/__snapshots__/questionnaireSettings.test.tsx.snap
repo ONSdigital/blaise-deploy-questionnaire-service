@@ -1,0 +1,1151 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Given the API successfully loads the questionnaire mode and settings for CATI only mode > matches Snapshot for the view Questionnaire Settings page 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="ons-summary"
+      >
+        <div
+          class="ons-summary__group"
+        >
+          <h2
+            class="ons-summary__group-title"
+          >
+            Questionnaire settings
+          </h2>
+          <dl
+            class="ons-summary__items"
+            id="report-table"
+          >
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Type
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-no"
+                >
+                  StrictInterviewing
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  SaveSessionOnTimeout
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-s"
+                >
+                  False
+                </span>
+                <div
+                  class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                  id="panel-_r_1_"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="ons-panel__icon"
+                  >
+                    !
+                  </span>
+                  <span
+                    class="ons-panel__assistive-text ons-u-vh"
+                  >
+                    Warning:
+                     
+                  </span>
+                  <div
+                    class="ons-panel__body "
+                  >
+                    <p
+                      class="ons-u-mb-no"
+                    >
+                      SaveSessionOnTimeout
+                       should be 
+                      True
+                    </p>
+                  </div>
+                </div>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  SaveSessionOnQuit
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-no"
+                >
+                  True
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  DeleteSessionOnTimeout
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-no"
+                >
+                  False
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  DeleteSessionOnQuit
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-no"
+                >
+                  False
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  SessionTimeout
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-no"
+                >
+                  15
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  ApplyRecordLocking
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-s"
+                >
+                  False
+                </span>
+                <div
+                  class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                  id="panel-_r_2_"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="ons-panel__icon"
+                  >
+                    !
+                  </span>
+                  <span
+                    class="ons-panel__assistive-text ons-u-vh"
+                  >
+                    Warning:
+                     
+                  </span>
+                  <div
+                    class="ons-panel__body "
+                  >
+                    <p
+                      class="ons-u-mb-no"
+                    >
+                      ApplyRecordLocking
+                       should be 
+                      True
+                    </p>
+                  </div>
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="ons-summary"
+    >
+      <div
+        class="ons-summary__group"
+      >
+        <h2
+          class="ons-summary__group-title"
+        >
+          Questionnaire settings
+        </h2>
+        <dl
+          class="ons-summary__items"
+          id="report-table"
+        >
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Type
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-no"
+              >
+                StrictInterviewing
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                SaveSessionOnTimeout
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-s"
+              >
+                False
+              </span>
+              <div
+                class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                id="panel-_r_1_"
+              >
+                <span
+                  aria-hidden="true"
+                  class="ons-panel__icon"
+                >
+                  !
+                </span>
+                <span
+                  class="ons-panel__assistive-text ons-u-vh"
+                >
+                  Warning:
+                   
+                </span>
+                <div
+                  class="ons-panel__body "
+                >
+                  <p
+                    class="ons-u-mb-no"
+                  >
+                    SaveSessionOnTimeout
+                     should be 
+                    True
+                  </p>
+                </div>
+              </div>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                SaveSessionOnQuit
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-no"
+              >
+                True
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                DeleteSessionOnTimeout
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-no"
+              >
+                False
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                DeleteSessionOnQuit
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-no"
+              >
+                False
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                SessionTimeout
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-no"
+              >
+                15
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                ApplyRecordLocking
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-s"
+              >
+                False
+              </span>
+              <div
+                class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                id="panel-_r_2_"
+              >
+                <span
+                  aria-hidden="true"
+                  class="ons-panel__icon"
+                >
+                  !
+                </span>
+                <span
+                  class="ons-panel__assistive-text ons-u-vh"
+                >
+                  Warning:
+                   
+                </span>
+                <div
+                  class="ons-panel__body "
+                >
+                  <p
+                    class="ons-u-mb-no"
+                  >
+                    ApplyRecordLocking
+                     should be 
+                    True
+                  </p>
+                </div>
+              </div>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Given the API successfully loads the questionnaire mode and settings for mixed mode > matches Snapshot for the view Questionnaire Settings page 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="ons-summary"
+      >
+        <div
+          class="ons-summary__group"
+        >
+          <h2
+            class="ons-summary__group-title"
+          >
+            Questionnaire settings
+          </h2>
+          <dl
+            class="ons-summary__items"
+            id="report-table"
+          >
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Type
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-no"
+                >
+                  StrictInterviewing
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  SaveSessionOnTimeout
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-s"
+                >
+                  False
+                </span>
+                <div
+                  class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                  id="panel-_r_a_"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="ons-panel__icon"
+                  >
+                    !
+                  </span>
+                  <span
+                    class="ons-panel__assistive-text ons-u-vh"
+                  >
+                    Warning:
+                     
+                  </span>
+                  <div
+                    class="ons-panel__body "
+                  >
+                    <p
+                      class="ons-u-mb-no"
+                    >
+                      SaveSessionOnTimeout
+                       should be 
+                      True
+                    </p>
+                  </div>
+                </div>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  SaveSessionOnQuit
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-no"
+                >
+                  True
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  DeleteSessionOnTimeout
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-s"
+                >
+                  False
+                </span>
+                <div
+                  class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                  id="panel-_r_b_"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="ons-panel__icon"
+                  >
+                    !
+                  </span>
+                  <span
+                    class="ons-panel__assistive-text ons-u-vh"
+                  >
+                    Warning:
+                     
+                  </span>
+                  <div
+                    class="ons-panel__body "
+                  >
+                    <p
+                      class="ons-u-mb-no"
+                    >
+                      DeleteSessionOnTimeout
+                       should be 
+                      True
+                    </p>
+                  </div>
+                </div>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  DeleteSessionOnQuit
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-s"
+                >
+                  False
+                </span>
+                <div
+                  class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                  id="panel-_r_c_"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="ons-panel__icon"
+                  >
+                    !
+                  </span>
+                  <span
+                    class="ons-panel__assistive-text ons-u-vh"
+                  >
+                    Warning:
+                     
+                  </span>
+                  <div
+                    class="ons-panel__body "
+                  >
+                    <p
+                      class="ons-u-mb-no"
+                    >
+                      DeleteSessionOnQuit
+                       should be 
+                      True
+                    </p>
+                  </div>
+                </div>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  SessionTimeout
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-no"
+                >
+                  15
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  ApplyRecordLocking
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text ons-u-mb-s"
+                >
+                  False
+                </span>
+                <div
+                  class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                  id="panel-_r_d_"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="ons-panel__icon"
+                  >
+                    !
+                  </span>
+                  <span
+                    class="ons-panel__assistive-text ons-u-vh"
+                  >
+                    Warning:
+                     
+                  </span>
+                  <div
+                    class="ons-panel__body "
+                  >
+                    <p
+                      class="ons-u-mb-no"
+                    >
+                      ApplyRecordLocking
+                       should be 
+                      True
+                    </p>
+                  </div>
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="ons-summary"
+    >
+      <div
+        class="ons-summary__group"
+      >
+        <h2
+          class="ons-summary__group-title"
+        >
+          Questionnaire settings
+        </h2>
+        <dl
+          class="ons-summary__items"
+          id="report-table"
+        >
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Type
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-no"
+              >
+                StrictInterviewing
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                SaveSessionOnTimeout
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-s"
+              >
+                False
+              </span>
+              <div
+                class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                id="panel-_r_a_"
+              >
+                <span
+                  aria-hidden="true"
+                  class="ons-panel__icon"
+                >
+                  !
+                </span>
+                <span
+                  class="ons-panel__assistive-text ons-u-vh"
+                >
+                  Warning:
+                   
+                </span>
+                <div
+                  class="ons-panel__body "
+                >
+                  <p
+                    class="ons-u-mb-no"
+                  >
+                    SaveSessionOnTimeout
+                     should be 
+                    True
+                  </p>
+                </div>
+              </div>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                SaveSessionOnQuit
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-no"
+              >
+                True
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                DeleteSessionOnTimeout
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-s"
+              >
+                False
+              </span>
+              <div
+                class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                id="panel-_r_b_"
+              >
+                <span
+                  aria-hidden="true"
+                  class="ons-panel__icon"
+                >
+                  !
+                </span>
+                <span
+                  class="ons-panel__assistive-text ons-u-vh"
+                >
+                  Warning:
+                   
+                </span>
+                <div
+                  class="ons-panel__body "
+                >
+                  <p
+                    class="ons-u-mb-no"
+                  >
+                    DeleteSessionOnTimeout
+                     should be 
+                    True
+                  </p>
+                </div>
+              </div>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                DeleteSessionOnQuit
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-s"
+              >
+                False
+              </span>
+              <div
+                class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                id="panel-_r_c_"
+              >
+                <span
+                  aria-hidden="true"
+                  class="ons-panel__icon"
+                >
+                  !
+                </span>
+                <span
+                  class="ons-panel__assistive-text ons-u-vh"
+                >
+                  Warning:
+                   
+                </span>
+                <div
+                  class="ons-panel__body "
+                >
+                  <p
+                    class="ons-u-mb-no"
+                  >
+                    DeleteSessionOnQuit
+                     should be 
+                    True
+                  </p>
+                </div>
+              </div>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                SessionTimeout
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-no"
+              >
+                15
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                ApplyRecordLocking
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text ons-u-mb-s"
+              >
+                False
+              </span>
+              <div
+                class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+                id="panel-_r_d_"
+              >
+                <span
+                  aria-hidden="true"
+                  class="ons-panel__icon"
+                >
+                  !
+                </span>
+                <span
+                  class="ons-panel__assistive-text ons-u-vh"
+                >
+                  Warning:
+                   
+                </span>
+                <div
+                  class="ons-panel__body "
+                >
+                  <p
+                    class="ons-u-mb-no"
+                  >
+                    ApplyRecordLocking
+                     should be 
+                    True
+                  </p>
+                </div>
+              </div>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

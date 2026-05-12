@@ -1,13 +1,13 @@
 import express, { type Request, type Response, type Router } from "express";
 
-import type AuditLogger from "../auditLogging/logger.js";
+import type AuditLogger from "../auditLogger.js";
 
-export default function newAuditHandler(auditlogger: AuditLogger): Router {
+export default function newAuditHandler(auditLogger: AuditLogger): Router {
   const router = express.Router();
 
-  const auditHandler = new AuditHandler(auditlogger);
+  const auditHandler = new AuditHandler(auditLogger);
 
-  return router.get("/api/audit", auditHandler.GetAuditInfo);
+  return router.get("/api/audit", auditHandler.getAuditInfo);
 }
 
 class AuditHandler {
@@ -15,11 +15,9 @@ class AuditHandler {
 
   constructor(auditLogger: AuditLogger) {
     this.auditLogger = auditLogger;
-
-    this.GetAuditInfo = this.GetAuditInfo.bind(this);
   }
 
-  async GetAuditInfo(req: Request, res: Response): Promise<Response> {
+  getAuditInfo = async (req: Request, res: Response): Promise<Response> => {
     try {
       const logs = await this.auditLogger.getLogs();
 
@@ -31,5 +29,5 @@ class AuditHandler {
 
       return res.status(500).json(error);
     }
-  }
+  };
 }

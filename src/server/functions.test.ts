@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import { fieldPeriodToText } from "./functions";
 
 describe("Field period to text test", () => {
@@ -26,6 +28,10 @@ describe("Field period to text test", () => {
   });
 
   it("should return an unknown message if the month is unrecognised", () => {
-    expect(fieldPeriodToText("OPN20AB")).toBe("Field period unknown");
+    expect(fieldPeriodToText("OPN20AB")).toBe("Unknown");
+  });
+
+  it("should return an unknown message if the month is out of range", () => {
+    expect(fieldPeriodToText("OPN2013")).toBe("Unknown");
   });
 });

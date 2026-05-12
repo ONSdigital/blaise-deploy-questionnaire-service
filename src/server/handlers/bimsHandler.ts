@@ -1,79 +1,65 @@
-import { type IncomingMessage } from "http";
-
 import { type Auth } from "blaise-login-react-server";
+import dateFormatter from "dayjs";
 import express, { type Request, type Response, type Router } from "express";
 
-import { type BimsApi, type TmReleaseDate, type ToStartDate } from "../bimsApi/bimsApi.js";
-import { type Logger } from "../bimsApi/logger.js";
-import LoggingReleaseDateManager from "../bimsApi/loggingReleaseDateManager.js";
-import { type ReleaseDateManager } from "../bimsApi/releaseDateManager.js";
+import { type BimsClient, type TmReleaseDate, type ToStartDate } from "../bimsClient.js";
 
-import type AuditLogger from "../auditLogging/logger.js";
+import type AuditLogger from "../auditLogger.js";
 
 export default function newBimsHandler(
-  bimsApiClient: BimsApi,
+  bimsClient: BimsClient,
   auth: Auth,
   auditLogger: AuditLogger,
 ): Router {
   const router = express.Router();
 
-  const bimsHandler = new BimsHandler(bimsApiClient, auditLogger, auth);
+  const bimsHandler = new BimsHandler(bimsClient, auditLogger, auth);
 
-  // TO start date
-  router.post("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.SetToStartDate);
+  router.post("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.setToStartDate);
   router.delete(
     "/api/tostartdate/:questionnaireName",
     auth.Middleware,
-    bimsHandler.DeleteToStartDate,
+    bimsHandler.deleteToStartDate,
   );
-  router.get("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.GetToStartDate);
+  router.get("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.getToStartDate);
 
-  // TM release date
   router.post(
     "/api/tmreleasedate/:questionnaireName",
     auth.Middleware,
-    bimsHandler.SetTmReleaseDate,
+    bimsHandler.setTmReleaseDate,
   );
   router.delete(
     "/api/tmreleasedate/:questionnaireName",
     auth.Middleware,
-    bimsHandler.DeleteTmReleaseDate,
+    bimsHandler.deleteTmReleaseDate,
   );
   router.get(
     "/api/tmreleasedate/:questionnaireName",
     auth.Middleware,
-    bimsHandler.GetTmReleaseDate,
+    bimsHandler.getTmReleaseDate,
   );
 
   return router;
 }
 
 class BimsHandler {
-  bimsApiClient: BimsApi;
+  bimsClient: BimsClient;
   auditLogger: AuditLogger;
   auth: Auth;
 
-  constructor(bimsApiClient: BimsApi, auditLogger: AuditLogger, auth: Auth) {
-    this.bimsApiClient = bimsApiClient;
+  constructor(bimsClient: BimsClient, auditLogger: AuditLogger, auth: Auth) {
+    this.bimsClient = bimsClient;
     this.auditLogger = auditLogger;
     this.auth = auth;
-
-    this.SetToStartDate = this.SetToStartDate.bind(this);
-    this.DeleteToStartDate = this.DeleteToStartDate.bind(this);
-    this.GetToStartDate = this.GetToStartDate.bind(this);
-
-    this.SetTmReleaseDate = this.SetTmReleaseDate.bind(this);
-    this.DeleteTmReleaseDate = this.DeleteTmReleaseDate.bind(this);
-    this.GetTmReleaseDate = this.GetTmReleaseDate.bind(this);
   }
 
-  async SetToStartDate(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  setToStartDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const reqData = req.body;
+    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
 
     try {
-      let startDate = await this.bimsApiClient.getStartDate(questionnaireName);
+      let startDate = await this.bimsClient.getStartDate(questionnaireName);
 
       if (!startDateExists(startDate) && reqData.tostartdate === "") {
         req.log.info(
@@ -85,93 +71,99 @@ class BimsHandler {
 
       if (startDateExists(startDate) && reqData.tostartdate === "") {
         try {
-          await this.bimsApiClient.deleteStartDate(questionnaireName);
+          await this.bimsClient.deleteStartDate(questionnaireName);
           this.auditLogger.info(
             req.log,
-            `Successfully removed TO start date for questionnaire ${questionnaireName}`,
+            `Successfully removed TO start date for questionnaire ${questionnaireName} by ${username}`,
           );
 
           return res.status(201).json();
         } catch (error: unknown) {
           this.auditLogger.error(
             req.log,
-            `Failed to remove TO start date for questionnaire ${questionnaireName}`,
+            `Failed to remove TO start date for questionnaire ${questionnaireName} by ${username}`,
           );
           throw error;
         }
       }
 
-      startDate = await this.setToStartDate(questionnaireName, startDate, reqData.tostartdate, req);
+      startDate = await this.upsertToStartDate(
+        questionnaireName,
+        startDate,
+        reqData.tostartdate,
+        username,
+        req,
+      );
 
       return res.status(201).json(startDate);
     } catch {
       return res.status(500).json();
     }
-  }
+  };
 
-  async DeleteToStartDate(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  deleteToStartDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
 
     try {
-      const startDate = await this.bimsApiClient.getStartDate(questionnaireName);
+      const startDate = await this.bimsClient.getStartDate(questionnaireName);
 
       if (!startDateExists(startDate)) {
         return res.status(204).json();
       }
 
-      await this.bimsApiClient.deleteStartDate(questionnaireName);
+      await this.bimsClient.deleteStartDate(questionnaireName);
 
       this.auditLogger.info(
         req.log,
-        `Successfully removed TO start date for questionnaire ${questionnaireName}`,
+        `Successfully removed TO start date for questionnaire ${questionnaireName} by ${username}`,
       );
 
       return res.status(204).json();
     } catch (error: unknown) {
-      console.error(error);
+      req.log.error(error, `Failed to remove TO start date for questionnaire ${questionnaireName}`);
       this.auditLogger.error(
         req.log,
-        `Failed to remove TO start date for questionnaire ${questionnaireName}`,
+        `Failed to remove TO start date for questionnaire ${questionnaireName} by ${username}`,
       );
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async GetToStartDate(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  getToStartDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
 
     try {
-      const startDate = await this.bimsApiClient.getStartDate(questionnaireName);
+      const startDate = await this.bimsClient.getStartDate(questionnaireName);
 
       if (!startDate) {
         return res.status(404).json();
       }
 
-      return res.status(200).json(await this.bimsApiClient.getStartDate(questionnaireName));
+      return res.status(200).json(startDate);
     } catch {
       return res.status(500).json({});
     }
-  }
+  };
 
-  async setToStartDate(
+  private async upsertToStartDate(
     questionnaireName: string,
     startDate: ToStartDate | undefined,
     newStartDate: string,
+    username: string,
     req: Request,
   ): Promise<ToStartDate> {
     try {
       let configuredToStartDate: ToStartDate;
 
       if (startDateExists(startDate)) {
-        configuredToStartDate = await this.bimsApiClient.updateStartDate(
+        configuredToStartDate = await this.bimsClient.updateStartDate(
           questionnaireName,
           newStartDate,
         );
       } else {
-        configuredToStartDate = await this.bimsApiClient.createStartDate(
+        configuredToStartDate = await this.bimsClient.createStartDate(
           questionnaireName,
           newStartDate,
         );
@@ -179,88 +171,126 @@ class BimsHandler {
 
       this.auditLogger.info(
         req.log,
-        `Successfully set TO start date to ${newStartDate} for questionnaire ${questionnaireName}`,
+        `Successfully set TO start date to ${newStartDate} for questionnaire ${questionnaireName} by ${username}`,
       );
 
       return configuredToStartDate;
     } catch (error: unknown) {
       this.auditLogger.error(
         req.log,
-        `Failed to set TO start date to ${newStartDate} for questionnaire ${questionnaireName}`,
+        `Failed to set TO start date to ${newStartDate} for questionnaire ${questionnaireName} by ${username}`,
       );
       throw error;
     }
   }
 
-  async SetTmReleaseDate(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Destructured and cast req.params to keep it consistent and enforce strict string type
+  setTmReleaseDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
 
     try {
-      const responseBody = await setReleaseDate(
-        this.getLoggingBimsApiClient(req),
-        questionnaireName, // CHANGED: Using the destructured and typed variable
-        req.body.tmreleasedate,
-        this.auditLogger,
-        req.log,
-      );
+      const previousReleaseDate = await this.bimsClient.getReleaseDate(questionnaireName);
+      const newTmReleaseDate = req.body.tmreleasedate;
+      const newTmReleaseDateIsEmpty = newTmReleaseDate === "";
+
+      if (!releaseDateExists(previousReleaseDate) && newTmReleaseDateIsEmpty) {
+        this.auditLogger.info(req.log, `No Totalmobile release date set for ${questionnaireName}`);
+
+        return res.status(201).json("");
+      }
+
+      let responseBody: TmReleaseDate | "";
+
+      if (releaseDateExists(previousReleaseDate) && newTmReleaseDateIsEmpty) {
+        await this.bimsClient.deleteReleaseDate(questionnaireName);
+        const previousDateStr = ` (previously ${dateFormatter(previousReleaseDate!.tmreleasedate).format("YYYY-MM-DD")})`;
+
+        this.auditLogger.info(
+          req.log,
+          `Totalmobile release date deleted${previousDateStr} for ${questionnaireName} by ${username}`,
+        );
+        responseBody = "";
+      } else if (releaseDateExists(previousReleaseDate)) {
+        responseBody = await this.bimsClient.updateReleaseDate(questionnaireName, newTmReleaseDate);
+        const previousDateStr = ` (previously ${dateFormatter(previousReleaseDate!.tmreleasedate).format("YYYY-MM-DD")})`;
+
+        this.auditLogger.info(
+          req.log,
+          `Totalmobile release date updated to ${newTmReleaseDate}${previousDateStr} for ${questionnaireName} by ${username}`,
+        );
+      } else {
+        responseBody = await this.bimsClient.createReleaseDate(questionnaireName, newTmReleaseDate);
+        this.auditLogger.info(
+          req.log,
+          `Totalmobile release date set to ${newTmReleaseDate} for ${questionnaireName} by ${username}`,
+        );
+      }
 
       return res.status(201).json(responseBody);
-    } catch {
+    } catch (error: unknown) {
+      req.log.error(
+        error,
+        `Failed to set Totalmobile release date for questionnaire ${questionnaireName}`,
+      );
+      this.auditLogger.error(
+        req.log,
+        `Failed to set Totalmobile release date for questionnaire ${questionnaireName} (user: ${username})`,
+      );
+
       return res.status(500).json();
     }
-  }
+  };
 
-  async DeleteTmReleaseDate(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  deleteTmReleaseDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
 
     try {
-      const bimsApiClient = this.getLoggingBimsApiClient(req);
-
-      const releaseDate = await bimsApiClient.getReleaseDate(questionnaireName);
+      const releaseDate = await this.bimsClient.getReleaseDate(questionnaireName);
 
       if (!releaseDateExists(releaseDate)) {
         return res.status(204).json();
       }
 
-      await bimsApiClient.deleteReleaseDate(questionnaireName);
+      await this.bimsClient.deleteReleaseDate(questionnaireName);
+
+      const previousDateStr = ` (previously ${dateFormatter(releaseDate!.tmreleasedate).format("YYYY-MM-DD")})`;
+
+      this.auditLogger.info(
+        req.log,
+        `Totalmobile release date deleted${previousDateStr} for ${questionnaireName} by ${username}`,
+      );
 
       return res.status(204).json();
     } catch (error: unknown) {
-      console.error(error);
+      req.log.error(
+        error,
+        `Failed to remove TM release date for questionnaire ${questionnaireName}`,
+      );
+      this.auditLogger.error(
+        req.log,
+        `Failed to remove TM release date for questionnaire ${questionnaireName} by ${username}`,
+      );
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async GetTmReleaseDate(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  getTmReleaseDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
 
     try {
-      const releaseDate = await this.bimsApiClient.getReleaseDate(questionnaireName);
+      const releaseDate = await this.bimsClient.getReleaseDate(questionnaireName);
 
       if (!releaseDate) {
         return res.status(404).json();
       }
 
-      return res.status(200).json(await this.bimsApiClient.getReleaseDate(questionnaireName));
+      return res.status(200).json(releaseDate);
     } catch {
       return res.status(500).json({});
     }
-  }
-
-  private getLoggingBimsApiClient(req: Request): ReleaseDateManager {
-    const logger: Logger = {
-      info: (message: string) => this.auditLogger.info(req.log, message),
-      error: (message: string) => this.auditLogger.error(req.log, message),
-    };
-
-    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
-
-    return new LoggingReleaseDateManager(this.bimsApiClient, logger, username);
-  }
+  };
 }
 
 function startDateExists(startDate: ToStartDate | undefined): boolean {
@@ -281,32 +311,4 @@ function releaseDateExists(releaseDate: TmReleaseDate | undefined): boolean {
   const regexp = new RegExp(/^[0-9]{4}-[0-9]{2}-[0-9]{2}(.{1}[0-9]{2}:[0-9]{2}:[0-9]{2})?/);
 
   return regexp.test(releaseDate.tmreleasedate);
-}
-
-async function setReleaseDate(
-  bimsApiClient: ReleaseDateManager,
-  questionnaireName: string,
-  newTmReleaseDate: string,
-  auditLogger: AuditLogger,
-  log: IncomingMessage["log"],
-) {
-  const newTmReleaseDateIsEmpty = newTmReleaseDate === "";
-  const releaseDate = await bimsApiClient.getReleaseDate(questionnaireName);
-  const originalDateExists = releaseDateExists(releaseDate);
-
-  if (!originalDateExists && newTmReleaseDateIsEmpty) {
-    auditLogger.info(log, `No Totalmobile release date set for ${questionnaireName}`);
-
-    return "";
-  }
-
-  if (originalDateExists && newTmReleaseDateIsEmpty) {
-    return bimsApiClient.deleteReleaseDate(questionnaireName);
-  }
-
-  if (originalDateExists) {
-    return bimsApiClient.updateReleaseDate(questionnaireName, newTmReleaseDate);
-  } else {
-    return bimsApiClient.createReleaseDate(questionnaireName, newTmReleaseDate);
-  }
 }

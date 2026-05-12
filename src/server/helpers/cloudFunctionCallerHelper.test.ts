@@ -1,18 +1,23 @@
-/**
- * @vitest-environment node
- */
 import axios from "axios";
 import { GoogleAuth } from "google-auth-library";
-
-import { ipsQuestionnaire } from "../../features/step_definitions/helpers/apiMockObjects";
-import { getConfigFromEnv } from "../config";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { callCloudFunction } from "./cloudFunctionCallerHelper";
 
 vi.mock("google-auth-library");
 vi.mock("axios");
+vi.mock("../config", () => ({
+  getConfigFromEnv: () => ({
+    CreateDonorCasesCloudFunctionUrl: "https://example.com/create-donor-cases",
+    ReissueNewDonorCaseCloudFunctionUrl: "https://example.com/reissue-new-donor-case",
+  }),
+}));
 
-const config = getConfigFromEnv();
+const mockConfig = {
+  CreateDonorCasesCloudFunctionUrl: "https://example.com/create-donor-cases",
+  ReissueNewDonorCaseCloudFunctionUrl: "https://example.com/reissue-new-donor-case",
+};
+const ipsQuestionnaireName = "IPS1337a";
 const mockedAxiosPost = vi.mocked(axios.post);
 const mockedGoogleAuth = vi.mocked(GoogleAuth);
 
@@ -40,10 +45,10 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
   });
 
   it("should return a 200 status and a json object with message and status if successfully created donor cases", async () => {
-    const dummyUrl = config.CreateDonorCasesCloudFunctionUrl;
+    const dummyUrl = mockConfig.CreateDonorCasesCloudFunctionUrl;
 
     const payload = {
-      questionnaire_name: ipsQuestionnaire,
+      questionnaire_name: ipsQuestionnaireName,
       role: "IPS Manager",
     };
 
@@ -75,21 +80,21 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
     });
   });
 
-  it("should return a 500 status and a json object with message and status if failed in creating donor cases", async () => {
-    const dummyUrl = config.CreateDonorCasesCloudFunctionUrl;
+  it("should return response data and status from cloud function when it returns a non-200 response", async () => {
+    const dummyUrl = mockConfig.CreateDonorCasesCloudFunctionUrl;
 
     const payload = {
-      questionnaire_name: ipsQuestionnaire,
+      questionnaire_name: ipsQuestionnaireName,
       role: "IPS Manager",
     };
-    const mockErrorResponse = {
+    const mockResponse = {
       message: "Error invoking cloud function",
       status: 500,
     };
 
     mockedAxiosPost.mockResolvedValue({
-      data: mockErrorResponse.message,
-      status: mockErrorResponse.status,
+      data: mockResponse.message,
+      status: mockResponse.status,
     });
 
     const result = await callCloudFunction(dummyUrl, payload);

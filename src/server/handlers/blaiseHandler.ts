@@ -5,13 +5,12 @@ import {
 } from "blaise-api-node-client";
 import { type Auth } from "blaise-login-react-server";
 import express, { type Request, type Response, type Router } from "express";
-// CHANGED: Moved BlaiseApiClient inside the curly braces as it is a named export, not a default export.
 
 import { fieldPeriodToText } from "../functions.js";
 
-import type AuditLogger from "../auditLogging/logger.js";
+import type AuditLogger from "../auditLogger.js";
 
-export default function NewBlaiseHandler(
+export default function newBlaiseHandler(
   blaiseApiClient: BlaiseApiClient,
   serverPark: string,
   auth: Auth,
@@ -19,55 +18,59 @@ export default function NewBlaiseHandler(
 ): Router {
   const router = express.Router();
 
-  const blaiseHandler = new BlaiseHandler(blaiseApiClient, serverPark, auditLogger);
+  const blaiseHandler = new BlaiseHandler(blaiseApiClient, serverPark, auth, auditLogger);
 
-  router.get("/api/health/diagnosis", auth.Middleware, blaiseHandler.GetHealth);
-  router.get("/api/questionnaires", auth.Middleware, blaiseHandler.GetQuestionnaires);
+  router.get("/api/questionnaires", auth.Middleware, blaiseHandler.getQuestionnaires);
   router.get(
     "/api/questionnaires/:questionnaireName",
     auth.Middleware,
-    blaiseHandler.GetQuestionnaire,
+    blaiseHandler.getQuestionnaire,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/modes",
     auth.Middleware,
-    blaiseHandler.GetModes,
+    blaiseHandler.getModes,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/modes/:mode",
     auth.Middleware,
-    blaiseHandler.DoesQuestionnaireHaveMode,
+    blaiseHandler.doesQuestionnaireHaveMode,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/settings",
     auth.Middleware,
-    blaiseHandler.GetSettings,
+    blaiseHandler.getSettings,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/surveydays",
     auth.Middleware,
-    blaiseHandler.GetSurveyDays,
+    blaiseHandler.getSurveyDays,
+  );
+  router.get(
+    "/api/questionnaires/:questionnaireName/active",
+    auth.Middleware,
+    blaiseHandler.getActiveSurveyDays,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/cases/ids",
     auth.Middleware,
-    blaiseHandler.GetCases,
+    blaiseHandler.getCases,
   );
-  router.post("/api/install", auth.Middleware, blaiseHandler.InstallQuestionnaire);
+  router.post("/api/install", auth.Middleware, blaiseHandler.installQuestionnaire);
   router.patch(
     "/api/questionnaires/:questionnaireName/activate",
     auth.Middleware,
-    blaiseHandler.ActivateQuestionnaire,
+    blaiseHandler.activateQuestionnaire,
   );
   router.patch(
     "/api/questionnaires/:questionnaireName/deactivate",
     auth.Middleware,
-    blaiseHandler.DeactivateQuestionnaire,
+    blaiseHandler.deactivateQuestionnaire,
   );
   router.delete(
     "/api/questionnaires/:questionnaireName",
     auth.Middleware,
-    blaiseHandler.DeleteQuestionnaire,
+    blaiseHandler.deleteQuestionnaire,
   );
 
   return router;
@@ -76,43 +79,22 @@ export default function NewBlaiseHandler(
 class BlaiseHandler {
   blaiseApiClient: BlaiseApiClient;
   serverPark: string;
+  auth: Auth;
   auditLogger: AuditLogger;
 
-  constructor(blaiseApiClient: BlaiseApiClient, serverPark: string, auditLogger: AuditLogger) {
+  constructor(
+    blaiseApiClient: BlaiseApiClient,
+    serverPark: string,
+    auth: Auth,
+    auditLogger: AuditLogger,
+  ) {
     this.blaiseApiClient = blaiseApiClient;
     this.serverPark = serverPark;
+    this.auth = auth;
     this.auditLogger = auditLogger;
-
-    this.GetHealth = this.GetHealth.bind(this);
-    this.GetQuestionnaire = this.GetQuestionnaire.bind(this);
-    this.InstallQuestionnaire = this.InstallQuestionnaire.bind(this);
-    this.DeleteQuestionnaire = this.DeleteQuestionnaire.bind(this);
-    this.ActivateQuestionnaire = this.ActivateQuestionnaire.bind(this);
-    this.DeactivateQuestionnaire = this.DeactivateQuestionnaire.bind(this);
-    this.DoesQuestionnaireHaveMode = this.DoesQuestionnaireHaveMode.bind(this);
-    this.GetQuestionnaires = this.GetQuestionnaires.bind(this);
-    this.GetCases = this.GetCases.bind(this);
-    this.GetModes = this.GetModes.bind(this);
-    this.GetSettings = this.GetSettings.bind(this);
-    this.GetSurveyDays = this.GetSurveyDays.bind(this);
   }
 
-  async GetHealth(req: Request, res: Response): Promise<Response> {
-    try {
-      const diagnostics = await this.blaiseApiClient.getDiagnostics();
-
-      req.log.info({ diagnostics }, "Successfully called health check endpoint");
-
-      return res.status(200).json(diagnostics);
-    } catch (error: unknown) {
-      req.log.error(error, "health check endpoint failed");
-
-      return res.status(500).json();
-    }
-  }
-
-  async GetQuestionnaire(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  getQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
 
     try {
@@ -129,16 +111,16 @@ class BlaiseHandler {
         return res.status(404).json();
       }
 
-      console.log(error);
       req.log.error(error, "Get questionnaire endpoint failed");
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async InstallQuestionnaire(req: Request, res: Response): Promise<Response> {
+  installQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const filename: string = req.body.filename;
     const questionnaireName = filename?.toString().replace(/\.[a-zA-Z]*$/, "");
+    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
     const installQuestionnaire: InstallQuestionnaire = {
       questionnaireFile: filename?.toString() || "",
     };
@@ -149,20 +131,26 @@ class BlaiseHandler {
         installQuestionnaire,
       );
 
-      this.auditLogger.info(req.log, `Successfully installed questionnaire ${questionnaireName}`);
+      this.auditLogger.info(
+        req.log,
+        `Successfully installed questionnaire ${questionnaireName} by ${username}`,
+      );
 
       return res.status(201).json(response);
     } catch (error: unknown) {
       req.log.error(error, "Install questionnaire endpoint failed");
-      this.auditLogger.error(req.log, `Failed to install questionnaire ${questionnaireName}`);
+      this.auditLogger.error(
+        req.log,
+        `Failed to install questionnaire ${questionnaireName} by ${username}`,
+      );
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async DeleteQuestionnaire(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  deleteQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
 
     try {
       const response = await this.blaiseApiClient.deleteQuestionnaire(
@@ -170,27 +158,32 @@ class BlaiseHandler {
         questionnaireName,
       );
 
-      this.auditLogger.info(req.log, `Successfully uninstalled questionnaire ${questionnaireName}`);
+      this.auditLogger.info(
+        req.log,
+        `Successfully uninstalled questionnaire ${questionnaireName} by ${username}`,
+      );
 
       return res.status(204).json(response);
     } catch (error: unknown) {
       if (this.errorNotFound(error)) {
         this.auditLogger.error(
           req.log,
-          `Attempted to uninstall questionnaire ${questionnaireName} that doesn't exist`,
+          `Attempted to uninstall questionnaire ${questionnaireName} that doesn't exist by ${username}`,
         );
 
         return res.status(404).json();
       }
 
-      this.auditLogger.error(req.log, `Failed to uninstall questionnaire ${questionnaireName}`);
+      this.auditLogger.error(
+        req.log,
+        `Failed to uninstall questionnaire ${questionnaireName} by ${username}`,
+      );
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async ActivateQuestionnaire(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  activateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
 
     try {
@@ -216,10 +209,9 @@ class BlaiseHandler {
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async DeactivateQuestionnaire(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  deactivateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
 
     try {
@@ -245,10 +237,9 @@ class BlaiseHandler {
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async DoesQuestionnaireHaveMode(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params for multiple variables to enforce strict string types
+  doesQuestionnaireHaveMode = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName, mode } = req.params as { questionnaireName: string; mode: string };
 
     try {
@@ -269,15 +260,15 @@ class BlaiseHandler {
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async GetQuestionnaires(req: Request, res: Response): Promise<Response> {
+  getQuestionnaires = async (req: Request, res: Response): Promise<Response> => {
     try {
       const questionnaires: Questionnaire[] = await this.blaiseApiClient.getQuestionnaires(
         this.serverPark,
       );
 
-      questionnaires.forEach(function (questionnaire: Questionnaire) {
+      questionnaires.forEach((questionnaire: Questionnaire) => {
         if (questionnaire.status === "Erroneous") {
           req.log.info(`Questionnaire ${questionnaire.name} returned erroneous.`);
           questionnaire.status = "Failed";
@@ -297,10 +288,9 @@ class BlaiseHandler {
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async GetCases(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  getCases = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
 
     try {
@@ -320,10 +310,9 @@ class BlaiseHandler {
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async GetModes(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  getModes = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
 
     try {
@@ -343,10 +332,9 @@ class BlaiseHandler {
 
       return res.status(500).json(null);
     }
-  }
+  };
 
-  async GetSettings(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  getSettings = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
 
     try {
@@ -366,10 +354,9 @@ class BlaiseHandler {
 
       return res.status(500).json();
     }
-  }
+  };
 
-  async GetSurveyDays(req: Request, res: Response): Promise<Response> {
-    // CHANGED: Cast req.params to enforce strict string type
+  getSurveyDays = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
 
     try {
@@ -386,9 +373,32 @@ class BlaiseHandler {
 
       return res.status(500).json(null);
     }
-  }
+  };
 
-  errorNotFound(error: unknown): boolean {
+  getActiveSurveyDays = async (req: Request, res: Response): Promise<Response> => {
+    const { questionnaireName } = req.params as { questionnaireName: string };
+
+    try {
+      const surveyDays: string[] = await this.blaiseApiClient.getSurveyDays(
+        this.serverPark,
+        questionnaireName,
+      );
+      const hasActiveSurveyDays = Array.isArray(surveyDays) && surveyDays.length > 0;
+
+      req.log.info(
+        { questionnaireName, hasActiveSurveyDays },
+        `Successfully called active survey days endpoint for ${questionnaireName}`,
+      );
+
+      return res.status(200).json(hasActiveSurveyDays);
+    } catch (error: unknown) {
+      req.log.error(error, `Get active survey days for ${questionnaireName}`);
+
+      return res.status(500).json();
+    }
+  };
+
+  private errorNotFound(error: unknown): boolean {
     if (typeof error !== "object" || error === null) {
       return false;
     }

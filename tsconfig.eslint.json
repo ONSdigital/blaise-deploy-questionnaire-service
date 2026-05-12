@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
-    "noEmit": true
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "types": ["node", "vite/client", "vitest/globals", "@testing-library/jest-dom/vitest"]
   },
   "exclude": ["node_modules", "build", "dist", "coverage"],
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.base.json",
   "include": ["src", "*.config.ts"]
 }

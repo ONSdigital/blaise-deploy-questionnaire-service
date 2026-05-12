@@ -1,5 +1,6 @@
+import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url"; // ADDED: Required to reconstruct __dirname in an ES Module environment
+import { fileURLToPath } from "url";
 
 import { BlaiseApiClient } from "blaise-api-node-client";
 import { Auth, newLoginHandler } from "blaise-login-react-server";
@@ -9,8 +10,8 @@ import ejs from "ejs";
 import express, { type Express, type NextFunction, type Request, type Response } from "express";
 import { type HttpLogger } from "pino-http";
 
-import AuditLogger from "./auditLogging/logger.js";
-import { BimsApi } from "./bimsApi/bimsApi.js";
+import AuditLogger from "./auditLogger.js";
+import { BimsClient } from "./bimsClient.js";
 import { type Config } from "./config.js";
 import newAuditHandler from "./handlers/auditHandler.js";
 import newBimsHandler from "./handlers/bimsHandler.js";
@@ -18,15 +19,12 @@ import newBlaiseHandler from "./handlers/blaiseHandler.js";
 import newBusHandler from "./handlers/busHandler.js";
 import { type BusClientLike } from "./handlers/busHandler.js";
 import newClientLogHandler from "./handlers/clientLogHandler.js";
-import createDonorCasesCloudFunctionHandler from "./handlers/cloudFunctionHandler.js";
-import { reissueNewDonorCaseCloudFunctionHandler } from "./handlers/cloudFunctionHandler.js";
-import { getUsersByRoleCloudFunctionHandler } from "./handlers/cloudFunctionHandler.js";
-import HealthCheckHandler from "./handlers/healthCheckHandler.js";
+import newCloudFunctionHandler from "./handlers/cloudFunctionHandler.js";
+import newHealthCheckHandler from "./handlers/healthCheckHandler.js";
 import newUploadHandler from "./handlers/uploadHandler.js";
-import createLogger from "./pino/index.js";
-import StorageManager from "./storage/storage.js";
+import createLogger from "./pinoLogger.js";
+import StorageManager from "./storageManager.js";
 
-// ADDED: Reconstruct __dirname for ESM compatibility
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -38,7 +36,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
   const auth = new Auth(config);
 
-  const bimsAPI = new BimsApi(config.BimsApiUrl, config.BimsClientId);
+  const bimsClient = new BimsClient(config.BimsApiUrl, config.BimsClientId);
   const BusClientConstructor = BusClient as unknown as new (
     url: string,
     clientId: string,
@@ -48,37 +46,80 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   const auditLogger = new AuditLogger(config.ProjectId);
 
   const loginHandler = newLoginHandler(auth, blaiseApiClient);
-  const bimsHandler = newBimsHandler(bimsAPI, auth, auditLogger);
+  const bimsHandler = newBimsHandler(bimsClient, auth, auditLogger);
   const blaiseHandler = newBlaiseHandler(blaiseApiClient, config.ServerPark, auth, auditLogger);
   const busHandler = newBusHandler(busApiClient, auth);
   const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
   const auditHandler = newAuditHandler(auditLogger);
   const clientLogHandler = newClientLogHandler(auth);
-  const createDonorCasesHandler = createDonorCasesCloudFunctionHandler(
+  const createDonorCasesHandler = newCloudFunctionHandler(
+    "/api/cloudFunction/createDonorCases",
     config.CreateDonorCasesCloudFunctionUrl,
+    auth,
+    auditLogger,
+    (req: Request, username: string) => {
+      const questionnaireName =
+        typeof req.body?.questionnaire_name === "string" ? req.body.questionnaire_name : "unknown";
+      const role = typeof req.body?.role === "string" ? req.body.role : "unknown";
+
+      return {
+        successMessage:
+          `Successfully created donor cases for questionnaire ${questionnaireName} ` +
+          `for role ${role} by ${username}`,
+        errorMessage:
+          `Failed to create donor cases for questionnaire ${questionnaireName} ` +
+          `for role ${role} by ${username}`,
+      };
+    },
   );
-  const reissueNewDonorCaseHandler = reissueNewDonorCaseCloudFunctionHandler(
+  const reissueNewDonorCaseHandler = newCloudFunctionHandler(
+    "/api/cloudFunction/reissueNewDonorCase",
     config.ReissueNewDonorCaseCloudFunctionUrl,
+    auth,
+    auditLogger,
+    (req: Request, username: string) => {
+      const questionnaireName =
+        typeof req.body?.questionnaire_name === "string" ? req.body.questionnaire_name : "unknown";
+      const requestUser =
+        typeof req.body?.user === "string"
+          ? req.body.user
+          : typeof req.body?.role === "string"
+            ? req.body.role
+            : "unknown";
+
+      return {
+        successMessage:
+          `Successfully reissued new donor case for questionnaire ${questionnaireName} ` +
+          `for user ${requestUser} by ${username}`,
+        errorMessage:
+          `Failed to reissue new donor case for questionnaire ${questionnaireName} ` +
+          `for user ${requestUser} by ${username}`,
+      };
+    },
   );
-  const getUsersByRoleHandler = getUsersByRoleCloudFunctionHandler(
+  const getUsersByRoleHandler = newCloudFunctionHandler(
+    "/api/cloudFunction/getUsersByRole",
     config.GetUsersByRoleCloudFunctionUrl,
   );
 
   const server = express();
 
-  // const logger: HttpLogger = createLogger();
   server.use(logger);
 
   server.use("/", loginHandler);
   server.use(express.json());
 
-  // where ever the react built package is
-  const buildFolder = "../../../build";
+  const buildFolder = path.join(__dirname, "../../../build");
+  const errorPageCandidates = [
+    path.join(__dirname, "../../../src/server/views/500.html"),
+    path.join(buildFolder, "500.html"),
+    path.join(buildFolder, "views/500.html"),
+  ];
+  const errorPagePath = errorPageCandidates.find((filePath) => fs.existsSync(filePath));
 
-  // treat the index.html as a template and substitute the values at runtime
-  server.set("views", path.join(__dirname, buildFolder));
+  server.set("views", buildFolder);
   server.engine("html", ejs.renderFile);
-  server.use("/static", express.static(path.join(__dirname, `${buildFolder}/static`)));
+  server.use("/static", express.static(path.join(buildFolder, "static")));
 
   server.use("/", uploadHandler);
   server.use("/", blaiseHandler);
@@ -89,7 +130,11 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   server.use("/", createDonorCasesHandler);
   server.use("/", reissueNewDonorCaseHandler);
   server.use("/", getUsersByRoleHandler);
-  server.use("/", HealthCheckHandler());
+  server.use("/", newHealthCheckHandler());
+
+  server.use("/api", function (_req: Request, res: Response) {
+    res.status(404).json({ message: "Not found" });
+  });
 
   server.get(/.*/, function (req: Request, res: Response) {
     res.render("index.html");
@@ -97,7 +142,14 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
 
   server.use(function (err: Error, req: Request, res: Response, _next: NextFunction) {
     req.log.error(err, err.message);
-    res.status(500).sendFile(path.join(__dirname, "../../../src/views/500.html"));
+
+    if (errorPagePath != null) {
+      res.status(500).sendFile(errorPagePath);
+
+      return;
+    }
+
+    res.status(500).type("text/plain").send("Sorry, there is a problem with the service.");
   });
 
   return server;

@@ -1,0 +1,723 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Deployment summary > should match the Snapshot for DST2004A.bpkg 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="ons-summary"
+      >
+        <div
+          class="ons-summary__group"
+        >
+          <h2
+            class="ons-summary__group-title"
+          >
+            Deployment summary
+          </h2>
+          <dl
+            class="ons-summary__items"
+          >
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Questionnaire file name
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  DST2004A.bpkg
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Questionnaire file last modified date
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  24/01/2022 01:02
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Questionnaire file size
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  1MB
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Already exists in Blaise
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  Yes, overriding questionnaire
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Telephone Operations start date
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  Not specified
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Totalmobile release date
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  Not specified
+                </span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="ons-summary"
+    >
+      <div
+        class="ons-summary__group"
+      >
+        <h2
+          class="ons-summary__group-title"
+        >
+          Deployment summary
+        </h2>
+        <dl
+          class="ons-summary__items"
+        >
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Questionnaire file name
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                DST2004A.bpkg
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Questionnaire file last modified date
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                24/01/2022 01:02
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Questionnaire file size
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                1MB
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Already exists in Blaise
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                Yes, overriding questionnaire
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Telephone Operations start date
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                Not specified
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Totalmobile release date
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                Not specified
+              </span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Deployment summary > should match the Snapshot for LMS2004A.bpkg 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="ons-summary"
+      >
+        <div
+          class="ons-summary__group"
+        >
+          <h2
+            class="ons-summary__group-title"
+          >
+            Deployment summary
+          </h2>
+          <dl
+            class="ons-summary__items"
+          >
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Questionnaire file name
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  LMS2004A.bpkg
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Questionnaire file last modified date
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  24/01/2022 01:02
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Questionnaire file size
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  1MB
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Already exists in Blaise
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  Yes, overriding questionnaire
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Telephone Operations start date
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  Not specified
+                </span>
+              </dd>
+            </div>
+            <div
+              class="ons-summary__item"
+            >
+              <dt
+                class="ons-summary__item-title"
+              >
+                <div
+                  class="ons-summary__item--text"
+                >
+                  Totalmobile release date
+                </div>
+              </dt>
+              <dd
+                class="ons-summary__values"
+              >
+                <span
+                  class="ons-summary__text"
+                >
+                  Not specified
+                </span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="ons-summary"
+    >
+      <div
+        class="ons-summary__group"
+      >
+        <h2
+          class="ons-summary__group-title"
+        >
+          Deployment summary
+        </h2>
+        <dl
+          class="ons-summary__items"
+        >
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Questionnaire file name
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                LMS2004A.bpkg
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Questionnaire file last modified date
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                24/01/2022 01:02
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Questionnaire file size
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                1MB
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Already exists in Blaise
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                Yes, overriding questionnaire
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Telephone Operations start date
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                Not specified
+              </span>
+            </dd>
+          </div>
+          <div
+            class="ons-summary__item"
+          >
+            <dt
+              class="ons-summary__item-title"
+            >
+              <div
+                class="ons-summary__item--text"
+              >
+                Totalmobile release date
+              </div>
+            </dt>
+            <dd
+              class="ons-summary__values"
+            >
+              <span
+                class="ons-summary__text"
+              >
+                Not specified
+              </span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

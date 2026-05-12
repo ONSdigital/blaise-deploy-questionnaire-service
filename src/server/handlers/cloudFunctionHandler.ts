@@ -1,59 +1,75 @@
+import { type Auth } from "blaise-login-react-server";
 import express, { type Request, type Response, type Router } from "express";
 
 import { callCloudFunction } from "../helpers/cloudFunctionCallerHelper.js";
 
-export default function createDonorCasesCloudFunctionHandler(CloudFunctionUrl: string): Router {
+import type AuditLogger from "../auditLogger.js";
+
+type AuditMessages = {
+  successMessage: string;
+  errorMessage: string;
+};
+
+type BuildAuditMessages = (req: Request, username: string) => AuditMessages;
+
+export default function newCloudFunctionHandler(
+  routePath: string,
+  cloudFunctionUrl: string,
+  auth?: Auth,
+  auditLogger?: AuditLogger,
+  buildAuditMessages?: BuildAuditMessages,
+): Router {
   const router = express.Router();
-  const cloudFunctionHandler = new CloudFunctionHandler(CloudFunctionUrl);
+  const handler = new CloudFunctionHandler(cloudFunctionUrl, auth, auditLogger, buildAuditMessages);
 
-  router.post("/api/cloudFunction/createDonorCases", cloudFunctionHandler.CallCloudFunction);
-
-  return router;
-}
-
-export function reissueNewDonorCaseCloudFunctionHandler(CloudFunctionUrl: string): Router {
-  const router = express.Router();
-  const cloudFunctionHandler = new CloudFunctionHandler(CloudFunctionUrl);
-
-  router.post("/api/cloudFunction/reissueNewDonorCase", cloudFunctionHandler.CallCloudFunction);
-
-  return router;
-}
-
-export function getUsersByRoleCloudFunctionHandler(CloudFunctionUrl: string): Router {
-  const router = express.Router();
-  const cloudFunctionHandler = new CloudFunctionHandler(CloudFunctionUrl);
-
-  router.post("/api/cloudFunction/getUsersByRole", cloudFunctionHandler.CallCloudFunction);
+  router.post(routePath, handler.callCloudFunction);
 
   return router;
 }
 
 class CloudFunctionHandler {
-  CloudFunctionUrl: string;
+  private readonly cloudFunctionUrl: string;
+  private readonly auth?: Auth;
+  private readonly auditLogger?: AuditLogger;
+  private readonly buildAuditMessages?: BuildAuditMessages;
 
-  constructor(CloudFunctionUrl: string) {
-    this.CloudFunctionUrl = CloudFunctionUrl;
-    this.CallCloudFunction = this.CallCloudFunction.bind(this);
+  constructor(
+    cloudFunctionUrl: string,
+    auth?: Auth,
+    auditLogger?: AuditLogger,
+    buildAuditMessages?: BuildAuditMessages,
+  ) {
+    this.cloudFunctionUrl = cloudFunctionUrl;
+    this.auth = auth;
+    this.auditLogger = auditLogger;
+    this.buildAuditMessages = buildAuditMessages;
   }
 
-  async CallCloudFunction(req: Request, res: Response): Promise<Response> {
-    const reqData = req.body;
+  callCloudFunction = async (req: Request, res: Response): Promise<Response> => {
+    const username = this.auth?.GetUser(this.auth.GetToken(req)).name;
 
-    req.log.info(`${this.CloudFunctionUrl} URL to invoke for Cloud Function.`);
+    req.log.info(`${this.cloudFunctionUrl} URL to invoke for Cloud Function.`);
     try {
-      const cloudFunctionResponse = await callCloudFunction(this.CloudFunctionUrl, reqData);
+      const cloudFunctionResponse = await callCloudFunction(this.cloudFunctionUrl, req.body);
+
+      if (this.auditLogger != null && this.buildAuditMessages != null && username != null) {
+        this.auditLogger.info(req.log, this.buildAuditMessages(req, username).successMessage);
+      }
 
       return res.status(cloudFunctionResponse.status).json(cloudFunctionResponse);
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (error: unknown) {
+      req.log.error(error, "Cloud function call failed");
 
-      const cloudFunctionError = error as { response?: { data?: string } };
+      if (this.auditLogger != null && this.buildAuditMessages != null && username != null) {
+        this.auditLogger.error(req.log, this.buildAuditMessages(req, username).errorMessage);
+      }
+
+      const axiosError = error as { response?: { data?: string } };
 
       return res.status(500).json({
-        message: cloudFunctionError.response?.data,
+        message: axiosError.response?.data,
         status: 500,
       });
     }
-  }
+  };
 }

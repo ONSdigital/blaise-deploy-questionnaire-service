@@ -1,26 +1,13 @@
 {
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "noFallthroughCasesInSwitch": true,
     "outDir": "./build",
-    "resolveJsonModule": true,
     "rootDir": ".",
-    "skipLibCheck": true,
     "sourceMap": true,
-    "strict": true,
-    "target": "ES2022",
-    "types": ["node", "vitest/globals"],
-    "verbatimModuleSyntax": true
+    "types": ["node"]
   },
-  "exclude": [
-    "node_modules",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "src/client",
-    "src/components",
-    "src/features"
-  ],
-  "include": ["src/server/**/*.ts", "src/utilities/**/*.ts"]
+  "exclude": ["node_modules", "**/*.test.ts", "**/*.test.tsx", "src/client"],
+  "extends": "./tsconfig.base.json",
+  "include": ["src/server/**/*.ts"]
 }

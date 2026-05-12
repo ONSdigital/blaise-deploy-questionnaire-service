@@ -9,7 +9,15 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["coverage/**", "build/**", "dist/**", "node_modules/**", ".yarn/**", ".pnp.*"],
+    ignores: [
+      "coverage/**",
+      "coverage-server/**",
+      "build/**",
+      "dist/**",
+      "node_modules/**",
+      ".yarn/**",
+      ".pnp.*",
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -84,6 +92,9 @@ export default tseslint.config(
         "error",
         {
           devDependencies: [
+            "src/client/features/step_definitions/**/*.{ts,tsx}",
+            "src/client/setupTests.ts",
+            "src/client/test-utils/**/*.{ts,tsx}",
             "src/**/*.mock.{ts,tsx}",
             "src/**/*.test.{ts,tsx}",
             "src/setupTests.ts",

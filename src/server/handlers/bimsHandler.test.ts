@@ -1,26 +1,26 @@
-/* eslint-disable import-x/order */
-/**
- * @vitest-environment node
- */
-import { newServer } from "../server";
-
-import supertest, { type Response } from "supertest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
+import { Auth } from "blaise-login-react-server";
+import pino from "pino";
+import createLogger, { type HttpLogger } from "pino-http";
+import supertest, { type Response } from "supertest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { getConfigFromEnv } from "../config";
+import { newServer } from "../server";
 
 vi.mock("blaise-uac-service-node-client", () => ({
   __esModule: true,
+  BusClient: class MockBusClient {
+    constructor(_url?: string, _clientId?: string) {}
+  },
   default: class MockBusClient {
-    constructor(_url?: string, _clientId?: string) {
-      // Intentionally empty for tests.
-    }
+    constructor(_url?: string, _clientId?: string) {}
   },
 }));
 vi.mock("@google-cloud/logging", () => ({
   Logging: class MockLogging {
-    constructor(_options?: unknown) {
-      // Intentionally empty for tests.
-    }
+    constructor(_options?: unknown) {}
 
     public log(_logName: string) {
       return {
@@ -31,9 +31,7 @@ vi.mock("@google-cloud/logging", () => ({
 }));
 vi.mock("@google-cloud/storage", () => ({
   Storage: class MockStorage {
-    constructor(_options?: unknown) {
-      // Intentionally empty for tests.
-    }
+    constructor(_options?: unknown) {}
 
     public bucket(_bucketName: string) {
       return {
@@ -47,15 +45,10 @@ vi.mock("@google-cloud/storage", () => ({
   },
 }));
 vi.mock("blaise-login-react-server", async () => {
-  const { mockLoginReactServerModule } = await import("../../tests/utils/mockLoginReactServer");
+  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock");
 
   return mockLoginReactServerModule();
 });
-import { Auth } from "blaise-login-react-server";
-import pino from "pino";
-import createLogger, { type HttpLogger } from "pino-http";
-
-import { getConfigFromEnv } from "../config";
 
 Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
 Auth.prototype.GetUser = vi
@@ -65,17 +58,15 @@ Auth.prototype.GetToken = vi.fn().mockReturnValue("example-token");
 
 vi.mock("blaise-iap-node-provider");
 
-const logger: pino.Logger = pino(); // Real logger instance
+const logger: pino.Logger = pino();
 
-logger.child = vi.fn(() => logger); // Dirty little hack
-const logInfo = vi.spyOn(logger, "info"); // Get jest test to spy on it
-const httpLogger: HttpLogger = createLogger({ logger: logger }); // Logging middleware
+logger.child = vi.fn(() => logger) as unknown as typeof logger.child;
+const logInfo = vi.spyOn(logger, "info");
+const httpLogger: HttpLogger = createLogger({ logger: logger });
 
-// Create Mock adapter for Axios requests
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 const jsonHeaders = { "content-type": "application/json" };
 
-// Mock Express Server
 const config = getConfigFromEnv();
 const request = supertest(newServer(config, httpLogger));
 
@@ -83,6 +74,61 @@ describe("Sending TO start date to BIMS service", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
+  });
+
+  it("should return 201 with empty body when no existing TO date and none provided", async () => {
+    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(404, {}, jsonHeaders);
+
+    const response: Response = await request
+      .post("/api/tostartdate/OPN2004A")
+      .send({ tostartdate: "" });
+
+    expect(response.status).toEqual(201);
+    expect(response.body).toStrictEqual("");
+  });
+
+  it("should delete existing TO date when empty TO date is provided", async () => {
+    mock
+      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
+    mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(204, {}, jsonHeaders);
+
+    const response: Response = await request
+      .post("/api/tostartdate/OPN2004A")
+      .send({ tostartdate: "" });
+
+    expect(response.status).toEqual(201);
+    expect(mock.history.delete.length).toBe(1);
+  });
+
+  it("should return 500 when deleting existing TO date fails", async () => {
+    mock
+      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
+    mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
+
+    const response: Response = await request
+      .post("/api/tostartdate/OPN2004A")
+      .send({ tostartdate: "" });
+
+    expect(response.status).toEqual(500);
+  });
+
+  it("should update existing TO date when a new value is provided", async () => {
+    mock
+      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
+    mock
+      .onPatch(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .reply(200, { tostartdate: "2022-12-31" }, jsonHeaders);
+
+    const response: Response = await request
+      .post("/api/tostartdate/OPN2004A")
+      .send({ tostartdate: "2022-12-31" });
+
+    expect(response.status).toEqual(201);
+    expect(response.body).toStrictEqual({ tostartdate: "2022-12-31" });
+    expect(mock.history.patch[0].data).toEqual('{"tostartdate":"2022-12-31"}');
   });
 
   it("should return a 201 status when the live date is provided", async () => {
@@ -126,6 +172,14 @@ describe("Getting TO start date from BIMS service", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
+  });
+
+  it("should return a 404 status when BIMS returns no content for the start date", async () => {
+    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(204, undefined, jsonHeaders);
+
+    const response: Response = await request.get("/api/tostartdate/OPN2004A");
+
+    expect(response.status).toEqual(404);
   });
 
   it("should return a 200 status with a TO start date object when the start date is provided", async () => {
@@ -272,7 +326,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
           .send({ tmreleasedate: "" });
 
         expect(response.status).toEqual(201);
-        expect(response.body).toStrictEqual(""); // Not consistent :sob:
+        expect(response.body).toStrictEqual("");
       });
 
       it("should log a message when a release date is not provided", async () => {
@@ -333,8 +387,8 @@ describe("Sending Totalmobile release date to BIMS service", () => {
           .post("/api/tmreleasedate/LMS2004A")
           .send({ tmreleasedate: "" });
 
-        expect(response.status).toEqual(201); // 201 because it's an update not a delete
-        expect(response.body).toStrictEqual(""); // currently returns an empty string - not consistent
+        expect(response.status).toEqual(201);
+        expect(response.body).toStrictEqual("");
       });
 
       it("updates BIMS with a release date", async () => {
@@ -358,7 +412,7 @@ describe("Getting Totalmobile release date from BIMS service", () => {
     mock.reset();
   });
 
-  it("should return a 200 status with a TM release date object when the release date is provided", async () => {
+  it("should return a 200 status with a Totalmobile release date object when the release date is provided", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
@@ -400,7 +454,7 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
     mock.reset();
   });
 
-  it("should return a 204 status when the TM release date has been deleted", async () => {
+  it("should return a 204 status when the Totalmobile release date has been deleted", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
@@ -411,7 +465,7 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
     expect(response.status).toEqual(204);
   });
 
-  it("should log a message the TM release date has been deleted", async () => {
+  it("should log a message the Totalmobile release date has been deleted", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
@@ -424,7 +478,7 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
     );
   });
 
-  it("should return a 204 status when the TM release date doesn't exits", async () => {
+  it("should return a 204 status when the Totalmobile release date doesn't exits", async () => {
     mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(404, {}, jsonHeaders);
 
     const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");

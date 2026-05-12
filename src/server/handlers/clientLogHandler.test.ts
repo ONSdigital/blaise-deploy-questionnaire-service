@@ -1,21 +1,24 @@
-/* eslint-disable import-x/order */
+import { Auth } from "blaise-login-react-server";
+import pino from "pino";
+import createLogger, { type HttpLogger } from "pino-http";
 import supertest, { type Response } from "supertest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { getConfigFromEnv } from "../config";
 import { newServer } from "../server";
 
 vi.mock("blaise-uac-service-node-client", () => ({
   __esModule: true,
+  BusClient: class MockBusClient {
+    constructor(_url?: string, _clientId?: string) {}
+  },
   default: class MockBusClient {
-    constructor(_url?: string, _clientId?: string) {
-      // Intentionally empty for tests.
-    }
+    constructor(_url?: string, _clientId?: string) {}
   },
 }));
 vi.mock("@google-cloud/logging", () => ({
   Logging: class MockLogging {
-    constructor(_options?: unknown) {
-      // Intentionally empty for tests.
-    }
+    constructor(_options?: unknown) {}
 
     public log(_logName: string) {
       return {
@@ -26,9 +29,7 @@ vi.mock("@google-cloud/logging", () => ({
 }));
 vi.mock("@google-cloud/storage", () => ({
   Storage: class MockStorage {
-    constructor(_options?: unknown) {
-      // Intentionally empty for tests.
-    }
+    constructor(_options?: unknown) {}
 
     public bucket(_bucketName: string) {
       return {
@@ -42,15 +43,10 @@ vi.mock("@google-cloud/storage", () => ({
   },
 }));
 vi.mock("blaise-login-react-server", async () => {
-  const { mockLoginReactServerModule } = await import("../../tests/utils/mockLoginReactServer");
+  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock");
 
   return mockLoginReactServerModule();
 });
-import { Auth } from "blaise-login-react-server";
-import pino from "pino";
-import createLogger, { type HttpLogger } from "pino-http";
-
-import { getConfigFromEnv } from "../config";
 
 Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
 Auth.prototype.GetUser = vi.fn().mockReturnValue({ name: "rich" });
@@ -60,7 +56,7 @@ vi.mock("blaise-iap-node-provider");
 
 const logger: pino.Logger = pino();
 
-logger.child = vi.fn(() => logger); // pino-http uses child logger
+logger.child = vi.fn(() => logger) as unknown as typeof logger.child;
 const logInfo = vi.spyOn(logger, "info");
 const logWarn = vi.spyOn(logger, "warn");
 const logError = vi.spyOn(logger, "error");
@@ -121,6 +117,12 @@ describe("Client log forwarding", () => {
     expect(response.status).toEqual(400);
   });
 
+  it("rejects missing level when request body is undefined", async () => {
+    const response: Response = await request.post("/api/client-log");
+
+    expect(response.status).toEqual(400);
+  });
+
   it("rejects missing message", async () => {
     const response: Response = await request.post("/api/client-log").send({ level: "info" });
 
@@ -156,5 +158,49 @@ describe("Client log forwarding", () => {
     const payload = lastCall[0] as unknown as { clientLog?: { userAgent?: string } };
 
     expect(payload.clientLog?.userAgent).toEqual("test-agent");
+  });
+
+  it("truncates oversized message payloads", async () => {
+    const oversized = "x".repeat(2100);
+
+    const response: Response = await request
+      .post("/api/client-log")
+      .send({ level: "info", message: oversized });
+
+    expect(response.status).toEqual(204);
+    const lastCall = logInfo.mock.calls[logInfo.mock.calls.length - 1];
+    const payload = lastCall[0] as unknown as { clientLog?: { message?: string } };
+
+    expect(payload.clientLog?.message?.length).toEqual(2000);
+  });
+
+  it("captures optional string metadata fields", async () => {
+    const response: Response = await request.post("/api/client-log").send({
+      level: "info",
+      message: "hello",
+      pathname: "/route",
+      href: "https://example.com/route",
+      userAgent: "custom-agent",
+      timestamp: "2024-01-01T00:00:00.000Z",
+      stack: "stacktrace",
+    });
+
+    expect(response.status).toEqual(204);
+    const lastCall = logInfo.mock.calls[logInfo.mock.calls.length - 1];
+    const payload = lastCall[0] as unknown as {
+      clientLog?: {
+        pathname?: string;
+        href?: string;
+        userAgent?: string;
+        timestamp?: string;
+        stack?: string;
+      };
+    };
+
+    expect(payload.clientLog?.pathname).toEqual("/route");
+    expect(payload.clientLog?.href).toEqual("https://example.com/route");
+    expect(payload.clientLog?.userAgent).toEqual("custom-agent");
+    expect(payload.clientLog?.timestamp).toEqual("2024-01-01T00:00:00.000Z");
+    expect(payload.clientLog?.stack).toEqual("stacktrace");
   });
 });

@@ -1,0 +1,71 @@
+import { act, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import React, { type ReactNode } from "react";
+import { MemoryRouter } from "react-router-dom";
+
+import App from "../../../app";
+import flushPromises from "../../../test-utils/flushPromises";
+import { createWrapper } from "../../../test-utils/renderWithQueryClient";
+
+/*
+ * Renders the App in a Mock Router, then navigates the the 'Deploy questionnaire' page
+ * and then selects a mock OPN2004A.bpkg in the File select Input field.
+ *  */
+export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004A"): Promise<void> {
+  function DeployRouteWrapper({ children }: { children: ReactNode }) {
+    return <MemoryRouter initialEntries={["/deploy"]}>{children}</MemoryRouter>;
+  }
+
+  render(<App />, { wrapper: createWrapper(DeployRouteWrapper) });
+  await act(async () => {
+    await flushPromises();
+  });
+
+  const input =
+    (await screen
+      .findByLabelText(/Select questionnaire package|Select survey package/i)
+      .catch(() => null)) ??
+    ((await waitFor(() => {
+      const fileInput = document.querySelector("#survey-selector") as HTMLInputElement | null;
+
+      if (!fileInput) {
+        throw new Error("survey-selector input not found");
+      }
+
+      return fileInput;
+    })) as HTMLInputElement);
+
+  const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, { type: "application/zip" });
+
+  await userEvent.upload(input, file);
+}
+
+export async function navigatePastSettingTOStartDateAndDeployQuestionnaire(): Promise<void> {
+  await selectNoTOStartDateAndContinue();
+  await clickContinue();
+  await clickDeployQuestionnaire();
+}
+
+async function selectNoTOStartDateAndContinue(): Promise<void> {
+  await userEvent.click(screen.getByLabelText(/No start date/i));
+}
+
+async function clickDeployQuestionnaire(): Promise<void> {
+  await userEvent.click(screen.getByRole("button", { name: /Deploy questionnaire/i }));
+  await act(async () => {
+    await flushPromises();
+  });
+}
+
+export async function clickContinue(): Promise<void> {
+  await userEvent.click(screen.getByRole("button", { name: /Continue/i }));
+  await act(async () => {
+    await flushPromises();
+  });
+}
+
+export function formatDateString(date: string): string {
+  const splitDate = date.split("/");
+
+  return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`;
+}
