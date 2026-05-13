@@ -1,4 +1,4 @@
-import { type DefineStepFunction } from "jest-cucumber";
+type DefineStepFunction = (name: any, callback: any) => void;
 
 import { questionnaireWithName } from "./helpers/api.mock";
 import { formatDateString, navigateToDeployPageAndSelectFile } from "./helpers/functions";
@@ -114,6 +114,9 @@ export function givenTheQuestionnaireHasCases(
       if (questionnaire.name === questionnaireName) {
         questionnaire.dataRecordCount = caseCount;
         mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(200, questionnaire);
+        mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, {
+          count: Math.max(caseCount, 0),
+        });
       }
     }
   });
@@ -144,7 +147,6 @@ export function givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(
 ): void {
   given(/'(.*)' cannot be deleted because it would go erroneous/, (questionnaireName: string) => {
     mocker.onDelete(`/api/questionnaires/${questionnaireName}`).reply(420);
-    mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(420);
   });
 }
 

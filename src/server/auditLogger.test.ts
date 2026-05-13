@@ -1,7 +1,7 @@
 import { type Logger } from "pino";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import AuditLogger from "./auditLogger";
+import AuditLogger from "./auditLogger.js";
 
 const mockGetEntries = vi.fn();
 const mockLog = vi.fn().mockReturnValue({ getEntries: mockGetEntries });

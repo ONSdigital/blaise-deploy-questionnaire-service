@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -27,6 +27,8 @@ import {
   whenISelectToInstallWithNoStartDate,
 } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
 
@@ -37,11 +39,9 @@ MockAuthenticate.OverrideReturnValues(null, true);
 
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
-const feature = loadFeature("./src/client/features/successfully_deploy_a_questionnaire.feature", {
-  tagFilter: "not @server and not @integration",
-});
+describe("Feature: successfully_deploy_a_questionnaire", () => {
+  const Scenario = createScenario();
 
-defineFeature(feature, (test) => {
   beforeEach(() => {
     mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200);
   });
@@ -50,51 +50,51 @@ defineFeature(feature, (test) => {
     mocker.reset();
   });
 
-  test("Successful log in to Questionnaire Deployment Service", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
+  Scenario("Successful log in to Questionnaire Deployment Service", ({ Given, When, Then }) => {
+    givenNoQuestionnairesAreInstalled(Given, mocker);
 
-    whenILoadTheHomepage(when);
+    whenILoadTheHomepage(When);
 
-    thenIAmPresentedWithAnOptionToDeployAQuestionnaire(then);
+    thenIAmPresentedWithAnOptionToDeployAQuestionnaire(Then);
   });
 
-  test("Select to deploy a new questionnaire", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
+  Scenario("Select to deploy a new questionnaire", ({ Given, When, Then }) => {
+    givenNoQuestionnairesAreInstalled(Given, mocker);
 
-    whenILoadTheHomepage(when);
-    whenIClickDeployNewQuestionnaire(when);
+    whenILoadTheHomepage(When);
+    whenIClickDeployNewQuestionnaire(When);
 
-    thenIAmPresentedWithAnOptionToDeployAQuestionnaireFile(then);
-    thenICanSelectAQuestionnairePackageToInstall(then);
+    thenIAmPresentedWithAnOptionToDeployAQuestionnaireFile(Then);
+    thenICanSelectAQuestionnairePackageToInstall(Then);
   });
 
-  test("Deploy questionnaire functions disabled", ({ given, when, then }) => {
-    given("no questionnaires are installed", () => {
+  Scenario("Deploy questionnaire functions disabled", ({ Given, When, Then }) => {
+    Given("no questionnaires are installed", () => {
       mocker
         .onGet(/api\/questionnaires\//)
         .reply(() => new Promise((resolve) => setTimeout(() => resolve([404, undefined]), 500)));
       mocker.onGet("/api/questionnaires").reply(200, []);
     });
 
-    whenILoadTheHomepage(when);
-    whenIClickDeployNewQuestionnaire(when);
-    whenIHaveSelectedADeployPackage(when);
-    whenIConfirmMySelectionNoWait(when);
+    whenILoadTheHomepage(When);
+    whenIClickDeployNewQuestionnaire(When);
+    whenIHaveSelectedADeployPackage(When);
+    whenIConfirmMySelectionNoWait(When);
 
-    thenUploadIsDisabled(then);
+    thenUploadIsDisabled(Then);
   });
 
-  test("Deploy selected file", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
+  Scenario("Deploy selected file", ({ Given, When, Then }) => {
+    givenNoQuestionnairesAreInstalled(Given, mocker);
 
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-    givenInstallsSuccessfully(given, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
+    givenInstallsSuccessfully(Given, mocker);
 
-    whenIConfirmMySelection(when);
-    whenISelectToInstallWithNoStartDate(when);
-    whenIDeployTheQuestionnaire(when);
+    whenIConfirmMySelection(When);
+    whenISelectToInstallWithNoStartDate(When);
+    whenIDeployTheQuestionnaire(When);
 
-    thenTheQuestionnaireIsInstalled(then, mocker);
-    thenIAmPresentedWithASuccessfullyDeployedBanner(then);
+    thenTheQuestionnaireIsInstalled(Then, mocker);
+    thenIAmPresentedWithASuccessfullyDeployedBanner(Then);
   });
 });

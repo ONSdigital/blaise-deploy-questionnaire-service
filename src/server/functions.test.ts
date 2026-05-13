@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { fieldPeriodToText } from "./functions";
+import { fieldPeriodToText } from "./functions.js";
 
 describe("Field period to text test", () => {
   it("should return 'April 2020' for field period 2004", () => {

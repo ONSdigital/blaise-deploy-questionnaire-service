@@ -3,10 +3,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { act } from "react-dom/test-utils";
 import { BrowserRouter } from "react-router-dom";
 
-import flushPromises from "../../test-utils/flushPromises";
 import { createWrapper } from "../../test-utils/renderWithQueryClient";
 
 import AuditPage from "./auditPage";
@@ -43,9 +41,7 @@ describe("Audit Logs page", () => {
   it("view Audit Logs page matches Snapshot", async () => {
     const wrapper = render(<AuditPage />, { wrapper: createWrapper(BrowserRouter) });
 
-    await act(async () => {
-      await flushPromises();
-    });
+    await screen.findByText(/Successfully uninstalled questionnaire OPN2012K/i);
 
     await waitFor(() => {
       expect(wrapper).toMatchSnapshot();
@@ -75,10 +71,6 @@ describe("Audit Logs page", () => {
   it("should refresh the list when you press the Reload logs button", async () => {
     const { getByText } = render(<AuditPage />, { wrapper: createWrapper(BrowserRouter) });
 
-    await act(async () => {
-      await flushPromises();
-    });
-
     await waitFor(() => {
       expect(getByText(/Successfully uninstalled questionnaire OPN2012K/i)).toBeDefined();
       expect(getByText(/19\/02\/2021 12:46:29/i)).toBeDefined();
@@ -86,11 +78,7 @@ describe("Audit Logs page", () => {
 
     mock.onGet("/api/audit").reply(200, auditLogsList2);
 
-    userEvent.click(screen.getByText("Reload"));
-
-    await act(async () => {
-      await flushPromises();
-    });
+    await userEvent.click(screen.getByText("Reload"));
 
     await waitFor(() => {
       expect(getByText(/Successfully installed questionnaire OPN2012K/i)).toBeDefined();

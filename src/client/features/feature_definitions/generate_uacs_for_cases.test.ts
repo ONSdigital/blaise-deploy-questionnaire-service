@@ -1,6 +1,6 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -22,6 +22,8 @@ import {
   whenIGoToTheQuestionnaireDetailsPage,
 } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 import type { Questionnaire } from "blaise-api-node-client";
 
 vi.mock("blaise-login-react-client", async () => {
@@ -32,14 +34,12 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature("./src/client/features/generate_uacs_for_cases.feature", {
-  tagFilter: "not @server and not @integration",
-});
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
-defineFeature(feature, (test) => {
+describe("Feature: generate_uacs_for_cases", () => {
+  const Scenario = createScenario();
+
   beforeEach(() => {
     globalThis.URL.createObjectURL = vi.fn();
   });
@@ -48,101 +48,95 @@ defineFeature(feature, (test) => {
     mocker.reset();
   });
 
-  test("Generate button exists for questionnaires with CAWI mode and cases", ({
-    given,
-    when,
-    then,
-  }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
+  Scenario(
+    "Generate button exists for questionnaires with CAWI mode and cases",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasModes(Given, mocker);
+      givenTheQuestionnaireHasCases(Given, questionnaireList, mocker);
 
-    whenIGoToTheQuestionnaireDetailsPage(when);
+      whenIGoToTheQuestionnaireDetailsPage(When);
 
-    thenAGenerateUacButtonIsAvailable(then);
+      thenAGenerateUacButtonIsAvailable(Then);
+    },
+  );
+
+  Scenario(
+    "Generate button does not exist for questionnaires in CAWI mode without cases",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasModes(Given, mocker);
+      givenTheQuestionnaireHasCases(Given, questionnaireList, mocker);
+
+      whenIGoToTheQuestionnaireDetailsPage(When);
+
+      thenAGenerateUacButtonIsNotAvailable(Then);
+    },
+  );
+
+  Scenario(
+    "Generate button does not exist for questionnaires in CATI mode without cases",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasModes(Given, mocker);
+      givenTheQuestionnaireHasCases(Given, questionnaireList, mocker);
+
+      whenIGoToTheQuestionnaireDetailsPage(When);
+
+      thenAGenerateUacButtonIsNotAvailable(Then);
+    },
+  );
+
+  Scenario(
+    "Generate button does not exist for questionnaires in CATI mode with cases",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasModes(Given, mocker);
+      givenTheQuestionnaireHasCases(Given, questionnaireList, mocker);
+
+      whenIGoToTheQuestionnaireDetailsPage(When);
+
+      thenAGenerateUacButtonIsNotAvailable(Then);
+    },
+  );
+
+  Scenario(
+    "I get a confirmation message When generating Unique Access Codes",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasModes(Given, mocker);
+      givenTheQuestionnaireHasCases(Given, questionnaireList, mocker);
+
+      whenIGoToTheQuestionnaireDetailsPage(When);
+      whenIClickGenerateCases(When);
+
+      thenUacsAreGenerated(Then, mocker);
+    },
+  );
+
+  Scenario("I get a error message When generating Unique Access Codes", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireHasModes(Given, mocker);
+    givenTheQuestionnaireHasCases(Given, questionnaireList, mocker);
+    givenUacGenerationIsBroken(Given, mocker);
+
+    whenIGoToTheQuestionnaireDetailsPage(When);
+    whenIClickGenerateCases(When);
+
+    thenIReceiveAUacError(Then);
   });
 
-  test("Generate button does not exist for questionnaires in CAWI mode without cases", ({
-    given,
-    when,
-    then,
-  }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
+  Scenario(
+    "I can see how many Unique Access Codes have been generated for a particular questionnaire in the details page",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasModes(Given, mocker);
+      givenTheQuestionnaireHasCases(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasUacs(Given, mocker);
 
-    whenIGoToTheQuestionnaireDetailsPage(when);
-
-    thenAGenerateUacButtonIsNotAvailable(then);
-  });
-
-  test("Generate button does not exist for questionnaires in CATI mode without cases", ({
-    given,
-    when,
-    then,
-  }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
-
-    whenIGoToTheQuestionnaireDetailsPage(when);
-
-    thenAGenerateUacButtonIsNotAvailable(then);
-  });
-
-  test("Generate button does not exist for questionnaires in CATI mode with cases", ({
-    given,
-    when,
-    then,
-  }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
-
-    whenIGoToTheQuestionnaireDetailsPage(when);
-
-    thenAGenerateUacButtonIsNotAvailable(then);
-  });
-
-  test("I get a confirmation message when generating Unique Access Codes", ({
-    given,
-    when,
-    then,
-  }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
-
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIClickGenerateCases(when);
-
-    thenUacsAreGenerated(then, mocker);
-  });
-
-  test("I get a error message when generating Unique Access Codes", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
-    givenUacGenerationIsBroken(given, mocker);
-
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIClickGenerateCases(when);
-
-    thenIReceiveAUacError(then);
-  });
-
-  test("I can see how many Unique Access Codes have been generated for a particular questionnaire in the details page", ({
-    given,
-    when,
-    then,
-  }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    givenTheQuestionnaireHasCases(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasUacs(given, mocker);
-
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    thenICanSeeThatThatTheQuestionnaireHasCases(then);
-    thenAGenerateUacButtonIsAvailable(then);
-  });
+      whenIGoToTheQuestionnaireDetailsPage(When);
+      thenICanSeeThatThatTheQuestionnaireHasCases(Then);
+      thenAGenerateUacButtonIsAvailable(Then);
+    },
+  );
 });

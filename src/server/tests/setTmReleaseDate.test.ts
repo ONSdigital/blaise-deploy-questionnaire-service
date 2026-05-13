@@ -40,12 +40,12 @@ vi.mock("@google-cloud/storage", () => ({
   },
 }));
 vi.mock("blaise-login-react-server", async () => {
-  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock");
+  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock.js");
 
   return mockLoginReactServerModule();
 });
-import { getConfigFromEnv } from "../config";
-import { newServer } from "../server";
+import { getConfigFromEnv } from "../config.js";
+import { newServer } from "../server.js";
 
 Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
 

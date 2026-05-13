@@ -1,6 +1,7 @@
 import js from "@eslint/js";
 import eslintReact from "@eslint-react/eslint-plugin";
 import configPrettier from "eslint-config-prettier";
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import pluginImportX from "eslint-plugin-import-x";
 import pluginJsonc from "eslint-plugin-jsonc";
 import globals from "globals";
@@ -9,37 +10,36 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: [
-      "coverage/**",
-      "coverage-server/**",
-      "build/**",
-      "dist/**",
-      "node_modules/**",
-      ".yarn/**",
-      ".pnp.*",
-    ],
+    ignores: ["coverage/**", "build/**", "dist/**", "node_modules/**", ".yarn/**", ".pnp.*"],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   eslintReact.configs.recommended,
 
   {
-    languageOptions: {
-      ecmaVersion: "latest",
-    },
+    languageOptions: { ecmaVersion: "latest" },
     settings: {
+      // Legacy fallback for editor runtimes still expecting `import-x/resolver`.
+      // Keeping this on `node` avoids loading an incompatible TypeScript resolver interface.
       "import-x/resolver": {
-        typescript: { project: "./tsconfig.eslint.json" },
+        node: true,
       },
+      "import-x/resolver-next": [
+        createTypeScriptImportResolver({
+          project: [
+            "./tsconfig.client.json",
+            "./tsconfig.server.json",
+            "./tsconfig.server.test.json",
+            "./tsconfig.node.json",
+          ],
+        }),
+      ],
     },
   },
 
-  // Shared Rules (Applies to both Frontend and Backend)
   {
     files: ["**/*.{ts,tsx}"],
-    plugins: {
-      "import-x": pluginImportX,
-    },
+    plugins: { "import-x": pluginImportX },
     rules: {
       "padding-line-between-statements": [
         "error",
@@ -55,18 +55,11 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
       "@typescript-eslint/consistent-type-imports": [
         "error",
-        {
-          prefer: "type-imports",
-          fixStyle: "inline-type-imports",
-        },
+        { prefer: "type-imports", fixStyle: "inline-type-imports" },
       ],
       "sort-imports": [
         "error",
-        {
-          ignoreCase: true,
-          ignoreDeclarationSort: true,
-          ignoreMemberSort: false,
-        },
+        { ignoreCase: true, ignoreDeclarationSort: true, ignoreMemberSort: false },
       ],
       "import-x/order": [
         "error",
@@ -92,56 +85,40 @@ export default tseslint.config(
         "error",
         {
           devDependencies: [
-            "src/client/features/step_definitions/**/*.{ts,tsx}",
-            "src/client/setupTests.ts",
-            "src/client/test-utils/**/*.{ts,tsx}",
             "src/**/*.mock.{ts,tsx}",
             "src/**/*.test.{ts,tsx}",
-            "src/setupTests.ts",
+            "src/client/setupTests.ts",
+            "src/client/features/**/*.ts",
+            "src/client/features/**/*.tsx",
             "*.config.ts",
+            "*.workspace.ts",
           ],
         },
       ],
     },
   },
 
-  // Frontend Specific Boundaries (React)
   {
-    files: ["src/**/*.{ts,tsx}"],
+    files: ["src/client/**/*.{ts,tsx}", "src/components/**/*.{ts,tsx}"],
     ignores: ["src/server/**", "src/utilities/**"],
-    languageOptions: {
-      globals: { ...globals.browser },
-    },
+    languageOptions: { globals: { ...globals.browser } },
     rules: {
       "import-x/extensions": [
         "error",
         "ignorePackages",
-        {
-          js: "never",
-          jsx: "never",
-          ts: "never",
-          tsx: "never",
-        },
+        { js: "never", jsx: "never", ts: "never", tsx: "never" },
       ],
     },
   },
 
-  // Backend Specific Boundaries (Node)
   {
     files: ["src/server/**/*.ts", "src/utilities/**/*.ts"],
-    languageOptions: {
-      globals: { ...globals.node },
-    },
+    languageOptions: { globals: { ...globals.node } },
     rules: {
       "import-x/extensions": [
         "error",
         "ignorePackages",
-        {
-          js: "always",
-          jsx: "never",
-          ts: "never",
-          tsx: "never",
-        },
+        { js: "always", jsx: "never", ts: "never", tsx: "never" },
       ],
     },
   },
@@ -150,9 +127,7 @@ export default tseslint.config(
 
   {
     files: ["**/*.json", "**/*.jsonc"],
-    languageOptions: {
-      parser: jsoncParser,
-    },
+    languageOptions: { parser: jsoncParser },
     rules: {
       "jsonc/sort-keys": [
         "error",
@@ -172,23 +147,12 @@ export default tseslint.config(
           order: [
             "name",
             "version",
-            "private",
-            "description",
-            "author",
             "license",
-            "repository",
             "engines",
             "type",
-            "types",
-            "exports",
-            "files",
-            "sideEffects",
             "scripts",
-            "peerDependencies",
             "dependencies",
             "devDependencies",
-            "resolutions",
-            "browserslist",
             "packageManager",
           ],
         },

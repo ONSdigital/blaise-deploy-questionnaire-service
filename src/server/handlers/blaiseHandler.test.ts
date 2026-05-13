@@ -2,13 +2,13 @@ import { Auth } from "blaise-login-react-server";
 import supertest, { type Response } from "supertest";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { getConfigFromEnv } from "../config";
-import { newServer } from "../server";
+import { getConfigFromEnv } from "../config.js";
+import { newServer } from "../server.js";
 import {
   expectedQuestionnaireList,
   questionnaireListMockObject,
   questionnaireMockObject,
-} from "../test-utils/blaiseHandler.mock";
+} from "../test-utils/blaiseHandler.mock.js";
 
 vi.mock("blaise-uac-service-node-client", () => ({
   __esModule: true,
@@ -46,7 +46,7 @@ vi.mock("@google-cloud/storage", () => ({
   },
 }));
 vi.mock("blaise-login-react-server", async () => {
-  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock");
+  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock.js");
 
   return mockLoginReactServerModule();
 });

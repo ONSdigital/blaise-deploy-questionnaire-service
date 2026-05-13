@@ -1,11 +1,11 @@
 import { Auth } from "blaise-login-react-server";
 import pino from "pino";
-import createLogger, { type HttpLogger } from "pino-http";
+import { type HttpLogger, pinoHttp } from "pino-http";
 import supertest, { type Response } from "supertest";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { getConfigFromEnv } from "../config";
-import { newServer } from "../server";
+import { getConfigFromEnv } from "../config.js";
+import { newServer } from "../server.js";
 
 vi.mock("blaise-uac-service-node-client", () => ({
   __esModule: true,
@@ -43,7 +43,7 @@ vi.mock("@google-cloud/storage", () => ({
   },
 }));
 vi.mock("blaise-login-react-server", async () => {
-  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock");
+  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock.js");
 
   return mockLoginReactServerModule();
 });
@@ -61,7 +61,7 @@ const logInfo = vi.spyOn(logger, "info");
 const logWarn = vi.spyOn(logger, "warn");
 const logError = vi.spyOn(logger, "error");
 const logDebug = vi.spyOn(logger, "debug");
-const httpLogger: HttpLogger = createLogger({ logger: logger, autoLogging: false });
+const httpLogger: HttpLogger = pinoHttp({ logger: logger, autoLogging: false });
 
 const config = getConfigFromEnv();
 const request = supertest(newServer(config, httpLogger));

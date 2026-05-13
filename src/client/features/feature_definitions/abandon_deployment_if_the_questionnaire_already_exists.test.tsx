@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -14,6 +14,8 @@ import {
 } from "../step_definitions/then";
 import { whenIConfirmMySelection, whenISelectTo } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 import type { Questionnaire } from "blaise-api-node-client";
 
 vi.mock("blaise-login-react-client", async () => {
@@ -24,33 +26,30 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature(
-  "./src/client/features/abandon_deployment_if_the_questionnaire_already_exists.feature",
-  { tagFilter: "not @server and not @integration" },
-);
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
-defineFeature(feature, (test) => {
+describe("Feature: abandon_deployment_if_the_questionnaire_already_exists", () => {
+  const Scenario = createScenario();
+
   afterEach(() => {
     mocker.reset();
   });
 
-  test("Questionnaire package already in Blaise", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario("Questionnaire package already in Blaise", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    thenIAmPresentedWithTheOptionsToCancelOrOverwrite(then);
+    whenIConfirmMySelection(When);
+    thenIAmPresentedWithTheOptionsToCancelOrOverwrite(Then);
   });
 
-  test("Back-out of deploying a questionnaire", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario("Back-out of deploying a questionnaire", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    whenISelectTo(when);
-    thenIAmReturnedToTheLandingPage(then);
+    whenIConfirmMySelection(When);
+    whenISelectTo(When);
+    thenIAmReturnedToTheLandingPage(Then);
   });
 });

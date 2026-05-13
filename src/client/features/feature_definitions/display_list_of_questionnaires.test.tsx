@@ -1,12 +1,14 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires } from "../step_definitions/then";
 import { whenILoadTheHomepage } from "../step_definitions/when";
+
+import { createScenario } from "./nativeScenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -18,23 +20,21 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature("./src/client/features/display_list_of_questionnaires.feature", {
-  tagFilter: "not @server and not @integration",
-});
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
-defineFeature(feature, (test) => {
+describe("Feature: display_list_of_questionnaires", () => {
+  const Scenario = createScenario();
+
   afterEach(() => {
     mocker.reset();
   });
 
-  test("List all questionnaires in Blaise", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    whenILoadTheHomepage(when);
-    thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
+  Scenario("List all questionnaires in Blaise", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    whenILoadTheHomepage(When);
+    thenIAmPresentedWithAListOfDeployedQuestionnaires(Then);
   });
 });

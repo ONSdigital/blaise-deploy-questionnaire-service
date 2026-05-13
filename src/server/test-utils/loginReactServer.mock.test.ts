@@ -2,7 +2,7 @@ import express, { type Request, type Response } from "express";
 import supertest from "supertest";
 import { describe, expect, it, vi } from "vitest";
 
-import { mockLoginReactServerModule } from "./loginReactServer.mock";
+import { mockLoginReactServerModule } from "./loginReactServer.mock.js";
 
 describe("mockLoginReactServerModule", () => {
   it("returns Auth mock with expected behavior", () => {

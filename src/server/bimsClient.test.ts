@@ -1,7 +1,7 @@
 import { type IapProvider } from "blaise-iap-node-provider";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { BimsClient } from "./bimsClient";
+import { BimsClient } from "./bimsClient.js";
 
 const {
   mockHttpGet,

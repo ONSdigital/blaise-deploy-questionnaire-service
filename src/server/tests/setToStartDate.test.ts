@@ -1,9 +1,9 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { Auth } from "blaise-login-react-server";
-import { defineFeature, loadFeature, setJestCucumberConfiguration } from "jest-cucumber";
 import supertest, { type Response } from "supertest";
-import { afterEach, describe, expect, vi, test as vitestTest } from "vitest";
+import { afterAll, afterEach, describe, expect, test, vi } from "vitest";
+
 
 vi.mock("blaise-uac-service-node-client", () => ({
   __esModule: true,
@@ -41,16 +41,27 @@ vi.mock("@google-cloud/storage", () => ({
   },
 }));
 vi.mock("blaise-login-react-server", async () => {
-  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock");
+  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock.js");
 
   return mockLoginReactServerModule();
 });
-import { getConfigFromEnv } from "../config";
-import { newServer } from "../server";
+
+import { getConfigFromEnv } from "../config.js";
+import { newServer } from "../server.js";
 
 Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
+Auth.prototype.GetUser = vi.fn().mockReturnValue({ name: "rich" });
+Auth.prototype.GetToken = vi.fn().mockReturnValue("example-token");
 
-vi.mock("blaise-iap-node-provider");
+vi.mock("blaise-iap-node-provider", () => ({
+  IapProvider: class MockIapProvider {
+    constructor(_clientId?: string) {}
+
+    async getAuthHeader(): Promise<Record<string, never>> {
+      return {};
+    }
+  },
+}));
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 const jsonHeaders = { "content-type": "application/json" };
@@ -58,60 +69,69 @@ const jsonHeaders = { "content-type": "application/json" };
 const config = getConfigFromEnv();
 const request = supertest(newServer(config));
 
-const feature = loadFeature("./src/client/features/set_telephone_operations_start_date.feature", {
-  tagFilter: "@server",
-});
-
-setJestCucumberConfiguration({
-  runner: {
-    describe,
-    test: vitestTest,
-  },
-});
-
-defineFeature(feature, (test) => {
+describe("setToStartDate", () => {
   afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterAll(() => {
     vi.resetModules();
     mock.reset();
   });
 
-  test("Overwrite questionnaire and previous TO Start Date with new", ({ given, when, then }) => {
+  describe.sequential(
+    "Scenario: Overwrite questionnaire and previous TO Start Date with new",
+    () => {
+      let response: Response;
+
+      test("Given a pre-deployed questionnaire that already has a TO Start Date stored against it", () => {
+        mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(
+          200,
+          { tostartdate: "2021-07-29T00:00:00+00:00" },
+          jsonHeaders,
+        );
+        mock
+          .onPatch(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+          .reply(200, { tostartdate: "2020-06-05T00:00:00+00:00" }, jsonHeaders);
+        mock
+          .onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+          .reply(201, { tostartdate: "2020-06-05T00:00:00+00:00" }, jsonHeaders);
+      });
+
+      test("When a TO Start Date is specified", async () => {
+        response = await request
+          .post("/api/tostartdate/OPN2004A")
+          .send({ tostartdate: "2020-06-05" });
+      });
+
+      test("Then the new TO Start Date will overwrite the previous", () => {
+        expect(response.status).toEqual(201);
+      });
+    },
+  );
+
+  describe.sequential("Scenario: Overwrite questionnaire and remove previous TO Start Date", () => {
     let response: Response;
 
-    given("a pre-deployed questionnaire that already has a TO Start Date stored against it", () => {
-      mock
-        .onGet(/\/tostartdate\/OPN2004A$/)
-        .reply(200, { tostartdate: "2021-07-29T00:00:00+00:00" }, jsonHeaders);
-      mock.onPatch(/\/tostartdate\/OPN2004A$/).reply(200, [], jsonHeaders);
+    test("Given a pre-deployed questionnaire that already has a TO Start Date stored against it", () => {
+      mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(
+        200,
+        { tostartdate: "2021-07-29T00:00:00+00:00" },
+        jsonHeaders,
+      );
+      mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(204, [], jsonHeaders);
+      mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(
+        201,
+        { tostartdate: "" },
+        jsonHeaders,
+      );
     });
 
-    when("a TO Start Date is specified", async () => {
-      response = await request
-        .post("/api/tostartdate/OPN2004A")
-        .send({ tostartdate: "2020-06-05" });
-    });
-
-    then("the new TO Start Date will overwrite the previous", () => {
-      expect(response.status).toEqual(201);
-    });
-  });
-
-  test("Overwrite questionnaire and remove previous TO Start Date", ({ given, when, then }) => {
-    let response: Response;
-
-    given("a pre-deployed questionnaire that already has a TO Start Date stored against it", () => {
-      mock
-        .onGet(/\/tostartdate\/OPN2004A$/)
-        .reply(200, { tostartdate: "2021-07-29T00:00:00+00:00" }, jsonHeaders);
-      mock.onDelete(/\/tostartdate\/OPN2004A$/).reply(204, [], jsonHeaders);
-    });
-
-    when("a TO Start Date is not specified", async () => {
+    test("When a TO Start Date is not specified", async () => {
       response = await request.post("/api/tostartdate/OPN2004A").send({ tostartdate: "" });
     });
 
-    then("the original TO Start Date is removed from data store", () => {
+    test("Then the original TO Start Date is removed from data store", () => {
       expect(response.status).toEqual(201);
     });
   });

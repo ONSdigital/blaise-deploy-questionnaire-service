@@ -43,9 +43,18 @@ type UploadFormValues = {
   override: string;
   askStartDate: string;
   "set TO start date": string;
-  "set start date"?: string;
-  "set release date"?: string;
-  askToSetDate?: string;
+  "set start date": string;
+  "set release date": string;
+  askToSetDate: string;
+};
+
+const initialValues: UploadFormValues = {
+  override: "",
+  askStartDate: "",
+  "set TO start date": "",
+  askToSetDate: "",
+  "set start date": "",
+  "set release date": "",
 };
 
 function DeployPage(): ReactElement {
@@ -388,10 +397,10 @@ function DeployPage(): ReactElement {
             }}
           />
         ) : (
-          <Formik
+          <Formik<UploadFormValues>
             validateOnBlur={false}
             validateOnChange={false}
-            initialValues={{ override: "", askStartDate: "", "set TO start date": "" }}
+            initialValues={initialValues}
             onSubmit={_handleSubmit}
           >
             {({ isSubmitting, values }) => (

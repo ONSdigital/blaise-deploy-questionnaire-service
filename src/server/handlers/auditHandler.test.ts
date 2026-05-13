@@ -2,7 +2,7 @@ import express from "express";
 import supertest from "supertest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import newAuditHandler from "./auditHandler";
+import newAuditHandler from "./auditHandler.js";
 
 import type { Logger } from "pino";
 

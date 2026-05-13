@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -25,6 +25,8 @@ import {
   whenISelectToOverwrite,
 } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 import type { Questionnaire } from "blaise-api-node-client";
 
 vi.mock("blaise-login-react-client", async () => {
@@ -37,14 +39,11 @@ MockAuthenticate.OverrideReturnValues(null, true);
 
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
-const feature = loadFeature(
-  "./src/client/features/overwrite_existing_questionnaire_when_survey_is_not_live.feature",
-  { tagFilter: "not @server and not @integration" },
-);
-
 const questionnaireList: Questionnaire[] = [];
 
-defineFeature(feature, (test) => {
+describe("Feature: overwrite_existing_questionnaire_when_survey_is_not_live", () => {
+  const Scenario = createScenario();
+
   beforeEach(() => {
     questionnaireList.length = 0;
     mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200, {});
@@ -54,64 +53,65 @@ defineFeature(feature, (test) => {
     mocker.reset();
   });
 
-  test("Select a new questionnaire package file", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario("Select a new questionnaire package file", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    thenIAmPresentedWithTheOptionsToCancelOrOverwrite(then);
+    whenIConfirmMySelection(When);
+    thenIAmPresentedWithTheOptionsToCancelOrOverwrite(Then);
   });
 
-  test("Select to overwrite existing questionnaire when it is live", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-    givenTheQuestionnaireIsLive(given, questionnaireList, mocker);
+  Scenario(
+    "Select to overwrite existing questionnaire When it is live",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
+      givenTheQuestionnaireIsLive(Given, questionnaireList, mocker);
 
-    whenIConfirmMySelection(when);
-    whenISelectToOverwrite(when);
+      whenIConfirmMySelection(When);
+      whenISelectToOverwrite(When);
 
-    thenIGetTheQuestionnaireIsLiveWarningBanner(then);
-    thenICanOnlyReturnToTheLandingPage(then);
-  });
+      thenIGetTheQuestionnaireIsLiveWarningBanner(Then);
+      thenICanOnlyReturnToTheLandingPage(Then);
+    },
+  );
 
-  test("Select to overwrite existing questionnaire where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)", ({
-    given,
-    when,
-    then,
-  }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario(
+    "Select to overwrite existing questionnaire where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    whenISelectToOverwrite(when);
+      whenIConfirmMySelection(When);
+      whenISelectToOverwrite(When);
 
-    thenIAmPresentedWithAConfirmOverwriteWarning(then);
-  });
+      thenIAmPresentedWithAConfirmOverwriteWarning(Then);
+    },
+  );
 
-  test("Confirm overwrite of existing questionnaire package where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)", ({
-    given,
-    when,
-    then,
-  }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario(
+    "Confirm overwrite of existing questionnaire package where no data exists (the questionnaire has been deployed but the sample data has not yet been deployed)",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    whenISelectToOverwrite(when);
-    whenIConfirmToOverwrite(when);
+      whenIConfirmMySelection(When);
+      whenISelectToOverwrite(When);
+      whenIConfirmToOverwrite(When);
 
-    thenTheQuestionnaireIsInstalled(then, mocker);
-    thenIAmPresentedWithASuccessfullyDeployedBanner(then);
-  });
+      thenTheQuestionnaireIsInstalled(Then, mocker);
+      thenIAmPresentedWithASuccessfullyDeployedBanner(Then);
+    },
+  );
 
-  test("Cancel overwrite of existing questionnaire package", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario("Cancel overwrite of existing questionnaire package", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    whenISelectToOverwrite(when);
-    whenIConfirmNotToOverwrite(when);
+    whenIConfirmMySelection(When);
+    whenISelectToOverwrite(When);
+    whenIConfirmNotToOverwrite(When);
 
-    thenIAmReturnedToTheLandingPage(then);
+    thenIAmReturnedToTheLandingPage(Then);
   });
 });

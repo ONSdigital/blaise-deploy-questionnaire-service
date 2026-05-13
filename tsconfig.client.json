@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "outDir": "build/client",
+    "rootDir": "src",
+    "sourceMap": true,
+    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom/vitest"]
+  },
+  "exclude": ["coverage", "build", "dist", "node_modules", "src/server"],
+  "extends": "./tsconfig.base.json",
+  "include": ["src"]
+}

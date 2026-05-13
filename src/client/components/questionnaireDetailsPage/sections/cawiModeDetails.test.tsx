@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 
 import { opnQuestionnaire } from "../../../features/step_definitions/helpers/api.mock";
 import flushPromises from "../../../test-utils/flushPromises";

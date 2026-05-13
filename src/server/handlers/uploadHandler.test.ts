@@ -2,7 +2,7 @@ import express from "express";
 import supertest from "supertest";
 import { describe, expect, it, vi } from "vitest";
 
-import newUploadHandler from "./uploadHandler";
+import newUploadHandler from "./uploadHandler.js";
 
 import type { Logger } from "pino";
 

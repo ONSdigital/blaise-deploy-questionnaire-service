@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 import { BrowserRouter } from "react-router-dom";
 
 import { questionnaireList } from "../../features/step_definitions/helpers/api.mock";

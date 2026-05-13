@@ -1,6 +1,6 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React, { type ReactNode } from "react";
+import React, { act, type ReactNode } from "react";
 import { MemoryRouter } from "react-router-dom";
 
 import App from "../../../app";
@@ -21,19 +21,30 @@ export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004
     await flushPromises();
   });
 
-  const input =
-    (await screen
-      .findByLabelText(/Select questionnaire package|Select survey package/i)
-      .catch(() => null)) ??
-    ((await waitFor(() => {
-      const fileInput = document.querySelector("#survey-selector") as HTMLInputElement | null;
+  let input = await screen
+    .findByLabelText(/Select questionnaire package|Select survey package/i)
+    .catch(() => null);
 
-      if (!fileInput) {
-        throw new Error("survey-selector input not found");
-      }
+  if (!input) {
+    input = (await waitFor(
+      () => {
+        const fileInput =
+          (document.querySelector("#survey-selector") as HTMLInputElement | null) ??
+          (document.querySelector("input[type='file']") as HTMLInputElement | null);
 
-      return fileInput;
-    })) as HTMLInputElement);
+        if (!fileInput) {
+          throw new Error("Questionnaire package file input not found");
+        }
+
+        return fileInput;
+      },
+      { timeout: 5000 },
+    )) as HTMLInputElement;
+  }
+
+  if (!input) {
+    throw new Error("Questionnaire package file input not found");
+  }
 
   const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, { type: "application/zip" });
 

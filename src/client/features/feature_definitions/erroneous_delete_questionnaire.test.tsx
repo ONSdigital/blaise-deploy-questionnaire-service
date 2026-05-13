@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import Mockadapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterAll, afterEach, beforeEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -21,6 +21,8 @@ import {
   whenIGoToTheQuestionnaireDetailsPage,
 } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 import type { Questionnaire } from "blaise-api-node-client";
 
 vi.mock("blaise-login-react-client", async () => {
@@ -31,34 +33,43 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature("./src/client/features/erroneous_delete_questionnaire.feature", {
-  tagFilter: "not @server and not @integration",
-});
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new Mockadapter(axios);
 
-defineFeature(feature, (test) => {
+describe("Feature: erroneous_delete_questionnaire", () => {
+  const Scenario = createScenario();
+
+  beforeEach(() => {
+    questionnaireList.length = 0;
+  });
+
   afterEach(() => {
     mocker.reset();
   });
 
-  test("Attempt to delete an questionnaire with an erroneous status", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsErroneous(given, questionnaireList);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIDeleteAQuestionnaire(when);
-    thenIAmPresentedWithAUnableDeleteWarning(then);
-    thenIAmUnableToDeleteTheQuestionnaire(then);
-    thenICanReturnToTheQuestionnaireList(then);
+  afterAll(() => {
+    mocker.restore();
   });
 
-  test("Select to deploy a new questionnaire", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(when, mocker);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIDeleteAQuestionnaire(when);
-    whenIConfirmDelete(when);
-    thenIAmPresentedWithACannotDeleteWarning(then);
+  Scenario(
+    "Attempt to delete an questionnaire with an erroneous status",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireIsErroneous(Given, questionnaireList);
+      whenIGoToTheQuestionnaireDetailsPage(When);
+      whenIDeleteAQuestionnaire(When);
+      thenIAmPresentedWithAUnableDeleteWarning(Then);
+      thenIAmUnableToDeleteTheQuestionnaire(Then);
+      thenICanReturnToTheQuestionnaireList(Then);
+    },
+  );
+
+  Scenario("Select to deploy a new questionnaire", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(Given, mocker);
+    whenIGoToTheQuestionnaireDetailsPage(When);
+    whenIDeleteAQuestionnaire(When);
+    whenIConfirmDelete(When);
+    thenIAmPresentedWithACannotDeleteWarning(Then);
   });
 });

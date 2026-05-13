@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -11,6 +11,8 @@ import {
 import { thenICanRetryAnInstall, thenIGetAnErrorBanner } from "../step_definitions/then";
 import { whenIConfirmMySelection, whenIDeploy } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
 
@@ -19,35 +21,33 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature("./src/client/features/failing_to_deploy_a_questionnaire.feature", {
-  tagFilter: "not @server and not @integration",
-});
-
 const mocker = new MockAdapter(axios);
 
-defineFeature(feature, (test) => {
+describe("Feature: failing_to_deploy_a_questionnaire", () => {
+  const Scenario = createScenario();
+
   afterEach(() => {
     mocker.reset();
   });
 
-  test("Deployment of selected file failure", ({ given, when, then }) => {
-    givenAllInstallsWillFail(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario("Deployment of selected file failure", ({ Given, When, Then }) => {
+    givenAllInstallsWillFail(Given, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    whenIDeploy(when);
+    whenIConfirmMySelection(When);
+    whenIDeploy(When);
 
-    thenIGetAnErrorBanner(then);
+    thenIGetAnErrorBanner(Then);
   });
 
-  test("Deploy selected file, retry following failure", ({ given, when, then }) => {
-    givenAllInstallsWillFail(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario("Deploy selected file, retry following failure", ({ Given, When, Then }) => {
+    givenAllInstallsWillFail(Given, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    whenIDeploy(when);
+    whenIConfirmMySelection(When);
+    whenIDeploy(When);
 
-    thenIGetAnErrorBanner(then);
-    thenICanRetryAnInstall(then);
+    thenIGetAnErrorBanner(Then);
+    thenICanRetryAnInstall(Then);
   });
 });

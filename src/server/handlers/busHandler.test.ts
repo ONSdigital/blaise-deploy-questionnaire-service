@@ -2,7 +2,7 @@ import express from "express";
 import supertest from "supertest";
 import { describe, expect, it, vi } from "vitest";
 
-import newBusHandler, { type BusClientLike } from "./busHandler";
+import newBusHandler, { type BusClientLike } from "./busHandler.js";
 
 import type { Logger } from "pino";
 

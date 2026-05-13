@@ -3,12 +3,12 @@ import pino from "pino";
 import supertest from "supertest";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getConfigFromEnv } from "../config";
-import { callCloudFunction } from "../helpers/cloudFunctionCallerHelper";
-import createLogger from "../pinoLogger";
-import { newServer } from "../server";
+import { getConfigFromEnv } from "../config.js";
+import { callCloudFunction } from "../helpers/cloudFunctionCallerHelper.js";
+import createLogger from "../pinoLogger.js";
+import { newServer } from "../server.js";
 
-import newCloudFunctionHandler from "./cloudFunctionHandler";
+import newCloudFunctionHandler from "./cloudFunctionHandler.js";
 
 import type { Logger } from "pino";
 
@@ -52,7 +52,7 @@ vi.mock("@google-cloud/storage", () => ({
   },
 }));
 vi.mock("blaise-login-react-server", async () => {
-  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock");
+  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock.js");
 
   return mockLoginReactServerModule();
 });

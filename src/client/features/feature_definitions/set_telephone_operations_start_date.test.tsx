@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -23,6 +23,8 @@ import {
   whenISpecifyATOStartDateOf,
 } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
 
@@ -31,57 +33,55 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature("./src/client/features/set_telephone_operations_start_date.feature", {
-  tagFilter: "not @server and not @integration",
-});
-
 const mocker = new MockAdapter(axios);
 
-defineFeature(feature, (test) => {
+describe("Feature: set_telephone_operations_start_date", () => {
+  const Scenario = createScenario();
+
   afterEach(() => {
     mocker.reset();
   });
 
-  test("Present TO Start Date option", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario("Present TO Start Date option", ({ Given, When, Then }) => {
+    givenNoQuestionnairesAreInstalled(Given, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
+    whenIConfirmMySelection(When);
 
-    thenIAmPresentedWithAnOptionToSpecifyAToStartDate(then);
+    thenIAmPresentedWithAnOptionToSpecifyAToStartDate(Then);
   });
 
-  test("Enter TO Start Date", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario("Enter TO Start Date", ({ Given, When, Then }) => {
+    givenNoQuestionnairesAreInstalled(Given, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    whenISpecifyATOStartDateOf(when);
-    whenISelectTheContinueButton(when);
+    whenIConfirmMySelection(When);
+    whenISpecifyATOStartDateOf(When);
+    whenISelectTheContinueButton(When);
 
-    thenICanViewTheTOStartDateIsSetTo(then);
+    thenICanViewTheTOStartDateIsSetTo(Then);
   });
 
-  test("Do not enter TO Start Date", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario("Do not enter TO Start Date", ({ Given, When, Then }) => {
+    givenNoQuestionnairesAreInstalled(Given, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    whenISelectToInstallWithNoStartDate(when);
+    whenIConfirmMySelection(When);
+    whenISelectToInstallWithNoStartDate(When);
 
-    thenTheSummaryPageHasNoToStartDate(then);
+    thenTheSummaryPageHasNoToStartDate(Then);
   });
 
-  test("Setting the TO Start Date fails during deployment", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenTOStartDateFails(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
+  Scenario("Setting the TO Start Date fails during deployment", ({ Given, When, Then }) => {
+    givenNoQuestionnairesAreInstalled(Given, mocker);
+    givenTOStartDateFails(Given, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
 
-    whenIConfirmMySelection(when);
-    whenISpecifyATOStartDateOf(when);
-    whenISelectTheContinueButton(when);
-    whenIDeployTheQuestionnaire(when);
+    whenIConfirmMySelection(When);
+    whenISpecifyATOStartDateOf(When);
+    whenISelectTheContinueButton(When);
+    whenIDeployTheQuestionnaire(When);
 
-    thenIGetAnErrorBannerWithMessage(then);
+    thenIGetAnErrorBannerWithMessage(Then);
   });
 });

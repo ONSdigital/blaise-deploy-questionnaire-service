@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -22,6 +22,8 @@ import {
   whenISpecifyATotalmobileReleaseDateOf,
 } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
 
@@ -30,52 +32,54 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature(
-  "./src/client/features/add_option_to_set_a_totalmobile_release_date.feature",
-  {
-    tagFilter: "not @server and not @integration",
-  },
-);
-
 const mocker = new MockAdapter(axios);
 
-defineFeature(feature, (test) => {
+describe("Feature: add_option_to_set_a_totalmobile_release_date", () => {
+  const Scenario = createScenario();
+
   afterEach(() => {
     mocker.reset();
   });
 
-  test("Present Totalmobile release date selector", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-    whenIConfirmMySelection(when);
-    whenISelectToInstallWithNoStartDate(when);
-    thenIAmPresentedWithAnOptionToSpecifyATmReleaseDate(then);
+  afterAll(() => {
+    mocker.restore();
   });
 
-  test("Non LMS questionnaire does not see the release date selector", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-    whenIConfirmMySelection(when);
-    whenISelectToInstallWithNoStartDate(when);
-    thenIAmGivenASummaryOfTheDeployment(then);
+  Scenario("Present Totalmobile release date selector", ({ Given, When, Then }) => {
+    givenNoQuestionnairesAreInstalled(Given, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
+    whenIConfirmMySelection(When);
+    whenISelectToInstallWithNoStartDate(When);
+    thenIAmPresentedWithAnOptionToSpecifyATmReleaseDate(Then);
   });
 
-  test("Totalmobile date selected", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-    whenIConfirmMySelection(when);
-    whenISelectToInstallWithNoStartDate(when);
-    whenISpecifyATotalmobileReleaseDateOf(when);
-    whenISelectTheContinueButton(when);
-    thenICanViewTheTotalmobileReleaseDateIsSetTo(then);
+  Scenario(
+    "Non LMS questionnaire does not see the release date selector",
+    ({ Given, When, Then }) => {
+      givenNoQuestionnairesAreInstalled(Given, mocker);
+      givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
+      whenIConfirmMySelection(When);
+      whenISelectToInstallWithNoStartDate(When);
+      thenIAmGivenASummaryOfTheDeployment(Then);
+    },
+  );
+
+  Scenario("Totalmobile date selected", ({ Given, When, Then }) => {
+    givenNoQuestionnairesAreInstalled(Given, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
+    whenIConfirmMySelection(When);
+    whenISelectToInstallWithNoStartDate(When);
+    whenISpecifyATotalmobileReleaseDateOf(When);
+    whenISelectTheContinueButton(When);
+    thenICanViewTheTotalmobileReleaseDateIsSetTo(Then);
   });
 
-  test("If I select no date to be set", ({ given, when, then }) => {
-    givenNoQuestionnairesAreInstalled(given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(given);
-    whenIConfirmMySelection(when);
-    whenISelectToInstallWithNoStartDate(when);
-    whenISelectToInstallWithNoTmReleaseDate(when);
-    thenTheSummaryPageHasNoTmReleaseDate(then);
+  Scenario("If I select no date to be set", ({ Given, When, Then }) => {
+    givenNoQuestionnairesAreInstalled(Given, mocker);
+    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
+    whenIConfirmMySelection(When);
+    whenISelectToInstallWithNoStartDate(When);
+    whenISelectToInstallWithNoTmReleaseDate(When);
+    thenTheSummaryPageHasNoTmReleaseDate(Then);
   });
 });

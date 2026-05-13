@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -16,6 +16,8 @@ import {
 } from "../step_definitions/then";
 import { whenIGoToTheQuestionnaireDetailsPage } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 import type { Questionnaire } from "blaise-api-node-client";
 
 vi.mock("blaise-login-react-client", async () => {
@@ -26,32 +28,36 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature(
-  "./src/client/features/display_totalmobile_release_date_on_questionnaire_details_page.feature",
-  { tagFilter: "not @server and not @integration" },
-);
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
-defineFeature(feature, (test) => {
+describe("Feature: display_totalmobile_release_date_on_questionnaire_details_page", () => {
+  const Scenario = createScenario();
+
   afterEach(() => {
     mocker.reset();
   });
 
-  test("View saved Totalmobile release date in questionnaire details", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasATotalmobileReleaseDate(given, mocker);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
-    thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(then);
+  afterAll(() => {
+    mocker.restore();
   });
 
-  test("Add Totalmobile release date in questionnaire details", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireDoesNotHaveATotalmobileReleaseDate(given, mocker);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(then);
-    thenIHaveTheOptionToAddATotalmobileReleaseDate(then);
+  Scenario(
+    "View saved Totalmobile release date in questionnaire details",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasATotalmobileReleaseDate(Given, mocker);
+      whenIGoToTheQuestionnaireDetailsPage(When);
+      thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(Then);
+      thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(Then);
+    },
+  );
+
+  Scenario("Add Totalmobile release date in questionnaire details", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireDoesNotHaveATotalmobileReleaseDate(Given, mocker);
+    whenIGoToTheQuestionnaireDetailsPage(When);
+    thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(Then);
+    thenIHaveTheOptionToAddATotalmobileReleaseDate(Then);
   });
 });

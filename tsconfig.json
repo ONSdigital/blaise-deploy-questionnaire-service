@@ -1,17 +1,9 @@
 {
-  "compilerOptions": {
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "moduleResolution": "bundler",
-    "outDir": "build",
-    "rootDir": "src",
-    "sourceMap": true,
-    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom/vitest"]
-  },
-  "exclude": ["coverage", "build", "dist", "node_modules", "src/server"],
-  "extends": "./tsconfig.base.json",
-  "include": ["src"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.client.json" },
+    { "path": "./tsconfig.server.json" },
+    { "path": "./tsconfig.server.test.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

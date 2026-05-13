@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
@@ -10,6 +10,8 @@ import {
   thenIAmPresentedWithQuestionnaireNotFound,
 } from "../step_definitions/then";
 import { whenILoadTheHomepage, whenISearchForAQuestionnaire } from "../step_definitions/when";
+
+import { createScenario } from "./nativeScenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -21,14 +23,12 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature("./src/client/features/questionnaire_search_filter.feature", {
-  tagFilter: "not @server and not @integration",
-});
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
-defineFeature(feature, (test) => {
+describe("Feature: questionnaire_search_filter", () => {
+  const Scenario = createScenario();
+
   beforeEach(() => {
     questionnaireList.length = 0;
   });
@@ -37,59 +37,59 @@ defineFeature(feature, (test) => {
     mocker.reset();
   });
 
-  test("Search for a questionnaire", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+  Scenario("Search for a questionnaire", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
 
-    whenILoadTheHomepage(when);
-    whenISearchForAQuestionnaire(when);
+    whenILoadTheHomepage(When);
+    whenISearchForAQuestionnaire(When);
 
-    thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
+    thenIAmPresentedWithAListOfDeployedQuestionnaires(Then);
   });
 
-  test("Questionnaire not found", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+  Scenario("Questionnaire not found", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
 
-    whenILoadTheHomepage(when);
-    whenISearchForAQuestionnaire(when);
+    whenILoadTheHomepage(When);
+    whenISearchForAQuestionnaire(When);
 
-    thenIAmPresentedWithQuestionnaireNotFound(then);
+    thenIAmPresentedWithQuestionnaireNotFound(Then);
   });
 
-  test("DST questionnaires do not show up by default", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+  Scenario("DST questionnaires do not show up by default", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
 
-    whenILoadTheHomepage(when);
-    whenISearchForAQuestionnaire(when);
+    whenILoadTheHomepage(When);
+    whenISearchForAQuestionnaire(When);
 
-    thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
+    thenIAmPresentedWithAListOfDeployedQuestionnaires(Then);
   });
 
-  test("I can search for DST questinnaires", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
+  Scenario("I can search for DST questinnaires", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
 
-    whenILoadTheHomepage(when);
-    whenISearchForAQuestionnaire(when);
+    whenILoadTheHomepage(When);
+    whenISearchForAQuestionnaire(When);
 
-    thenIAmPresentedWithAListOfDeployedQuestionnaires(then);
+    thenIAmPresentedWithAListOfDeployedQuestionnaires(Then);
   });
 });

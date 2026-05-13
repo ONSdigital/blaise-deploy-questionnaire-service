@@ -54,7 +54,7 @@ vi.mock("@google-cloud/storage", () => ({
   },
 }));
 vi.mock("blaise-login-react-server", async () => {
-  const { mockLoginReactServerModule } = await import("./test-utils/loginReactServer.mock");
+  const { mockLoginReactServerModule } = await import("./test-utils/loginReactServer.mock.js");
 
   return mockLoginReactServerModule();
 });
@@ -65,9 +65,9 @@ import { Auth } from "blaise-login-react-server";
 import supertest from "supertest";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getConfigFromEnv } from "./config";
-import { callCloudFunction } from "./helpers/cloudFunctionCallerHelper";
-import { newServer } from "./server";
+import { getConfigFromEnv } from "./config.js";
+import { callCloudFunction } from "./helpers/cloudFunctionCallerHelper.js";
+import { newServer } from "./server.js";
 
 Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
 
@@ -252,7 +252,7 @@ describe("Server module bootstrap", () => {
       config: dotenvConfig,
     }));
 
-    await import("./server");
+    await import("./server.js");
 
     expect(dotenvConfig).not.toHaveBeenCalled();
 

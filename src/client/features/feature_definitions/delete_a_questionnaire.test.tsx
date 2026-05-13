@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -29,6 +29,8 @@ import {
   whenILoadTheHomepage,
 } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 import type { Questionnaire } from "blaise-api-node-client";
 
 vi.mock("blaise-login-react-client", async () => {
@@ -39,14 +41,12 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature("./src/client/features/delete_a_questionnaire.feature", {
-  tagFilter: "not @server and not @integration",
-});
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
-defineFeature(feature, (test) => {
+describe("Feature: delete_a_questionnaire", () => {
+  const Scenario = createScenario();
+
   beforeEach(() => {
     questionnaireList.length = 0;
   });
@@ -55,87 +55,93 @@ defineFeature(feature, (test) => {
     mocker.reset();
   });
 
-  test("Delete an 'inactive' survey at any time", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInactive(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasActiveSurveyDays(given, questionnaireList, mocker);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIDeleteAQuestionnaire(when);
-    whenIConfirmDelete(when);
-    thenTheQuestionnaireDataIsDeleted(then, mocker);
-    thenIGetTheDeleteSuccessBanner(then);
+  afterAll(() => {
+    mocker.restore();
   });
 
-  test("Delete a questionnaire not available from the homepage", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    whenILoadTheHomepage(when);
-    thenIWillNotHaveTheOptionToDelete(then);
+  Scenario("Delete an 'inactive' survey at any time", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInactive(Given, questionnaireList, mocker);
+    givenTheQuestionnaireHasActiveSurveyDays(Given, questionnaireList, mocker);
+    whenIGoToTheQuestionnaireDetailsPage(When);
+    whenIDeleteAQuestionnaire(When);
+    whenIConfirmDelete(When);
+    thenTheQuestionnaireDataIsDeleted(Then, mocker);
+    thenIGetTheDeleteSuccessBanner(Then);
   });
 
-  test("Confirm deletion", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIDeleteAQuestionnaire(when);
-    whenIConfirmDelete(when);
-    thenTheQuestionnaireDataIsDeleted(then, mocker);
-    thenIGetTheDeleteSuccessBanner(then);
+  Scenario("Delete a questionnaire not available from the homepage", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    whenILoadTheHomepage(When);
+    thenIWillNotHaveTheOptionToDelete(Then);
   });
 
-  test("Cancel deletion", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIDeleteAQuestionnaire(when);
-    whenICancelDelete(when);
-    thenTheQuestionnaireDataIsNotDeleted(then, mocker);
-    thenIAmReturnedToTheQuestionnaireDetailsPage(then);
+  Scenario("Confirm deletion", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    whenIGoToTheQuestionnaireDetailsPage(When);
+    whenIDeleteAQuestionnaire(When);
+    whenIConfirmDelete(When);
+    thenTheQuestionnaireDataIsDeleted(Then, mocker);
+    thenIGetTheDeleteSuccessBanner(Then);
   });
 
-  test("Select to delete questionnaire that is active and live", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsActive(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasActiveSurveyDays(given, questionnaireList, mocker);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIDeleteAQuestionnaire(when);
-    thenIAmPresentedWithAnActiveSurveyDaysWarning(then);
-    whenIConfirmDelete(when);
-    thenTheQuestionnaireDataIsDeleted(then, mocker);
-    thenIGetTheDeleteSuccessBanner(then);
+  Scenario("Cancel deletion", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    whenIGoToTheQuestionnaireDetailsPage(When);
+    whenIDeleteAQuestionnaire(When);
+    whenICancelDelete(When);
+    thenTheQuestionnaireDataIsNotDeleted(Then, mocker);
+    thenIAmReturnedToTheQuestionnaireDetailsPage(Then);
   });
 
-  test("Select to delete questionnaire that is active and not live", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasActiveSurveyDays(given, questionnaireList, mocker);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIDeleteAQuestionnaire(when);
-    thenIAmPresentedWithAWarning(then);
-    whenIConfirmDelete(when);
-    thenTheQuestionnaireDataIsDeleted(then, mocker);
-    thenIGetTheDeleteSuccessBanner(then);
+  Scenario("Select to delete questionnaire that is active and live", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsActive(Given, questionnaireList, mocker);
+    givenTheQuestionnaireHasActiveSurveyDays(Given, questionnaireList, mocker);
+    whenIGoToTheQuestionnaireDetailsPage(When);
+    whenIDeleteAQuestionnaire(When);
+    thenIAmPresentedWithAnActiveSurveyDaysWarning(Then);
+    whenIConfirmDelete(When);
+    thenTheQuestionnaireDataIsDeleted(Then, mocker);
+    thenIGetTheDeleteSuccessBanner(Then);
   });
 
-  test("Select to delete questionnaire that is inactive", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInactive(given, questionnaireList, mocker);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIDeleteAQuestionnaire(when);
-    whenIConfirmDelete(when);
-    thenTheQuestionnaireDataIsDeleted(then, mocker);
-    thenIGetTheDeleteSuccessBanner(then);
+  Scenario(
+    "Select to delete questionnaire that is active and not live",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasActiveSurveyDays(Given, questionnaireList, mocker);
+      whenIGoToTheQuestionnaireDetailsPage(When);
+      whenIDeleteAQuestionnaire(When);
+      thenIAmPresentedWithAWarning(Then);
+      whenIConfirmDelete(When);
+      thenTheQuestionnaireDataIsDeleted(Then, mocker);
+      thenIGetTheDeleteSuccessBanner(Then);
+    },
+  );
+
+  Scenario("Select to delete questionnaire that is inactive", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireIsInactive(Given, questionnaireList, mocker);
+    whenIGoToTheQuestionnaireDetailsPage(When);
+    whenIDeleteAQuestionnaire(When);
+    whenIConfirmDelete(When);
+    thenTheQuestionnaireDataIsDeleted(Then, mocker);
+    thenIGetTheDeleteSuccessBanner(Then);
   });
 
-  test("Select to delete questionnaire that is active and has mode set to CAWI", ({
-    given,
-    when,
-    then,
-  }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireIsActive(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasModes(given, mocker);
-    whenIGoToTheQuestionnaireDetailsPage(when);
-    whenIDeleteAQuestionnaire(when);
-    thenIAmPresentedWithAnActiveWebCollectionWarning(then);
-    whenIConfirmDelete(when);
-    thenTheQuestionnaireDataIsDeleted(then, mocker);
-    thenIGetTheDeleteSuccessBanner(then);
-  });
+  Scenario(
+    "Select to delete questionnaire that is active and has mode set to CAWI",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireIsActive(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasModes(Given, mocker);
+      whenIGoToTheQuestionnaireDetailsPage(When);
+      whenIDeleteAQuestionnaire(When);
+      thenIAmPresentedWithAnActiveWebCollectionWarning(Then);
+      whenIConfirmDelete(When);
+      thenTheQuestionnaireDataIsDeleted(Then, mocker);
+      thenIGetTheDeleteSuccessBanner(Then);
+    },
+  );
 });

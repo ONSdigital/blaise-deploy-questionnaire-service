@@ -2,12 +2,12 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { Auth } from "blaise-login-react-server";
 import pino from "pino";
-import createLogger, { type HttpLogger } from "pino-http";
+import { type HttpLogger, pinoHttp } from "pino-http";
 import supertest, { type Response } from "supertest";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getConfigFromEnv } from "../config";
-import { newServer } from "../server";
+import { getConfigFromEnv } from "../config.js";
+import { newServer } from "../server.js";
 
 vi.mock("blaise-uac-service-node-client", () => ({
   __esModule: true,
@@ -45,7 +45,7 @@ vi.mock("@google-cloud/storage", () => ({
   },
 }));
 vi.mock("blaise-login-react-server", async () => {
-  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock");
+  const { mockLoginReactServerModule } = await import("../test-utils/loginReactServer.mock.js");
 
   return mockLoginReactServerModule();
 });
@@ -62,7 +62,7 @@ const logger: pino.Logger = pino();
 
 logger.child = vi.fn(() => logger) as unknown as typeof logger.child;
 const logInfo = vi.spyOn(logger, "info");
-const httpLogger: HttpLogger = createLogger({ logger: logger });
+const httpLogger: HttpLogger = pinoHttp({ logger: logger });
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 const jsonHeaders = { "content-type": "application/json" };

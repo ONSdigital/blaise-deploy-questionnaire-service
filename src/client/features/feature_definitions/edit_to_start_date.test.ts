@@ -1,6 +1,6 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { defineFeature, loadFeature } from "jest-cucumber";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -25,6 +25,8 @@ import {
   whenISpecifyATOStartDateOf,
 } from "../step_definitions/when";
 
+import { createScenario } from "./nativeScenario";
+
 import type { Questionnaire } from "blaise-api-node-client";
 
 vi.mock("blaise-login-react-client", async () => {
@@ -35,84 +37,89 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const feature = loadFeature("./src/client/features/edit_to_start_date.feature", {
-  tagFilter: "not @server and not @integration",
-});
-
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
-defineFeature(feature, (test) => {
+describe("Feature: edit_to_start_date", () => {
+  const Scenario = createScenario();
+
   afterEach(() => {
     mocker.reset();
   });
 
-  test("View TO Start Date if specified", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasAToStartDate(given, mocker);
-
-    whenILoadTheHomepage(when);
-    whenISelectTheQuestionnaire(when);
-
-    thenICanViewTheTOStartDateIsSetTo(then);
+  afterAll(() => {
+    mocker.restore();
   });
 
-  test("Change TO Start Date if specified", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasAToStartDate(given, mocker);
+  Scenario("View TO Start Date if specified", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireHasAToStartDate(Given, mocker);
 
-    whenILoadTheHomepage(when);
-    whenISelectTheQuestionnaire(when);
+    whenILoadTheHomepage(When);
+    whenISelectTheQuestionnaire(When);
 
-    thenIHaveTheOptionToChangeOrDeleteTheToStartDate(then);
+    thenICanViewTheTOStartDateIsSetTo(Then);
   });
 
-  test("Add TO Start Date if not previously specified", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasNoToStartDate(given, mocker);
+  Scenario("Change TO Start Date if specified", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireHasAToStartDate(Given, mocker);
 
-    whenILoadTheHomepage(when);
-    whenISelectTheQuestionnaire(when);
+    whenILoadTheHomepage(When);
+    whenISelectTheQuestionnaire(When);
 
-    thenIHaveTheOptionToAddAToStartDate(then);
+    thenIHaveTheOptionToChangeOrDeleteTheToStartDate(Then);
   });
 
-  test("Change an existing TO Start Date for a deployed questionnaire", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasAToStartDate(given, mocker);
+  Scenario("Add TO Start Date if not previously specified", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireHasNoToStartDate(Given, mocker);
 
-    whenILoadTheHomepage(when);
-    whenISelectTheQuestionnaire(when);
-    whenISelectToChangeOrDeleteToStartDate(when);
-    whenISpecifyATOStartDateOf(when);
-    whenISelectTheContinueButton(when);
+    whenILoadTheHomepage(When);
+    whenISelectTheQuestionnaire(When);
 
-    thenTheToStartDateIsStored(then, mocker);
+    thenIHaveTheOptionToAddAToStartDate(Then);
   });
 
-  test("Delete a TO start date from a deployed questionnaire", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasAToStartDate(given, mocker);
+  Scenario(
+    "Change an existing TO Start Date for a deployed questionnaire",
+    ({ Given, When, Then }) => {
+      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+      givenTheQuestionnaireHasAToStartDate(Given, mocker);
 
-    whenILoadTheHomepage(when);
-    whenISelectTheQuestionnaire(when);
-    whenISelectToChangeOrDeleteToStartDate(when);
-    whenIDeleteTheToStartDate(when);
-    whenISelectTheContinueButton(when);
+      whenILoadTheHomepage(When);
+      whenISelectTheQuestionnaire(When);
+      whenISelectToChangeOrDeleteToStartDate(When);
+      whenISpecifyATOStartDateOf(When);
+      whenISelectTheContinueButton(When);
 
-    thenTheToStartDateIsDeleted(then, mocker);
+      thenTheToStartDateIsStored(Then, mocker);
+    },
+  );
+
+  Scenario("Delete a TO start date from a deployed questionnaire", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireHasAToStartDate(Given, mocker);
+
+    whenILoadTheHomepage(When);
+    whenISelectTheQuestionnaire(When);
+    whenISelectToChangeOrDeleteToStartDate(When);
+    whenIDeleteTheToStartDate(When);
+    whenISelectTheContinueButton(When);
+
+    thenTheToStartDateIsDeleted(Then, mocker);
   });
 
-  test("Add a TO Start Date to a deployed questionnaire", ({ given, when, then }) => {
-    givenTheQuestionnaireIsInstalled(given, questionnaireList, mocker);
-    givenTheQuestionnaireHasNoToStartDate(given, mocker);
+  Scenario("Add a TO Start Date to a deployed questionnaire", ({ Given, When, Then }) => {
+    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
+    givenTheQuestionnaireHasNoToStartDate(Given, mocker);
 
-    whenILoadTheHomepage(when);
-    whenISelectTheQuestionnaire(when);
-    whenIHaveSelectedToAddAToStartDate(when);
-    whenISpecifyATOStartDateOf(when);
-    whenISelectTheContinueButton(when);
+    whenILoadTheHomepage(When);
+    whenISelectTheQuestionnaire(When);
+    whenIHaveSelectedToAddAToStartDate(When);
+    whenISpecifyATOStartDateOf(When);
+    whenISelectTheContinueButton(When);
 
-    thenTheToStartDateIsStored(then, mocker);
+    thenTheToStartDateIsStored(Then, mocker);
   });
 });

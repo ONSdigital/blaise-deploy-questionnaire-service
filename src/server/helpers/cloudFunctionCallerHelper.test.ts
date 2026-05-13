@@ -2,7 +2,7 @@ import axios from "axios";
 import { GoogleAuth } from "google-auth-library";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { callCloudFunction } from "./cloudFunctionCallerHelper";
+import { callCloudFunction } from "./cloudFunctionCallerHelper.js";
 
 vi.mock("google-auth-library");
 vi.mock("axios");

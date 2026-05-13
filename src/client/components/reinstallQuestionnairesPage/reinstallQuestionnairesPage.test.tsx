@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 import { BrowserRouter, createMemoryRouter, RouterProvider } from "react-router-dom";
 
 import flushPromises from "../../test-utils/flushPromises";

@@ -1,18 +1,10 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "noEmit": true,
-    "types": ["node", "vite/client", "vitest/globals"]
+    "types": ["node", "vitest/globals"]
   },
   "extends": "./tsconfig.base.json",
-  "include": [
-    "src/server/**/*.test.ts",
-    "src/server/**/*.test.tsx",
-    "src/client/tests/**/*.ts",
-    "src/client/tests/**/*.tsx",
-    "src/client/features/**/*.ts",
-    "src/client/features/**/*.tsx"
-  ]
+  "include": ["src/server/**/*.test.ts", "src/utilities/**/*.test.ts"]
 }
