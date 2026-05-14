@@ -13,6 +13,7 @@
     "build-watch:server": "yarn tsc --project tsconfig.server.json --watch --preserveWatchOutput",
     "build:client": "yarn vite build",
     "build:server": "yarn tsc --project tsconfig.server.json",
+    "start": "node ./build/server/index.js",
     "dev": "yarn concurrently --kill-others-on-fail --names \"server,web\" \"yarn dev:server\" \"yarn dev:client\"",
     "dev-wsl": "CHOKIDAR_USEPOLLING=1 CHOKIDAR_INTERVAL=300 yarn concurrently --kill-others-on-fail --names \"server,web\" \"yarn dev:server\" \"yarn dev-wsl:client\"",
     "dev-wsl:client": "yarn vite --host 0.0.0.0",
