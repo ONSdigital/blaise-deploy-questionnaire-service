@@ -17,7 +17,7 @@ describe("Function validateUploadIsComplete(filename: string) ", () => {
     mock.reset();
   });
 
-  it("should return true if object with the correct filename returned", async () => {
+  it("should return true if the response contains the expected filename", async () => {
     mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "OPN2004A.bpkg" });
 
     const fileFound = await validateUploadIsComplete("OPN2004A.bpkg");
@@ -25,7 +25,7 @@ describe("Function validateUploadIsComplete(filename: string) ", () => {
     expect(fileFound).toBeTruthy();
   });
 
-  it("should return false if object is returned with different filename", async () => {
+  it("should return false if the response contains a different filename", async () => {
     mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "RandomName.bpkg" });
 
     const fileFound = await validateUploadIsComplete("OPN2004A.bpkg");

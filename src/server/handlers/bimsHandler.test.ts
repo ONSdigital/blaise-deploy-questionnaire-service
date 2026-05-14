@@ -70,13 +70,13 @@ const jsonHeaders = { "content-type": "application/json" };
 const config = getConfigFromEnv();
 const request = supertest(newServer(config, httpLogger));
 
-describe("Sending TO start date to BIMS service", () => {
+describe("Sending Telephone Operations start date to BIMS service", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
   });
 
-  it("should return 201 with empty body when no existing TO date and none provided", async () => {
+  it("should return 201 with an empty body when no existing Telephone Operations start date is found and none is provided", async () => {
     mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(404, {}, jsonHeaders);
 
     const response: Response = await request
@@ -87,7 +87,7 @@ describe("Sending TO start date to BIMS service", () => {
     expect(response.body).toStrictEqual("");
   });
 
-  it("should delete existing TO date when empty TO date is provided", async () => {
+  it("should delete an existing Telephone Operations start date when an empty start date is provided", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
@@ -101,7 +101,7 @@ describe("Sending TO start date to BIMS service", () => {
     expect(mock.history.delete.length).toBe(1);
   });
 
-  it("should return 500 when deleting existing TO date fails", async () => {
+  it("should return 500 when deleting an existing Telephone Operations start date fails", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
@@ -114,7 +114,7 @@ describe("Sending TO start date to BIMS service", () => {
     expect(response.status).toEqual(500);
   });
 
-  it("should update existing TO date when a new value is provided", async () => {
+  it("should update an existing Telephone Operations start date when a new value is provided", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
@@ -131,7 +131,7 @@ describe("Sending TO start date to BIMS service", () => {
     expect(mock.history.patch[0].data).toEqual('{"tostartdate":"2022-12-31"}');
   });
 
-  it("should return a 201 status when the live date is provided", async () => {
+  it("should return a 201 status when a Telephone Operations start date is provided", async () => {
     mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
     mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(201, {}, jsonHeaders);
 
@@ -168,7 +168,7 @@ describe("Sending TO start date to BIMS service", () => {
   });
 });
 
-describe("Getting TO start date from BIMS service", () => {
+describe("Getting Telephone Operations start date from BIMS service", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
@@ -182,7 +182,7 @@ describe("Getting TO start date from BIMS service", () => {
     expect(response.status).toEqual(404);
   });
 
-  it("should return a 200 status with a TO start date object when the start date is provided", async () => {
+  it("should return a 200 status with a Telephone Operations start date response body when a start date is provided", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-12-31" }, jsonHeaders);
@@ -210,13 +210,13 @@ describe("Getting TO start date from BIMS service", () => {
   });
 });
 
-describe("Deleting TO start date to BIMS service", () => {
+describe("Deleting Telephone Operations start date from BIMS service", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
   });
 
-  it("should return a 204 status when the TO date has been deleted", async () => {
+  it("should return a 204 status when the Telephone Operations start date has been deleted", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-12-31" }, jsonHeaders);
@@ -227,7 +227,7 @@ describe("Deleting TO start date to BIMS service", () => {
     expect(response.status).toEqual(204);
   });
 
-  it("should return a 204 status when the TO date doesn't exits", async () => {
+  it("should return a 204 status when the Telephone Operations start date does not exist", async () => {
     mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(404, {}, jsonHeaders);
 
     const response: Response = await request.delete("/api/tostartdate/OPN2004A");
@@ -333,7 +333,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "" });
 
         expect(logInfo).toHaveBeenCalledWith(
-          "AUDIT_LOG: No Totalmobile release date set for LMS2004A",
+          "AUDIT_LOG: No release date set for LMS2004A",
         );
       });
     });
@@ -412,7 +412,7 @@ describe("Getting Totalmobile release date from BIMS service", () => {
     mock.reset();
   });
 
-  it("should return a 200 status with a Totalmobile release date object when the release date is provided", async () => {
+  it("should return a 200 status with a Totalmobile release date response body when a release date is provided", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
@@ -478,7 +478,7 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
     );
   });
 
-  it("should return a 204 status when the Totalmobile release date doesn't exits", async () => {
+  it("should return a 204 status when the Totalmobile release date does not exist", async () => {
     mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(404, {}, jsonHeaders);
 
     const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");

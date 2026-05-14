@@ -2,12 +2,10 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "outDir": "./build/server",
-    "rootDir": ".",
-    "sourceMap": true,
+    "outDir": "build/server",
+    "rootDir": "src/server",
     "types": ["node", "vitest/globals"]
   },
-  "exclude": ["node_modules", "src/client", "src/components", "**/*.test.ts", "**/*.test.tsx"],
   "extends": "./tsconfig.base.json",
-  "include": ["src/server/**/*.ts", "src/utilities/**/*.ts"]
+  "include": ["src/server"]
 }

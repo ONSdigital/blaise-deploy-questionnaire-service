@@ -5,61 +5,61 @@ import { Form, Formik, type FormikHelpers } from "formik";
 import React, { type ReactElement } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { setTmReleaseDate } from "../../api/tmReleaseDate";
+import { setToStartDate } from "../../api/toStartDate";
 import { clientLogger } from "../../utils/logger";
-import { AskReleaseDate } from "../shared/dateQuestions/askReleaseDate";
+import { AskStartDate } from "../shared/dateQuestions/askStartDate";
 
 interface LocationState {
-  tmReleaseDate: string | null;
+  toStartDate: string | null;
   questionnaireName?: string;
 }
 
-type TmReleaseDateFormValues = {
-  askToSetDate: string;
-  "set release date": string;
+type ToStartDateFormValues = {
+  askDate: string;
+  toStartDate: string;
 };
 
-function QuestionnaireReleaseDatePage(): ReactElement {
+function QuestionnaireToStartDatePage(): ReactElement {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const routeParams = useParams();
   const location = useLocation().state as LocationState | undefined;
-  const { tmReleaseDate, questionnaireName: questionnaireNameFromState } = location || {
-    tmReleaseDate: null,
+  const { toStartDate, questionnaireName: questionnaireNameFromState } = location || {
+    toStartDate: null,
     questionnaireName: null,
   };
   const questionnaireName = routeParams.questionnaireName ?? questionnaireNameFromState ?? "";
 
   async function handleSubmit(
-    values: TmReleaseDateFormValues,
-    actions: FormikHelpers<TmReleaseDateFormValues>,
+    values: ToStartDateFormValues,
+    actions: FormikHelpers<ToStartDateFormValues>,
   ) {
-    if (values.askToSetDate === "no") {
-      values["set release date"] = "";
+    if (values.askDate === "no") {
+      values.toStartDate = "";
     }
 
-    const liveDateCreated = await setTmReleaseDate(questionnaireName, values["set release date"]);
+    const toStartDateCreated = await setToStartDate(questionnaireName, values.toStartDate);
 
-    if (!liveDateCreated) {
-      clientLogger.info("Failed to store Totalmobile release date specified");
+    if (!toStartDateCreated) {
+      clientLogger.error("Failed to store Telephone Operations start date");
 
       return;
     }
 
     actions.setSubmitting(false);
-    void queryClient.invalidateQueries({ queryKey: ["tmReleaseDate", questionnaireName] });
+    void queryClient.invalidateQueries({ queryKey: ["toStartDate", questionnaireName] });
     navigate(-1);
   }
 
   let initialValues = {
-    askToSetDate: "",
-    "set release date": "",
+    askDate: "",
+    toStartDate: "",
   };
 
-  if (tmReleaseDate != null) {
+  if (toStartDate != null) {
     initialValues = {
-      askToSetDate: "yes",
-      "set release date": dateFormatter(tmReleaseDate).format("YYYY-MM-DD"),
+      askDate: "yes",
+      toStartDate: dateFormatter(toStartDate).format("YYYY-MM-DD"),
     };
   }
 
@@ -77,7 +77,7 @@ function QuestionnaireReleaseDatePage(): ReactElement {
         >
           {({ isSubmitting }) => (
             <Form id={"formID"}>
-              <AskReleaseDate questionnaireName={questionnaireName} />
+              <AskStartDate questionnaireName={questionnaireName} />
 
               <div className="ons-btn-group ons-u-mt-m">
                 <Button
@@ -104,4 +104,4 @@ function QuestionnaireReleaseDatePage(): ReactElement {
   );
 }
 
-export default QuestionnaireReleaseDatePage;
+export default QuestionnaireToStartDatePage;

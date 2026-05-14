@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Deployment summary > should match the Snapshot for DST2004A.bpkg 1`] = `
+exports[`Deployment summary > should match thesnapshotfor DST2004A.bpkg 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -94,7 +94,7 @@ exports[`Deployment summary > should match the Snapshot for DST2004A.bpkg 1`] = 
                 <div
                   class="ons-summary__item--text"
                 >
-                  Already exists in Blaise
+                  Already exists
                 </div>
               </dt>
               <dd
@@ -103,7 +103,7 @@ exports[`Deployment summary > should match the Snapshot for DST2004A.bpkg 1`] = 
                 <span
                   class="ons-summary__text"
                 >
-                  Yes, overriding questionnaire
+                  Yes, overwriting questionnaire
                 </span>
               </dd>
             </div>
@@ -246,7 +246,7 @@ exports[`Deployment summary > should match the Snapshot for DST2004A.bpkg 1`] = 
               <div
                 class="ons-summary__item--text"
               >
-                Already exists in Blaise
+                Already exists
               </div>
             </dt>
             <dd
@@ -255,7 +255,7 @@ exports[`Deployment summary > should match the Snapshot for DST2004A.bpkg 1`] = 
               <span
                 class="ons-summary__text"
               >
-                Yes, overriding questionnaire
+                Yes, overwriting questionnaire
               </span>
             </dd>
           </div>
@@ -361,7 +361,7 @@ exports[`Deployment summary > should match the Snapshot for DST2004A.bpkg 1`] = 
 }
 `;
 
-exports[`Deployment summary > should match the Snapshot for LMS2004A.bpkg 1`] = `
+exports[`Deployment summary > should match thesnapshotfor LMS2004A.bpkg 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -455,7 +455,7 @@ exports[`Deployment summary > should match the Snapshot for LMS2004A.bpkg 1`] = 
                 <div
                   class="ons-summary__item--text"
                 >
-                  Already exists in Blaise
+                  Already exists
                 </div>
               </dt>
               <dd
@@ -464,7 +464,7 @@ exports[`Deployment summary > should match the Snapshot for LMS2004A.bpkg 1`] = 
                 <span
                   class="ons-summary__text"
                 >
-                  Yes, overriding questionnaire
+                  Yes, overwriting questionnaire
                 </span>
               </dd>
             </div>
@@ -607,7 +607,7 @@ exports[`Deployment summary > should match the Snapshot for LMS2004A.bpkg 1`] = 
               <div
                 class="ons-summary__item--text"
               >
-                Already exists in Blaise
+                Already exists
               </div>
             </dt>
             <dd
@@ -616,7 +616,7 @@ exports[`Deployment summary > should match the Snapshot for LMS2004A.bpkg 1`] = 
               <span
                 class="ons-summary__text"
               >
-                Yes, overriding questionnaire
+                Yes, overwriting questionnaire
               </span>
             </dd>
           </div>

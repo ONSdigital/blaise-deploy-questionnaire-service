@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { act } from "react";
@@ -86,6 +86,26 @@ describe("Questionnaire details happy path", () => {
     await waitFor(() => {
       expect(screen.getByText("Blaise version")).toBeDefined();
       expect(screen.getByText("5.9.9.2735")).toBeDefined();
+    });
+  });
+
+  it("should render an empty questionnaire status when the status is missing", async () => {
+    cleanup();
+
+    render(
+      <QuestionnaireDetails
+        questionnaire={{ ...opnQuestionnaire, status: undefined }}
+        modes={["CATI"]}
+      />,
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText("Questionnaire status")).toBeDefined();
+      expect(screen.queryByText("undefined")).not.toBeInTheDocument();
     });
   });
 });

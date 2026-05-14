@@ -21,8 +21,7 @@ function getApiErrorMessage(error: unknown): string {
       "string"
   ) {
     return (
-      (error as { response?: { data?: { message?: string } } }).response?.data?.message ??
-      "Unknown error"
+        (error as { response?: { data?: { message?: string } } }).response?.data?.message
     );
   }
 

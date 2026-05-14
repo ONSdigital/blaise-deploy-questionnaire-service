@@ -1140,7 +1140,7 @@ exports[`DeleteConfirmation > when CAWI mode is include > should display CAWI wa
 }
 `;
 
-exports[`DeleteConfirmation > when Delete button is pressed > should display an error if deleting TO start date fails 1`] = `
+exports[`DeleteConfirmation > when Delete button is pressed > should display an error if deleting Telephone Operations start date fails 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -1192,7 +1192,7 @@ exports[`DeleteConfirmation > when Delete button is pressed > should display an 
         <div
           class="ons-panel__body "
         >
-          Failed to delete TO start date
+          Failed to delete Telephone Operations start date
         </div>
       </div>
       <form>
@@ -1280,7 +1280,7 @@ exports[`DeleteConfirmation > when Delete button is pressed > should display an 
       <div
         class="ons-panel__body "
       >
-        Failed to delete TO start date
+        Failed to delete Telephone Operations start date
       </div>
     </div>
     <form>

@@ -3,17 +3,17 @@ import { deleteQuestionnaire } from "../questionnaires";
 import { deleteTmReleaseDate } from "../tmReleaseDate";
 import { deleteToStartDate } from "../toStartDate";
 
-type removeToStartDateAndDeleteQuestionnaireResponse = [boolean, string];
+type deleteQuestionnaireAndRelatedDatesResponse = [boolean, string];
 
-async function removeToStartDateAndDeleteQuestionnaire(
+async function deleteQuestionnaireAndRelatedDates(
   questionnaireName: string,
-): Promise<removeToStartDateAndDeleteQuestionnaireResponse> {
+): Promise<deleteQuestionnaireAndRelatedDatesResponse> {
   const toStartDateDeleted = await deleteToStartDate(questionnaireName);
 
   if (!toStartDateDeleted) {
-    clientLogger.error("Failed to delete TO start date");
+    clientLogger.error("Failed to delete Telephone Operations start date");
 
-    return [false, "Failed to delete TO start date"];
+    return [false, "Failed to delete Telephone Operations start date"];
   }
 
   const tmReleaseDateDeleted = await deleteTmReleaseDate(questionnaireName);
@@ -35,4 +35,4 @@ async function removeToStartDateAndDeleteQuestionnaire(
   return [true, "Deleted successfully"];
 }
 
-export { removeToStartDateAndDeleteQuestionnaire };
+export { deleteQuestionnaireAndRelatedDates };

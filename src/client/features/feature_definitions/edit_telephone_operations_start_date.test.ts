@@ -9,7 +9,7 @@ import {
   givenTheQuestionnaireIsInstalled,
 } from "../step_definitions/given";
 import {
-  thenICanViewTheTOStartDateIsSetTo,
+  thenICanViewTheToStartDateIsSetTo,
   thenIHaveTheOptionToAddAToStartDate,
   thenIHaveTheOptionToChangeOrDeleteTheToStartDate,
   thenTheToStartDateIsDeleted,
@@ -22,10 +22,10 @@ import {
   whenISelectTheContinueButton,
   whenISelectTheQuestionnaire,
   whenISelectToChangeOrDeleteToStartDate,
-  whenISpecifyATOStartDateOf,
+  whenISpecifyAToStartDateOf,
 } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -40,7 +40,7 @@ MockAuthenticate.OverrideReturnValues(null, true);
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
-describe("Feature: edit_to_start_date", () => {
+describe("Feature: edit_telephone_operations_start_date", () => {
   const Scenario = createScenario();
 
   afterEach(() => {
@@ -51,17 +51,17 @@ describe("Feature: edit_to_start_date", () => {
     mocker.restore();
   });
 
-  Scenario("View TO Start Date if specified", ({ Given, When, Then }) => {
+  Scenario("View Telephone Operations start date if specified", ({ Given, When, Then }) => {
     givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
     givenTheQuestionnaireHasAToStartDate(Given, mocker);
 
     whenILoadTheHomepage(When);
     whenISelectTheQuestionnaire(When);
 
-    thenICanViewTheTOStartDateIsSetTo(Then);
+    thenICanViewTheToStartDateIsSetTo(Then);
   });
 
-  Scenario("Change TO Start Date if specified", ({ Given, When, Then }) => {
+  Scenario("Change Telephone Operations start date if specified", ({ Given, When, Then }) => {
     givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
     givenTheQuestionnaireHasAToStartDate(Given, mocker);
 
@@ -71,7 +71,7 @@ describe("Feature: edit_to_start_date", () => {
     thenIHaveTheOptionToChangeOrDeleteTheToStartDate(Then);
   });
 
-  Scenario("Add TO Start Date if not previously specified", ({ Given, When, Then }) => {
+  Scenario("Add Telephone Operations start date if not previously specified", ({ Given, When, Then }) => {
     givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
     givenTheQuestionnaireHasNoToStartDate(Given, mocker);
 
@@ -82,7 +82,7 @@ describe("Feature: edit_to_start_date", () => {
   });
 
   Scenario(
-    "Change an existing TO Start Date for a deployed questionnaire",
+    "Change an existing Telephone Operations start date for a deployed questionnaire",
     ({ Given, When, Then }) => {
       givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
       givenTheQuestionnaireHasAToStartDate(Given, mocker);
@@ -90,14 +90,14 @@ describe("Feature: edit_to_start_date", () => {
       whenILoadTheHomepage(When);
       whenISelectTheQuestionnaire(When);
       whenISelectToChangeOrDeleteToStartDate(When);
-      whenISpecifyATOStartDateOf(When);
+      whenISpecifyAToStartDateOf(When);
       whenISelectTheContinueButton(When);
 
       thenTheToStartDateIsStored(Then, mocker);
     },
   );
 
-  Scenario("Delete a TO start date from a deployed questionnaire", ({ Given, When, Then }) => {
+  Scenario("Delete a Telephone Operations start date from a deployed questionnaire", ({ Given, When, Then }) => {
     givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
     givenTheQuestionnaireHasAToStartDate(Given, mocker);
 
@@ -110,14 +110,14 @@ describe("Feature: edit_to_start_date", () => {
     thenTheToStartDateIsDeleted(Then, mocker);
   });
 
-  Scenario("Add a TO Start Date to a deployed questionnaire", ({ Given, When, Then }) => {
+  Scenario("Add a Telephone Operations start date to a deployed questionnaire", ({ Given, When, Then }) => {
     givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
     givenTheQuestionnaireHasNoToStartDate(Given, mocker);
 
     whenILoadTheHomepage(When);
     whenISelectTheQuestionnaire(When);
     whenIHaveSelectedToAddAToStartDate(When);
-    whenISpecifyATOStartDateOf(When);
+    whenISpecifyAToStartDateOf(When);
     whenISelectTheContinueButton(When);
 
     thenTheToStartDateIsStored(Then, mocker);

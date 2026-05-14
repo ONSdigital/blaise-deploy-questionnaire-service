@@ -44,7 +44,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
     vi.resetAllMocks();
   });
 
-  it("should return a 200 status and a json object with message and status if successfully created donor cases", async () => {
+  it("should return message and status when donor cases are created successfully", async () => {
     const dummyUrl = mockConfig.CreateDonorCasesCloudFunctionUrl;
 
     const payload = {

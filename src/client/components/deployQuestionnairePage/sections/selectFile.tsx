@@ -90,7 +90,7 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
           <Upload
             id="survey-selector"
             label="Select questionnaire package"
-            description="Accepted file type: .bpkg"
+            description="Accepted file type: bpkg"
             fileName="Select survey package"
             accept=".bpkg"
             onChange={(e) => handleFileChange(e.target.files)}

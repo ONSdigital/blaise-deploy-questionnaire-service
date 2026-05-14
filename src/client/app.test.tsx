@@ -1,15 +1,16 @@
 import "@testing-library/jest-dom";
-import { render, screen, waitFor } from "@testing-library/react";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { act } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, MemoryRouter } from "react-router-dom";
 
 import App from "./app";
 import { questionnaireList } from "./features/step_definitions/helpers/api.mock";
 import { MockAuthenticate } from "./test-utils/authenticate.mock";
 import flushPromises from "./test-utils/flushPromises";
-import { createWrapper } from "./test-utils/renderWithQueryClient";
+import { createTestQueryClient, createWrapper } from "./test-utils/renderWithQueryClient";
 
 const mock = new MockAdapter(axios);
 
@@ -24,6 +25,61 @@ const mockIsProduction = vi.fn();
 vi.mock("./utils/env", () => ({
   isProduction: () => mockIsProduction(),
 }));
+
+vi.mock("./components/createDonorCasesPage/createDonorCasesPage", () => ({
+  default: () => <div>Create donor cases page</div>,
+}));
+
+vi.mock("./components/auditPage/auditPage", () => ({
+  default: () => <div>Audit page</div>,
+}));
+
+vi.mock("./components/reinstallQuestionnairesPage/reinstallQuestionnairesPage", () => ({
+  default: () => <div>Reinstall questionnaires page</div>,
+}));
+
+vi.mock("./components/reissueNewDonorCasePage/reissueNewDonorCasePage", () => ({
+  default: () => <div>Reissue new donor case page</div>,
+}));
+
+vi.mock("./components/deleteQuestionnairePage/deleteQuestionnairePage", () => ({
+  default: ({
+    onCancel,
+    onDelete,
+  }: {
+    onCancel: (questionnaireName: string) => void;
+    onDelete: (status: string) => void;
+  }) => {
+    return (
+      <>
+        <button
+          type="button"
+          onClick={() => onDelete("Deleted questionnaire")}
+        >
+          Delete questionnaire
+        </button>
+        <button
+          type="button"
+          onClick={() => onCancel("OPN2007T")}
+        >
+          Cancel deletion
+        </button>
+      </>
+    );
+  },
+}));
+
+function renderAtRoute(initialEntry: string) {
+  const client = createTestQueryClient();
+
+  return render(
+    <QueryClientProvider client={client}>
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <App />
+      </MemoryRouter>
+    </QueryClientProvider>,
+  );
+}
 
 describe("DQS homepage", () => {
   beforeAll(() => {
@@ -141,4 +197,69 @@ describe("Given the API returns an empty list", () => {
       expect(queryByText(/Loading/i)).not.toBeInTheDocument();
     });
   });
+});
+
+describe("App routes and status lifecycle", () => {
+  beforeEach(() => {
+    mock.onGet("/api/questionnaires").reply(200, questionnaireList);
+    mockIsProduction.mockReturnValue(true);
+    MockAuthenticate.OverrideReturnValues(null, true);
+  });
+
+  afterEach(() => {
+    mock.reset();
+    vi.useRealTimers();
+  });
+
+  it("loads the create donor cases page on its direct route", async () => {
+    renderAtRoute("/questionnaire/OPN2007T/create-donor-cases/IPS%20Manager");
+
+    await waitFor(() => {
+      expect(screen.getByText("Create donor cases page")).toBeInTheDocument();
+    });
+  });
+
+  it("loads the audit page on its direct route", async () => {
+    renderAtRoute("/audit");
+
+    await waitFor(() => {
+      expect(screen.getByText("Audit page")).toBeInTheDocument();
+    });
+  });
+
+  it("loads the reinstall questionnaires page on its direct route", async () => {
+    renderAtRoute("/reinstall");
+
+    await waitFor(() => {
+      expect(screen.getByText("Reinstall questionnaires page")).toBeInTheDocument();
+    });
+  });
+
+  it("loads the reissue new donor case page on its direct route", async () => {
+    renderAtRoute("/questionnaire/OPN2007T/reissue-new-donor-case/test%20user");
+
+    await waitFor(() => {
+      expect(screen.getByText("Reissue new donor case page")).toBeInTheDocument();
+    });
+  });
+
+  it("clears the success status after five seconds", async () => {
+    renderAtRoute("/questionnaire/OPN2007T/delete");
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Delete questionnaire" })).toBeInTheDocument();
+    });
+
+    vi.useFakeTimers();
+
+    fireEvent.click(screen.getByRole("button", { name: "Delete questionnaire" }));
+
+    expect(screen.getByText("Deleted questionnaire")).toBeInTheDocument();
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(5000);
+    });
+
+    expect(screen.queryByText("Deleted questionnaire")).not.toBeInTheDocument();
+  }, 15000);
 });

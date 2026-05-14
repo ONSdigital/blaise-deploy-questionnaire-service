@@ -1,6 +1,6 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { afterEach, describe, vi } from "vitest";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -22,7 +22,7 @@ import {
   whenIGoToTheQuestionnaireDetailsPage,
 } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -46,6 +46,10 @@ describe("Feature: generate_uacs_for_cases", () => {
 
   afterEach(() => {
     mocker.reset();
+  });
+
+  afterAll(() => {
+    mocker.restore();
   });
 
   Scenario(

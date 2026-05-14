@@ -17,6 +17,7 @@ function parseTmReleaseDateResponse(data: unknown): string {
 const tmReleaseDateClient = createDateClient({
   apiPath: "tmreleasedate",
   fieldKey: "tmreleasedate",
+  logLabel: "TmReleaseDate",
   notFoundStatuses: [204, 404],
   parseResponseData: parseTmReleaseDateResponse,
 });

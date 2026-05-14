@@ -19,12 +19,16 @@ import {
 
 const mock = new MockAdapter(axios);
 
+afterAll(() => {
+  mock.restore();
+});
+
 describe("Function getQuestionnaire(questionnaireName: string) ", () => {
   afterEach(() => {
     mock.reset();
   });
 
-  it("should return true and the questionnaire object if object with the correct name returned", async () => {
+  it("should return the questionnaire when the response contains the requested questionnaire", async () => {
     mock.onGet("/api/questionnaires/OPN2004A").reply(200, opnQuestionnaire);
 
     const questionnaire = await getQuestionnaire("OPN2004A");
@@ -46,10 +50,27 @@ describe("Function getQuestionnaire(questionnaireName: string) ", () => {
     await expect(getQuestionnaire("OPN2004A")).rejects.toThrow();
   });
 
-  it("should thrown an error if request call fails", async () => {
+  it("should throw an error if the request fails", async () => {
     mock.onGet("/api/questionnaires/OPN2004A").networkError();
 
     await expect(getQuestionnaire("OPN2004A")).rejects.toThrow();
+  });
+
+  it("should rethrow non-object errors", async () => {
+    const getSpy = vi.spyOn(axios, "get").mockRejectedValueOnce("boom");
+
+    await expect(getQuestionnaire("OPN2004A")).rejects.toEqual("boom");
+
+    getSpy.mockRestore();
+  });
+
+  it("should rethrow axios-like objects without a response", async () => {
+    const error = { isAxiosError: true };
+    const getSpy = vi.spyOn(axios, "get").mockRejectedValueOnce(error);
+
+    await expect(getQuestionnaire("OPN2004A")).rejects.toEqual(error);
+
+    getSpy.mockRestore();
   });
 });
 
@@ -395,6 +416,6 @@ describe("Function surveyIsActive(questionnaireName: string)", () => {
   it("should throw an error object if request call fails", async () => {
     mock.onGet("/api/questionnaires/OPN2004A/active").networkError();
 
-    await expect(getSurveyDays("OPN2004A")).rejects.toThrow();
+    await expect(surveyIsActive("OPN2004A")).rejects.toThrow();
   });
 });

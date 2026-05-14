@@ -14,14 +14,18 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-describe("SetDate for TO Start Date", () => {
+describe("SetDate for Telephone Operations start date", () => {
   it("should match the Snapshot", async () => {
     const wrapper = render(
       <Formik
         initialValues={{}}
         onSubmit={() => {}}
       >
-        <SetDate dateType={"start"} />
+        <SetDate
+          dateFieldName={"toStartDate"}
+          fullDateLabel={"Telephone Operations start date"}
+          shortDateLabel={"start date"}
+        />
       </Formik>,
     );
 
@@ -34,7 +38,11 @@ describe("SetDate for TO Start Date", () => {
         initialValues={{}}
         onSubmit={() => {}}
       >
-        <SetDate dateType={"start"} />
+        <SetDate
+          dateFieldName={"toStartDate"}
+          fullDateLabel={"Telephone Operations start date"}
+          shortDateLabel={"start date"}
+        />
       </Formik>,
     );
 
@@ -47,7 +55,11 @@ describe("SetDate for TO Start Date", () => {
         initialValues={{}}
         onSubmit={() => {}}
       >
-        <SetDate dateType={"start"} />
+        <SetDate
+          dateFieldName={"toStartDate"}
+          fullDateLabel={"Telephone Operations start date"}
+          shortDateLabel={"start date"}
+        />
       </Formik>,
     );
 
@@ -62,7 +74,11 @@ describe("SetDate for Totalmobile release date", () => {
         initialValues={{}}
         onSubmit={() => {}}
       >
-        <SetDate dateType={"release"} />
+        <SetDate
+          dateFieldName={"tmReleaseDate"}
+          fullDateLabel={"Totalmobile release date"}
+          shortDateLabel={"release date"}
+        />
       </Formik>,
     );
 
@@ -75,7 +91,11 @@ describe("SetDate for Totalmobile release date", () => {
         initialValues={{}}
         onSubmit={() => {}}
       >
-        <SetDate dateType={"release"} />
+        <SetDate
+          dateFieldName={"tmReleaseDate"}
+          fullDateLabel={"Totalmobile release date"}
+          shortDateLabel={"release date"}
+        />
       </Formik>,
     );
 
@@ -88,7 +108,11 @@ describe("SetDate for Totalmobile release date", () => {
         initialValues={{}}
         onSubmit={() => {}}
       >
-        <SetDate dateType={"release"} />
+        <SetDate
+          dateFieldName={"tmReleaseDate"}
+          fullDateLabel={"Totalmobile release date"}
+          shortDateLabel={"release date"}
+        />
       </Formik>,
     );
 

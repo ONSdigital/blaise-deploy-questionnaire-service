@@ -195,6 +195,52 @@ describe("Reinstall questionnaires", () => {
     });
   });
 
+  it("returns to the questionnaire list when viewing questionnaires from the success outcome", async () => {
+    const routes = [
+      {
+        path: "/reinstall",
+        element: <ReinstallQuestionnaires />,
+      },
+      {
+        path: "/",
+        element: <h1>Questionnaires page</h1>,
+      },
+    ];
+
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/reinstall"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />, { wrapper: createWrapper() });
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await act(async () => {
+      fireEvent.change(
+        screen.getByRole("combobox", { name: /Select a questionnaire to reinstall/i }),
+        {
+          target: { value: "OPN2004A.bpkg" },
+        },
+      );
+      await flushPromises();
+      fireEvent.click(screen.getByText(/Continue/i));
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /View questionnaires/i })).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /View questionnaires/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: /Questionnaires page/i })).toBeInTheDocument();
+    });
+  });
+
   it("should show failure outcome when install fails", async () => {
     mock.onPost("/api/install").reply(500);
 
@@ -236,6 +282,52 @@ describe("Reinstall questionnaires", () => {
       expect(
         screen.getByRole("button", { name: /Return to reinstall questionnaire/i }),
       ).toBeInTheDocument();
+    });
+  });
+
+  it("returns to the reinstall form when retry is clicked from the failure outcome", async () => {
+    mock.onPost("/api/install").reply(500);
+
+    const routes = [
+      {
+        path: "/reinstall",
+        element: <ReinstallQuestionnaires />,
+      },
+    ];
+
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/reinstall"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />, { wrapper: createWrapper() });
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await act(async () => {
+      fireEvent.change(
+        screen.getByRole("combobox", { name: /Select a questionnaire to reinstall/i }),
+        {
+          target: { value: "OPN2004A.bpkg" },
+        },
+      );
+      await flushPromises();
+      fireEvent.click(screen.getByText(/Continue/i));
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: /Return to reinstall questionnaire/i }),
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Return to reinstall questionnaire/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("combobox", { name: /Select a questionnaire to reinstall/i })).toBeInTheDocument();
     });
   });
 

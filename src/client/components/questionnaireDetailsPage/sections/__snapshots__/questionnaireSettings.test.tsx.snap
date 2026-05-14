@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Given the API successfully loads the questionnaire mode and settings for CATI only mode > matches Snapshot for the view Questionnaire Settings page 1`] = `
+exports[`Given the API successfully loads the questionnaire mode and settings for CATI only mode > matchessnapshotfor the view Questionnaire Settings page 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -519,7 +519,7 @@ exports[`Given the API successfully loads the questionnaire mode and settings fo
 }
 `;
 
-exports[`Given the API successfully loads the questionnaire mode and settings for mixed mode > matches Snapshot for the view Questionnaire Settings page 1`] = `
+exports[`Given the API successfully loads the questionnaire mode and settings for mixed mode > matchessnapshotfor the view Questionnaire Settings page 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>

@@ -25,7 +25,7 @@ import {
   whenISpecifyATotalmobileReleaseDateOf,
 } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -40,7 +40,7 @@ MockAuthenticate.OverrideReturnValues(null, true);
 const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios);
 
-describe("Feature: edit_tm_release_date", () => {
+describe("Feature: edit_totalmobile_release_date", () => {
   const Scenario = createScenario();
 
   afterEach(() => {

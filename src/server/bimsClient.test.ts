@@ -73,11 +73,11 @@ describe("BimsClient", () => {
     });
   });
 
-  describe("getStartDate", () => {
+  describe("getToStartDate", () => {
     it("returns start date when API returns 200", async () => {
       mockHttpGet.mockResolvedValueOnce({ status: 200, data: { tostartdate: "2022-12-31" } });
 
-      const result = await client.getStartDate("OPN2004A");
+      const result = await client.getToStartDate("OPN2004A");
 
       expect(result).toEqual({ tostartdate: "2022-12-31" });
       const [url, config] = mockHttpGet.mock.calls[0];
@@ -93,29 +93,29 @@ describe("BimsClient", () => {
     it("returns undefined when API returns 404", async () => {
       mockHttpGet.mockResolvedValueOnce({ status: 404, data: {} });
 
-      await expect(client.getStartDate("OPN2004A")).resolves.toBeUndefined();
+      await expect(client.getToStartDate("OPN2004A")).resolves.toBeUndefined();
     });
 
     it("returns undefined when API returns 204", async () => {
       mockHttpGet.mockResolvedValueOnce({ status: 204, data: {} });
 
-      await expect(client.getStartDate("OPN2004A")).resolves.toBeUndefined();
+      await expect(client.getToStartDate("OPN2004A")).resolves.toBeUndefined();
     });
 
     it("throws when API status is not expected", async () => {
       mockHttpGet.mockResolvedValueOnce({ status: 500, data: {} });
 
-      await expect(client.getStartDate("OPN2004A")).rejects.toThrow(
-        "Error getting start date for questionnaire: OPN2004A",
+      await expect(client.getToStartDate("OPN2004A")).rejects.toThrow(
+        "Error getting Telephone Operations start date for questionnaire: OPN2004A",
       );
     });
   });
 
-  describe("deleteStartDate", () => {
+  describe("deleteToStartDate", () => {
     it("succeeds when API returns 204", async () => {
       mockHttpDelete.mockResolvedValueOnce({ status: 204, data: {} });
 
-      await expect(client.deleteStartDate("OPN2004A")).resolves.toBeUndefined();
+      await expect(client.deleteToStartDate("OPN2004A")).resolves.toBeUndefined();
       expect(mockHttpDelete).toHaveBeenCalledWith("https://bims.example/tostartdate/OPN2004A", {
         headers: { Authorization: "Bearer token" },
       });
@@ -124,17 +124,17 @@ describe("BimsClient", () => {
     it("throws when API returns non-204", async () => {
       mockHttpDelete.mockResolvedValueOnce({ status: 200, data: {} });
 
-      await expect(client.deleteStartDate("OPN2004A")).rejects.toThrow(
-        "Could not delete TO Start date for: OPN2004A",
+      await expect(client.deleteToStartDate("OPN2004A")).rejects.toThrow(
+        "Could not delete Telephone Operations start date for: OPN2004A",
       );
     });
   });
 
-  describe("createStartDate", () => {
+  describe("createToStartDate", () => {
     it("posts and returns created start date", async () => {
       mockHttpPost.mockResolvedValueOnce({ status: 201, data: { tostartdate: "2022-12-31" } });
 
-      const result = await client.createStartDate("OPN2004A", "2022-12-31");
+      const result = await client.createToStartDate("OPN2004A", "2022-12-31");
 
       expect(result).toEqual({ tostartdate: "2022-12-31" });
       expect(mockHttpPost).toHaveBeenCalledWith(
@@ -145,11 +145,11 @@ describe("BimsClient", () => {
     });
   });
 
-  describe("updateStartDate", () => {
+  describe("updateToStartDate", () => {
     it("patches and returns updated start date", async () => {
       mockHttpPatch.mockResolvedValueOnce({ status: 200, data: { tostartdate: "2022-12-31" } });
 
-      const result = await client.updateStartDate("OPN2004A", "2022-12-31");
+      const result = await client.updateToStartDate("OPN2004A", "2022-12-31");
 
       expect(result).toEqual({ tostartdate: "2022-12-31" });
       expect(mockHttpPatch).toHaveBeenCalledWith(
@@ -160,11 +160,11 @@ describe("BimsClient", () => {
     });
   });
 
-  describe("getReleaseDate", () => {
+  describe("getTmReleaseDate", () => {
     it("returns release date when API returns 200", async () => {
       mockHttpGet.mockResolvedValueOnce({ status: 200, data: { tmreleasedate: "2022-12-31" } });
 
-      const result = await client.getReleaseDate("LMS2004A");
+      const result = await client.getTmReleaseDate("LMS2004A");
 
       expect(result).toEqual({ tmreleasedate: "2022-12-31" });
       expect(mockHttpGet).toHaveBeenCalledWith("https://bims.example/tmreleasedate/LMS2004A", {
@@ -176,29 +176,29 @@ describe("BimsClient", () => {
     it("returns undefined when API returns 404", async () => {
       mockHttpGet.mockResolvedValueOnce({ status: 404, data: {} });
 
-      await expect(client.getReleaseDate("LMS2004A")).resolves.toBeUndefined();
+      await expect(client.getTmReleaseDate("LMS2004A")).resolves.toBeUndefined();
     });
 
     it("returns undefined when API returns 204", async () => {
       mockHttpGet.mockResolvedValueOnce({ status: 204, data: {} });
 
-      await expect(client.getReleaseDate("LMS2004A")).resolves.toBeUndefined();
+      await expect(client.getTmReleaseDate("LMS2004A")).resolves.toBeUndefined();
     });
 
     it("throws when API status is not expected", async () => {
       mockHttpGet.mockResolvedValueOnce({ status: 500, data: {} });
 
-      await expect(client.getReleaseDate("LMS2004A")).rejects.toThrow(
-        "Error getting release date for questionnaire: LMS2004A",
+      await expect(client.getTmReleaseDate("LMS2004A")).rejects.toThrow(
+        "Error getting Totalmobile release date for questionnaire: LMS2004A",
       );
     });
   });
 
-  describe("deleteReleaseDate", () => {
+  describe("deleteTmReleaseDate", () => {
     it("succeeds when API returns 204", async () => {
       mockHttpDelete.mockResolvedValueOnce({ status: 204, data: {} });
 
-      await expect(client.deleteReleaseDate("LMS2004A")).resolves.toBeUndefined();
+      await expect(client.deleteTmReleaseDate("LMS2004A")).resolves.toBeUndefined();
       expect(mockHttpDelete).toHaveBeenCalledWith("https://bims.example/tmreleasedate/LMS2004A", {
         headers: { Authorization: "Bearer token" },
       });
@@ -207,17 +207,17 @@ describe("BimsClient", () => {
     it("throws when API returns non-204", async () => {
       mockHttpDelete.mockResolvedValueOnce({ status: 200, data: {} });
 
-      await expect(client.deleteReleaseDate("LMS2004A")).rejects.toThrow(
+      await expect(client.deleteTmReleaseDate("LMS2004A")).rejects.toThrow(
         "Could not delete Totalmobile release date for: LMS2004A",
       );
     });
   });
 
-  describe("createReleaseDate", () => {
+  describe("createTmReleaseDate", () => {
     it("posts and returns created release date", async () => {
       mockHttpPost.mockResolvedValueOnce({ status: 201, data: { tmreleasedate: "2022-12-31" } });
 
-      const result = await client.createReleaseDate("LMS2004A", "2022-12-31");
+      const result = await client.createTmReleaseDate("LMS2004A", "2022-12-31");
 
       expect(result).toEqual({ tmreleasedate: "2022-12-31" });
       expect(mockHttpPost).toHaveBeenCalledWith(
@@ -228,11 +228,11 @@ describe("BimsClient", () => {
     });
   });
 
-  describe("updateReleaseDate", () => {
+  describe("updateTmReleaseDate", () => {
     it("patches and returns updated release date", async () => {
       mockHttpPatch.mockResolvedValueOnce({ status: 200, data: { tmreleasedate: "2022-12-31" } });
 
-      const result = await client.updateReleaseDate("LMS2004A", "2022-12-31");
+      const result = await client.updateTmReleaseDate("LMS2004A", "2022-12-31");
 
       expect(result).toEqual({ tmreleasedate: "2022-12-31" });
       expect(mockHttpPatch).toHaveBeenCalledWith(

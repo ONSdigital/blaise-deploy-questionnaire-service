@@ -9,7 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 import { questionnaireList } from "../../features/step_definitions/helpers/api.mock";
 import {
   clickContinue,
-  navigatePastSettingTOStartDateAndDeployQuestionnaire,
+  navigatePastSettingToStartDateAndDeployQuestionnaire,
   navigateToDeployPageAndSelectFile,
 } from "../../features/step_definitions/helpers/functions";
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
@@ -96,7 +96,7 @@ describe("Upload Page", () => {
     });
   });
 
-  it("should disable continue on TO start date step until an option is selected", async () => {
+  it("should disable continue on Telephone Operations start date step until an option is selected", async () => {
     mock.onGet("/api/questionnaires/OPN2004A").reply(404);
 
     render(<DeployPage />, { wrapper: createWrapper(BrowserRouter) });
@@ -109,12 +109,12 @@ describe("Upload Page", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(/Would you like to set a telephone operations start date/i),
+        screen.getByText(/Would you like to set a Telephone Operations start date/i),
       ).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /Continue/i })).toBeDisabled();
     });
 
-    await userEvent.click(screen.getByText(/No start date/i));
+    await userEvent.click(screen.getByLabelText(/No start date/i));
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /Continue/i })).toBeEnabled();
@@ -134,11 +134,11 @@ describe("Upload Page", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(/Would you like to set a telephone operations start date/i),
+        screen.getByText(/Would you like to set a Telephone Operations start date/i),
       ).toBeInTheDocument();
     });
 
-    await userEvent.click(screen.getByText(/No start date/i));
+    await userEvent.click(screen.getByLabelText(/No start date/i));
     await userEvent.click(screen.getByRole("button", { name: /Continue/i }));
 
     await waitFor(() => {
@@ -148,7 +148,7 @@ describe("Upload Page", () => {
       expect(screen.getByRole("button", { name: /Continue/i })).toBeDisabled();
     });
 
-    await userEvent.click(screen.getByText(/No release date/i));
+    await userEvent.click(screen.getByLabelText(/No release date/i));
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /Continue/i })).toBeEnabled();
@@ -168,11 +168,11 @@ describe("Upload Page", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(/Would you like to set a telephone operations start date/i),
+        screen.getByText(/Would you like to set a Telephone Operations start date/i),
       ).toBeInTheDocument();
     });
 
-    await userEvent.click(screen.getByText(/No start date/i));
+    await userEvent.click(screen.getByLabelText(/No start date/i));
     await userEvent.click(screen.getByRole("button", { name: /Continue/i }));
 
     await waitFor(() => {
@@ -182,7 +182,7 @@ describe("Upload Page", () => {
     });
   });
 
-  it("should ask only TO start date for OPN questionnaires", async () => {
+  it("should ask only Telephone Operations start date for OPN questionnaires", async () => {
     mock.onGet("/api/questionnaires/OPN2207T").reply(404);
 
     render(<DeployPage />, { wrapper: createWrapper(BrowserRouter) });
@@ -195,11 +195,11 @@ describe("Upload Page", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(/Would you like to set a telephone operations start date/i),
+        screen.getByText(/Would you like to set a Telephone Operations start date/i),
       ).toBeInTheDocument();
     });
 
-    await userEvent.click(screen.getByText(/No start date/i));
+    await userEvent.click(screen.getByLabelText(/No start date/i));
     await userEvent.click(screen.getByRole("button", { name: /Continue/i }));
 
     await waitFor(() => {
@@ -231,7 +231,7 @@ describe("Given the file fails to upload", () => {
     await navigateToDeployPageAndSelectFile();
     await clickContinue();
 
-    await navigatePastSettingTOStartDateAndDeployQuestionnaire();
+    await navigatePastSettingToStartDateAndDeployQuestionnaire();
 
     await waitFor(() => {
       expect(

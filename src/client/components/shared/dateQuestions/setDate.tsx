@@ -3,15 +3,17 @@ import { useFormikContext } from "formik";
 import React, { type ReactElement } from "react";
 
 interface DateFormProps {
-  dateType: string;
+  dateFieldName: string;
+  fullDateLabel: string;
+  shortDateLabel: string;
 }
 
 type DateFormValues = {
-  askToSetDate?: string;
+  askDate?: string;
   [key: string]: string | undefined;
 };
 
-export function SetDate(DateFormProps: DateFormProps): ReactElement {
+export function SetDate({ dateFieldName, fullDateLabel, shortDateLabel }: DateFormProps): ReactElement {
   const { values } = useFormikContext<DateFormValues>();
 
   function validateRadio(value: string) {
@@ -19,32 +21,32 @@ export function SetDate(DateFormProps: DateFormProps): ReactElement {
 
     if (!value) {
       error = "Select an option";
-    } else if (values.askToSetDate === "yes" && !values[`set ${DateFormProps.dateType} date`]) {
-      error = `Enter a ${DateFormProps.dateType} date`;
+    } else if (values.askDate === "yes" && !values[dateFieldName]) {
+      error = `Enter a ${fullDateLabel}`;
     }
 
     return error;
   }
 
   const field = {
-    name: "askToSetDate",
+    name: "askDate",
     type: "radio",
     autoFocus: true,
     validate: validateRadio,
     radioOptions: [
       {
         id: "no",
-        label: `No ${DateFormProps.dateType} date`,
+        label: `No ${shortDateLabel}`,
         value: "no",
       },
       {
         id: "yes",
-        label: `Yes, let me specify a ${DateFormProps.dateType} date`,
+        label: `Yes, let me specify a ${shortDateLabel}`,
         value: "yes",
         specifyOption: {
           type: "date",
-          id: "set-live-date",
-          name: `set ${DateFormProps.dateType} date`,
+          id: "set-date",
+          name: dateFieldName,
           description: "Please specify date",
         },
       },

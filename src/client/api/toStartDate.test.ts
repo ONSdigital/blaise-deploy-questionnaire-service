@@ -48,7 +48,7 @@ describe("Function getToStartDate(questionnaireName: string) ", () => {
     mock.reset();
   });
 
-  it("should return true and a TO start date string if object with the correct name returned", async () => {
+  it("should return a Telephone Operations start date string if the response contains a start date", async () => {
     mock.onGet("/api/tostartdate/OPN2004A").reply(200, { tostartdate: "1997-12-24" });
 
     const toStartDate = await getToStartDate("OPN2004A");
@@ -56,7 +56,7 @@ describe("Function getToStartDate(questionnaireName: string) ", () => {
     expect(toStartDate).toEqual("1997-12-24");
   });
 
-  it("should return an empty string if object without a TO start date is returned", async () => {
+  it("should return an empty string if the response does not contain a Telephone Operations start date", async () => {
     mock.onGet("/api/tostartdate/OPN2004A").reply(200, { name: "BACON" });
 
     const toStartDate = await getToStartDate("OPN2004A");

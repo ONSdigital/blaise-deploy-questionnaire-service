@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { clientLogger } from "../utils/logger";
 
+import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
 import axiosConfig from "./axiosConfig";
 
 import type { Questionnaire, QuestionnaireSettings } from "blaise-api-node-client";
@@ -23,7 +24,7 @@ function isAxios404(error: unknown): boolean {
 export async function getQuestionnaire(
   questionnaireName: string,
 ): Promise<Questionnaire | undefined> {
-  clientLogger.info(`Call to getQuestionnaire(${questionnaireName})`);
+  logFunctionCall("getQuestionnaire", questionnaireName);
   const url = `/api/questionnaires/${questionnaireName}`;
 
   try {
@@ -32,27 +33,32 @@ export async function getQuestionnaire(
     return response.data;
   } catch (error: unknown) {
     if (isAxios404(error)) {
-      clientLogger.info(`Questionnaire ${questionnaireName} does not exist`);
+      clientLogger.info(`${formatFunctionCall("getQuestionnaire", questionnaireName)} returned 404`);
 
       return undefined;
     }
 
-    clientLogger.error(`Failed to get questionnaires ${error}`);
+    logFunctionError("getQuestionnaire", error, questionnaireName);
     throw error;
   }
 }
 
 export async function getQuestionnaires(): Promise<Questionnaire[]> {
-  clientLogger.info("Call to getQuestionnaires");
+  logFunctionCall("getQuestionnaires");
   const url = "/api/questionnaires";
 
-  const response = await axios.get(url, axiosConfig());
+  try {
+    const response = await axios.get(url, axiosConfig());
 
-  return response.data;
+    return response.data;
+  } catch (error: unknown) {
+    logFunctionError("getQuestionnaires", error);
+    throw error;
+  }
 }
 
 export async function deleteQuestionnaire(questionnaireName: string): Promise<boolean> {
-  clientLogger.info("Call to deleteQuestionnaire");
+  logFunctionCall("deleteQuestionnaire", questionnaireName);
   const url = `/api/questionnaires/${questionnaireName}`;
 
   try {
@@ -60,14 +66,14 @@ export async function deleteQuestionnaire(questionnaireName: string): Promise<bo
 
     return response.status === 204;
   } catch (error: unknown) {
-    clientLogger.error(`Response from deleteQuestionnaire: Error ${error}`);
+    logFunctionError("deleteQuestionnaire", error, questionnaireName);
 
     return false;
   }
 }
 
 export async function activateQuestionnaire(questionnaireName: string): Promise<boolean> {
-  clientLogger.info("Call to activateQuestionnaire");
+  logFunctionCall("activateQuestionnaire", questionnaireName);
   const url = `/api/questionnaires/${questionnaireName}/activate`;
 
   try {
@@ -75,14 +81,14 @@ export async function activateQuestionnaire(questionnaireName: string): Promise<
 
     return response.status === 204;
   } catch (error: unknown) {
-    clientLogger.error(`Response from activateQuestionnaire: Error ${error}`);
+    logFunctionError("activateQuestionnaire", error, questionnaireName);
 
     return false;
   }
 }
 
 export async function deactivateQuestionnaire(questionnaireName: string): Promise<boolean> {
-  clientLogger.info("Call to deactivateQuestionnaire");
+  logFunctionCall("deactivateQuestionnaire", questionnaireName);
   const url = `/api/questionnaires/${questionnaireName}/deactivate`;
 
   try {
@@ -90,29 +96,29 @@ export async function deactivateQuestionnaire(questionnaireName: string): Promis
 
     return response.status === 204;
   } catch (error: unknown) {
-    clientLogger.error(`Response from deactivateQuestionnaire: Error ${error}`);
+    logFunctionError("deactivateQuestionnaire", error, questionnaireName);
 
     return false;
   }
 }
 
 export async function installQuestionnaire(filename: string): Promise<boolean> {
-  clientLogger.info("Sending request to start install");
+  logFunctionCall("installQuestionnaire", filename);
   const url = "/api/install";
 
   try {
-    const response = await axios.post(url, { filename: filename }, axiosConfig());
+    const response = await axios.post(url, { filename }, axiosConfig());
 
     return response.status === 201;
   } catch (error: unknown) {
-    clientLogger.error(`Failed to install questionnaire, Error ${error}`);
+    logFunctionError("installQuestionnaire", error, filename);
 
     return false;
   }
 }
 
 export async function getQuestionnaireModes(questionnaireName: string): Promise<string[]> {
-  clientLogger.info("Sending request get questionnaire modes");
+  logFunctionCall("getQuestionnaireModes", questionnaireName);
   const url = `/api/questionnaires/${questionnaireName}/modes`;
 
   try {
@@ -120,7 +126,7 @@ export async function getQuestionnaireModes(questionnaireName: string): Promise<
 
     return response.data;
   } catch (error: unknown) {
-    clientLogger.error(`Failed to get questionnaire modes, Error ${error}`);
+    logFunctionError("getQuestionnaireModes", error, questionnaireName);
     throw error;
   }
 }
@@ -128,7 +134,7 @@ export async function getQuestionnaireModes(questionnaireName: string): Promise<
 export async function getQuestionnaireSettings(
   questionnaireName: string,
 ): Promise<QuestionnaireSettings[]> {
-  clientLogger.info("Sending request get questionnaire settings");
+  logFunctionCall("getQuestionnaireSettings", questionnaireName);
   const url = `/api/questionnaires/${questionnaireName}/settings`;
 
   try {
@@ -136,26 +142,27 @@ export async function getQuestionnaireSettings(
 
     return response.data;
   } catch (error: unknown) {
-    clientLogger.error(`Failed to get questionnaire settings, Error ${error}`);
+    logFunctionError("getQuestionnaireSettings", error, questionnaireName);
     throw error;
   }
 }
 
 export async function getQuestionnaireCaseIds(questionnaireName: string): Promise<string[]> {
-  clientLogger.info("Call to getQuestionnaireCaseIds");
+  logFunctionCall("getQuestionnaireCaseIds", questionnaireName);
   const url = `/api/questionnaires/${questionnaireName}/cases/ids`;
 
   try {
     const response = await axios.get(url, axiosConfig());
 
     return response.data;
-  } catch {
+  } catch (error: unknown) {
+    logFunctionError("getQuestionnaireCaseIds", error, questionnaireName);
     throw new Error("Failed to get questionnaire case IDs");
   }
 }
 
 export async function getSurveyDays(questionnaireName: string): Promise<string[]> {
-  clientLogger.info("Sending request get survey days");
+  logFunctionCall("getSurveyDays", questionnaireName);
   const url = `/api/questionnaires/${questionnaireName}/surveydays`;
 
   try {
@@ -163,13 +170,13 @@ export async function getSurveyDays(questionnaireName: string): Promise<string[]
 
     return response.data;
   } catch (error: unknown) {
-    clientLogger.error(`Failed to get survey days, Error ${error}`);
+    logFunctionError("getSurveyDays", error, questionnaireName);
     throw error;
   }
 }
 
 export async function surveyIsActive(questionnaireName: string): Promise<boolean> {
-  clientLogger.info("Sending request get survey is active");
+  logFunctionCall("surveyIsActive", questionnaireName);
   const url = `/api/questionnaires/${questionnaireName}/active`;
 
   try {
@@ -177,7 +184,7 @@ export async function surveyIsActive(questionnaireName: string): Promise<boolean
 
     return response.data;
   } catch (error: unknown) {
-    clientLogger.error(`Failed to get survey is active, Error ${error}`);
+    logFunctionError("surveyIsActive", error, questionnaireName);
     throw error;
   }
 }

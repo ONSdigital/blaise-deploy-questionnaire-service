@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`SetDate for TO Start Date > should match the Snapshot 1`] = `
+exports[`SetDate for Telephone Operations start date > should match the Snapshot 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -36,7 +36,7 @@ exports[`SetDate for TO Start Date > should match the Snapshot 1`] = `
                       <input
                         class="ons-radio__input"
                         id="no"
-                        name="askToSetDate"
+                        name="askDate"
                         props="[object Object]"
                         type="radio"
                         value="no"
@@ -59,7 +59,7 @@ exports[`SetDate for TO Start Date > should match the Snapshot 1`] = `
                       <input
                         class="ons-radio__input"
                         id="yes"
-                        name="askToSetDate"
+                        name="askDate"
                         props="[object Object]"
                         type="radio"
                         value="yes"
@@ -76,14 +76,14 @@ exports[`SetDate for TO Start Date > should match the Snapshot 1`] = `
                       >
                         <label
                           class="ons-label ons-u-fs-s--b"
-                          for="set-live-date"
+                          for="set-date"
                         >
                           Please specify date
                         </label>
                         <input
                           class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                          id="set-live-date"
-                          name="set start date"
+                          id="set-date"
+                          name="toStartDate"
                           type="date"
                         />
                       </span>
@@ -130,7 +130,7 @@ exports[`SetDate for TO Start Date > should match the Snapshot 1`] = `
                     <input
                       class="ons-radio__input"
                       id="no"
-                      name="askToSetDate"
+                      name="askDate"
                       props="[object Object]"
                       type="radio"
                       value="no"
@@ -153,7 +153,7 @@ exports[`SetDate for TO Start Date > should match the Snapshot 1`] = `
                     <input
                       class="ons-radio__input"
                       id="yes"
-                      name="askToSetDate"
+                      name="askDate"
                       props="[object Object]"
                       type="radio"
                       value="yes"
@@ -170,14 +170,14 @@ exports[`SetDate for TO Start Date > should match the Snapshot 1`] = `
                     >
                       <label
                         class="ons-label ons-u-fs-s--b"
-                        for="set-live-date"
+                        for="set-date"
                       >
                         Please specify date
                       </label>
                       <input
                         class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                        id="set-live-date"
-                        name="set start date"
+                        id="set-date"
+                        name="toStartDate"
                         type="date"
                       />
                     </span>
@@ -281,7 +281,7 @@ exports[`SetDate for Totalmobile release date > should match the Snapshot 1`] = 
                       <input
                         class="ons-radio__input"
                         id="no"
-                        name="askToSetDate"
+                        name="askDate"
                         props="[object Object]"
                         type="radio"
                         value="no"
@@ -304,7 +304,7 @@ exports[`SetDate for Totalmobile release date > should match the Snapshot 1`] = 
                       <input
                         class="ons-radio__input"
                         id="yes"
-                        name="askToSetDate"
+                        name="askDate"
                         props="[object Object]"
                         type="radio"
                         value="yes"
@@ -321,14 +321,14 @@ exports[`SetDate for Totalmobile release date > should match the Snapshot 1`] = 
                       >
                         <label
                           class="ons-label ons-u-fs-s--b"
-                          for="set-live-date"
+                          for="set-date"
                         >
                           Please specify date
                         </label>
                         <input
                           class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                          id="set-live-date"
-                          name="set release date"
+                          id="set-date"
+                          name="tmReleaseDate"
                           type="date"
                         />
                       </span>
@@ -375,7 +375,7 @@ exports[`SetDate for Totalmobile release date > should match the Snapshot 1`] = 
                     <input
                       class="ons-radio__input"
                       id="no"
-                      name="askToSetDate"
+                      name="askDate"
                       props="[object Object]"
                       type="radio"
                       value="no"
@@ -398,7 +398,7 @@ exports[`SetDate for Totalmobile release date > should match the Snapshot 1`] = 
                     <input
                       class="ons-radio__input"
                       id="yes"
-                      name="askToSetDate"
+                      name="askDate"
                       props="[object Object]"
                       type="radio"
                       value="yes"
@@ -415,14 +415,14 @@ exports[`SetDate for Totalmobile release date > should match the Snapshot 1`] = 
                     >
                       <label
                         class="ons-label ons-u-fs-s--b"
-                        for="set-live-date"
+                        for="set-date"
                       >
                         Please specify date
                       </label>
                       <input
                         class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                        id="set-live-date"
-                        name="set release date"
+                        id="set-date"
+                        name="tmReleaseDate"
                         type="date"
                       />
                     </span>

@@ -1,6 +1,8 @@
 import React, { type ReactElement } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 
+import { decodeRouteParam } from "../../utils/decodeRouteParam";
+
 import { Confirmation } from "./sections/confirmation";
 
 import type { Questionnaire } from "blaise-api-node-client";
@@ -18,8 +20,7 @@ function ReissueNewDonorCasePage(): ReactElement {
   const routeParams = useParams();
   const location = useLocation().state as Location | undefined;
   const questionnaireName = routeParams.questionnaireName ?? "";
-  const routeUser = routeParams.user;
-  const decodedRouteUser = routeUser ? decodeURIComponent(routeUser) : undefined;
+  const decodedRouteUser = decodeRouteParam(routeParams.user);
   const user = decodedRouteUser ?? location?.user ?? "";
 
   if (!questionnaireName || !user) {

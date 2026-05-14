@@ -57,14 +57,14 @@ const jsonHeaders = { "content-type": "application/json" };
 const config = getConfigFromEnv();
 const request = supertest(newServer(config));
 
-describe("TM release date server flows", () => {
+describe("Totalmobile release date server flows", () => {
   afterEach(() => {
     vi.clearAllMocks();
     vi.resetModules();
     mock.reset();
   });
 
-  it("sets a new TM release date when none exists", async () => {
+  it("sets a new Totalmobile release date when none exists", async () => {
     mock.onGet(/\/tmreleasedate\/OPN2004A$/).reply(404, {}, jsonHeaders);
     mock
       .onPost(/\/tmreleasedate\/OPN2004A$/)
@@ -78,7 +78,7 @@ describe("TM release date server flows", () => {
     expect(response.body).toEqual({ tmreleasedate: "2025-01-15T00:00:00+00:00" });
   });
 
-  it("updates an existing TM release date", async () => {
+  it("updates an existing Totalmobile release date", async () => {
     mock
       .onGet(/\/tmreleasedate\/OPN2004A$/)
       .reply(200, { tmreleasedate: "2024-12-25T00:00:00+00:00" }, jsonHeaders);
@@ -94,7 +94,7 @@ describe("TM release date server flows", () => {
     expect(response.body).toEqual({ tmreleasedate: "2025-01-15T00:00:00+00:00" });
   });
 
-  it("removes an existing TM release date when empty string is posted", async () => {
+  it("deletes an existing Totalmobile release date when an empty string is posted", async () => {
     mock
       .onGet(/\/tmreleasedate\/OPN2004A$/)
       .reply(200, { tmreleasedate: "2024-12-25T00:00:00+00:00" }, jsonHeaders);

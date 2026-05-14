@@ -16,7 +16,7 @@ const DEFAULT_DATE = "05/06/2030";
 const DEFAULT_MODES = "CAWI,CATI";
 const DEFAULT_CASE_COUNT = "500";
 const DEFAULT_MESSAGE = "No questionnaires containing BAR1234K found";
-const DEFAULT_DEPLOY_ERROR_MESSAGE = "Failed to store telephone Operations start date specified";
+const DEFAULT_DEPLOY_ERROR_MESSAGE = "Failed to store Telephone Operations start date";
 const DEFAULT_SETTINGS_TABLE: Array<Record<string, string>> = [
   {
     type: "StrictInterviewing",
@@ -28,9 +28,7 @@ const DEFAULT_SETTINGS_TABLE: Array<Record<string, string>> = [
     applyRecordLocking: "false",
   },
 ];
-const DEFAULT_QUESTIONNAIRE_TABLE: Array<Record<string, string>> = [
-  { Questionnaire: "OPN2004A" },
-];
+const DEFAULT_QUESTIONNAIRE_TABLE: Array<Record<string, string>> = [{ Questionnaire: "OPN2004A" }];
 const RECOMMENDED_SETTINGS_TABLE: Array<Record<string, string>> = [
   {
     type: "StrictInterviewing",
@@ -64,7 +62,8 @@ function resolveArgs(
     scenario.includes("release date") ||
     scenario.includes("no date to be set");
   const isNonLmsScenario = scenario.includes("non lms");
-  const questionnaireName = isTmScenario && !isNonLmsScenario ? DEFAULT_TM_QUESTIONNAIRE : DEFAULT_QUESTIONNAIRE;
+  const questionnaireName =
+    isTmScenario && !isNonLmsScenario ? DEFAULT_TM_QUESTIONNAIRE : DEFAULT_QUESTIONNAIRE;
   const isQuestionnaireSearchScenario =
     scenario.includes("search for a questionnaire") ||
     scenario.includes("questionnaire not found") ||
@@ -88,7 +87,7 @@ function resolveArgs(
       ? "CAWI"
       : isNonLmsScenario
         ? "CAWI"
-      : DEFAULT_MODES;
+        : DEFAULT_MODES;
 
   const cases = scenario.includes("without cases") ? "0" : DEFAULT_CASE_COUNT;
 
@@ -172,8 +171,8 @@ function resolveArgs(
   }
 
   if (
-    label.includes("i specify the to start date of") ||
-    label.includes("i can view the to start date is set to") ||
+    label.includes("i specify the telephone operations start date of") ||
+    label.includes("i can view the telephone operations start date is set to") ||
     label.includes("i specify the totalmobile release date of") ||
     label.includes("i can view the totalmobile release date is set to")
   ) {
@@ -181,27 +180,20 @@ function resolveArgs(
   }
 
   if (
-    (label.includes("to start date of") || label.includes("totalmobile release date of")) &&
+    (label.includes("telephone operations start date of") || label.includes("totalmobile release date of")) &&
     label.includes("stored against")
   ) {
     return [DEFAULT_DATE, questionnaireName];
   }
 
   if (
-    label.includes("has a to start date of") ||
+    label.includes("has a telephone operations start date of") ||
     label.includes("has a totalmobile release date of")
   ) {
     return [questionnaireName, DEFAULT_DATE];
   }
 
-  return [
-    questionnaireName,
-    DEFAULT_DATE,
-    modes,
-    cases,
-    settingsTable,
-    DEFAULT_MESSAGE,
-  ];
+  return [questionnaireName, DEFAULT_DATE, modes, cases, settingsTable, DEFAULT_MESSAGE];
 }
 
 export function createScenario() {

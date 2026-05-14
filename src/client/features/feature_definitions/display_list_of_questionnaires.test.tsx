@@ -1,14 +1,14 @@
 import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { afterEach, describe, vi } from "vitest";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
 import { thenIAmPresentedWithAListOfDeployedQuestionnaires } from "../step_definitions/then";
 import { whenILoadTheHomepage } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -28,6 +28,10 @@ describe("Feature: display_list_of_questionnaires", () => {
 
   afterEach(() => {
     mocker.reset();
+  });
+
+  afterAll(() => {
+    mocker.restore();
   });
 
   Scenario("List all questionnaires in Blaise", ({ Given, When, Then }) => {

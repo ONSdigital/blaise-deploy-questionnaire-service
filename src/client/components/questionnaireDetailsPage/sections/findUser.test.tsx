@@ -108,6 +108,22 @@ describe("FindUser happy path", () => {
     await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 
+  it("calls onError when the API returns a non-array payload", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: { message: "bad payload" } });
+    const onError = vi.fn();
+
+    render(
+      <FindUser
+        label="Enter Username"
+        roles={roles}
+        onError={onError}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(onError).toHaveBeenCalledWith("Unable to get users"));
+  });
+
   it("clears input and calls onItemSelected with empty string on blur if input is not a user", async () => {
     mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
     const onItemSelected = vi.fn();
@@ -127,6 +143,82 @@ describe("FindUser happy path", () => {
     fireEvent.blur(input);
     expect(input).toHaveValue("");
     expect(onItemSelected).toHaveBeenCalledWith("");
+  });
+
+  it("calls onError on blur when a non-empty invalid username is entered", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
+    const onItemSelected = vi.fn();
+    const onError = vi.fn();
+
+    render(
+      <FindUser
+        label="Enter Username"
+        roles={roles}
+        onItemSelected={onItemSelected}
+        onError={onError}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter Username");
+
+    fireEvent.change(input, { target: { value: "NotAUser" } });
+    fireEvent.blur(input);
+
+    expect(onError).toHaveBeenCalledWith("Username does not exist");
+    expect(onItemSelected).toHaveBeenCalledWith("");
+  });
+
+  it("does not call onError on blur when the invalid input is only whitespace", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
+    const onItemSelected = vi.fn();
+    const onError = vi.fn();
+
+    render(
+      <FindUser
+        label="Enter Username"
+        roles={roles}
+        onItemSelected={onItemSelected}
+        onError={onError}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter Username");
+
+    fireEvent.change(input, { target: { value: "   " } });
+    fireEvent.blur(input);
+
+    expect(onError).not.toHaveBeenCalled();
+    expect(onItemSelected).toHaveBeenCalledWith("");
+  });
+
+  it("does not clear the input on blur when a valid username is selected", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
+    const onItemSelected = vi.fn();
+    const onError = vi.fn();
+
+    render(
+      <FindUser
+        label="Enter Username"
+        roles={roles}
+        onItemSelected={onItemSelected}
+        onError={onError}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter Username");
+
+    fireEvent.change(input, { target: { value: "Jill" } });
+    fireEvent.blur(input);
+
+    expect(input).toHaveValue("Jill");
+    expect(onItemSelected).toHaveBeenCalledWith("Jill");
+    expect(onError).not.toHaveBeenCalled();
   });
 
   it("shows no options if filter matches no users", async () => {

@@ -41,7 +41,7 @@ export async function validateSelectedQuestionnaireExists(
   try {
     questionnaire = await getQuestionnaire(questionnaireName);
   } catch {
-    clientLogger.info("Failed to validate if questionnaire already exists");
+    clientLogger.error("validateSelectedQuestionnaireExists() failed while checking questionnaire existence");
     setUploadStatus("Failed to validate if questionnaire already exists");
 
     return null;
@@ -69,14 +69,17 @@ export async function uploadAndInstallFile(
     return false;
   }
 
-  clientLogger.info("Start uploading the file");
+  clientLogger.info(`uploadAndInstallFile(${questionnaireName}) started`);
 
   if (shouldAskToStartDate(questionnaireName)) {
-    clientLogger.info(`liveDate ${toStartDate}`);
-    const liveDateCreated = await setToStartDate(questionnaireName, toStartDate);
+    clientLogger.info(`uploadAndInstallFile(${questionnaireName}) storing Telephone Operations start date`);
+    const toStartDateCreated = await setToStartDate(questionnaireName, toStartDate);
 
-    if (!liveDateCreated) {
-      setUploadStatus("Failed to store telephone Operations start date specified");
+    if (!toStartDateCreated) {
+      clientLogger.error(
+        `uploadAndInstallFile(${questionnaireName}) failed while storing Telephone Operations start date`,
+      );
+      setUploadStatus("Failed to store Telephone Operations start date");
       setUploading(false);
 
       return false;
@@ -84,11 +87,14 @@ export async function uploadAndInstallFile(
   }
 
   if (shouldAskTmReleaseDate(questionnaireName)) {
-    clientLogger.info(`releaseDate ${tmReleaseDate}`);
-    const releaseDateCreated = await setTmReleaseDate(questionnaireName, tmReleaseDate);
+    clientLogger.info(`uploadAndInstallFile(${questionnaireName}) storing Totalmobile release date`);
+    const tmReleaseDateCreated = await setTmReleaseDate(questionnaireName, tmReleaseDate);
 
-    if (!releaseDateCreated) {
-      setUploadStatus("Failed to store Totalmobile release date specified");
+    if (!tmReleaseDateCreated) {
+      clientLogger.error(
+        `uploadAndInstallFile(${questionnaireName}) failed while storing Totalmobile release date`,
+      );
+      setUploadStatus("Failed to store Totalmobile release date");
       setUploading(false);
 
       return false;
@@ -100,7 +106,7 @@ export async function uploadAndInstallFile(
   try {
     signedUrl = await initialiseUpload(file.name);
   } catch {
-    clientLogger.error("Failed to initialiseUpload");
+    clientLogger.error(`uploadAndInstallFile(${questionnaireName}) failed during initialiseUpload`);
     setUploadStatus("Failed to upload questionnaire");
     setUploading(false);
 
@@ -113,7 +119,7 @@ export async function uploadAndInstallFile(
 
   setUploading(false);
   if (!uploaded) {
-    clientLogger.error("Failed to Upload file");
+    clientLogger.error(`uploadAndInstallFile(${questionnaireName}) failed during uploadFile`);
     setUploadStatus("Failed to upload questionnaire");
 
     return false;

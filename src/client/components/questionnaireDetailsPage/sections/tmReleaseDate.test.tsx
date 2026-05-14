@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import flushPromises from "../../../test-utils/flushPromises";
 import { createWrapper } from "../../../test-utils/renderWithQueryClient";
 
-import { ReleaseDate } from "./releaseDate";
+import { TmReleaseDate } from "./tmReleaseDate";
 import "@testing-library/jest-dom";
 
 const mock = new MockAdapter(axios);
@@ -21,7 +21,7 @@ describe("Totalmobile details", () => {
     mock
       .onGet("/api/tmreleasedate/LMS2101_AA1")
       .reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
-    render(<ReleaseDate questionnaireName={"LMS2101_AA1"} />, {
+    render(<TmReleaseDate questionnaireName={"LMS2101_AA1"} />, {
       wrapper: createWrapper(BrowserRouter),
     });
 
@@ -37,7 +37,7 @@ describe("Totalmobile details", () => {
 
   it("should display the add release date option for an LMS questionnaire with no release date", async () => {
     mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(404, { tmreleasedate: "" });
-    render(<ReleaseDate questionnaireName={"LMS2101_AA1"} />, {
+    render(<TmReleaseDate questionnaireName={"LMS2101_AA1"} />, {
       wrapper: createWrapper(BrowserRouter),
     });
 
@@ -52,7 +52,7 @@ describe("Totalmobile details", () => {
 
   it("should render an invalid Totalmobile release date value without crashing", async () => {
     mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(200, { tmreleasedate: "not-a-date" });
-    render(<ReleaseDate questionnaireName={"LMS2101_AA1"} />, {
+    render(<TmReleaseDate questionnaireName={"LMS2101_AA1"} />, {
       wrapper: createWrapper(BrowserRouter),
     });
 
@@ -66,7 +66,7 @@ describe("Totalmobile details", () => {
 
   it("should display an error message when it fails to load the Totalmobile release date", async () => {
     mock.onGet("/api/tmreleasedate/LMS2101A").reply(500);
-    render(<ReleaseDate questionnaireName={"LMS2101A"} />, {
+    render(<TmReleaseDate questionnaireName={"LMS2101A"} />, {
       wrapper: createWrapper(BrowserRouter),
     });
 
@@ -81,7 +81,7 @@ describe("Totalmobile details", () => {
     mock
       .onGet("/api/tmreleasedate/DST2101_AA1")
       .reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
-    render(<ReleaseDate questionnaireName={"DST2101_AA1"} />, {
+    render(<TmReleaseDate questionnaireName={"DST2101_AA1"} />, {
       wrapper: createWrapper(BrowserRouter),
     });
 
@@ -96,7 +96,7 @@ describe("Totalmobile details", () => {
     mock
       .onGet("/api/tmreleasedate/FRS2101_AA1")
       .reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
-    render(<ReleaseDate questionnaireName={"FRS2101_AA1"} />, {
+    render(<TmReleaseDate questionnaireName={"FRS2101_AA1"} />, {
       wrapper: createWrapper(BrowserRouter),
     });
 
@@ -111,7 +111,7 @@ describe("Totalmobile details", () => {
     mock
       .onGet("/api/tmreleasedate/OPN2101_AA1")
       .reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
-    render(<ReleaseDate questionnaireName={"OPN2101_AA1"} />, {
+    render(<TmReleaseDate questionnaireName={"OPN2101_AA1"} />, {
       wrapper: createWrapper(BrowserRouter),
     });
 

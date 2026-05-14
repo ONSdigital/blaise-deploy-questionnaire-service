@@ -46,7 +46,7 @@ describe("Deployment summary", () => {
   const opnQuestionnaire = questionnaireWithName(opnQuestionnaireName);
 
   validFiles.forEach(({ file, questionnaire }) => {
-    it(`should match the Snapshot for ${file.name}`, async () => {
+    it(`should match thesnapshotfor ${file.name}`, async () => {
       const wrapper = render(
         <Formik
           initialValues={{}}
@@ -129,10 +129,10 @@ describe("Deployment summary", () => {
       </Formik>,
     );
 
-    expect(getByText(/Already exists in Blaise/i)).toBeInTheDocument();
+    expect(getByText(/Already exists/i)).toBeInTheDocument();
   });
 
-  it("should display the telephone operation start date", async () => {
+  it("should display the Telephone Operations start date", async () => {
     const { file, questionnaire } = validFiles[0];
     const { getByText } = render(
       <Formik
@@ -146,7 +146,7 @@ describe("Deployment summary", () => {
       </Formik>,
     );
 
-    expect(getByText(/Telephone operations start date/i)).toBeInTheDocument();
+    expect(getByText(/Telephone Operations start date/i)).toBeInTheDocument();
   });
 
   validFiles.forEach(({ file, questionnaire }) => {
@@ -183,7 +183,7 @@ describe("Deployment summary", () => {
     expect(queryByText(/Totalmobile release date/i)).not.toBeInTheDocument();
   });
 
-  it("should display TO start date question for OPN questionnaires", async () => {
+  it("should display Telephone Operations start date for OPN questionnaires", async () => {
     const { getByText } = render(
       <Formik
         initialValues={{}}
@@ -196,6 +196,24 @@ describe("Deployment summary", () => {
       </Formik>,
     );
 
-    expect(getByText(/Telephone operations start date/i)).toBeInTheDocument();
+    expect(getByText(/Telephone Operations start date/i)).toBeInTheDocument();
+  });
+
+  it("does not add date-specific rows when there is no selected file", async () => {
+    const { getByText, queryByText } = render(
+      <Formik
+        initialValues={{}}
+        onSubmit={() => {}}
+      >
+        <DeploymentSummary
+          file={undefined}
+          foundQuestionnaire={null}
+        />
+      </Formik>,
+    );
+
+    expect(getByText(/Already exists/i)).toBeInTheDocument();
+    expect(queryByText(/Telephone Operations start date/i)).not.toBeInTheDocument();
+    expect(queryByText(/Totalmobile release date/i)).not.toBeInTheDocument();
   });
 });

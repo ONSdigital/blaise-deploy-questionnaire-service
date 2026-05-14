@@ -33,28 +33,22 @@ enum Step {
   QuestionnaireExists,
   LiveWarning,
   ConfirmOverride,
-  SetLiveDate,
+  SetToStartDate,
   SetReleaseDate,
   Summary,
   InvalidSettings,
 }
 
 type UploadFormValues = {
-  override: string;
-  askStartDate: string;
-  "set TO start date": string;
-  "set start date": string;
-  "set release date": string;
-  askToSetDate: string;
+  askDate: string;
+  toStartDate: string;
+  tmReleaseDate: string;
 };
 
 const initialValues: UploadFormValues = {
-  override: "",
-  askStartDate: "",
-  "set TO start date": "",
-  askToSetDate: "",
-  "set start date": "",
-  "set release date": "",
+  askDate: "",
+  toStartDate: "",
+  tmReleaseDate: "",
 };
 
 function DeployPage(): ReactElement {
@@ -132,7 +126,7 @@ function DeployPage(): ReactElement {
 
   function getFirstDateStep(questionnaireName: string): Step {
     if (shouldAskToStartDate(questionnaireName)) {
-      return Step.SetLiveDate;
+      return Step.SetToStartDate;
     }
 
     if (shouldAskTmReleaseDate(questionnaireName)) {
@@ -172,7 +166,7 @@ function DeployPage(): ReactElement {
         );
       case Step.ConfirmOverride:
         return <ConfirmOverride questionnaireName={questionnaireName} />;
-      case Step.SetLiveDate:
+      case Step.SetToStartDate:
         return <AskStartDate questionnaireName={questionnaireName} />;
       case Step.SetReleaseDate:
         if (shouldAskTmReleaseDate(questionnaireName)) {
@@ -206,20 +200,20 @@ function DeployPage(): ReactElement {
 
   function isContinueDisabled(values: UploadFormValues): boolean {
     if (activeStep !== Step.SelectFile) {
-      if (activeStep === Step.SetLiveDate) {
-        if (values.askToSetDate !== "yes" && values.askToSetDate !== "no") {
+      if (activeStep === Step.SetToStartDate) {
+        if (values.askDate !== "yes" && values.askDate !== "no") {
           return true;
         }
 
-        return values.askToSetDate === "yes" && !values["set start date"];
+        return values.askDate === "yes" && !values.toStartDate;
       }
 
       if (activeStep === Step.SetReleaseDate && shouldAskTmReleaseDate(questionnaireName)) {
-        if (values.askToSetDate !== "yes" && values.askToSetDate !== "no") {
+        if (values.askDate !== "yes" && values.askDate !== "no") {
           return true;
         }
 
-        return values.askToSetDate === "yes" && !values["set release date"];
+        return values.askDate === "yes" && !values.tmReleaseDate;
       }
 
       return false;
@@ -234,8 +228,8 @@ function DeployPage(): ReactElement {
   ) {
     const installed = await uploadAndInstallFile(
       questionnaireName,
-      values["set start date"],
-      values["set release date"],
+      values.toStartDate,
+      values.tmReleaseDate,
       file,
       setUploading,
       setUploadStatus,
@@ -307,13 +301,6 @@ function DeployPage(): ReactElement {
       }
 
       case Step.QuestionnaireExists:
-        if (values.override === "cancel") {
-          actions.setSubmitting(false);
-          navigate("/");
-
-          return;
-        }
-
         if (foundQuestionnaire?.active && foundQuestionnaire?.hasData) {
           setActiveStep(Step.LiveWarning);
           actions.setTouched({});
@@ -328,24 +315,17 @@ function DeployPage(): ReactElement {
 
         return;
       case Step.ConfirmOverride:
-        if (values.override === "cancel") {
-          actions.setSubmitting(false);
-          navigate("/");
-
-          return;
-        }
-
         setActiveStep(getFirstDateStep(questionnaireName));
         actions.setTouched({});
         actions.setSubmitting(false);
 
         return;
-      case Step.SetLiveDate:
-        if (values.askToSetDate === "no") {
-          values["set start date"] = "";
+      case Step.SetToStartDate:
+        if (values.askDate === "no") {
+          values.toStartDate = "";
         }
 
-        values.askToSetDate = "";
+        values.askDate = "";
 
         if (!shouldAskTmReleaseDate(questionnaireName)) {
           setActiveStep(Step.Summary);
@@ -357,8 +337,8 @@ function DeployPage(): ReactElement {
 
         break;
       case Step.SetReleaseDate:
-        if (values.askToSetDate === "no") {
-          values["set release date"] = "";
+        if (values.askDate === "no") {
+          values.tmReleaseDate = "";
         }
 
         break;

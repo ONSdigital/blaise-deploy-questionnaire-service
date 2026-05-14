@@ -90,5 +90,33 @@ describe("Questionnaire settings table", () => {
         expect(screen.getByText(/ApplyRecordLocking should be True/i)).toBeDefined();
       });
     });
+
+    it("renders False as the expected value for invalid boolean settings", async () => {
+      render(
+        <QuestionnaireSettings
+          errored={false}
+          questionnaireSettings={questionnaireSettingsValid}
+          invalidSettings={{ applyRecordLocking: false }}
+        />,
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText(/ApplyRecordLocking should be False/i)).toBeDefined();
+      });
+    });
+
+    it("renders numeric expected values for invalid non-boolean settings", async () => {
+      render(
+        <QuestionnaireSettings
+          errored={false}
+          questionnaireSettings={questionnaireSettingsValid}
+          invalidSettings={{ sessionTimeout: 30 }}
+        />,
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText(/SessionTimeout should be 30/i)).toBeDefined();
+      });
+    });
   });
 });

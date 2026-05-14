@@ -4,7 +4,7 @@ export default defineConfig({
   test: {
     globals: true,
     clearMocks: true,
-    exclude: ["build/**", "dist/**", "coverage/**", "node_modules/**"],
+    exclude: ["build/**", "coverage/**", "node_modules/**"],
     projects: [
       {
         extends: true,
@@ -20,6 +20,7 @@ export default defineConfig({
         test: {
           name: "server",
           environment: "node",
+          setupFiles: ["./src/server/setupTests.ts"],
           include: ["src/server/**/*.test.ts"],
         },
       },
@@ -28,12 +29,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       include: ["src/**/*.{ts,tsx}"],
-      exclude: [
-        "**/*.mock.{ts,tsx}",
-        "**/*.test.{ts,tsx}",
-        "**/setupTests.ts",
-        "src/server/index.ts",
-      ],
+      exclude: ["**/*.mock.{ts,tsx}", "**/*.test.{ts,tsx}", "**/*.types.ts", "**/setupTests.ts"],
     },
   },
 });

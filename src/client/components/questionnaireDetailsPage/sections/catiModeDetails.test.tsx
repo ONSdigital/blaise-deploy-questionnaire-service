@@ -33,7 +33,7 @@ describe("CATI mode details", () => {
     });
   });
 
-  it("should display an error message when it fails to load the TO Start Date", async () => {
+  it("should display an error message when it fails to load the Telephone Operations start date", async () => {
     const viewToStartDateFailedMessage = /Failed to get Telephone Operations start date/i;
 
     mock.onGet("/api/tostartdate/OPN2101A").reply(500);

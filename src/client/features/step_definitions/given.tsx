@@ -150,8 +150,8 @@ export function givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(
   });
 }
 
-export function givenTOStartDateFails(given: DefineStepFunction, mocker: MockAdapter): void {
-  given(/setting a TO start date for '(.*)' fails/, (questionnaireName: string) => {
+export function givenToStartDateFails(given: DefineStepFunction, mocker: MockAdapter): void {
+  given(/setting a Telephone Operations start date for '(.*)' fails/, (questionnaireName: string) => {
     mocker.onPost(`/api/tostartdate/${questionnaireName}`).reply(500);
   });
 }
@@ -167,7 +167,7 @@ export function givenTheQuestionnaireHasAToStartDate(
   mocker: MockAdapter,
 ): void {
   given(
-    /'(.*)' has a TO start date of '(.*)'/,
+    /'(.*)' has a Telephone Operations start date of '(.*)'/,
     async (questionnaireName: string, toStartDate: string) => {
       mocker
         .onGet(`/api/tostartdate/${questionnaireName}`)
@@ -194,7 +194,7 @@ export function givenTheQuestionnaireHasNoToStartDate(
   given: DefineStepFunction,
   mocker: MockAdapter,
 ): void {
-  given(/'(.*)' has no TO start date/, async (questionnaireName: string) => {
+  given(/'(.*)' has no Telephone Operations start date/, async (questionnaireName: string) => {
     mocker.onGet(`/api/tostartdate/${questionnaireName}`).reply(404);
   });
 }

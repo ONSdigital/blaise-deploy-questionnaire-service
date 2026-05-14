@@ -85,7 +85,7 @@ exports[`Upload Page > select file page matches Snapshot 1`] = `
                   class="ons-label__description ons-input--with-description"
                   id="survey-selector-hint"
                 >
-                  Accepted file type: .bpkg
+                  Accepted file type: bpkg
                 </span>
                 <input
                   accept=".bpkg"
@@ -221,7 +221,7 @@ exports[`Upload Page > select file page matches Snapshot 1`] = `
                 class="ons-label__description ons-input--with-description"
                 id="survey-selector-hint"
               >
-                Accepted file type: .bpkg
+                Accepted file type: bpkg
               </span>
               <input
                 accept=".bpkg"

@@ -24,7 +24,11 @@ export function AskReleaseDate({ questionnaireName }: SelectFilePageProps): Reac
 
           <StyledFormErrorSummary />
 
-          <SetDate dateType="release" />
+          <SetDate
+            dateFieldName="tmReleaseDate"
+            fullDateLabel="Totalmobile release date"
+            shortDateLabel="release date"
+          />
         </div>
       </div>
     </>

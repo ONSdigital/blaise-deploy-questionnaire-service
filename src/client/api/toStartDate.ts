@@ -3,6 +3,7 @@ import { createDateClient } from "./dateClient";
 const toStartDateClient = createDateClient({
   apiPath: "tostartdate",
   fieldKey: "tostartdate",
+  logLabel: "ToStartDate",
   notFoundStatuses: [404],
 });
 

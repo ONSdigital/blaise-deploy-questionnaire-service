@@ -11,7 +11,6 @@ import React, { type ReactElement } from "react";
 
 import { getAuditLogs } from "../../api/auditLogs";
 import { type AuditLog } from "../../utils/auditLog.types";
-import { clientLogger } from "../../utils/logger";
 
 function AuditPage(): ReactElement {
   const {
@@ -22,19 +21,13 @@ function AuditPage(): ReactElement {
   } = useQuery({
     queryKey: ["auditLogs"],
     queryFn: async () => {
-      const logs = await getAuditLogs();
-
-      clientLogger.info(`Response from get audit logs successful, data list length ${logs.length}`);
-      clientLogger.info(logs);
-
-      return logs;
+      return await getAuditLogs();
     },
   });
 
   let listError = "";
 
   if (error) {
-    clientLogger.info(`Error getting audit logs: ${error}`);
     listError = "Unable to load deployment history.";
   } else if (auditLogs.length === 0 && !isLoading) {
     listError = "No recent deployment history found.";

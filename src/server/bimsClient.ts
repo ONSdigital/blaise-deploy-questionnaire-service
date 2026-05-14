@@ -21,7 +21,7 @@ export class BimsClient {
     this.authProvider = new IapProvider(bimsClientId);
   }
 
-  async getStartDate(questionnaireName: string): Promise<ToStartDate | undefined> {
+  async getToStartDate(questionnaireName: string): Promise<ToStartDate | undefined> {
     const url = `/tostartdate/${questionnaireName}`;
 
     const response = await this.get(url);
@@ -31,39 +31,41 @@ export class BimsClient {
     }
 
     if (response.status !== 200) {
-      throw new Error(`Error getting start date for questionnaire: ${questionnaireName}`);
+      throw new Error(
+        `Error getting Telephone Operations start date for questionnaire: ${questionnaireName}`,
+      );
     }
 
     return response.data;
   }
 
-  async deleteStartDate(questionnaireName: string): Promise<void> {
+  async deleteToStartDate(questionnaireName: string): Promise<void> {
     const url = `/tostartdate/${questionnaireName}`;
 
     const response = await this.delete(url);
 
     if (response.status !== 204) {
-      throw new Error(`Could not delete TO Start date for: ${questionnaireName}`);
+      throw new Error(`Could not delete Telephone Operations start date for: ${questionnaireName}`);
     }
   }
 
-  async createStartDate(questionnaireName: string, startDate: string): Promise<ToStartDate> {
+  async createToStartDate(questionnaireName: string, toStartDate: string): Promise<ToStartDate> {
     const url = `/tostartdate/${questionnaireName}`;
 
-    const response = await this.post(url, { tostartdate: startDate });
+    const response = await this.post(url, { tostartdate: toStartDate });
 
     return response.data;
   }
 
-  async updateStartDate(questionnaireName: string, startDate: string): Promise<ToStartDate> {
+  async updateToStartDate(questionnaireName: string, toStartDate: string): Promise<ToStartDate> {
     const url = `/tostartdate/${questionnaireName}`;
 
-    const response = await this.patch(url, { tostartdate: startDate });
+    const response = await this.patch(url, { tostartdate: toStartDate });
 
     return response.data;
   }
 
-  async getReleaseDate(questionnaireName: string): Promise<TmReleaseDate | undefined> {
+  async getTmReleaseDate(questionnaireName: string): Promise<TmReleaseDate | undefined> {
     const url = `/tmreleasedate/${questionnaireName}`;
 
     const response = await this.get(url);
@@ -73,13 +75,13 @@ export class BimsClient {
     }
 
     if (response.status !== 200) {
-      throw new Error(`Error getting release date for questionnaire: ${questionnaireName}`);
+      throw new Error(`Error getting Totalmobile release date for questionnaire: ${questionnaireName}`);
     }
 
     return response.data;
   }
 
-  async deleteReleaseDate(questionnaireName: string): Promise<void> {
+  async deleteTmReleaseDate(questionnaireName: string): Promise<void> {
     const url = `/tmreleasedate/${questionnaireName}`;
 
     const response = await this.delete(url);
@@ -89,18 +91,24 @@ export class BimsClient {
     }
   }
 
-  async createReleaseDate(questionnaireName: string, releaseDate: string): Promise<TmReleaseDate> {
+  async createTmReleaseDate(
+    questionnaireName: string,
+    tmReleaseDate: string,
+  ): Promise<TmReleaseDate> {
     const url = `/tmreleasedate/${questionnaireName}`;
 
-    const response = await this.post(url, { tmreleasedate: releaseDate });
+    const response = await this.post(url, { tmreleasedate: tmReleaseDate });
 
     return response.data;
   }
 
-  async updateReleaseDate(questionnaireName: string, releaseDate: string): Promise<TmReleaseDate> {
+  async updateTmReleaseDate(
+    questionnaireName: string,
+    tmReleaseDate: string,
+  ): Promise<TmReleaseDate> {
     const url = `/tmreleasedate/${questionnaireName}`;
 
-    const response = await this.patch(url, { tmreleasedate: releaseDate });
+    const response = await this.patch(url, { tmreleasedate: tmReleaseDate });
 
     return response.data;
   }

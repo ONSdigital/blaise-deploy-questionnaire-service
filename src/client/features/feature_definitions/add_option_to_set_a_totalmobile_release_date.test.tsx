@@ -22,7 +22,7 @@ import {
   whenISpecifyATotalmobileReleaseDateOf,
 } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
@@ -64,7 +64,7 @@ describe("Feature: add_option_to_set_a_totalmobile_release_date", () => {
     },
   );
 
-  Scenario("Totalmobile date selected", ({ Given, When, Then }) => {
+  Scenario("Totalmobile release date selected", ({ Given, When, Then }) => {
     givenNoQuestionnairesAreInstalled(Given, mocker);
     givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
     whenIConfirmMySelection(When);
@@ -74,7 +74,7 @@ describe("Feature: add_option_to_set_a_totalmobile_release_date", () => {
     thenICanViewTheTotalmobileReleaseDateIsSetTo(Then);
   });
 
-  Scenario("If I select no date to be set", ({ Given, When, Then }) => {
+  Scenario("No Totalmobile release date selected", ({ Given, When, Then }) => {
     givenNoQuestionnairesAreInstalled(Given, mocker);
     givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
     whenIConfirmMySelection(When);

@@ -57,7 +57,7 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
                           <input
                             class="ons-radio__input"
                             id="no"
-                            name="askToSetDate"
+                            name="askDate"
                             props="[object Object]"
                             type="radio"
                             value="no"
@@ -80,7 +80,7 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
                           <input
                             class="ons-radio__input"
                             id="yes"
-                            name="askToSetDate"
+                            name="askDate"
                             props="[object Object]"
                             type="radio"
                             value="yes"
@@ -97,14 +97,14 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
                           >
                             <label
                               class="ons-label ons-u-fs-s--b"
-                              for="set-live-date"
+                              for="set-date"
                             >
                               Please specify date
                             </label>
                             <input
                               class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                              id="set-live-date"
-                              name="set release date"
+                              id="set-date"
+                              name="tmReleaseDate"
                               type="date"
                             />
                           </span>
@@ -174,7 +174,7 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
                         <input
                           class="ons-radio__input"
                           id="no"
-                          name="askToSetDate"
+                          name="askDate"
                           props="[object Object]"
                           type="radio"
                           value="no"
@@ -197,7 +197,7 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
                         <input
                           class="ons-radio__input"
                           id="yes"
-                          name="askToSetDate"
+                          name="askDate"
                           props="[object Object]"
                           type="radio"
                           value="yes"
@@ -214,14 +214,14 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
                         >
                           <label
                             class="ons-label ons-u-fs-s--b"
-                            for="set-live-date"
+                            for="set-date"
                           >
                             Please specify date
                           </label>
                           <input
                             class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                            id="set-live-date"
-                            name="set release date"
+                            id="set-date"
+                            name="tmReleaseDate"
                             type="date"
                           />
                         </span>

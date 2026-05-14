@@ -33,4 +33,18 @@ describe("ReissueNewDonorCaseSummary", () => {
       ),
     ).toBeInTheDocument();
   });
+
+  it("displays the donor-case guidance when the user has no existing donor cases", () => {
+    const props = {
+      responseMessage: "User has no existing donor cases.",
+      statusCode: 500,
+      role: "testuser1",
+    };
+
+    const { getByText } = render(<ReissueNewDonorCaseSummary {...props} />);
+
+    expect(
+      getByText(/User has not been issued with an initial donor case/i),
+    ).toBeInTheDocument();
+  });
 });

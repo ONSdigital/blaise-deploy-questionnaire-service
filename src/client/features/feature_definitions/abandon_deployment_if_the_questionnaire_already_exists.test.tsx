@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { afterEach, describe, vi } from "vitest";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -14,7 +14,7 @@ import {
 } from "../step_definitions/then";
 import { whenIConfirmMySelection, whenISelectTo } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -34,6 +34,10 @@ describe("Feature: abandon_deployment_if_the_questionnaire_already_exists", () =
 
   afterEach(() => {
     mocker.reset();
+  });
+
+  afterAll(() => {
+    mocker.restore();
   });
 
   Scenario("Questionnaire package already in Blaise", ({ Given, When, Then }) => {

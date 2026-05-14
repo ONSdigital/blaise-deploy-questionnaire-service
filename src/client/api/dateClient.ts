@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { clientLogger } from "../utils/logger";
 
+import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
 import axiosConfig from "./axiosConfig";
 
 function isAxiosStatus(error: unknown, statuses: number[]): boolean {
@@ -21,6 +22,7 @@ function isAxiosStatus(error: unknown, statuses: number[]): boolean {
 interface DateClientOptions {
   apiPath: string;
   fieldKey: string;
+  logLabel?: string;
   notFoundStatuses?: number[];
   parseResponseData?: (data: unknown) => string;
 }
@@ -51,14 +53,14 @@ export function createDateClient(options: DateClientOptions): DateClient {
   const {
     apiPath,
     fieldKey,
+    logLabel = fieldKey,
     notFoundStatuses = [404],
     parseResponseData = defaultParseResponseData(fieldKey),
   } = options;
 
-  const label = apiPath;
-
   async function set(questionnaireName: string, value: string | undefined): Promise<boolean> {
-    clientLogger.info(`Call to set ${label} (${questionnaireName}, ${value})`);
+    const functionName = `set${logLabel}`;
+    logFunctionCall(functionName, questionnaireName, value);
     const url = `/api/${apiPath}/${questionnaireName}`;
 
     try {
@@ -66,14 +68,15 @@ export function createDateClient(options: DateClientOptions): DateClient {
 
       return response.status === 200 || response.status === 201;
     } catch (error: unknown) {
-      clientLogger.error(`Setting ${label} for ${questionnaireName} failed: ${error}`);
+      logFunctionError(functionName, error, questionnaireName, value);
 
       return false;
     }
   }
 
   async function get(questionnaireName: string): Promise<string> {
-    clientLogger.info(`Call to get ${label} (${questionnaireName})`);
+    const functionName = `get${logLabel}`;
+    logFunctionCall(functionName, questionnaireName);
     const url = `/api/${apiPath}/${questionnaireName}`;
 
     try {
@@ -81,7 +84,7 @@ export function createDateClient(options: DateClientOptions): DateClient {
       const value = parseResponseData(response.data);
 
       if (!value) {
-        clientLogger.info(`No ${fieldKey} returned for ${questionnaireName}`);
+        clientLogger.info(`${formatFunctionCall(functionName, questionnaireName)} returned no value`);
 
         return "";
       }
@@ -89,16 +92,18 @@ export function createDateClient(options: DateClientOptions): DateClient {
       return value;
     } catch (error: unknown) {
       if (isAxiosStatus(error, notFoundStatuses)) {
+        clientLogger.info(`${formatFunctionCall(functionName, questionnaireName)} returned no value`);
         return "";
       }
 
-      clientLogger.error(`Getting ${label} for ${questionnaireName} failed: ${error}`);
+      logFunctionError(functionName, error, questionnaireName);
       throw error;
     }
   }
 
   async function del(questionnaireName: string): Promise<boolean> {
-    clientLogger.info(`Call to delete ${label} (${questionnaireName})`);
+    const functionName = `delete${logLabel}`;
+    logFunctionCall(functionName, questionnaireName);
     const url = `/api/${apiPath}/${questionnaireName}`;
 
     try {
@@ -106,7 +111,7 @@ export function createDateClient(options: DateClientOptions): DateClient {
 
       return response.status === 204;
     } catch (error: unknown) {
-      clientLogger.error(`Deleting ${label} for ${questionnaireName} failed: ${error}`);
+      logFunctionError(functionName, error, questionnaireName);
 
       return false;
     }

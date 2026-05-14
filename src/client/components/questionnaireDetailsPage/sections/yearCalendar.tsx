@@ -50,7 +50,7 @@ function YearCalendar({ modes, surveyDays }: Props): ReactElement {
 
   const fullWeeks = Math.floor(maxCells / 7);
   const partialDays = maxCells % 7;
-  const weekCount = fullWeeks + (partialDays > 0 ? 1 : 0);
+  const weekCount = fullWeeks + 1;
 
   function buildHeaderCells(): ReactElement[] {
     const headers: ReactElement[] = [];

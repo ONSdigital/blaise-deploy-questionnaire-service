@@ -18,14 +18,18 @@ export function AskStartDate({ questionnaireName }: SelectFilePageProps): ReactE
           </h1>
 
           <p>
-            This is used by the TOBI service to determine after what date a questionnaire should be
-            visible for telephone operators to start interviewing. If it not set, TOBI will use the
-            surveys days to determine when to display.
+            This is used by the TOBI service to determine when a questionnaire should be visible to
+            Telephone Operators for interviewing. If it is not set, TOBI will use survey days to
+            determine when to make it available.
           </p>
 
           <StyledFormErrorSummary />
 
-          <SetDate dateType="start" />
+          <SetDate
+            dateFieldName="toStartDate"
+            fullDateLabel="Telephone Operations start date"
+            shortDateLabel="start date"
+          />
         </div>
       </div>
     </>

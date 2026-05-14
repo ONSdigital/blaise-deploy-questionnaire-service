@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { afterEach, describe, vi } from "vitest";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
@@ -11,7 +11,7 @@ import {
 } from "../step_definitions/then";
 import { whenILoadTheHomepage, whenISearchForAQuestionnaire } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -35,6 +35,10 @@ describe("Feature: questionnaire_search_filter", () => {
 
   afterEach(() => {
     mocker.reset();
+  });
+
+  afterAll(() => {
+    mocker.restore();
   });
 
   Scenario("Search for a questionnaire", ({ Given, When, Then }) => {

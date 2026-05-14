@@ -2,6 +2,8 @@ import { QuestionnaireMode } from "./questionnaireMode.js";
 
 import type { QuestionnaireSettings } from "blaise-api-node-client";
 
+// TODO: make validation mode specific, replace CATI vs mixed
+
 const ValidMixedModeSettings: Partial<QuestionnaireSettings> = {
   saveSessionOnTimeout: true,
   saveSessionOnQuit: true,
@@ -32,7 +34,6 @@ export function ValidateSettings(
   questionnaireSettings: QuestionnaireSettings,
   questionnaireMode: QuestionnaireMode,
 ): [boolean, Partial<QuestionnaireSettings>] {
-  // TODO: make validation mode specific, replace CATI vs mixed
   if (questionnaireMode === QuestionnaireMode.Cati) {
     return ValidateCATIModeSettings(questionnaireSettings);
   }

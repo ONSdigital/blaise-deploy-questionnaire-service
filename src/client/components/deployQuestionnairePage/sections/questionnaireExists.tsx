@@ -1,4 +1,3 @@
-import { StyledFormErrorSummary, StyledFormField } from "blaise-design-system-react-components";
 import React, { type ReactElement } from "react";
 
 interface SelectFilePageProps {
@@ -6,41 +5,13 @@ interface SelectFilePageProps {
 }
 
 function QuestionnaireExists({ questionnaireName }: SelectFilePageProps): ReactElement {
-  function validateRadio(value: string) {
-    let error;
-
-    if (!value) {
-      error = "Select an option";
-    }
-
-    return error;
-  }
-
-  const field = {
-    name: "override",
-    description: "",
-    type: "radio",
-    autoFocus: true,
-    validate: validateRadio,
-    radioOptions: [
-      { id: "cancel", label: "Cancel and keep original questionnaire", value: "cancel" },
-      { id: "continue", label: "Overwrite the entire questionnaire", value: "continue" },
-    ],
-    props: {},
-  };
-
   return (
     <>
       <h1 className="ons-u-mb-l">
-        Questionnaire file <em className="ons-highlight">{questionnaireName}</em> already exists in
-        the system.
+        Questionnaire <em className="ons-highlight">{questionnaireName}</em> already exists.
         <br />
-        What action do you want to take?
+        Do you want to overwrite it?
       </h1>
-
-      <StyledFormErrorSummary />
-
-      <StyledFormField {...field} />
     </>
   );
 }

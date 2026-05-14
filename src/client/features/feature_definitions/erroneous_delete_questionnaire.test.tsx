@@ -21,7 +21,7 @@ import {
   whenIGoToTheQuestionnaireDetailsPage,
 } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 

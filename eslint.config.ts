@@ -10,7 +10,7 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["coverage/**", "build/**", "dist/**", "node_modules/**", ".yarn/**", ".pnp.*"],
+    ignores: ["build/**", "coverage/**", "node_modules/**"],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -19,19 +19,9 @@ export default tseslint.config(
   {
     languageOptions: { ecmaVersion: "latest" },
     settings: {
-      // Legacy fallback for editor runtimes still expecting `import-x/resolver`.
-      // Keeping this on `node` avoids loading an incompatible TypeScript resolver interface.
-      "import-x/resolver": {
-        node: true,
-      },
       "import-x/resolver-next": [
         createTypeScriptImportResolver({
-          project: [
-            "./tsconfig.client.json",
-            "./tsconfig.server.json",
-            "./tsconfig.server.test.json",
-            "./tsconfig.node.json",
-          ],
+          project: ["./tsconfig.client.json", "./tsconfig.server.json", "./tsconfig.tooling.json"],
         }),
       ],
     },
@@ -88,10 +78,8 @@ export default tseslint.config(
             "src/**/*.mock.{ts,tsx}",
             "src/**/*.test.{ts,tsx}",
             "src/client/setupTests.ts",
-            "src/client/features/**/*.ts",
-            "src/client/features/**/*.tsx",
+            "src/client/features/**/*.{ts,tsx}",
             "*.config.ts",
-            "*.workspace.ts",
           ],
         },
       ],
@@ -99,8 +87,7 @@ export default tseslint.config(
   },
 
   {
-    files: ["src/client/**/*.{ts,tsx}", "src/components/**/*.{ts,tsx}"],
-    ignores: ["src/server/**", "src/utilities/**"],
+    files: ["src/client/**/*.{ts,tsx}"],
     languageOptions: { globals: { ...globals.browser } },
     rules: {
       "import-x/extensions": [
@@ -112,7 +99,7 @@ export default tseslint.config(
   },
 
   {
-    files: ["src/server/**/*.ts", "src/utilities/**/*.ts"],
+    files: ["src/server/**/*.ts"],
     languageOptions: { globals: { ...globals.node } },
     rules: {
       "import-x/extensions": [

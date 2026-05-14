@@ -87,7 +87,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
     vi.clearAllMocks();
   });
 
-  it("should return a 200 status and a json object with message and status if successfully created donor cases", async () => {
+  it("should return a 200 status and a JSON response body with message and status when donor cases are created successfully", async () => {
     callCloudFunctionToCreateDonorCasesMock.mockResolvedValue(successResponse);
 
     const response = await request.post("/api/cloudFunction/createDonorCases");
@@ -96,7 +96,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
     expect(response.body).toEqual(successResponse);
   });
 
-  it("should return a 500 status and a json object with message and status if cloud function failed creating donor cases", async () => {
+  it("should return a 500 status and a JSON response body with message and status when creating donor cases fails", async () => {
     callCloudFunctionToCreateDonorCasesMock.mockRejectedValue(cloudFunctionAxiosError);
 
     const response = await request.post("/api/cloudFunction/createDonorCases");
@@ -137,7 +137,7 @@ describe("Call Cloud Function to reissue new donor case and return responses", (
     vi.clearAllMocks();
   });
 
-  it("should return a 200 status and a json object with message and status if successfully reissued new donor case", async () => {
+  it("should return a 200 status and a JSON response body with message and status when reissuing a donor case succeeds", async () => {
     callCloudFunctionToCreateDonorCasesMock.mockResolvedValue(successResponse);
 
     const response = await request.post("/api/cloudFunction/reissueNewDonorCase");
@@ -146,7 +146,7 @@ describe("Call Cloud Function to reissue new donor case and return responses", (
     expect(response.body).toEqual(successResponse);
   });
 
-  it("should return a 500 status and a json object with message and status if cloud function failed reissuing new donor case", async () => {
+  it("should return a 500 status and a JSON response body with message and status when reissuing a donor case fails", async () => {
     callCloudFunctionToCreateDonorCasesMock.mockRejectedValue(cloudFunctionAxiosError);
 
     const response = await request.post("/api/cloudFunction/reissueNewDonorCase");

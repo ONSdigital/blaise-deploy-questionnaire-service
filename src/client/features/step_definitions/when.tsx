@@ -13,7 +13,7 @@ import { createTestQueryClient } from "../../test-utils/renderWithQueryClient";
 
 import {
   formatDateString,
-  navigatePastSettingTOStartDateAndDeployQuestionnaire,
+  navigatePastSettingToStartDateAndDeployQuestionnaire,
 } from "./helpers/functions";
 
 export function whenIConfirmMySelection(when: DefineStepFunction): void {
@@ -34,8 +34,7 @@ export function whenIConfirmMySelectionNoWait(when: DefineStepFunction): void {
 export function whenISelectTo(when: DefineStepFunction): void {
   when(/I select to '(.*)'/, async (button: string) => {
     if (button == "cancel") {
-      await userEvent.click(screen.getByText("Cancel and keep original questionnaire"));
-      await userEvent.click(screen.getByRole("button", { name: /Continue/i }));
+      await userEvent.click(await screen.findByRole("button", { name: /^Cancel$/i }));
     }
   });
 }
@@ -50,17 +49,7 @@ export function whenILoadTheHomepage(when: DefineStepFunction): void {
       </QueryClientProvider>,
     );
 
-    const filterInput = await screen
-      .findByLabelText(/Filter by questionnaire name/i)
-      .catch(() => null);
-
-    if (filterInput) {
-      expect(filterInput).toBeDefined();
-
-      return;
-    }
-
-    await screen.findByRole("heading", { name: /View questionnaires/i });
+    await screen.findByLabelText(/Filter by questionnaire name/i);
   });
 }
 
@@ -80,34 +69,41 @@ export function whenIGoToTheQuestionnaireDetailsPage(when: DefineStepFunction): 
 
 export function whenIDeleteAQuestionnaire(when: DefineStepFunction): void {
   when(/I select a link to delete the '(.*)' questionnaire/, async (questionnaire: string) => {
-    await waitFor(() => {
-      expect(document.querySelector("#delete-questionnaire")).not.toBeNull();
-    }, { timeout: 10000 });
+    await waitFor(
+      () => {
+        expect(document.querySelector("#delete-questionnaire")).not.toBeNull();
+      },
+      { timeout: 10000 },
+    );
 
     const deleteControl = document.querySelector("#delete-questionnaire") as HTMLElement;
 
     await userEvent.click(deleteControl);
 
-    await waitFor(() => {
-      const confirmDeleteButton = document.querySelector("#confirm-delete");
-      const erroneousHeading = screen.queryByRole("heading", {
-        name: new RegExp(`Unable to delete questionnaire ${questionnaire}`, "i"),
-      });
+    await waitFor(
+      () => {
+        const confirmDeleteButton = document.querySelector("#confirm-delete");
+        const erroneousHeading = screen.queryByRole("heading", {
+          name: new RegExp(`Unable to delete questionnaire ${questionnaire}`, "i"),
+        });
 
-      expect(confirmDeleteButton ?? erroneousHeading).not.toBeNull();
-    }, { timeout: 10000 });
+        expect(confirmDeleteButton ?? erroneousHeading).not.toBeNull();
+      },
+      { timeout: 10000 },
+    );
   });
 }
 
 export function whenIConfirmDelete(when: DefineStepFunction): void {
   when("I confirm that I want to proceed", async () => {
-    await waitFor(() => {
-      expect(document.querySelector("#confirm-delete")).not.toBeNull();
-    }, { timeout: 10000 });
+    await waitFor(
+      () => {
+        expect(document.querySelector("#confirm-delete")).not.toBeNull();
+      },
+      { timeout: 10000 },
+    );
 
-    const confirmDeleteButton =
-      (document.querySelector("#confirm-delete") as HTMLElement | null) ??
-      (await screen.findByRole("button", { name: /^Delete$/i }));
+    const confirmDeleteButton = document.querySelector("#confirm-delete") as HTMLElement;
 
     await userEvent.click(confirmDeleteButton);
   });
@@ -115,13 +111,14 @@ export function whenIConfirmDelete(when: DefineStepFunction): void {
 
 export function whenICancelDelete(when: DefineStepFunction): void {
   when("I click cancel", async () => {
-    await waitFor(() => {
-      expect(document.querySelector("#cancel-delete")).not.toBeNull();
-    }, { timeout: 10000 });
+    await waitFor(
+      () => {
+        expect(document.querySelector("#cancel-delete")).not.toBeNull();
+      },
+      { timeout: 10000 },
+    );
 
-    const cancelDeleteButton =
-      (document.querySelector("#cancel-delete") as HTMLElement | null) ??
-      (await screen.findByRole("button", { name: /^Cancel$/i }));
+    const cancelDeleteButton = document.querySelector("#cancel-delete") as HTMLElement;
 
     await userEvent.click(cancelDeleteButton);
   });
@@ -147,7 +144,7 @@ export function whenISelectTheQuestionnaire(when: DefineStepFunction): void {
 }
 
 export function whenISelectToChangeOrDeleteToStartDate(when: DefineStepFunction): void {
-  when("I select to change or delete the TO Start Date", async () => {
+  when("I select to change or delete the Telephone Operations start date", async () => {
     await act(async () => {
       await flushPromises();
     });
@@ -162,7 +159,7 @@ export function whenISelectToChangeOrDeleteToStartDate(when: DefineStepFunction)
 }
 
 export function whenIHaveSelectedToAddAToStartDate(when: DefineStepFunction): void {
-  when("I have selected to add a TO Start Date", async () => {
+  when("I have selected to add a Telephone Operations start date", async () => {
     await act(async () => {
       await flushPromises();
     });
@@ -181,15 +178,9 @@ export function whenIHaveSelectedToAddATotalmobileReleaseDate(when: DefineStepFu
     await act(async () => {
       await flushPromises();
     });
-    const addReleaseDateLink =
-      screen.queryByRole("link", { name: /Add( a)? release date/i }) ??
-      screen.queryByRole("link", { name: /Add.*release date/i });
-
-    if (!addReleaseDateLink) {
-      throw new Error("Add release date action is not available");
-    }
-
-    await userEvent.click(addReleaseDateLink);
+    await userEvent.click(
+      await screen.findByRole("link", { name: /^Add a release date for questionnaire /i }),
+    );
     await waitFor(() =>
       screen.getByRole("heading", {
         level: 1,
@@ -199,8 +190,8 @@ export function whenIHaveSelectedToAddATotalmobileReleaseDate(when: DefineStepFu
   });
 }
 
-export function whenISpecifyATOStartDateOf(when: DefineStepFunction): void {
-  when(/I specify the TO start date of '(.*)'/, async (toStartDate: string) => {
+export function whenISpecifyAToStartDateOf(when: DefineStepFunction): void {
+  when(/I specify the Telephone Operations start date of '(.*)'/, async (toStartDate: string) => {
     await userEvent.click(screen.getByLabelText(/Yes, let me specify a start date/i));
     fireEvent.change(screen.getByLabelText(/Please specify date/i), {
       target: { value: formatDateString(toStartDate) },
@@ -212,7 +203,7 @@ export function whenISpecifyATOStartDateOf(when: DefineStepFunction): void {
 }
 
 export function whenIDeleteTheToStartDate(when: DefineStepFunction): void {
-  when("I delete the TO start date", async () => {
+  when("I delete the Telephone Operations start date", async () => {
     await userEvent.click(screen.getByLabelText(/No start date/i));
     await act(async () => {
       await flushPromises();
@@ -222,12 +213,7 @@ export function whenIDeleteTheToStartDate(when: DefineStepFunction): void {
 
 export function whenIDeleteTheTotalmobileReleaseDate(when: DefineStepFunction): void {
   when("I delete the Totalmobile release date", async () => {
-    const noReleaseDateOption =
-      screen.queryByLabelText(/No.*release date/i) ??
-      screen.queryByLabelText(/No.*Totalmobile/i) ??
-      screen.getByRole("radio", { name: /No/i });
-
-    await userEvent.click(noReleaseDateOption);
+    await userEvent.click(screen.getByLabelText(/^No release date$/i));
     await act(async () => {
       await flushPromises();
     });
@@ -235,7 +221,7 @@ export function whenIDeleteTheTotalmobileReleaseDate(when: DefineStepFunction): 
 }
 
 export function whenISelectToInstallWithNoStartDate(when: DefineStepFunction): void {
-  when("I select to not provide a TO Start Date", async () => {
+  when("I select to not provide a Telephone Operations start date", async () => {
     await userEvent.click(screen.getByLabelText(/No start date/i));
     await userEvent.click(screen.getByRole("button", { name: /Continue/i }));
     await act(async () => {
@@ -272,7 +258,6 @@ export function whenIClickGenerateCases(when: DefineStepFunction): void {
 
 export function whenISelectToOverwrite(when: DefineStepFunction): void {
   when("I select to 'overwrite'", async () => {
-    await userEvent.click(await screen.findByText(/overwrite the entire questionnaire/i));
     await userEvent.click(await screen.findByRole("button", { name: /Continue/i }));
     await act(async () => {
       await flushPromises();
@@ -282,13 +267,12 @@ export function whenISelectToOverwrite(when: DefineStepFunction): void {
 
 export function whenIConfirmToOverwrite(when: DefineStepFunction): void {
   when("I confirm 'overwrite'", async () => {
-    await userEvent.click(await screen.findByText(/yes, overwrite questionnaire/i));
     await userEvent.click(await screen.findByRole("button", { name: /Continue/i }));
     await act(async () => {
       await flushPromises();
     });
 
-    await navigatePastSettingTOStartDateAndDeployQuestionnaire();
+    await navigatePastSettingToStartDateAndDeployQuestionnaire();
     await act(async () => {
       await flushPromises();
     });
@@ -297,8 +281,7 @@ export function whenIConfirmToOverwrite(when: DefineStepFunction): void {
 
 export function whenIConfirmNotToOverwrite(when: DefineStepFunction): void {
   when("I confirm that I do NOT want to continue", async () => {
-    await userEvent.click(await screen.findByText(/no, do not overwrite questionnaire/i));
-    await userEvent.click(await screen.findByRole("button", { name: /Continue/i }));
+    await userEvent.click(await screen.findByRole("button", { name: /^Cancel$/i }));
   });
 }
 
@@ -320,7 +303,9 @@ export function whenISearchForAQuestionnaire(when: DefineStepFunction): void {
 export function whenIDeployTheQuestionnaire(when: DefineStepFunction): void {
   when("I deploy the questionnaire", async () => {
     const isDeploymentOutcomeVisible = (): boolean => {
-      return screen.queryByRole("heading", { name: /Questionnaire .* deploy(ed| failed)/i }) != null;
+      return (
+        screen.queryByRole("heading", { name: /Questionnaire .* deploy(ed| failed)/i }) != null
+      );
     };
 
     // Drive the wizard through Continue/Deploy states using the form submit control.
@@ -330,15 +315,10 @@ export function whenIDeployTheQuestionnaire(when: DefineStepFunction): void {
       }
 
       await waitFor(() => {
-        expect(
-          document.getElementById("continue-deploy-button") ??
-            screen.queryByRole("button", { name: /Deploy questionnaire|Deploy anyway|Continue/i }),
-        ).not.toBeNull();
+        expect(document.getElementById("continue-deploy-button")).not.toBeNull();
       });
 
-      const submitButton =
-        document.getElementById("continue-deploy-button") ??
-        screen.queryByRole("button", { name: /Deploy questionnaire|Deploy anyway|Continue/i });
+      const submitButton = document.getElementById("continue-deploy-button");
 
       if (!submitButton) {
         throw new Error("No deployment action button was available");
@@ -365,11 +345,8 @@ export function whenIClickDeployNewQuestionnaire(when: DefineStepFunction): void
     await act(async () => {
       await flushPromises();
     });
-    const deployLink =
-      (await screen.findByRole("link", { name: /deploy questionnaire/i }).catch(() => null)) ??
-      (await screen.findByText(/deploy questionnaire/i));
 
-    await userEvent.click(deployLink);
+    await userEvent.click(await screen.findByRole("link", { name: /^Deploy questionnaire$/i }));
     await act(async () => {
       await flushPromises();
     });
@@ -378,7 +355,9 @@ export function whenIClickDeployNewQuestionnaire(when: DefineStepFunction): void
 
 export function whenIHaveSelectedADeployPackage(then: DefineStepFunction): void {
   then(/I have selected a deploy package for '(.*)'/, async (questionnaire: string) => {
-    const input = await screen.findByLabelText(/Select questionnaire package|Select survey package/i);
+    const input = await screen.findByLabelText(
+      /Select questionnaire package|Select survey package/i,
+    );
 
     const file = new File(["(⌐□_□)"], `${questionnaire}.bpkg`, { type: "application/zip" });
 
@@ -388,24 +367,7 @@ export function whenIHaveSelectedADeployPackage(then: DefineStepFunction): void 
 
 export function whenIChooseToDeployAnyway(when: DefineStepFunction): void {
   when("I choose to deploy anyway", async () => {
-    const deployAnywayButton = await screen.findByRole("button", { name: /Deploy anyway/i }).catch(() => null);
-
-    if (deployAnywayButton) {
-      await userEvent.click(deployAnywayButton);
-    } else {
-      const continueButton = await screen.findByRole("button", { name: /Continue/i }).catch(() => null);
-
-      if (!continueButton) {
-        throw new Error("Deploy anyway action was not available");
-      }
-
-      await userEvent.click(continueButton);
-      await act(async () => {
-        await flushPromises();
-      });
-
-      await userEvent.click(await screen.findByRole("button", { name: /Deploy anyway/i }));
-    }
+    await userEvent.click(await screen.findByRole("button", { name: /^Deploy anyway$/i }));
 
     await act(async () => {
       await flushPromises();
@@ -415,24 +377,7 @@ export function whenIChooseToDeployAnyway(when: DefineStepFunction): void {
 
 export function whenIChooseToCancel(when: DefineStepFunction): void {
   when("I choose to cancel", async () => {
-    const cancelButton = await screen.findByRole("button", { name: /Cancel/i }).catch(() => null);
-
-    if (cancelButton) {
-      await userEvent.click(cancelButton);
-    } else {
-      const continueButton = await screen.findByRole("button", { name: /Continue/i }).catch(() => null);
-
-      if (!continueButton) {
-        throw new Error("Cancel action was not available");
-      }
-
-      await userEvent.click(continueButton);
-      await act(async () => {
-        await flushPromises();
-      });
-
-      await userEvent.click(await screen.findByRole("button", { name: /Cancel/i }));
-    }
+    await userEvent.click(await screen.findByRole("button", { name: /^Cancel$/i }));
 
     await act(async () => {
       await flushPromises();
@@ -467,13 +412,9 @@ export function whenIDeploy(when: DefineStepFunction): void {
 
 export function whenISpecifyATotalmobileReleaseDateOf(when: DefineStepFunction): void {
   when(/I specify the Totalmobile release date of '(.*)'/, async (toStartDate: string) => {
-    const yesReleaseDateOption =
-      screen.queryByLabelText(/Yes.*release date/i) ??
-      screen.getByLabelText(/Yes.*specify.*date/i);
+    await userEvent.click(screen.getByLabelText(/^Yes, let me specify a release date$/i));
 
-    await userEvent.click(yesReleaseDateOption);
-
-    fireEvent.change(screen.getByLabelText(/Please specify( the)? date/i), {
+    fireEvent.change(screen.getByLabelText(/^Please specify date$/i), {
       target: { value: formatDateString(toStartDate) },
     });
     await act(async () => {
@@ -484,12 +425,7 @@ export function whenISpecifyATotalmobileReleaseDateOf(when: DefineStepFunction):
 
 export function whenISelectToInstallWithNoTmReleaseDate(when: DefineStepFunction): void {
   when("I select to not provide a Totalmobile release date", async () => {
-    const noReleaseDateOption =
-      screen.queryByLabelText(/No.*release date/i) ??
-      screen.queryByLabelText(/No.*Totalmobile/i) ??
-      screen.getByRole("radio", { name: /No/i });
-
-    await userEvent.click(noReleaseDateOption);
+    await userEvent.click(screen.getByLabelText(/^No release date$/i));
     await userEvent.click(screen.getByRole("button", { name: /Continue/i }));
     await act(async () => {
       await flushPromises();
@@ -502,15 +438,11 @@ export function whenISelectToChangeOrDeleteTotalmobileReleaseDate(when: DefineSt
     await act(async () => {
       await flushPromises();
     });
-    const changeReleaseDateLink =
-      screen.queryByRole("link", { name: /Change or delete release date/i }) ??
-      screen.queryByRole("link", { name: /Change.*release date/i });
-
-    if (!changeReleaseDateLink) {
-      throw new Error("Change or delete release date action is not available");
-    }
-
-    await userEvent.click(changeReleaseDateLink);
+    await userEvent.click(
+      await screen.findByRole("link", {
+        name: /^Change or delete release date for questionnaire /i,
+      }),
+    );
     await waitFor(() =>
       screen.getByRole("heading", {
         level: 1,

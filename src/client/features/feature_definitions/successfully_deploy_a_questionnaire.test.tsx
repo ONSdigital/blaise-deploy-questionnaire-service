@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { afterEach, describe, vi } from "vitest";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -27,7 +27,7 @@ import {
   whenISelectToInstallWithNoStartDate,
 } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
@@ -48,6 +48,10 @@ describe("Feature: successfully_deploy_a_questionnaire", () => {
 
   afterEach(() => {
     mocker.reset();
+  });
+
+  afterAll(() => {
+    mocker.restore();
   });
 
   Scenario("Successful log in to Questionnaire Deployment Service", ({ Given, When, Then }) => {

@@ -29,6 +29,4 @@ export function formatRelativeDate(dateValue: Date | string): string {
       );
     }
   }
-
-  return relativeTimeFormatter.format(0, "second");
 }

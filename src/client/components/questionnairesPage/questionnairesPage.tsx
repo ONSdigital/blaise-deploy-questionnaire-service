@@ -8,7 +8,6 @@ import React, { type ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { getQuestionnaires } from "../../api/questionnaires";
-import { clientLogger } from "../../utils/logger";
 import { QuestionnaireStatus } from "../shared/questionnaireStatus";
 
 import type { Questionnaire } from "blaise-api-node-client";
@@ -28,11 +27,6 @@ function isHiddenQuestionnaire(questionnaireName: string): boolean {
 function getQuestionnaireIcon(questionnaireName: string): IconProp {
   if (questionnaireName.toUpperCase().includes("DST")) {
     return faVial;
-  } else if (
-    questionnaireName.toUpperCase().includes("CONTACTINFO") ||
-    questionnaireName.toUpperCase().includes("ATTEMPTS")
-  ) {
-    return faGear;
   }
 
   return faGear;
@@ -121,15 +115,8 @@ const QuestionnairesPage = ({ setErrored }: Props): ReactElement => {
     queryKey: ["questionnaires"],
     queryFn: async () => {
       try {
-        const data = await getQuestionnaires();
-
-        clientLogger.info(
-          `Response from get all questionnaires successful, data list length ${data.length}`,
-        );
-
-        return data;
+        return await getQuestionnaires();
       } catch {
-        clientLogger.info("Response from get all questionnaires failed");
         setErrored(true);
         throw new Error("Unable to load questionnaires");
       }

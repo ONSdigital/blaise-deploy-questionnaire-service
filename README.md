@@ -11,7 +11,7 @@ The app is a React frontend served by an Express backend. During deployment, upl
 DQS interacts with the following services during questionnaire deployment and management:
 
 - [Blaise Instrument Metadata Service (BIMS)](https://github.com/ONSdigital/blaise-instrument-metadata-service): Stores questionnaire metadata, including Telephone Operations start date and Totalmobile release date.
-- [Telephone Operations Blaise Interface (TOBI)](https://github.com/ONSdigital/telephone-operations-blaise-interface): Uses TO start dates configured via DQS/BIMS.
+- [Telephone Operations Blaise Interface (TOBI)](https://github.com/ONSdigital/telephone-operations-blaise-interface): Uses Telephone Operations start dates configured via DQS/BIMS.
 - [Blaise Totalmobile Services (BTS)](https://github.com/ONSdigital/blaise-totalmobile-services): Uses Totalmobile release dates configured via DQS/BIMS.
 - [Blaise UAC Service (BUS)](https://github.com/ONSdigital/blaise-uac-service): Generates and manages Unique Access Codes (UACs).
 

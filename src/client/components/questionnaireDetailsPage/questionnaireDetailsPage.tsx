@@ -15,7 +15,7 @@ import { QuestionnaireDetails } from "./sections/questionnaireDetails";
 import { QuestionnaireSettings } from "./sections/questionnaireSettings";
 import { ReissueNewDonorCase } from "./sections/reissueNewDonorCase";
 import { ReissueNewDonorCaseSummary } from "./sections/reissueNewDonorCaseSummary";
-import { ReleaseDate } from "./sections/releaseDate";
+import { TmReleaseDate } from "./sections/tmReleaseDate";
 import { YearCalendar } from "./sections/yearCalendar";
 
 import type { Questionnaire } from "blaise-api-node-client";
@@ -158,7 +158,7 @@ function QuestionnaireDetailsPage(): ReactElement {
               />
             </ErrorBoundary>
             <ErrorBoundary errorMessageText="Failed to load Totalmobile details">
-              <ReleaseDate questionnaireName={questionnaire.name} />
+              <TmReleaseDate questionnaireName={questionnaire.name} />
             </ErrorBoundary>
             <ErrorBoundary errorMessageText="Failed to load questionnaire settings">
               <QuestionnaireSettings

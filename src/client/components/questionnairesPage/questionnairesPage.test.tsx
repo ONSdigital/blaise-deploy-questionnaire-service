@@ -165,6 +165,64 @@ describe("Questionnaire List displays valid user questionnaires", () => {
       expect(screen.getByText(/IPS2409A/i)).toBeVisible();
     });
   });
+
+  it("shows an info panel when the filter has no matches", async () => {
+    renderWithRouter(<QuestionnairesPage setErrored={vi.fn()} />);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/IPS2409A/i)).toBeVisible();
+    });
+
+    const filterInput = screen.getByTestId(/filter-by-name-input/i);
+    await userEvent.type(filterInput, "NO_MATCHES");
+
+    await waitFor(() => {
+      expect(screen.getByText(/No questionnaires containing NO_MATCHES found/i)).toBeVisible();
+    });
+  });
+
+  it("shows an error panel when loading questionnaires fails", async () => {
+    mock.reset();
+    mock.onGet("/api/questionnaires").reply(500);
+    const setErrored = vi.fn();
+
+    const { container } = renderWithRouter(<QuestionnairesPage setErrored={setErrored} />);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Unable to load questionnaires/i)).toBeVisible();
+      expect(setErrored).toHaveBeenCalledWith(true);
+      expect(container.querySelector(".ons-panel--error")).toBeTruthy();
+    });
+  });
+
+  it("passes an empty status to the status component when a questionnaire status is missing", async () => {
+    mock.onGet("/api/questionnaires").reply(200, [
+      {
+        ...MOCK_QUESTIONNAIRE_LIST[0],
+        name: "IPS2410A",
+        status: undefined,
+      },
+    ]);
+
+    renderWithRouter(<QuestionnairesPage setErrored={vi.fn()} />);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/IPS2410A/i)).toBeVisible();
+      expect(screen.queryByText("undefined")).not.toBeInTheDocument();
+    });
+  });
 });
 
 describe("Questionnaire List displays hidden questionnaires that match when using the search filter", () => {

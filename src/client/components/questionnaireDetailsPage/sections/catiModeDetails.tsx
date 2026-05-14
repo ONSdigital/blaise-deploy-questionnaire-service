@@ -55,14 +55,11 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
       <div className="ons-summary__group">
         <h2 className="ons-summary__group-title">CATI mode details</h2>
 
-        {/* CHANGED: Replaced the legacy table markup with the strict 2-column <dl> grid, matching CAWI */}
         <dl className="ons-summary__items">
           <div className="ons-summary__item">
-            {/* Column 1: Title AND Action Link (Forces link to the left) */}
             <dt className="ons-summary__item-title">
               <div className="ons-summary__item--text">Telephone Operations start date</div>
 
-              {/* CHANGED: Placed the action links underneath the title text to left-align them */}
               <div className="ons-u-mt-m ons-u-mb-s">
                 {toStartDate ? (
                   <Link
@@ -86,9 +83,7 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
               </div>
             </dt>
 
-            {/* Column 2: Values (Bolded text) */}
             <dd className="ons-summary__values">
-              {/* CHANGED: Added ons-u-fw-b to bold the resulting data text to match CAWI layout */}
               <span className="ons-summary__text ons-u-fw-b">
                 {toStartDate ? (
                   <>

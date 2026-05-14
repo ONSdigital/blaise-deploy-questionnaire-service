@@ -51,13 +51,13 @@ export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004
   await userEvent.upload(input, file);
 }
 
-export async function navigatePastSettingTOStartDateAndDeployQuestionnaire(): Promise<void> {
-  await selectNoTOStartDateAndContinue();
+export async function navigatePastSettingToStartDateAndDeployQuestionnaire(): Promise<void> {
+  await selectNoToStartDateAndContinue();
   await clickContinue();
   await clickDeployQuestionnaire();
 }
 
-async function selectNoTOStartDateAndContinue(): Promise<void> {
+async function selectNoToStartDateAndContinue(): Promise<void> {
   await userEvent.click(screen.getByLabelText(/No start date/i));
 }
 

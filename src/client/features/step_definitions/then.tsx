@@ -1,6 +1,6 @@
 import { screen, waitFor } from "@testing-library/react";
-import { act } from "react";
 import userEvent from "@testing-library/user-event";
+import { act } from "react";
 
 type DefineStepFunction = (name: any, callback: any) => void;
 
@@ -12,24 +12,15 @@ import type MockAdapter from "axios-mock-adapter/types";
 
 export function thenIAmPresentedWithTheOptionsToCancelOrOverwrite(then: DefineStepFunction): void {
   then("I am presented with the options to cancel or overwrite the questionnaire", async () => {
-    expect(await screen.findByText(/already exists in the system/i)).toBeDefined();
-    expect(await screen.findByText("Overwrite the entire questionnaire")).toBeDefined();
+    expect(await screen.findByText(/already exists/i)).toBeDefined();
+    expect(await screen.findByRole("button", { name: /Continue/i })).toBeDefined();
+    expect(await screen.findByRole("button", { name: /^Cancel$/i })).toBeDefined();
   });
 }
 
 export function thenIAmReturnedToTheLandingPage(then: DefineStepFunction): void {
   then("I am returned to the landing page", async () => {
-    const filterInput = await screen
-      .findByLabelText(/Filter by questionnaire name/i)
-      .catch(() => null);
-
-    if (filterInput) {
-      expect(filterInput).toBeDefined();
-
-      return;
-    }
-
-    expect(await screen.findByRole("heading", { name: /view questionnaires/i })).toBeDefined();
+    expect(await screen.findByLabelText(/Filter by questionnaire name/i)).toBeDefined();
   });
 }
 
@@ -43,9 +34,11 @@ export function thenIWillNotHaveTheOptionToDelete(then: DefineStepFunction): voi
   then(
     /I will not have the option to 'delete' displayed for '(.*)'/,
     async (questionnaire: string) => {
-      const deleteButton: Element | null = document.querySelector(`#delete-${questionnaire}`);
-
-      expect(await deleteButton).toBeNull();
+      expect(
+        screen.queryByRole("button", {
+          name: new RegExp(`Delete questionnaire ${questionnaire}`, "i"),
+        }),
+      ).toBeNull();
     },
   );
 }
@@ -85,7 +78,7 @@ export function thenIAmPresentedWithAnActiveWebCollectionWarning(then: DefineSte
 
 export function thenIAmPresentedWithAConfirmOverwriteWarning(then: DefineStepFunction): void {
   then("I am presented with a warning, to confirm overwrite", async () => {
-    expect(await screen.findByText(/are you sure you want to overwrite the entire questionnaire/i));
+    expect(await screen.findByText(/are you sure you want to overwrite questionnaire/i));
   });
 }
 
@@ -212,26 +205,26 @@ export function thenIAmPresentedWithAListOfDeployedQuestionnaires(then: DefineSt
 }
 
 export function thenIHaveTheOptionToChangeOrDeleteTheToStartDate(then: DefineStepFunction): void {
-  then("I have the option to change or delete the TO Start date", async () => {
+  then("I have the option to change or delete the Telephone Operations start date", async () => {
     expect(await screen.findByText(/Change or delete start date/i)).toBeDefined();
   });
 }
 
 export function thenIHaveTheOptionToAddAToStartDate(then: DefineStepFunction): void {
-  then("I have the option to add a TO Start date", async () => {
+  then("I have the option to add a Telephone Operations start date", async () => {
     expect(await screen.findByText(/Add start date/i)).toBeDefined();
   });
 }
 
-export function thenICanViewTheTOStartDateIsSetTo(then: DefineStepFunction): void {
-  then(/I can view the TO Start Date is set to '(.*)'/, async (toStartDate: string) => {
+export function thenICanViewTheToStartDateIsSetTo(then: DefineStepFunction): void {
+  then(/I can view the Telephone Operations start date is set to '(.*)'/, async (toStartDate: string) => {
     expect(await screen.findByText(new RegExp(toStartDate, "i"))).toBeDefined();
   });
 }
 
 export function thenTheToStartDateIsStored(then: DefineStepFunction, mocker: MockAdapter): void {
   then(
-    /the TO start date of '(.*)' is stored against '(.*)'/,
+    /the Telephone Operations start date of '(.*)' is stored against '(.*)'/,
     async (toStartDate: string, questionnaire: string) => {
       expect(mocker.history.post).toEqual(
         expect.arrayContaining([
@@ -265,7 +258,7 @@ export function thenTheTotalmobileReleaseDateIsStored(
 }
 
 export function thenTheToStartDateIsDeleted(then: DefineStepFunction, mocker: MockAdapter): void {
-  then(/the TO Start Date is deleted from '(.*)'/, async (questionnaire: string) => {
+  then(/the Telephone Operations start date is deleted from '(.*)'/, async (questionnaire: string) => {
     expect(mocker.history.post).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -331,12 +324,8 @@ export function thenICanReturnToTheQuestionnaireList(then: DefineStepFunction): 
 export function thenIGetAnErrorBanner(then: DefineStepFunction): void {
   then("I am presented with an information banner with an error message", async () => {
     expect(
-      await screen.findAllByText((_, element) => {
-        const text = (element?.textContent ?? "").replace(/\s+/g, " ").toLowerCase();
-
-        return text.includes("deploy failed");
-      }),
-    ).not.toHaveLength(0);
+      await screen.findByRole("heading", { name: /^Questionnaire .* deploy failed$/i }),
+    ).toBeDefined();
   });
 }
 
@@ -345,12 +334,8 @@ export function thenIGetAnErrorBannerWithMessage(then: DefineStepFunction): void
     "I am presented with an information banner with an error message:",
     async (message: string) => {
       expect(
-        await screen.findAllByText((_, element) => {
-          const text = (element?.textContent ?? "").replace(/\s+/g, " ").toLowerCase();
-
-          return text.includes("deploy failed");
-        }),
-      ).not.toHaveLength(0);
+        await screen.findByRole("heading", { name: /^Questionnaire .* deploy failed$/i }),
+      ).toBeDefined();
       expect(await screen.findByText(new RegExp(message.trim(), "i"))).toBeDefined();
     },
   );
@@ -415,14 +400,9 @@ export function thenICanSeeThatThatTheQuestionnaireHasCases(then: DefineStepFunc
 
 export function thenIAmPresentedWithASuccessfullyDeployedBanner(then: DefineStepFunction): void {
   then("I am presented with a successful deployment banner on the landing page", async () => {
-    // The banner text can vary slightly across flows; assert on stable keywords.
     expect(
-      await screen.findAllByText((_, element) => {
-        const text = (element?.textContent ?? "").replace(/\s+/g, " ").toLowerCase();
-
-        return text.includes("questionnaire") && text.includes("deployed");
-      }),
-    ).not.toHaveLength(0);
+      await screen.findByRole("heading", { name: /^Questionnaire .* deployed$/i }),
+    ).toBeDefined();
   });
 }
 
@@ -441,7 +421,7 @@ export function thenIAmPresentedWithQuestionnaireNotFound(then: DefineStepFuncti
 }
 
 export function thenIAmPresentedWithAnOptionToSpecifyAToStartDate(then: DefineStepFunction): void {
-  then("I am presented with an option to specify a TO Start Date", async () => {
+  then("I am presented with an option to specify a Telephone Operations start date", async () => {
     expect(
       await screen.findByText(/Would you like to set a Telephone Operations start date/i),
     ).toBeDefined();
@@ -449,7 +429,7 @@ export function thenIAmPresentedWithAnOptionToSpecifyAToStartDate(then: DefineSt
 }
 
 export function thenTheSummaryPageHasNoToStartDate(then: DefineStepFunction): void {
-  then("the questionnaire is deployed without a TO Start Date", async () => {
+  then("the questionnaire is deployed without a Telephone Operations start date", async () => {
     expect(await screen.findByText(/Deployment summary/i)).toBeDefined();
     expect(
       await screen.findAllByText((_, element) => {
@@ -463,11 +443,7 @@ export function thenTheSummaryPageHasNoToStartDate(then: DefineStepFunction): vo
 
 export function thenIAmPresentedWithAnOptionToDeployAQuestionnaire(then: DefineStepFunction): void {
   then("I am presented with an option to deploy a new questionnaire", async () => {
-    const deployLink =
-      (await screen.findByRole("link", { name: /deploy questionnaire/i }).catch(() => null)) ??
-      (await screen.findByText(/deploy questionnaire/i));
-
-    expect(deployLink).toBeDefined();
+    expect(await screen.findByRole("link", { name: /^Deploy questionnaire$/i })).toBeDefined();
   });
 }
 
@@ -475,12 +451,7 @@ export function thenIAmPresentedWithAnOptionToDeployAQuestionnaireFile(
   then: DefineStepFunction,
 ): void {
   then("I am presented with an option to choose a file containing the questionnaire", async () => {
-    expect(
-      (await screen
-        .findByRole("heading", { name: /^Deploy questionnaire$/i })
-        .catch(() => null)) ??
-        (await screen.findByText(/^Deploy questionnaire$/i, { selector: "h1" })),
-    ).toBeDefined();
+    expect(await screen.findByRole("heading", { name: /^Deploy questionnaire$/i })).toBeDefined();
   });
 }
 
@@ -547,17 +518,11 @@ export function thenIAmPresentedWithAnOptionToSpecifyATmReleaseDate(
   then: DefineStepFunction,
 ): void {
   then("I am presented with an option to specify a Totalmobile release date", async () => {
-    const matches = await screen.findAllByText((_, element) => {
-      const text = (element?.textContent ?? "").replace(/\s+/g, " ").toLowerCase();
-
-      return (
-        text.includes("would you like to set") &&
-        text.includes("totalmobile") &&
-        text.includes("release date")
-      );
-    });
-
-    expect(matches.length).toBeGreaterThan(0);
+    expect(
+      await screen.findByRole("heading", {
+        name: /Would you like to set a Totalmobile release date/i,
+      }),
+    ).toBeDefined();
   });
 }
 
@@ -597,19 +562,7 @@ export function thenIWillSeeAnEntryDisplayedForTotalmobileReleaseDate(
   then: DefineStepFunction,
 ): void {
   then("I will see an entry displayed for Totalmobile release date", async () => {
-    const releaseDateEntry = await screen
-      .findByText((_, element) => {
-        const text = (element?.textContent ?? "").replace(/\s+/g, " ").toLowerCase();
-
-        return text.includes("totalmobile") && text.includes("release date");
-      })
-      .catch(() => null);
-
-    const releaseDateAction =
-      (await screen.findByRole("link", { name: /Change or delete release date/i }).catch(() => null)) ??
-      (await screen.findByRole("link", { name: /Add( a)? release date/i }).catch(() => null));
-
-    expect(releaseDateEntry ?? releaseDateAction).toBeDefined();
+    expect(await screen.findByText(/^Totalmobile release date$/i)).toBeDefined();
   });
 }
 
@@ -623,12 +576,8 @@ export function thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(
 
 export function thenIHaveTheOptionToAddATotalmobileReleaseDate(then: DefineStepFunction): void {
   then("I have the option to add a Totalmobile release date", async () => {
-    await waitFor(async () => {
-      const addLink =
-        (await screen.findByRole("link", { name: /Add( a)? release date/i }).catch(() => null)) ??
-        (await screen.findByRole("link", { name: /Add.*release date/i }).catch(() => null));
-
-      expect(addLink).toBeDefined();
-    });
+    expect(
+      await screen.findByRole("link", { name: /^Add a release date for questionnaire /i }),
+    ).toBeDefined();
   });
 }

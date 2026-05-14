@@ -25,11 +25,11 @@ const CreateDonorCasesPage = lazy(
 const DeleteQuestionnairePage = lazy(
   () => import("./components/deleteQuestionnairePage/deleteQuestionnairePage"),
 );
-const QuestionnaireReleaseDatePage = lazy(
-  () => import("./components/questionnaireReleaseDatePage/questionnaireReleaseDatePage"),
+const QuestionnaireTmReleaseDatePage = lazy(
+  () => import("./components/questionnaireTmReleaseDatePage/questionnaireTmReleaseDatePage"),
 );
-const QuestionnaireStartDatePage = lazy(
-  () => import("./components/questionnaireStartDatePage/questionnaireStartDatePage"),
+const QuestionnaireToStartDatePage = lazy(
+  () => import("./components/questionnaireToStartDatePage/questionnaireToStartDatePage"),
 );
 const QuestionnaireDetailsPage = lazy(
   () => import("./components/questionnaireDetailsPage/questionnaireDetailsPage"),
@@ -43,10 +43,6 @@ const ReissueNewDonorCasePage = lazy(
 const DeployPage = lazy(
   () => import("./components/deployQuestionnairePage/deployQuestionnairePage"),
 );
-
-const divStyle = {
-  minHeight: "calc(67vh)",
-};
 
 type AppRoutesProps = {
   errored: boolean;
@@ -121,7 +117,7 @@ function AppRoutes({
           />
           <Route
             path="/questionnaire/:questionnaireName/release-date"
-            element={<QuestionnaireReleaseDatePage />}
+            element={<QuestionnaireTmReleaseDatePage />}
           />
           <Route
             path="/questionnaire/:questionnaireName/reissue-new-donor-case/:user"
@@ -129,7 +125,7 @@ function AppRoutes({
           />
           <Route
             path="/questionnaire/:questionnaireName/start-date"
-            element={<QuestionnaireStartDatePage />}
+            element={<QuestionnaireToStartDatePage />}
           />
           <Route
             path="/reinstall"
@@ -177,7 +173,7 @@ function App(): ReactElement {
   return (
     <Authenticate title="Deploy Questionnaire Service">
       {(_user: User, loggedIn: boolean, logOutFunction: () => void) => (
-        <>
+        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
           <a
             href="#main-content"
             className="ons-skip-to-content ons-u-fs-r--b"
@@ -203,7 +199,7 @@ function App(): ReactElement {
             createNavLink={createNavLink}
           />
           <div
-            style={divStyle}
+            style={{ flexGrow: 1 }}
             className="ons-page__container ons-container"
           >
             <AppRoutes
@@ -215,7 +211,7 @@ function App(): ReactElement {
             />
           </div>
           <Footer />
-        </>
+        </div>
       )}
     </Authenticate>
   );

@@ -87,6 +87,18 @@ describe("Year calendar for mixed and CATI mode", () => {
       expect(screen.getByText(/2025/i)).toBeDefined();
     });
   });
+
+  it("uses the current year when no survey days are provided", async () => {
+    render(<YearCalendar modes={modes} />);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(String(new Date().getFullYear()))).toBeDefined();
+    });
+  });
 });
 
 describe("Year calendar for anything except CATI mode", () => {

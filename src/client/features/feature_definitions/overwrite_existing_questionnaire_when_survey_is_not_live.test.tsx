@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { afterEach, describe, vi } from "vitest";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -25,7 +25,7 @@ import {
   whenISelectToOverwrite,
 } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -53,6 +53,10 @@ describe("Feature: overwrite_existing_questionnaire_when_survey_is_not_live", ()
     mocker.reset();
   });
 
+  afterAll(() => {
+    mocker.restore();
+  });
+
   Scenario("Select a new questionnaire package file", ({ Given, When, Then }) => {
     givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
     givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
@@ -62,7 +66,7 @@ describe("Feature: overwrite_existing_questionnaire_when_survey_is_not_live", ()
   });
 
   Scenario(
-    "Select to overwrite existing questionnaire When it is live",
+    "Select to overwrite existing questionnaire when it is live",
     ({ Given, When, Then }) => {
       givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
       givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);

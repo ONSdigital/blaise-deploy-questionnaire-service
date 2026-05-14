@@ -43,6 +43,10 @@ describe("Function GetStrictInterviewingSettings()", () => {
       applyRecordLocking: false,
     });
   });
+
+  it("returns an empty object when strict interviewing settings are missing", () => {
+    expect(GetStrictInterviewingSettings([questionnaireSettingTestList[0]])).toEqual({});
+  });
 });
 
 describe("Function ValidateCATIModeSettings()", () => {

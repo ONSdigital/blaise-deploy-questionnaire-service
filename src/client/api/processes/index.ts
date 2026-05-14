@@ -1,7 +1,7 @@
 export * from "./deployQuestionnaire";
 
-export * from "./removeQuestionnaire";
+export * from "./deleteQuestionnaire";
 
 export * from "./generateUacs";
 
-export * from "./uploadProcess";
+export * from "./uploadQuestionnaire";

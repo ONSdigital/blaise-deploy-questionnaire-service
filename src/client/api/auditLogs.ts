@@ -1,15 +1,20 @@
 import axios from "axios";
 
 import { type AuditLog } from "../utils/auditLog.types";
-import { clientLogger } from "../utils/logger";
 
+import { logFunctionCall, logFunctionError } from "./logHelpers";
 import axiosConfig from "./axiosConfig";
 
 export async function getAuditLogs(): Promise<AuditLog[]> {
-  clientLogger.info("Call to getAuditLogs");
+  logFunctionCall("getAuditLogs");
   const url = "/api/audit";
 
-  const response = await axios.get(url, axiosConfig());
+  try {
+    const response = await axios.get(url, axiosConfig());
 
-  return response.data;
+    return response.data;
+  } catch (error: unknown) {
+    logFunctionError("getAuditLogs", error);
+    throw error;
+  }
 }

@@ -12,8 +12,8 @@ interface Props {
   questionnaireName: string;
 }
 
-function ReleaseDate({ questionnaireName }: Props): ReactElement {
-  const shouldShowReleaseDateDetails = shouldAskTmReleaseDate(questionnaireName);
+function TmReleaseDate({ questionnaireName }: Props): ReactElement {
+  const shouldShowTmReleaseDateDetails = shouldAskTmReleaseDate(questionnaireName);
 
   const {
     data: tmReleaseDateValue = "",
@@ -22,12 +22,12 @@ function ReleaseDate({ questionnaireName }: Props): ReactElement {
   } = useQuery({
     queryKey: ["tmReleaseDate", questionnaireName],
     queryFn: () => getTmReleaseDate(questionnaireName),
-    enabled: shouldShowReleaseDateDetails,
+    enabled: shouldShowTmReleaseDateDetails,
   });
 
   const tmReleaseDate = tmReleaseDateValue !== "";
 
-  function renderReleaseDate(): ReactElement | string {
+  function renderTmReleaseDate(): ReactElement | string {
     const parsedReleaseDate = dateFormatter(tmReleaseDateValue);
 
     if (!parsedReleaseDate.isValid()) {
@@ -41,7 +41,7 @@ function ReleaseDate({ questionnaireName }: Props): ReactElement {
     );
   }
 
-  if (!shouldShowReleaseDateDetails) {
+  if (!shouldShowTmReleaseDateDetails) {
     return <></>;
   }
 
@@ -69,14 +69,11 @@ function ReleaseDate({ questionnaireName }: Props): ReactElement {
       <div className="ons-summary__group">
         <h2 className="ons-summary__group-title">Totalmobile details</h2>
 
-        {/* CHANGED: Replaced the legacy table markup with the strict 2-column <dl> grid, matching CAWI and CATI */}
         <dl className="ons-summary__items">
           <div className="ons-summary__item">
-            {/* Column 1: Title AND Action Link (Forces link to the left) */}
             <dt className="ons-summary__item-title">
               <div className="ons-summary__item--text">Totalmobile release date</div>
 
-              {/* CHANGED: Placed the action links underneath the title text to left-align them */}
               <div className="ons-u-mt-m ons-u-mb-s">
                 {tmReleaseDate ? (
                   <Link
@@ -103,11 +100,9 @@ function ReleaseDate({ questionnaireName }: Props): ReactElement {
               </div>
             </dt>
 
-            {/* Column 2: Values (Bolded text) */}
             <dd className="ons-summary__values">
-              {/* CHANGED: Added ons-u-fw-b to bold the resulting data text to match the layout */}
               <span className="ons-summary__text ons-u-fw-b">
-                {tmReleaseDate ? renderReleaseDate() : "No release date specified"}
+                {tmReleaseDate ? renderTmReleaseDate() : "No release date specified"}
               </span>
             </dd>
           </div>
@@ -117,4 +112,4 @@ function ReleaseDate({ questionnaireName }: Props): ReactElement {
   );
 }
 
-export { ReleaseDate };
+export { TmReleaseDate };

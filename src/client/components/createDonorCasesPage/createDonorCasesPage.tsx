@@ -1,6 +1,8 @@
 import { type ReactElement } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 
+import { decodeRouteParam } from "../../utils/decodeRouteParam";
+
 import { Confirmation } from "./sections/confirmation";
 
 import type { Questionnaire } from "blaise-api-node-client";
@@ -18,7 +20,7 @@ function CreateDonorCasesPage(): ReactElement {
   const routeParams = useParams();
   const location = useLocation().state as Location | undefined;
   const questionnaireName = routeParams.questionnaireName ?? "";
-  const role = routeParams.role ?? location?.role ?? "";
+  const role = decodeRouteParam(routeParams.role) ?? location?.role ?? "";
 
   if (!questionnaireName || !role) {
     return (

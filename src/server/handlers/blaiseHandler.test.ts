@@ -178,7 +178,7 @@ describe("BlaiseAPI Get specific questionnaire information from API", () => {
     expect(response.body).toEqual("");
   });
 
-  it("should return a 200 status and a json object when API returns a questionnaire object", async () => {
+  it("should return a 200 status and a questionnaire response body when the API returns a questionnaire", async () => {
     mockGetQuestionnaire.mockImplementation(() => {
       return Promise.resolve(questionnaireMockObject);
     });
@@ -478,7 +478,7 @@ describe("BlaiseAPI get questionnaire settings", () => {
     expect(response.body).toStrictEqual([]);
   });
 
-  it("should return a 200 status and a json object when API returns an questionnaire settings object", async () => {
+  it("should return a 200 status and a questionnaire settings response body when the API returns questionnaire settings", async () => {
     mockGetQuestionnaireSettings.mockImplementation(() => {
       return Promise.resolve(QuestionnaireSettingsMockList);
     });

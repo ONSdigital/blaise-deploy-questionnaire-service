@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import { setToStartDate } from "../../api/toStartDate";
 
-import QuestionnaireStartDatePage from "./questionnaireStartDatePage";
+import QuestionnaireToStartDatePage from "./questionnaireToStartDatePage";
 
 function renderWithQueryClient(ui: React.ReactElement) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -18,11 +18,12 @@ vi.mock("../../api/toStartDate", () => ({
 }));
 
 const mockInfo = vi.fn();
+const mockError = vi.fn();
 
 vi.mock("../../utils/logger", () => ({
   clientLogger: {
     info: (...args: unknown[]) => mockInfo(...args),
-    error: vi.fn(),
+    error: (...args: unknown[]) => mockError(...args),
   },
 }));
 
@@ -37,9 +38,26 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-describe("QuestionnaireStartDatePage", () => {
+describe("QuestionnaireToStartDatePage", () => {
   afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  it("navigates back on cancel when no route params or location state are available", () => {
+    renderWithQueryClient(
+      <MemoryRouter initialEntries={["/change"]}>
+        <Routes>
+          <Route
+            path="/change"
+            element={<QuestionnaireToStartDatePage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+
+    expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 
   it("logs and stays on page when setToStartDate fails", async () => {
@@ -57,7 +75,7 @@ describe("QuestionnaireStartDatePage", () => {
         <Routes>
           <Route
             path="/change"
-            element={<QuestionnaireStartDatePage />}
+            element={<QuestionnaireToStartDatePage />}
           />
         </Routes>
       </MemoryRouter>,
@@ -66,9 +84,7 @@ describe("QuestionnaireStartDatePage", () => {
     fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
 
     await waitFor(() => {
-      expect(mockInfo).toHaveBeenCalledWith(
-        "Failed to store Telephone Operations start date specified",
-      );
+      expect(mockError).toHaveBeenCalledWith("Failed to store Telephone Operations start date");
     });
     expect(mockNavigate).not.toHaveBeenCalledWith(-1);
   });
@@ -85,7 +101,7 @@ describe("QuestionnaireStartDatePage", () => {
         <Routes>
           <Route
             path="/change"
-            element={<QuestionnaireStartDatePage />}
+            element={<QuestionnaireToStartDatePage />}
           />
         </Routes>
       </MemoryRouter>,
@@ -93,5 +109,35 @@ describe("QuestionnaireStartDatePage", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
     expect(mockNavigate).toHaveBeenCalledWith(-1);
+  });
+
+  it("clears the start date and navigates back when the user chooses no", async () => {
+    vi.mocked(setToStartDate).mockResolvedValue(true);
+
+    renderWithQueryClient(
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: "/change",
+            state: { toStartDate: "2026-01-01", questionnaireName: "OPN2004A" },
+          },
+        ]}
+      >
+        <Routes>
+          <Route
+            path="/change"
+            element={<QuestionnaireToStartDatePage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(screen.getByLabelText(/No start date/i));
+    fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+
+    await waitFor(() => {
+      expect(setToStartDate).toHaveBeenCalledWith("OPN2004A", "");
+      expect(mockNavigate).toHaveBeenCalledWith(-1);
+    });
   });
 });

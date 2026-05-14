@@ -40,8 +40,6 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
     queryFn: async () => {
       const count = await getUacCount(questionnaire.name);
 
-      clientLogger.info(`count: ${count}`);
-
       return count ?? 0;
     },
     enabled: isCawiQuestionnaire,

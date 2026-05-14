@@ -51,10 +51,6 @@ export async function generateUacsAndCsvFileData(questionnaireName: string): Pro
 
   const uacs = await getUacsByCaseId(questionnaireName);
 
-  if (uacs === undefined) {
-    throw new Error("Failed to get Uacs by case ID");
-  }
-
   const caseIDs = await getQuestionnaireCaseIds(questionnaireName);
 
   return mapCasesToUacs(caseIDs, uacs);

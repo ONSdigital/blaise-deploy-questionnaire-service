@@ -35,16 +35,12 @@ function ReinstallQuestionnaires(): ReactElement {
         getAllQuestionnairesInBucket().catch(() => {
           throw new Error("Unable to load questionnaires from bucket. Check bucket permissions.");
         }),
-        getQuestionnaires().catch(() => {
-          clientLogger.info("Response from get all questionnaires failed");
+        getQuestionnaires().catch((error: unknown) => {
+          clientLogger.warn(`getQuestionnaires() failed while loading reinstall candidates: ${error}`);
 
           return [] as Awaited<ReturnType<typeof getQuestionnaires>>;
         }),
       ]);
-
-      clientLogger.info(
-        `Response from get all questionnaires in bucket successful, data list length ${bucketList.length}`,
-      );
 
       const installedNames = installedQuestionnaires.map((q) => `${q.name}.bpkg`);
       const available = bucketList.filter((item) => !installedNames.includes(item));

@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button, LoadingPanel, Panel } from "blaise-design-system-react-components";
 import React, { type ReactElement, useState } from "react";
 
-import { removeToStartDateAndDeleteQuestionnaire } from "../../../api/processes";
+import { deleteQuestionnaireAndRelatedDates } from "../../../api/processes";
 import { surveyIsActive } from "../../../api/questionnaires";
 import { clientLogger } from "../../../utils/logger";
 
@@ -38,9 +38,8 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
   const {
     mutate: confirmDeleteMutation,
     isPending: deleting,
-    error: deleteError,
   } = useMutation({
-    mutationFn: () => removeToStartDateAndDeleteQuestionnaire(questionnaire.name),
+    mutationFn: () => deleteQuestionnaireAndRelatedDates(questionnaire.name),
     onSuccess: ([deleted, msg]) => {
       if (!deleted) {
         setMessage(msg);
@@ -80,7 +79,6 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
       </Panel>
 
       {message !== "" && <Panel status="error">{message}</Panel>}
-      {deleteError && <Panel status="error">{deleteError.message}</Panel>}
 
       <form>
         <br />

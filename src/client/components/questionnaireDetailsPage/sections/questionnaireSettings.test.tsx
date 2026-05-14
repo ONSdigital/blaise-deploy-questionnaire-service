@@ -36,7 +36,7 @@ describe("Given the API successfully loads the questionnaire mode and settings f
     mock.reset();
   });
 
-  it("matches Snapshot for the view Questionnaire Settings page", async () => {
+  it("matchessnapshotfor the view Questionnaire Settings page", async () => {
     const wrapper = render(
       <QuestionnaireSettings
         questionnaire={opnQuestionnaire}
@@ -105,7 +105,7 @@ describe("Given the API successfully loads the questionnaire mode and settings f
     mock.reset();
   });
 
-  it("matches Snapshot for the view Questionnaire Settings page", async () => {
+  it("matchessnapshotfor the view Questionnaire Settings page", async () => {
     const wrapper = render(
       <QuestionnaireSettings
         questionnaire={opnQuestionnaire}

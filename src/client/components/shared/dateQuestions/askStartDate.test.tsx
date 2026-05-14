@@ -4,7 +4,7 @@ import { Formik } from "formik";
 
 import { AskStartDate } from "./askStartDate";
 
-describe("Ask to set To start date page", () => {
+describe("Ask to set Telephone Operations start date", () => {
   it("should render with the questionnaire name displayed", () => {
     const { queryByText } = render(
       <Formik

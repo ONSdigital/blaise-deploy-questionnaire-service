@@ -2,10 +2,11 @@ import axios, { type AxiosProgressEvent } from "axios";
 
 import { clientLogger } from "../utils/logger";
 
+import { logFunctionCall, logFunctionError } from "./logHelpers";
 import axiosConfig from "./axiosConfig";
 
 export async function initialiseUpload(filename: string): Promise<string> {
-  clientLogger.info(`Call to initialiseUpload(${filename})`);
+  logFunctionCall("initialiseUpload", filename);
   const url = `/upload/init?filename=${encodeURIComponent(filename)}`;
 
   try {
@@ -21,13 +22,13 @@ export async function initialiseUpload(filename: string): Promise<string> {
 
     return response.data;
   } catch (error: unknown) {
-    clientLogger.error(`Response from initialise Upload: Error ${error}`);
+    logFunctionError("initialiseUpload", error, filename);
     throw error;
   }
 }
 
 export async function validateUploadIsComplete(filename: string): Promise<boolean> {
-  clientLogger.info(`Call to validateUploadIsComplete(${filename})`);
+  logFunctionCall("validateUploadIsComplete", filename);
   const url = `/upload/verify?filename=${encodeURIComponent(filename)}`;
 
   try {
@@ -35,7 +36,7 @@ export async function validateUploadIsComplete(filename: string): Promise<boolea
 
     return response.data.name === filename;
   } catch (error: unknown) {
-    clientLogger.error(`Response from check bucket Failed: Error ${error}`);
+    logFunctionError("validateUploadIsComplete", error, filename);
 
     return false;
   }
@@ -53,21 +54,21 @@ export async function uploadFile(
     },
   };
 
-  clientLogger.info("Uploading to bucket");
+  logFunctionCall("uploadFile", file.name);
   try {
     await axios.put(url, file, config);
-    clientLogger.info("File successfully uploaded");
+    clientLogger.info(`uploadFile(${file.name}) completed`);
 
     return true;
   } catch (error: unknown) {
-    clientLogger.error(`File failed to upload ${error}`);
+    logFunctionError("uploadFile", error, file.name);
 
     return false;
   }
 }
 
 export async function getAllQuestionnairesInBucket(): Promise<string[]> {
-  clientLogger.info("Call to getAllQuestionnairesInBucket");
+  logFunctionCall("getAllQuestionnairesInBucket");
   const url = "/bucket/files";
 
   try {
@@ -78,12 +79,12 @@ export async function getAllQuestionnairesInBucket(): Promise<string[]> {
     }
 
     clientLogger.warn(
-      `Response from getAllQuestionnairesInBucket was not an array, received: ${JSON.stringify(response.data)}`,
+      `getAllQuestionnairesInBucket() returned a non-array response: ${JSON.stringify(response.data)}`,
     );
 
     return [];
   } catch (error: unknown) {
-    clientLogger.error(`Failed to get questionnaires in bucket: ${error}`);
+    logFunctionError("getAllQuestionnairesInBucket", error);
     throw error;
   }
 }

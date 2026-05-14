@@ -2,11 +2,12 @@ import axios from "axios";
 
 import { clientLogger } from "../utils/logger";
 
+import { logFunctionCall, logFunctionError } from "./logHelpers";
 import axiosConfig from "./axiosConfig";
 import { type InstrumentUacDetailsByCaseId } from "./uac.types";
 
 export async function generateUacs(instrumentName: string): Promise<boolean> {
-  clientLogger.info("Sending request generate Uacs");
+  logFunctionCall("generateUacs", instrumentName);
   const url = `/api/uacs/instrument/${instrumentName}`;
 
   try {
@@ -14,14 +15,14 @@ export async function generateUacs(instrumentName: string): Promise<boolean> {
 
     return response.status === 200;
   } catch (error: unknown) {
-    clientLogger.error(`Failed to generate Uacs, Error ${error}`);
+    logFunctionError("generateUacs", error, instrumentName);
 
     return false;
   }
 }
 
 export async function getUacCount(instrumentName: string): Promise<number> {
-  clientLogger.info(`Sending request to get Uac count for ${instrumentName}`);
+  logFunctionCall("getUacCount", instrumentName);
   const url = `/api/uacs/instrument/${instrumentName}/count`;
 
   try {
@@ -33,7 +34,7 @@ export async function getUacCount(instrumentName: string): Promise<number> {
 
     return response.data.count;
   } catch (error: unknown) {
-    clientLogger.error(`Failed to get Uac count, Error ${error}`);
+    logFunctionError("getUacCount", error, instrumentName);
     throw error;
   }
 }
@@ -41,7 +42,7 @@ export async function getUacCount(instrumentName: string): Promise<number> {
 export async function getUacsByCaseId(
   instrumentName: string,
 ): Promise<InstrumentUacDetailsByCaseId> {
-  clientLogger.info(`Sending request to get Uacs by case ID ${instrumentName}`);
+  logFunctionCall("getUacsByCaseId", instrumentName);
   const url = `/api/uacs/instrument/${instrumentName}/bycaseid`;
 
   try {
@@ -49,7 +50,7 @@ export async function getUacsByCaseId(
 
     return response.data;
   } catch (error: unknown) {
-    clientLogger.error(`Failed to get Uacs by case ID, Error ${error}`);
+    logFunctionError("getUacsByCaseId", error, instrumentName);
     throw new Error("Failed to get Uacs by case ID", { cause: error });
   }
 }

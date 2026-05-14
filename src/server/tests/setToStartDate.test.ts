@@ -4,7 +4,6 @@ import { Auth } from "blaise-login-react-server";
 import supertest, { type Response } from "supertest";
 import { afterAll, afterEach, describe, expect, test, vi } from "vitest";
 
-
 vi.mock("blaise-uac-service-node-client", () => ({
   __esModule: true,
   BusClient: class MockBusClient {
@@ -80,16 +79,14 @@ describe("setToStartDate", () => {
   });
 
   describe.sequential(
-    "Scenario: Overwrite questionnaire and previous TO Start Date with new",
+    "Scenario: Overwrite questionnaire and previous Telephone Operations start date with a new value",
     () => {
       let response: Response;
 
-      test("Given a pre-deployed questionnaire that already has a TO Start Date stored against it", () => {
-        mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(
-          200,
-          { tostartdate: "2021-07-29T00:00:00+00:00" },
-          jsonHeaders,
-        );
+      test("Given a pre-deployed questionnaire that already has a Telephone Operations start date stored against it", () => {
+        mock
+          .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+          .reply(200, { tostartdate: "2021-07-29T00:00:00+00:00" }, jsonHeaders);
         mock
           .onPatch(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
           .reply(200, { tostartdate: "2020-06-05T00:00:00+00:00" }, jsonHeaders);
@@ -98,41 +95,40 @@ describe("setToStartDate", () => {
           .reply(201, { tostartdate: "2020-06-05T00:00:00+00:00" }, jsonHeaders);
       });
 
-      test("When a TO Start Date is specified", async () => {
+      test("When a Telephone Operations start date is specified", async () => {
         response = await request
           .post("/api/tostartdate/OPN2004A")
           .send({ tostartdate: "2020-06-05" });
       });
 
-      test("Then the new TO Start Date will overwrite the previous", () => {
+      test("Then the new Telephone Operations start date will overwrite the previous value", () => {
         expect(response.status).toEqual(201);
       });
     },
   );
 
-  describe.sequential("Scenario: Overwrite questionnaire and remove previous TO Start Date", () => {
-    let response: Response;
+  describe.sequential(
+    "Scenario: Overwrite questionnaire and delete previous Telephone Operations start date",
+    () => {
+      let response: Response;
 
-    test("Given a pre-deployed questionnaire that already has a TO Start Date stored against it", () => {
-      mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(
-        200,
-        { tostartdate: "2021-07-29T00:00:00+00:00" },
-        jsonHeaders,
-      );
-      mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(204, [], jsonHeaders);
-      mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(
-        201,
-        { tostartdate: "" },
-        jsonHeaders,
-      );
-    });
+      test("Given a pre-deployed questionnaire that already has a Telephone Operations start date stored against it", () => {
+        mock
+          .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+          .reply(200, { tostartdate: "2021-07-29T00:00:00+00:00" }, jsonHeaders);
+        mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(204, [], jsonHeaders);
+        mock
+          .onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+          .reply(201, { tostartdate: "" }, jsonHeaders);
+      });
 
-    test("When a TO Start Date is not specified", async () => {
-      response = await request.post("/api/tostartdate/OPN2004A").send({ tostartdate: "" });
-    });
+      test("When a Telephone Operations start date is not specified", async () => {
+        response = await request.post("/api/tostartdate/OPN2004A").send({ tostartdate: "" });
+      });
 
-    test("Then the original TO Start Date is removed from data store", () => {
-      expect(response.status).toEqual(201);
-    });
-  });
+      test("Then the original Telephone Operations start date is deleted from data store", () => {
+        expect(response.status).toEqual(201);
+      });
+    },
+  );
 });

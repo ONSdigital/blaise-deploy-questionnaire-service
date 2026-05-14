@@ -48,7 +48,7 @@ describe("Function getTmReleaseDate(questionnaireName: string) ", () => {
     mock.reset();
   });
 
-  it("should return true and a Totalmobile release date string if object with the correct name returned", async () => {
+  it("should return a Totalmobile release date string if the response contains a release date", async () => {
     mock.onGet("/api/tmreleasedate/LMS2004A").reply(200, { tmreleasedate: "1997-12-24" });
 
     const tmReleaseDate = await getTmReleaseDate("LMS2004A");
@@ -56,8 +56,16 @@ describe("Function getTmReleaseDate(questionnaireName: string) ", () => {
     expect(tmReleaseDate).toEqual("1997-12-24");
   });
 
-  it("should return an empty string if object without a Totalmobile release date is returned", async () => {
+  it("should return an empty string if the response does not contain a Totalmobile release date", async () => {
     mock.onGet("/api/tmreleasedate/LMS2004A").reply(200, { name: "BACON" });
+
+    const tmReleaseDate = await getTmReleaseDate("LMS2004A");
+
+    expect(tmReleaseDate).toEqual("");
+  });
+
+  it("should return an empty string if the response contains a non-string Totalmobile release date", async () => {
+    mock.onGet("/api/tmreleasedate/LMS2004A").reply(200, { tmreleasedate: 12345 });
 
     const tmReleaseDate = await getTmReleaseDate("LMS2004A");
 

@@ -3,9 +3,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
+import { clientLogger } from "./utils/logger";
 import { queryClient } from "./utils/queryClient";
 
 const rootElement = document.getElementById("root");
+
+function getShimmedNodeEnv(): string {
+  try {
+    return import.meta.env.MODE;
+  } catch {
+    return "test";
+  }
+}
 
 if (!rootElement) {
   throw new Error("Root element not found");
@@ -14,7 +23,7 @@ if (!rootElement) {
 if (!("process" in globalThis)) {
   const shimmedProcess = {
     env: {
-      NODE_ENV: import.meta.env.MODE,
+      NODE_ENV: getShimmedNodeEnv(),
     },
   };
 
@@ -31,7 +40,7 @@ function showBootstrapError(message: string): void {
   appRootElement.innerHTML = `<div style="color: #b00020; background: #fff5f5; border: 1px solid #f5c2c7; padding: 16px; margin: 16px; font-family: sans-serif;"><h1 style="margin-top: 0;">App failed to load</h1><pre style="white-space: pre-wrap; margin-bottom: 0;">${message}</pre></div>`;
 }
 
-console.log("Mounting React app...");
+clientLogger.info("Mounting React app");
 
 const root = ReactDOM.createRoot(rootElement);
 
@@ -49,9 +58,9 @@ void (async () => {
       </React.StrictMode>,
     );
 
-    console.log("React app mounted successfully");
+    clientLogger.info("React app mounted successfully");
   } catch (error) {
-    console.error("Error mounting React app:", error);
+    clientLogger.error("Error mounting React app", error);
     showBootstrapError(String(error));
   }
 })();

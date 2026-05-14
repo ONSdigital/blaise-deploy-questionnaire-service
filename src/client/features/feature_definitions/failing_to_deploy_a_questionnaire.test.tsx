@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { afterEach, describe, vi } from "vitest";
+import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
@@ -11,7 +11,7 @@ import {
 import { thenICanRetryAnInstall, thenIGetAnErrorBanner } from "../step_definitions/then";
 import { whenIConfirmMySelection, whenIDeploy } from "../step_definitions/when";
 
-import { createScenario } from "./nativeScenario";
+import { createScenario } from "./native_scenario";
 
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
@@ -28,6 +28,10 @@ describe("Feature: failing_to_deploy_a_questionnaire", () => {
 
   afterEach(() => {
     mocker.reset();
+  });
+
+  afterAll(() => {
+    mocker.restore();
   });
 
   Scenario("Deployment of selected file failure", ({ Given, When, Then }) => {

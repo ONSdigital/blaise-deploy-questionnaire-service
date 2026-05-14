@@ -103,7 +103,7 @@ class BlaiseHandler {
         questionnaireName,
       );
 
-      req.log.info({ questionnaire }, `Get questionnaire ${questionnaireName} endpoint`);
+      req.log.info({ questionnaireName }, "Get questionnaire endpoint succeeded");
 
       return res.status(200).json(questionnaire);
     } catch (error: unknown) {
@@ -111,7 +111,7 @@ class BlaiseHandler {
         return res.status(404).json();
       }
 
-      req.log.error(error, "Get questionnaire endpoint failed");
+      req.log.error({ error }, "Get questionnaire endpoint failed");
 
       return res.status(500).json();
     }
@@ -138,7 +138,7 @@ class BlaiseHandler {
 
       return res.status(201).json(response);
     } catch (error: unknown) {
-      req.log.error(error, "Install questionnaire endpoint failed");
+      req.log.error({ error }, "Install questionnaire endpoint failed");
       this.auditLogger.error(
         req.log,
         `Failed to install questionnaire ${questionnaireName} by ${username}`,
@@ -250,13 +250,16 @@ class BlaiseHandler {
       );
 
       req.log.info(
-        { response },
-        `Successfully called does questionnaire have mode endpoint for ${questionnaireName}`,
+        { questionnaireName, mode, hasMode: response },
+        "Does questionnaire have mode endpoint succeeded",
       );
 
       return res.status(200).json(response);
     } catch (error: unknown) {
-      req.log.error(error, `does questionnaire have mode failed for ${questionnaireName}`);
+      req.log.error(
+        { error },
+        `Does questionnaire have mode endpoint failed for ${questionnaireName}`,
+      );
 
       return res.status(500).json();
     }
@@ -270,7 +273,10 @@ class BlaiseHandler {
 
       questionnaires.forEach((questionnaire: Questionnaire) => {
         if (questionnaire.status === "Erroneous") {
-          req.log.info(`Questionnaire ${questionnaire.name} returned erroneous.`);
+          req.log.warn(
+            { questionnaireName: questionnaire.name },
+            "Questionnaire returned erroneous status from Blaise",
+          );
           questionnaire.status = "Failed";
         }
 
@@ -278,13 +284,13 @@ class BlaiseHandler {
       });
 
       req.log.info(
-        { questionnaires },
-        `${questionnaires.length} questionnaire/s currently installed.`,
+        { questionnairesCount: questionnaires.length },
+        "Get questionnaires endpoint succeeded",
       );
 
       return res.status(200).json(questionnaires);
     } catch (error: unknown) {
-      req.log.error(error, "Get questionnaires endpoint failed.");
+      req.log.error({ error }, "Get questionnaires endpoint failed.");
 
       return res.status(500).json();
     }
@@ -300,13 +306,16 @@ class BlaiseHandler {
       );
 
       req.log.info(
-        { caseIds },
-        `Successfully called get cases IDs for questionnaire ${questionnaireName}`,
+        { questionnaireName, caseCount: caseIds.length },
+        "Get questionnaire case IDs endpoint succeeded",
       );
 
       return res.status(200).json(caseIds);
     } catch (error: unknown) {
-      req.log.error(error, `Get cases IDs for questionnaire ${questionnaireName}`);
+      req.log.error(
+        { error },
+        `Get questionnaire case IDs endpoint failed for ${questionnaireName}`,
+      );
 
       return res.status(500).json();
     }
@@ -322,13 +331,13 @@ class BlaiseHandler {
       );
 
       req.log.info(
-        { modes },
-        `Successfully called get questionnaire modes for ${questionnaireName}`,
+        { questionnaireName, modesCount: modes.length },
+        "Get questionnaire modes endpoint succeeded",
       );
 
       return res.status(200).json(modes);
     } catch (error: unknown) {
-      req.log.error(error, `Get questionnaire modes for ${questionnaireName}`);
+      req.log.error({ error }, `Get questionnaire modes endpoint failed for ${questionnaireName}`);
 
       return res.status(500).json(null);
     }
@@ -344,13 +353,16 @@ class BlaiseHandler {
       );
 
       req.log.info(
-        { questionnaireSettings },
-        `Successfully called get questionnaire settings for ${questionnaireName}`,
+        { questionnaireName, settingsCount: questionnaireSettings.length },
+        "Get questionnaire settings endpoint succeeded",
       );
 
       return res.status(200).json(questionnaireSettings);
     } catch (error: unknown) {
-      req.log.error(error, `Get questionnaire settings for ${questionnaireName}`);
+      req.log.error(
+        { error },
+        `Get questionnaire settings endpoint failed for ${questionnaireName}`,
+      );
 
       return res.status(500).json();
     }
@@ -365,11 +377,14 @@ class BlaiseHandler {
         questionnaireName,
       );
 
-      req.log.info({ surveyDays }, `Successfully called get survey days for ${questionnaireName}`);
+      req.log.info(
+        { questionnaireName, surveyDaysCount: surveyDays.length },
+        "Get survey days endpoint succeeded",
+      );
 
       return res.status(200).json(surveyDays);
     } catch (error: unknown) {
-      req.log.error(error, `Get survey days for ${questionnaireName}`);
+      req.log.error({ error }, `Get survey days endpoint failed for ${questionnaireName}`);
 
       return res.status(500).json(null);
     }
@@ -387,12 +402,15 @@ class BlaiseHandler {
 
       req.log.info(
         { questionnaireName, hasActiveSurveyDays },
-        `Successfully called active survey days endpoint for ${questionnaireName}`,
+        "Get active survey days endpoint succeeded",
       );
 
       return res.status(200).json(hasActiveSurveyDays);
     } catch (error: unknown) {
-      req.log.error(error, `Get active survey days for ${questionnaireName}`);
+      req.log.error(
+        { error },
+        `Get active survey days endpoint failed for ${questionnaireName}`,
+      );
 
       return res.status(500).json();
     }

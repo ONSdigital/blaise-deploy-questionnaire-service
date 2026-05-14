@@ -1,3 +1,4 @@
+// TODO: make mode specific, replace CATI vs mixed
 export enum QuestionnaireMode {
   Cati,
   Mixed,

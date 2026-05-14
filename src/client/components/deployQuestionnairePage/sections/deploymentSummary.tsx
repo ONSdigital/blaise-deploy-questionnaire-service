@@ -17,8 +17,8 @@ interface PageFourProps {
 }
 
 type DeployFormValues = {
-  "set start date"?: string;
-  "set release date"?: string;
+  toStartDate?: string;
+  tmReleaseDate?: string;
 };
 
 function DeploymentSummary({ file, foundQuestionnaire }: PageFourProps): ReactElement {
@@ -31,18 +31,18 @@ function DeploymentSummary({ file, foundQuestionnaire }: PageFourProps): ReactEl
       "DD/MM/YYYY HH:mm",
     ),
     "Questionnaire file size": file ? `${roundUp(file.size / 1000000, 0)}MB` : undefined,
-    "Already exists in Blaise": foundQuestionnaire ? "Yes, overriding questionnaire" : "No",
+    "Already exists": foundQuestionnaire ? "Yes, overwriting questionnaire" : "No",
   };
 
   if (shouldAskToStartDate(questionnaireName)) {
-    records["Telephone Operations start date"] = formValues["set start date"]
-      ? dateFormatter(formValues["set start date"]).format("DD/MM/YYYY")
+    records["Telephone Operations start date"] = formValues.toStartDate
+      ? dateFormatter(formValues.toStartDate).format("DD/MM/YYYY")
       : "Not specified";
   }
 
   if (shouldAskTmReleaseDate(questionnaireName)) {
-    records["Totalmobile release date"] = formValues["set release date"]
-      ? dateFormatter(formValues["set release date"]).format("DD/MM/YYYY")
+    records["Totalmobile release date"] = formValues.tmReleaseDate
+      ? dateFormatter(formValues.tmReleaseDate).format("DD/MM/YYYY")
       : "Not specified";
   }
 

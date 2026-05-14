@@ -300,7 +300,7 @@ describe("DeleteConfirmation", () => {
       mockHttp.onDelete("/api/questionnaires/LMS2210_CC1").reply(204);
     });
 
-    it("should delete the TO start date, release date and questionnaire on confirm", async () => {
+    it("should delete the Telephone Operations start date, Totalmobile release date and questionnaire on confirm", async () => {
       render(
         <DeleteConfirmation
           modes={[]}
@@ -347,7 +347,7 @@ describe("DeleteConfirmation", () => {
       expect(onCancel).not.toHaveBeenCalled();
     });
 
-    it("should display an error if deleting TO start date fails", async () => {
+    it("should display an error if deleting Telephone Operations start date fails", async () => {
       mockHttp.onDelete("/api/tostartdate/LMS2210_CC1").reply(500);
       const view = render(
         <DeleteConfirmation
@@ -363,14 +363,14 @@ describe("DeleteConfirmation", () => {
 
       await userEvent.click(confirm);
 
-      expect(await screen.findByText(/Failed to delete TO start date/i)).toBeVisible();
+      expect(await screen.findByText(/Failed to delete Telephone Operations start date/i)).toBeVisible();
       await waitFor(() => {
         expect(mockHttp.history.delete.length).toBe(1);
       });
       expect(view).toMatchSnapshot();
     });
 
-    it("should display an error if deleting TO release date fails", async () => {
+    it("should display an error if deleting Totalmobile release date fails", async () => {
       mockHttp.onDelete("/api/tmreleasedate/LMS2210_CC1").reply(500);
       render(
         <DeleteConfirmation
