@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 import { configure } from "@testing-library/react";
+import axios from "axios";
 
 const globalWithActEnvironment = globalThis as typeof globalThis & {
   IS_REACT_ACT_ENVIRONMENT?: boolean;
@@ -9,3 +10,12 @@ globalWithActEnvironment.IS_REACT_ACT_ENVIRONMENT = true;
 
 // Feature tests perform full page flows and can exceed the default 1s async timeout.
 configure({ asyncUtilTimeout: 5000 });
+
+axios.defaults.adapter = async (config) => {
+  const method = (config.method ?? "GET").toUpperCase();
+  const url = config.url ?? "<unknown-url>";
+
+  throw new Error(
+    `Unmocked HTTP request in tests: ${method} ${url}. Add a test mock for this request.`,
+  );
+};
