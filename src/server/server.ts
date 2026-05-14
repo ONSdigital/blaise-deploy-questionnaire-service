@@ -111,17 +111,27 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   server.use("/", loginHandler);
   server.use(express.json());
 
-  const buildFolder = path.join(__dirname, "../../../build");
+  const buildRootCandidates = [
+    path.join(__dirname, "../../../build"),
+    path.join(__dirname, ".."),
+    path.join(process.cwd(), "build"),
+  ];
+  const buildRoot = firstExistingPath(buildRootCandidates) ?? buildRootCandidates[0];
+  const clientBuildCandidates = [path.join(buildRoot, "client"), buildRoot];
+  const clientBuildFolder = firstExistingPath(clientBuildCandidates) ?? clientBuildCandidates[0];
+
   const errorPageCandidates = [
     path.join(__dirname, "../../../src/server/views/500.html"),
-    path.join(buildFolder, "500.html"),
-    path.join(buildFolder, "views/500.html"),
+    path.join(buildRoot, "500.html"),
+    path.join(buildRoot, "views/500.html"),
+    path.join(clientBuildFolder, "500.html"),
   ];
   const errorPagePath = errorPageCandidates.find((filePath) => fs.existsSync(filePath));
 
-  server.set("views", buildFolder);
+  server.set("views", clientBuildFolder);
   server.engine("html", ejs.renderFile);
-  server.use("/static", express.static(path.join(buildFolder, "static")));
+  server.use("/assets", express.static(path.join(clientBuildFolder, "assets")));
+  server.use("/static", express.static(path.join(clientBuildFolder, "static")));
 
   server.use("/", uploadHandler);
   server.use("/", blaiseHandler);
@@ -154,4 +164,8 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   });
 
   return server;
+}
+
+function firstExistingPath(candidates: string[]): string | undefined {
+  return candidates.find((candidate) => fs.existsSync(candidate));
 }
