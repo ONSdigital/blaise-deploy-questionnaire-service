@@ -106,6 +106,8 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
 
   server.use(logger);
 
+  server.use("/", newHealthCheckHandler());
+
   server.use("/", loginHandler);
   server.use(express.json());
 
@@ -130,7 +132,6 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   server.use("/", createDonorCasesHandler);
   server.use("/", reissueNewDonorCaseHandler);
   server.use("/", getUsersByRoleHandler);
-  server.use("/", newHealthCheckHandler());
 
   server.use("/api", function (_req: Request, res: Response) {
     res.status(404).json({ message: "Not found" });
