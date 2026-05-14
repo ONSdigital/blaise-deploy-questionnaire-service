@@ -32,6 +32,8 @@ function createApp(storageManager: MockStorageManager) {
   const auth = {
     Middleware: (_req: express.Request, _res: express.Response, next: express.NextFunction) =>
       next(),
+    GetToken: vi.fn().mockReturnValue("test-token"),
+    GetUser: vi.fn().mockReturnValue({ name: "test-user" }),
   } as unknown as Parameters<typeof newUploadHandler>[1];
   const auditLogger = {
     info: vi.fn(),

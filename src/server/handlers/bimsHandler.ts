@@ -70,18 +70,21 @@ class BimsHandler {
       }
 
       if (toStartDateExists(toStartDate) && reqData.tostartdate === "") {
+        const previousDateStr = ` (previously ${dateFormatter(toStartDate.tostartdate).format("YYYY-MM-DD")})`;
+
         try {
           await this.bimsClient.deleteToStartDate(questionnaireName);
+
           this.auditLogger.info(
             req.log,
-            `Successfully deleted Telephone Operations start date for questionnaire ${questionnaireName} by ${username}`,
+            `${username} deleted ${questionnaireName} Telephone Operations start date${previousDateStr}`,
           );
 
           return res.status(201).json();
         } catch (error: unknown) {
           this.auditLogger.error(
             req.log,
-            `Failed to delete Telephone Operations start date for questionnaire ${questionnaireName} by ${username}`,
+            `${username} failed to delete ${questionnaireName} Telephone Operations start date${previousDateStr}`,
           );
           throw error;
         }
@@ -114,9 +117,11 @@ class BimsHandler {
 
       await this.bimsClient.deleteToStartDate(questionnaireName);
 
+      const previousDateStr = ` (previously ${dateFormatter(toStartDate.tostartdate).format("YYYY-MM-DD")})`;
+
       this.auditLogger.info(
         req.log,
-        `Successfully deleted Telephone Operations start date for questionnaire ${questionnaireName} by ${username}`,
+        `${username} deleted ${questionnaireName} Telephone Operations start date${previousDateStr}`,
       );
 
       return res.status(204).json();
@@ -127,7 +132,7 @@ class BimsHandler {
       );
       this.auditLogger.error(
         req.log,
-        `Failed to delete Telephone Operations start date for questionnaire ${questionnaireName} by ${username}`,
+        `${username} failed to delete ${questionnaireName} Telephone Operations start date`,
       );
 
       return res.status(500).json();
@@ -161,27 +166,40 @@ class BimsHandler {
       let configuredToStartDate: ToStartDate;
 
       if (toStartDateExists(toStartDate)) {
+        const existingToStartDate = toStartDate;
+
         configuredToStartDate = await this.bimsClient.updateToStartDate(
           questionnaireName,
           newToStartDate,
+        );
+
+        const previousDateStr = ` (previously ${dateFormatter(existingToStartDate.tostartdate).format("YYYY-MM-DD")})`;
+
+        this.auditLogger.info(
+          req.log,
+          `${username} updated ${questionnaireName} Telephone Operations start date to ${newToStartDate}${previousDateStr}`,
         );
       } else {
         configuredToStartDate = await this.bimsClient.createToStartDate(
           questionnaireName,
           newToStartDate,
         );
-      }
 
-      this.auditLogger.info(
-        req.log,
-        `Successfully set Telephone Operations start date to ${newToStartDate} for questionnaire ${questionnaireName} by ${username}`,
-      );
+        this.auditLogger.info(
+          req.log,
+          `${username} set ${questionnaireName} Telephone Operations start date to ${newToStartDate}`,
+        );
+      }
 
       return configuredToStartDate;
     } catch (error: unknown) {
+      const previousDateStr = toStartDateExists(toStartDate)
+        ? ` (previously ${dateFormatter(toStartDate.tostartdate).format("YYYY-MM-DD")})`
+        : "";
+
       this.auditLogger.error(
         req.log,
-        `Failed to set Telephone Operations start date to ${newToStartDate} for questionnaire ${questionnaireName} by ${username}`,
+        `${username} failed to set ${questionnaireName} Telephone Operations start date to ${newToStartDate}${previousDateStr}`,
       );
       throw error;
     }
@@ -197,7 +215,9 @@ class BimsHandler {
       const newTmReleaseDateIsEmpty = newTmReleaseDate === "";
 
       if (!tmReleaseDateExists(previousTmReleaseDate) && newTmReleaseDateIsEmpty) {
-        this.auditLogger.info(req.log, `No release date set for ${questionnaireName}`);
+        req.log.info(
+          `No previous Totalmobile release date found and none specified for questionnaire ${questionnaireName}`,
+        );
 
         return res.status(201).json("");
       }
@@ -205,34 +225,58 @@ class BimsHandler {
       let responseBody: TmReleaseDate | "";
 
       if (tmReleaseDateExists(previousTmReleaseDate) && newTmReleaseDateIsEmpty) {
-        await this.bimsClient.deleteTmReleaseDate(questionnaireName);
-        const previousDateStr = ` (previously ${dateFormatter(previousTmReleaseDate!.tmreleasedate).format("YYYY-MM-DD")})`;
+        const previousDateStr = ` (previously ${dateFormatter(previousTmReleaseDate.tmreleasedate).format("YYYY-MM-DD")})`;
 
-        this.auditLogger.info(
-          req.log,
-          `Totalmobile release date deleted${previousDateStr} for ${questionnaireName} by ${username}`,
-        );
-        responseBody = "";
+        try {
+          await this.bimsClient.deleteTmReleaseDate(questionnaireName);
+          this.auditLogger.info(
+            req.log,
+            `${username} deleted ${questionnaireName} Totalmobile release date${previousDateStr}`,
+          );
+          responseBody = "";
+        } catch (error: unknown) {
+          this.auditLogger.error(
+            req.log,
+            `${username} failed to delete ${questionnaireName} Totalmobile release date${previousDateStr}`,
+          );
+          throw error;
+        }
       } else if (tmReleaseDateExists(previousTmReleaseDate)) {
-        responseBody = await this.bimsClient.updateTmReleaseDate(
-          questionnaireName,
-          newTmReleaseDate,
-        );
-        const previousDateStr = ` (previously ${dateFormatter(previousTmReleaseDate!.tmreleasedate).format("YYYY-MM-DD")})`;
+        const previousDateStr = ` (previously ${dateFormatter(previousTmReleaseDate.tmreleasedate).format("YYYY-MM-DD")})`;
 
-        this.auditLogger.info(
-          req.log,
-          `Totalmobile release date updated to ${newTmReleaseDate}${previousDateStr} for ${questionnaireName} by ${username}`,
-        );
+        try {
+          responseBody = await this.bimsClient.updateTmReleaseDate(
+            questionnaireName,
+            newTmReleaseDate,
+          );
+          this.auditLogger.info(
+            req.log,
+            `${username} updated ${questionnaireName} Totalmobile release date to ${newTmReleaseDate}${previousDateStr}`,
+          );
+        } catch (error: unknown) {
+          this.auditLogger.error(
+            req.log,
+            `${username} failed to update ${questionnaireName} Totalmobile release date to ${newTmReleaseDate}${previousDateStr}`,
+          );
+          throw error;
+        }
       } else {
-        responseBody = await this.bimsClient.createTmReleaseDate(
-          questionnaireName,
-          newTmReleaseDate,
-        );
-        this.auditLogger.info(
-          req.log,
-          `Totalmobile release date set to ${newTmReleaseDate} for ${questionnaireName} by ${username}`,
-        );
+        try {
+          responseBody = await this.bimsClient.createTmReleaseDate(
+            questionnaireName,
+            newTmReleaseDate,
+          );
+          this.auditLogger.info(
+            req.log,
+            `${username} set ${questionnaireName} Totalmobile release date to ${newTmReleaseDate}`,
+          );
+        } catch (error: unknown) {
+          this.auditLogger.error(
+            req.log,
+            `${username} failed to set ${questionnaireName} Totalmobile release date to ${newTmReleaseDate}`,
+          );
+          throw error;
+        }
       }
 
       return res.status(201).json(responseBody);
@@ -240,10 +284,6 @@ class BimsHandler {
       req.log.error(
         error,
         `Failed to set Totalmobile release date for questionnaire ${questionnaireName}`,
-      );
-      this.auditLogger.error(
-        req.log,
-        `Failed to set Totalmobile release date for questionnaire ${questionnaireName} (user: ${username})`,
       );
 
       return res.status(500).json();
@@ -267,7 +307,7 @@ class BimsHandler {
 
       this.auditLogger.info(
         req.log,
-        `Totalmobile release date deleted${previousDateStr} for ${questionnaireName} by ${username}`,
+        `${username} deleted ${questionnaireName} Totalmobile release date${previousDateStr}`,
       );
 
       return res.status(204).json();
@@ -278,7 +318,7 @@ class BimsHandler {
       );
       this.auditLogger.error(
         req.log,
-        `Failed to delete Totalmobile release date for questionnaire ${questionnaireName} by ${username}`,
+        `${username} failed to delete ${questionnaireName} Totalmobile release date`,
       );
 
       return res.status(500).json();
@@ -302,7 +342,7 @@ class BimsHandler {
   };
 }
 
-function toStartDateExists(toStartDate: ToStartDate | undefined): boolean {
+function toStartDateExists(toStartDate: ToStartDate | undefined): toStartDate is ToStartDate {
   if (!toStartDate) {
     return false;
   }
@@ -312,7 +352,9 @@ function toStartDateExists(toStartDate: ToStartDate | undefined): boolean {
   return regexp.test(toStartDate.tostartdate);
 }
 
-function tmReleaseDateExists(tmReleaseDate: TmReleaseDate | undefined): boolean {
+function tmReleaseDateExists(
+  tmReleaseDate: TmReleaseDate | undefined,
+): tmReleaseDate is TmReleaseDate {
   if (!tmReleaseDate) {
     return false;
   }

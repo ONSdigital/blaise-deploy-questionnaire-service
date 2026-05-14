@@ -111,7 +111,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
     await request.post("/api/cloudFunction/createDonorCases").send(createDonorCasesPayload);
 
     expect(logInfo).toHaveBeenCalledWith(
-      "AUDIT_LOG: Successfully created donor cases for questionnaire OPN2004A for role interviewer by rich",
+      "AUDIT_LOG: rich created donor cases for interviewer on OPN2004A",
     );
   });
 
@@ -121,7 +121,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
     await request.post("/api/cloudFunction/createDonorCases").send(createDonorCasesPayload);
 
     expect(logError).toHaveBeenCalledWith(
-      "AUDIT_LOG: Failed to create donor cases for questionnaire OPN2004A for role interviewer by rich",
+      "AUDIT_LOG: rich failed to create donor cases for interviewer on OPN2004A",
     );
   });
 });
@@ -161,7 +161,7 @@ describe("Call Cloud Function to reissue new donor case and return responses", (
     await request.post("/api/cloudFunction/reissueNewDonorCase").send(reissueDonorCasePayload);
 
     expect(logInfo).toHaveBeenCalledWith(
-      "AUDIT_LOG: Successfully reissued new donor case for questionnaire OPN2004A for user alex by rich",
+      "AUDIT_LOG: rich reissued donor case for alex on OPN2004A",
     );
   });
 
@@ -171,7 +171,7 @@ describe("Call Cloud Function to reissue new donor case and return responses", (
     await request.post("/api/cloudFunction/reissueNewDonorCase").send(reissueDonorCasePayload);
 
     expect(logError).toHaveBeenCalledWith(
-      "AUDIT_LOG: Failed to reissue new donor case for questionnaire OPN2004A for user alex by rich",
+      "AUDIT_LOG: rich failed to reissue donor case for alex on OPN2004A",
     );
   });
 });

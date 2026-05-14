@@ -33,7 +33,7 @@ export default function newUploadHandler(
 ): Router {
   const router = express.Router();
 
-  const uploadHandler = new UploadHandler(storageManager, auditLogger);
+  const uploadHandler = new UploadHandler(storageManager, auth, auditLogger);
 
   router.get("/upload/init", auth.Middleware, uploadHandler.initialiseUpload);
   router.get("/bucket/files", auth.Middleware, uploadHandler.listFiles);
@@ -44,10 +44,12 @@ export default function newUploadHandler(
 
 class UploadHandler {
   storageManager: StorageManager;
+  auth: Auth;
   auditLogger: AuditLogger;
 
-  constructor(storageManager: StorageManager, auditLogger: AuditLogger) {
+  constructor(storageManager: StorageManager, auth: Auth, auditLogger: AuditLogger) {
     this.storageManager = storageManager;
+    this.auth = auth;
     this.auditLogger = auditLogger;
   }
 
@@ -70,19 +72,19 @@ class UploadHandler {
       if (!isAllowedSignedUrlHost(url)) {
         req.log.error({ url }, "Signed URL returned unexpected host");
 
-        return res.status(500).json("Failed to obtain Signed Url");
+        return res.status(500).json("Failed to obtain signed URL");
       }
 
       req.log.info(
         { url },
-        `Signed url for ${filename} created in Bucket ${this.storageManager.bucketName}`,
+        `Signed url for ${filename} created in bucket ${this.storageManager.bucketName}`,
       );
 
       return res.status(200).json(url);
     } catch (error: unknown) {
-      req.log.error(error, "Failed to obtain Signed Url");
+      req.log.error(error, "Failed to obtain signed URL");
 
-      return res.status(500).json("Failed to obtain Signed Url");
+      return res.status(500).json("Failed to obtain signed URL");
     }
   };
 
@@ -91,7 +93,7 @@ class UploadHandler {
     try {
       const bucketItems = await this.storageManager.GetBucketItems();
 
-      req.log.info(`Obtained list of files in Bucket ${this.storageManager.bucketName}`);
+      req.log.info(`Obtained list of files in bucket ${this.storageManager.bucketName}`);
 
       return res.status(200).json(bucketItems);
     } catch (error: unknown) {
@@ -103,6 +105,7 @@ class UploadHandler {
 
   verifyUpload = async (req: Request, res: Response): Promise<Response> => {
     const { filename } = req.query;
+    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
 
     if (typeof filename !== "string" || filename.trim() === "") {
       return res.status(400).json("No filename provided");
@@ -121,21 +124,20 @@ class UploadHandler {
         req.log.warn(`File ${filename} not found in Bucket ${this.storageManager.bucketName}`);
         this.auditLogger.error(
           req.log,
-          `Failed to install questionnaire ${filename}, file upload failed`,
+          `${username} failed to upload ${filename}`,
         );
 
         return res.status(404).json("Not found");
       }
 
       req.log.info(`File ${filename} found in Bucket ${this.storageManager.bucketName}`);
-      this.auditLogger.info(req.log, `Successfully uploaded questionnaire file ${filename}`);
 
       return res.status(200).json(file);
     } catch (error: unknown) {
       req.log.error(error, "Failed calling checkFile");
       this.auditLogger.error(
         req.log,
-        `Failed to install questionnaire ${filename}, unable to verify if file had been uploaded`,
+        `${username} failed to verify ${filename} uploaded`,
       );
 
       return res.status(500).json(error);

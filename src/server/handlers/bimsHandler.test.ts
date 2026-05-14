@@ -99,6 +99,9 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
 
     expect(response.status).toEqual(201);
     expect(mock.history.delete.length).toBe(1);
+    expect(logInfo).toHaveBeenCalledWith(
+      "AUDIT_LOG: rich deleted OPN2004A Telephone Operations start date (previously 2022-01-01)",
+    );
   });
 
   it("should return 500 when deleting an existing Telephone Operations start date fails", async () => {
@@ -129,6 +132,9 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
     expect(response.status).toEqual(201);
     expect(response.body).toStrictEqual({ tostartdate: "2022-12-31" });
     expect(mock.history.patch[0].data).toEqual('{"tostartdate":"2022-12-31"}');
+    expect(logInfo).toHaveBeenCalledWith(
+      "AUDIT_LOG: rich updated OPN2004A Telephone Operations start date to 2022-12-31 (previously 2022-01-01)",
+    );
   });
 
   it("should return a 201 status when a Telephone Operations start date is provided", async () => {
@@ -139,10 +145,12 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
       .post("/api/tostartdate/OPN2004A")
       .send({ tostartdate: "2022-12-31" });
 
-    console.log(mock.history);
     expect(mock.history.post[0].data).toEqual('{"tostartdate":"2022-12-31"}');
     expect(response.status).toEqual(201);
     expect(response.body).toStrictEqual({});
+    expect(logInfo).toHaveBeenCalledWith(
+      "AUDIT_LOG: rich set OPN2004A Telephone Operations start date to 2022-12-31",
+    );
   });
 
   it("should return a 500 status direct from the API", async () => {
@@ -225,6 +233,9 @@ describe("Deleting Telephone Operations start date from BIMS service", () => {
     const response: Response = await request.delete("/api/tostartdate/OPN2004A");
 
     expect(response.status).toEqual(204);
+    expect(logInfo).toHaveBeenCalledWith(
+      "AUDIT_LOG: rich deleted OPN2004A Telephone Operations start date (previously 2022-12-31)",
+    );
   });
 
   it("should return a 204 status when the Telephone Operations start date does not exist", async () => {
@@ -314,7 +325,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "2022-12-31" });
 
         expect(logInfo).toHaveBeenCalledWith(
-          "AUDIT_LOG: Totalmobile release date set to 2022-12-31 for LMS2004A by rich",
+          "AUDIT_LOG: rich set LMS2004A Totalmobile release date to 2022-12-31",
         );
       });
     });
@@ -327,14 +338,6 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
         expect(response.status).toEqual(201);
         expect(response.body).toStrictEqual("");
-      });
-
-      it("should log a message when a release date is not provided", async () => {
-        await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "" });
-
-        expect(logInfo).toHaveBeenCalledWith(
-          "AUDIT_LOG: No release date set for LMS2004A",
-        );
       });
     });
   });
@@ -372,7 +375,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
       it("should log a message when a release date is provided", async () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "2022-12-31" });
         expect(logInfo).toHaveBeenCalledWith(
-          "AUDIT_LOG: Totalmobile release date updated to 2022-12-31 (previously 2022-06-27) for LMS2004A by rich",
+          "AUDIT_LOG: rich updated LMS2004A Totalmobile release date to 2022-12-31 (previously 2022-06-27)",
         );
       });
     });
@@ -399,7 +402,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
       it("should log a message when a release date is not provided", async () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "" });
         expect(logInfo).toHaveBeenCalledWith(
-          "AUDIT_LOG: Totalmobile release date deleted (previously 2022-06-27) for LMS2004A by rich",
+          "AUDIT_LOG: rich deleted LMS2004A Totalmobile release date (previously 2022-06-27)",
         );
       });
     });
@@ -474,7 +477,7 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
     await request.delete("/api/tmreleasedate/LMS2004A");
 
     expect(logInfo).toHaveBeenCalledWith(
-      "AUDIT_LOG: Totalmobile release date deleted (previously 2022-12-31) for LMS2004A by rich",
+      "AUDIT_LOG: rich deleted LMS2004A Totalmobile release date (previously 2022-12-31)",
     );
   });
 

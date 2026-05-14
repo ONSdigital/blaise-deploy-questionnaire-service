@@ -63,12 +63,8 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
       const role = typeof req.body?.role === "string" ? req.body.role : "unknown";
 
       return {
-        successMessage:
-          `Successfully created donor cases for questionnaire ${questionnaireName} ` +
-          `for role ${role} by ${username}`,
-        errorMessage:
-          `Failed to create donor cases for questionnaire ${questionnaireName} ` +
-          `for role ${role} by ${username}`,
+        successMessage: `${username} created donor cases for ${role} on ${questionnaireName}`,
+        errorMessage: `${username} failed to create donor cases for ${role} on ${questionnaireName}`,
       };
     },
   );
@@ -88,12 +84,8 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
             : "unknown";
 
       return {
-        successMessage:
-          `Successfully reissued new donor case for questionnaire ${questionnaireName} ` +
-          `for user ${requestUser} by ${username}`,
-        errorMessage:
-          `Failed to reissue new donor case for questionnaire ${questionnaireName} ` +
-          `for user ${requestUser} by ${username}`,
+        successMessage: `${username} reissued donor case for ${requestUser} on ${questionnaireName}`,
+        errorMessage: `${username} failed to reissue donor case for ${requestUser} on ${questionnaireName}`,
       };
     },
   );
@@ -111,20 +103,15 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   server.use("/", loginHandler);
   server.use(express.json());
 
-  const buildRootCandidates = [
-    path.join(__dirname, "../../../build"),
-    path.join(__dirname, ".."),
-    path.join(process.cwd(), "build"),
-  ];
+  const buildRootCandidates = [path.resolve(process.cwd(), "build"), path.resolve(__dirname, "../../../build")];
   const buildRoot = firstExistingPath(buildRootCandidates) ?? buildRootCandidates[0];
-  const clientBuildCandidates = [path.join(buildRoot, "client"), buildRoot];
+  const clientBuildCandidates = [path.resolve(buildRoot, "client"), buildRoot];
   const clientBuildFolder = firstExistingPath(clientBuildCandidates) ?? clientBuildCandidates[0];
 
   const errorPageCandidates = [
-    path.join(__dirname, "../../../src/server/views/500.html"),
-    path.join(buildRoot, "500.html"),
-    path.join(buildRoot, "views/500.html"),
-    path.join(clientBuildFolder, "500.html"),
+    path.resolve(__dirname, "../../../src/server/views/500.html"),
+    path.resolve(buildRoot, "500.html"),
+    path.resolve(buildRoot, "views/500.html"),
   ];
   const errorPagePath = errorPageCandidates.find((filePath) => fs.existsSync(filePath));
 

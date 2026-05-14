@@ -133,7 +133,7 @@ class BlaiseHandler {
 
       this.auditLogger.info(
         req.log,
-        `Successfully installed questionnaire ${questionnaireName} by ${username}`,
+        `${username} deployed questionnaire ${questionnaireName}`,
       );
 
       return res.status(201).json(response);
@@ -141,7 +141,7 @@ class BlaiseHandler {
       req.log.error({ error }, "Install questionnaire endpoint failed");
       this.auditLogger.error(
         req.log,
-        `Failed to install questionnaire ${questionnaireName} by ${username}`,
+        `${username} failed to install questionnaire ${questionnaireName}`,
       );
 
       return res.status(500).json();
@@ -160,7 +160,7 @@ class BlaiseHandler {
 
       this.auditLogger.info(
         req.log,
-        `Successfully uninstalled questionnaire ${questionnaireName} by ${username}`,
+        `${username} deleted questionnaire ${questionnaireName}`,
       );
 
       return res.status(204).json(response);
@@ -168,7 +168,7 @@ class BlaiseHandler {
       if (this.errorNotFound(error)) {
         this.auditLogger.error(
           req.log,
-          `Attempted to uninstall questionnaire ${questionnaireName} that doesn't exist by ${username}`,
+          `${username} attempted to uninstall questionnaire ${questionnaireName} but it doesn't exist by`,
         );
 
         return res.status(404).json();
@@ -176,7 +176,7 @@ class BlaiseHandler {
 
       this.auditLogger.error(
         req.log,
-        `Failed to uninstall questionnaire ${questionnaireName} by ${username}`,
+        `${username} failed to uninstall questionnaire ${questionnaireName}`,
       );
 
       return res.status(500).json();
@@ -185,6 +185,7 @@ class BlaiseHandler {
 
   activateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
 
     try {
       const response = await this.blaiseApiClient.activateQuestionnaire(
@@ -192,20 +193,20 @@ class BlaiseHandler {
         questionnaireName,
       );
 
-      this.auditLogger.info(req.log, `Successfully activated questionnaire ${questionnaireName}`);
+      this.auditLogger.info(req.log, `${username} activated questionnaire ${questionnaireName}`);
 
       return res.status(204).json(response);
     } catch (error: unknown) {
       if (this.errorNotFound(error)) {
         this.auditLogger.error(
           req.log,
-          `Attempted to activate questionnaire ${questionnaireName} that doesn't exist`,
+          `${username} attempted to activate questionnaire ${questionnaireName} but it doesn't exist`,
         );
 
         return res.status(404).json();
       }
 
-      this.auditLogger.error(req.log, `Failed to activate questionnaire ${questionnaireName}`);
+      this.auditLogger.error(req.log, `${username} failed to activate questionnaire ${questionnaireName}`);
 
       return res.status(500).json();
     }
@@ -213,6 +214,7 @@ class BlaiseHandler {
 
   deactivateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
 
     try {
       const response = await this.blaiseApiClient.deactivateQuestionnaire(
@@ -220,20 +222,20 @@ class BlaiseHandler {
         questionnaireName,
       );
 
-      this.auditLogger.info(req.log, `Successfully deactivated questionnaire ${questionnaireName}`);
+      this.auditLogger.info(req.log, `${username} deactivated questionnaire ${questionnaireName}`);
 
       return res.status(204).json(response);
     } catch (error: unknown) {
       if (this.errorNotFound(error)) {
         this.auditLogger.error(
           req.log,
-          `Attempted to deactivate questionnaire ${questionnaireName} that doesn't exist`,
+          `${username} attempted to deactivate questionnaire ${questionnaireName} but it doesn't exist`,
         );
 
         return res.status(404).json();
       }
 
-      this.auditLogger.error(req.log, `Failed to deactivate questionnaire ${questionnaireName}`);
+      this.auditLogger.error(req.log, `${username} failed to deactivate questionnaire ${questionnaireName}`);
 
       return res.status(500).json();
     }
