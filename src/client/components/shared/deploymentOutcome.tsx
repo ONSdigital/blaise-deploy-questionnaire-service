@@ -24,13 +24,13 @@ export function DeploymentOutcome({
           bigIcon={true}
         >
           <h1>
-            Questionnaire <em className="ons-highlight">{questionnaireName}</em> deployed
+            Questionnaire <em>{questionnaireName}</em> deployed successfully
           </h1>
         </Panel>
       ) : (
         <>
           <h1 className="ons-u-mb-l ons-u-mt-m">
-            Questionnaire <em className="ons-highlight">{questionnaireName}</em> deploy failed
+            Questionnaire <em>{questionnaireName}</em> deploy failed
           </h1>
           <Panel status="error">
             <p>
@@ -45,20 +45,20 @@ export function DeploymentOutcome({
         </>
       )}
 
-      <br />
-      <br />
-      {status !== "" && onRetry && (
+      <div className="ons-btn-group ons-u-mt-m">
+        {status !== "" && onRetry && (
+          <Button
+            label={retryLabel}
+            primary={true}
+            onClick={onRetry}
+          />
+        )}
         <Button
-          label={retryLabel}
-          primary={true}
-          onClick={onRetry}
+          label="View questionnaires"
+          primary={status === ""}
+          onClick={onViewQuestionnaires}
         />
-      )}
-      <Button
-        label="View questionnaires"
-        primary={status === ""}
-        onClick={onViewQuestionnaires}
-      />
+      </div>
     </>
   );
 }

@@ -4,14 +4,13 @@ import MockAdapter from "axios-mock-adapter";
 import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
+import { createScenario } from "../feature_scenario_runner";
 import {
   givenPackageSelectedForDeploy,
   givenQuestionnaireInstalled,
 } from "../step_definitions/given";
 import { thenCancelOrOverwriteOptions, thenReturnedToLandingPage } from "../step_definitions/then";
 import { whenCancelDeployment, whenConfirmSelection } from "../step_definitions/when";
-
-import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -27,7 +26,7 @@ const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: cancel_deployment_when_questionnaire_exists", () => {
-  const Scenario = createScenario();
+  const Scenario = createScenario({ questionnaireName: "OPN2004A" });
 
   afterEach(() => {
     mocker.reset();
@@ -44,11 +43,17 @@ describe("Feature: cancel_deployment_when_questionnaire_exists", () => {
     thenCancelOrOverwriteOptions(Then);
   });
 
-  Scenario("Back-out of deploying existing questionnaire", ({ Given, When, Then }) => {
-    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
-    givenPackageSelectedForDeploy(Given);
-    whenConfirmSelection(When);
-    whenCancelDeployment(When);
-    thenReturnedToLandingPage(Then);
-  });
+  Scenario(
+    {
+      name: "Back-out of deploying existing questionnaire",
+      args: { selection: "cancel" },
+    },
+    ({ Given, When, Then }) => {
+      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+      givenPackageSelectedForDeploy(Given);
+      whenConfirmSelection(When);
+      whenCancelDeployment(When);
+      thenReturnedToLandingPage(Then);
+    },
+  );
 });

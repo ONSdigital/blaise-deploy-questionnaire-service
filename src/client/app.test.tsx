@@ -48,13 +48,13 @@ vi.mock("./components/deleteQuestionnairePage/deleteQuestionnairePage", () => ({
     onDelete,
   }: {
     onCancel: (questionnaireName: string) => void;
-    onDelete: (status: string) => void;
+    onDelete: (questionnaireName: string) => void;
   }) => {
     return (
       <>
         <button
           type="button"
-          onClick={() => onDelete("Deleted questionnaire")}
+          onClick={() => onDelete("OPN2007T")}
         >
           Delete questionnaire
         </button>
@@ -243,7 +243,7 @@ describe("App routes and status lifecycle", () => {
     });
   });
 
-  it("clears the success status after five seconds", async () => {
+  it("shows a persistent delete success summary after returning home", async () => {
     renderAtRoute("/questionnaire/OPN2007T/delete");
 
     await waitFor(() => {
@@ -254,12 +254,16 @@ describe("App routes and status lifecycle", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Delete questionnaire" }));
 
-    expect(screen.getByText("Deleted questionnaire")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Questionnaire OPN2007T deleted successfully/i }),
+    ).toBeInTheDocument();
 
     await act(async () => {
       await vi.advanceTimersByTimeAsync(5000);
     });
 
-    expect(screen.queryByText("Deleted questionnaire")).not.toBeInTheDocument();
-  }, 15000);
+    expect(
+      screen.getByRole("heading", { name: /Questionnaire OPN2007T deleted successfully/i }),
+    ).toBeInTheDocument();
+  });
 });

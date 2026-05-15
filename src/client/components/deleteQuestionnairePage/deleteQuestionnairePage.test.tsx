@@ -2,10 +2,18 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
+import { getQuestionnaire, getQuestionnaireModes } from "../../api/questionnaires";
+import { createWrapper } from "../../test-utils/renderWithQueryClient";
+
 import DeleteQuestionnairePage from "./deleteQuestionnairePage";
 
 const mockDeleteConfirmation = vi.fn();
 const mockErroneousWarning = vi.fn();
+
+vi.mock("../../api/questionnaires", () => ({
+  getQuestionnaire: vi.fn(),
+  getQuestionnaireModes: vi.fn(),
+}));
 
 vi.mock("./sections/deleteConfirmation", () => ({
   DeleteConfirmation: (props: {
@@ -37,6 +45,7 @@ vi.mock("./sections/erroneousWarning", () => ({
 
 describe("DeleteQuestionnairePage", () => {
   afterEach(() => {
+    vi.clearAllMocks();
     mockDeleteConfirmation.mockClear();
     mockErroneousWarning.mockClear();
   });
@@ -67,6 +76,7 @@ describe("DeleteQuestionnairePage", () => {
           />
         </Routes>
       </MemoryRouter>,
+      { wrapper: createWrapper() },
     );
 
     expect(mockDeleteConfirmation).toHaveBeenCalledWith(
@@ -109,6 +119,7 @@ describe("DeleteQuestionnairePage", () => {
           />
         </Routes>
       </MemoryRouter>,
+      { wrapper: createWrapper() },
     );
 
     expect(screen.getByText("Erroneous warning for IPS0002A")).toBeVisible();
@@ -141,6 +152,7 @@ describe("DeleteQuestionnairePage", () => {
           />
         </Routes>
       </MemoryRouter>,
+      { wrapper: createWrapper() },
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Cancel deletion" }));
@@ -165,16 +177,57 @@ describe("DeleteQuestionnairePage", () => {
           />
         </Routes>
       </MemoryRouter>,
+      { wrapper: createWrapper() },
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Cancel deletion" }));
 
     expect(mockDeleteConfirmation).toHaveBeenCalledWith(
       expect.objectContaining({
-        questionnaire: "",
-        modes: "",
+        questionnaire: expect.objectContaining({ name: "", status: "" }),
+        modes: [],
       }),
     );
     expect(onCancel).toHaveBeenCalledWith("");
+  });
+
+  it("fetches questionnaire details when opened directly by URL without location state", async () => {
+    const onCancel = vi.fn();
+
+    vi.mocked(getQuestionnaire).mockResolvedValue({ name: "IPS2605A", status: "Active" } as never);
+    vi.mocked(getQuestionnaireModes).mockResolvedValue(["CAWI"]);
+
+    render(
+      <MemoryRouter initialEntries={["/questionnaire/IPS2605A/delete"]}>
+        <Routes>
+          <Route
+            path="/questionnaire/:questionnaireName/delete"
+            element={
+              <DeleteQuestionnairePage
+                onCancel={onCancel}
+                onDelete={vi.fn()}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>,
+      { wrapper: createWrapper() },
+    );
+
+    await screen.findByRole("button", { name: "Cancel deletion" });
+
+    expect(getQuestionnaire).toHaveBeenCalledWith("IPS2605A");
+    expect(getQuestionnaireModes).toHaveBeenCalledWith("IPS2605A");
+    expect(mockDeleteConfirmation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        questionnaire: expect.objectContaining({ name: "IPS2605A", status: "Active" }),
+        modes: ["CAWI"],
+        onCancel: expect.any(Function),
+      }),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Cancel deletion" }));
+
+    expect(onCancel).toHaveBeenCalledWith("IPS2605A");
   });
 });

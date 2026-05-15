@@ -4,6 +4,7 @@ import MockAdapter from "axios-mock-adapter";
 import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
+import { createScenario } from "../feature_scenario_runner";
 import {
   givenNoQuestionnairesInstalled,
   givenPackageSelectedForDeploy,
@@ -29,8 +30,6 @@ import {
   whenSkipToStartDate,
 } from "../step_definitions/when";
 
-import { createScenario } from "./native_scenario";
-
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
 
@@ -42,7 +41,7 @@ MockAuthenticate.OverrideReturnValues(null, true);
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: deploy_questionnaire_with_incorrect_settings", () => {
-  const Scenario = createScenario();
+  const Scenario = createScenario({ questionnaireName: "OPN2004A" });
 
   beforeEach(() => {
     mocker.onPut(/^https:\/\/storage\.googleapis\.com\//).reply(200);
@@ -99,16 +98,34 @@ describe("Feature: deploy_questionnaire_with_incorrect_settings", () => {
     thenReturnedToLandingPage(Then);
   });
 
-  Scenario("Install with correct settings", ({ Given, When, Then }) => {
-    givenNoQuestionnairesInstalled(Given, mocker);
-    givenPackageSelectedForDeploy(Given);
-    givenQuestionnaireInstallsSuccessfully(Given, mocker);
-    givenQuestionnaireHasModes(Given, mocker);
-    givenQuestionnaireHasSettings(Given, mocker);
-    whenConfirmSelection(When);
-    whenSkipToStartDate(When);
-    whenDeployQuestionnaire(When);
-    thenQuestionnaireInstalled(Then, mocker);
-    thenDeploySuccessBanner(Then);
-  });
+  Scenario(
+    {
+      name: "Install with correct settings",
+      args: {
+        settingsTable: [
+          {
+            type: "StrictInterviewing",
+            saveSessionOnTimeout: "true",
+            saveSessionOnQuit: "true",
+            deleteSessionOnTimeout: "true",
+            deleteSessionOnQuit: "true",
+            sessionTimeout: "15",
+            applyRecordLocking: "true",
+          },
+        ],
+      },
+    },
+    ({ Given, When, Then }) => {
+      givenNoQuestionnairesInstalled(Given, mocker);
+      givenPackageSelectedForDeploy(Given);
+      givenQuestionnaireInstallsSuccessfully(Given, mocker);
+      givenQuestionnaireHasModes(Given, mocker);
+      givenQuestionnaireHasSettings(Given, mocker);
+      whenConfirmSelection(When);
+      whenSkipToStartDate(When);
+      whenDeployQuestionnaire(When);
+      thenQuestionnaireInstalled(Then, mocker);
+      thenDeploySuccessBanner(Then);
+    },
+  );
 });

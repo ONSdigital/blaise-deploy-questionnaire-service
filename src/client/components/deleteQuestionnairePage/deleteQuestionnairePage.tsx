@@ -1,5 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
+import { LoadingPanel, Panel } from "blaise-design-system-react-components";
 import React, { type ReactElement } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
+
+import { getQuestionnaire, getQuestionnaireModes } from "../../api/questionnaires";
 
 import { DeleteConfirmation } from "./sections/deleteConfirmation";
 import { ErroneousWarning } from "./sections/erroneousWarning";
@@ -7,20 +11,83 @@ import { ErroneousWarning } from "./sections/erroneousWarning";
 import type { Questionnaire } from "blaise-api-node-client";
 
 interface Location {
-  questionnaire: Questionnaire;
-  modes: string[];
+  questionnaire?: Questionnaire;
+  modes?: string[];
 }
 
 interface Props {
-  onDelete: (status: string) => void;
+  onDelete: (questionnaireName: string) => void;
   onCancel: (questionnaireName: string) => void;
 }
 
 function DeleteQuestionnairePage({ onDelete, onCancel }: Props): ReactElement {
-  const location = useLocation().state as Location;
+  const location = useLocation().state as Location | undefined;
   const routeParams = useParams();
-  const { questionnaire, modes } = location || { questionnaire: "", modes: "" };
-  const questionnaireName = routeParams.questionnaireName ?? questionnaire?.name ?? "";
+  const questionnaireName = routeParams.questionnaireName ?? location?.questionnaire?.name ?? "";
+
+  const {
+    data: fetchedQuestionnaire,
+    isLoading: questionnaireLoading,
+    error: questionnaireError,
+  } = useQuery({
+    queryKey: ["deleteQuestionnairePageQuestionnaire", questionnaireName],
+    queryFn: () => getQuestionnaire(questionnaireName),
+    enabled: !!questionnaireName && !location?.questionnaire,
+  });
+
+  const {
+    data: fetchedModes = [],
+    isLoading: modesLoading,
+    error: modesError,
+  } = useQuery({
+    queryKey: ["deleteQuestionnairePageModes", questionnaireName],
+    queryFn: () => getQuestionnaireModes(questionnaireName),
+    enabled: !!questionnaireName && !location?.modes,
+  });
+
+  const questionnaire = location?.questionnaire ?? fetchedQuestionnaire;
+  const modes = location?.modes ?? fetchedModes;
+
+  if (questionnaireName && (questionnaireLoading || modesLoading)) {
+    return (
+      <main
+        id="main-content"
+        className="ons-page__main ons-u-mt-l"
+      >
+        <LoadingPanel />
+      </main>
+    );
+  }
+
+  if (questionnaireName && (questionnaireError || modesError)) {
+    return (
+      <main
+        id="main-content"
+        className="ons-page__main ons-u-mt-l"
+      >
+        <Panel status="error">Could not get delete confirmation details, please try again</Panel>
+      </main>
+    );
+  }
+
+  if (questionnaireName && !questionnaire) {
+    return (
+      <Navigate
+        to="/"
+        replace={true}
+      />
+    );
+  }
+
+  const fallbackQuestionnaire: Questionnaire =
+    questionnaire ??
+    ({
+      name: "",
+      status: "",
+      fieldPeriod: "",
+      installDate: "",
+      serverParkName: "",
+    } as Questionnaire);
 
   return (
     <>
@@ -28,11 +95,11 @@ function DeleteQuestionnairePage({ onDelete, onCancel }: Props): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        {questionnaire.status === "Failed" ? (
-          <ErroneousWarning questionnaireName={questionnaire.name} />
+        {fallbackQuestionnaire.status === "Failed" ? (
+          <ErroneousWarning questionnaireName={fallbackQuestionnaire.name} />
         ) : (
           <DeleteConfirmation
-            questionnaire={questionnaire}
+            questionnaire={fallbackQuestionnaire}
             modes={modes}
             onDelete={onDelete}
             onCancel={() => onCancel(questionnaireName)}

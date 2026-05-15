@@ -189,7 +189,7 @@ describe("Reinstall questionnaires", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("heading", { name: /Questionnaire .*OPN2004A.* deployed/i }),
+        screen.getByRole("heading", { name: /Questionnaire .*OPN2004A.* deployed successfully/i }),
       ).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /View questionnaires/i })).toBeInTheDocument();
     });

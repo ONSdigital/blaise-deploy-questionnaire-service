@@ -103,10 +103,10 @@ exports[`DeleteConfirmation > when CATI mode is present > should display the CAT
       <h1
         class="ons-u-mb-l"
       >
-        Are you sure you want to delete the questionnaire
+        Are you sure you want to delete questionnaire
          
         <em
-          class="highlight"
+          class="ons-highlight"
         >
           LMS2201_AA1
         </em>
@@ -200,10 +200,10 @@ exports[`DeleteConfirmation > when CATI mode is present > should display the CAT
     <h1
       class="ons-u-mb-l"
     >
-      Are you sure you want to delete the questionnaire
+      Are you sure you want to delete questionnaire
        
       <em
-        class="highlight"
+        class="ons-highlight"
       >
         LMS2201_AA1
       </em>
@@ -937,10 +937,10 @@ exports[`DeleteConfirmation > when CAWI mode is include > should display CAWI wa
       <h1
         class="ons-u-mb-l"
       >
-        Are you sure you want to delete the questionnaire
+        Are you sure you want to delete questionnaire
          
         <em
-          class="highlight"
+          class="ons-highlight"
         />
         ?
       </h1>
@@ -1032,10 +1032,10 @@ exports[`DeleteConfirmation > when CAWI mode is include > should display CAWI wa
     <h1
       class="ons-u-mb-l"
     >
-      Are you sure you want to delete the questionnaire
+      Are you sure you want to delete questionnaire
        
       <em
-        class="highlight"
+        class="ons-highlight"
       />
       ?
     </h1>
@@ -1184,10 +1184,10 @@ exports[`DeleteConfirmation > when Delete button is pressed > should display an 
       <h1
         class="ons-u-mb-l"
       >
-        Are you sure you want to delete the questionnaire
+        Are you sure you want to delete questionnaire
          
         <em
-          class="highlight"
+          class="ons-highlight"
         >
           LMS2210_CC1
         </em>
@@ -1281,10 +1281,10 @@ exports[`DeleteConfirmation > when Delete button is pressed > should display an 
     <h1
       class="ons-u-mb-l"
     >
-      Are you sure you want to delete the questionnaire
+      Are you sure you want to delete questionnaire
        
       <em
-        class="highlight"
+        class="ons-highlight"
       >
         LMS2210_CC1
       </em>

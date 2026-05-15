@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
-import { setTmReleaseDate } from "../../api/tmReleaseDate";
+import { getTmReleaseDate, setTmReleaseDate } from "../../api/tmReleaseDate";
 
 import QuestionnaireTmReleaseDatePage from "./questionnaireTmReleaseDatePage";
 
@@ -14,6 +14,7 @@ function renderWithQueryClient(ui: React.ReactElement) {
 }
 
 vi.mock("../../api/tmReleaseDate", () => ({
+  getTmReleaseDate: vi.fn(),
   setTmReleaseDate: vi.fn(),
 }));
 
@@ -115,7 +116,31 @@ describe("QuestionnaireTmReleaseDatePage", () => {
 
     await waitFor(() => {
       expect(setTmReleaseDate).toHaveBeenCalledWith("OPN2004A", "");
-      expect(mockNavigate).toHaveBeenCalledWith(-1);
+      expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/OPN2004A", { replace: true });
     });
+  });
+
+  it("supports direct questionnaire routes by fetching the current release date and returning to details", async () => {
+    vi.mocked(getTmReleaseDate).mockResolvedValueOnce("2026-01-01");
+
+    renderWithQueryClient(
+      <MemoryRouter initialEntries={["/questionnaire/LMS2605_LJ2/release-date"]}>
+        <Routes>
+          <Route
+            path="/questionnaire/:questionnaireName/release-date"
+            element={<QuestionnaireTmReleaseDatePage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(getTmReleaseDate).toHaveBeenCalledWith("LMS2605_LJ2");
+    });
+    await waitFor(() => screen.getByRole("button", { name: /Cancel/i }));
+
+    fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+
+    expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/LMS2605_LJ2", { replace: true });
   });
 });

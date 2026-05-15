@@ -167,7 +167,7 @@ describe("Deployment summary", () => {
     });
   });
 
-  it("should not display the totalmobile release date for non-LMS, non-DST questionnaires", async () => {
+  it("should not display the totalmobile release date for non-LMS and non-DST questionnaires", async () => {
     const { queryByText } = render(
       <Formik
         initialValues={{}}

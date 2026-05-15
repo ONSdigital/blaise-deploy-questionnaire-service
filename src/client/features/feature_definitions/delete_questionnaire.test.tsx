@@ -4,6 +4,7 @@ import MockAdapter from "axios-mock-adapter";
 import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
+import { createScenario } from "../feature_scenario_runner";
 import {
   givenQuestionnaireHasActiveSurveyDays,
   givenQuestionnaireHasModes,
@@ -29,8 +30,6 @@ import {
   whenLoadHomepage,
 } from "../step_definitions/when";
 
-import { createScenario } from "./native_scenario";
-
 import type { Questionnaire } from "blaise-api-node-client";
 
 vi.mock("blaise-login-react-client", async () => {
@@ -45,7 +44,7 @@ const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: delete_questionnaire", () => {
-  const Scenario = createScenario();
+  const Scenario = createScenario({ questionnaireName: "OPN2004A" });
 
   beforeEach(() => {
     questionnaireList.length = 0;
@@ -107,15 +106,21 @@ describe("Feature: delete_questionnaire", () => {
     thenDeleteSuccessBanner(Then);
   });
 
-  Scenario("Delete CAWI questionnaire", ({ Given, When, Then }) => {
-    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
-    givenQuestionnaireIsActive(Given, questionnaireList, mocker);
-    givenQuestionnaireHasModes(Given, mocker);
-    whenGoToDetailsPage(When);
-    whenClickDelete(When);
-    thenActiveWebCollectionWarning(Then);
-    whenConfirmDeletion(When);
-    thenQuestionnaireDeleted(Then, mocker);
-    thenDeleteSuccessBanner(Then);
-  });
+  Scenario(
+    {
+      name: "Delete CAWI questionnaire",
+      args: { modes: "CAWI" },
+    },
+    ({ Given, When, Then }) => {
+      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+      givenQuestionnaireIsActive(Given, questionnaireList, mocker);
+      givenQuestionnaireHasModes(Given, mocker);
+      whenGoToDetailsPage(When);
+      whenClickDelete(When);
+      thenActiveWebCollectionWarning(Then);
+      whenConfirmDeletion(When);
+      thenQuestionnaireDeleted(Then, mocker);
+      thenDeleteSuccessBanner(Then);
+    },
+  );
 });

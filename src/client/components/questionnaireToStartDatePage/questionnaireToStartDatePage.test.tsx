@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
-import { setToStartDate } from "../../api/toStartDate";
+import { getToStartDate, setToStartDate } from "../../api/toStartDate";
 
 import QuestionnaireToStartDatePage from "./questionnaireToStartDatePage";
 
@@ -14,6 +14,7 @@ function renderWithQueryClient(ui: React.ReactElement) {
 }
 
 vi.mock("../../api/toStartDate", () => ({
+  getToStartDate: vi.fn(),
   setToStartDate: vi.fn(),
 }));
 
@@ -108,7 +109,7 @@ describe("QuestionnaireToStartDatePage", () => {
     );
 
     fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
-    expect(mockNavigate).toHaveBeenCalledWith(-1);
+    expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/OPN2004A", { replace: true });
   });
 
   it("clears the start date and navigates back when the user chooses no", async () => {
@@ -137,7 +138,31 @@ describe("QuestionnaireToStartDatePage", () => {
 
     await waitFor(() => {
       expect(setToStartDate).toHaveBeenCalledWith("OPN2004A", "");
-      expect(mockNavigate).toHaveBeenCalledWith(-1);
+      expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/OPN2004A", { replace: true });
     });
+  });
+
+  it("supports direct questionnaire routes by fetching the current start date and returning to details", async () => {
+    vi.mocked(getToStartDate).mockResolvedValueOnce("2026-01-01");
+
+    renderWithQueryClient(
+      <MemoryRouter initialEntries={["/questionnaire/LMS2605_LJ2/start-date"]}>
+        <Routes>
+          <Route
+            path="/questionnaire/:questionnaireName/start-date"
+            element={<QuestionnaireToStartDatePage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(getToStartDate).toHaveBeenCalledWith("LMS2605_LJ2");
+    });
+    await waitFor(() => screen.getByRole("button", { name: /Cancel/i }));
+
+    fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+
+    expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/LMS2605_LJ2", { replace: true });
   });
 });

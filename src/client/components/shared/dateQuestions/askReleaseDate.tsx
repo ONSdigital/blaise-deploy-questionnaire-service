@@ -18,8 +18,8 @@ export function AskReleaseDate({ questionnaireName }: SelectFilePageProps): Reac
           </h1>
 
           <p>
-            This is used to determine the date that selected cases will be sent to Totalmobile for
-            field allocation. If a date is not selected, then no cases will be sent to Totalmobile.
+            This determines when selected cases are sent to Totalmobile for field allocation. If you
+            do not select a date, no cases will be sent to Totalmobile.
           </p>
 
           <StyledFormErrorSummary />

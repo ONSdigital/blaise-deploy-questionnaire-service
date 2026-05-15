@@ -21,9 +21,7 @@ export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004
     await flushPromises();
   });
 
-  let input = await screen
-    .findByLabelText(/Select questionnaire package/i)
-    .catch(() => null);
+  let input = await screen.findByLabelText(/Select questionnaire package/i).catch(() => null);
 
   if (!input) {
     input = (await waitFor(

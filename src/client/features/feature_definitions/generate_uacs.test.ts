@@ -3,6 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
+import { createScenario } from "../feature_scenario_runner";
 import {
   givenQuestionnaireHasCases,
   givenQuestionnaireHasModes,
@@ -19,8 +20,6 @@ import {
 } from "../step_definitions/then";
 import { whenClickGenerateUacs, whenGoToDetailsPage } from "../step_definitions/when";
 
-import { createScenario } from "./native_scenario";
-
 import type { Questionnaire } from "blaise-api-node-client";
 
 vi.mock("blaise-login-react-client", async () => {
@@ -35,7 +34,7 @@ const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: generate_uacs", () => {
-  const Scenario = createScenario();
+  const Scenario = createScenario({ cases: "500", questionnaireName: "OPN2004A" });
 
   beforeEach(() => {
     globalThis.URL.createObjectURL = vi.fn();
@@ -50,7 +49,10 @@ describe("Feature: generate_uacs", () => {
   });
 
   Scenario(
-    "Generate button exists for questionnaires with CAWI mode and cases",
+    {
+      name: "Generate button exists for questionnaires with CAWI mode and cases",
+      args: { modes: "CAWI" },
+    },
     ({ Given, When, Then }) => {
       givenQuestionnaireInstalled(Given, questionnaireList, mocker);
       givenQuestionnaireHasModes(Given, mocker);
@@ -61,7 +63,10 @@ describe("Feature: generate_uacs", () => {
   );
 
   Scenario(
-    "Generate button does not exist for questionnaires in CAWI mode without cases",
+    {
+      name: "Generate button does not exist for questionnaires in CAWI mode without cases",
+      args: { modes: "CAWI", cases: "0" },
+    },
     ({ Given, When, Then }) => {
       givenQuestionnaireInstalled(Given, questionnaireList, mocker);
       givenQuestionnaireHasModes(Given, mocker);
@@ -72,7 +77,10 @@ describe("Feature: generate_uacs", () => {
   );
 
   Scenario(
-    "Generate button does not exist for questionnaires in CATI mode with cases",
+    {
+      name: "Generate button does not exist for questionnaires in CATI mode with cases",
+      args: { modes: "CATI" },
+    },
     ({ Given, When, Then }) => {
       givenQuestionnaireInstalled(Given, questionnaireList, mocker);
       givenQuestionnaireHasModes(Given, mocker);
@@ -83,7 +91,10 @@ describe("Feature: generate_uacs", () => {
   );
 
   Scenario(
-    "I get a confirmation message When generating Unique Access Codes",
+    {
+      name: "I get a confirmation message When generating Unique Access Codes",
+      args: { modes: "CAWI" },
+    },
     ({ Given, When, Then }) => {
       givenQuestionnaireInstalled(Given, questionnaireList, mocker);
       givenQuestionnaireHasModes(Given, mocker);
@@ -94,18 +105,27 @@ describe("Feature: generate_uacs", () => {
     },
   );
 
-  Scenario("I get a error message When generating Unique Access Codes", ({ Given, When, Then }) => {
-    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
-    givenQuestionnaireHasModes(Given, mocker);
-    givenQuestionnaireHasCases(Given, questionnaireList, mocker);
-    givenUacGenerationFails(Given, mocker);
-    whenGoToDetailsPage(When);
-    whenClickGenerateUacs(When);
-    thenUacError(Then);
-  });
+  Scenario(
+    {
+      name: "I get a error message When generating Unique Access Codes",
+      args: { modes: "CAWI" },
+    },
+    ({ Given, When, Then }) => {
+      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+      givenQuestionnaireHasModes(Given, mocker);
+      givenQuestionnaireHasCases(Given, questionnaireList, mocker);
+      givenUacGenerationFails(Given, mocker);
+      whenGoToDetailsPage(When);
+      whenClickGenerateUacs(When);
+      thenUacError(Then);
+    },
+  );
 
   Scenario(
-    "I can see how many Unique Access Codes have been generated for a questionnaire on the details page",
+    {
+      name: "I can see how many Unique Access Codes have been generated for a questionnaire on the details page",
+      args: { modes: "CAWI" },
+    },
     ({ Given, When, Then }) => {
       givenQuestionnaireInstalled(Given, questionnaireList, mocker);
       givenQuestionnaireHasModes(Given, mocker);

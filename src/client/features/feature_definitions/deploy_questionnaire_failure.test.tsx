@@ -4,11 +4,10 @@ import MockAdapter from "axios-mock-adapter";
 import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
+import { createScenario } from "../feature_scenario_runner";
 import { givenAllInstallsFail, givenPackageSelectedForDeploy } from "../step_definitions/given";
 import { thenCanRetryInstall, thenDeployErrorBanner } from "../step_definitions/then";
 import { whenConfirmSelection, whenDeploy } from "../step_definitions/when";
-
-import { createScenario } from "./native_scenario";
 
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
@@ -21,7 +20,7 @@ MockAuthenticate.OverrideReturnValues(null, true);
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: deploy_questionnaire_failure", () => {
-  const Scenario = createScenario();
+  const Scenario = createScenario({ questionnaireName: "OPN2004A" });
 
   afterEach(() => {
     mocker.reset();

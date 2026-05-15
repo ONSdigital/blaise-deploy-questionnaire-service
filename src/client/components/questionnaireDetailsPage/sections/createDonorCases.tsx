@@ -22,7 +22,7 @@ function CreateDonorCases({ questionnaire }: Props): ReactElement {
     <>
       <div className="ons-summary ons-u-mb-m">
         <div className="ons-summary__group">
-          <h2 className="ons-summary__group-title">Donor case</h2>
+          <h2 className="ons-summary__group-title">Donor cases</h2>
           <Panel>
             To create initial donor cases for interviewers, click <b>Create cases</b>.
             <br />

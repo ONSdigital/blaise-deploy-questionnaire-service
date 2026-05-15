@@ -4,6 +4,7 @@ import MockAdapter from "axios-mock-adapter";
 import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
+import { createScenario } from "../feature_scenario_runner";
 import {
   givenNoQuestionnairesInstalled,
   givenPackageSelectedForDeploy,
@@ -27,8 +28,6 @@ import {
   whenSkipToStartDate,
 } from "../step_definitions/when";
 
-import { createScenario } from "./native_scenario";
-
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
 
@@ -40,7 +39,7 @@ MockAuthenticate.OverrideReturnValues(null, true);
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: deploy_questionnaire", () => {
-  const Scenario = createScenario();
+  const Scenario = createScenario({ questionnaireName: "OPN2004A" });
 
   beforeEach(() => {
     mocker.onPut(/^https:\/\/storage\.googleapis\.com\//).reply(200);

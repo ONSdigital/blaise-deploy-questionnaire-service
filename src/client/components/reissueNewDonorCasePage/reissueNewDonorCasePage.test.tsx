@@ -4,9 +4,14 @@ import axios from "axios";
 import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
+import { getQuestionnaire } from "../../api/questionnaires";
+
 import ReissueNewDonorCasePage from "./reissueNewDonorCasePage";
 
 vi.mock("axios");
+vi.mock("../../api/questionnaires", () => ({
+  getQuestionnaire: vi.fn(),
+}));
 
 const mockNavigate = vi.fn();
 
@@ -34,6 +39,10 @@ describe("ReissueNewDonorCasePage", () => {
 
   it("supports direct URLs with an encoded user parameter", async () => {
     mockedAxios.post.mockResolvedValueOnce({ data: "Reissued", status: 201 } as never);
+    vi.mocked(getQuestionnaire).mockResolvedValueOnce({
+      name: "IPS0001A",
+      status: "Active",
+    } as never);
 
     renderWithQueryClient(
       <MemoryRouter initialEntries={["/questionnaire/IPS0001A/reissue-new-donor-case/test%20user"]}>
@@ -47,8 +56,10 @@ describe("ReissueNewDonorCasePage", () => {
     );
 
     expect(
-      screen.getByText(/Reissue a new donor case for/i, { selector: "h1" }).textContent,
-    ).toContain("test user");
+      screen.getByRole("heading", {
+        name: /Reissue test user a new donor case for IPS0001A\s*\?/i,
+      }),
+    ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
 
@@ -58,10 +69,11 @@ describe("ReissueNewDonorCasePage", () => {
         { questionnaire_name: "IPS0001A", role: "test user", user: "test user" },
         expect.any(Object),
       );
+      expect(getQuestionnaire).toHaveBeenCalledWith("IPS0001A");
       expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/IPS0001A", {
         replace: true,
         state: {
-          questionnaire: null,
+          questionnaire: expect.objectContaining({ name: "IPS0001A", status: "Active" }),
           responseMessage: "Reissued",
           role: "test user",
           section: "reissueNewDonorCase",

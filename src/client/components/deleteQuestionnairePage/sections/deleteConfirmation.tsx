@@ -11,7 +11,7 @@ import type { Questionnaire } from "blaise-api-node-client";
 interface Props {
   questionnaire: Questionnaire;
   modes: string[];
-  onDelete: (message: string) => void;
+  onDelete: (questionnaireName: string) => void;
   onCancel: () => void;
 }
 
@@ -44,7 +44,7 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
         return;
       }
 
-      onDelete(`Questionnaire: ${questionnaire.name} Successfully deleted`);
+      onDelete(questionnaire.name);
     },
   });
 
@@ -59,8 +59,8 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
   return (
     <>
       <h1 className="ons-u-mb-l">
-        Are you sure you want to delete the questionnaire{" "}
-        <em className="highlight">{questionnaire.name}</em>?
+        Are you sure you want to delete questionnaire{" "}
+        <em className="ons-highlight">{questionnaire.name}</em>?
       </h1>
 
       {modes.includes("CATI") && questionnaire.status?.toLowerCase() === "active" && active && (

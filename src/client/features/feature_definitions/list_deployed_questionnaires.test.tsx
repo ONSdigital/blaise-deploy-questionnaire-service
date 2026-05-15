@@ -4,11 +4,10 @@ import MockAdapter from "axios-mock-adapter";
 import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
+import { createScenario } from "../feature_scenario_runner";
 import { givenQuestionnaireInstalled } from "../step_definitions/given";
 import { thenDeployedListShown } from "../step_definitions/then";
 import { whenLoadHomepage } from "../step_definitions/when";
-
-import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -24,7 +23,10 @@ const questionnaireList: Questionnaire[] = [];
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: list_deployed_questionnaires", () => {
-  const Scenario = createScenario();
+  const Scenario = createScenario({
+    questionnaireName: "OPN2004A",
+    questionnaireTable: [{ Questionnaire: "OPN2004A" }],
+  });
 
   afterEach(() => {
     mocker.reset();

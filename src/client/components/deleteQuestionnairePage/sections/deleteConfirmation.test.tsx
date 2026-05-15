@@ -341,7 +341,7 @@ describe("DeleteConfirmation", () => {
 
       await userEvent.click(confirm);
       await waitFor(() => {
-        expect(onDelete).toHaveBeenCalledWith("Questionnaire: LMS2210_CC1 Successfully deleted");
+        expect(onDelete).toHaveBeenCalledWith("LMS2210_CC1");
       });
 
       expect(onCancel).not.toHaveBeenCalled();

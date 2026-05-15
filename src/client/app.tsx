@@ -54,8 +54,8 @@ const DeployPage = lazy(
 type AppRoutesProps = {
   errored: boolean;
   setErrored: (errored: boolean) => void;
-  status: string;
-  onDeleteQuestionnaire: (status: string) => void;
+  deletedQuestionnaireName: string;
+  onDeleteQuestionnaire: (questionnaireName: string) => void;
   onCancelDeleteQuestionnaire: (questionnaireName: string) => void;
 };
 
@@ -84,10 +84,27 @@ function NotFound(): ReactElement {
   );
 }
 
+function DeleteQuestionnaireSummary({
+  questionnaireName,
+}: {
+  questionnaireName: string;
+}): ReactElement {
+  return (
+    <div className="ons-u-mb-m">
+      <Panel
+        status="success"
+        bigIcon={true}
+      >
+        <h1>Questionnaire {questionnaireName} deleted successfully</h1>
+      </Panel>
+    </div>
+  );
+}
+
 function AppRoutes({
   errored,
   setErrored,
-  status,
+  deletedQuestionnaireName,
   onDeleteQuestionnaire,
   onCancelDeleteQuestionnaire,
 }: AppRoutesProps): ReactElement {
@@ -111,7 +128,9 @@ function AppRoutes({
                 id="main-content"
                 className="ons-page__main ons-u-mt-no"
               >
-                {status !== "" && <Panel status="success">{status}</Panel>}
+                {deletedQuestionnaireName !== "" && (
+                  <DeleteQuestionnaireSummary questionnaireName={deletedQuestionnaireName} />
+                )}
                 {errored && <ErrorPanel />}
                 <ErrorBoundary errorMessageText="Unable to load questionnaires">
                   <QuestionnairesPage setErrored={setErrored} />
@@ -193,27 +212,17 @@ function App(): ReactElement {
   }, [authClient, handleSetLoggedIn]);
 
   const [errored, setErrored] = useState(false);
-  const [status, setStatus] = useState("");
-  const visibleStatus = location.pathname === "/" ? status : "";
+  const deletedQuestionnaireName =
+    location.pathname === "/" &&
+    typeof (location.state as { deletedQuestionnaireName?: unknown } | null)
+      ?.deletedQuestionnaireName === "string"
+      ? ((location.state as { deletedQuestionnaireName?: string } | null)
+          ?.deletedQuestionnaireName ?? "")
+      : "";
 
-  useEffect(() => {
-    if (status === "") {
-      return;
-    }
-
-    const timer = window.setTimeout(() => {
-      setStatus("");
-    }, 5000);
-
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [status]);
-
-  function onDeleteQuestionnaire(newStatus: string): void {
+  function onDeleteQuestionnaire(questionnaireName: string): void {
     void queryClient.invalidateQueries({ queryKey: ["questionnaires"] });
-    navigate("/");
-    setStatus(newStatus);
+    navigate("/", { state: { deletedQuestionnaireName: questionnaireName } });
   }
 
   function onCancelDeleteQuestionnaire(questionnaireName: string): void {
@@ -274,7 +283,7 @@ function App(): ReactElement {
           <AppRoutes
             errored={errored}
             setErrored={setErrored}
-            status={visibleStatus}
+            deletedQuestionnaireName={deletedQuestionnaireName}
             onDeleteQuestionnaire={onDeleteQuestionnaire}
             onCancelDeleteQuestionnaire={onCancelDeleteQuestionnaire}
           />

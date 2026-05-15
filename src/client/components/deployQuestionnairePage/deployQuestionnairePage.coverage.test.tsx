@@ -129,7 +129,7 @@ vi.mock("../shared/deploymentOutcome", () => ({
 }));
 
 function defaultShouldAskToStartDate(questionnaireName: string): boolean {
-  return ["DST", "LMS", "OPN", "TST"].some((tla) => questionnaireName.startsWith(tla));
+  return ["DST", "LMS", "OPN"].some((tla) => questionnaireName.startsWith(tla));
 }
 
 function defaultShouldAskTmReleaseDate(questionnaireName: string): boolean {

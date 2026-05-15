@@ -24,7 +24,7 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
             ?
           </h1>
           <p>
-            This is used to determine the date that selected cases will be sent to Totalmobile for field allocation. If a date is not selected, then no cases will be sent to Totalmobile.
+            This determines when selected cases are sent to Totalmobile for field allocation. If you do not select a date, no cases will be sent to Totalmobile.
           </p>
           <div
             class="ons-field ons-u-mb-m"
@@ -141,7 +141,7 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
           ?
         </h1>
         <p>
-          This is used to determine the date that selected cases will be sent to Totalmobile for field allocation. If a date is not selected, then no cases will be sent to Totalmobile.
+          This determines when selected cases are sent to Totalmobile for field allocation. If you do not select a date, no cases will be sent to Totalmobile.
         </p>
         <div
           class="ons-field ons-u-mb-m"

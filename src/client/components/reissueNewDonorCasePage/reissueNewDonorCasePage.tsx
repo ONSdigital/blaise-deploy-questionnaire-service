@@ -1,6 +1,8 @@
+import { useQueryClient } from "@tanstack/react-query";
 import React, { type ReactElement } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 
+import { getQuestionnaire } from "../../api/questionnaires";
 import { decodeRouteParam } from "../../utils/decodeRouteParam";
 
 import { Confirmation } from "./sections/confirmation";
@@ -17,6 +19,7 @@ interface Location {
 
 function ReissueNewDonorCasePage(): ReactElement {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const routeParams = useParams();
   const location = useLocation().state as Location | undefined;
   const questionnaireName = routeParams.questionnaireName ?? "";
@@ -33,16 +36,32 @@ function ReissueNewDonorCasePage(): ReactElement {
   }
 
   const handleSuccess = (message: string, code: number): void => {
-    navigate(`/questionnaire/${questionnaireName}`, {
-      state: {
-        section: "reissueNewDonorCase",
-        questionnaire: location?.questionnaire ?? null,
-        responseMessage: message,
-        statusCode: code,
-        role: user,
-      },
-      replace: true,
-    });
+    void (async () => {
+      let questionnaire = location?.questionnaire ?? null;
+
+      if (!questionnaire) {
+        try {
+          questionnaire =
+            (await queryClient.fetchQuery({
+              queryKey: ["questionnaire", questionnaireName],
+              queryFn: () => getQuestionnaire(questionnaireName),
+            })) ?? null;
+        } catch {
+          questionnaire = null;
+        }
+      }
+
+      navigate(`/questionnaire/${questionnaireName}`, {
+        state: {
+          section: "reissueNewDonorCase",
+          questionnaire,
+          responseMessage: message,
+          statusCode: code,
+          role: user,
+        },
+        replace: true,
+      });
+    })();
   };
 
   return (

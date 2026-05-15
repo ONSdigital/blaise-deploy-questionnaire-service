@@ -54,9 +54,7 @@ export function thenLiveQuestionnaireWarning(then: DefineStepFunction): void {
 
 export function thenDeleteWarning(then: DefineStepFunction): void {
   then("I am presented with a warning", async () => {
-    expect(
-      await screen.findByText(/are you sure you want to delete the questionnaire/i),
-    ).toBeDefined();
+    expect(await screen.findByText(/are you sure you want to delete questionnaire/i)).toBeDefined();
   });
 }
 
@@ -380,7 +378,7 @@ export function thenCasesDisplayed(then: DefineStepFunction): void {
 export function thenDeploySuccessBanner(then: DefineStepFunction): void {
   then("I am presented with a successful deployment banner on the landing page", async () => {
     expect(
-      await screen.findByRole("heading", { name: /^Questionnaire .* deployed$/i }),
+      await screen.findByRole("heading", { name: /^Questionnaire .* deployed successfully$/i }),
     ).toBeDefined();
   });
 }

@@ -1,11 +1,11 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "blaise-design-system-react-components";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Button, LoadingPanel, Panel } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
 import { Form, Formik, type FormikHelpers } from "formik";
 import React, { type ReactElement } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { setTmReleaseDate } from "../../api/tmReleaseDate";
+import { getTmReleaseDate, setTmReleaseDate } from "../../api/tmReleaseDate";
 import { clientLogger } from "../../utils/logger";
 import { AskReleaseDate } from "../shared/dateQuestions/askReleaseDate";
 
@@ -24,11 +24,36 @@ function QuestionnaireTmReleaseDatePage(): ReactElement {
   const queryClient = useQueryClient();
   const routeParams = useParams();
   const location = useLocation().state as LocationState | undefined;
-  const { tmReleaseDate, questionnaireName: questionnaireNameFromState } = location || {
-    tmReleaseDate: null,
-    questionnaireName: null,
-  };
+  const tmReleaseDateFromState = location?.tmReleaseDate;
+  const questionnaireNameFromState = location?.questionnaireName;
   const questionnaireName = routeParams.questionnaireName ?? questionnaireNameFromState ?? "";
+
+  const {
+    data: fetchedTmReleaseDate = "",
+    isLoading: tmReleaseDateLoading,
+    error: tmReleaseDateError,
+  } = useQuery({
+    queryKey: ["tmReleaseDate", questionnaireName],
+    queryFn: () => getTmReleaseDate(questionnaireName),
+    enabled: !!questionnaireName && tmReleaseDateFromState === undefined,
+  });
+
+  const tmReleaseDate =
+    tmReleaseDateFromState === undefined
+      ? fetchedTmReleaseDate === ""
+        ? null
+        : fetchedTmReleaseDate
+      : tmReleaseDateFromState;
+
+  function navigateBackToQuestionnaire(): void {
+    if (questionnaireName) {
+      navigate(`/questionnaire/${questionnaireName}`, { replace: true });
+
+      return;
+    }
+
+    navigate(-1);
+  }
 
   async function handleSubmit(
     values: TmReleaseDateFormValues,
@@ -48,13 +73,35 @@ function QuestionnaireTmReleaseDatePage(): ReactElement {
 
     actions.setSubmitting(false);
     void queryClient.invalidateQueries({ queryKey: ["tmReleaseDate", questionnaireName] });
-    navigate(-1);
+    navigateBackToQuestionnaire();
   }
 
   let initialValues = {
     askDate: "",
     tmReleaseDate: "",
   };
+
+  if (questionnaireName && tmReleaseDateLoading) {
+    return (
+      <main
+        id="main-content"
+        className="ons-page__main ons-u-mt-l"
+      >
+        <LoadingPanel message={"Getting Totalmobile release date"} />
+      </main>
+    );
+  }
+
+  if (questionnaireName && tmReleaseDateError) {
+    return (
+      <main
+        id="main-content"
+        className="ons-page__main ons-u-mt-l"
+      >
+        <Panel status="error">Failed to get Totalmobile release date</Panel>
+      </main>
+    );
+  }
 
   if (tmReleaseDate != null) {
     initialValues = {
@@ -72,6 +119,7 @@ function QuestionnaireTmReleaseDatePage(): ReactElement {
         <Formik
           validateOnBlur={false}
           validateOnChange={false}
+          enableReinitialize={true}
           initialValues={initialValues}
           onSubmit={handleSubmit}
         >
@@ -90,7 +138,7 @@ function QuestionnaireTmReleaseDatePage(): ReactElement {
                 {!isSubmitting && (
                   <Button
                     id={"cancel-deploy-button"}
-                    onClick={() => navigate(-1)}
+                    onClick={navigateBackToQuestionnaire}
                     primary={false}
                     label={"Cancel"}
                   />

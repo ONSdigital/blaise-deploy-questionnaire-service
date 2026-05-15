@@ -4,6 +4,7 @@ import MockAdapter from "axios-mock-adapter";
 import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
+import { createScenario } from "../feature_scenario_runner";
 import {
   givenNoQuestionnairesInstalled,
   givenPackageSelectedForDeploy,
@@ -23,8 +24,6 @@ import {
   whenSpecifyToStartDate,
 } from "../step_definitions/when";
 
-import { createScenario } from "./native_scenario";
-
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");
 
@@ -36,7 +35,7 @@ MockAuthenticate.OverrideReturnValues(null, true);
 const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: set_telephone_operations_start_date", () => {
-  const Scenario = createScenario();
+  const Scenario = createScenario({ date: "05/06/2030", questionnaireName: "OPN2004A" });
 
   afterEach(() => {
     mocker.reset();

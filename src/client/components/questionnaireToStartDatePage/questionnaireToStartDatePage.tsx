@@ -1,11 +1,11 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "blaise-design-system-react-components";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Button, LoadingPanel, Panel } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
 import { Form, Formik, type FormikHelpers } from "formik";
 import React, { type ReactElement } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { setToStartDate } from "../../api/toStartDate";
+import { getToStartDate, setToStartDate } from "../../api/toStartDate";
 import { clientLogger } from "../../utils/logger";
 import { AskStartDate } from "../shared/dateQuestions/askStartDate";
 
@@ -24,11 +24,36 @@ function QuestionnaireToStartDatePage(): ReactElement {
   const queryClient = useQueryClient();
   const routeParams = useParams();
   const location = useLocation().state as LocationState | undefined;
-  const { toStartDate, questionnaireName: questionnaireNameFromState } = location || {
-    toStartDate: null,
-    questionnaireName: null,
-  };
+  const toStartDateFromState = location?.toStartDate;
+  const questionnaireNameFromState = location?.questionnaireName;
   const questionnaireName = routeParams.questionnaireName ?? questionnaireNameFromState ?? "";
+
+  const {
+    data: fetchedToStartDate = "",
+    isLoading: toStartDateLoading,
+    error: toStartDateError,
+  } = useQuery({
+    queryKey: ["toStartDate", questionnaireName],
+    queryFn: () => getToStartDate(questionnaireName),
+    enabled: !!questionnaireName && toStartDateFromState === undefined,
+  });
+
+  const toStartDate =
+    toStartDateFromState === undefined
+      ? fetchedToStartDate === ""
+        ? null
+        : fetchedToStartDate
+      : toStartDateFromState;
+
+  function navigateBackToQuestionnaire(): void {
+    if (questionnaireName) {
+      navigate(`/questionnaire/${questionnaireName}`, { replace: true });
+
+      return;
+    }
+
+    navigate(-1);
+  }
 
   async function handleSubmit(
     values: ToStartDateFormValues,
@@ -48,13 +73,35 @@ function QuestionnaireToStartDatePage(): ReactElement {
 
     actions.setSubmitting(false);
     void queryClient.invalidateQueries({ queryKey: ["toStartDate", questionnaireName] });
-    navigate(-1);
+    navigateBackToQuestionnaire();
   }
 
   let initialValues = {
     askDate: "",
     toStartDate: "",
   };
+
+  if (questionnaireName && toStartDateLoading) {
+    return (
+      <main
+        id="main-content"
+        className="ons-page__main ons-u-mt-l"
+      >
+        <LoadingPanel message={"Getting Telephone Operations start date"} />
+      </main>
+    );
+  }
+
+  if (questionnaireName && toStartDateError) {
+    return (
+      <main
+        id="main-content"
+        className="ons-page__main ons-u-mt-l"
+      >
+        <Panel status="error">Failed to get Telephone Operations start date</Panel>
+      </main>
+    );
+  }
 
   if (toStartDate != null) {
     initialValues = {
@@ -72,6 +119,7 @@ function QuestionnaireToStartDatePage(): ReactElement {
         <Formik
           validateOnBlur={false}
           validateOnChange={false}
+          enableReinitialize={true}
           initialValues={initialValues}
           onSubmit={handleSubmit}
         >
@@ -90,7 +138,7 @@ function QuestionnaireToStartDatePage(): ReactElement {
                 {!isSubmitting && (
                   <Button
                     id={"cancel-deploy-button"}
-                    onClick={() => navigate(-1)}
+                    onClick={navigateBackToQuestionnaire}
                     primary={false}
                     label={"Cancel"}
                   />

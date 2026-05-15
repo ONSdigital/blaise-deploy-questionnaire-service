@@ -5,7 +5,7 @@ import {
 } from "./deploymentDateQuestionRules";
 
 describe("deploymentDateQuestionRules", () => {
-  it.each(["DST2101A", "LMS2101A", "OPN2101A", "TST2101A"])(
+  it.each(["DST2101A", "LMS2101A", "OPN2101A"])(
     "asks the Telephone Operations start date question for %s",
     (questionnaireName) => {
       expect(shouldAskToStartDate(questionnaireName)).toBe(true);

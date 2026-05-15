@@ -4,6 +4,7 @@ import Mockadapter from "axios-mock-adapter";
 import { afterAll, afterEach, beforeEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
+import { createScenario } from "../feature_scenario_runner";
 import {
   givenQuestionnaireInstalled,
   givenQuestionnaireIsErroneous,
@@ -14,8 +15,6 @@ import {
   thenUnableToDeleteWarning,
 } from "../step_definitions/then";
 import { whenClickDelete, whenGoToDetailsPage } from "../step_definitions/when";
-
-import { createScenario } from "./native_scenario";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -31,7 +30,7 @@ const questionnaireList: Questionnaire[] = [];
 const mocker = new Mockadapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: delete_erroneous_questionnaire", () => {
-  const Scenario = createScenario();
+  const Scenario = createScenario({ questionnaireName: "OPN2004A" });
 
   beforeEach(() => {
     questionnaireList.length = 0;

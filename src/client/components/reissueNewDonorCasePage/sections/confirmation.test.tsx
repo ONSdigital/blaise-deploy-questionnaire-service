@@ -45,10 +45,10 @@ describe("Confirmation rendering", () => {
           const text = element.textContent ?? "";
 
           return (
-            text.includes("Reissue a new donor case for") &&
-            text.includes(ipsQuestionnaire.name) &&
-            text.includes("on behalf of") &&
-            text.includes("test_user")
+            text.includes("Reissue") &&
+            text.includes("test_user") &&
+            text.includes("a new donor case for") &&
+            text.includes(ipsQuestionnaire.name)
           );
         },
         { selector: "h1" },
