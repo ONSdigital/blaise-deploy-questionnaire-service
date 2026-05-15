@@ -37,7 +37,9 @@ describe("deleteQuestionnaireAndRelatedDates", () => {
     ]);
     expect(deleteTmReleaseDate).not.toHaveBeenCalled();
     expect(deleteQuestionnaire).not.toHaveBeenCalled();
-    expect(clientLogger.error).toHaveBeenCalledWith("Failed to delete Telephone Operations start date");
+    expect(clientLogger.error).toHaveBeenCalledWith(
+      "Failed to delete Telephone Operations start date",
+    );
   });
 
   it("returns a failure when deleting the Totalmobile release date fails", async () => {

@@ -29,8 +29,6 @@ describe("logHelpers", () => {
   it("logs api function failures", () => {
     logFunctionError("getToStartDate", new Error("boom"), "OPN2004A");
 
-    expect(clientLogger.error).toHaveBeenCalledWith(
-      "getToStartDate(OPN2004A) failed: Error: boom",
-    );
+    expect(clientLogger.error).toHaveBeenCalledWith("getToStartDate(OPN2004A) failed: Error: boom");
   });
 });

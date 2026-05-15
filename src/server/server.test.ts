@@ -63,7 +63,7 @@ vi.mock("./helpers/cloudFunctionCallerHelper", () => ({
 }));
 import { Auth } from "blaise-login-react-server";
 import supertest from "supertest";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { getConfigFromEnv } from "./config.js";
 import { callCloudFunction } from "./helpers/cloudFunctionCallerHelper.js";

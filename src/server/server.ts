@@ -103,7 +103,10 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   server.use("/", loginHandler);
   server.use(express.json());
 
-  const buildRootCandidates = [path.resolve(process.cwd(), "build"), path.resolve(__dirname, "../../../build")];
+  const buildRootCandidates = [
+    path.resolve(process.cwd(), "build"),
+    path.resolve(__dirname, "../../../build"),
+  ];
   const buildRoot = firstExistingPath(buildRootCandidates) ?? buildRootCandidates[0];
   const clientBuildCandidates = [path.resolve(buildRoot, "client"), buildRoot];
   const clientBuildFolder = firstExistingPath(clientBuildCandidates) ?? clientBuildCandidates[0];
@@ -113,7 +116,14 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     path.resolve(buildRoot, "500.html"),
     path.resolve(buildRoot, "views/500.html"),
   ];
-  const errorPagePath = errorPageCandidates.find((filePath) => fs.existsSync(filePath));
+  let errorPageContent: string | undefined;
+
+  for (const filePath of errorPageCandidates) {
+    if (fs.existsSync(filePath)) {
+      errorPageContent = fs.readFileSync(filePath, "utf-8");
+      break;
+    }
+  }
 
   server.set("views", clientBuildFolder);
   server.engine("html", ejs.renderFile);
@@ -141,8 +151,8 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   server.use(function (err: Error, req: Request, res: Response, _next: NextFunction) {
     req.log.error(err, err.message);
 
-    if (errorPagePath != null) {
-      res.status(500).sendFile(errorPagePath);
+    if (errorPageContent != null) {
+      res.status(500).type("text/html").send(errorPageContent);
 
       return;
     }

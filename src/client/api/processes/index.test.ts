@@ -1,16 +1,13 @@
-import * as processExports from "./index";
-
-import { verifyAndInstallQuestionnaire } from "./deployQuestionnaire";
-import {
-  generateUacsAndCsvFileData,
-  mapCasesToUacs,
-} from "./generateUacs";
 import { deleteQuestionnaireAndRelatedDates } from "./deleteQuestionnaire";
+import { verifyAndInstallQuestionnaire } from "./deployQuestionnaire";
+import { generateUacsAndCsvFileData, mapCasesToUacs } from "./generateUacs";
 import {
   checkQuestionnaireSettings,
   uploadAndInstallFile,
   validateSelectedQuestionnaireExists,
 } from "./uploadQuestionnaire";
+
+import * as processExports from "./index";
 
 describe("client api process index", () => {
   it("re-exports the process helpers", () => {

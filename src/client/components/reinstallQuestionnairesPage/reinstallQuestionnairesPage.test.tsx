@@ -327,7 +327,9 @@ describe("Reinstall questionnaires", () => {
     fireEvent.click(screen.getByRole("button", { name: /Return to reinstall questionnaire/i }));
 
     await waitFor(() => {
-      expect(screen.getByRole("combobox", { name: /Select a questionnaire to reinstall/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole("combobox", { name: /Select a questionnaire to reinstall/i }),
+      ).toBeInTheDocument();
     });
   });
 

@@ -363,7 +363,9 @@ describe("DeleteConfirmation", () => {
 
       await userEvent.click(confirm);
 
-      expect(await screen.findByText(/Failed to delete Telephone Operations start date/i)).toBeVisible();
+      expect(
+        await screen.findByText(/Failed to delete Telephone Operations start date/i),
+      ).toBeVisible();
       await waitFor(() => {
         expect(mockHttp.history.delete.length).toBe(1);
       });

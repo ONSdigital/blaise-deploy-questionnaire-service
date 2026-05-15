@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/vitest";
-import React from "react";
 import { render, screen } from "@testing-library/react";
+import React from "react";
 
 import { ConfirmOverride } from "./confirmOverride";
 
@@ -21,6 +21,8 @@ describe("ConfirmOverride", () => {
         { selector: "h1" },
       ),
     ).toBeInTheDocument();
-    expect(screen.getByText(/All existing questionnaire data will be deleted/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/All existing questionnaire data will be deleted/i),
+    ).toBeInTheDocument();
   });
 });

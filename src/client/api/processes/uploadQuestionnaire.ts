@@ -41,7 +41,9 @@ export async function validateSelectedQuestionnaireExists(
   try {
     questionnaire = await getQuestionnaire(questionnaireName);
   } catch {
-    clientLogger.error("validateSelectedQuestionnaireExists() failed while checking questionnaire existence");
+    clientLogger.error(
+      "validateSelectedQuestionnaireExists() failed while checking questionnaire existence",
+    );
     setUploadStatus("Failed to validate if questionnaire already exists");
 
     return null;
@@ -72,7 +74,9 @@ export async function uploadAndInstallFile(
   clientLogger.info(`uploadAndInstallFile(${questionnaireName}) started`);
 
   if (shouldAskToStartDate(questionnaireName)) {
-    clientLogger.info(`uploadAndInstallFile(${questionnaireName}) storing Telephone Operations start date`);
+    clientLogger.info(
+      `uploadAndInstallFile(${questionnaireName}) storing Telephone Operations start date`,
+    );
     const toStartDateCreated = await setToStartDate(questionnaireName, toStartDate);
 
     if (!toStartDateCreated) {
@@ -87,7 +91,9 @@ export async function uploadAndInstallFile(
   }
 
   if (shouldAskTmReleaseDate(questionnaireName)) {
-    clientLogger.info(`uploadAndInstallFile(${questionnaireName}) storing Totalmobile release date`);
+    clientLogger.info(
+      `uploadAndInstallFile(${questionnaireName}) storing Totalmobile release date`,
+    );
     const tmReleaseDateCreated = await setTmReleaseDate(questionnaireName, tmReleaseDate);
 
     if (!tmReleaseDateCreated) {

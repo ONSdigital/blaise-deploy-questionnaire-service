@@ -27,7 +27,7 @@ class AuditHandler {
     } catch (error: unknown) {
       req.log.error(error, "Failed calling getAuditLogs");
 
-      return res.status(500).json(error);
+      return res.status(500).json({ message: "Failed to retrieve audit logs" });
     }
   };
 }

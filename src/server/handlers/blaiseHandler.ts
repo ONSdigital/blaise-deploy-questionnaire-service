@@ -7,6 +7,7 @@ import { type Auth } from "blaise-login-react-server";
 import express, { type Request, type Response, type Router } from "express";
 
 import { fieldPeriodToText } from "../functions.js";
+import { sanitise } from "../helpers/sanitise.js";
 
 import type AuditLogger from "../auditLogger.js";
 
@@ -96,6 +97,7 @@ class BlaiseHandler {
 
   getQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
       const questionnaire = await this.blaiseApiClient.getQuestionnaire(
@@ -103,7 +105,10 @@ class BlaiseHandler {
         questionnaireName,
       );
 
-      req.log.info({ questionnaireName }, "Get questionnaire endpoint succeeded");
+      req.log.info(
+        { questionnaireName: safeQuestionnaireName },
+        "Get questionnaire endpoint succeeded",
+      );
 
       return res.status(200).json(questionnaire);
     } catch (error: unknown) {
@@ -119,8 +124,8 @@ class BlaiseHandler {
 
   installQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const filename: string = req.body.filename;
-    const questionnaireName = filename?.toString().replace(/\.[a-zA-Z]*$/, "");
-    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
+    const questionnaireName = sanitise(filename?.toString().replace(/\.[a-zA-Z]*$/, "") ?? "");
+    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
     const installQuestionnaire: InstallQuestionnaire = {
       questionnaireFile: filename?.toString() || "",
     };
@@ -131,10 +136,7 @@ class BlaiseHandler {
         installQuestionnaire,
       );
 
-      this.auditLogger.info(
-        req.log,
-        `${username} deployed questionnaire ${questionnaireName}`,
-      );
+      this.auditLogger.info(req.log, `${username} deployed questionnaire ${questionnaireName}`);
 
       return res.status(201).json(response);
     } catch (error: unknown) {
@@ -150,7 +152,8 @@ class BlaiseHandler {
 
   deleteQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
-    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
+    const safeQuestionnaireName = sanitise(questionnaireName);
+    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
 
     try {
       const response = await this.blaiseApiClient.deleteQuestionnaire(
@@ -158,17 +161,14 @@ class BlaiseHandler {
         questionnaireName,
       );
 
-      this.auditLogger.info(
-        req.log,
-        `${username} deleted questionnaire ${questionnaireName}`,
-      );
+      this.auditLogger.info(req.log, `${username} deleted questionnaire ${safeQuestionnaireName}`);
 
       return res.status(204).json(response);
     } catch (error: unknown) {
       if (this.errorNotFound(error)) {
         this.auditLogger.error(
           req.log,
-          `${username} attempted to uninstall questionnaire ${questionnaireName} but it doesn't exist by`,
+          `${username} attempted to uninstall questionnaire ${safeQuestionnaireName} but it doesn't exist by`,
         );
 
         return res.status(404).json();
@@ -176,7 +176,7 @@ class BlaiseHandler {
 
       this.auditLogger.error(
         req.log,
-        `${username} failed to uninstall questionnaire ${questionnaireName}`,
+        `${username} failed to uninstall questionnaire ${safeQuestionnaireName}`,
       );
 
       return res.status(500).json();
@@ -185,7 +185,8 @@ class BlaiseHandler {
 
   activateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
-    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
+    const safeQuestionnaireName = sanitise(questionnaireName);
+    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
 
     try {
       const response = await this.blaiseApiClient.activateQuestionnaire(
@@ -193,20 +194,26 @@ class BlaiseHandler {
         questionnaireName,
       );
 
-      this.auditLogger.info(req.log, `${username} activated questionnaire ${questionnaireName}`);
+      this.auditLogger.info(
+        req.log,
+        `${username} activated questionnaire ${safeQuestionnaireName}`,
+      );
 
       return res.status(204).json(response);
     } catch (error: unknown) {
       if (this.errorNotFound(error)) {
         this.auditLogger.error(
           req.log,
-          `${username} attempted to activate questionnaire ${questionnaireName} but it doesn't exist`,
+          `${username} attempted to activate questionnaire ${safeQuestionnaireName} but it doesn't exist`,
         );
 
         return res.status(404).json();
       }
 
-      this.auditLogger.error(req.log, `${username} failed to activate questionnaire ${questionnaireName}`);
+      this.auditLogger.error(
+        req.log,
+        `${username} failed to activate questionnaire ${safeQuestionnaireName}`,
+      );
 
       return res.status(500).json();
     }
@@ -214,7 +221,8 @@ class BlaiseHandler {
 
   deactivateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
-    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
+    const safeQuestionnaireName = sanitise(questionnaireName);
+    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
 
     try {
       const response = await this.blaiseApiClient.deactivateQuestionnaire(
@@ -222,20 +230,26 @@ class BlaiseHandler {
         questionnaireName,
       );
 
-      this.auditLogger.info(req.log, `${username} deactivated questionnaire ${questionnaireName}`);
+      this.auditLogger.info(
+        req.log,
+        `${username} deactivated questionnaire ${safeQuestionnaireName}`,
+      );
 
       return res.status(204).json(response);
     } catch (error: unknown) {
       if (this.errorNotFound(error)) {
         this.auditLogger.error(
           req.log,
-          `${username} attempted to deactivate questionnaire ${questionnaireName} but it doesn't exist`,
+          `${username} attempted to deactivate questionnaire ${safeQuestionnaireName} but it doesn't exist`,
         );
 
         return res.status(404).json();
       }
 
-      this.auditLogger.error(req.log, `${username} failed to deactivate questionnaire ${questionnaireName}`);
+      this.auditLogger.error(
+        req.log,
+        `${username} failed to deactivate questionnaire ${safeQuestionnaireName}`,
+      );
 
       return res.status(500).json();
     }
@@ -243,6 +257,8 @@ class BlaiseHandler {
 
   doesQuestionnaireHaveMode = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName, mode } = req.params as { questionnaireName: string; mode: string };
+    const safeQuestionnaireName = sanitise(questionnaireName);
+    const safeMode = sanitise(mode);
 
     try {
       const response = await this.blaiseApiClient.doesQuestionnaireHaveMode(
@@ -252,7 +268,7 @@ class BlaiseHandler {
       );
 
       req.log.info(
-        { questionnaireName, mode, hasMode: response },
+        { questionnaireName: safeQuestionnaireName, mode: safeMode, hasMode: response },
         "Does questionnaire have mode endpoint succeeded",
       );
 
@@ -260,7 +276,7 @@ class BlaiseHandler {
     } catch (error: unknown) {
       req.log.error(
         { error },
-        `Does questionnaire have mode endpoint failed for ${questionnaireName}`,
+        `Does questionnaire have mode endpoint failed for ${safeQuestionnaireName}`,
       );
 
       return res.status(500).json();
@@ -300,6 +316,7 @@ class BlaiseHandler {
 
   getCases = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
       const caseIds = await this.blaiseApiClient.getQuestionnaireCaseIds(
@@ -308,7 +325,7 @@ class BlaiseHandler {
       );
 
       req.log.info(
-        { questionnaireName, caseCount: caseIds.length },
+        { questionnaireName: safeQuestionnaireName, caseCount: caseIds.length },
         "Get questionnaire case IDs endpoint succeeded",
       );
 
@@ -316,7 +333,7 @@ class BlaiseHandler {
     } catch (error: unknown) {
       req.log.error(
         { error },
-        `Get questionnaire case IDs endpoint failed for ${questionnaireName}`,
+        `Get questionnaire case IDs endpoint failed for ${safeQuestionnaireName}`,
       );
 
       return res.status(500).json();
@@ -325,6 +342,7 @@ class BlaiseHandler {
 
   getModes = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
       const modes = await this.blaiseApiClient.getQuestionnaireModes(
@@ -333,13 +351,16 @@ class BlaiseHandler {
       );
 
       req.log.info(
-        { questionnaireName, modesCount: modes.length },
+        { questionnaireName: safeQuestionnaireName, modesCount: modes.length },
         "Get questionnaire modes endpoint succeeded",
       );
 
       return res.status(200).json(modes);
     } catch (error: unknown) {
-      req.log.error({ error }, `Get questionnaire modes endpoint failed for ${questionnaireName}`);
+      req.log.error(
+        { error },
+        `Get questionnaire modes endpoint failed for ${safeQuestionnaireName}`,
+      );
 
       return res.status(500).json(null);
     }
@@ -347,6 +368,7 @@ class BlaiseHandler {
 
   getSettings = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
       const questionnaireSettings = await this.blaiseApiClient.getQuestionnaireSettings(
@@ -355,7 +377,7 @@ class BlaiseHandler {
       );
 
       req.log.info(
-        { questionnaireName, settingsCount: questionnaireSettings.length },
+        { questionnaireName: safeQuestionnaireName, settingsCount: questionnaireSettings.length },
         "Get questionnaire settings endpoint succeeded",
       );
 
@@ -363,7 +385,7 @@ class BlaiseHandler {
     } catch (error: unknown) {
       req.log.error(
         { error },
-        `Get questionnaire settings endpoint failed for ${questionnaireName}`,
+        `Get questionnaire settings endpoint failed for ${safeQuestionnaireName}`,
       );
 
       return res.status(500).json();
@@ -372,6 +394,7 @@ class BlaiseHandler {
 
   getSurveyDays = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
       const surveyDays = await this.blaiseApiClient.getSurveyDays(
@@ -380,13 +403,13 @@ class BlaiseHandler {
       );
 
       req.log.info(
-        { questionnaireName, surveyDaysCount: surveyDays.length },
+        { questionnaireName: safeQuestionnaireName, surveyDaysCount: surveyDays.length },
         "Get survey days endpoint succeeded",
       );
 
       return res.status(200).json(surveyDays);
     } catch (error: unknown) {
-      req.log.error({ error }, `Get survey days endpoint failed for ${questionnaireName}`);
+      req.log.error({ error }, `Get survey days endpoint failed for ${safeQuestionnaireName}`);
 
       return res.status(500).json(null);
     }
@@ -394,6 +417,7 @@ class BlaiseHandler {
 
   getActiveSurveyDays = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
       const surveyDays: string[] = await this.blaiseApiClient.getSurveyDays(
@@ -403,7 +427,7 @@ class BlaiseHandler {
       const hasActiveSurveyDays = Array.isArray(surveyDays) && surveyDays.length > 0;
 
       req.log.info(
-        { questionnaireName, hasActiveSurveyDays },
+        { questionnaireName: safeQuestionnaireName, hasActiveSurveyDays },
         "Get active survey days endpoint succeeded",
       );
 
@@ -411,7 +435,7 @@ class BlaiseHandler {
     } catch (error: unknown) {
       req.log.error(
         { error },
-        `Get active survey days endpoint failed for ${questionnaireName}`,
+        `Get active survey days endpoint failed for ${safeQuestionnaireName}`,
       );
 
       return res.status(500).json();

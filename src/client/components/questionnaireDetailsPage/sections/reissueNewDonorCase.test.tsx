@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/vitest";
-import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+import React from "react";
 
 import { ReissueNewDonorCase } from "./reissueNewDonorCase";
 
@@ -92,7 +92,9 @@ describe("ReissueNewDonorCase", () => {
     fireEvent.click(screen.getByRole("button", { name: /Select blank user/i }));
     fireEvent.click(screen.getByRole("button", { name: /Reissue Donor Case/i }));
 
-    expect(screen.getByText(/User input cannot be empty or contain only spaces/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/User input cannot be empty or contain only spaces/i),
+    ).toBeInTheDocument();
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 });

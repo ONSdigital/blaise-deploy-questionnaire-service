@@ -188,7 +188,9 @@ describe("Confirmation behavior", () => {
     mockedAxios.post.mockImplementationOnce(
       () =>
         new Promise((resolve) => {
-          resolveRequest = resolve as (value: typeof mockSuccessResponseForDonorCasesCreation) => void;
+          resolveRequest = resolve as (
+            value: typeof mockSuccessResponseForDonorCasesCreation,
+          ) => void;
         }) as never,
     );
 

@@ -1,6 +1,8 @@
 import { type Auth } from "blaise-login-react-server";
 import express, { type Request, type Response, type Router } from "express";
 
+import { sanitise } from "../helpers/sanitise.js";
+
 export interface BusClientLike {
   generateUacsForQuestionnaire(instrumentName: string): Promise<unknown>;
   getUacsByCaseId(instrumentName: string): Promise<unknown>;
@@ -32,46 +34,49 @@ class BusHandler {
 
   generateUacs = async (req: Request, res: Response): Promise<Response> => {
     const { instrumentName } = req.params as { instrumentName: string };
+    const safeInstrumentName = sanitise(instrumentName);
     const uacs = await this.busApiClient.generateUacsForQuestionnaire(instrumentName);
 
     if (typeof uacs !== "object") {
-      req.log.error(`Generate Uacs for ${instrumentName} response is not an object`);
+      req.log.error(`Generate Uacs for ${safeInstrumentName} response is not an object`);
 
       return res.status(500).json();
     }
 
-    req.log.info(`Generate Uacs for ${instrumentName} response successful`);
+    req.log.info(`Generate Uacs for ${safeInstrumentName} response successful`);
 
     return res.status(200).json(uacs);
   };
 
   getUacsByCaseId = async (req: Request, res: Response): Promise<Response> => {
     const { instrumentName } = req.params as { instrumentName: string };
+    const safeInstrumentName = sanitise(instrumentName);
     const uacs = await this.busApiClient.getUacsByCaseId(instrumentName);
 
     if (typeof uacs !== "object") {
-      req.log.error(`Get Uacs by case ID for ${instrumentName} response is not an object`);
+      req.log.error(`Get Uacs by case ID for ${safeInstrumentName} response is not an object`);
 
       return res.status(500).json();
     }
 
-    req.log.info(`Get Uacs by case ID for ${instrumentName} response successful`);
+    req.log.info(`Get Uacs by case ID for ${safeInstrumentName} response successful`);
 
     return res.status(200).json(uacs);
   };
 
   getUacCount = async (req: Request, res: Response): Promise<Response> => {
     const { instrumentName } = req.params as { instrumentName: string };
+    const safeInstrumentName = sanitise(instrumentName);
     const uacCount = await this.busApiClient.getUacCount(instrumentName);
 
     if (typeof uacCount.count !== "number") {
-      req.log.error(`Get Uac for ${instrumentName} response is not a number`);
+      req.log.error(`Get Uac for ${safeInstrumentName} response is not a number`);
 
       return res.status(500).json();
     }
 
     req.log.info(
-      `Get Uac count for ${instrumentName} response successful, count: ${uacCount.count}`,
+      `Get Uac count for ${safeInstrumentName} response successful, count: ${uacCount.count}`,
     );
 
     return res.status(200).json(uacCount);

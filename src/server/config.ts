@@ -98,7 +98,7 @@ function fixURL(url: string): string {
     return url;
   }
 
-  return `http://${url}`;
+  return `https://${url}`;
 }
 
 function requireEnv(name: string, value: string | undefined): string | undefined {

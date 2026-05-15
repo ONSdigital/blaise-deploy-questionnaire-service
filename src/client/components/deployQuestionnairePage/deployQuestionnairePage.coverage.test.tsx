@@ -319,6 +319,7 @@ describe("DeployPage coverage paths", () => {
     ruleMocks.shouldAskTmReleaseDate.mockReturnValue(false);
 
     let finishUpload: (() => void) | undefined;
+
     processMocks.uploadAndInstallFile.mockImplementation(
       (
         _questionnaireName: string,

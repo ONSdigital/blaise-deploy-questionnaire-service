@@ -10,17 +10,17 @@ import {
   givenQuestionnaireIsLive,
 } from "../step_definitions/given";
 import {
+  thenCanOnlyReturnToLandingPage,
   thenConfirmOverwriteWarning,
   thenDeploySuccessBanner,
-  thenReturnedToLandingPage,
-  thenCanOnlyReturnToLandingPage,
   thenLiveQuestionnaireWarning,
   thenQuestionnaireInstalled,
+  thenReturnedToLandingPage,
 } from "../step_definitions/then";
 import {
-  whenConfirmSelection,
   whenCancelOverwrite,
   whenConfirmOverwrite,
+  whenConfirmSelection,
   whenProceedToOverwrite,
 } from "../step_definitions/when";
 
@@ -45,7 +45,7 @@ describe("Feature: overwrite_existing_questionnaire", () => {
 
   beforeEach(() => {
     questionnaireList.length = 0;
-    mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200, {});
+    mocker.onPut(/^https:\/\/storage\.googleapis\.com\//).reply(200, {});
   });
 
   afterEach(() => {

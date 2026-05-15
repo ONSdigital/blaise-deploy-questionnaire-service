@@ -5,10 +5,7 @@ import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import { givenQuestionnaireInstalled } from "../step_definitions/given";
-import {
-  thenDeployedListShown,
-  thenQuestionnaireNotFound,
-} from "../step_definitions/then";
+import { thenDeployedListShown, thenQuestionnaireNotFound } from "../step_definitions/then";
 import { whenLoadHomepage, whenSearchForQuestionnaire } from "../step_definitions/when";
 
 import { createScenario } from "./native_scenario";

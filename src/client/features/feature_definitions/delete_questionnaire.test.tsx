@@ -7,24 +7,24 @@ import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
   givenQuestionnaireHasActiveSurveyDays,
   givenQuestionnaireHasModes,
+  givenQuestionnaireInstalled,
   givenQuestionnaireIsActive,
   givenQuestionnaireIsInactive,
-  givenQuestionnaireInstalled,
 } from "../step_definitions/given";
 import {
   thenActiveSurveyDaysWarning,
   thenActiveWebCollectionWarning,
-  thenDeleteWarning,
-  thenReturnedToDetailsPage,
   thenDeleteSuccessBanner,
+  thenDeleteWarning,
   thenNoDeleteOption,
   thenQuestionnaireDeleted,
   thenQuestionnaireNotDeleted,
+  thenReturnedToDetailsPage,
 } from "../step_definitions/then";
 import {
   whenCancelDeletion,
-  whenConfirmDeletion,
   whenClickDelete,
+  whenConfirmDeletion,
   whenGoToDetailsPage,
   whenLoadHomepage,
 } from "../step_definitions/when";
@@ -86,19 +86,16 @@ describe("Feature: delete_questionnaire", () => {
     thenDeleteSuccessBanner(Then);
   });
 
-  Scenario(
-    "Delete questionnaire with survey days",
-    ({ Given, When, Then }) => {
-      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
-      givenQuestionnaireHasActiveSurveyDays(Given, questionnaireList, mocker);
-      whenGoToDetailsPage(When);
-      whenClickDelete(When);
-      thenDeleteWarning(Then);
-      whenConfirmDeletion(When);
-      thenQuestionnaireDeleted(Then, mocker);
-      thenDeleteSuccessBanner(Then);
-    },
-  );
+  Scenario("Delete questionnaire with survey days", ({ Given, When, Then }) => {
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireHasActiveSurveyDays(Given, questionnaireList, mocker);
+    whenGoToDetailsPage(When);
+    whenClickDelete(When);
+    thenDeleteWarning(Then);
+    whenConfirmDeletion(When);
+    thenQuestionnaireDeleted(Then, mocker);
+    thenDeleteSuccessBanner(Then);
+  });
 
   Scenario("Delete inactive questionnaire", ({ Given, When, Then }) => {
     givenQuestionnaireInstalled(Given, questionnaireList, mocker);
@@ -110,18 +107,15 @@ describe("Feature: delete_questionnaire", () => {
     thenDeleteSuccessBanner(Then);
   });
 
-  Scenario(
-    "Delete CAWI questionnaire",
-    ({ Given, When, Then }) => {
-      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
-      givenQuestionnaireIsActive(Given, questionnaireList, mocker);
-      givenQuestionnaireHasModes(Given, mocker);
-      whenGoToDetailsPage(When);
-      whenClickDelete(When);
-      thenActiveWebCollectionWarning(Then);
-      whenConfirmDeletion(When);
-      thenQuestionnaireDeleted(Then, mocker);
-      thenDeleteSuccessBanner(Then);
-    },
-  );
+  Scenario("Delete CAWI questionnaire", ({ Given, When, Then }) => {
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireIsActive(Given, questionnaireList, mocker);
+    givenQuestionnaireHasModes(Given, mocker);
+    whenGoToDetailsPage(When);
+    whenClickDelete(When);
+    thenActiveWebCollectionWarning(Then);
+    whenConfirmDeletion(When);
+    thenQuestionnaireDeleted(Then, mocker);
+    thenDeleteSuccessBanner(Then);
+  });
 });

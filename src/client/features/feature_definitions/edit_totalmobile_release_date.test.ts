@@ -4,24 +4,24 @@ import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
-  givenQuestionnaireHasTmReleaseDate,
   givenQuestionnaireHasNoTmReleaseDate,
+  givenQuestionnaireHasTmReleaseDate,
   givenQuestionnaireInstalled,
 } from "../step_definitions/given";
 import {
-  thenTmReleaseDateShown,
   thenAddTmReleaseDateOption,
   thenChangeOrDeleteTmReleaseDateOption,
   thenTmReleaseDateDeleted,
+  thenTmReleaseDateShown,
   thenTmReleaseDateStored,
 } from "../step_definitions/then";
 import {
-  whenDeleteTmReleaseDate,
   whenAddTmReleaseDate,
-  whenLoadHomepage,
   whenClickContinue,
-  whenSelectQuestionnaire,
+  whenDeleteTmReleaseDate,
   whenEditTmReleaseDate,
+  whenLoadHomepage,
+  whenSelectQuestionnaire,
   whenSpecifyTmReleaseDate,
 } from "../step_definitions/when";
 

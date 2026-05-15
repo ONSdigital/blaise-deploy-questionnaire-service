@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 import { configure } from "@testing-library/react";
-import axios, { AxiosHeaders, type AxiosAdapter } from "axios";
+import axios, { type AxiosAdapter, AxiosHeaders } from "axios";
 
 const globalWithActEnvironment = globalThis as typeof globalThis & {
   IS_REACT_ACT_ENVIRONMENT?: boolean;
@@ -27,6 +27,7 @@ const testAdapter: AxiosAdapter = async (config) => {
   }
 
   const message = `Unmocked HTTP request in tests: ${method} ${url}. Add a test mock for this request.`;
+
   console.error(message);
   throw new Error(message);
 };

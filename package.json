@@ -13,7 +13,6 @@
     "build-watch:server": "yarn tsc --project tsconfig.server.json --watch --preserveWatchOutput",
     "build:client": "yarn vite build",
     "build:server": "yarn tsc --project tsconfig.server.json",
-    "start": "node ./build/server/index.js",
     "dev": "yarn concurrently --kill-others-on-fail --names \"server,web\" \"yarn dev:server\" \"yarn dev:client\"",
     "dev-wsl": "CHOKIDAR_USEPOLLING=1 CHOKIDAR_INTERVAL=300 yarn concurrently --kill-others-on-fail --names \"server,web\" \"yarn dev:server\" \"yarn dev-wsl:client\"",
     "dev-wsl:client": "yarn vite --host 0.0.0.0",
@@ -25,6 +24,7 @@
     "lint-fix": "yarn eslint . --fix && yarn prettier --write . && yarn knip --fix",
     "run-watch:server": "node --watch --watch-path=build/server ./build/server/index.js | yarn pino-pretty -c -t",
     "spellcheck": "yarn cspell \"**/*.{ts,tsx,json,jsonc,yml,yaml,md}\" --no-progress --no-summary",
+    "start": "node ./build/server/index.js",
     "test": "yarn vitest run --coverage",
     "test-watch": "yarn vitest",
     "typecheck": "yarn tsc --noEmit -p tsconfig.client.json && yarn tsc --noEmit -p tsconfig.server.json && yarn tsc --noEmit -p tsconfig.tooling.json"

@@ -35,7 +35,7 @@ describe("Config setup", () => {
   it("should return the correct environment variables", () => {
     const config = getConfigFromEnv();
 
-    expect(config.BlaiseApiUrl).toBe("http://mock-api");
+    expect(config.BlaiseApiUrl).toBe("https://mock-api");
     expect(config.ProjectId).toBe("a-project-name");
     expect(config.BucketName).toBe("unique-bucket");
     expect(config.BimsApiUrl).toBe("bims-mock-api");

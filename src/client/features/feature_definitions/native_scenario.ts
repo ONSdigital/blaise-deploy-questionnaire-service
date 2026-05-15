@@ -180,7 +180,8 @@ function resolveArgs(
   }
 
   if (
-    (label.includes("telephone operations start date of") || label.includes("totalmobile release date of")) &&
+    (label.includes("telephone operations start date of") ||
+      label.includes("totalmobile release date of")) &&
     label.includes("stored against")
   ) {
     return [DEFAULT_DATE, questionnaireName];

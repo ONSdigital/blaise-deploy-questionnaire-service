@@ -21,7 +21,8 @@ function getApiErrorMessage(error: unknown): string {
       "string"
   ) {
     return (
-        (error as { response?: { data?: { message?: string } } }).response?.data?.message
+      (error as { response?: { data?: { message?: string } } }).response?.data?.message ??
+      "Unknown error"
     );
   }
 
@@ -73,15 +74,12 @@ function Confirmation({ questionnaireName, user, onSuccess }: Props): ReactEleme
               label="Continue"
               onClick={() => reissueNewDonorCase()}
               primary
-              disabled={loading}
             />
-            {!loading && (
-              <Button
-                label="Cancel"
-                onClick={() => navigate(`/questionnaire/${questionnaireName}`)}
-                primary={false}
-              />
-            )}
+            <Button
+              label="Cancel"
+              onClick={() => navigate(`/questionnaire/${questionnaireName}`)}
+              primary={false}
+            />
           </>
         }
       </main>

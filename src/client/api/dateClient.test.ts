@@ -2,9 +2,9 @@ import axios from "axios";
 
 import { clientLogger } from "../utils/logger";
 
-import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
 import axiosConfig from "./axiosConfig";
 import { createDateClient } from "./dateClient";
+import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
 
 vi.mock("axios");
 
@@ -53,15 +53,11 @@ describe("createDateClient", () => {
 
   it("returns false when set fails", async () => {
     const error = new Error("boom");
+
     vi.mocked(axios.post).mockRejectedValue(error);
 
     await expect(client.set("OPN2004A", undefined)).resolves.toBe(false);
-    expect(logFunctionError).toHaveBeenCalledWith(
-      "setToStartDate",
-      error,
-      "OPN2004A",
-      undefined,
-    );
+    expect(logFunctionError).toHaveBeenCalledWith("setToStartDate", error, "OPN2004A", undefined);
   });
 
   it("returns parsed values from get", async () => {
@@ -95,6 +91,7 @@ describe("createDateClient", () => {
 
   it("rethrows axios errors without a response status", async () => {
     const error = { isAxiosError: true, response: {} };
+
     vi.mocked(axios.get).mockRejectedValue(error);
 
     await expect(client.get("OPN2004A")).rejects.toBe(error);
@@ -103,6 +100,7 @@ describe("createDateClient", () => {
 
   it("rethrows unexpected get errors", async () => {
     const error = new Error("explode");
+
     vi.mocked(axios.get).mockRejectedValue(error);
 
     await expect(client.get("OPN2004A")).rejects.toBe(error);
@@ -137,6 +135,7 @@ describe("createDateClient", () => {
 
   it("returns false when delete fails", async () => {
     const error = new Error("boom");
+
     vi.mocked(axios.delete).mockRejectedValue(error);
 
     await expect(client.delete("OPN2004A")).resolves.toBe(false);

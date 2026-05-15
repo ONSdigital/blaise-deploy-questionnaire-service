@@ -5,18 +5,15 @@ import { afterAll, afterEach, beforeEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
-  givenQuestionnaireIsErroneous,
   givenQuestionnaireInstalled,
+  givenQuestionnaireIsErroneous,
 } from "../step_definitions/given";
 import {
-  thenUnableToDeleteWarning,
   thenCannotDeleteQuestionnaire,
   thenCanReturnToList,
+  thenUnableToDeleteWarning,
 } from "../step_definitions/then";
-import {
-  whenClickDelete,
-  whenGoToDetailsPage,
-} from "../step_definitions/when";
+import { whenClickDelete, whenGoToDetailsPage } from "../step_definitions/when";
 
 import { createScenario } from "./native_scenario";
 
@@ -48,16 +45,13 @@ describe("Feature: delete_erroneous_questionnaire", () => {
     mocker.restore();
   });
 
-  Scenario(
-    "Delete erroneous questionnaire",
-    ({ Given, When, Then }) => {
-      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
-      givenQuestionnaireIsErroneous(Given, questionnaireList);
-      whenGoToDetailsPage(When);
-      whenClickDelete(When);
-      thenUnableToDeleteWarning(Then);
-      thenCannotDeleteQuestionnaire(Then);
-      thenCanReturnToList(Then);
-    },
-  );
+  Scenario("Delete erroneous questionnaire", ({ Given, When, Then }) => {
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireIsErroneous(Given, questionnaireList);
+    whenGoToDetailsPage(When);
+    whenClickDelete(When);
+    thenUnableToDeleteWarning(Then);
+    thenCannotDeleteQuestionnaire(Then);
+    thenCanReturnToList(Then);
+  });
 });

@@ -4,10 +4,7 @@ import MockAdapter from "axios-mock-adapter";
 import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
-import {
-  givenAllInstallsFail,
-  givenPackageSelectedForDeploy,
-} from "../step_definitions/given";
+import { givenAllInstallsFail, givenPackageSelectedForDeploy } from "../step_definitions/given";
 import { thenCanRetryInstall, thenDeployErrorBanner } from "../step_definitions/then";
 import { whenConfirmSelection, whenDeploy } from "../step_definitions/when";
 

@@ -1,4 +1,4 @@
-type DefineStepFunction = (name: any, callback: any) => void;
+type DefineStepFunction = (name: string | RegExp, callback: (...args: never[]) => unknown) => void;
 
 import { questionnaireWithName } from "./helpers/api.mock";
 import { formatDateString, navigateToDeployPageAndSelectFile } from "./helpers/functions";
@@ -64,7 +64,10 @@ export function givenNoQuestionnairesInstalled(
   });
 }
 
-export function givenQuestionnaireInstallsSuccessfully(given: DefineStepFunction, mocker: MockAdapter): void {
+export function givenQuestionnaireInstallsSuccessfully(
+  given: DefineStepFunction,
+  mocker: MockAdapter,
+): void {
   given(/'(.*)' installs successfully/, (questionnaireName: string) => {
     mocker.onDelete(`/api/questionnaires/${questionnaireName}`).reply(204);
     mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(200);
@@ -96,10 +99,7 @@ export function givenQuestionnaireInstallsSuccessfully(given: DefineStepFunction
   });
 }
 
-export function givenQuestionnaireHasModes(
-  given: DefineStepFunction,
-  mocker: MockAdapter,
-): void {
+export function givenQuestionnaireHasModes(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' has the modes '(.*)'/, (questionnaireName: string, modes: string) => {
     mocker.onGet(`/api/questionnaires/${questionnaireName}/modes`).reply(200, modes.split(","));
   });
@@ -145,9 +145,12 @@ export function givenQuestionnaireIsErroneous(
 }
 
 export function givenToStartDateFails(given: DefineStepFunction, mocker: MockAdapter): void {
-  given(/setting a Telephone Operations start date for '(.*)' fails/, (questionnaireName: string) => {
-    mocker.onPost(`/api/tostartdate/${questionnaireName}`).reply(500);
-  });
+  given(
+    /setting a Telephone Operations start date for '(.*)' fails/,
+    (questionnaireName: string) => {
+      mocker.onPost(`/api/tostartdate/${questionnaireName}`).reply(500);
+    },
+  );
 }
 
 export function givenUacGenerationFails(given: DefineStepFunction, mocker: MockAdapter): void {
@@ -314,5 +317,3 @@ export function givenQuestionnaireHasSettings(
     },
   );
 }
-
-

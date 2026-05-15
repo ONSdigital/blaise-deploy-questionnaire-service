@@ -24,8 +24,8 @@ import {
   whenClickContinue,
   whenConfirmSelection,
   whenGoToDetailsPage,
-  whenSkipToStartDate,
   whenSkipTmReleaseDate,
+  whenSkipToStartDate,
   whenSpecifyTmReleaseDate,
 } from "../step_definitions/when";
 
@@ -93,16 +93,13 @@ describe("Feature: totalmobile_release_date", () => {
     thenSummaryHasNoTmReleaseDate(Then);
   });
 
-  Scenario(
-    "View Totalmobile release date in questionnaire details",
-    ({ Given, When, Then }) => {
-      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
-      givenQuestionnaireHasTmReleaseDate(Given, mocker);
-      whenGoToDetailsPage(When);
-      thenTmReleaseDateEntryShown(Then);
-      thenChangeOrDeleteTmReleaseDateOption(Then);
-    },
-  );
+  Scenario("View Totalmobile release date in questionnaire details", ({ Given, When, Then }) => {
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireHasTmReleaseDate(Given, mocker);
+    whenGoToDetailsPage(When);
+    thenTmReleaseDateEntryShown(Then);
+    thenChangeOrDeleteTmReleaseDateOption(Then);
+  });
 
   Scenario("Add Totalmobile release date in questionnaire details", ({ Given, When, Then }) => {
     givenQuestionnaireInstalled(Given, questionnaireList, mocker);

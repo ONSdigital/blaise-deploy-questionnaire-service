@@ -13,7 +13,11 @@ type DateFormValues = {
   [key: string]: string | undefined;
 };
 
-export function SetDate({ dateFieldName, fullDateLabel, shortDateLabel }: DateFormProps): ReactElement {
+export function SetDate({
+  dateFieldName,
+  fullDateLabel,
+  shortDateLabel,
+}: DateFormProps): ReactElement {
   const { values } = useFormikContext<DateFormValues>();
 
   function validateRadio(value: string) {

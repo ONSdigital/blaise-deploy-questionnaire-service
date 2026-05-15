@@ -11,16 +11,13 @@ import {
   givenUacGenerationFails,
 } from "../step_definitions/given";
 import {
+  thenCasesDisplayed,
   thenGenerateUacAvailable,
   thenGenerateUacNotAvailable,
-  thenCasesDisplayed,
   thenUacError,
   thenUacsGenerated,
 } from "../step_definitions/then";
-import {
-  whenClickGenerateUacs,
-  whenGoToDetailsPage,
-} from "../step_definitions/when";
+import { whenClickGenerateUacs, whenGoToDetailsPage } from "../step_definitions/when";
 
 import { createScenario } from "./native_scenario";
 

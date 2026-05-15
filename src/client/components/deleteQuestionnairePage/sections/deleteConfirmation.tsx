@@ -35,10 +35,7 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
     enabled: needsCatiCheck,
   });
 
-  const {
-    mutate: confirmDeleteMutation,
-    isPending: deleting,
-  } = useMutation({
+  const { mutate: confirmDeleteMutation, isPending: deleting } = useMutation({
     mutationFn: () => deleteQuestionnaireAndRelatedDates(questionnaire.name),
     onSuccess: ([deleted, msg]) => {
       if (!deleted) {

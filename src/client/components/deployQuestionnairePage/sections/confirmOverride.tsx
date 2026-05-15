@@ -1,6 +1,4 @@
-import {
-  Panel,
-} from "blaise-design-system-react-components";
+import { Panel } from "blaise-design-system-react-components";
 import React, { type ReactElement } from "react";
 
 interface SelectFilePageProps {

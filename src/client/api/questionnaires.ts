@@ -2,8 +2,8 @@ import axios from "axios";
 
 import { clientLogger } from "../utils/logger";
 
-import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
 import axiosConfig from "./axiosConfig";
+import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
 
 import type { Questionnaire, QuestionnaireSettings } from "blaise-api-node-client";
 
@@ -33,7 +33,9 @@ export async function getQuestionnaire(
     return response.data;
   } catch (error: unknown) {
     if (isAxios404(error)) {
-      clientLogger.info(`${formatFunctionCall("getQuestionnaire", questionnaireName)} returned 404`);
+      clientLogger.info(
+        `${formatFunctionCall("getQuestionnaire", questionnaireName)} returned 404`,
+      );
 
       return undefined;
     }
@@ -157,7 +159,7 @@ export async function getQuestionnaireCaseIds(questionnaireName: string): Promis
     return response.data;
   } catch (error: unknown) {
     logFunctionError("getQuestionnaireCaseIds", error, questionnaireName);
-    throw new Error("Failed to get questionnaire case IDs");
+    throw new Error("Failed to get questionnaire case IDs", { cause: error });
   }
 }
 

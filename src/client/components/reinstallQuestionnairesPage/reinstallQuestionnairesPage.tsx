@@ -36,7 +36,9 @@ function ReinstallQuestionnaires(): ReactElement {
           throw new Error("Unable to load questionnaires from bucket. Check bucket permissions.");
         }),
         getQuestionnaires().catch((error: unknown) => {
-          clientLogger.warn(`getQuestionnaires() failed while loading reinstall candidates: ${error}`);
+          clientLogger.warn(
+            `getQuestionnaires() failed while loading reinstall candidates: ${error}`,
+          );
 
           return [] as Awaited<ReturnType<typeof getQuestionnaires>>;
         }),

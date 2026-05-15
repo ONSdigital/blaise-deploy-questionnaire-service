@@ -46,9 +46,9 @@ describe("ReissueNewDonorCasePage", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText(/Reissue a new donor case for/i, { selector: "h1" }).textContent).toContain(
-      "test user",
-    );
+    expect(
+      screen.getByText(/Reissue a new donor case for/i, { selector: "h1" }).textContent,
+    ).toContain("test user");
 
     fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
 

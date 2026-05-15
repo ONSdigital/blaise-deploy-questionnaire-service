@@ -5,20 +5,20 @@ import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
-  givenPackageSelectedForDeploy,
   givenNoQuestionnairesInstalled,
+  givenPackageSelectedForDeploy,
   givenToStartDateFails,
 } from "../step_definitions/given";
 import {
-  thenToStartDatePrompt,
-  thenToStartDateShown,
   thenDeployErrorBannerWithMessage,
   thenSummaryHasNoToStartDate,
+  thenToStartDatePrompt,
+  thenToStartDateShown,
 } from "../step_definitions/then";
 import {
+  whenClickContinue,
   whenConfirmSelection,
   whenDeployQuestionnaire,
-  whenClickContinue,
   whenSkipToStartDate,
   whenSpecifyToStartDate,
 } from "../step_definitions/when";
@@ -70,14 +70,17 @@ describe("Feature: set_telephone_operations_start_date", () => {
     thenSummaryHasNoToStartDate(Then);
   });
 
-  Scenario("Setting the Telephone Operations start date fails during deployment", ({ Given, When, Then }) => {
-    givenNoQuestionnairesInstalled(Given, mocker);
-    givenToStartDateFails(Given, mocker);
-    givenPackageSelectedForDeploy(Given);
-    whenConfirmSelection(When);
-    whenSpecifyToStartDate(When);
-    whenClickContinue(When);
-    whenDeployQuestionnaire(When);
-    thenDeployErrorBannerWithMessage(Then);
-  });
+  Scenario(
+    "Setting the Telephone Operations start date fails during deployment",
+    ({ Given, When, Then }) => {
+      givenNoQuestionnairesInstalled(Given, mocker);
+      givenToStartDateFails(Given, mocker);
+      givenPackageSelectedForDeploy(Given);
+      whenConfirmSelection(When);
+      whenSpecifyToStartDate(When);
+      whenClickContinue(When);
+      whenDeployQuestionnaire(When);
+      thenDeployErrorBannerWithMessage(Then);
+    },
+  );
 });

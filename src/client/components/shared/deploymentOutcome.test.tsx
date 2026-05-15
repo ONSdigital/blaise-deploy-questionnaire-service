@@ -17,8 +17,7 @@ describe("DeploymentOutcome", () => {
 
     expect(
       screen.getByText(
-        (_, element) =>
-          (element?.textContent ?? "").includes("Questionnaire OPN2004A deployed"),
+        (_, element) => (element?.textContent ?? "").includes("Questionnaire OPN2004A deployed"),
         { selector: "h1" },
       ),
     ).toBeInTheDocument();

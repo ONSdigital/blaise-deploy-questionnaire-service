@@ -5,26 +5,26 @@ import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
-  givenPackageSelectedForDeploy,
-  givenQuestionnaireInstallsSuccessfully,
   givenNoQuestionnairesInstalled,
+  givenPackageSelectedForDeploy,
   givenQuestionnaireHasModes,
   givenQuestionnaireHasSettings,
+  givenQuestionnaireInstallsSuccessfully,
 } from "../step_definitions/given";
 import {
-  thenIncorrectSettingsWarning,
-  thenDeploySuccessBanner,
-  thenReturnedToLandingPage,
   thenContinueOrCancelOption,
-  thenQuestionnaireDeleted,
+  thenDeploySuccessBanner,
+  thenIncorrectSettingsWarning,
   thenQuestionnaireActivated,
   thenQuestionnaireDeactivated,
+  thenQuestionnaireDeleted,
   thenQuestionnaireInstalled,
+  thenReturnedToLandingPage,
 } from "../step_definitions/then";
 import {
   whenChooseCancel,
-  whenDeployAnyway,
   whenConfirmSelection,
+  whenDeployAnyway,
   whenDeployQuestionnaire,
   whenSkipToStartDate,
 } from "../step_definitions/when";
@@ -45,7 +45,7 @@ describe("Feature: deploy_questionnaire_with_incorrect_settings", () => {
   const Scenario = createScenario();
 
   beforeEach(() => {
-    mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200);
+    mocker.onPut(/^https:\/\/storage\.googleapis\.com\//).reply(200);
   });
 
   afterEach(() => {

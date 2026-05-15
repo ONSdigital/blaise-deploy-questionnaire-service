@@ -9,13 +9,13 @@ import { setTmReleaseDate } from "../tmReleaseDate";
 import { setToStartDate } from "../toStartDate";
 import { initialiseUpload, uploadFile } from "../upload";
 
-import { verifyAndInstallQuestionnaire } from ".";
-
 import {
   checkQuestionnaireSettings,
   uploadAndInstallFile,
   validateSelectedQuestionnaireExists,
 } from "./uploadQuestionnaire";
+
+import { verifyAndInstallQuestionnaire } from ".";
 
 vi.mock("../questionnaires", () => ({
   getQuestionnaire: vi.fn(),
@@ -117,7 +117,9 @@ describe("uploadQuestionnaire", () => {
     );
 
     expect(result).toBeNull();
-    expect(setUploadStatus).toHaveBeenCalledWith("Failed to validate if questionnaire already exists");
+    expect(setUploadStatus).toHaveBeenCalledWith(
+      "Failed to validate if questionnaire already exists",
+    );
     expect(setFoundQuestionnaire).not.toHaveBeenCalled();
   });
 

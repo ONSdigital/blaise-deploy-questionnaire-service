@@ -22,10 +22,6 @@ export function logFunctionCall(functionName: string, ...args: LogArg[]): void {
   clientLogger.info(`Call to ${formatFunctionCall(functionName, ...args)}`);
 }
 
-export function logFunctionError(
-  functionName: string,
-  error: unknown,
-  ...args: LogArg[]
-): void {
+export function logFunctionError(functionName: string, error: unknown, ...args: LogArg[]): void {
   clientLogger.error(`${formatFunctionCall(functionName, ...args)} failed: ${error}`);
 }

@@ -2,8 +2,8 @@ import axios from "axios";
 
 import { clientLogger } from "../utils/logger";
 
-import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
 import axiosConfig from "./axiosConfig";
+import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
 
 function isAxiosStatus(error: unknown, statuses: number[]): boolean {
   if (typeof error !== "object" || error === null) {
@@ -60,6 +60,7 @@ export function createDateClient(options: DateClientOptions): DateClient {
 
   async function set(questionnaireName: string, value: string | undefined): Promise<boolean> {
     const functionName = `set${logLabel}`;
+
     logFunctionCall(functionName, questionnaireName, value);
     const url = `/api/${apiPath}/${questionnaireName}`;
 
@@ -76,6 +77,7 @@ export function createDateClient(options: DateClientOptions): DateClient {
 
   async function get(questionnaireName: string): Promise<string> {
     const functionName = `get${logLabel}`;
+
     logFunctionCall(functionName, questionnaireName);
     const url = `/api/${apiPath}/${questionnaireName}`;
 
@@ -84,7 +86,9 @@ export function createDateClient(options: DateClientOptions): DateClient {
       const value = parseResponseData(response.data);
 
       if (!value) {
-        clientLogger.info(`${formatFunctionCall(functionName, questionnaireName)} returned no value`);
+        clientLogger.info(
+          `${formatFunctionCall(functionName, questionnaireName)} returned no value`,
+        );
 
         return "";
       }
@@ -92,7 +96,10 @@ export function createDateClient(options: DateClientOptions): DateClient {
       return value;
     } catch (error: unknown) {
       if (isAxiosStatus(error, notFoundStatuses)) {
-        clientLogger.info(`${formatFunctionCall(functionName, questionnaireName)} returned no value`);
+        clientLogger.info(
+          `${formatFunctionCall(functionName, questionnaireName)} returned no value`,
+        );
+
         return "";
       }
 
@@ -103,6 +110,7 @@ export function createDateClient(options: DateClientOptions): DateClient {
 
   async function del(questionnaireName: string): Promise<boolean> {
     const functionName = `delete${logLabel}`;
+
     logFunctionCall(functionName, questionnaireName);
     const url = `/api/${apiPath}/${questionnaireName}`;
 

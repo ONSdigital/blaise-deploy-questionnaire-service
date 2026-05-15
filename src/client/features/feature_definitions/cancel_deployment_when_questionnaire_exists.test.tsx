@@ -8,11 +8,8 @@ import {
   givenPackageSelectedForDeploy,
   givenQuestionnaireInstalled,
 } from "../step_definitions/given";
-import {
-  thenCancelOrOverwriteOptions,
-  thenReturnedToLandingPage,
-} from "../step_definitions/then";
-import { whenConfirmSelection, whenCancelDeployment } from "../step_definitions/when";
+import { thenCancelOrOverwriteOptions, thenReturnedToLandingPage } from "../step_definitions/then";
+import { whenCancelDeployment, whenConfirmSelection } from "../step_definitions/when";
 
 import { createScenario } from "./native_scenario";
 

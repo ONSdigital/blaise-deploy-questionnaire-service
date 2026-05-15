@@ -3,6 +3,8 @@ import path from "path";
 import { type Auth } from "blaise-login-react-server";
 import express, { type Request, type Response, type Router } from "express";
 
+import { sanitise } from "../helpers/sanitise.js";
+
 import type AuditLogger from "../auditLogger.js";
 import type StorageManager from "../storageManager.js";
 
@@ -105,7 +107,7 @@ class UploadHandler {
 
   verifyUpload = async (req: Request, res: Response): Promise<Response> => {
     const { filename } = req.query;
-    const username = this.auth.GetUser(this.auth.GetToken(req)).name;
+    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
 
     if (typeof filename !== "string" || filename.trim() === "") {
       return res.status(400).json("No filename provided");
@@ -121,26 +123,25 @@ class UploadHandler {
       const file = await this.storageManager.CheckFile(filename);
 
       if (!file.found) {
-        req.log.warn(`File ${filename} not found in Bucket ${this.storageManager.bucketName}`);
-        this.auditLogger.error(
-          req.log,
-          `${username} failed to upload ${filename}`,
+        req.log.warn(
+          `File ${sanitise(filename)} not found in Bucket ${this.storageManager.bucketName}`,
         );
+        this.auditLogger.error(req.log, `${username} failed to upload ${sanitise(filename)}`);
 
         return res.status(404).json("Not found");
       }
 
-      req.log.info(`File ${filename} found in Bucket ${this.storageManager.bucketName}`);
+      req.log.info(`File ${sanitise(filename)} found in Bucket ${this.storageManager.bucketName}`);
 
       return res.status(200).json(file);
     } catch (error: unknown) {
       req.log.error(error, "Failed calling checkFile");
       this.auditLogger.error(
         req.log,
-        `${username} failed to verify ${filename} uploaded`,
+        `${username} failed to verify ${sanitise(filename)} uploaded`,
       );
 
-      return res.status(500).json(error);
+      return res.status(500).json("Failed to verify upload");
     }
   };
 }

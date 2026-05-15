@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import React, { act } from "react";
 import { MemoryRouter } from "react-router-dom";
 
-type DefineStepFunction = (name: any, callback: any) => void;
+type DefineStepFunction = (name: string | RegExp, callback: (...args: never[]) => unknown) => void;
 
 import App from "../../app";
 import flushPromises from "../../test-utils/flushPromises";

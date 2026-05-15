@@ -1,9 +1,7 @@
 import axios from "axios";
 
-import { clientLogger } from "../utils/logger";
-
-import { logFunctionCall, logFunctionError } from "./logHelpers";
 import axiosConfig from "./axiosConfig";
+import { logFunctionCall, logFunctionError } from "./logHelpers";
 import { type InstrumentUacDetailsByCaseId } from "./uac.types";
 
 export async function generateUacs(instrumentName: string): Promise<boolean> {

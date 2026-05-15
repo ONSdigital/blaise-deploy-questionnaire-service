@@ -5,15 +5,15 @@ import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
+  givenNoQuestionnairesInstalled,
   givenPackageSelectedForDeploy,
   givenQuestionnaireInstallsSuccessfully,
-  givenNoQuestionnairesInstalled,
 } from "../step_definitions/given";
 import {
-  thenDeployOption,
-  thenDeployFileOption,
-  thenDeploySuccessBanner,
   thenCanSelectPackage,
+  thenDeployFileOption,
+  thenDeployOption,
+  thenDeploySuccessBanner,
   thenQuestionnaireInstalled,
   thenUploadDisabled,
 } from "../step_definitions/then";
@@ -22,8 +22,8 @@ import {
   whenConfirmSelection,
   whenConfirmSelectionNoFlush,
   whenDeployQuestionnaire,
-  whenSelectDeployPackage,
   whenLoadHomepage,
+  whenSelectDeployPackage,
   whenSkipToStartDate,
 } from "../step_definitions/when";
 
@@ -43,7 +43,7 @@ describe("Feature: deploy_questionnaire", () => {
   const Scenario = createScenario();
 
   beforeEach(() => {
-    mocker.onPut(/^https:\/\/storage\.googleapis\.com/).reply(200);
+    mocker.onPut(/^https:\/\/storage\.googleapis\.com\//).reply(200);
   });
 
   afterEach(() => {

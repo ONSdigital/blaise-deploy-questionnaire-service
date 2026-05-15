@@ -2,7 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react";
 
-type DefineStepFunction = (name: any, callback: any) => void;
+type DefineStepFunction = (name: string | RegExp, callback: (...args: never[]) => unknown) => void;
 
 import flushPromises from "../../test-utils/flushPromises";
 
@@ -82,10 +82,7 @@ export function thenConfirmOverwriteWarning(then: DefineStepFunction): void {
   });
 }
 
-export function thenQuestionnaireDeleted(
-  then: DefineStepFunction,
-  mocker: MockAdapter,
-): void {
+export function thenQuestionnaireDeleted(then: DefineStepFunction, mocker: MockAdapter): void {
   then(
     /the questionnaire and data is deleted from Blaise for '(.*)'/,
     async (questionnaire: string) => {
@@ -104,10 +101,7 @@ export function thenQuestionnaireDeleted(
   );
 }
 
-export function thenQuestionnaireNotDeleted(
-  then: DefineStepFunction,
-  mocker: MockAdapter,
-): void {
+export function thenQuestionnaireNotDeleted(then: DefineStepFunction, mocker: MockAdapter): void {
   then(/the questionnaire and data is not deleted from Blaise for '(.*)'/, async () => {
     await act(async () => {
       await flushPromises();
@@ -117,10 +111,7 @@ export function thenQuestionnaireNotDeleted(
   });
 }
 
-export function thenQuestionnaireInstalled(
-  then: DefineStepFunction,
-  mocker: MockAdapter,
-): void {
+export function thenQuestionnaireInstalled(then: DefineStepFunction, mocker: MockAdapter): void {
   then(/the questionnaire package '(.*)' is deployed/, async (questionnaire: string) => {
     await act(async () => {
       await flushPromises();
@@ -137,10 +128,7 @@ export function thenQuestionnaireInstalled(
   });
 }
 
-export function thenQuestionnaireActivated(
-  then: DefineStepFunction,
-  mocker: MockAdapter,
-): void {
+export function thenQuestionnaireActivated(then: DefineStepFunction, mocker: MockAdapter): void {
   then(/the questionnaire package '(.*)' is activated/, async (questionnaire: string) => {
     await act(async () => {
       await flushPromises();
@@ -156,10 +144,7 @@ export function thenQuestionnaireActivated(
   });
 }
 
-export function thenQuestionnaireDeactivated(
-  then: DefineStepFunction,
-  mocker: MockAdapter,
-): void {
+export function thenQuestionnaireDeactivated(then: DefineStepFunction, mocker: MockAdapter): void {
   then(/the questionnaire package '(.*)' is deactivated/, async (questionnaire: string) => {
     await act(async () => {
       await flushPromises();
@@ -217,9 +202,12 @@ export function thenAddToStartDateOption(then: DefineStepFunction): void {
 }
 
 export function thenToStartDateShown(then: DefineStepFunction): void {
-  then(/I can view the Telephone Operations start date is set to '(.*)'/, async (toStartDate: string) => {
-    expect(await screen.findByText(new RegExp(toStartDate, "i"))).toBeDefined();
-  });
+  then(
+    /I can view the Telephone Operations start date is set to '(.*)'/,
+    async (toStartDate: string) => {
+      expect(await screen.findByText(new RegExp(toStartDate, "i"))).toBeDefined();
+    },
+  );
 }
 
 export function thenToStartDateStored(then: DefineStepFunction, mocker: MockAdapter): void {
@@ -238,10 +226,7 @@ export function thenToStartDateStored(then: DefineStepFunction, mocker: MockAdap
   );
 }
 
-export function thenTmReleaseDateStored(
-  then: DefineStepFunction,
-  mocker: MockAdapter,
-): void {
+export function thenTmReleaseDateStored(then: DefineStepFunction, mocker: MockAdapter): void {
   then(
     /the Totalmobile release date of '(.*)' is stored against '(.*)'/,
     async (tmReleaseDate: string, questionnaire: string) => {
@@ -258,22 +243,22 @@ export function thenTmReleaseDateStored(
 }
 
 export function thenToStartDateDeleted(then: DefineStepFunction, mocker: MockAdapter): void {
-  then(/the Telephone Operations start date is deleted from '(.*)'/, async (questionnaire: string) => {
-    expect(mocker.history.post).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          url: `/api/tostartdate/${questionnaire}`,
-          data: JSON.stringify({ tostartdate: "" }),
-        }),
-      ]),
-    );
-  });
+  then(
+    /the Telephone Operations start date is deleted from '(.*)'/,
+    async (questionnaire: string) => {
+      expect(mocker.history.post).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            url: `/api/tostartdate/${questionnaire}`,
+            data: JSON.stringify({ tostartdate: "" }),
+          }),
+        ]),
+      );
+    },
+  );
 }
 
-export function thenTmReleaseDateDeleted(
-  then: DefineStepFunction,
-  mocker: MockAdapter,
-): void {
+export function thenTmReleaseDateDeleted(then: DefineStepFunction, mocker: MockAdapter): void {
   then(/the Totalmobile release date is deleted from '(.*)'/, async (questionnaire: string) => {
     expect(mocker.history.post).toEqual(
       expect.arrayContaining([
@@ -438,9 +423,7 @@ export function thenDeployOption(then: DefineStepFunction): void {
   });
 }
 
-export function thenDeployFileOption(
-  then: DefineStepFunction,
-): void {
+export function thenDeployFileOption(then: DefineStepFunction): void {
   then("I am presented with an option to choose a file containing the questionnaire", async () => {
     expect(await screen.findByRole("heading", { name: /^Deploy questionnaire$/i })).toBeDefined();
   });
@@ -505,9 +488,7 @@ export function thenContinueOrCancelOption(then: DefineStepFunction): void {
   });
 }
 
-export function thenTmReleaseDatePrompt(
-  then: DefineStepFunction,
-): void {
+export function thenTmReleaseDatePrompt(then: DefineStepFunction): void {
   then("I am presented with an option to specify a Totalmobile release date", async () => {
     expect(
       await screen.findByRole("heading", {
@@ -549,17 +530,13 @@ export function thenSummaryHasNoTmReleaseDate(then: DefineStepFunction): void {
   });
 }
 
-export function thenTmReleaseDateEntryShown(
-  then: DefineStepFunction,
-): void {
+export function thenTmReleaseDateEntryShown(then: DefineStepFunction): void {
   then("I will see an entry displayed for Totalmobile release date", async () => {
     expect(await screen.findByText(/^Totalmobile release date$/i)).toBeDefined();
   });
 }
 
-export function thenChangeOrDeleteTmReleaseDateOption(
-  then: DefineStepFunction,
-): void {
+export function thenChangeOrDeleteTmReleaseDateOption(then: DefineStepFunction): void {
   then("I have the option to change or delete the Totalmobile release date", async () => {
     expect(await screen.findByText(/Change or delete release date/i)).toBeDefined();
   });

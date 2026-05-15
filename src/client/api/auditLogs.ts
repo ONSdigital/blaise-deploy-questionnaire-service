@@ -2,8 +2,8 @@ import axios from "axios";
 
 import { type AuditLog } from "../utils/auditLog.types";
 
-import { logFunctionCall, logFunctionError } from "./logHelpers";
 import axiosConfig from "./axiosConfig";
+import { logFunctionCall, logFunctionError } from "./logHelpers";
 
 export async function getAuditLogs(): Promise<AuditLog[]> {
   logFunctionCall("getAuditLogs");

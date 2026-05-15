@@ -178,6 +178,7 @@ describe("Questionnaire List displays valid user questionnaires", () => {
     });
 
     const filterInput = screen.getByTestId(/filter-by-name-input/i);
+
     await userEvent.type(filterInput, "NO_MATCHES");
 
     await waitFor(() => {

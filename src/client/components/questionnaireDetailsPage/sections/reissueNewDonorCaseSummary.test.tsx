@@ -43,8 +43,6 @@ describe("ReissueNewDonorCaseSummary", () => {
 
     const { getByText } = render(<ReissueNewDonorCaseSummary {...props} />);
 
-    expect(
-      getByText(/User has not been issued with an initial donor case/i),
-    ).toBeInTheDocument();
+    expect(getByText(/User has not been issued with an initial donor case/i)).toBeInTheDocument();
   });
 });

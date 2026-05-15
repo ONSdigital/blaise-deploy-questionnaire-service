@@ -75,7 +75,9 @@ export class BimsClient {
     }
 
     if (response.status !== 200) {
-      throw new Error(`Error getting Totalmobile release date for questionnaire: ${questionnaireName}`);
+      throw new Error(
+        `Error getting Totalmobile release date for questionnaire: ${questionnaireName}`,
+      );
     }
 
     return response.data;

@@ -10,7 +10,16 @@ import {
   Panel,
 } from "blaise-design-system-react-components";
 import { AuthClient, LoginForm } from "blaise-login-react-client";
-import { lazy, type ReactElement, type ReactNode, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  lazy,
+  type ReactElement,
+  type ReactNode,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import QuestionnairesPage from "./components/questionnairesPage/questionnairesPage";
@@ -64,7 +73,10 @@ function createNavLink(id: string | undefined, label: string, endpoint: string):
 
 function NotFound(): ReactElement {
   return (
-    <main id="main-content" className="ons-page__main ons-u-mt-l">
+    <main
+      id="main-content"
+      className="ons-page__main ons-u-mt-l"
+    >
       <h1>Page not found</h1>
       <p>The page you're looking for doesn't exist.</p>
       <Link to="/">Return to home</Link>
@@ -83,7 +95,10 @@ function AppRoutes({
     <DefaultErrorBoundary>
       <Suspense
         fallback={
-          <main id="main-content" className="ons-page__main ons-u-mt-l">
+          <main
+            id="main-content"
+            className="ons-page__main ons-u-mt-l"
+          >
             <LoadingPanel />
           </main>
         }
@@ -161,7 +176,9 @@ function App(): ReactElement {
   const queryClient = useQueryClient();
 
   const authClient = useMemo(() => new AuthClient(), []);
-  const [authState, setAuthState] = useState<"checking" | "unauthenticated" | "authenticated">("checking");
+  const [authState, setAuthState] = useState<"checking" | "unauthenticated" | "authenticated">(
+    "checking",
+  );
 
   const handleSetLoggedIn = useCallback((loggedIn: boolean) => {
     setAuthState(loggedIn ? "authenticated" : "unauthenticated");
