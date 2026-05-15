@@ -8,8 +8,8 @@ import flushPromises from "../../../test-utils/flushPromises";
 import { createWrapper } from "../../../test-utils/renderWithQueryClient";
 
 /*
- * Renders the app in a mock router, then navigates the the 'Deploy questionnaire' page
- * and then selects a mock OPN2004A.bpkg in the file select input field.
+ * Renders the app in a mock router, then navigates to the 'Deploy questionnaire' page
+ * and selects a mock OPN2004A.bpkg in the file select input field.
  *  */
 export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004A"): Promise<void> {
   function DeployRouteWrapper({ children }: { children: ReactNode }) {
@@ -22,7 +22,7 @@ export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004
   });
 
   let input = await screen
-    .findByLabelText(/Select questionnaire package|Select survey package/i)
+    .findByLabelText(/Select questionnaire package/i)
     .catch(() => null);
 
   if (!input) {

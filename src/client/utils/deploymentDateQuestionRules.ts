@@ -1,4 +1,4 @@
-const toStartDateSurveyTlas = ["DST", "LMS", "OPN", "TST"];
+const toStartDateSurveyTlas = ["DST", "LMS", "OPN"];
 
 export const tmReleaseDateSurveyTlas = ["DST", "LMS"];
 

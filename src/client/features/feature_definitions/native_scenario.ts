@@ -71,7 +71,7 @@ function resolveArgs(
     scenario.includes("search for dst");
 
   if (isQuestionnaireSearchScenario && label.includes("is installed")) {
-    const searchDataset = ["DST9999A", "DST8888B", "TST2108A", "TST2108B", "TST2108C", "FOO1234Z"];
+    const searchDataset = ["DST9999A", "DST8888B", "DST2108A", "DST2108B", "DST2108C", "FOO1234Z"];
     const questionnaireName =
       searchDataset[Math.min(ctx.installedStepCalls, searchDataset.length - 1)] ??
       searchDataset[searchDataset.length - 1];
@@ -98,16 +98,16 @@ function resolveArgs(
       : scenario.includes("search for dst")
         ? "DST"
         : scenario.includes("search for a questionnaire")
-          ? "TST2108C"
+          ? "DST2108C"
           : DEFAULT_QUESTIONNAIRE;
 
   const questionnaireTable = scenario.includes("search for a questionnaire")
-    ? [{ Questionnaire: "TST2108C" }]
+    ? [{ Questionnaire: "DST2108C" }]
     : scenario.includes("dst questionnaires do not show up by default")
       ? [
-          { Questionnaire: "TST2108A" },
-          { Questionnaire: "TST2108B" },
-          { Questionnaire: "TST2108C" },
+          { Questionnaire: "DST2108A" },
+          { Questionnaire: "DST2108B" },
+          { Questionnaire: "DST2108C" },
           { Questionnaire: "FOO1234Z" },
         ]
       : scenario.includes("search for dst")
