@@ -217,6 +217,7 @@ describe("Client route rendering and global error handler", () => {
 
   it("returns the static 500 page when render fails and error page exists", async () => {
     vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    vi.spyOn(fs, "readFileSync").mockReturnValue("<html>500</html>");
     const app = newServer(config);
 
     app.set("views", "/definitely/missing/views");

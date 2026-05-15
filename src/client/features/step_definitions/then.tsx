@@ -2,7 +2,10 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react";
 
-type DefineStepFunction = (name: string | RegExp, callback: (...args: never[]) => unknown) => void;
+type DefineStepFunction = (
+  name: string | RegExp,
+  callback: (...args: any[]) => void | Promise<void>,
+) => void;
 
 import flushPromises from "../../test-utils/flushPromises";
 

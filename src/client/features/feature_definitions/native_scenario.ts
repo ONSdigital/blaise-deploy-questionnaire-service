@@ -2,7 +2,7 @@ import { describe, test } from "vitest";
 
 type StepFn = (...args: unknown[]) => void | Promise<void>;
 
-export type NativeStep = (name: string | RegExp, fn: StepFn) => void;
+export type NativeStep = (name: string | RegExp, fn: (...args: never[]) => unknown) => void;
 
 type ScenarioStep = {
   kind: "Given" | "When" | "Then";
@@ -207,7 +207,7 @@ export function createScenario() {
 
       const mkStep = (kind: "Given" | "When" | "Then"): NativeStep => {
         return (stepName, stepFn) => {
-          steps.push({ kind, name: stepName, fn: stepFn });
+          steps.push({ kind, name: stepName, fn: stepFn as StepFn });
         };
       };
 

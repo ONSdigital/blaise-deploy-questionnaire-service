@@ -76,7 +76,7 @@ export function getConfigFromEnv(): Config {
 
   return {
     Port: port,
-    BlaiseApiUrl: fixURL(requiredEnv.BLAISE_API_URL),
+    BlaiseApiUrl: fixUrl(requiredEnv.BLAISE_API_URL),
     ProjectId: requiredEnv.PROJECT_ID,
     BucketName: requiredEnv.BUCKET_NAME,
     ServerPark: requiredEnv.SERVER_PARK,
@@ -93,9 +93,13 @@ export function getConfigFromEnv(): Config {
   };
 }
 
-function fixURL(url: string): string {
+function fixUrl(url: string): string {
   if (url.startsWith("http")) {
     return url;
+  }
+
+  if (url.startsWith("localhost") || url.startsWith("127.0.0.1")) {
+    return `http://${url}`;
   }
 
   return `https://${url}`;

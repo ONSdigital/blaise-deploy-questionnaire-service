@@ -52,6 +52,22 @@ describe("Config setup", () => {
     expect(config.BlaiseApiUrl).toBe("https://already-qualified-url");
   });
 
+  it("should use http for localhost BLAISE_API_URL", () => {
+    process.env.BLAISE_API_URL = "localhost:8080";
+
+    const config = getConfigFromEnv();
+
+    expect(config.BlaiseApiUrl).toBe("http://localhost:8080");
+  });
+
+  it("should use http for 127.0.0.1 BLAISE_API_URL", () => {
+    process.env.BLAISE_API_URL = "127.0.0.1:8080";
+
+    const config = getConfigFromEnv();
+
+    expect(config.BlaiseApiUrl).toBe("http://127.0.0.1:8080");
+  });
+
   it("should throw an error if required variables are not defined", () => {
     process.env.BLAISE_API_URL = undefined;
     process.env.PROJECT_ID = undefined;

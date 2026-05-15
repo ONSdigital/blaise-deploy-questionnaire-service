@@ -1,4 +1,7 @@
-type DefineStepFunction = (name: string | RegExp, callback: (...args: never[]) => unknown) => void;
+type DefineStepFunction = (
+  name: string | RegExp,
+  callback: (...args: any[]) => void | Promise<void>,
+) => void;
 
 import { questionnaireWithName } from "./helpers/api.mock";
 import { formatDateString, navigateToDeployPageAndSelectFile } from "./helpers/functions";
