@@ -72,7 +72,7 @@ function AuditPage(): ReactElement {
                     key={id}
                     data-testid={"questionnaire-table-row"}
                   >
-                    <td className="ons-table__cell ">
+                    <td className="ons-table__cell " style={{ whiteSpace: "nowrap" }}>
                       {dateFormatter(new Date(timestamp)).format("DD/MM/YYYY HH:mm:ss")}
                     </td>
                     <td className="ons-table__cell ">

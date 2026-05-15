@@ -9,7 +9,7 @@ import { createWrapper } from "../../test-utils/renderWithQueryClient";
 
 import AuditPage from "./auditPage";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 const auditLogsList = [
   {

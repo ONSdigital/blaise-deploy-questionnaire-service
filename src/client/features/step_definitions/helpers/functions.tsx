@@ -8,8 +8,8 @@ import flushPromises from "../../../test-utils/flushPromises";
 import { createWrapper } from "../../../test-utils/renderWithQueryClient";
 
 /*
- * Renders the App in a Mock Router, then navigates the the 'Deploy questionnaire' page
- * and then selects a mock OPN2004A.bpkg in the File select Input field.
+ * Renders the app in a mock router, then navigates the the 'Deploy questionnaire' page
+ * and then selects a mock OPN2004A.bpkg in the file select input field.
  *  */
 export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004A"): Promise<void> {
   function DeployRouteWrapper({ children }: { children: ReactNode }) {

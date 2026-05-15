@@ -6,7 +6,7 @@ import { formatDateString, navigateToDeployPageAndSelectFile } from "./helpers/f
 import type MockAdapter from "axios-mock-adapter";
 import type { Questionnaire, QuestionnaireSettings } from "blaise-api-node-client";
 
-export function givenTheQuestionnaireIsInstalled(
+export function givenQuestionnaireInstalled(
   given: DefineStepFunction,
   questionnaireList: Questionnaire[],
   mocker: MockAdapter,
@@ -48,20 +48,23 @@ export function givenTheQuestionnaireIsInstalled(
     mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, { count: 0 });
     mocker.onGet(`/api/questionnaires/${questionnaireName}/surveydays`).reply(200, []);
     mocker.onGet(`/api/questionnaires/${questionnaireName}/active`).reply(200, true);
+    mocker.onPost("/api/client-log").reply(200);
   });
 }
 
 // Just a bunch of default mocks to stop things falling over
-export function givenNoQuestionnairesAreInstalled(
+export function givenNoQuestionnairesInstalled(
   given: DefineStepFunction,
   mocker: MockAdapter,
 ): void {
   given("no questionnaires are installed", () => {
     mocker.onGet("/api/questionnaires").reply(200, []);
+    mocker.onGet(/^\/api\/questionnaires\/[^/]+$/).replyOnce(404);
+    mocker.onPost("/api/client-log").reply(200);
   });
 }
 
-export function givenInstallsSuccessfully(given: DefineStepFunction, mocker: MockAdapter): void {
+export function givenQuestionnaireInstallsSuccessfully(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/'(.*)' installs successfully/, (questionnaireName: string) => {
     mocker.onDelete(`/api/questionnaires/${questionnaireName}`).reply(204);
     mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(200);
@@ -93,7 +96,7 @@ export function givenInstallsSuccessfully(given: DefineStepFunction, mocker: Moc
   });
 }
 
-export function givenTheQuestionnaireHasModes(
+export function givenQuestionnaireHasModes(
   given: DefineStepFunction,
   mocker: MockAdapter,
 ): void {
@@ -102,7 +105,7 @@ export function givenTheQuestionnaireHasModes(
   });
 }
 
-export function givenTheQuestionnaireHasCases(
+export function givenQuestionnaireHasCases(
   given: DefineStepFunction,
   questionnaireList: Questionnaire[],
   mocker: MockAdapter,
@@ -122,13 +125,13 @@ export function givenTheQuestionnaireHasCases(
   });
 }
 
-export function givenTheQuestionnaireHasUacs(given: DefineStepFunction, mocker: MockAdapter): void {
+export function givenQuestionnaireHasUacs(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/^'(.*?)' has (\d+) Unique Access Codes$/, (questionnaireName: string, count: string) => {
     mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, { count: +count });
   });
 }
 
-export function givenTheQuestionnaireIsErroneous(
+export function givenQuestionnaireIsErroneous(
   given: DefineStepFunction,
   questionnaireList: Questionnaire[],
 ): void {
@@ -141,28 +144,19 @@ export function givenTheQuestionnaireIsErroneous(
   });
 }
 
-export function givenTheQuestionnaireCannotBeDeletedBecauseItWillGoErroneous(
-  given: DefineStepFunction,
-  mocker: MockAdapter,
-): void {
-  given(/'(.*)' cannot be deleted because it would go erroneous/, (questionnaireName: string) => {
-    mocker.onDelete(`/api/questionnaires/${questionnaireName}`).reply(420);
-  });
-}
-
 export function givenToStartDateFails(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/setting a Telephone Operations start date for '(.*)' fails/, (questionnaireName: string) => {
     mocker.onPost(`/api/tostartdate/${questionnaireName}`).reply(500);
   });
 }
 
-export function givenUacGenerationIsBroken(given: DefineStepFunction, mocker: MockAdapter): void {
+export function givenUacGenerationFails(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/Unique Access Code generation is broken for '(.*)'/, (questionnaireName: string) => {
     mocker.onPost(`/api/uacs/instrument/${questionnaireName}`).reply(500);
   });
 }
 
-export function givenTheQuestionnaireHasAToStartDate(
+export function givenQuestionnaireHasToStartDate(
   given: DefineStepFunction,
   mocker: MockAdapter,
 ): void {
@@ -176,7 +170,7 @@ export function givenTheQuestionnaireHasAToStartDate(
   );
 }
 
-export function givenTheQuestionnaireHasATotalmobileReleaseDate(
+export function givenQuestionnaireHasTmReleaseDate(
   given: DefineStepFunction,
   mocker: MockAdapter,
 ): void {
@@ -190,7 +184,7 @@ export function givenTheQuestionnaireHasATotalmobileReleaseDate(
   );
 }
 
-export function givenTheQuestionnaireHasNoToStartDate(
+export function givenQuestionnaireHasNoToStartDate(
   given: DefineStepFunction,
   mocker: MockAdapter,
 ): void {
@@ -199,7 +193,7 @@ export function givenTheQuestionnaireHasNoToStartDate(
   });
 }
 
-export function givenTheQuestionnaireHasNoTotalmobileReleaseDate(
+export function givenQuestionnaireHasNoTmReleaseDate(
   given: DefineStepFunction,
   mocker: MockAdapter,
 ): void {
@@ -208,13 +202,22 @@ export function givenTheQuestionnaireHasNoTotalmobileReleaseDate(
   });
 }
 
-export function givenAllInstallsWillFail(given: DefineStepFunction, mocker: MockAdapter): void {
-  given(/All Questionnaire installs will fail for '(.*)'/, () => {
+export function givenAllInstallsFail(given: DefineStepFunction, mocker: MockAdapter): void {
+  given(/All Questionnaire installs will fail for '(.*)'/, (questionnaireName: string) => {
+    mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(404);
+    mocker
+      .onGet(`/upload/init?filename=${questionnaireName}.bpkg`)
+      .reply(200, "https://storage.googleapis.com/");
+    mocker.onPut("https://storage.googleapis.com/").reply(200);
+    mocker
+      .onGet(`/upload/verify?filename=${questionnaireName}.bpkg`)
+      .reply(200, { name: `${questionnaireName}.bpkg` });
     mocker.onPost("/api/install").reply(500);
+    mocker.onPost("/api/client-log").reply(200);
   });
 }
 
-export function givenIHaveSelectedTheQuestionnairePackageToDeploy(given: DefineStepFunction): void {
+export function givenPackageSelectedForDeploy(given: DefineStepFunction): void {
   given(
     /I have selected the questionnaire package for '(.*)' to deploy/,
     async (questionnaireName: string) => {
@@ -223,7 +226,7 @@ export function givenIHaveSelectedTheQuestionnairePackageToDeploy(given: DefineS
   );
 }
 
-export function givenTheQuestionnaireIsLive(
+export function givenQuestionnaireIsLive(
   given: DefineStepFunction,
   questionnaireList: Questionnaire[],
   mocker: MockAdapter,
@@ -240,7 +243,7 @@ export function givenTheQuestionnaireIsLive(
   });
 }
 
-export function givenTheQuestionnaireIsActive(
+export function givenQuestionnaireIsActive(
   given: DefineStepFunction,
   questionnaireList: Questionnaire[],
   mocker: MockAdapter,
@@ -256,7 +259,7 @@ export function givenTheQuestionnaireIsActive(
   });
 }
 
-export function givenTheQuestionnaireIsInactive(
+export function givenQuestionnaireIsInactive(
   given: DefineStepFunction,
   questionnaireList: Questionnaire[],
   mocker: MockAdapter,
@@ -272,7 +275,7 @@ export function givenTheQuestionnaireIsInactive(
   });
 }
 
-export function givenTheQuestionnaireHasActiveSurveyDays(
+export function givenQuestionnaireHasActiveSurveyDays(
   given: DefineStepFunction,
   questionnaireList: Questionnaire[],
   mocker: MockAdapter,
@@ -286,7 +289,7 @@ export function givenTheQuestionnaireHasActiveSurveyDays(
   });
 }
 
-export function givenTheQuestionnaireHasTheSettings(
+export function givenQuestionnaireHasSettings(
   given: DefineStepFunction,
   mocker: MockAdapter,
 ): void {
@@ -312,11 +315,4 @@ export function givenTheQuestionnaireHasTheSettings(
   );
 }
 
-export function givenTheQuestionnaireDoesNotHaveATotalmobileReleaseDate(
-  given: DefineStepFunction,
-  mocker: MockAdapter,
-): void {
-  given(/'(.*)' does not have a Totalmobile release date/, async (questionnaireName: string) => {
-    mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(404);
-  });
-}
+

@@ -237,10 +237,12 @@ describe("DeployPage coverage paths", () => {
     mockQuestionnaireMissing();
   });
 
-  it("returns early when the form is submitted without a file", () => {
+  it("returns early when the form is submitted without a file", async () => {
     renderDeployPage();
 
-    fireEvent.submit(document.getElementById("formID") as HTMLFormElement);
+    await act(async () => {
+      fireEvent.submit(document.getElementById("formID") as HTMLFormElement);
+    });
 
     expect(processMocks.validateSelectedQuestionnaireExists).not.toHaveBeenCalled();
     expect(screen.getByText("No mocked file")).toBeInTheDocument();

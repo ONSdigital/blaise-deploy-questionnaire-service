@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 
 import { getAuditLogs } from "./auditLogs";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Function getAuditLogs(filename: string) ", () => {
   afterEach(() => {

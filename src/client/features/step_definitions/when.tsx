@@ -16,7 +16,7 @@ import {
   navigatePastSettingToStartDateAndDeployQuestionnaire,
 } from "./helpers/functions";
 
-export function whenIConfirmMySelection(when: DefineStepFunction): void {
+export function whenConfirmSelection(when: DefineStepFunction): void {
   when("I confirm my selection", async () => {
     await userEvent.click(await screen.findByRole("button", { name: /Continue/i }));
     await act(async () => {
@@ -25,13 +25,13 @@ export function whenIConfirmMySelection(when: DefineStepFunction): void {
   });
 }
 
-export function whenIConfirmMySelectionNoWait(when: DefineStepFunction): void {
+export function whenConfirmSelectionNoFlush(when: DefineStepFunction): void {
   when("I confirm my selection", async () => {
     await userEvent.click(await screen.findByRole("button", { name: /Continue/i }));
   });
 }
 
-export function whenISelectTo(when: DefineStepFunction): void {
+export function whenCancelDeployment(when: DefineStepFunction): void {
   when(/I select to '(.*)'/, async (button: string) => {
     if (button == "cancel") {
       await userEvent.click(await screen.findByRole("button", { name: /^Cancel$/i }));
@@ -39,7 +39,7 @@ export function whenISelectTo(when: DefineStepFunction): void {
   });
 }
 
-export function whenILoadTheHomepage(when: DefineStepFunction): void {
+export function whenLoadHomepage(when: DefineStepFunction): void {
   when("I load the homepage", async () => {
     render(
       <QueryClientProvider client={createTestQueryClient()}>
@@ -53,7 +53,7 @@ export function whenILoadTheHomepage(when: DefineStepFunction): void {
   });
 }
 
-export function whenIGoToTheQuestionnaireDetailsPage(when: DefineStepFunction): void {
+export function whenGoToDetailsPage(when: DefineStepFunction): void {
   when(/I go to the questionnaire details page for '(.*)'/, async (questionnaire: string) => {
     render(
       <QueryClientProvider client={createTestQueryClient()}>
@@ -67,7 +67,7 @@ export function whenIGoToTheQuestionnaireDetailsPage(when: DefineStepFunction): 
   });
 }
 
-export function whenIDeleteAQuestionnaire(when: DefineStepFunction): void {
+export function whenClickDelete(when: DefineStepFunction): void {
   when(/I select a link to delete the '(.*)' questionnaire/, async (questionnaire: string) => {
     await waitFor(
       () => {
@@ -94,7 +94,7 @@ export function whenIDeleteAQuestionnaire(when: DefineStepFunction): void {
   });
 }
 
-export function whenIConfirmDelete(when: DefineStepFunction): void {
+export function whenConfirmDeletion(when: DefineStepFunction): void {
   when("I confirm that I want to proceed", async () => {
     await waitFor(
       () => {
@@ -109,7 +109,7 @@ export function whenIConfirmDelete(when: DefineStepFunction): void {
   });
 }
 
-export function whenICancelDelete(when: DefineStepFunction): void {
+export function whenCancelDeletion(when: DefineStepFunction): void {
   when("I click cancel", async () => {
     await waitFor(
       () => {
@@ -124,7 +124,7 @@ export function whenICancelDelete(when: DefineStepFunction): void {
   });
 }
 
-export function whenISelectTheQuestionnaire(when: DefineStepFunction): void {
+export function whenSelectQuestionnaire(when: DefineStepFunction): void {
   when(/I select the questionnaire '(.*)'/, async (questionnaire: string) => {
     const detailsLink = await screen.findByRole(
       "link",
@@ -143,7 +143,7 @@ export function whenISelectTheQuestionnaire(when: DefineStepFunction): void {
   });
 }
 
-export function whenISelectToChangeOrDeleteToStartDate(when: DefineStepFunction): void {
+export function whenEditToStartDate(when: DefineStepFunction): void {
   when("I select to change or delete the Telephone Operations start date", async () => {
     await act(async () => {
       await flushPromises();
@@ -158,7 +158,7 @@ export function whenISelectToChangeOrDeleteToStartDate(when: DefineStepFunction)
   });
 }
 
-export function whenIHaveSelectedToAddAToStartDate(when: DefineStepFunction): void {
+export function whenAddToStartDate(when: DefineStepFunction): void {
   when("I have selected to add a Telephone Operations start date", async () => {
     await act(async () => {
       await flushPromises();
@@ -173,7 +173,7 @@ export function whenIHaveSelectedToAddAToStartDate(when: DefineStepFunction): vo
   });
 }
 
-export function whenIHaveSelectedToAddATotalmobileReleaseDate(when: DefineStepFunction): void {
+export function whenAddTmReleaseDate(when: DefineStepFunction): void {
   when("I have selected to add a Totalmobile release date", async () => {
     await act(async () => {
       await flushPromises();
@@ -190,7 +190,7 @@ export function whenIHaveSelectedToAddATotalmobileReleaseDate(when: DefineStepFu
   });
 }
 
-export function whenISpecifyAToStartDateOf(when: DefineStepFunction): void {
+export function whenSpecifyToStartDate(when: DefineStepFunction): void {
   when(/I specify the Telephone Operations start date of '(.*)'/, async (toStartDate: string) => {
     await userEvent.click(screen.getByLabelText(/Yes, let me specify a start date/i));
     fireEvent.change(screen.getByLabelText(/Please specify date/i), {
@@ -202,7 +202,7 @@ export function whenISpecifyAToStartDateOf(when: DefineStepFunction): void {
   });
 }
 
-export function whenIDeleteTheToStartDate(when: DefineStepFunction): void {
+export function whenDeleteToStartDate(when: DefineStepFunction): void {
   when("I delete the Telephone Operations start date", async () => {
     await userEvent.click(screen.getByLabelText(/No start date/i));
     await act(async () => {
@@ -211,7 +211,7 @@ export function whenIDeleteTheToStartDate(when: DefineStepFunction): void {
   });
 }
 
-export function whenIDeleteTheTotalmobileReleaseDate(when: DefineStepFunction): void {
+export function whenDeleteTmReleaseDate(when: DefineStepFunction): void {
   when("I delete the Totalmobile release date", async () => {
     await userEvent.click(screen.getByLabelText(/^No release date$/i));
     await act(async () => {
@@ -220,7 +220,7 @@ export function whenIDeleteTheTotalmobileReleaseDate(when: DefineStepFunction): 
   });
 }
 
-export function whenISelectToInstallWithNoStartDate(when: DefineStepFunction): void {
+export function whenSkipToStartDate(when: DefineStepFunction): void {
   when("I select to not provide a Telephone Operations start date", async () => {
     await userEvent.click(screen.getByLabelText(/No start date/i));
     await userEvent.click(screen.getByRole("button", { name: /Continue/i }));
@@ -230,7 +230,7 @@ export function whenISelectToInstallWithNoStartDate(when: DefineStepFunction): v
   });
 }
 
-export function whenISelectTheContinueButton(when: DefineStepFunction): void {
+export function whenClickContinue(when: DefineStepFunction): void {
   when("I select the continue button", async () => {
     await act(async () => {
       await flushPromises();
@@ -242,7 +242,7 @@ export function whenISelectTheContinueButton(when: DefineStepFunction): void {
   });
 }
 
-export function whenIClickGenerateCases(when: DefineStepFunction): void {
+export function whenClickGenerateUacs(when: DefineStepFunction): void {
   when("I click generate cases", async () => {
     await act(async () => {
       await flushPromises();
@@ -256,7 +256,7 @@ export function whenIClickGenerateCases(when: DefineStepFunction): void {
   });
 }
 
-export function whenISelectToOverwrite(when: DefineStepFunction): void {
+export function whenProceedToOverwrite(when: DefineStepFunction): void {
   when("I select to 'overwrite'", async () => {
     await userEvent.click(await screen.findByRole("button", { name: /Continue/i }));
     await act(async () => {
@@ -265,7 +265,7 @@ export function whenISelectToOverwrite(when: DefineStepFunction): void {
   });
 }
 
-export function whenIConfirmToOverwrite(when: DefineStepFunction): void {
+export function whenConfirmOverwrite(when: DefineStepFunction): void {
   when("I confirm 'overwrite'", async () => {
     await userEvent.click(await screen.findByRole("button", { name: /Continue/i }));
     await act(async () => {
@@ -279,13 +279,13 @@ export function whenIConfirmToOverwrite(when: DefineStepFunction): void {
   });
 }
 
-export function whenIConfirmNotToOverwrite(when: DefineStepFunction): void {
+export function whenCancelOverwrite(when: DefineStepFunction): void {
   when("I confirm that I do NOT want to continue", async () => {
     await userEvent.click(await screen.findByRole("button", { name: /^Cancel$/i }));
   });
 }
 
-export function whenISearchForAQuestionnaire(when: DefineStepFunction): void {
+export function whenSearchForQuestionnaire(when: DefineStepFunction): void {
   when(/I enter the '(.*)' in the search box/, async (questionnaire: string) => {
     if (questionnaire.length > 0) {
       await userEvent.type(
@@ -300,7 +300,7 @@ export function whenISearchForAQuestionnaire(when: DefineStepFunction): void {
   });
 }
 
-export function whenIDeployTheQuestionnaire(when: DefineStepFunction): void {
+export function whenDeployQuestionnaire(when: DefineStepFunction): void {
   when("I deploy the questionnaire", async () => {
     const isDeploymentOutcomeVisible = (): boolean => {
       return (
@@ -340,7 +340,7 @@ export function whenIDeployTheQuestionnaire(when: DefineStepFunction): void {
   });
 }
 
-export function whenIClickDeployNewQuestionnaire(when: DefineStepFunction): void {
+export function whenClickDeployNew(when: DefineStepFunction): void {
   when("I click deploy questionnaire", async () => {
     await act(async () => {
       await flushPromises();
@@ -353,7 +353,7 @@ export function whenIClickDeployNewQuestionnaire(when: DefineStepFunction): void
   });
 }
 
-export function whenIHaveSelectedADeployPackage(then: DefineStepFunction): void {
+export function whenSelectDeployPackage(then: DefineStepFunction): void {
   then(/I have selected a deploy package for '(.*)'/, async (questionnaire: string) => {
     const input = await screen.findByLabelText(
       /Select questionnaire package|Select survey package/i,
@@ -365,7 +365,7 @@ export function whenIHaveSelectedADeployPackage(then: DefineStepFunction): void 
   });
 }
 
-export function whenIChooseToDeployAnyway(when: DefineStepFunction): void {
+export function whenDeployAnyway(when: DefineStepFunction): void {
   when("I choose to deploy anyway", async () => {
     await userEvent.click(await screen.findByRole("button", { name: /^Deploy anyway$/i }));
 
@@ -375,7 +375,7 @@ export function whenIChooseToDeployAnyway(when: DefineStepFunction): void {
   });
 }
 
-export function whenIChooseToCancel(when: DefineStepFunction): void {
+export function whenChooseCancel(when: DefineStepFunction): void {
   when("I choose to cancel", async () => {
     await userEvent.click(await screen.findByRole("button", { name: /^Cancel$/i }));
 
@@ -385,7 +385,7 @@ export function whenIChooseToCancel(when: DefineStepFunction): void {
   });
 }
 
-export function whenIDeploy(when: DefineStepFunction): void {
+export function whenDeploy(when: DefineStepFunction): void {
   when("I deploy", async () => {
     await act(async () => {
       await flushPromises();
@@ -410,7 +410,7 @@ export function whenIDeploy(when: DefineStepFunction): void {
   });
 }
 
-export function whenISpecifyATotalmobileReleaseDateOf(when: DefineStepFunction): void {
+export function whenSpecifyTmReleaseDate(when: DefineStepFunction): void {
   when(/I specify the Totalmobile release date of '(.*)'/, async (toStartDate: string) => {
     await userEvent.click(screen.getByLabelText(/^Yes, let me specify a release date$/i));
 
@@ -423,7 +423,7 @@ export function whenISpecifyATotalmobileReleaseDateOf(when: DefineStepFunction):
   });
 }
 
-export function whenISelectToInstallWithNoTmReleaseDate(when: DefineStepFunction): void {
+export function whenSkipTmReleaseDate(when: DefineStepFunction): void {
   when("I select to not provide a Totalmobile release date", async () => {
     await userEvent.click(screen.getByLabelText(/^No release date$/i));
     await userEvent.click(screen.getByRole("button", { name: /Continue/i }));
@@ -433,7 +433,7 @@ export function whenISelectToInstallWithNoTmReleaseDate(when: DefineStepFunction
   });
 }
 
-export function whenISelectToChangeOrDeleteTotalmobileReleaseDate(when: DefineStepFunction): void {
+export function whenEditTmReleaseDate(when: DefineStepFunction): void {
   when("I select to change or delete the Totalmobile release date", async () => {
     await act(async () => {
       await flushPromises();

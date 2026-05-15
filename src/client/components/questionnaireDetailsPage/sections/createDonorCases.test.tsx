@@ -13,7 +13,7 @@ import flushPromises from "../../../test-utils/flushPromises";
 
 import { CreateDonorCases } from "./createDonorCases";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../../test-utils/authenticate.mock");

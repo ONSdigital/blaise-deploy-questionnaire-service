@@ -25,7 +25,7 @@ vi.mock("../../../api/logger", () => ({
   },
 }));
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("CAWI mode details", () => {
   afterEach(() => {

@@ -4,9 +4,9 @@ import MockAdapter from "axios-mock-adapter";
 import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
-import { givenTheQuestionnaireIsInstalled } from "../step_definitions/given";
-import { thenIAmPresentedWithAListOfDeployedQuestionnaires } from "../step_definitions/then";
-import { whenILoadTheHomepage } from "../step_definitions/when";
+import { givenQuestionnaireInstalled } from "../step_definitions/given";
+import { thenDeployedListShown } from "../step_definitions/then";
+import { whenLoadHomepage } from "../step_definitions/when";
 
 import { createScenario } from "./native_scenario";
 
@@ -21,9 +21,9 @@ vi.mock("blaise-login-react-client", async () => {
 MockAuthenticate.OverrideReturnValues(null, true);
 
 const questionnaireList: Questionnaire[] = [];
-const mocker = new MockAdapter(axios);
+const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
-describe("Feature: display_list_of_questionnaires", () => {
+describe("Feature: list_deployed_questionnaires", () => {
   const Scenario = createScenario();
 
   afterEach(() => {
@@ -34,11 +34,9 @@ describe("Feature: display_list_of_questionnaires", () => {
     mocker.restore();
   });
 
-  Scenario("List all questionnaires in Blaise", ({ Given, When, Then }) => {
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    whenILoadTheHomepage(When);
-    thenIAmPresentedWithAListOfDeployedQuestionnaires(Then);
+  Scenario("List deployed questionnaires", ({ Given, When, Then }) => {
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    whenLoadHomepage(When);
+    thenDeployedListShown(Then);
   });
 });

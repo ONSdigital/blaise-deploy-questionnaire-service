@@ -80,6 +80,7 @@ exports[`Audit Logs page > view Audit Logs page matches Snapshot 1`] = `
                   >
                     <td
                       class="ons-table__cell "
+                      style="white-space: nowrap;"
                     >
                       19/02/2021 12:46:29
                     </td>
@@ -177,6 +178,7 @@ exports[`Audit Logs page > view Audit Logs page matches Snapshot 1`] = `
                 >
                   <td
                     class="ons-table__cell "
+                    style="white-space: nowrap;"
                   >
                     19/02/2021 12:46:29
                   </td>

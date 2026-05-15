@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 
 import { getAllQuestionnairesInBucket, initialiseUpload, validateUploadIsComplete } from "./upload";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 vi.mock("../api/logger", () => ({
   clientLogger: {

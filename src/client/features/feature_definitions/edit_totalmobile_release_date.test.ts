@@ -4,25 +4,25 @@ import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
-  givenTheQuestionnaireHasATotalmobileReleaseDate,
-  givenTheQuestionnaireHasNoTotalmobileReleaseDate,
-  givenTheQuestionnaireIsInstalled,
+  givenQuestionnaireHasTmReleaseDate,
+  givenQuestionnaireHasNoTmReleaseDate,
+  givenQuestionnaireInstalled,
 } from "../step_definitions/given";
 import {
-  thenICanViewTheTotalmobileReleaseDateIsSetTo,
-  thenIHaveTheOptionToAddATotalmobileReleaseDate,
-  thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate,
-  thenTheTotalmobileReleaseDateIsDeleted,
-  thenTheTotalmobileReleaseDateIsStored,
+  thenTmReleaseDateShown,
+  thenAddTmReleaseDateOption,
+  thenChangeOrDeleteTmReleaseDateOption,
+  thenTmReleaseDateDeleted,
+  thenTmReleaseDateStored,
 } from "../step_definitions/then";
 import {
-  whenIDeleteTheTotalmobileReleaseDate,
-  whenIHaveSelectedToAddATotalmobileReleaseDate,
-  whenILoadTheHomepage,
-  whenISelectTheContinueButton,
-  whenISelectTheQuestionnaire,
-  whenISelectToChangeOrDeleteTotalmobileReleaseDate,
-  whenISpecifyATotalmobileReleaseDateOf,
+  whenDeleteTmReleaseDate,
+  whenAddTmReleaseDate,
+  whenLoadHomepage,
+  whenClickContinue,
+  whenSelectQuestionnaire,
+  whenEditTmReleaseDate,
+  whenSpecifyTmReleaseDate,
 } from "../step_definitions/when";
 
 import { createScenario } from "./native_scenario";
@@ -38,7 +38,7 @@ vi.mock("blaise-login-react-client", async () => {
 MockAuthenticate.OverrideReturnValues(null, true);
 
 const questionnaireList: Questionnaire[] = [];
-const mocker = new MockAdapter(axios);
+const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: edit_totalmobile_release_date", () => {
   const Scenario = createScenario();
@@ -52,80 +52,68 @@ describe("Feature: edit_totalmobile_release_date", () => {
   });
 
   Scenario("View Totalmobile release date if specified", ({ Given, When, Then }) => {
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    givenTheQuestionnaireHasATotalmobileReleaseDate(Given, mocker);
-
-    whenILoadTheHomepage(When);
-    whenISelectTheQuestionnaire(When);
-
-    thenICanViewTheTotalmobileReleaseDateIsSetTo(Then);
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireHasTmReleaseDate(Given, mocker);
+    whenLoadHomepage(When);
+    whenSelectQuestionnaire(When);
+    thenTmReleaseDateShown(Then);
   });
 
   Scenario("Change Totalmobile release date if specified", ({ Given, When, Then }) => {
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    givenTheQuestionnaireHasATotalmobileReleaseDate(Given, mocker);
-
-    whenILoadTheHomepage(When);
-    whenISelectTheQuestionnaire(When);
-
-    thenIHaveTheOptionToChangeOrDeleteTheTotalmobileReleaseDate(Then);
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireHasTmReleaseDate(Given, mocker);
+    whenLoadHomepage(When);
+    whenSelectQuestionnaire(When);
+    thenChangeOrDeleteTmReleaseDateOption(Then);
   });
 
   Scenario("Add Totalmobile release date if not previously specified", ({ Given, When, Then }) => {
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    givenTheQuestionnaireHasNoTotalmobileReleaseDate(Given, mocker);
-
-    whenILoadTheHomepage(When);
-    whenISelectTheQuestionnaire(When);
-
-    thenIHaveTheOptionToAddATotalmobileReleaseDate(Then);
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireHasNoTmReleaseDate(Given, mocker);
+    whenLoadHomepage(When);
+    whenSelectQuestionnaire(When);
+    thenAddTmReleaseDateOption(Then);
   });
 
   Scenario(
     "Change an existing Totalmobile release date for a deployed questionnaire",
     ({ Given, When, Then }) => {
-      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-      givenTheQuestionnaireHasATotalmobileReleaseDate(Given, mocker);
-
-      whenILoadTheHomepage(When);
-      whenISelectTheQuestionnaire(When);
-      whenISelectToChangeOrDeleteTotalmobileReleaseDate(When);
-      whenISpecifyATotalmobileReleaseDateOf(When);
-      whenISelectTheContinueButton(When);
-
-      thenTheTotalmobileReleaseDateIsStored(Then, mocker);
+      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+      givenQuestionnaireHasTmReleaseDate(Given, mocker);
+      whenLoadHomepage(When);
+      whenSelectQuestionnaire(When);
+      whenEditTmReleaseDate(When);
+      whenSpecifyTmReleaseDate(When);
+      whenClickContinue(When);
+      thenTmReleaseDateStored(Then, mocker);
     },
   );
 
   Scenario(
     "Delete a Totalmobile release date from a deployed questionnaire",
     ({ Given, When, Then }) => {
-      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-      givenTheQuestionnaireHasATotalmobileReleaseDate(Given, mocker);
-
-      whenILoadTheHomepage(When);
-      whenISelectTheQuestionnaire(When);
-      whenISelectToChangeOrDeleteTotalmobileReleaseDate(When);
-      whenIDeleteTheTotalmobileReleaseDate(When);
-      whenISelectTheContinueButton(When);
-
-      thenTheTotalmobileReleaseDateIsDeleted(Then, mocker);
+      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+      givenQuestionnaireHasTmReleaseDate(Given, mocker);
+      whenLoadHomepage(When);
+      whenSelectQuestionnaire(When);
+      whenEditTmReleaseDate(When);
+      whenDeleteTmReleaseDate(When);
+      whenClickContinue(When);
+      thenTmReleaseDateDeleted(Then, mocker);
     },
   );
 
   Scenario(
     "Add a Totalmobile release date to a deployed questionnaire",
     ({ Given, When, Then }) => {
-      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-      givenTheQuestionnaireHasNoTotalmobileReleaseDate(Given, mocker);
-
-      whenILoadTheHomepage(When);
-      whenISelectTheQuestionnaire(When);
-      whenIHaveSelectedToAddATotalmobileReleaseDate(When);
-      whenISpecifyATotalmobileReleaseDateOf(When);
-      whenISelectTheContinueButton(When);
-
-      thenTheTotalmobileReleaseDateIsStored(Then, mocker);
+      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+      givenQuestionnaireHasNoTmReleaseDate(Given, mocker);
+      whenLoadHomepage(When);
+      whenSelectQuestionnaire(When);
+      whenAddTmReleaseDate(When);
+      whenSpecifyTmReleaseDate(When);
+      whenClickContinue(When);
+      thenTmReleaseDateStored(Then, mocker);
     },
   );
 });

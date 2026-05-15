@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 
 import { deleteToStartDate, getToStartDate, setToStartDate } from "./toStartDate";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Function setToStartDate(questionnaireName: string, toStartDate: string) ", () => {
   afterEach(() => {

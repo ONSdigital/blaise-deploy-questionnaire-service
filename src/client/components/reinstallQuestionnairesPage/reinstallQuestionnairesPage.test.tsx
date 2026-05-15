@@ -12,7 +12,7 @@ import ReinstallQuestionnaires from "./reinstallQuestionnairesPage";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 const questionnaireList: Questionnaire[] = [
   {

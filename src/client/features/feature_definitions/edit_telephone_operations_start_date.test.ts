@@ -4,25 +4,25 @@ import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
-  givenTheQuestionnaireHasAToStartDate,
-  givenTheQuestionnaireHasNoToStartDate,
-  givenTheQuestionnaireIsInstalled,
+  givenQuestionnaireHasToStartDate,
+  givenQuestionnaireHasNoToStartDate,
+  givenQuestionnaireInstalled,
 } from "../step_definitions/given";
 import {
-  thenICanViewTheToStartDateIsSetTo,
-  thenIHaveTheOptionToAddAToStartDate,
-  thenIHaveTheOptionToChangeOrDeleteTheToStartDate,
-  thenTheToStartDateIsDeleted,
-  thenTheToStartDateIsStored,
+  thenToStartDateShown,
+  thenAddToStartDateOption,
+  thenChangeOrDeleteToStartDateOption,
+  thenToStartDateDeleted,
+  thenToStartDateStored,
 } from "../step_definitions/then";
 import {
-  whenIDeleteTheToStartDate,
-  whenIHaveSelectedToAddAToStartDate,
-  whenILoadTheHomepage,
-  whenISelectTheContinueButton,
-  whenISelectTheQuestionnaire,
-  whenISelectToChangeOrDeleteToStartDate,
-  whenISpecifyAToStartDateOf,
+  whenDeleteToStartDate,
+  whenAddToStartDate,
+  whenLoadHomepage,
+  whenClickContinue,
+  whenSelectQuestionnaire,
+  whenEditToStartDate,
+  whenSpecifyToStartDate,
 } from "../step_definitions/when";
 
 import { createScenario } from "./native_scenario";
@@ -38,7 +38,7 @@ vi.mock("blaise-login-react-client", async () => {
 MockAuthenticate.OverrideReturnValues(null, true);
 
 const questionnaireList: Questionnaire[] = [];
-const mocker = new MockAdapter(axios);
+const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: edit_telephone_operations_start_date", () => {
   const Scenario = createScenario();
@@ -52,74 +52,62 @@ describe("Feature: edit_telephone_operations_start_date", () => {
   });
 
   Scenario("View Telephone Operations start date if specified", ({ Given, When, Then }) => {
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    givenTheQuestionnaireHasAToStartDate(Given, mocker);
-
-    whenILoadTheHomepage(When);
-    whenISelectTheQuestionnaire(When);
-
-    thenICanViewTheToStartDateIsSetTo(Then);
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireHasToStartDate(Given, mocker);
+    whenLoadHomepage(When);
+    whenSelectQuestionnaire(When);
+    thenToStartDateShown(Then);
   });
 
   Scenario("Change Telephone Operations start date if specified", ({ Given, When, Then }) => {
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    givenTheQuestionnaireHasAToStartDate(Given, mocker);
-
-    whenILoadTheHomepage(When);
-    whenISelectTheQuestionnaire(When);
-
-    thenIHaveTheOptionToChangeOrDeleteTheToStartDate(Then);
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireHasToStartDate(Given, mocker);
+    whenLoadHomepage(When);
+    whenSelectQuestionnaire(When);
+    thenChangeOrDeleteToStartDateOption(Then);
   });
 
   Scenario("Add Telephone Operations start date if not previously specified", ({ Given, When, Then }) => {
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    givenTheQuestionnaireHasNoToStartDate(Given, mocker);
-
-    whenILoadTheHomepage(When);
-    whenISelectTheQuestionnaire(When);
-
-    thenIHaveTheOptionToAddAToStartDate(Then);
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireHasNoToStartDate(Given, mocker);
+    whenLoadHomepage(When);
+    whenSelectQuestionnaire(When);
+    thenAddToStartDateOption(Then);
   });
 
   Scenario(
     "Change an existing Telephone Operations start date for a deployed questionnaire",
     ({ Given, When, Then }) => {
-      givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-      givenTheQuestionnaireHasAToStartDate(Given, mocker);
-
-      whenILoadTheHomepage(When);
-      whenISelectTheQuestionnaire(When);
-      whenISelectToChangeOrDeleteToStartDate(When);
-      whenISpecifyAToStartDateOf(When);
-      whenISelectTheContinueButton(When);
-
-      thenTheToStartDateIsStored(Then, mocker);
+      givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+      givenQuestionnaireHasToStartDate(Given, mocker);
+      whenLoadHomepage(When);
+      whenSelectQuestionnaire(When);
+      whenEditToStartDate(When);
+      whenSpecifyToStartDate(When);
+      whenClickContinue(When);
+      thenToStartDateStored(Then, mocker);
     },
   );
 
   Scenario("Delete a Telephone Operations start date from a deployed questionnaire", ({ Given, When, Then }) => {
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    givenTheQuestionnaireHasAToStartDate(Given, mocker);
-
-    whenILoadTheHomepage(When);
-    whenISelectTheQuestionnaire(When);
-    whenISelectToChangeOrDeleteToStartDate(When);
-    whenIDeleteTheToStartDate(When);
-    whenISelectTheContinueButton(When);
-
-    thenTheToStartDateIsDeleted(Then, mocker);
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireHasToStartDate(Given, mocker);
+    whenLoadHomepage(When);
+    whenSelectQuestionnaire(When);
+    whenEditToStartDate(When);
+    whenDeleteToStartDate(When);
+    whenClickContinue(When);
+    thenToStartDateDeleted(Then, mocker);
   });
 
   Scenario("Add a Telephone Operations start date to a deployed questionnaire", ({ Given, When, Then }) => {
-    givenTheQuestionnaireIsInstalled(Given, questionnaireList, mocker);
-    givenTheQuestionnaireHasNoToStartDate(Given, mocker);
-
-    whenILoadTheHomepage(When);
-    whenISelectTheQuestionnaire(When);
-    whenIHaveSelectedToAddAToStartDate(When);
-    whenISpecifyAToStartDateOf(When);
-    whenISelectTheContinueButton(When);
-
-    thenTheToStartDateIsStored(Then, mocker);
+    givenQuestionnaireInstalled(Given, questionnaireList, mocker);
+    givenQuestionnaireHasNoToStartDate(Given, mocker);
+    whenLoadHomepage(When);
+    whenSelectQuestionnaire(When);
+    whenAddToStartDate(When);
+    whenSpecifyToStartDate(When);
+    whenClickContinue(When);
+    thenToStartDateStored(Then, mocker);
   });
 });

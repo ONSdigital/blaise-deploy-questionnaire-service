@@ -17,7 +17,7 @@ import {
   surveyIsActive,
 } from "./questionnaires";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 afterAll(() => {
   mock.restore();

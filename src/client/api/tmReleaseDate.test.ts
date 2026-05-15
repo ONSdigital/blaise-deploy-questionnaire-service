@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 
 import { deleteTmReleaseDate, getTmReleaseDate, setTmReleaseDate } from "./tmReleaseDate";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Function setTmReleaseDate(questionnaireName: string, tmReleaseDate: string) ", () => {
   afterEach(() => {

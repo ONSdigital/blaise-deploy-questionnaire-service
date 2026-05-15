@@ -10,7 +10,7 @@ import { createWrapper } from "../../../test-utils/renderWithQueryClient";
 import { TmReleaseDate } from "./tmReleaseDate";
 import "@testing-library/jest-dom";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Totalmobile details", () => {
   afterEach(() => {

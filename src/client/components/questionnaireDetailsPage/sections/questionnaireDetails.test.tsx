@@ -8,7 +8,7 @@ import flushPromises from "../../../test-utils/flushPromises";
 
 import { QuestionnaireDetails } from "./questionnaireDetails";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Questionnaire details happy path", () => {
   beforeEach(() => {

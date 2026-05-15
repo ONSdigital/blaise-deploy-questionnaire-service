@@ -10,7 +10,7 @@ import { DeleteConfirmation } from "./deleteConfirmation";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
-const mockHttp = new MockAdapter(axios);
+const mockHttp = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("DeleteConfirmation", () => {
   const CATI_WARNING_MESSAGE = "Questionnaire has active survey days";

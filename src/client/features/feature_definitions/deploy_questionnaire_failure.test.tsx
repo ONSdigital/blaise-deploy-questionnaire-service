@@ -5,11 +5,11 @@ import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
-  givenAllInstallsWillFail,
-  givenIHaveSelectedTheQuestionnairePackageToDeploy,
+  givenAllInstallsFail,
+  givenPackageSelectedForDeploy,
 } from "../step_definitions/given";
-import { thenICanRetryAnInstall, thenIGetAnErrorBanner } from "../step_definitions/then";
-import { whenIConfirmMySelection, whenIDeploy } from "../step_definitions/when";
+import { thenCanRetryInstall, thenDeployErrorBanner } from "../step_definitions/then";
+import { whenConfirmSelection, whenDeploy } from "../step_definitions/when";
 
 import { createScenario } from "./native_scenario";
 
@@ -21,9 +21,9 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const mocker = new MockAdapter(axios);
+const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
-describe("Feature: failing_to_deploy_a_questionnaire", () => {
+describe("Feature: deploy_questionnaire_failure", () => {
   const Scenario = createScenario();
 
   afterEach(() => {
@@ -35,23 +35,19 @@ describe("Feature: failing_to_deploy_a_questionnaire", () => {
   });
 
   Scenario("Deployment of selected file failure", ({ Given, When, Then }) => {
-    givenAllInstallsWillFail(Given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
-
-    whenIConfirmMySelection(When);
-    whenIDeploy(When);
-
-    thenIGetAnErrorBanner(Then);
+    givenAllInstallsFail(Given, mocker);
+    givenPackageSelectedForDeploy(Given);
+    whenConfirmSelection(When);
+    whenDeploy(When);
+    thenDeployErrorBanner(Then);
   });
 
   Scenario("Deploy selected file, retry following failure", ({ Given, When, Then }) => {
-    givenAllInstallsWillFail(Given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
-
-    whenIConfirmMySelection(When);
-    whenIDeploy(When);
-
-    thenIGetAnErrorBanner(Then);
-    thenICanRetryAnInstall(Then);
+    givenAllInstallsFail(Given, mocker);
+    givenPackageSelectedForDeploy(Given);
+    whenConfirmSelection(When);
+    whenDeploy(When);
+    thenDeployErrorBanner(Then);
+    thenCanRetryInstall(Then);
   });
 });

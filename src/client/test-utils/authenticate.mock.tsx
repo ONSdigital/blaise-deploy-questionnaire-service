@@ -32,6 +32,19 @@ class MockAuthManager {
   public cookieSettings = (): Record<string, string> => ({ path: "/" });
 }
 
+class MockAuthClientClass {
+  public loggedIn = async (): Promise<boolean> => mockAuthenticateState.loggedIn;
+
+  public logOut = (setLoggedIn: (v: boolean) => void): void => {
+    mockAuthenticateState.loggedIn = false;
+    setLoggedIn(false);
+  };
+
+  public authHeader = (): Record<string, string> => ({});
+
+  public getToken = (): string | null => null;
+}
+
 const defaultUser: User = {
   name: "Test User",
   role: "",
@@ -73,6 +86,8 @@ export function mockLoginReactClientModule() {
   return {
     Authenticate: renderMockAuthenticate,
     AuthManager: MockAuthManager,
+    AuthClient: MockAuthClientClass,
+    LoginForm: () => null,
   };
 }
 

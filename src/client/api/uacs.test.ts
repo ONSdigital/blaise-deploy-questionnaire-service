@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 
 import { generateUacs, getUacCount, getUacsByCaseId } from "./uacs";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Function getUacCount(questionnaireName: string) ", () => {
   const questionnaireName = "OPN2004A";

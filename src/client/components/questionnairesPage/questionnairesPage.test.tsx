@@ -12,7 +12,7 @@ import { createTestQueryClient } from "../../test-utils/renderWithQueryClient";
 
 import QuestionnairesPage from "./questionnairesPage";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 vi.mock("blaise-login-react-client", async () => {
   const { mockLoginReactClientModule } = await import("../../test-utils/authenticate.mock");

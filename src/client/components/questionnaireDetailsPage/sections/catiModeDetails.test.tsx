@@ -8,7 +8,7 @@ import { createWrapper } from "../../../test-utils/renderWithQueryClient";
 
 import { CatiModeDetails } from "./catiModeDetails";
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("CATI mode details", () => {
   afterEach(() => {

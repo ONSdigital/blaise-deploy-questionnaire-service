@@ -9,14 +9,12 @@ import {
   NotProductionWarning,
   Panel,
 } from "blaise-design-system-react-components";
-import { Authenticate } from "blaise-login-react-client";
-import { lazy, type ReactElement, type ReactNode, Suspense, useEffect, useState } from "react";
+import { AuthClient, LoginForm } from "blaise-login-react-client";
+import { lazy, type ReactElement, type ReactNode, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import QuestionnairesPage from "./components/questionnairesPage/questionnairesPage";
 import { isProduction } from "./utils/env";
-
-import type { User } from "blaise-api-node-client";
 
 const AuditPage = lazy(() => import("./components/auditPage/auditPage"));
 const CreateDonorCasesPage = lazy(
@@ -64,6 +62,16 @@ function createNavLink(id: string | undefined, label: string, endpoint: string):
   );
 }
 
+function NotFound(): ReactElement {
+  return (
+    <main id="main-content" className="ons-page__main ons-u-mt-l">
+      <h1>Page not found</h1>
+      <p>The page you're looking for doesn't exist.</p>
+      <Link to="/">Return to home</Link>
+    </main>
+  );
+}
+
 function AppRoutes({
   errored,
   setErrored,
@@ -73,7 +81,13 @@ function AppRoutes({
 }: AppRoutesProps): ReactElement {
   return (
     <DefaultErrorBoundary>
-      <Suspense fallback={<LoadingPanel />}>
+      <Suspense
+        fallback={
+          <main id="main-content" className="ons-page__main ons-u-mt-l">
+            <LoadingPanel />
+          </main>
+        }
+      >
         <Routes>
           <Route
             path="/"
@@ -131,6 +145,10 @@ function AppRoutes({
             path="/reinstall"
             element={<ReinstallQuestionnaires />}
           />
+          <Route
+            path="*"
+            element={<NotFound />}
+          />
         </Routes>
       </Suspense>
     </DefaultErrorBoundary>
@@ -141,6 +159,21 @@ function App(): ReactElement {
   const location = useLocation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const authClient = useMemo(() => new AuthClient(), []);
+  const [authState, setAuthState] = useState<"checking" | "unauthenticated" | "authenticated">("checking");
+
+  const handleSetLoggedIn = useCallback((loggedIn: boolean) => {
+    setAuthState(loggedIn ? "authenticated" : "unauthenticated");
+  }, []);
+
+  const handleLogOut = useCallback(() => {
+    authClient.logOut(handleSetLoggedIn);
+  }, [authClient, handleSetLoggedIn]);
+
+  useEffect(() => {
+    void authClient.loggedIn().then(handleSetLoggedIn);
+  }, [authClient, handleSetLoggedIn]);
 
   const [errored, setErrored] = useState(false);
   const [status, setStatus] = useState("");
@@ -171,49 +204,67 @@ function App(): ReactElement {
   }
 
   return (
-    <Authenticate title="Deploy Questionnaire Service">
-      {(_user: User, loggedIn: boolean, logOutFunction: () => void) => (
-        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-          <a
-            href="#main-content"
-            className="ons-skip-to-content ons-u-fs-r--b"
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <a
+        href="#main-content"
+        className="ons-skip-to-content ons-u-fs-r--b"
+      >
+        Skip to content
+      </a>
+      {!isProduction(window.location.hostname) && <NotProductionWarning />}
+      <Header
+        title="Deploy Questionnaire Service"
+        signOutButton={authState === "authenticated"}
+        noSave={true}
+        signOutFunction={handleLogOut}
+        navigationLinks={[
+          { id: "home-link", label: "Home", endpoint: "/" },
+          {
+            id: "deploy-questionnaire-link",
+            label: "Deploy questionnaire",
+            endpoint: "/deploy",
+          },
+          { id: "audit-logs-link", label: "View deployment history", endpoint: "/audit" },
+        ]}
+        currentLocation={location.pathname}
+        createNavLink={createNavLink}
+      />
+      <div
+        style={{ flexGrow: 1 }}
+        className="ons-page__container ons-container"
+      >
+        {authState === "checking" && (
+          <main
+            id="main-content"
+            className="ons-page__main ons-u-mt-l"
           >
-            Skip to content
-          </a>
-          {!isProduction(window.location.hostname) && <NotProductionWarning />}
-          <Header
-            title="Deploy Questionnaire Service"
-            signOutButton={loggedIn}
-            noSave={true}
-            signOutFunction={logOutFunction}
-            navigationLinks={[
-              { id: "home-link", label: "Home", endpoint: "/" },
-              {
-                id: "deploy-questionnaire-link",
-                label: "Deploy questionnaire",
-                endpoint: "/deploy",
-              },
-              { id: "audit-logs-link", label: "View deployment history", endpoint: "/audit" },
-            ]}
-            currentLocation={location.pathname}
-            createNavLink={createNavLink}
-          />
-          <div
-            style={{ flexGrow: 1 }}
-            className="ons-page__container ons-container"
+            <LoadingPanel />
+          </main>
+        )}
+        {authState === "unauthenticated" && (
+          <main
+            id="main-content"
+            className="ons-page__main ons-u-mt-l"
           >
-            <AppRoutes
-              errored={errored}
-              setErrored={setErrored}
-              status={visibleStatus}
-              onDeleteQuestionnaire={onDeleteQuestionnaire}
-              onCancelDeleteQuestionnaire={onCancelDeleteQuestionnaire}
+            <Panel status="info">Enter your Blaise username and password</Panel>
+            <LoginForm
+              authManager={authClient}
+              setLoggedIn={handleSetLoggedIn}
             />
-          </div>
-          <Footer />
-        </div>
-      )}
-    </Authenticate>
+          </main>
+        )}
+        {authState === "authenticated" && (
+          <AppRoutes
+            errored={errored}
+            setErrored={setErrored}
+            status={visibleStatus}
+            onDeleteQuestionnaire={onDeleteQuestionnaire}
+            onCancelDeleteQuestionnaire={onCancelDeleteQuestionnaire}
+          />
+        )}
+      </div>
+      <Footer />
+    </div>
   );
 }
 

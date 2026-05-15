@@ -5,22 +5,22 @@ import { afterAll, afterEach, describe, vi } from "vitest";
 
 import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import {
-  givenIHaveSelectedTheQuestionnairePackageToDeploy,
-  givenNoQuestionnairesAreInstalled,
+  givenPackageSelectedForDeploy,
+  givenNoQuestionnairesInstalled,
   givenToStartDateFails,
 } from "../step_definitions/given";
 import {
-  thenIAmPresentedWithAnOptionToSpecifyAToStartDate,
-  thenICanViewTheToStartDateIsSetTo,
-  thenIGetAnErrorBannerWithMessage,
-  thenTheSummaryPageHasNoToStartDate,
+  thenToStartDatePrompt,
+  thenToStartDateShown,
+  thenDeployErrorBannerWithMessage,
+  thenSummaryHasNoToStartDate,
 } from "../step_definitions/then";
 import {
-  whenIConfirmMySelection,
-  whenIDeployTheQuestionnaire,
-  whenISelectTheContinueButton,
-  whenISelectToInstallWithNoStartDate,
-  whenISpecifyAToStartDateOf,
+  whenConfirmSelection,
+  whenDeployQuestionnaire,
+  whenClickContinue,
+  whenSkipToStartDate,
+  whenSpecifyToStartDate,
 } from "../step_definitions/when";
 
 import { createScenario } from "./native_scenario";
@@ -33,7 +33,7 @@ vi.mock("blaise-login-react-client", async () => {
 
 MockAuthenticate.OverrideReturnValues(null, true);
 
-const mocker = new MockAdapter(axios);
+const mocker = new MockAdapter(axios, { onNoMatch: "throwException" });
 
 describe("Feature: set_telephone_operations_start_date", () => {
   const Scenario = createScenario();
@@ -47,45 +47,37 @@ describe("Feature: set_telephone_operations_start_date", () => {
   });
 
   Scenario("Present Telephone Operations start date option", ({ Given, When, Then }) => {
-    givenNoQuestionnairesAreInstalled(Given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
-
-    whenIConfirmMySelection(When);
-
-    thenIAmPresentedWithAnOptionToSpecifyAToStartDate(Then);
+    givenNoQuestionnairesInstalled(Given, mocker);
+    givenPackageSelectedForDeploy(Given);
+    whenConfirmSelection(When);
+    thenToStartDatePrompt(Then);
   });
 
   Scenario("Enter Telephone Operations start date", ({ Given, When, Then }) => {
-    givenNoQuestionnairesAreInstalled(Given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
-
-    whenIConfirmMySelection(When);
-    whenISpecifyAToStartDateOf(When);
-    whenISelectTheContinueButton(When);
-
-    thenICanViewTheToStartDateIsSetTo(Then);
+    givenNoQuestionnairesInstalled(Given, mocker);
+    givenPackageSelectedForDeploy(Given);
+    whenConfirmSelection(When);
+    whenSpecifyToStartDate(When);
+    whenClickContinue(When);
+    thenToStartDateShown(Then);
   });
 
   Scenario("Do not enter Telephone Operations start date", ({ Given, When, Then }) => {
-    givenNoQuestionnairesAreInstalled(Given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
-
-    whenIConfirmMySelection(When);
-    whenISelectToInstallWithNoStartDate(When);
-
-    thenTheSummaryPageHasNoToStartDate(Then);
+    givenNoQuestionnairesInstalled(Given, mocker);
+    givenPackageSelectedForDeploy(Given);
+    whenConfirmSelection(When);
+    whenSkipToStartDate(When);
+    thenSummaryHasNoToStartDate(Then);
   });
 
   Scenario("Setting the Telephone Operations start date fails during deployment", ({ Given, When, Then }) => {
-    givenNoQuestionnairesAreInstalled(Given, mocker);
+    givenNoQuestionnairesInstalled(Given, mocker);
     givenToStartDateFails(Given, mocker);
-    givenIHaveSelectedTheQuestionnairePackageToDeploy(Given);
-
-    whenIConfirmMySelection(When);
-    whenISpecifyAToStartDateOf(When);
-    whenISelectTheContinueButton(When);
-    whenIDeployTheQuestionnaire(When);
-
-    thenIGetAnErrorBannerWithMessage(Then);
+    givenPackageSelectedForDeploy(Given);
+    whenConfirmSelection(When);
+    whenSpecifyToStartDate(When);
+    whenClickContinue(When);
+    whenDeployQuestionnaire(When);
+    thenDeployErrorBannerWithMessage(Then);
   });
 });
