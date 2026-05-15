@@ -11,22 +11,31 @@ function ErroneousWarning({ questionnaireName }: Props): ReactElement {
 
   return (
     <>
-      <Panel status="error">
-        <h1>
-          Unable to delete questionnaire <em className="ons-highlight">{questionnaireName}</em>{" "}
-          because it is in a failed state.
-        </h1>
-        <p>An error has occurred with the questionnaire, in this state it cannot be deleted.</p>
-        <p>
-          You can <a href="https://ons.service-now.com/">report this issue</a> to Service Desk.
-        </p>
-      </Panel>
-      <br />
-      <Button
-        label="View questionnaires"
-        primary={true}
-        onClick={() => navigate("/")}
-      />
+      <div className="ons-u-mb-m">
+        <Panel status="error">
+          <h1>
+            Unable to delete questionnaire <em className="ons-highlight">{questionnaireName}</em>{" "}
+            because it is in a failed state.
+          </h1>
+          <p>An error has occurred with the questionnaire, in this state it cannot be deleted.</p>
+          <p>
+            You can <a href="https://ons.service-now.com/">report this issue</a> to Service Desk.
+          </p>
+        </Panel>
+      </div>
+      <div className="ons-btn-group ons-u-mt-m">
+        <Button
+          label="View questionnaires"
+          primary={true}
+          onClick={() => navigate("/")}
+        />
+      </div>
+        <Button
+          label="View questionnaires"
+          primary={true}
+          onClick={() => navigate("/")}
+        />
+      </div>
     </>
   );
 }

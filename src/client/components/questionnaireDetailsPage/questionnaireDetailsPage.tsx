@@ -176,19 +176,19 @@ function QuestionnaireDetailsPage(): ReactElement {
               <BlaiseNodeStates questionnaire={questionnaire} />
             </ErrorBoundary>
 
-            <br></br>
-
-            <Button
-              label={"Delete Questionnaire"}
-              primary={false}
-              aria-label={`Delete questionnaire ${questionnaire.name}`}
-              id="delete-questionnaire"
-              onClick={() =>
-                navigate(`/questionnaire/${questionnaire.name}/delete`, {
-                  state: { questionnaire, modes },
-                })
-              }
-            />
+            <div className="ons-btn-group ons-u-mt-m">
+              <Button
+                label={"Delete Questionnaire"}
+                primary={false}
+                aria-label={`Delete questionnaire ${questionnaire.name}`}
+                id="delete-questionnaire"
+                onClick={() =>
+                  navigate(`/questionnaire/${questionnaire.name}/delete`, {
+                    state: { questionnaire, modes },
+                  })
+                }
+              />
+            </div>
           </>
         )}
       </main>

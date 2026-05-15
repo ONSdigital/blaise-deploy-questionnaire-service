@@ -65,16 +65,18 @@ function Confirmation({ questionnaireName, role, onSuccess }: Props): ReactEleme
               Create <em className="ons-highlight">{role}</em> donor cases for{" "}
               <em className="ons-highlight">{questionnaireName}</em>?
             </h1>
-            <Button
-              label="Continue"
-              onClick={() => createDonorCases()}
-              primary
-            />
-            <Button
-              label="Cancel"
-              onClick={() => navigate(`/questionnaire/${questionnaireName}`)}
-              primary={false}
-            />
+            <div className="ons-btn-group ons-u-mt-m">
+              <Button
+                label="Continue"
+                onClick={() => createDonorCases()}
+                primary
+              />
+              <Button
+                label="Cancel"
+                onClick={() => navigate(`/questionnaire/${questionnaireName}`)}
+                primary={false}
+              />
+            </div>
           </>
         }
       </main>

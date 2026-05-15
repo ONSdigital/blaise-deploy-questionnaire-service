@@ -64,21 +64,30 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
       </h1>
 
       {modes.includes("CATI") && questionnaire.status?.toLowerCase() === "active" && active && (
-        <Panel status="error">Questionnaire has active survey days</Panel>
+        <div className="ons-u-mb-m">
+          <Panel status="error">Questionnaire has active survey days</Panel>
+        </div>
       )}
 
       {modes.includes("CAWI") && questionnaire.status?.toLowerCase() === "active" && (
-        <Panel status="error">Questionnaire is active for web collection</Panel>
+        <div className="ons-u-mb-m">
+          <Panel status="error">Questionnaire is active for web collection</Panel>
+        </div>
       )}
 
-      <Panel status="warn">
-        The questionnaire and all associated respondent data will be deleted
-      </Panel>
+      <div className="ons-u-mb-m">
+        <Panel status="warn">
+          The questionnaire and all associated respondent data will be deleted
+        </Panel>
+      </div>
 
-      {message !== "" && <Panel status="error">{message}</Panel>}
+      {message !== "" && (
+        <div className="ons-u-mb-m">
+          <Panel status="error">{message}</Panel>
+        </div>
+      )}
 
-      <form>
-        <br />
+      <div className="ons-btn-group ons-u-mt-m">
         <Button
           label="Delete"
           primary={true}
@@ -94,7 +103,7 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
             onClick={() => onCancel()}
           />
         )}
-      </form>
+      </div>
     </>
   );
 }

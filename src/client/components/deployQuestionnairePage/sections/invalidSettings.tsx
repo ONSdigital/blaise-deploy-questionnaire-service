@@ -24,15 +24,16 @@ function InvalidSettings({
         Questionnaire settings for <em className="ons-highlight">{questionnaireName}</em> do not
         match recommendations
       </h1>
-      <Panel status={"error"}>
-        <p>This questionnaire does not match the recommended settings.</p>
-        <p>
-          If this is expected, select <b>Deploy anyway</b>. If it is not expected, select{" "}
-          <b>Cancel</b> and start again.
-        </p>
-        <p>Please do not leave this page until you have selected an option.</p>
-      </Panel>
-      <br></br>
+      <div className="ons-u-mb-m">
+        <Panel status={"error"}>
+          <p>This questionnaire does not match the recommended settings.</p>
+          <p>
+            If this is expected, select <b>Deploy anyway</b>. If it is not expected, select{" "}
+            <b>Cancel</b> and start again.
+          </p>
+          <p>Please do not leave this page until you have selected an option.</p>
+        </Panel>
+      </div>
       <QuestionnaireSettings
         questionnaireSettings={questionnaireSettings}
         invalidSettings={invalidSettings}

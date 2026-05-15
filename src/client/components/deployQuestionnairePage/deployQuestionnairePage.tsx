@@ -151,17 +151,21 @@ function DeployPage(): ReactElement {
       case Step.LiveWarning:
         return (
           <>
-            <Panel status="warn">
-              <p>You cannot overwrite questionnaire that are currently live</p>
-            </Panel>
-            <Button
-              label="Accept and go to table of questionnaires"
-              primary={true}
-              onClick={() => {
-                void queryClient.invalidateQueries({ queryKey: ["questionnaires"] });
-                navigate("/");
-              }}
-            />
+            <div className="ons-u-mb-m">
+              <Panel status="warn">
+                <p>You cannot overwrite questionnaire that are currently live</p>
+              </Panel>
+            </div>
+            <div className="ons-btn-group ons-u-mt-m">
+              <Button
+                label="Accept and go to table of questionnaires"
+                primary={true}
+                onClick={() => {
+                  void queryClient.invalidateQueries({ queryKey: ["questionnaires"] });
+                  navigate("/");
+                }}
+              />
+            </div>
           </>
         );
       case Step.ConfirmOverride:

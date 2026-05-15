@@ -98,11 +98,7 @@ function fixUrl(url: string): string {
     return url;
   }
 
-  if (url.startsWith("localhost") || url.startsWith("127.0.0.1")) {
-    return `http://${url}`;
-  }
-
-  return `https://${url}`;
+  return `http://${url}`;
 }
 
 function requireEnv(name: string, value: string | undefined): string | undefined {

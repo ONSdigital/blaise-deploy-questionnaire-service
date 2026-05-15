@@ -70,16 +70,18 @@ function Confirmation({ questionnaireName, user, onSuccess }: Props): ReactEleme
               Reissue a new donor case for <em className="ons-highlight">{questionnaireName}</em> on
               behalf of <em className="ons-highlight">{user}</em>?
             </h1>
-            <Button
-              label="Continue"
-              onClick={() => reissueNewDonorCase()}
-              primary
-            />
-            <Button
-              label="Cancel"
-              onClick={() => navigate(`/questionnaire/${questionnaireName}`)}
-              primary={false}
-            />
+            <div className="ons-btn-group ons-u-mt-m">
+              <Button
+                label="Continue"
+                onClick={() => reissueNewDonorCase()}
+                primary
+              />
+              <Button
+                label="Cancel"
+                onClick={() => navigate(`/questionnaire/${questionnaireName}`)}
+                primary={false}
+              />
+            </div>
           </>
         }
       </main>
