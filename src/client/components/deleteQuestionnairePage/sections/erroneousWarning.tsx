@@ -30,12 +30,6 @@ function ErroneousWarning({ questionnaireName }: Props): ReactElement {
           onClick={() => navigate("/")}
         />
       </div>
-        <Button
-          label="View questionnaires"
-          primary={true}
-          onClick={() => navigate("/")}
-        />
-      </div>
     </>
   );
 }
