@@ -1,5 +1,5 @@
 import { Panel } from "blaise-design-system-react-components";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { Link } from "react-router-dom";
 
 import type { Questionnaire } from "blaise-api-node-client";
@@ -30,7 +30,7 @@ function CreateDonorCases({ questionnaire }: Props): ReactElement {
             If you add new interviewers who do not yet have donor cases, click <b>
               Create cases
             </b>{" "}
-            again. Only interviewers without an existing case will receive one.
+            again. Only interviewers without an existing donor case will receive one.
             <br />
           </Panel>
           <dl className="ons-summary__items">

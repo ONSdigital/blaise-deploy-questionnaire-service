@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button, LoadingPanel, Panel } from "blaise-design-system-react-components";
-import React, { type ReactElement, useState } from "react";
+import { type ReactElement, useState } from "react";
 
 import { deleteQuestionnaireAndRelatedDates } from "../../../api/processes";
 import { surveyIsActive } from "../../../api/questionnaires";
@@ -53,7 +53,7 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
   }
 
   if (activeError) {
-    return <Panel status="error">Could not get warning details, please try again</Panel>;
+    return <Panel status="error">Failed to get delete questionnaire warning details</Panel>;
   }
 
   return (
@@ -65,7 +65,7 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
 
       {modes.includes("CATI") && questionnaire.status?.toLowerCase() === "active" && active && (
         <div className="ons-u-mb-m">
-          <Panel status="error">Questionnaire has active survey days</Panel>
+          <Panel status="warn">Questionnaire has active survey days</Panel>
         </div>
       )}
 
@@ -76,9 +76,7 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
       )}
 
       <div className="ons-u-mb-m">
-        <Panel status="warn">
-          The questionnaire and all associated respondent data will be deleted
-        </Panel>
+        <Panel status="warn">All questionnaire data will be deleted</Panel>
       </div>
 
       {message !== "" && (

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, LoadingPanel, Panel } from "blaise-design-system-react-components";
-import React, { type ReactElement, useRef, useState } from "react";
+import { type ReactElement, useRef, useState } from "react";
 
 import { generateUacsAndCsvFileData } from "../../../api/processes";
 import { getQuestionnaireModes } from "../../../api/questionnaires";
@@ -40,7 +40,7 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
     queryFn: async () => {
       const count = await getUacCount(questionnaire.name);
 
-      return count ?? 0;
+      return count;
     },
     enabled: isCawiQuestionnaire,
   });
@@ -106,13 +106,13 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
   }
 
   if (modesLoading) {
-    return <LoadingPanel message="Getting web mode information" />;
+    return <LoadingPanel message="Getting CAWI mode details" />;
   }
 
   if (modesError) {
     return (
       <Panel status={"error"}>
-        <p>Failed to get Web mode details</p>
+        <p>Failed to get CAWI mode details</p>
       </Panel>
     );
   }
@@ -120,10 +120,7 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
   if (uacCountError) {
     return (
       <Panel status={"error"}>
-        <p>
-          Failed to connect to the Unique Access Codes service. Please check the service is running
-          and try again.
-        </p>
+        <p>Failed to get Unique Access Code details</p>
       </Panel>
     );
   }

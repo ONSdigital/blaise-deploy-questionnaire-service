@@ -66,7 +66,7 @@ describe("ReissueNewDonorCasePage", () => {
     await waitFor(() => {
       expect(mockedAxios.post).toHaveBeenCalledWith(
         "/api/cloudFunction/reissueNewDonorCase",
-        { questionnaire_name: "IPS0001A", role: "test user", user: "test user" },
+        { questionnaire_name: "IPS0001A", user: "test user" },
         expect.any(Object),
       );
       expect(getQuestionnaire).toHaveBeenCalledWith("IPS0001A");
@@ -75,7 +75,109 @@ describe("ReissueNewDonorCasePage", () => {
         state: {
           questionnaire: expect.objectContaining({ name: "IPS0001A", status: "Active" }),
           responseMessage: "Reissued",
-          role: "test user",
+          user: "test user",
+          section: "reissueNewDonorCase",
+          statusCode: 201,
+        },
+      });
+    });
+  });
+
+  it("still navigates back with a null questionnaire when the lookup fails after a successful reissue", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: "Reissued", status: 201 } as never);
+    vi.mocked(getQuestionnaire).mockRejectedValueOnce(new Error("lookup failed"));
+
+    renderWithQueryClient(
+      <MemoryRouter initialEntries={["/questionnaire/IPS0001A/reissue-new-donor-case/test%20user"]}>
+        <Routes>
+          <Route
+            path="/questionnaire/:questionnaireName/reissue-new-donor-case/:user"
+            element={<ReissueNewDonorCasePage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/IPS0001A", {
+        replace: true,
+        state: {
+          questionnaire: null,
+          responseMessage: "Reissued",
+          user: "test user",
+          section: "reissueNewDonorCase",
+          statusCode: 201,
+        },
+      });
+    });
+  });
+
+  it("navigates back with a null questionnaire when the lookup returns null", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: "Reissued", status: 201 } as never);
+    vi.mocked(getQuestionnaire).mockResolvedValueOnce(null as never);
+
+    renderWithQueryClient(
+      <MemoryRouter initialEntries={["/questionnaire/IPS0001A/reissue-new-donor-case/test%20user"]}>
+        <Routes>
+          <Route
+            path="/questionnaire/:questionnaireName/reissue-new-donor-case/:user"
+            element={<ReissueNewDonorCasePage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/IPS0001A", {
+        replace: true,
+        state: {
+          questionnaire: null,
+          responseMessage: "Reissued",
+          user: "test user",
+          section: "reissueNewDonorCase",
+          statusCode: 201,
+        },
+      });
+    });
+  });
+
+  it("reuses the questionnaire from navigation state without re-fetching it", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: "Reissued", status: 201 } as never);
+
+    renderWithQueryClient(
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: "/questionnaire/IPS0001A/reissue-new-donor-case/test%20user",
+            state: {
+              questionnaire: { name: "IPS0001A", status: "Active" },
+            },
+          },
+        ]}
+      >
+        <Routes>
+          <Route
+            path="/questionnaire/:questionnaireName/reissue-new-donor-case/:user"
+            element={<ReissueNewDonorCasePage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+
+    await waitFor(() => {
+      expect(getQuestionnaire).not.toHaveBeenCalled();
+      expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/IPS0001A", {
+        replace: true,
+        state: {
+          questionnaire: expect.objectContaining({ name: "IPS0001A", status: "Active" }),
+          responseMessage: "Reissued",
+          user: "test user",
           section: "reissueNewDonorCase",
           statusCode: 201,
         },

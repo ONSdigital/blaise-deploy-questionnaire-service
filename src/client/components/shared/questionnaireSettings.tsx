@@ -1,5 +1,5 @@
 import { LoadingPanel, Panel } from "blaise-design-system-react-components";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 
 import { formatText } from "../../utils/textFormatting";
 

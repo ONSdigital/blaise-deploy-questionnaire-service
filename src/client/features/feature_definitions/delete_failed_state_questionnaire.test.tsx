@@ -7,7 +7,7 @@ import { MockAuthenticate } from "../../test-utils/authenticate.mock";
 import { createScenario } from "../feature_scenario_runner";
 import {
   givenQuestionnaireInstalled,
-  givenQuestionnaireIsErroneous,
+  givenQuestionnaireIsInFailedState,
 } from "../step_definitions/given";
 import {
   thenCannotDeleteQuestionnaire,
@@ -29,7 +29,7 @@ MockAuthenticate.OverrideReturnValues(null, true);
 const questionnaireList: Questionnaire[] = [];
 const mocker = new Mockadapter(axios, { onNoMatch: "throwException" });
 
-describe("Feature: delete_erroneous_questionnaire", () => {
+describe("Feature: delete_failed_state_questionnaire", () => {
   const Scenario = createScenario({ questionnaireName: "OPN2004A" });
 
   beforeEach(() => {
@@ -44,9 +44,9 @@ describe("Feature: delete_erroneous_questionnaire", () => {
     mocker.restore();
   });
 
-  Scenario("Delete erroneous questionnaire", ({ Given, When, Then }) => {
+  Scenario("Delete questionnaire in failed state", ({ Given, When, Then }) => {
     givenQuestionnaireInstalled(Given, questionnaireList, mocker);
-    givenQuestionnaireIsErroneous(Given, questionnaireList);
+    givenQuestionnaireIsInFailedState(Given, questionnaireList);
     whenGoToDetailsPage(When);
     whenClickDelete(When);
     thenUnableToDeleteWarning(Then);

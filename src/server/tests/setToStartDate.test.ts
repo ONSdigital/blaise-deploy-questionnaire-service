@@ -44,6 +44,15 @@ vi.mock("blaise-login-react-server", async () => {
 
   return mockLoginReactServerModule();
 });
+vi.mock("blaise-api-node-client", () => ({
+  __esModule: true,
+  BlaiseApiClient: class MockBlaiseApiClient {
+    constructor(_url?: string) {}
+  },
+  default: class MockBlaiseApiClient {
+    constructor(_url?: string) {}
+  },
+}));
 
 import { getConfigFromEnv } from "../config.js";
 import { newServer } from "../server.js";
@@ -64,6 +73,8 @@ vi.mock("blaise-iap-node-provider", () => ({
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 const jsonHeaders = { "content-type": "application/json" };
+
+vi.spyOn(axios, "create").mockReturnValue(axios);
 
 const config = getConfigFromEnv();
 const request = supertest(newServer(config));

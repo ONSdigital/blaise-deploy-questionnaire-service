@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { getQuestionnaire } from "../../api/questionnaires";
@@ -57,7 +57,7 @@ function ReissueNewDonorCasePage(): ReactElement {
           questionnaire,
           responseMessage: message,
           statusCode: code,
-          role: user,
+          user,
         },
         replace: true,
       });

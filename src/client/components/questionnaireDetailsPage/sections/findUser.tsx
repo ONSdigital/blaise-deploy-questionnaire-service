@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { LoadingPanel } from "blaise-design-system-react-components";
-import React, { type ReactElement, useMemo, useState } from "react";
+import { type ReactElement, useMemo, useState } from "react";
 
 import axiosConfig from "../../../api/axiosConfig";
 import { clientLogger } from "../../../utils/logger";
@@ -72,7 +72,7 @@ function FindUser({ label = "Search user", roles, onItemSelected, onError }: Pro
   }
 
   if (loading) {
-    return <LoadingPanel message="Getting list of users" />;
+    return <LoadingPanel message="Getting users" />;
   }
 
   return (

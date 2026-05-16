@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button, ErrorBoundary, LoadingPanel, Panel } from "blaise-design-system-react-components";
-import React, { type ReactElement, useMemo } from "react";
+import { type ReactElement, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../api/questionnaires";
@@ -26,6 +26,7 @@ interface State {
   responseMessage?: string;
   statusCode?: number;
   role?: string;
+  user?: string;
 }
 
 function QuestionnaireDetailsPage(): ReactElement {
@@ -33,11 +34,12 @@ function QuestionnaireDetailsPage(): ReactElement {
   const navigate = useNavigate();
   const initialState = useMemo(() => location || { questionnaire: null }, [location]);
   const { questionnaireName } = useParams();
-  const { section, responseMessage, statusCode, role } = location || {
+  const { section, responseMessage, statusCode, role, user } = location || {
     section: "",
     responseMessage: "",
     statusCode: 0,
     role: "",
+    user: "",
   };
 
   const {
@@ -116,7 +118,7 @@ function QuestionnaireDetailsPage(): ReactElement {
       >
         {isLoading && <LoadingPanel />}
         {loaded && (errored || !questionnaire) && (
-          <Panel status="error">Failed to get questionnaire details, please try again</Panel>
+          <Panel status="error">Failed to get questionnaire details</Panel>
         )}
         {loaded && !errored && questionnaire && (
           <>
@@ -128,11 +130,11 @@ function QuestionnaireDetailsPage(): ReactElement {
                 role={role}
               />
             )}
-            {section === "reissueNewDonorCase" && responseMessage && statusCode && role && (
+            {section === "reissueNewDonorCase" && responseMessage && statusCode && user && (
               <ReissueNewDonorCaseSummary
                 responseMessage={responseMessage}
                 statusCode={statusCode}
-                role={role}
+                user={user}
               />
             )}
             <QuestionnaireDetails
@@ -145,40 +147,40 @@ function QuestionnaireDetailsPage(): ReactElement {
             {questionnaire.name.includes("IPS") && (
               <ReissueNewDonorCase questionnaire={questionnaire} />
             )}
-            <ErrorBoundary errorMessageText="Failed to load Telephone Operations details">
+            <ErrorBoundary errorMessageText="Failed to get CATI mode details">
               <CatiModeDetails
                 questionnaireName={questionnaire.name}
                 modes={modes}
               />
             </ErrorBoundary>
-            <ErrorBoundary errorMessageText="Failed to load CAWI mode details">
+            <ErrorBoundary errorMessageText="Failed to get CAWI mode details">
               <CawiModeDetails
                 questionnaire={questionnaire}
                 modes={modes}
               />
             </ErrorBoundary>
-            <ErrorBoundary errorMessageText="Failed to load Totalmobile details">
+            <ErrorBoundary errorMessageText="Failed to get Totalmobile details">
               <TmReleaseDate questionnaireName={questionnaire.name} />
             </ErrorBoundary>
-            <ErrorBoundary errorMessageText="Failed to load questionnaire settings">
+            <ErrorBoundary errorMessageText="Failed to get questionnaire settings">
               <QuestionnaireSettings
                 questionnaire={questionnaire}
                 modes={modes}
               />
             </ErrorBoundary>
-            <ErrorBoundary errorMessageText="Failed to load survey days calendar">
+            <ErrorBoundary errorMessageText="Failed to get survey days">
               <YearCalendar
                 modes={modes}
                 surveyDays={surveyDays}
               />
             </ErrorBoundary>
-            <ErrorBoundary errorMessageText="Failed to load Blaise node information">
+            <ErrorBoundary errorMessageText="Failed to get Blaise node details">
               <BlaiseNodeStates questionnaire={questionnaire} />
             </ErrorBoundary>
 
             <div className="ons-btn-group ons-u-mt-m">
               <Button
-                label={"Delete Questionnaire"}
+                label={"Delete questionnaire"}
                 primary={false}
                 aria-label={`Delete questionnaire ${questionnaire.name}`}
                 id="delete-questionnaire"

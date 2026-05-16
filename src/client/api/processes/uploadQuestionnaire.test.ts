@@ -268,4 +268,81 @@ describe("uploadQuestionnaire", () => {
     expect(result).toBe(false);
     expect(deactivateQuestionnaire).toHaveBeenCalledWith("OPN2004A");
   });
+
+  it("waits for deactivation to finish before returning invalid settings", async () => {
+    const setQuestionnaireSettings = vi.fn();
+    const setInvalidSettings = vi.fn();
+    const setErrored = vi.fn();
+    let resolveSettings:
+      | ((value: Awaited<ReturnType<typeof getQuestionnaireSettings>>) => void)
+      | undefined;
+    let resolveModes:
+      | ((value: Awaited<ReturnType<typeof getQuestionnaireModes>>) => void)
+      | undefined;
+    let resolveDeactivate: ((value: boolean) => void) | undefined;
+
+    vi.mocked(getQuestionnaireSettings).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveSettings = resolve;
+        }) as never,
+    );
+    vi.mocked(getQuestionnaireModes).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveModes = resolve;
+        }) as never,
+    );
+    vi.mocked(deactivateQuestionnaire).mockImplementation(
+      () =>
+        new Promise<boolean>((resolve) => {
+          resolveDeactivate = resolve;
+        }) as never,
+    );
+
+    let resolved = false;
+    const resultPromise = checkQuestionnaireSettings(
+      "OPN2004A",
+      setQuestionnaireSettings,
+      setInvalidSettings,
+      setErrored,
+    ).then((result) => {
+      resolved = true;
+
+      return result;
+    });
+
+    resolveSettings?.([
+      {
+        questionnaireName: "OPN2004A",
+        type: "StrictInterviewing",
+        askOffSubstitutionQuestions: false,
+        askOtherwiseQuestions: false,
+        checkQuestions: false,
+        keyboardShortcuts: false,
+        pause: false,
+        allowMovementDuringResponseChange: false,
+        useLiveRouting: false,
+        totaliserRouting: false,
+        applyRecordLocking: false,
+      },
+    ] as never);
+
+    await Promise.resolve();
+
+    expect(deactivateQuestionnaire).not.toHaveBeenCalled();
+    expect(resolved).toBe(false);
+
+    resolveModes?.(["MIXED"] as never);
+
+    await Promise.resolve();
+
+    expect(deactivateQuestionnaire).toHaveBeenCalledWith("OPN2004A");
+    expect(resolved).toBe(false);
+
+    resolveDeactivate?.(true);
+
+    await expect(resultPromise).resolves.toBe(false);
+    expect(resolved).toBe(true);
+  });
 });

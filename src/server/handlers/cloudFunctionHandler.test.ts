@@ -56,6 +56,15 @@ vi.mock("blaise-login-react-server", async () => {
 
   return mockLoginReactServerModule();
 });
+vi.mock("blaise-api-node-client", () => ({
+  __esModule: true,
+  BlaiseApiClient: class MockBlaiseApiClient {
+    constructor(_url?: string) {}
+  },
+  default: class MockBlaiseApiClient {
+    constructor(_url?: string) {}
+  },
+}));
 vi.mock("../helpers/cloudFunctionCallerHelper");
 const successResponse = {
   message: "Success",

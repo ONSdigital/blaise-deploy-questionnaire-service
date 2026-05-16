@@ -2,12 +2,12 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import "@testing-library/jest-dom/vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React, { act } from "react";
+import { act } from "react";
 import { MemoryRouter } from "react-router-dom";
 
-type DefineStepFunction = (
+type DefineStepFunction = <TArgs extends unknown[]>(
   name: string | RegExp,
-  callback: (...args: any[]) => void | Promise<void>,
+  callback: (...args: TArgs) => void | Promise<void>,
 ) => void;
 
 import App from "../../app";
@@ -86,11 +86,11 @@ export function whenClickDelete(when: DefineStepFunction): void {
     await waitFor(
       () => {
         const confirmDeleteButton = document.querySelector("#confirm-delete");
-        const erroneousHeading = screen.queryByRole("heading", {
+        const failedStateHeading = screen.queryByRole("heading", {
           name: new RegExp(`Unable to delete questionnaire ${questionnaire}`, "i"),
         });
 
-        expect(confirmDeleteButton ?? erroneousHeading).not.toBeNull();
+        expect(confirmDeleteButton ?? failedStateHeading).not.toBeNull();
       },
       { timeout: 10000 },
     );
@@ -132,7 +132,7 @@ export function whenSelectQuestionnaire(when: DefineStepFunction): void {
     const detailsLink = await screen.findByRole(
       "link",
       {
-        name: new RegExp(`View more information for questionnaire ${questionnaire}`, "i"),
+        name: new RegExp(`View information for questionnaire ${questionnaire}`, "i"),
       },
       { timeout: 5000 },
     );
@@ -151,7 +151,11 @@ export function whenEditToStartDate(when: DefineStepFunction): void {
     await act(async () => {
       await flushPromises();
     });
-    await userEvent.click(screen.getByRole("link", { name: /Change or delete start date/i }));
+    await userEvent.click(
+      screen.getByRole("link", {
+        name: /Change or delete Telephone Operations start date/i,
+      }),
+    );
     await waitFor(() =>
       screen.getByRole("heading", {
         level: 1,
@@ -166,7 +170,9 @@ export function whenAddToStartDate(when: DefineStepFunction): void {
     await act(async () => {
       await flushPromises();
     });
-    await userEvent.click(screen.getByRole("link", { name: /Add a start date/i }));
+    await userEvent.click(
+      screen.getByRole("link", { name: /Add a Telephone Operations start date/i }),
+    );
     await waitFor(() =>
       screen.getByRole("heading", {
         level: 1,
@@ -182,7 +188,9 @@ export function whenAddTmReleaseDate(when: DefineStepFunction): void {
       await flushPromises();
     });
     await userEvent.click(
-      await screen.findByRole("link", { name: /^Add a release date for questionnaire /i }),
+      await screen.findByRole("link", {
+        name: /^Add a Totalmobile release date for questionnaire /i,
+      }),
     );
     await waitFor(() =>
       screen.getByRole("heading", {
@@ -311,7 +319,7 @@ export function whenDeployQuestionnaire(when: DefineStepFunction): void {
       );
     };
 
-    // Drive the wizard through Continue/Deploy states using the form submit control.
+    // Click the shared submit button until the wizard reaches a deploy action or finishes
     for (let attempt = 0; attempt < 3; attempt += 1) {
       if (isDeploymentOutcomeVisible()) {
         return;
@@ -394,10 +402,10 @@ export function whenDeploy(when: DefineStepFunction): void {
       await flushPromises();
     });
 
-    const noStartDate = screen.queryByLabelText(/No start date/i);
+    const noToStartDate = screen.queryByLabelText(/No start date/i);
 
-    if (noStartDate) {
-      await userEvent.click(noStartDate);
+    if (noToStartDate) {
+      await userEvent.click(noToStartDate);
       await userEvent.click(await screen.findByRole("button", { name: /Continue/i }));
     }
 
@@ -443,7 +451,7 @@ export function whenEditTmReleaseDate(when: DefineStepFunction): void {
     });
     await userEvent.click(
       await screen.findByRole("link", {
-        name: /^Change or delete release date for questionnaire /i,
+        name: /^Change or delete Totalmobile release date for questionnaire /i,
       }),
     );
     await waitFor(() =>

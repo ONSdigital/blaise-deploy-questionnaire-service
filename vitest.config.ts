@@ -7,18 +7,18 @@ export default defineConfig({
     exclude: ["build/**", "coverage/**", "node_modules/**"],
     projects: [
       {
-        extends: true,
         test: {
           name: "client",
+          globals: true,
           environment: "happy-dom",
           setupFiles: ["./src/client/setupTests.ts"],
           include: ["src/client/**/*.test.{ts,tsx}"],
         },
       },
       {
-        extends: true,
         test: {
           name: "server",
+          globals: true,
           environment: "node",
           setupFiles: ["./src/server/setupTests.ts"],
           include: ["src/server/**/*.test.ts"],
@@ -29,7 +29,14 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       include: ["src/**/*.{ts,tsx}"],
-      exclude: ["**/*.mock.{ts,tsx}", "**/*.test.{ts,tsx}", "**/*.types.ts", "**/setupTests.ts"],
+      exclude: [
+        "**/*.mock.{ts,tsx}",
+        "**/*.test.{ts,tsx}",
+        "**/*.types.ts",
+        "**/setupTests.ts",
+        "src/client/features/**",
+        "src/client/test-utils/**",
+      ],
     },
   },
 });

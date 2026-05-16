@@ -1,6 +1,6 @@
-type DefineStepFunction = (
+type DefineStepFunction = <TArgs extends unknown[]>(
   name: string | RegExp,
-  callback: (...args: any[]) => void | Promise<void>,
+  callback: (...args: TArgs) => void | Promise<void>,
 ) => void;
 
 import { questionnaireWithName } from "./helpers/api.mock";
@@ -55,7 +55,6 @@ export function givenQuestionnaireInstalled(
   });
 }
 
-// Just a bunch of default mocks to stop things falling over
 export function givenNoQuestionnairesInstalled(
   given: DefineStepFunction,
   mocker: MockAdapter,
@@ -134,11 +133,11 @@ export function givenQuestionnaireHasUacs(given: DefineStepFunction, mocker: Moc
   });
 }
 
-export function givenQuestionnaireIsErroneous(
+export function givenQuestionnaireIsInFailedState(
   given: DefineStepFunction,
   questionnaireList: Questionnaire[],
 ): void {
-  given(/'(.*)' is erroneous/, (questionnaireName: string) => {
+  given(/'(.*)' is in a failed state/, (questionnaireName: string) => {
     for (const questionnaire of questionnaireList) {
       if (questionnaire.name === questionnaireName) {
         questionnaire.status = "Failed";

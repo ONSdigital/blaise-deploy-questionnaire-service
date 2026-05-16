@@ -1,5 +1,5 @@
 import dateFormatter from "dayjs";
-import React, { type ReactElement, useMemo, useState } from "react";
+import { type ReactElement, useMemo, useState } from "react";
 import "./yearCalendar.css";
 
 interface Props {

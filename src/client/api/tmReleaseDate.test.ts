@@ -48,7 +48,7 @@ describe("Function getTmReleaseDate(questionnaireName: string) ", () => {
     mock.reset();
   });
 
-  it("should return a Totalmobile release date string if the response contains a release date", async () => {
+  it("should return a Totalmobile release date string if the response contains a Totalmobile release date", async () => {
     mock.onGet("/api/tmreleasedate/LMS2004A").reply(200, { tmreleasedate: "1997-12-24" });
 
     const tmReleaseDate = await getTmReleaseDate("LMS2004A");

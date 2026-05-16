@@ -1,22 +1,20 @@
 import { Panel } from "blaise-design-system-react-components";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 
 interface Props {
   responseMessage: string;
   statusCode: number;
-  role: string;
+  user: string;
 }
 
 export function ReissueNewDonorCaseSummary({
   statusCode,
-  role,
+  user,
   responseMessage,
 }: Props): ReactElement {
-  const message =
+  const missingInitialDonorCase =
     typeof responseMessage === "string" &&
-    responseMessage.includes("User has no existing donor cases.")
-      ? "User has not been issued with an initial donor case. Please click 'Create cases' under the Donor cases section."
-      : "When reporting this issue to the Service Desk, please provide the questionnaire name, user, time and date of the failure.";
+    responseMessage.includes("User has no existing donor cases.");
 
   return (
     <div className="ons-u-mb-m">
@@ -25,12 +23,22 @@ export function ReissueNewDonorCaseSummary({
           status="success"
           bigIcon={true}
         >
-          <h1>Reissued donor case successfully for {role}</h1>
+          <h1>Reissued donor case successfully for {user}</h1>
         </Panel>
       ) : (
         <Panel status="error">
-          <h1>Error reissuing donor case for {role}.</h1>
-          <p>{message}</p>
+          <h1>Error reissuing donor case for {user}</h1>
+          {missingInitialDonorCase ? (
+            <p>
+              User has not been issued with an initial donor case. Please click <b>Create cases</b>
+              under the Donor cases section.
+            </p>
+          ) : (
+            <p>
+              Please report this issue to <a href="https://ons.service-now.com/">Service Desk</a>{" "}
+              and include the questionnaire name, username, and the date and time of failure.
+            </p>
+          )}
         </Panel>
       )}
     </div>

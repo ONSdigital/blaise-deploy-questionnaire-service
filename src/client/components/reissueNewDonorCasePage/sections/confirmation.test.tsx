@@ -10,7 +10,7 @@ import { createWrapper } from "../../../test-utils/renderWithQueryClient";
 
 import { Confirmation } from "./confirmation";
 
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 vi.mock("axios");
 
@@ -91,7 +91,7 @@ describe("Confirmation behavior", () => {
     await waitFor(() => {
       expect(mockedAxios.post).toHaveBeenCalledWith(
         "/api/cloudFunction/reissueNewDonorCase",
-        { questionnaire_name: ipsQuestionnaire.name, user: "testuser", role: "testuser" },
+        { questionnaire_name: ipsQuestionnaire.name, user: "testuser" },
         { headers: { "Content-Type": "application/json" } },
       );
 
@@ -121,7 +121,7 @@ describe("Confirmation behavior", () => {
     await waitFor(() => {
       expect(mockedAxios.post).toHaveBeenCalledWith(
         "/api/cloudFunction/reissueNewDonorCase",
-        { questionnaire_name: ipsQuestionnaire.name, user: "testuser", role: "testuser" },
+        { questionnaire_name: ipsQuestionnaire.name, user: "testuser" },
         { headers: { "Content-Type": "application/json" } },
       );
 

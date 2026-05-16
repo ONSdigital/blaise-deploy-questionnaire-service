@@ -104,6 +104,21 @@ describe("client bootstrap", () => {
     expect(
       (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env?.NODE_ENV,
     ).toBeDefined();
+
+    const nextTickCallback = vi.fn();
+
+    await new Promise<void>((resolve) => {
+      (
+        globalThis as {
+          process?: { nextTick?: (callback: () => void) => void };
+        }
+      ).process?.nextTick?.(() => {
+        nextTickCallback();
+        resolve();
+      });
+    });
+
+    expect(nextTickCallback).toHaveBeenCalledTimes(1);
   }, 15000);
 
   it("shows a bootstrap error when loading the app fails", async () => {

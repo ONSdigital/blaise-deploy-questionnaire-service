@@ -1,5 +1,5 @@
 import { Button, Panel } from "blaise-design-system-react-components";
-import React, { type ReactElement, useState } from "react";
+import { type ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FindUser } from "./findUser";
@@ -63,7 +63,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
         <div className="ons-summary__group">
           <Panel>
             To assign another donor case to an interviewer who already has one, select their
-            username and click <b>Reissue Donor Case</b>.
+            username and click <b>Reissue donor case</b>.
           </Panel>
           <dl className="ons-summary__items">
             <div className="ons-summary__item">
@@ -71,7 +71,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                 <div className="ons-summary__item--text">
                   <div className="ons-field">
                     <FindUser
-                      label="Enter Username"
+                      label="Enter username"
                       onItemSelected={onSetUser}
                       onError={onError}
                       roles={roles}
@@ -87,7 +87,7 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
                 </div>
                 <div className="ons-u-mt-m ons-u-mb-s">
                   <Button
-                    label="Reissue Donor Case"
+                    label="Reissue donor case"
                     primary={false}
                     small={true}
                     disabled={error}

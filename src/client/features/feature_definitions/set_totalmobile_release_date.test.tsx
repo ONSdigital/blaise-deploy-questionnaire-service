@@ -64,7 +64,7 @@ describe("Feature: totalmobile_release_date", () => {
 
   Scenario(
     {
-      name: "Non LMS questionnaire does not see the release date selector",
+      name: "Non LMS questionnaire does not see the Totalmobile release date selector",
       args: { questionnaireName: "OPN2004A" },
     },
     ({ Given, When, Then }) => {

@@ -1,5 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
@@ -25,6 +25,9 @@ if (!("process" in globalThis)) {
     env: {
       NODE_ENV: getShimmedNodeEnv(),
     },
+    nextTick: (callback: (...args: unknown[]) => void, ...args: unknown[]) => {
+      queueMicrotask(() => callback(...args));
+    },
   };
 
   Object.defineProperty(globalThis, "process", {
@@ -49,13 +52,13 @@ void (async () => {
     const { default: App } = await import("./app");
 
     root.render(
-      <React.StrictMode>
+      <StrictMode>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <App />
           </BrowserRouter>
         </QueryClientProvider>
-      </React.StrictMode>,
+      </StrictMode>,
     );
 
     clientLogger.info("React app mounted successfully");

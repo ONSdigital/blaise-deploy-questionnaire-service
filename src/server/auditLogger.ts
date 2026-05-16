@@ -8,6 +8,8 @@ interface AuditLog {
   severity: string;
 }
 
+const AUDIT_LOG_LOOKBACK_DAYS = 7;
+
 export default class AuditLogger {
   private readonly projectId: string;
   private readonly logger: Logging;
@@ -30,8 +32,7 @@ export default class AuditLogger {
   async getLogs(): Promise<AuditLog[]> {
     const auditLogs: AuditLog[] = [];
     const log = this.logger.log(this.logName);
-    const filter =
-      'resource.type="gae_app" AND resource.labels.module_id="dqs-ui" AND jsonPayload.message=~"^AUDIT_LOG: "';
+    const filter = buildAuditLogFilter(new Date());
     const [entries] = await log.getEntries({ filter: filter, maxResults: 50 });
 
     for (const entry of entries) {
@@ -66,4 +67,17 @@ export default class AuditLogger {
 
     return auditLogs;
   }
+}
+
+function buildAuditLogFilter(referenceDate: Date): string {
+  const earliestTimestamp = new Date(
+    referenceDate.getTime() - AUDIT_LOG_LOOKBACK_DAYS * 24 * 60 * 60 * 1000,
+  ).toISOString();
+
+  return (
+    'resource.type="gae_app" AND ' +
+    'resource.labels.module_id="dqs-ui" AND ' +
+    `timestamp >= "${earliestTimestamp}" AND ` +
+    'jsonPayload.message:"AUDIT_LOG:"'
+  );
 }

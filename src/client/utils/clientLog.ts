@@ -50,6 +50,6 @@ export async function sendClientLog(level: ClientLogLevel, ...args: unknown[]): 
   try {
     await axios.post("/api/client-log", payload, axiosConfig());
   } catch {
-    // Intentionally swallow.
+    // Ignore logging transport failures so they never affect the user flow
   }
 }

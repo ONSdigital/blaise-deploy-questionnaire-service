@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { LoadingPanel, Panel } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { Link } from "react-router-dom";
 
 import { getToStartDate } from "../../../api/toStartDate";
@@ -63,19 +63,19 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
               <div className="ons-u-mt-m ons-u-mb-s">
                 {toStartDate ? (
                   <Link
-                    to={`/questionnaire/${questionnaireName}/start-date`}
+                    to={`/questionnaire/${questionnaireName}/to-start-date`}
                     state={{ questionnaireName: questionnaireName, toStartDate: toStartDateValue }}
                     className="ons-summary__button"
-                    aria-label={`Change or delete start date for questionnaire ${questionnaireName}`}
+                    aria-label={`Change or delete Telephone Operations start date for questionnaire ${questionnaireName}`}
                   >
                     Change or delete start date
                   </Link>
                 ) : (
                   <Link
-                    to={`/questionnaire/${questionnaireName}/start-date`}
+                    to={`/questionnaire/${questionnaireName}/to-start-date`}
                     state={{ questionnaireName: questionnaireName }}
                     className="ons-summary__button"
-                    aria-label={`Add a start date for questionnaire ${questionnaireName}`}
+                    aria-label={`Add a Telephone Operations start date for questionnaire ${questionnaireName}`}
                   >
                     Add start date
                   </Link>

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Button, LoadingPanel } from "blaise-design-system-react-components";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axiosConfig from "../../../api/axiosConfig";
@@ -20,10 +20,7 @@ function getApiErrorMessage(error: unknown): string {
     typeof (error as { response?: { data?: { message?: unknown } } }).response?.data?.message ===
       "string"
   ) {
-    return (
-      (error as { response?: { data?: { message?: string } } }).response?.data?.message ??
-      "Unknown error"
-    );
+    return (error as { response?: { data?: { message?: string } } }).response!.data!.message!;
   }
 
   return "Unknown error";

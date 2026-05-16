@@ -1,6 +1,6 @@
 import { StyledFormField } from "blaise-design-system-react-components";
 import { useFormikContext } from "formik";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 
 interface DateFormProps {
   dateFieldName: string;

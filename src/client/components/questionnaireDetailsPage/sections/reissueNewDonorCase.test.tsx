@@ -54,7 +54,7 @@ describe("ReissueNewDonorCase", () => {
 
     expect(mockFindUser).toHaveBeenCalledWith(
       expect.objectContaining({
-        label: "Enter Username",
+        label: "Enter username",
         roles: ["IPS Field Interviewer", "IPS Manager", "IPS Pilot Interviewer"],
       }),
     );
@@ -72,7 +72,7 @@ describe("ReissueNewDonorCase", () => {
     render(<ReissueNewDonorCase questionnaire={questionnaire} />);
 
     fireEvent.click(screen.getByRole("button", { name: /Select user/i }));
-    fireEvent.click(screen.getByRole("button", { name: /Reissue Donor Case/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Reissue donor case/i }));
 
     expect(mockNavigate).toHaveBeenCalledWith(
       "/questionnaire/IPS2101A/reissue-new-donor-case/field.user",
@@ -90,7 +90,7 @@ describe("ReissueNewDonorCase", () => {
     render(<ReissueNewDonorCase questionnaire={questionnaire} />);
 
     fireEvent.click(screen.getByRole("button", { name: /Select blank user/i }));
-    fireEvent.click(screen.getByRole("button", { name: /Reissue Donor Case/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Reissue donor case/i }));
 
     expect(
       screen.getByText(/User input cannot be empty or contain only spaces/i),

@@ -1,6 +1,6 @@
 import { GroupedSummary, SummaryGroupTable } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -14,7 +14,7 @@ function QuestionnaireDetails({ questionnaire, modes }: Props): ReactElement {
     {
       title: "Questionnaire details",
       records: {
-        "Questionnaire status": questionnaire.status ? questionnaire.status : "",
+        Status: questionnaire.status ? questionnaire.status : "",
         Modes: modes.join(", "),
         "Number of cases": questionnaire.dataRecordCount,
         "Install date": dateFormatter(questionnaire.installDate).format("DD/MM/YYYY HH:mm"),

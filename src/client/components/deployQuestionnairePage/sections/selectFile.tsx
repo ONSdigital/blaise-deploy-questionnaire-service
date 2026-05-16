@@ -1,6 +1,6 @@
 import { Panel, StyledFormErrorSummary, Upload } from "blaise-design-system-react-components";
 import { type FormikContextType, useFormikContext } from "formik";
-import React, { type ReactElement, useEffect } from "react";
+import { type ReactElement, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 interface SelectFilePageProps {
@@ -75,8 +75,8 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
             <b>deployment can take a few minutes</b>.
             <br />
             <br />
-            Please <b>do not leave this page</b> while deployment is in progress. You will be
-            redirected when there is an update.
+            Please <b>do not leave this page</b> while deployment is in progress. You will be taken
+            to the next page when there is an update.
           </p>
         </Panel>
       </div>

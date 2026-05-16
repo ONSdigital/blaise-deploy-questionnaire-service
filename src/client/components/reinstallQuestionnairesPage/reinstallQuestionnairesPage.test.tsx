@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { act } from "react";
@@ -278,7 +278,7 @@ describe("Reinstall questionnaires", () => {
       expect(
         screen.getByRole("heading", { name: /Questionnaire .*OPN2004A.* deploy failed/i }),
       ).toBeInTheDocument();
-      expect(screen.getByText(/Reason: Failed to install the questionnaire/i)).toBeInTheDocument();
+      expect(screen.getByText(/Details: Failed to install the questionnaire/i)).toBeInTheDocument();
       expect(
         screen.getByRole("button", { name: /Return to reinstall questionnaire/i }),
       ).toBeInTheDocument();

@@ -1,6 +1,6 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { ReissueNewDonorCaseSummary } from "./reissueNewDonorCaseSummary";
 
 describe("ReissueNewDonorCaseSummary", () => {
@@ -8,7 +8,7 @@ describe("ReissueNewDonorCaseSummary", () => {
     const props = {
       responseMessage: "Success",
       statusCode: 200,
-      role: "testuser1",
+      user: "testuser1",
     };
 
     const { getByText } = render(<ReissueNewDonorCaseSummary {...props} />);
@@ -21,15 +21,19 @@ describe("ReissueNewDonorCaseSummary", () => {
     const props = {
       responseMessage: "Internal Server Error",
       statusCode: 500,
-      role: "testuser1",
+      user: "testuser1",
     };
 
     const { getByText } = render(<ReissueNewDonorCaseSummary {...props} />);
 
     expect(getByText(/Error reissuing donor case for testuser1/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Service Desk/i })).toHaveAttribute(
+      "href",
+      "https://ons.service-now.com/",
+    );
     expect(
-      getByText(
-        /When reporting this issue to the Service Desk, please provide the questionnaire name, user, time and date of the failure./i,
+      screen.getByText(
+        /include the questionnaire name, username, and the date and time of failure\./i,
       ),
     ).toBeInTheDocument();
   });
@@ -38,7 +42,7 @@ describe("ReissueNewDonorCaseSummary", () => {
     const props = {
       responseMessage: "User has no existing donor cases.",
       statusCode: 500,
-      role: "testuser1",
+      user: "testuser1",
     };
 
     const { getByText } = render(<ReissueNewDonorCaseSummary {...props} />);

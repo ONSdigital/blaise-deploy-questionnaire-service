@@ -76,12 +76,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     (req: Request, username: string) => {
       const questionnaireName =
         typeof req.body?.questionnaire_name === "string" ? req.body.questionnaire_name : "unknown";
-      const requestUser =
-        typeof req.body?.user === "string"
-          ? req.body.user
-          : typeof req.body?.role === "string"
-            ? req.body.role
-            : "unknown";
+      const requestUser = typeof req.body?.user === "string" ? req.body.user : "unknown";
 
       return {
         successMessage: `${username} reissued donor case for ${requestUser} on ${questionnaireName}`,

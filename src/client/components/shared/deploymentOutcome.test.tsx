@@ -51,7 +51,14 @@ describe("DeploymentOutcome", () => {
         { selector: "h1" },
       ),
     ).toBeInTheDocument();
-    expect(screen.getByText(/Reason: Failed to upload questionnaire/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Service Desk/i })).toHaveAttribute(
+      "href",
+      "https://ons.service-now.com/",
+    );
+    expect(screen.getByText(/Details: Failed to upload questionnaire/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/include the questionnaire name and the date and time of failure\./i),
+    ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /Return to deploy questionnaire/i }));
     fireEvent.click(screen.getByRole("button", { name: /View questionnaires/i }));

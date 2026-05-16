@@ -112,7 +112,7 @@ describe("QuestionnaireToStartDatePage", () => {
     expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/OPN2004A", { replace: true });
   });
 
-  it("clears the start date and navigates back when the user chooses no", async () => {
+  it("clears the Telephone Operations start date and navigates back when the user chooses no", async () => {
     vi.mocked(setToStartDate).mockResolvedValue(true);
 
     renderWithQueryClient(
@@ -142,14 +142,14 @@ describe("QuestionnaireToStartDatePage", () => {
     });
   });
 
-  it("supports direct questionnaire routes by fetching the current start date and returning to details", async () => {
+  it("supports direct questionnaire routes by fetching the current Telephone Operations start date and returning to details", async () => {
     vi.mocked(getToStartDate).mockResolvedValueOnce("2026-01-01");
 
     renderWithQueryClient(
-      <MemoryRouter initialEntries={["/questionnaire/LMS2605_LJ2/start-date"]}>
+      <MemoryRouter initialEntries={["/questionnaire/LMS2605_LJ2/to-start-date"]}>
         <Routes>
           <Route
-            path="/questionnaire/:questionnaireName/start-date"
+            path="/questionnaire/:questionnaireName/to-start-date"
             element={<QuestionnaireToStartDatePage />}
           />
         </Routes>
@@ -164,5 +164,22 @@ describe("QuestionnaireToStartDatePage", () => {
     fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
 
     expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/LMS2605_LJ2", { replace: true });
+  });
+
+  it("shows an error panel when loading the Telephone Operations start date fails", async () => {
+    vi.mocked(getToStartDate).mockRejectedValueOnce(new Error("nope"));
+
+    renderWithQueryClient(
+      <MemoryRouter initialEntries={["/questionnaire/LMS2605_LJ2/to-start-date"]}>
+        <Routes>
+          <Route
+            path="/questionnaire/:questionnaireName/to-start-date"
+            element={<QuestionnaireToStartDatePage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByText(/Failed to get Telephone Operations start date/i)).toBeDefined();
   });
 });

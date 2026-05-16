@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
@@ -265,5 +265,27 @@ describe("App routes and status lifecycle", () => {
     expect(
       screen.getByRole("heading", { name: /Questionnaire OPN2007T deleted successfully/i }),
     ).toBeInTheDocument();
+  });
+
+  it("renders the not found page for unknown routes", async () => {
+    renderAtRoute("/does-not-exist");
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: /Page not found/i })).toBeInTheDocument();
+    });
+
+    expect(screen.getByRole("link", { name: /Return home/i })).toHaveAttribute("href", "/");
+  });
+
+  it("signs the user out from the header", async () => {
+    renderAtRoute("/");
+
+    const signOutButton = await screen.findByRole("button", { name: /sign out/i });
+
+    fireEvent.click(signOutButton);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Enter your Blaise username and password/i)).toBeInTheDocument();
+    });
   });
 });

@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { type AxiosProgressEvent } from "axios";
 import { Button, Panel } from "blaise-design-system-react-components";
 import { Form, Formik, type FormikHelpers } from "formik";
-import React, { type ReactElement, useState } from "react";
+import { type ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -16,8 +16,8 @@ import {
   shouldAskToStartDate,
 } from "../../utils/deploymentDateQuestionRules";
 import { clientLogger } from "../../utils/logger";
-import { AskReleaseDate } from "../shared/dateQuestions/askReleaseDate";
-import { AskStartDate } from "../shared/dateQuestions/askStartDate";
+import { AskTmReleaseDate } from "../shared/dateQuestions/askTmReleaseDate";
+import { AskToStartDate } from "../shared/dateQuestions/askToStartDate";
 import { DeploymentOutcome } from "../shared/deploymentOutcome";
 
 import { ConfirmOverride } from "./sections/confirmOverride";
@@ -34,7 +34,7 @@ enum Step {
   LiveWarning,
   ConfirmOverride,
   SetToStartDate,
-  SetReleaseDate,
+  SetTmReleaseDate,
   Summary,
   InvalidSettings,
 }
@@ -130,7 +130,7 @@ function DeployPage(): ReactElement {
     }
 
     if (shouldAskTmReleaseDate(questionnaireName)) {
-      return Step.SetReleaseDate;
+      return Step.SetTmReleaseDate;
     }
 
     return Step.Summary;
@@ -152,13 +152,13 @@ function DeployPage(): ReactElement {
         return (
           <>
             <div className="ons-u-mb-m">
-              <Panel status="warn">
-                <p>You cannot overwrite questionnaire that are currently live</p>
+              <Panel status="error">
+                <p>You cannot overwrite a questionnaire that is currently live</p>
               </Panel>
             </div>
             <div className="ons-btn-group ons-u-mt-m">
               <Button
-                label="Accept and go to table of questionnaires"
+                label="View questionnaires"
                 primary={true}
                 onClick={() => {
                   void queryClient.invalidateQueries({ queryKey: ["questionnaires"] });
@@ -171,10 +171,10 @@ function DeployPage(): ReactElement {
       case Step.ConfirmOverride:
         return <ConfirmOverride questionnaireName={questionnaireName} />;
       case Step.SetToStartDate:
-        return <AskStartDate questionnaireName={questionnaireName} />;
-      case Step.SetReleaseDate:
+        return <AskToStartDate questionnaireName={questionnaireName} />;
+      case Step.SetTmReleaseDate:
         if (shouldAskTmReleaseDate(questionnaireName)) {
-          return <AskReleaseDate questionnaireName={questionnaireName} />;
+          return <AskTmReleaseDate questionnaireName={questionnaireName} />;
         }
 
         return (
@@ -212,7 +212,7 @@ function DeployPage(): ReactElement {
         return values.askDate === "yes" && !values.toStartDate;
       }
 
-      if (activeStep === Step.SetReleaseDate && shouldAskTmReleaseDate(questionnaireName)) {
+      if (activeStep === Step.SetTmReleaseDate && shouldAskTmReleaseDate(questionnaireName)) {
         if (values.askDate !== "yes" && values.askDate !== "no") {
           return true;
         }
@@ -340,7 +340,7 @@ function DeployPage(): ReactElement {
         }
 
         break;
-      case Step.SetReleaseDate:
+      case Step.SetTmReleaseDate:
         if (values.askDate === "no") {
           values.tmReleaseDate = "";
         }
@@ -354,7 +354,6 @@ function DeployPage(): ReactElement {
         break;
     }
 
-    // Summary has custom handling for steps
     if (activeStep != Step.Summary) {
       setActiveStep(activeStep + 1);
     }

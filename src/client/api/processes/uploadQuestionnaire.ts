@@ -5,8 +5,11 @@ import {
   shouldAskToStartDate,
 } from "../../utils/deploymentDateQuestionRules";
 import { clientLogger } from "../../utils/logger";
-import { GetQuestionnaireMode } from "../../utils/questionnaireMode";
-import { GetStrictInterviewingSettings, ValidateSettings } from "../../utils/questionnaireSettings";
+import {
+  GetStrictInterviewingSettings,
+  ValidateCatiModeOnlySettings,
+  ValidateSettings,
+} from "../../utils/questionnaireSettings";
 import {
   deactivateQuestionnaire,
   getQuestionnaire,
@@ -164,18 +167,17 @@ export async function checkQuestionnaireSettings(
   }
 
   const questionnaireSettings = GetStrictInterviewingSettings(questionnaireSettingsList);
+  const isCatiModeOnly = questionnaireModes.length === 1 && questionnaireModes[0] === "CATI";
 
   setQuestionnaireSettings(questionnaireSettings);
-  // TODO: validate questionnaire settings using the questionnaire's actual modes
-  const [valid, invalidSettings] = ValidateSettings(
-    questionnaireSettings,
-    GetQuestionnaireMode(questionnaireModes),
-  );
+  const [valid, invalidSettings] = isCatiModeOnly
+    ? ValidateCatiModeOnlySettings(questionnaireSettings)
+    : ValidateSettings(questionnaireSettings);
 
   setInvalidSettings(invalidSettings);
 
   if (!valid) {
-    deactivateQuestionnaire(questionnaireName);
+    await deactivateQuestionnaire(questionnaireName);
   }
 
   return valid;

@@ -8,7 +8,7 @@ import flushPromises from "../../../test-utils/flushPromises";
 import { createWrapper } from "../../../test-utils/renderWithQueryClient";
 
 import { TmReleaseDate } from "./tmReleaseDate";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
@@ -17,7 +17,7 @@ describe("Totalmobile details", () => {
     mock.reset();
   });
 
-  it("should display the Totalmobile details for an LMS questionnaire with a release date", async () => {
+  it("should display the Totalmobile details for an LMS questionnaire with a Totalmobile release date", async () => {
     mock
       .onGet("/api/tmreleasedate/LMS2101_AA1")
       .reply(200, { tmreleasedate: "2021-06-27T16:29:00+00:00" });
@@ -35,7 +35,7 @@ describe("Totalmobile details", () => {
     expect(await screen.findByText(/27\/06\/2021/i)).toBeInTheDocument();
   });
 
-  it("should display the add release date option for an LMS questionnaire with no release date", async () => {
+  it("should display the add release date option for an LMS questionnaire with no Totalmobile release date", async () => {
     mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(404, { tmreleasedate: "" });
     render(<TmReleaseDate questionnaireName={"LMS2101_AA1"} />, {
       wrapper: createWrapper(BrowserRouter),

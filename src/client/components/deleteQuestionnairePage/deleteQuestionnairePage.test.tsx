@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
@@ -8,7 +8,7 @@ import { createWrapper } from "../../test-utils/renderWithQueryClient";
 import DeleteQuestionnairePage from "./deleteQuestionnairePage";
 
 const mockDeleteConfirmation = vi.fn();
-const mockErroneousWarning = vi.fn();
+const mockFailedStateWarning = vi.fn();
 
 vi.mock("../../api/questionnaires", () => ({
   getQuestionnaire: vi.fn(),
@@ -35,11 +35,11 @@ vi.mock("./sections/deleteConfirmation", () => ({
   },
 }));
 
-vi.mock("./sections/erroneousWarning", () => ({
-  ErroneousWarning: (props: { questionnaireName: string }) => {
-    mockErroneousWarning(props);
+vi.mock("./sections/failedStateWarning", () => ({
+  FailedStateWarning: (props: { questionnaireName: string }) => {
+    mockFailedStateWarning(props);
 
-    return <div>Erroneous warning for {props.questionnaireName}</div>;
+    return <div>Failed state warning for {props.questionnaireName}</div>;
   },
 }));
 
@@ -47,7 +47,7 @@ describe("DeleteQuestionnairePage", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mockDeleteConfirmation.mockClear();
-    mockErroneousWarning.mockClear();
+    mockFailedStateWarning.mockClear();
   });
 
   it("renders the delete confirmation flow for non-failed questionnaires", () => {
@@ -87,14 +87,14 @@ describe("DeleteQuestionnairePage", () => {
         onCancel: expect.any(Function),
       }),
     );
-    expect(mockErroneousWarning).not.toHaveBeenCalled();
+    expect(mockFailedStateWarning).not.toHaveBeenCalled();
 
     fireEvent.click(screen.getByRole("button", { name: "Cancel deletion" }));
 
     expect(onCancel).toHaveBeenCalledWith("IPS0001A");
   });
 
-  it("renders the erroneous warning flow for failed questionnaires", () => {
+  it("renders the failed-state warning flow for failed questionnaires", () => {
     render(
       <MemoryRouter
         initialEntries={[
@@ -122,8 +122,8 @@ describe("DeleteQuestionnairePage", () => {
       { wrapper: createWrapper() },
     );
 
-    expect(screen.getByText("Erroneous warning for IPS0002A")).toBeVisible();
-    expect(mockErroneousWarning).toHaveBeenCalledWith({ questionnaireName: "IPS0002A" });
+    expect(screen.getByText("Failed state warning for IPS0002A")).toBeVisible();
+    expect(mockFailedStateWarning).toHaveBeenCalledWith({ questionnaireName: "IPS0002A" });
     expect(mockDeleteConfirmation).not.toHaveBeenCalled();
   });
 
@@ -229,5 +229,61 @@ describe("DeleteQuestionnairePage", () => {
     fireEvent.click(screen.getByRole("button", { name: "Cancel deletion" }));
 
     expect(onCancel).toHaveBeenCalledWith("IPS2605A");
+  });
+
+  it("shows an error panel when fetching delete details fails", async () => {
+    vi.mocked(getQuestionnaire).mockRejectedValueOnce(new Error("nope"));
+    vi.mocked(getQuestionnaireModes).mockResolvedValueOnce(["CAWI"]);
+
+    render(
+      <MemoryRouter initialEntries={["/questionnaire/IPS2605A/delete"]}>
+        <Routes>
+          <Route
+            path="/questionnaire/:questionnaireName/delete"
+            element={
+              <DeleteQuestionnairePage
+                onCancel={vi.fn()}
+                onDelete={vi.fn()}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>,
+      { wrapper: createWrapper() },
+    );
+
+    expect(
+      await screen.findByText(/Failed to get delete questionnaire confirmation details/i),
+    ).toBeVisible();
+  });
+
+  it("redirects home when a questionnaire name is present but the questionnaire cannot be found", async () => {
+    vi.mocked(getQuestionnaire).mockResolvedValueOnce(null as never);
+    vi.mocked(getQuestionnaireModes).mockResolvedValueOnce([]);
+
+    render(
+      <MemoryRouter initialEntries={["/questionnaire/IPS2605A/delete"]}>
+        <Routes>
+          <Route
+            path="/questionnaire/:questionnaireName/delete"
+            element={
+              <DeleteQuestionnairePage
+                onCancel={vi.fn()}
+                onDelete={vi.fn()}
+              />
+            }
+          />
+          <Route
+            path="/"
+            element={<h1>Questionnaire list</h1>}
+          />
+        </Routes>
+      </MemoryRouter>,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: /Questionnaire list/i })).toBeInTheDocument();
+    });
   });
 });

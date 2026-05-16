@@ -88,12 +88,10 @@ table.calendar td.bolder {
   font-weight: bold;
 }
 
-/* Single selected day */
 table.calendar td.selected {
   border: 3px solid #fbc900;
 }
 
-/* Selected range */
 table.calendar td.range {
   background-color: rgba(255, 69, 0, 0.7);
   font-weight: bold;
@@ -143,43 +141,6 @@ div.calendar-controls .today {
   font-size: 0.6em;
   text-transform: uppercase;
 }
-
-/* Demo */
-
-/*div#calendar {*/
-/*    position: relative;*/
-/*    border-radius: 5px;*/
-/*    border: 1px solid #5A5A5A;*/
-/*    background-color: white;*/
-/*    overflow: hidden;*/
-/*    -webkit-touch-callout: none;*/
-/*    -webkit-user-select: none;*/
-/*    -khtml-user-select: none;*/
-/*    -moz-user-select: none;*/
-/*    -ms-user-select: none;*/
-/*    user-select: none;*/
-/*}*/
-
-/*div#root {*/
-/*    display: table;*/
-/*    margin: 50px auto;*/
-/*}*/
-
-/*h2,h3,h4,h5 {*/
-/*    text-align: center;*/
-/*    color: #404040;*/
-/*}*/
-
-/*h1 {*/
-/*    text-align: center;*/
-/*    color: #B10909;*/
-/*}*/
-
-/*a {*/
-/*    color: #B10909;*/
-/*    font-weight: bolder;*/
-/*    text-decoration: none;*/
-/*}*/
 
 a.demoLink {
   text-decoration: underline;

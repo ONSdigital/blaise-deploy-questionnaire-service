@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import { LoadingPanel, Panel, Table, TextInput } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
-import React, { type ReactElement, useState } from "react";
+import { type ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { getQuestionnaires } from "../../api/questionnaires";
@@ -56,7 +56,7 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
         <Link
           id={`info-${questionnaire.name}`}
           data-testid={`info-${questionnaire.name}`}
-          aria-label={`View more information for questionnaire ${questionnaire.name}`}
+          aria-label={`View information for questionnaire ${questionnaire.name}`}
           to={`/questionnaire/${questionnaire.name}`}
           state={{ questionnaire: questionnaire }}
         >

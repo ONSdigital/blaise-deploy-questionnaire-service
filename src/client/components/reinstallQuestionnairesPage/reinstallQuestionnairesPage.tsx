@@ -6,7 +6,7 @@ import {
   Panel,
   Select,
 } from "blaise-design-system-react-components";
-import React, { type ReactElement, useState } from "react";
+import { type ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { verifyAndInstallQuestionnaire } from "../../api/processes";
@@ -30,7 +30,7 @@ function ReinstallQuestionnaires(): ReactElement {
   } = useQuery({
     queryKey: ["reinstallList"],
     queryFn: async () => {
-      // Fetch files in bucket and questionnaires installed in parallel
+      // Fetch files in bucket and questionnaires installed in parallel for speed
       const [bucketList, installedQuestionnaires] = await Promise.all([
         getAllQuestionnairesInBucket().catch(() => {
           throw new Error("Unable to load questionnaires from bucket. Check bucket permissions.");
@@ -93,7 +93,7 @@ function ReinstallQuestionnaires(): ReactElement {
               <LoadingPanel />
             ) : (
               <div>
-                <ErrorBoundary errorMessageText={"Failed to load questionnaires."}>
+                <ErrorBoundary errorMessageText={"Failed to get questionnaires."}>
                   <form>
                     {error ? (
                       <Panel spacious={true}>{(error as Error).message}</Panel>

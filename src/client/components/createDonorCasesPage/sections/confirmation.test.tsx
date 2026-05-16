@@ -10,7 +10,7 @@ import { createWrapper } from "../../../test-utils/renderWithQueryClient";
 
 import { Confirmation } from "./confirmation";
 
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 vi.mock("axios");
 

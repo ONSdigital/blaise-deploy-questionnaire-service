@@ -1,5 +1,5 @@
 import { StyledFormErrorSummary } from "blaise-design-system-react-components";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 
 import { SetDate } from "./setDate";
 
@@ -7,7 +7,7 @@ interface SelectFilePageProps {
   questionnaireName: string;
 }
 
-export function AskStartDate({ questionnaireName }: SelectFilePageProps): ReactElement {
+export function AskToStartDate({ questionnaireName }: SelectFilePageProps): ReactElement {
   return (
     <>
       <div className="ons-grid">

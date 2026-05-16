@@ -1,16 +1,12 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React, { act, type ReactNode } from "react";
+import { act, type ReactNode } from "react";
 import { MemoryRouter } from "react-router-dom";
 
 import App from "../../../app";
 import flushPromises from "../../../test-utils/flushPromises";
 import { createWrapper } from "../../../test-utils/renderWithQueryClient";
 
-/*
- * Renders the app in a mock router, then navigates to the 'Deploy questionnaire' page
- * and selects a mock OPN2004A.bpkg in the file select input field.
- *  */
 export async function navigateToDeployPageAndSelectFile(questionnaire = "OPN2004A"): Promise<void> {
   function DeployRouteWrapper({ children }: { children: ReactNode }) {
     return <MemoryRouter initialEntries={["/deploy"]}>{children}</MemoryRouter>;

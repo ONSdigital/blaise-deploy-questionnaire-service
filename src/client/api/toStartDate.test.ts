@@ -48,7 +48,7 @@ describe("Function getToStartDate(questionnaireName: string) ", () => {
     mock.reset();
   });
 
-  it("should return a Telephone Operations start date string if the response contains a start date", async () => {
+  it("should return a Telephone Operations start date string if the response contains a Telephone Operations start date", async () => {
     mock.onGet("/api/tostartdate/OPN2004A").reply(200, { tostartdate: "1997-12-24" });
 
     const toStartDate = await getToStartDate("OPN2004A");

@@ -26,8 +26,8 @@ export function CreateDonorCasesSummary({
           <h1>Error creating donor cases for {role}</h1>
           <p>{donorCasesResponseMessage}</p>
           <p>
-            When reporting this issue to the Service Desk, please provide the questionnaire name,
-            time and date of the failure.
+            Please report this issue to <a href="https://ons.service-now.com/">Service Desk</a> and
+            include the questionnaire name, user role, and the date and time of failure.
           </p>
         </Panel>
       )}

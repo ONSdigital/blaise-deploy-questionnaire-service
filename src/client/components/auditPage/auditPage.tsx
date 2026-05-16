@@ -7,7 +7,7 @@ import {
   Table,
 } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 
 import { getAuditLogs } from "../../api/auditLogs";
 import { type AuditLog } from "../../utils/auditLog.types";
@@ -60,7 +60,7 @@ function AuditPage(): ReactElement {
         )}
         {!isLoading && listError === "" && (
           <div>
-            <ErrorBoundary errorMessageText={"Failed to load deployment history"}>
+            <ErrorBoundary errorMessageText={"Failed to get deployment history"}>
               <Table
                 columns={tableColumns}
                 id={"audit-table"}

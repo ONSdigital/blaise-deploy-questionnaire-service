@@ -1,8 +1,6 @@
-import { QuestionnaireMode } from "./questionnaireMode";
 import {
   GetStrictInterviewingSettings,
-  ValidateCATIModeSettings,
-  ValidateMixedModeSettings,
+  ValidateCatiModeOnlySettings,
   ValidateSettings,
 } from "./questionnaireSettings";
 
@@ -49,7 +47,7 @@ describe("Function GetStrictInterviewingSettings()", () => {
   });
 });
 
-describe("Function ValidateCATIModeSettings()", () => {
+describe("Function ValidateCatiModeOnlySettings()", () => {
   describe("when the settings are valid", () => {
     const questionnaireSettings = {
       type: "StrictInterviewing",
@@ -62,7 +60,7 @@ describe("Function ValidateCATIModeSettings()", () => {
     };
 
     it("returns true", () => {
-      const [valid, invalidSettings] = ValidateCATIModeSettings(questionnaireSettings);
+      const [valid, invalidSettings] = ValidateCatiModeOnlySettings(questionnaireSettings);
 
       expect(valid).toBeTruthy();
       expect(invalidSettings).toEqual({});
@@ -81,7 +79,7 @@ describe("Function ValidateCATIModeSettings()", () => {
     };
 
     it("returns true", () => {
-      const [valid, invalidSettings] = ValidateCATIModeSettings(questionnaireSettings);
+      const [valid, invalidSettings] = ValidateCatiModeOnlySettings(questionnaireSettings);
 
       expect(valid).toBeFalsy();
       expect(invalidSettings.saveSessionOnTimeout).toBeTruthy();
@@ -94,7 +92,7 @@ describe("Function ValidateCATIModeSettings()", () => {
   });
 });
 
-describe("Function ValidateMixedModeSettings()", () => {
+describe("Function ValidateSettings()", () => {
   describe("when the settings are valid", () => {
     const questionnaireSettings = {
       type: "StrictInterviewing",
@@ -107,7 +105,7 @@ describe("Function ValidateMixedModeSettings()", () => {
     };
 
     it("returns true", () => {
-      const [valid, invalidSettings] = ValidateMixedModeSettings(questionnaireSettings);
+      const [valid, invalidSettings] = ValidateSettings(questionnaireSettings);
 
       expect(valid).toBeTruthy();
       expect(invalidSettings).toEqual({});
@@ -126,7 +124,7 @@ describe("Function ValidateMixedModeSettings()", () => {
     };
 
     it("returns true", () => {
-      const [valid, invalidSettings] = ValidateMixedModeSettings(questionnaireSettings);
+      const [valid, invalidSettings] = ValidateSettings(questionnaireSettings);
 
       expect(valid).toBeFalsy();
       expect(invalidSettings.deleteSessionOnTimeout).toBeTruthy();
@@ -139,7 +137,7 @@ describe("Function ValidateMixedModeSettings()", () => {
   });
 });
 
-describe("Function ValidateSettings()", () => {
+describe("Mode-based settings validation", () => {
   const questionnaireSettings = {
     type: "StrictInterviewing",
     saveSessionOnTimeout: true,
@@ -150,12 +148,17 @@ describe("Function ValidateSettings()", () => {
     applyRecordLocking: true,
   };
 
+  function validateForModes(modes: string[]) {
+    const isCatiModeOnly = modes.length === 1 && modes[0] === "CATI";
+
+    return isCatiModeOnly
+      ? ValidateCatiModeOnlySettings(questionnaireSettings)
+      : ValidateSettings(questionnaireSettings);
+  }
+
   describe("when the mode is CATI", () => {
     it("uses cati validation rules and returns true", () => {
-      const [valid, invalidSettings] = ValidateSettings(
-        questionnaireSettings,
-        QuestionnaireMode.Cati,
-      );
+      const [valid, invalidSettings] = validateForModes(["CATI"]);
 
       expect(valid).toBeTruthy();
       expect(invalidSettings).toEqual({});
@@ -163,11 +166,8 @@ describe("Function ValidateSettings()", () => {
   });
 
   describe("when the mode is MIXED", () => {
-    it("uses cawi validation rules and returns false", () => {
-      const [valid, invalidSettings] = ValidateSettings(
-        questionnaireSettings,
-        QuestionnaireMode.Mixed,
-      );
+    it("uses default validation rules and returns false", () => {
+      const [valid, invalidSettings] = validateForModes(["CAWI"]);
 
       expect(valid).toBeFalsy();
       expect(invalidSettings.deleteSessionOnTimeout).toBeTruthy();

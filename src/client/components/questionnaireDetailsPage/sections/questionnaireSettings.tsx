@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { type ReactElement, useMemo } from "react";
+import { type ReactElement, useMemo } from "react";
 
 import { getQuestionnaireSettings } from "../../../api/questionnaires";
 import { clientLogger } from "../../../utils/logger";
-import { GetQuestionnaireMode, type QuestionnaireMode } from "../../../utils/questionnaireMode";
 import {
   GetStrictInterviewingSettings,
+  ValidateCatiModeOnlySettings,
   ValidateSettings,
 } from "../../../utils/questionnaireSettings";
 import { QuestionnaireSettings as QuestionnaireSettingsShared } from "../../shared/questionnaireSettings";
@@ -21,7 +21,7 @@ interface Props {
 }
 
 function QuestionnaireSettings({ questionnaire, modes }: Props): ReactElement {
-  const mode: QuestionnaireMode = useMemo(() => GetQuestionnaireMode(modes), [modes]);
+  const isCatiModeOnly = useMemo(() => modes.length === 1 && modes[0] === "CATI", [modes]);
 
   const { data: setting, error } = useQuery({
     queryKey: ["questionnaireSettings", questionnaire.name],
@@ -42,14 +42,16 @@ function QuestionnaireSettings({ questionnaire, modes }: Props): ReactElement {
   const errored = !!error;
 
   const invalidSettings: Partial<QuestionnaireSettingsType> = useMemo(() => {
-    if (setting === undefined || mode === undefined) {
+    if (setting === undefined) {
       return {};
     }
 
-    const [valid, invalid] = ValidateSettings(setting, mode);
+    const [valid, invalid] = isCatiModeOnly
+      ? ValidateCatiModeOnlySettings(setting)
+      : ValidateSettings(setting);
 
     return valid ? {} : invalid;
-  }, [mode, setting]);
+  }, [isCatiModeOnly, setting]);
 
   return (
     <QuestionnaireSettingsShared

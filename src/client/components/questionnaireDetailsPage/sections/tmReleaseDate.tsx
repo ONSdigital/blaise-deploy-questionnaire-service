@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { LoadingPanel, Panel } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { Link } from "react-router-dom";
 
 import { getTmReleaseDate } from "../../../api/tmReleaseDate";
@@ -28,15 +28,16 @@ function TmReleaseDate({ questionnaireName }: Props): ReactElement {
   const tmReleaseDate = tmReleaseDateValue !== "";
 
   function renderTmReleaseDate(): ReactElement | string {
-    const parsedReleaseDate = dateFormatter(tmReleaseDateValue);
+    const parsedTmReleaseDate = dateFormatter(tmReleaseDateValue);
 
-    if (!parsedReleaseDate.isValid()) {
+    if (!parsedTmReleaseDate.isValid()) {
       return tmReleaseDateValue;
     }
 
     return (
       <>
-        {parsedReleaseDate.format("DD/MM/YYYY")} ({formatRelativeDate(parsedReleaseDate.toDate())})
+        {parsedTmReleaseDate.format("DD/MM/YYYY")} (
+        {formatRelativeDate(parsedTmReleaseDate.toDate())})
       </>
     );
   }
@@ -77,22 +78,22 @@ function TmReleaseDate({ questionnaireName }: Props): ReactElement {
               <div className="ons-u-mt-m ons-u-mb-s">
                 {tmReleaseDate ? (
                   <Link
-                    to={`/questionnaire/${questionnaireName}/release-date`}
+                    to={`/questionnaire/${questionnaireName}/tm-release-date`}
                     state={{
                       questionnaireName: questionnaireName,
                       tmReleaseDate: tmReleaseDateValue,
                     }}
                     className="ons-summary__button"
-                    aria-label={`Change or delete release date for questionnaire ${questionnaireName}`}
+                    aria-label={`Change or delete Totalmobile release date for questionnaire ${questionnaireName}`}
                   >
                     Change or delete release date
                   </Link>
                 ) : (
                   <Link
-                    to={`/questionnaire/${questionnaireName}/release-date`}
+                    to={`/questionnaire/${questionnaireName}/tm-release-date`}
                     state={{ questionnaireName: questionnaireName }}
                     className="ons-summary__button"
-                    aria-label={`Add a release date for questionnaire ${questionnaireName}`}
+                    aria-label={`Add a Totalmobile release date for questionnaire ${questionnaireName}`}
                   >
                     Add release date
                   </Link>

@@ -1,10 +1,6 @@
-import { QuestionnaireMode } from "./questionnaireMode.js";
-
 import type { QuestionnaireSettings } from "blaise-api-node-client";
 
-// TODO: make validation mode specific, replace CATI vs mixed
-
-const ValidMixedModeSettings: Partial<QuestionnaireSettings> = {
+const ValidSettings: Partial<QuestionnaireSettings> = {
   saveSessionOnTimeout: true,
   saveSessionOnQuit: true,
   deleteSessionOnTimeout: true,
@@ -12,7 +8,7 @@ const ValidMixedModeSettings: Partial<QuestionnaireSettings> = {
   applyRecordLocking: true,
 };
 
-const ValidCatiModeSettings: Partial<QuestionnaireSettings> = {
+const ValidCatiModeOnlySettings: Partial<QuestionnaireSettings> = {
   saveSessionOnTimeout: true,
   saveSessionOnQuit: true,
   applyRecordLocking: true,
@@ -32,25 +28,14 @@ export function GetStrictInterviewingSettings(
 
 export function ValidateSettings(
   questionnaireSettings: QuestionnaireSettings,
-  questionnaireMode: QuestionnaireMode,
 ): [boolean, Partial<QuestionnaireSettings>] {
-  if (questionnaireMode === QuestionnaireMode.Cati) {
-    return ValidateCATIModeSettings(questionnaireSettings);
-  }
-
-  return ValidateMixedModeSettings(questionnaireSettings);
+  return validateSettings(questionnaireSettings, ValidSettings);
 }
 
-export function ValidateCATIModeSettings(
+export function ValidateCatiModeOnlySettings(
   questionnaireSettings: QuestionnaireSettings,
 ): [boolean, Partial<QuestionnaireSettings>] {
-  return validateSettings(questionnaireSettings, ValidCatiModeSettings);
-}
-
-export function ValidateMixedModeSettings(
-  questionnaireSettings: QuestionnaireSettings,
-): [boolean, Partial<QuestionnaireSettings>] {
-  return validateSettings(questionnaireSettings, ValidMixedModeSettings);
+  return validateSettings(questionnaireSettings, ValidCatiModeOnlySettings);
 }
 
 function setInvalidSetting<K extends keyof QuestionnaireSettings>(

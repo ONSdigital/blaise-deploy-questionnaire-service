@@ -2,9 +2,9 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react";
 
-type DefineStepFunction = (
+type DefineStepFunction = <TArgs extends unknown[]>(
   name: string | RegExp,
-  callback: (...args: any[]) => void | Promise<void>,
+  callback: (...args: TArgs) => void | Promise<void>,
 ) => void;
 
 import flushPromises from "../../test-utils/flushPromises";
@@ -48,7 +48,7 @@ export function thenNoDeleteOption(then: DefineStepFunction): void {
 
 export function thenLiveQuestionnaireWarning(then: DefineStepFunction): void {
   then("I am presented with a warning banner that I cannot overwrite the survey", async () => {
-    expect(await screen.findByText(/you cannot overwrite questionnaire that are currently live/i));
+    expect(await screen.findByText(/you cannot overwrite a questionnaire that is currently live/i));
   });
 }
 
@@ -367,8 +367,7 @@ export function thenUacError(then: DefineStepFunction): void {
 
 export function thenCasesDisplayed(then: DefineStepFunction): void {
   then(/I can see that that the questionnaire has (\d+) cases/, async (cases: string) => {
-    // Should appear twice as the number 500 should show for number of cases
-    // as well as number of Unique Access Codes generated
+    // Should appear twice, case count and UAC count
     await waitFor(() => {
       expect(screen.getAllByText(cases)).toHaveLength(2);
     });
@@ -385,8 +384,8 @@ export function thenDeploySuccessBanner(then: DefineStepFunction): void {
 
 export function thenCanOnlyReturnToLandingPage(then: DefineStepFunction): void {
   then("I can only return to the landing page", async () => {
-    expect(await screen.findByText(/accept and go to table of questionnaires/i));
-    await userEvent.click(await screen.findByText(/accept and go to table of questionnaires/i));
+    expect(await screen.findByText(/view questionnaires/i));
+    await userEvent.click(await screen.findByText(/view questionnaires/i));
   });
 }
 
@@ -512,7 +511,13 @@ export function thenTmReleaseDateShown(then: DefineStepFunction): void {
   then(
     /I can view the Totalmobile release date is set to '(.*)'/,
     async (tmReleaseDate: string) => {
-      expect(await screen.findByText(new RegExp(tmReleaseDate, "i"))).toBeDefined();
+      expect(
+        await screen.findAllByText((_, element) => {
+          const text = element?.textContent ?? "";
+
+          return text.includes(tmReleaseDate);
+        }),
+      ).not.toHaveLength(0);
     },
   );
 }
@@ -546,7 +551,9 @@ export function thenChangeOrDeleteTmReleaseDateOption(then: DefineStepFunction):
 export function thenAddTmReleaseDateOption(then: DefineStepFunction): void {
   then("I have the option to add a Totalmobile release date", async () => {
     expect(
-      await screen.findByRole("link", { name: /^Add a release date for questionnaire /i }),
+      await screen.findByRole("link", {
+        name: /^Add a Totalmobile release date for questionnaire /i,
+      }),
     ).toBeDefined();
   });
 }

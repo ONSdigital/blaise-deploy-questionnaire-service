@@ -1,5 +1,5 @@
 import { Panel } from "blaise-design-system-react-components";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 
 import { QuestionnaireSettings } from "../../shared/questionnaireSettings";
 
@@ -31,7 +31,6 @@ function InvalidSettings({
             If this is expected, select <b>Deploy anyway</b>. If it is not expected, select{" "}
             <b>Cancel</b> and start again.
           </p>
-          <p>Please do not leave this page until you have selected an option.</p>
         </Panel>
       </div>
       <QuestionnaireSettings

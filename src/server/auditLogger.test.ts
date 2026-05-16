@@ -187,13 +187,19 @@ describe("AuditLogger", () => {
     });
 
     it("passes the correct filter and maxResults to getEntries", async () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-05-16T15:13:27.000Z"));
       mockGetEntries.mockResolvedValueOnce([[]]);
+
       await auditLogger.getLogs();
+
       expect(mockGetEntries).toHaveBeenCalledWith({
         filter:
-          'resource.type="gae_app" AND resource.labels.module_id="dqs-ui" AND jsonPayload.message=~"^AUDIT_LOG: "',
+          'resource.type="gae_app" AND resource.labels.module_id="dqs-ui" AND timestamp >= "2026-05-09T15:13:27.000Z" AND jsonPayload.message:"AUDIT_LOG:"',
         maxResults: 50,
       });
+
+      vi.useRealTimers();
     });
   });
 });

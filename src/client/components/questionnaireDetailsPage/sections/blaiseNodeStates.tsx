@@ -1,5 +1,5 @@
 import { Collapsible } from "blaise-design-system-react-components";
-import React, { Fragment, type ReactElement } from "react";
+import { Fragment, type ReactElement } from "react";
 
 import { QuestionnaireStatus } from "../../shared/questionnaireStatus";
 

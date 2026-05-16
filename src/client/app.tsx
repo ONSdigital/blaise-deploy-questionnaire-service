@@ -79,7 +79,7 @@ function NotFound(): ReactElement {
     >
       <h1>Page not found</h1>
       <p>The page you're looking for doesn't exist.</p>
-      <Link to="/">Return to home</Link>
+      <Link to="/">Return home</Link>
     </main>
   );
 }
@@ -164,7 +164,7 @@ function AppRoutes({
             }
           />
           <Route
-            path="/questionnaire/:questionnaireName/release-date"
+            path="/questionnaire/:questionnaireName/tm-release-date"
             element={<QuestionnaireTmReleaseDatePage />}
           />
           <Route
@@ -172,7 +172,7 @@ function AppRoutes({
             element={<ReissueNewDonorCasePage />}
           />
           <Route
-            path="/questionnaire/:questionnaireName/start-date"
+            path="/questionnaire/:questionnaireName/to-start-date"
             element={<QuestionnaireToStartDatePage />}
           />
           <Route
@@ -216,8 +216,7 @@ function App(): ReactElement {
     location.pathname === "/" &&
     typeof (location.state as { deletedQuestionnaireName?: unknown } | null)
       ?.deletedQuestionnaireName === "string"
-      ? ((location.state as { deletedQuestionnaireName?: string } | null)
-          ?.deletedQuestionnaireName ?? "")
+      ? (location.state as { deletedQuestionnaireName: string }).deletedQuestionnaireName
       : "";
 
   function onDeleteQuestionnaire(questionnaireName: string): void {

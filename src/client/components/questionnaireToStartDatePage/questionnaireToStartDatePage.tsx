@@ -2,12 +2,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, LoadingPanel, Panel } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
 import { Form, Formik, type FormikHelpers } from "formik";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { getToStartDate, setToStartDate } from "../../api/toStartDate";
 import { clientLogger } from "../../utils/logger";
-import { AskStartDate } from "../shared/dateQuestions/askStartDate";
+import { AskToStartDate } from "../shared/dateQuestions/askToStartDate";
 
 interface LocationState {
   toStartDate: string | null;
@@ -125,7 +125,7 @@ function QuestionnaireToStartDatePage(): ReactElement {
         >
           {({ isSubmitting }) => (
             <Form id={"formID"}>
-              <AskStartDate questionnaireName={questionnaireName} />
+              <AskToStartDate questionnaireName={questionnaireName} />
 
               <div className="ons-btn-group ons-u-mt-m">
                 <Button

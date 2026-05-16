@@ -1,7 +1,6 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { act } from "react";
 import { MemoryRouter } from "react-router-dom";
 
 import {
@@ -9,7 +8,6 @@ import {
   ipsQuestionnaire,
 } from "../../../features/step_definitions/helpers/api.mock";
 import { MockAuthenticate } from "../../../test-utils/authenticate.mock";
-import flushPromises from "../../../test-utils/flushPromises";
 
 import { CreateDonorCases } from "./createDonorCases";
 
@@ -28,42 +26,29 @@ describe("IPS questionnaires", () => {
     mock.reset();
   });
 
-  it("should display the option to create donor cases for IPS Manager and IPS Field Interviewer", async () => {
+  it("should display the option to create donor cases for IPS Manager and IPS Field Interviewer", () => {
     render(
       <MemoryRouter initialEntries={["/questionnaire/"]}>
         <CreateDonorCases questionnaire={ipsQuestionnaire} />
       </MemoryRouter>,
     );
 
-    await act(async () => {
-      await flushPromises();
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText("IPS Manager")).toBeDefined();
-      expect(screen.getByText("IPS Field Interviewer")).toBeDefined();
-      const createCasesElements = screen.getAllByText("Create cases");
-
-      expect(createCasesElements.length).toBe(4);
-    });
+    expect(screen.getByText("IPS Manager")).toBeInTheDocument();
+    expect(screen.getByText("IPS Field Interviewer")).toBeInTheDocument();
+    expect(
+      screen.getByText(/Only interviewers without an existing donor case will receive one\./),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Create cases")).toHaveLength(4);
   });
 
-  it("should display the option to create donor cases for IPS Pilot Interviewer only given it's an IPS Pilot Questionnaire", async () => {
+  it("should display the option to create donor cases for IPS Pilot Interviewer only given it's an IPS Pilot Questionnaire", () => {
     render(
       <MemoryRouter initialEntries={["/questionnaire/"]}>
         <CreateDonorCases questionnaire={ipsPilotQuestionnaire} />
       </MemoryRouter>,
     );
 
-    await act(async () => {
-      await flushPromises();
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText("IPS Pilot Interviewer")).toBeDefined();
-      const createCasesElements = screen.getAllByText("Create cases");
-
-      expect(createCasesElements.length).toBe(3);
-    });
+    expect(screen.getByText("IPS Pilot Interviewer")).toBeInTheDocument();
+    expect(screen.getAllByText("Create cases")).toHaveLength(3);
   });
 });

@@ -1,5 +1,5 @@
 import { Panel } from "blaise-design-system-react-components";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 
 interface SelectFilePageProps {
   questionnaireName: string;
@@ -13,7 +13,7 @@ function ConfirmOverride({ questionnaireName }: SelectFilePageProps): ReactEleme
         <em className="ons-highlight">{questionnaireName}</em>?
       </h1>
 
-      <Panel status={"warn"}>All existing questionnaire data will be deleted</Panel>
+      <Panel status={"warn"}>All questionnaire data will be deleted</Panel>
     </>
   );
 }

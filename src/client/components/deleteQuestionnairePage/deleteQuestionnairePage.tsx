@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { LoadingPanel, Panel } from "blaise-design-system-react-components";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { Navigate, useLocation, useParams } from "react-router-dom";
 
 import { getQuestionnaire, getQuestionnaireModes } from "../../api/questionnaires";
 
 import { DeleteConfirmation } from "./sections/deleteConfirmation";
-import { ErroneousWarning } from "./sections/erroneousWarning";
+import { FailedStateWarning } from "./sections/failedStateWarning";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
@@ -65,7 +65,7 @@ function DeleteQuestionnairePage({ onDelete, onCancel }: Props): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        <Panel status="error">Could not get delete confirmation details, please try again</Panel>
+        <Panel status="error">Failed to get delete questionnaire confirmation details</Panel>
       </main>
     );
   }
@@ -96,7 +96,7 @@ function DeleteQuestionnairePage({ onDelete, onCancel }: Props): ReactElement {
         className="ons-page__main ons-u-mt-l"
       >
         {fallbackQuestionnaire.status === "Failed" ? (
-          <ErroneousWarning questionnaireName={fallbackQuestionnaire.name} />
+          <FailedStateWarning questionnaireName={fallbackQuestionnaire.name} />
         ) : (
           <DeleteConfirmation
             questionnaire={fallbackQuestionnaire}

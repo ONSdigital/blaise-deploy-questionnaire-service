@@ -130,8 +130,11 @@ class BimsHandler {
       return res.status(204).json();
     } catch (error: unknown) {
       req.log.error(
-        error,
-        `Failed to delete Telephone Operations start date for questionnaire ${safeQuestionnaireName}`,
+        {
+          error: getSafeErrorMessage(error),
+          questionnaireName: safeQuestionnaireName,
+        },
+        "Failed to delete Telephone Operations start date for questionnaire",
       );
       this.auditLogger.error(
         req.log,
@@ -290,8 +293,11 @@ class BimsHandler {
       return res.status(201).json(responseBody);
     } catch (error: unknown) {
       req.log.error(
-        error,
-        `Failed to set Totalmobile release date for questionnaire ${safeQuestionnaireName}`,
+        {
+          error: getSafeErrorMessage(error),
+          questionnaireName: safeQuestionnaireName,
+        },
+        "Failed to set Totalmobile release date for questionnaire",
       );
 
       return res.status(500).json();
@@ -322,8 +328,11 @@ class BimsHandler {
       return res.status(204).json();
     } catch (error: unknown) {
       req.log.error(
-        error,
-        `Failed to delete Totalmobile release date for questionnaire ${safeQuestionnaireName}`,
+        {
+          error: getSafeErrorMessage(error),
+          questionnaireName: safeQuestionnaireName,
+        },
+        "Failed to delete Totalmobile release date for questionnaire",
       );
       this.auditLogger.error(
         req.log,
@@ -371,4 +380,20 @@ function tmReleaseDateExists(
   const regexp = new RegExp(/^[0-9]{4}-[0-9]{2}-[0-9]{2}(.{1}[0-9]{2}:[0-9]{2}:[0-9]{2})?/);
 
   return regexp.test(tmReleaseDate.tmreleasedate);
+}
+
+function getSafeErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return sanitise(`${error.name}: ${error.message}`);
+  }
+
+  if (typeof error === "object" && error !== null && "message" in error) {
+    const errorMessage = error.message;
+
+    if (typeof errorMessage === "string") {
+      return sanitise(errorMessage);
+    }
+  }
+
+  return sanitise(String(error));
 }

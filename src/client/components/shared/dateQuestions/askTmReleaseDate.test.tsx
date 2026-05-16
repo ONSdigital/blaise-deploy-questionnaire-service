@@ -1,8 +1,8 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { render } from "@testing-library/react";
 import { Formik } from "formik";
 
-import { AskReleaseDate } from "./askReleaseDate";
+import { AskTmReleaseDate } from "./askTmReleaseDate";
 
 describe("Ask to set Totalmobile release date page", () => {
   it("should match the Snapshot", () => {
@@ -11,7 +11,7 @@ describe("Ask to set Totalmobile release date page", () => {
         initialValues={{}}
         onSubmit={() => {}}
       >
-        <AskReleaseDate questionnaireName={"LMS2207T"} />
+        <AskTmReleaseDate questionnaireName={"LMS2207T"} />
       </Formik>,
     );
 
@@ -24,7 +24,7 @@ describe("Ask to set Totalmobile release date page", () => {
         initialValues={{}}
         onSubmit={() => {}}
       >
-        <AskReleaseDate questionnaireName={"LMS2207T"} />
+        <AskTmReleaseDate questionnaireName={"LMS2207T"} />
       </Formik>,
     );
 
@@ -37,7 +37,7 @@ describe("Ask to set Totalmobile release date page", () => {
         initialValues={{}}
         onSubmit={() => {}}
       >
-        <AskReleaseDate questionnaireName={"LMS2207T"} />
+        <AskTmReleaseDate questionnaireName={"LMS2207T"} />
       </Formik>,
     );
 

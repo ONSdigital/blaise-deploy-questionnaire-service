@@ -8,6 +8,7 @@ const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 describe("sendClientLog", () => {
   afterEach(() => {
     mock.reset();
+    vi.unstubAllGlobals();
   });
 
   it("posts a payload to /api/client-log", async () => {
@@ -46,5 +47,46 @@ describe("sendClientLog", () => {
     const payload3 = JSON.parse(mock.history.post[2].data);
 
     expect(payload3.message).toContain("boom");
+  });
+
+  it("falls back for circular values and captures stack information from later error args", async () => {
+    mock.onPost("/api/client-log").reply(204);
+
+    const circular: { self?: unknown } = {};
+
+    circular.self = circular;
+
+    const err = new Error("secondary");
+
+    await sendClientLog("error", circular, err);
+
+    const payload = JSON.parse(mock.history.post[0].data);
+
+    expect(payload.message).toEqual("[object Object]");
+    expect(payload.args[0]).toContain("secondary");
+    expect(payload.stack).toContain("secondary");
+  });
+
+  it("falls back to a generic error message and omits browser-only fields when globals are unavailable", async () => {
+    mock.onPost("/api/client-log").reply(204);
+
+    vi.stubGlobal("window", undefined);
+    vi.stubGlobal("navigator", undefined);
+
+    const errorWithoutMessage = new Error("");
+
+    Object.defineProperty(errorWithoutMessage, "stack", {
+      configurable: true,
+      value: "",
+    });
+
+    await sendClientLog("error", errorWithoutMessage);
+
+    const payload = JSON.parse(mock.history.post[0].data);
+
+    expect(payload.message).toEqual("Error");
+    expect(payload.pathname).toBeUndefined();
+    expect(payload.href).toBeUndefined();
+    expect(payload.userAgent).toBeUndefined();
   });
 });

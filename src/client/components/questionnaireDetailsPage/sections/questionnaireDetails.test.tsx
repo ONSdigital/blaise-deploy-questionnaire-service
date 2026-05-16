@@ -34,13 +34,13 @@ describe("Questionnaire details happy path", () => {
     });
   });
 
-  it("should display the questionnaire's 'Questionnaire status'", async () => {
+  it("should display the questionnaire's 'Status'", async () => {
     await act(async () => {
       await flushPromises();
     });
 
     await waitFor(() => {
-      expect(screen.getByText("Questionnaire status")).toBeDefined();
+      expect(screen.getByText("Status")).toBeDefined();
       expect(screen.getByText("Active")).toBeDefined();
     });
   });
@@ -104,7 +104,7 @@ describe("Questionnaire details happy path", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("Questionnaire status")).toBeDefined();
+      expect(screen.getByText("Status")).toBeDefined();
       expect(screen.queryByText("undefined")).not.toBeInTheDocument();
     });
   });

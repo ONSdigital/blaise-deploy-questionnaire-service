@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
@@ -261,7 +261,7 @@ describe("DeleteConfirmation", () => {
       );
 
       expect(
-        await screen.findByText(/Could not get warning details, please try again/i),
+        await screen.findByText(/Failed to get delete questionnaire warning details/i),
       ).toBeVisible();
       expect(view).toMatchSnapshot();
     });

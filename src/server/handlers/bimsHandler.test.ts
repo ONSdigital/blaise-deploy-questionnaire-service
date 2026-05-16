@@ -49,6 +49,15 @@ vi.mock("blaise-login-react-server", async () => {
 
   return mockLoginReactServerModule();
 });
+vi.mock("blaise-api-node-client", () => ({
+  __esModule: true,
+  BlaiseApiClient: class MockBlaiseApiClient {
+    constructor(_url?: string) {}
+  },
+  default: class MockBlaiseApiClient {
+    constructor(_url?: string) {}
+  },
+}));
 
 Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
 Auth.prototype.GetUser = vi
@@ -62,10 +71,13 @@ const logger: pino.Logger = pino();
 
 logger.child = vi.fn(() => logger) as unknown as typeof logger.child;
 const logInfo = vi.spyOn(logger, "info");
+const logError = vi.spyOn(logger, "error");
 const httpLogger: HttpLogger = pinoHttp({ logger: logger });
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 const jsonHeaders = { "content-type": "application/json" };
+
+vi.spyOn(axios, "create").mockReturnValue(axios);
 
 const config = getConfigFromEnv();
 const request = supertest(newServer(config, httpLogger));
@@ -87,7 +99,7 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
     expect(response.body).toStrictEqual("");
   });
 
-  it("should delete an existing Telephone Operations start date when an empty start date is provided", async () => {
+  it("should delete an existing Telephone Operations start date when an empty Telephone Operations start date is provided", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
@@ -137,6 +149,22 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
     );
   });
 
+  it("should audit-log a failure when updating an existing Telephone Operations start date fails", async () => {
+    mock
+      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
+    mock.onPatch(`${config.BimsApiUrl}/tostartdate/OPN2004A`).networkError();
+
+    const response: Response = await request
+      .post("/api/tostartdate/OPN2004A")
+      .send({ tostartdate: "2022-12-31" });
+
+    expect(response.status).toEqual(500);
+    expect(logError).toHaveBeenCalledWith(
+      "AUDIT_LOG: rich failed to set OPN2004A Telephone Operations start date to 2022-12-31 (previously 2022-01-01)",
+    );
+  });
+
   it("should return a 201 status when a Telephone Operations start date is provided", async () => {
     mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
     mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(201, {}, jsonHeaders);
@@ -174,6 +202,20 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
 
     expect(response.status).toEqual(500);
   });
+
+  it("should audit-log a failure when setting a new Telephone Operations start date fails without a previous value", async () => {
+    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
+    mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).networkError();
+
+    const response: Response = await request
+      .post("/api/tostartdate/OPN2004A")
+      .send({ tostartdate: "2022-12-31" });
+
+    expect(response.status).toEqual(500);
+    expect(logError).toHaveBeenCalledWith(
+      "AUDIT_LOG: rich failed to set OPN2004A Telephone Operations start date to 2022-12-31",
+    );
+  });
 });
 
 describe("Getting Telephone Operations start date from BIMS service", () => {
@@ -182,7 +224,7 @@ describe("Getting Telephone Operations start date from BIMS service", () => {
     mock.reset();
   });
 
-  it("should return a 404 status when BIMS returns no content for the start date", async () => {
+  it("should return a 404 status when BIMS returns no content for the Telephone Operations start date", async () => {
     mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(204, undefined, jsonHeaders);
 
     const response: Response = await request.get("/api/tostartdate/OPN2004A");
@@ -190,7 +232,7 @@ describe("Getting Telephone Operations start date from BIMS service", () => {
     expect(response.status).toEqual(404);
   });
 
-  it("should return a 200 status with a Telephone Operations start date response body when a start date is provided", async () => {
+  it("should return a 200 status with a Telephone Operations start date response body when a Telephone Operations start date is provided", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-12-31" }, jsonHeaders);
@@ -266,6 +308,13 @@ describe("Deleting Telephone Operations start date from BIMS service", () => {
     const response: Response = await request.delete("/api/tostartdate/OPN2004A");
 
     expect(response.status).toEqual(500);
+    expect(logError).toHaveBeenCalledWith(
+      {
+        error: "Error: Network Error",
+        questionnaireName: "OPN2004A",
+      },
+      "Failed to delete Telephone Operations start date for questionnaire",
+    );
   });
 });
 
@@ -297,12 +346,32 @@ describe("Sending Totalmobile release date to BIMS service", () => {
     expect(response.status).toEqual(500);
   });
 
-  describe("when there is no existing release date", () => {
+  it("should sanitise object-like errors when setting a Totalmobile release date fails", async () => {
+    mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
+    mock
+      .onPost(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .reply(() => Promise.reject({ message: "bad\nmessage" }) as never);
+
+    const response: Response = await request
+      .post("/api/tmreleasedate/LMS2004A")
+      .send({ tmreleasedate: "2022-12-31" });
+
+    expect(response.status).toEqual(500);
+    expect(logError).toHaveBeenCalledWith(
+      {
+        error: "badmessage",
+        questionnaireName: "LMS2004A",
+      },
+      "Failed to set Totalmobile release date for questionnaire",
+    );
+  });
+
+  describe("when there is no existing Totalmobile release date", () => {
     beforeEach(() => {
       mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
     });
 
-    describe("specifying a new release date", () => {
+    describe("specifying a new Totalmobile release date", () => {
       beforeEach(() => {
         mock.onPost(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(201, {}, jsonHeaders);
       });
@@ -316,12 +385,12 @@ describe("Sending Totalmobile release date to BIMS service", () => {
         expect(response.body).toStrictEqual({});
       });
 
-      it("updates BIMS with a release date", async () => {
+      it("updates BIMS with a Totalmobile release date", async () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "2022-12-31" });
         expect(mock.history.post[0].data).toEqual('{"tmreleasedate":"2022-12-31"}');
       });
 
-      it("should log a message when a release date is provided", async () => {
+      it("should log a message when a Totalmobile release date is provided", async () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "2022-12-31" });
 
         expect(logInfo).toHaveBeenCalledWith(
@@ -330,7 +399,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
       });
     });
 
-    describe("not specifying any release date", () => {
+    describe("not specifying any Totalmobile release date", () => {
       it("should return a 201 status", async () => {
         const response: Response = await request
           .post("/api/tmreleasedate/LMS2004A")
@@ -342,7 +411,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
     });
   });
 
-  describe("when there is an existing release date", () => {
+  describe("when there is an existing Totalmobile release date", () => {
     beforeEach(() => {
       mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(
         200,
@@ -353,7 +422,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
       );
     });
 
-    describe("specifying a new release date", () => {
+    describe("specifying a new Totalmobile release date", () => {
       beforeEach(() => {
         mock.onPatch(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(201, {}, jsonHeaders);
       });
@@ -367,20 +436,41 @@ describe("Sending Totalmobile release date to BIMS service", () => {
         expect(response.body).toStrictEqual({});
       });
 
-      it("updates BIMS with a release date", async () => {
+      it("updates BIMS with a Totalmobile release date", async () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "2022-12-31" });
         expect(mock.history.patch[0].data).toEqual('{"tmreleasedate":"2022-12-31"}');
       });
 
-      it("should log a message when a release date is provided", async () => {
+      it("should log a message when a Totalmobile release date is provided", async () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "2022-12-31" });
         expect(logInfo).toHaveBeenCalledWith(
           "AUDIT_LOG: rich updated LMS2004A Totalmobile release date to 2022-12-31 (previously 2022-06-27)",
         );
       });
+
+      it("should audit-log a failure when updating an existing Totalmobile release date fails", async () => {
+        mock.resetHandlers();
+        mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(
+          200,
+          {
+            tmreleasedate: "2022-06-27T16:29:00+00:00",
+          },
+          jsonHeaders,
+        );
+        mock.onPatch(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
+
+        const response: Response = await request
+          .post("/api/tmreleasedate/LMS2004A")
+          .send({ tmreleasedate: "2022-12-31" });
+
+        expect(response.status).toEqual(500);
+        expect(logError).toHaveBeenCalledWith(
+          "AUDIT_LOG: rich failed to update LMS2004A Totalmobile release date to 2022-12-31 (previously 2022-06-27)",
+        );
+      });
     });
 
-    describe("deleting a release date", () => {
+    describe("deleting a Totalmobile release date", () => {
       beforeEach(() => {
         mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
       });
@@ -394,15 +484,36 @@ describe("Sending Totalmobile release date to BIMS service", () => {
         expect(response.body).toStrictEqual("");
       });
 
-      it("updates BIMS with a release date", async () => {
+      it("updates BIMS with a Totalmobile release date", async () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "" });
         expect(mock.history.delete.length).toBe(1);
       });
 
-      it("should log a message when a release date is not provided", async () => {
+      it("should log a message when a Totalmobile release date is not provided", async () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "" });
         expect(logInfo).toHaveBeenCalledWith(
           "AUDIT_LOG: rich deleted LMS2004A Totalmobile release date (previously 2022-06-27)",
+        );
+      });
+
+      it("should audit-log a failure when deleting an existing Totalmobile release date fails", async () => {
+        mock.resetHandlers();
+        mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(
+          200,
+          {
+            tmreleasedate: "2022-06-27T16:29:00+00:00",
+          },
+          jsonHeaders,
+        );
+        mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
+
+        const response: Response = await request
+          .post("/api/tmreleasedate/LMS2004A")
+          .send({ tmreleasedate: "" });
+
+        expect(response.status).toEqual(500);
+        expect(logError).toHaveBeenCalledWith(
+          "AUDIT_LOG: rich failed to delete LMS2004A Totalmobile release date (previously 2022-06-27)",
         );
       });
     });
@@ -415,7 +526,7 @@ describe("Getting Totalmobile release date from BIMS service", () => {
     mock.reset();
   });
 
-  it("should return a 200 status with a Totalmobile release date response body when a release date is provided", async () => {
+  it("should return a 200 status with a Totalmobile release date response body when a Totalmobile release date is provided", async () => {
     mock
       .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
@@ -426,7 +537,7 @@ describe("Getting Totalmobile release date from BIMS service", () => {
     expect(response.body).toStrictEqual({ tmreleasedate: "2022-12-31" });
   });
 
-  it("should return a 404 status when BIMS returns no content for the release date", async () => {
+  it("should return a 404 status when BIMS returns no content for the Totalmobile release date", async () => {
     mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, undefined, jsonHeaders);
 
     const response: Response = await request.get("/api/tmreleasedate/LMS2004A");
@@ -509,5 +620,45 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
     const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");
 
     expect(response.status).toEqual(500);
+  });
+
+  it("should sanitise non-error values when deleting a Totalmobile release date fails", async () => {
+    mock
+      .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
+    mock
+      .onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .reply(() => Promise.reject("bad\nmessage") as never);
+
+    const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");
+
+    expect(response.status).toEqual(500);
+    expect(logError).toHaveBeenCalledWith(
+      {
+        error: "badmessage",
+        questionnaireName: "LMS2004A",
+      },
+      "Failed to delete Totalmobile release date for questionnaire",
+    );
+  });
+
+  it("should fall back to stringifying object-like errors with non-string messages", async () => {
+    mock
+      .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
+    mock
+      .onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .reply(() => Promise.reject({ message: { detail: "bad" } }) as never);
+
+    const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");
+
+    expect(response.status).toEqual(500);
+    expect(logError).toHaveBeenCalledWith(
+      {
+        error: "[object Object]",
+        questionnaireName: "LMS2004A",
+      },
+      "Failed to delete Totalmobile release date for questionnaire",
+    );
   });
 });

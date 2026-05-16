@@ -5,7 +5,7 @@ import MockAdapter from "axios-mock-adapter";
 import { createWrapper } from "../../../test-utils/renderWithQueryClient";
 
 import { FindUser } from "./findUser";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
@@ -23,13 +23,13 @@ describe("FindUser happy path", () => {
   it("renders input and label", async () => {
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
       />,
       { wrapper: createWrapper() },
     );
     await waitFor(() => {
-      expect(screen.getByPlaceholderText("Enter Username")).toBeInTheDocument();
+      expect(screen.getByPlaceholderText("Enter username")).toBeInTheDocument();
     });
   });
 
@@ -37,13 +37,13 @@ describe("FindUser happy path", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
       />,
       { wrapper: createWrapper() },
     );
     await waitFor(() => {
-      expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled();
+      expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled();
     });
   });
 
@@ -51,14 +51,14 @@ describe("FindUser happy path", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
       />,
       { wrapper: createWrapper() },
     );
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled();
+      expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled();
     });
 
     if (document != null) {
@@ -80,14 +80,14 @@ describe("FindUser happy path", () => {
 
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
         onItemSelected={onItemSelected}
       />,
       { wrapper: createWrapper() },
     );
-    await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
-    const input = screen.getByPlaceholderText("Enter Username");
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter username");
 
     fireEvent.change(input, { target: { value: "Jill" } });
     expect(onItemSelected).toHaveBeenCalledWith("Jill");
@@ -99,7 +99,7 @@ describe("FindUser happy path", () => {
 
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
         onError={onError}
       />,
@@ -114,7 +114,7 @@ describe("FindUser happy path", () => {
 
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
         onError={onError}
       />,
@@ -130,14 +130,14 @@ describe("FindUser happy path", () => {
 
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
         onItemSelected={onItemSelected}
       />,
       { wrapper: createWrapper() },
     );
-    await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
-    const input = screen.getByPlaceholderText("Enter Username");
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter username");
 
     fireEvent.change(input, { target: { value: "NotAUser" } });
     fireEvent.blur(input);
@@ -152,7 +152,7 @@ describe("FindUser happy path", () => {
 
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
         onItemSelected={onItemSelected}
         onError={onError}
@@ -160,8 +160,8 @@ describe("FindUser happy path", () => {
       { wrapper: createWrapper() },
     );
 
-    await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
-    const input = screen.getByPlaceholderText("Enter Username");
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter username");
 
     fireEvent.change(input, { target: { value: "NotAUser" } });
     fireEvent.blur(input);
@@ -177,7 +177,7 @@ describe("FindUser happy path", () => {
 
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
         onItemSelected={onItemSelected}
         onError={onError}
@@ -185,8 +185,8 @@ describe("FindUser happy path", () => {
       { wrapper: createWrapper() },
     );
 
-    await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
-    const input = screen.getByPlaceholderText("Enter Username");
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter username");
 
     fireEvent.change(input, { target: { value: "   " } });
     fireEvent.blur(input);
@@ -202,7 +202,7 @@ describe("FindUser happy path", () => {
 
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
         onItemSelected={onItemSelected}
         onError={onError}
@@ -210,8 +210,8 @@ describe("FindUser happy path", () => {
       { wrapper: createWrapper() },
     );
 
-    await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
-    const input = screen.getByPlaceholderText("Enter Username");
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter username");
 
     fireEvent.change(input, { target: { value: "Jill" } });
     fireEvent.blur(input);
@@ -225,13 +225,13 @@ describe("FindUser happy path", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
       />,
       { wrapper: createWrapper() },
     );
-    await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
-    const input = screen.getByPlaceholderText("Enter Username");
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter username");
 
     fireEvent.change(input, { target: { value: "zzz" } });
     expect(screen.queryAllByRole("option")).toHaveLength(0);
@@ -243,13 +243,13 @@ describe("FindUser happy path", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: { message: unordered } });
     render(
       <FindUser
-        label="Enter Username"
+        label="Enter username"
         roles={roles}
       />,
       { wrapper: createWrapper() },
     );
-    await waitFor(() => expect(screen.getByPlaceholderText("Enter Username")).not.toBeDisabled());
-    const input = screen.getByPlaceholderText("Enter Username");
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter username");
 
     fireEvent.focus(input);
     const datalistId = screen.getByRole("combobox").getAttribute("list");

@@ -2,12 +2,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, LoadingPanel, Panel } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
 import { Form, Formik, type FormikHelpers } from "formik";
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { getTmReleaseDate, setTmReleaseDate } from "../../api/tmReleaseDate";
 import { clientLogger } from "../../utils/logger";
-import { AskReleaseDate } from "../shared/dateQuestions/askReleaseDate";
+import { AskTmReleaseDate } from "../shared/dateQuestions/askTmReleaseDate";
 
 interface LocationState {
   tmReleaseDate: string | null;
@@ -125,7 +125,7 @@ function QuestionnaireTmReleaseDatePage(): ReactElement {
         >
           {({ isSubmitting }) => (
             <Form id={"formID"}>
-              <AskReleaseDate questionnaireName={questionnaireName} />
+              <AskTmReleaseDate questionnaireName={questionnaireName} />
 
               <div className="ons-btn-group ons-u-mt-m">
                 <Button

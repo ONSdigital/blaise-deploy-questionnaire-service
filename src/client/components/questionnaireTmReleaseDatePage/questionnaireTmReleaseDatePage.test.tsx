@@ -90,7 +90,7 @@ describe("QuestionnaireTmReleaseDatePage", () => {
     expect(mockNavigate).not.toHaveBeenCalledWith(-1);
   });
 
-  it("clears the release date and navigates back when the user chooses no", async () => {
+  it("clears the Totalmobile release date and navigates back when the user chooses no", async () => {
     vi.mocked(setTmReleaseDate).mockResolvedValue(true);
 
     renderWithQueryClient(
@@ -120,14 +120,14 @@ describe("QuestionnaireTmReleaseDatePage", () => {
     });
   });
 
-  it("supports direct questionnaire routes by fetching the current release date and returning to details", async () => {
+  it("supports direct questionnaire routes by fetching the current Totalmobile release date and returning to details", async () => {
     vi.mocked(getTmReleaseDate).mockResolvedValueOnce("2026-01-01");
 
     renderWithQueryClient(
-      <MemoryRouter initialEntries={["/questionnaire/LMS2605_LJ2/release-date"]}>
+      <MemoryRouter initialEntries={["/questionnaire/LMS2605_LJ2/tm-release-date"]}>
         <Routes>
           <Route
-            path="/questionnaire/:questionnaireName/release-date"
+            path="/questionnaire/:questionnaireName/tm-release-date"
             element={<QuestionnaireTmReleaseDatePage />}
           />
         </Routes>
@@ -142,5 +142,22 @@ describe("QuestionnaireTmReleaseDatePage", () => {
     fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
 
     expect(mockNavigate).toHaveBeenCalledWith("/questionnaire/LMS2605_LJ2", { replace: true });
+  });
+
+  it("shows an error panel when loading the Totalmobile release date fails", async () => {
+    vi.mocked(getTmReleaseDate).mockRejectedValueOnce(new Error("nope"));
+
+    renderWithQueryClient(
+      <MemoryRouter initialEntries={["/questionnaire/LMS2605_LJ2/tm-release-date"]}>
+        <Routes>
+          <Route
+            path="/questionnaire/:questionnaireName/tm-release-date"
+            element={<QuestionnaireTmReleaseDatePage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByText(/Failed to get Totalmobile release date/i)).toBeDefined();
   });
 });

@@ -74,7 +74,7 @@ describe("BimsClient", () => {
   });
 
   describe("getToStartDate", () => {
-    it("returns start date when API returns 200", async () => {
+    it("returns Telephone Operations start date when API returns 200", async () => {
       mockHttpGet.mockResolvedValueOnce({ status: 200, data: { tostartdate: "2022-12-31" } });
 
       const result = await client.getToStartDate("OPN2004A");
@@ -131,7 +131,7 @@ describe("BimsClient", () => {
   });
 
   describe("createToStartDate", () => {
-    it("posts and returns created start date", async () => {
+    it("posts and returns created Telephone Operations start date", async () => {
       mockHttpPost.mockResolvedValueOnce({ status: 201, data: { tostartdate: "2022-12-31" } });
 
       const result = await client.createToStartDate("OPN2004A", "2022-12-31");
@@ -146,7 +146,7 @@ describe("BimsClient", () => {
   });
 
   describe("updateToStartDate", () => {
-    it("patches and returns updated start date", async () => {
+    it("patches and returns updated Telephone Operations start date", async () => {
       mockHttpPatch.mockResolvedValueOnce({ status: 200, data: { tostartdate: "2022-12-31" } });
 
       const result = await client.updateToStartDate("OPN2004A", "2022-12-31");
@@ -161,7 +161,7 @@ describe("BimsClient", () => {
   });
 
   describe("getTmReleaseDate", () => {
-    it("returns release date when API returns 200", async () => {
+    it("returns Totalmobile release date when API returns 200", async () => {
       mockHttpGet.mockResolvedValueOnce({ status: 200, data: { tmreleasedate: "2022-12-31" } });
 
       const result = await client.getTmReleaseDate("LMS2004A");
@@ -214,7 +214,7 @@ describe("BimsClient", () => {
   });
 
   describe("createTmReleaseDate", () => {
-    it("posts and returns created release date", async () => {
+    it("posts and returns created Totalmobile release date", async () => {
       mockHttpPost.mockResolvedValueOnce({ status: 201, data: { tmreleasedate: "2022-12-31" } });
 
       const result = await client.createTmReleaseDate("LMS2004A", "2022-12-31");
@@ -229,7 +229,7 @@ describe("BimsClient", () => {
   });
 
   describe("updateTmReleaseDate", () => {
-    it("patches and returns updated release date", async () => {
+    it("patches and returns updated Totalmobile release date", async () => {
       mockHttpPatch.mockResolvedValueOnce({ status: 200, data: { tmreleasedate: "2022-12-31" } });
 
       const result = await client.updateTmReleaseDate("LMS2004A", "2022-12-31");

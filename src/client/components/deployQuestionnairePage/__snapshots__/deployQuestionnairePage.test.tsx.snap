@@ -58,7 +58,7 @@ exports[`Upload Page > select file page matches Snapshot 1`] = `
                   <b>
                     do not leave this page
                   </b>
-                   while deployment is in progress. You will be redirected when there is an update.
+                   while deployment is in progress. You will be taken to the next page when there is an update.
                 </p>
               </div>
             </div>
@@ -194,7 +194,7 @@ exports[`Upload Page > select file page matches Snapshot 1`] = `
                 <b>
                   do not leave this page
                 </b>
-                 while deployment is in progress. You will be redirected when there is an update.
+                 while deployment is in progress. You will be taken to the next page when there is an update.
               </p>
             </div>
           </div>

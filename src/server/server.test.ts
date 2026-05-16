@@ -194,15 +194,6 @@ describe("Cloud function routes build audit messages", () => {
     expect(response.statusCode).toEqual(200);
   });
 
-  it("covers reissueNewDonorCase role fallback branch", async () => {
-    const response = await request.post("/api/cloudFunction/reissueNewDonorCase").send({
-      questionnaire_name: "OPN2004A",
-      role: "interviewer",
-    });
-
-    expect(response.statusCode).toEqual(200);
-  });
-
   it("covers reissueNewDonorCase unknown fallbacks", async () => {
     const response = await request.post("/api/cloudFunction/reissueNewDonorCase").send({});
 

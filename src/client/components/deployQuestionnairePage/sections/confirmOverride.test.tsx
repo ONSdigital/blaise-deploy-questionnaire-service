@@ -21,8 +21,6 @@ describe("ConfirmOverride", () => {
         { selector: "h1" },
       ),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(/All existing questionnaire data will be deleted/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/All questionnaire data will be deleted/i)).toBeInTheDocument();
   });
 });

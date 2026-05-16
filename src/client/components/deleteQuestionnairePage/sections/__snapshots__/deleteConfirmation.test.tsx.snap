@@ -18,7 +18,7 @@ exports[`DeleteConfirmation > when CATI mode is present > should display an erro
         <div
           class="ons-panel__body "
         >
-          Could not get warning details, please try again
+          Failed to get delete questionnaire warning details
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@ exports[`DeleteConfirmation > when CATI mode is present > should display an erro
       <div
         class="ons-panel__body "
       >
-        Could not get warning details, please try again
+        Failed to get delete questionnaire warning details
       </div>
     </div>
   </div>,
@@ -116,13 +116,19 @@ exports[`DeleteConfirmation > when CATI mode is present > should display the CAT
         class="ons-u-mb-m"
       >
         <div
-          class="ons-panel ons-panel--error ons-panel--no-title ons-u-mt-m"
+          class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
           id="panel-_r_8_"
         >
           <span
+            aria-hidden="true"
+            class="ons-panel__icon"
+          >
+            !
+          </span>
+          <span
             class="ons-panel__assistive-text ons-u-vh"
           >
-            Error:
+            Warning:
              
           </span>
           <div
@@ -154,7 +160,7 @@ exports[`DeleteConfirmation > when CATI mode is present > should display the CAT
           <div
             class="ons-panel__body "
           >
-            The questionnaire and all associated respondent data will be deleted
+            All questionnaire data will be deleted
           </div>
         </div>
       </div>
@@ -213,13 +219,19 @@ exports[`DeleteConfirmation > when CATI mode is present > should display the CAT
       class="ons-u-mb-m"
     >
       <div
-        class="ons-panel ons-panel--error ons-panel--no-title ons-u-mt-m"
+        class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
         id="panel-_r_8_"
       >
         <span
+          aria-hidden="true"
+          class="ons-panel__icon"
+        >
+          !
+        </span>
+        <span
           class="ons-panel__assistive-text ons-u-vh"
         >
-          Error:
+          Warning:
            
         </span>
         <div
@@ -251,7 +263,7 @@ exports[`DeleteConfirmation > when CATI mode is present > should display the CAT
         <div
           class="ons-panel__body "
         >
-          The questionnaire and all associated respondent data will be deleted
+          All questionnaire data will be deleted
         </div>
       </div>
     </div>
@@ -986,7 +998,7 @@ exports[`DeleteConfirmation > when CAWI mode is include > should display CAWI wa
           <div
             class="ons-panel__body "
           >
-            The questionnaire and all associated respondent data will be deleted
+            All questionnaire data will be deleted
           </div>
         </div>
       </div>
@@ -1081,7 +1093,7 @@ exports[`DeleteConfirmation > when CAWI mode is include > should display CAWI wa
         <div
           class="ons-panel__body "
         >
-          The questionnaire and all associated respondent data will be deleted
+          All questionnaire data will be deleted
         </div>
       </div>
     </div>
@@ -1215,7 +1227,7 @@ exports[`DeleteConfirmation > when Delete button is pressed > should display an 
           <div
             class="ons-panel__body "
           >
-            The questionnaire and all associated respondent data will be deleted
+            All questionnaire data will be deleted
           </div>
         </div>
       </div>
@@ -1312,7 +1324,7 @@ exports[`DeleteConfirmation > when Delete button is pressed > should display an 
         <div
           class="ons-panel__body "
         >
-          The questionnaire and all associated respondent data will be deleted
+          All questionnaire data will be deleted
         </div>
       </div>
     </div>
