@@ -26,23 +26,23 @@ vi.mock("./utils/env", () => ({
   isProduction: () => mockIsProduction(),
 }));
 
-vi.mock("./components/createDonorCasesPage/createDonorCasesPage", () => ({
+vi.mock("./pages/createDonorCasesPage/createDonorCasesPage", () => ({
   default: () => <div>Create donor cases page</div>,
 }));
 
-vi.mock("./components/auditPage/auditPage", () => ({
+vi.mock("./pages/auditPage/auditPage", () => ({
   default: () => <div>Audit page</div>,
 }));
 
-vi.mock("./components/reinstallQuestionnairesPage/reinstallQuestionnairesPage", () => ({
+vi.mock("./pages/reinstallQuestionnairesPage/reinstallQuestionnairesPage", () => ({
   default: () => <div>Reinstall questionnaires page</div>,
 }));
 
-vi.mock("./components/reissueNewDonorCasePage/reissueNewDonorCasePage", () => ({
+vi.mock("./pages/reissueNewDonorCasePage/reissueNewDonorCasePage", () => ({
   default: () => <div>Reissue new donor case page</div>,
 }));
 
-vi.mock("./components/deleteQuestionnairePage/deleteQuestionnairePage", () => ({
+vi.mock("./pages/deleteQuestionnairePage/deleteQuestionnairePage", () => ({
   default: ({
     onCancel,
     onDelete,

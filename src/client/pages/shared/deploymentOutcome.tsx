@@ -1,4 +1,4 @@
-import { Button, Panel } from "blaise-design-system-react-components";
+import { Button, ExternalLink, Panel } from "blaise-design-system-react-components";
 import { type ReactElement } from "react";
 
 type DeploymentOutcomeProps = {
@@ -30,8 +30,12 @@ export function DeploymentOutcome({
           <h1 className="ons-u-mb-l ons-u-mt-m">Questionnaire {questionnaireName} deploy failed</h1>
           <p>Details: {status}</p>
           <p>
-            Please report this issue to <a href="https://ons.service-now.com/">Service Desk</a> and
-            include the questionnaire name and the date and time of failure.
+            Please report this issue to{" "}
+            <ExternalLink
+              text="Service Desk"
+              link="https://ons.service-now.com/"
+            />{" "}
+            and include the questionnaire name and the date and time of failure.
           </p>
         </Panel>
       )}

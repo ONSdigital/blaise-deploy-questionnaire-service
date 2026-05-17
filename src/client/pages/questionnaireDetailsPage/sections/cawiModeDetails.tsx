@@ -1,5 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button, LoadingPanel, Panel } from "blaise-design-system-react-components";
+import {
+  Button,
+  GroupedSummary,
+  LoadingPanel,
+  Panel,
+  SummaryGroupTable,
+} from "blaise-design-system-react-components";
 import { type ReactElement, useRef, useState } from "react";
 
 import { generateUacsAndCsvFileData } from "../../../api/processes";
@@ -126,24 +132,22 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
   }
 
   if (cawiMode) {
-    return (
-      <div className="ons-summary ons-u-mb-m ons-u-mt-m">
-        <div className="ons-summary__group">
-          <h2 className="ons-summary__group-title">CAWI mode details</h2>
-          <dl className="ons-summary__items">
-            {uacGenerationFailed !== "" && (
-              <div className="ons-summary__item ons-summary__item--error">
-                <dt className="ons-summary__item-title">
-                  <div className="ons-summary__item--text">{uacGenerationFailed}</div>
-                </dt>
-                <dd className="ons-summary__values"></dd>
-              </div>
-            )}
-
-            <div className="ons-summary__item">
-              <dt className="ons-summary__item-title">
-                <div className="ons-summary__item--text">Unique Access Codes generated</div>
-
+    const groupedSummary = new GroupedSummary([
+      {
+        title: "CAWI mode details",
+        preamble:
+          uacGenerationFailed !== "" ? (
+            <Panel status="error">
+              <p className="ons-u-mb-no">{uacGenerationFailed}</p>
+            </Panel>
+          ) : undefined,
+        records: {
+          "Unique Access Codes generated": {
+            display: (
+              <>
+                <span className="ons-summary__text ons-u-fw-b">
+                  {uacCountLoading ? "Loading..." : uacCount}
+                </span>
                 {showGenerateUacsButton && (
                   <div className="ons-u-mt-m ons-u-mb-s">
                     <a
@@ -160,17 +164,19 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
                     />
                   </div>
                 )}
-              </dt>
+              </>
+            ),
+            csv: uacCountLoading ? undefined : uacCount,
+          },
+        },
+      },
+    ]);
 
-              <dd className="ons-summary__values">
-                <span className="ons-summary__text ons-u-fw-b">
-                  {uacCountLoading ? "Loading..." : uacCount}
-                </span>
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </div>
+    return (
+      <SummaryGroupTable
+        className="ons-u-mb-m ons-u-mt-m"
+        groupedSummary={groupedSummary}
+      />
     );
   }
 

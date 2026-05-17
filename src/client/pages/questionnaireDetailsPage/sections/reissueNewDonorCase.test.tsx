@@ -21,7 +21,13 @@ vi.mock("blaise-design-system-react-components", () => ({
   Button: ({ label, onClick }: { label: string; onClick?: () => void }) => (
     <button onClick={onClick}>{label}</button>
   ),
+  GroupedSummary: class GroupedSummary {
+    constructor(public groups: unknown[]) {}
+  },
   Panel: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  SummaryGroupTable: ({ groupedSummary }: { groupedSummary: { groups: Array<{ preamble: React.ReactNode }> } }) => (
+    <div>{groupedSummary.groups.map((group, index) => <div key={index}>{group.preamble}</div>)}</div>
+  ),
 }));
 
 vi.mock("./findUser", () => ({

@@ -49,7 +49,6 @@
                     class="ons-header__org-logo-link"
                     href="/"
                   >
-                    <!-- CHANGED: Replaced the broken <picture> and <img> CDN links with the inline SVGs from the design system -->
                     <div class="ons-header__org-logo ons-header__org-logo--large">
                       <svg
                         class="ons-icon--logo"
@@ -238,7 +237,37 @@
                 <p>Try again later.</p>
                 <p>
                   If the problem persists, please report this issue to
-                  <a href="https://ons.service-now.com/">Service Desk</a>
+                  <a
+                    href="https://ons.service-now.com/"
+                    class="ons-external-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span class="ons-external-link__text">Service Desk</span>
+                    <span class="ons-external-link__icon">
+                      &nbsp;
+                      <svg
+                        class="ons-icon"
+                        viewBox="0 0 12 12"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                        focusable="false"
+                        role="img"
+                      >
+                        <path
+                          d="M13.5,9H13a.5.5,0,0,0-.5.5v3h-9v-9h3A.5.5,0,0,0,7,3V2.5A.5.5,0,0,0,6.5,2h-4a.5.5,0,0,0-.5.5v11a.5.5,0,0,0,.5.5h11a.5.5,0,0,0,.5-.5v-4A.5.5,0,0,0,13.5,9Z"
+                          transform="translate(-2 -1.99)"
+                        ></path>
+                        <path
+                          d="M8.83,7.88a.51.51,0,0,0,.71,0l2.31-2.32,1.28,1.28A.51.51,0,0,0,14,6.49v-4a.52.52,0,0,0-.5-.5h-4A.51.51,0,0,0,9,2.52a.58.58,0,0,0,.14.33l1.28,1.28L8.12,6.46a.51.51,0,0,0,0,.71Z"
+                          transform="translate(-2 -1.99)"
+                        ></path>
+                      </svg>
+                    </span>
+                    <span class="ons-external-link__new-window-description ons-u-vh">
+                      (opens in a new tab)
+                    </span>
+                  </a>
                   and include the page you were using and the date and time the problem occurred.
                 </p>
               </main>

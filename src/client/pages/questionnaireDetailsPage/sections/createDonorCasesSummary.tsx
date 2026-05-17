@@ -1,4 +1,4 @@
-import { Panel } from "blaise-design-system-react-components";
+import { ExternalLink, Panel } from "blaise-design-system-react-components";
 import { type ReactElement } from "react";
 
 interface Props {
@@ -26,8 +26,12 @@ export function CreateDonorCasesSummary({
           <h1>Error creating donor cases for {role}</h1>
           <p>{donorCasesResponseMessage}</p>
           <p>
-            Please report this issue to <a href="https://ons.service-now.com/">Service Desk</a> and
-            include the questionnaire name, user role, and the date and time of failure.
+            Please report this issue to{" "}
+            <ExternalLink
+              text="Service Desk"
+              link="https://ons.service-now.com/"
+            />{" "}
+            and include the questionnaire name, user role, and the date and time of failure.
           </p>
         </Panel>
       )}

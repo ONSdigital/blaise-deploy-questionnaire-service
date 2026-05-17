@@ -1,4 +1,4 @@
-import { Panel } from "blaise-design-system-react-components";
+import { ExternalLink, Panel } from "blaise-design-system-react-components";
 import { type ReactElement } from "react";
 
 interface Props {
@@ -30,12 +30,16 @@ export function ReissueNewDonorCaseSummary({
           <h1>Error reissuing donor case for {user}</h1>
           {missingInitialDonorCase ? (
             <p>
-              User has not been issued with an initial donor case. Please click <b>Create cases</b>
+              User has not been issued with an initial donor case. Please click <b>Create cases</b>{" "}
               under the Donor cases section.
             </p>
           ) : (
             <p>
-              Please report this issue to <a href="https://ons.service-now.com/">Service Desk</a>{" "}
+              Please report this issue to{" "}
+              <ExternalLink
+                text="Service Desk"
+                link="https://ons.service-now.com/"
+              />{" "}
               and include the questionnaire name, username, and the date and time of failure.
             </p>
           )}

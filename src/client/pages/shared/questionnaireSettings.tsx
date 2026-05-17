@@ -1,4 +1,9 @@
-import { LoadingPanel, Panel } from "blaise-design-system-react-components";
+import {
+  GroupedSummary,
+  LoadingPanel,
+  Panel,
+  SummaryGroupTable,
+} from "blaise-design-system-react-components";
 import { type ReactElement } from "react";
 
 import { formatText } from "../../utils/textFormatting";
@@ -19,7 +24,7 @@ function formatSettings(
   questionnaireSettings: QuestionnaireSettings,
   invalidSettings: Partial<QuestionnaireSettings>,
 ): ReactElement {
-  const items: ReactElement[] = [];
+  const records: Record<string, { display: ReactElement; csv: string }> = {};
 
   for (const [property, value] of Object.entries(questionnaireSettings)) {
     const settingName = formatText(property);
@@ -37,15 +42,9 @@ function formatSettings(
           : String(correctValue);
     }
 
-    items.push(
-      <div
-        className="ons-summary__item"
-        key={settingName}
-      >
-        <dt className="ons-summary__item-title">
-          <div className="ons-summary__item--text">{settingName}</div>
-        </dt>
-        <dd className="ons-summary__values">
+    records[settingName] = {
+      display: (
+        <>
           <span
             className={
               expectedValue ? "ons-summary__text ons-u-mb-s" : "ons-summary__text ons-u-mb-no"
@@ -60,24 +59,21 @@ function formatSettings(
               </p>
             </Panel>
           )}
-        </dd>
-      </div>,
-    );
+        </>
+      ),
+      csv: displayValue,
+    };
   }
 
-  return (
-    <div className="ons-summary">
-      <div className="ons-summary__group">
-        <h2 className="ons-summary__group-title">Questionnaire settings</h2>
-        <dl
-          id="report-table"
-          className="ons-summary__items"
-        >
-          {items}
-        </dl>
-      </div>
-    </div>
-  );
+  const groupedSummary = new GroupedSummary([
+    {
+      title: "Questionnaire settings",
+      rowsId: "report-table",
+      records,
+    },
+  ]);
+
+  return <SummaryGroupTable groupedSummary={groupedSummary} />;
 }
 
 export function QuestionnaireSettings({

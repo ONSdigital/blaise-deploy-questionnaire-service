@@ -1,5 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { LoadingPanel, Panel } from "blaise-design-system-react-components";
+import {
+  GroupedSummary,
+  LoadingPanel,
+  Panel,
+  SummaryGroupTable,
+} from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
 import { type ReactElement } from "react";
 import { Link } from "react-router-dom";
@@ -65,51 +70,53 @@ function TmReleaseDate({ questionnaireName }: Props): ReactElement {
     );
   }
 
-  return (
-    <div className="ons-summary ons-u-mb-m">
-      <div className="ons-summary__group">
-        <h2 className="ons-summary__group-title">Totalmobile details</h2>
+  const releaseDateAction = tmReleaseDate ? (
+    <Link
+      to={`/questionnaire/${questionnaireName}/tm-release-date`}
+      state={{
+        questionnaireName: questionnaireName,
+        tmReleaseDate: tmReleaseDateValue,
+      }}
+      className="ons-summary__button"
+      aria-label={`Change or delete Totalmobile release date for questionnaire ${questionnaireName}`}
+    >
+      Change or delete release date
+    </Link>
+  ) : (
+    <Link
+      to={`/questionnaire/${questionnaireName}/tm-release-date`}
+      state={{ questionnaireName: questionnaireName }}
+      className="ons-summary__button"
+      aria-label={`Add a Totalmobile release date for questionnaire ${questionnaireName}`}
+    >
+      Add release date
+    </Link>
+  );
 
-        <dl className="ons-summary__items">
-          <div className="ons-summary__item">
-            <dt className="ons-summary__item-title">
-              <div className="ons-summary__item--text">Totalmobile release date</div>
-
-              <div className="ons-u-mt-m ons-u-mb-s">
-                {tmReleaseDate ? (
-                  <Link
-                    to={`/questionnaire/${questionnaireName}/tm-release-date`}
-                    state={{
-                      questionnaireName: questionnaireName,
-                      tmReleaseDate: tmReleaseDateValue,
-                    }}
-                    className="ons-summary__button"
-                    aria-label={`Change or delete Totalmobile release date for questionnaire ${questionnaireName}`}
-                  >
-                    Change or delete release date
-                  </Link>
-                ) : (
-                  <Link
-                    to={`/questionnaire/${questionnaireName}/tm-release-date`}
-                    state={{ questionnaireName: questionnaireName }}
-                    className="ons-summary__button"
-                    aria-label={`Add a Totalmobile release date for questionnaire ${questionnaireName}`}
-                  >
-                    Add release date
-                  </Link>
-                )}
-              </div>
-            </dt>
-
-            <dd className="ons-summary__values">
+  const groupedSummary = new GroupedSummary([
+    {
+      title: "Totalmobile details",
+      records: {
+        "Totalmobile release date": {
+          display: (
+            <>
               <span className="ons-summary__text ons-u-fw-b">
                 {tmReleaseDate ? renderTmReleaseDate() : "No release date specified"}
               </span>
-            </dd>
-          </div>
-        </dl>
-      </div>
-    </div>
+              <div className="ons-u-mt-m ons-u-mb-s">{releaseDateAction}</div>
+            </>
+          ),
+          csv: tmReleaseDate ? tmReleaseDateValue : "No release date specified",
+        },
+      },
+    },
+  ]);
+
+  return (
+    <SummaryGroupTable
+      className="ons-u-mb-m"
+      groupedSummary={groupedSummary}
+    />
   );
 }
 

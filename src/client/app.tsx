@@ -22,33 +22,33 @@ import {
 } from "react";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
-import QuestionnairesPage from "./components/questionnairesPage/questionnairesPage";
+import QuestionnairesPage from "./pages/questionnairesPage/questionnairesPage";
 import { isProduction } from "./utils/env";
 
-const AuditPage = lazy(() => import("./components/auditPage/auditPage"));
+const AuditPage = lazy(() => import("./pages/auditPage/auditPage"));
 const CreateDonorCasesPage = lazy(
-  () => import("./components/createDonorCasesPage/createDonorCasesPage"),
+  () => import("./pages/createDonorCasesPage/createDonorCasesPage"),
 );
 const DeleteQuestionnairePage = lazy(
-  () => import("./components/deleteQuestionnairePage/deleteQuestionnairePage"),
+  () => import("./pages/deleteQuestionnairePage/deleteQuestionnairePage"),
 );
 const QuestionnaireTmReleaseDatePage = lazy(
-  () => import("./components/questionnaireTmReleaseDatePage/questionnaireTmReleaseDatePage"),
+  () => import("./pages/questionnaireTmReleaseDatePage/questionnaireTmReleaseDatePage"),
 );
 const QuestionnaireToStartDatePage = lazy(
-  () => import("./components/questionnaireToStartDatePage/questionnaireToStartDatePage"),
+  () => import("./pages/questionnaireToStartDatePage/questionnaireToStartDatePage"),
 );
 const QuestionnaireDetailsPage = lazy(
-  () => import("./components/questionnaireDetailsPage/questionnaireDetailsPage"),
+  () => import("./pages/questionnaireDetailsPage/questionnaireDetailsPage"),
 );
 const ReinstallQuestionnaires = lazy(
-  () => import("./components/reinstallQuestionnairesPage/reinstallQuestionnairesPage"),
+  () => import("./pages/reinstallQuestionnairesPage/reinstallQuestionnairesPage"),
 );
 const ReissueNewDonorCasePage = lazy(
-  () => import("./components/reissueNewDonorCasePage/reissueNewDonorCasePage"),
+  () => import("./pages/reissueNewDonorCasePage/reissueNewDonorCasePage"),
 );
 const DeployPage = lazy(
-  () => import("./components/deployQuestionnairePage/deployQuestionnairePage"),
+  () => import("./pages/deployQuestionnairePage/deployQuestionnairePage"),
 );
 
 type AppRoutesProps = {

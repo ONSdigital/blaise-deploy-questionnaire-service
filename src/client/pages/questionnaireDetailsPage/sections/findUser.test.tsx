@@ -61,17 +61,14 @@ describe("FindUser happy path", () => {
       expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled();
     });
 
-    if (document != null) {
-      const datalistId = screen.getByRole("combobox").getAttribute("list")!;
-      const datalist = document.getElementById(datalistId)!;
-      const options = Array.from(datalist.querySelectorAll("option"));
-      const optionValues = options.map((opt) => opt.getAttribute("value"));
+    fireEvent.change(screen.getByPlaceholderText("Enter username"), {
+      target: { value: "im" },
+    });
 
-      expect(optionValues).toContain("Jimmy");
-      expect(optionValues).toContain("Timmy");
-    } else {
-      throw new Error("Datalist not found");
-    }
+    const optionValues = screen.getAllByRole("option").map((option) => option.textContent);
+
+    expect(optionValues).toContain("Jimmy");
+    expect(optionValues).toContain("Timmy");
   });
 
   it("calls onItemSelected when a valid user is selected", async () => {
@@ -141,8 +138,11 @@ describe("FindUser happy path", () => {
 
     fireEvent.change(input, { target: { value: "NotAUser" } });
     fireEvent.blur(input);
-    expect(input).toHaveValue("");
-    expect(onItemSelected).toHaveBeenCalledWith("");
+
+    await waitFor(() => {
+      expect(input).toHaveValue("");
+      expect(onItemSelected).toHaveBeenCalledWith("");
+    });
   });
 
   it("calls onError on blur when a non-empty invalid username is entered", async () => {
@@ -166,8 +166,10 @@ describe("FindUser happy path", () => {
     fireEvent.change(input, { target: { value: "NotAUser" } });
     fireEvent.blur(input);
 
-    expect(onError).toHaveBeenCalledWith("Username does not exist");
-    expect(onItemSelected).toHaveBeenCalledWith("");
+    await waitFor(() => {
+      expect(onError).toHaveBeenCalledWith("Username does not exist");
+      expect(onItemSelected).toHaveBeenCalledWith("");
+    });
   });
 
   it("does not call onError on blur when the invalid input is only whitespace", async () => {
@@ -191,8 +193,10 @@ describe("FindUser happy path", () => {
     fireEvent.change(input, { target: { value: "   " } });
     fireEvent.blur(input);
 
-    expect(onError).not.toHaveBeenCalled();
-    expect(onItemSelected).toHaveBeenCalledWith("");
+    await waitFor(() => {
+      expect(onError).not.toHaveBeenCalled();
+      expect(onItemSelected).toHaveBeenCalledWith("");
+    });
   });
 
   it("does not clear the input on blur when a valid username is selected", async () => {
@@ -221,7 +225,7 @@ describe("FindUser happy path", () => {
     expect(onError).not.toHaveBeenCalled();
   });
 
-  it("shows no options if filter matches no users", async () => {
+  it("shows the design-system no results option if the filter matches no users", async () => {
     mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
     render(
       <FindUser
@@ -234,7 +238,10 @@ describe("FindUser happy path", () => {
     const input = screen.getByPlaceholderText("Enter username");
 
     fireEvent.change(input, { target: { value: "zzz" } });
-    expect(screen.queryAllByRole("option")).toHaveLength(0);
+
+    await waitFor(() => {
+      expect(screen.getByRole("option")).toHaveTextContent("No results found");
+    });
   });
 
   it("returns users in alphabetical order", async () => {
@@ -251,19 +258,34 @@ describe("FindUser happy path", () => {
     await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
     const input = screen.getByPlaceholderText("Enter username");
 
-    fireEvent.focus(input);
-    const datalistId = screen.getByRole("combobox").getAttribute("list");
+    fireEvent.change(input, { target: { value: "i" } });
 
-    if (datalistId) {
-      const datalist = document.getElementById(datalistId);
+    const optionValues = screen.getAllByRole("option").map((option) => option.textContent);
 
-      expect(datalist).not.toBeNull();
-      if (datalist) {
-        const options = datalist ? Array.from(datalist.querySelectorAll("option")) : [];
-        const optionValues = options.map((opt) => opt.getAttribute("value"));
+    expect(optionValues).toEqual(["Erin", "Jill", "Jimmy", "Timmy"]);
+  });
 
-        expect(optionValues).toEqual(["Erin", "Jill", "Jimmy", "Timmy"]);
-      }
-    }
+  it("allows a suggested user to be selected from the results list", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
+    const onItemSelected = vi.fn();
+
+    render(
+      <FindUser
+        label="Enter username"
+        roles={roles}
+        onItemSelected={onItemSelected}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+
+    fireEvent.change(screen.getByPlaceholderText("Enter username"), {
+      target: { value: "jim" },
+    });
+    fireEvent.click(screen.getByRole("option", { name: "Jimmy" }));
+
+    expect(screen.getByPlaceholderText("Enter username")).toHaveValue("Jimmy");
+    expect(onItemSelected).toHaveBeenCalledWith("Jimmy");
   });
 });

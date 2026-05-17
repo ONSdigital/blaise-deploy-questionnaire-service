@@ -1,4 +1,9 @@
-import { Button, Panel } from "blaise-design-system-react-components";
+import {
+  Button,
+  GroupedSummary,
+  Panel,
+  SummaryGroupTable,
+} from "blaise-design-system-react-components";
 import { type ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -57,49 +62,49 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
     }
   }
 
-  return (
-    <>
-      <div className="ons-summary ons-u-mb-m">
-        <div className="ons-summary__group">
+  const groupedSummary = new GroupedSummary([
+    {
+      title: "Reissue donor case",
+      preamble: (
+        <>
           <Panel>
             To assign another donor case to an interviewer who already has one, select their
             username and click <b>Reissue donor case</b>.
           </Panel>
-          <dl className="ons-summary__items">
-            <div className="ons-summary__item">
-              <dt className="ons-summary__item-title">
-                <div className="ons-summary__item--text">
-                  <div className="ons-field">
-                    <FindUser
-                      label="Enter username"
-                      onItemSelected={onSetUser}
-                      onError={onError}
-                      roles={roles}
-                    />
-                  </div>
-                  <div className="ons-field ons-input--text">
-                    {errorMessage && (
-                      <Panel status="error">
-                        <p className="">{errorMessage}</p>
-                      </Panel>
-                    )}
-                  </div>
-                </div>
-                <div className="ons-u-mt-m ons-u-mb-s">
-                  <Button
-                    label="Reissue donor case"
-                    primary={false}
-                    small={true}
-                    disabled={error}
-                    onClick={reissueNewDonorCaseButtonClicked}
-                  />
-                </div>
-              </dt>
+          <div className="ons-u-mt-m">
+            <FindUser
+              label="Enter username"
+              onItemSelected={onSetUser}
+              onError={onError}
+              roles={roles}
+            />
+            {errorMessage && (
+              <div className="ons-field ons-input--text">
+                <Panel status="error">
+                  <p>{errorMessage}</p>
+                </Panel>
+              </div>
+            )}
+            <div className="ons-u-mt-m ons-u-mb-s">
+              <Button
+                label="Reissue donor case"
+                primary={false}
+                small={true}
+                disabled={error}
+                onClick={reissueNewDonorCaseButtonClicked}
+              />
             </div>
-          </dl>
-        </div>
-      </div>
-    </>
+          </div>
+        </>
+      ),
+    },
+  ]);
+
+  return (
+    <SummaryGroupTable
+      className="ons-u-mb-m"
+      groupedSummary={groupedSummary}
+    />
   );
 }
 
