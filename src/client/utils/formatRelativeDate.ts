@@ -20,13 +20,14 @@ export function formatRelativeDate(dateValue: Date | string): string {
   }
 
   const differenceInMilliseconds = parsedDate.getTime() - Date.now();
+  const selectedUnitIndex = units.findIndex(({ milliseconds }) => {
+    return Math.abs(differenceInMilliseconds) >= milliseconds;
+  });
+  const selectedUnit =
+    selectedUnitIndex === -1 ? units[units.length - 1]! : units[selectedUnitIndex]!;
 
-  for (const { unit, milliseconds } of units) {
-    if (Math.abs(differenceInMilliseconds) >= milliseconds || unit === "second") {
-      return relativeTimeFormatter.format(
-        Math.round(differenceInMilliseconds / milliseconds),
-        unit,
-      );
-    }
-  }
+  return relativeTimeFormatter.format(
+    Math.round(differenceInMilliseconds / selectedUnit.milliseconds),
+    selectedUnit.unit,
+  );
 }

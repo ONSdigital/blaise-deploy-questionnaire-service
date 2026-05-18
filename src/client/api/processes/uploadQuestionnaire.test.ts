@@ -359,7 +359,6 @@ describe("uploadQuestionnaire", () => {
         saveSessionOnTimeout: true,
         saveSessionOnQuit: true,
         useLiveRouting: false,
-        applyRecordLocking: false,
         applyRecordLocking: true,
       },
     ] as never);
