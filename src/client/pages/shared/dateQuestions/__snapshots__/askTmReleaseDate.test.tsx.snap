@@ -16,11 +16,11 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
           >
             Would you like to set a Totalmobile release date for questionnaire
              
-            <em
+            <span
               class="ons-highlight"
             >
               LMS2207T
-            </em>
+            </span>
             ?
           </h1>
           <p>
@@ -133,11 +133,11 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
         >
           Would you like to set a Totalmobile release date for questionnaire
            
-          <em
+          <span
             class="ons-highlight"
           >
             LMS2207T
-          </em>
+          </span>
           ?
         </h1>
         <p>

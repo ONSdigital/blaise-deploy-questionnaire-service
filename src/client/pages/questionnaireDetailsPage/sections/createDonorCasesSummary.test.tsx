@@ -11,23 +11,54 @@ describe("CreateDonorCasesSummary", () => {
       role: "IPS Manager",
     };
 
-    const { getByText } = render(<CreateDonorCasesSummary {...props} />);
+    render(<CreateDonorCasesSummary {...props} />);
 
-    expect(getByText(/Donor cases created successfully for IPS Manager/i)).toBeInTheDocument();
-    expect(getByText(/Success/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Donor cases created successfully for IPS Manager/i }),
+    ).toBeInTheDocument();
   });
 
-  it("displays an error message when receiving a failed response from the cloud function", () => {
+  it("shows self-service guidance for the no-users-in-role error", () => {
     const props = {
-      donorCasesResponseMessage: "Internal Server Error",
+      donorCasesResponseMessage:
+        "\"Error creating IPS donor cases: No users found with role 'IPS Manager'\"",
       donorCasesStatusCode: 500,
       role: "IPS Manager",
     };
 
-    const { getByText } = render(<CreateDonorCasesSummary {...props} />);
+    render(<CreateDonorCasesSummary {...props} />);
 
-    expect(getByText(/Error creating donor cases for IPS Manager/i)).toBeInTheDocument();
-    expect(getByText(/Internal Server Error/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Error creating donor cases for IPS Manager/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Error creating IPS donor cases: No users found with role 'IPS Manager'"),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        "\"Error creating IPS donor cases: No users found with role 'IPS Manager'\"",
+      ),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/Add a user to this role and try creating donor cases again\./i),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Service Desk/i })).not.toBeInTheDocument();
+  });
+
+  it("shows Service Desk guidance for other donor case errors", () => {
+    const props = {
+      donorCasesResponseMessage: '"Internal Server Error"',
+      donorCasesStatusCode: 500,
+      role: "IPS Manager",
+    };
+
+    render(<CreateDonorCasesSummary {...props} />);
+
+    expect(
+      screen.getByRole("heading", { name: /Error creating donor cases for IPS Manager/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Internal Server Error")).toBeInTheDocument();
+    expect(screen.queryByText('"Internal Server Error"')).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Service Desk/i })).toHaveAttribute(
       "href",
       "https://ons.service-now.com/",

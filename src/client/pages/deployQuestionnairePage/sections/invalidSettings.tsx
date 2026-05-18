@@ -21,7 +21,7 @@ function InvalidSettings({
   return (
     <>
       <h1 className="ons-u-mb-l">
-        Questionnaire settings for <em className="ons-highlight">{questionnaireName}</em> do not
+        Questionnaire settings for <span className="ons-highlight">{questionnaireName}</span> do not
         match recommendations
       </h1>
       <div className="ons-u-mb-m">

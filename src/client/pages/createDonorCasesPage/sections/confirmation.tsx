@@ -17,6 +17,15 @@ function getApiErrorMessage(error: unknown): string {
     typeof error === "object" &&
     error !== null &&
     "response" in error &&
+    typeof (error as { response?: { data?: unknown } }).response?.data === "string"
+  ) {
+    return (error as { response?: { data?: string } }).response?.data ?? "Unknown error";
+  }
+
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "response" in error &&
     typeof (error as { response?: { data?: { message?: unknown } } }).response?.data?.message ===
       "string"
   ) {
@@ -38,7 +47,7 @@ function Confirmation({ questionnaireName, role, onSuccess }: Props): ReactEleme
 
         return { data: res.data, status: res.status };
       } catch (error: unknown) {
-        return { data: JSON.stringify(getApiErrorMessage(error)), status: 500 };
+        return { data: getApiErrorMessage(error), status: 500 };
       }
     },
     onSuccess: (res) => {
@@ -59,8 +68,8 @@ function Confirmation({ questionnaireName, role, onSuccess }: Props): ReactEleme
         {
           <>
             <h1 className="ons-u-mb-l">
-              Create <em className="ons-highlight">{role}</em> donor cases for{" "}
-              <em className="ons-highlight">{questionnaireName}</em>?
+              Create <strong className="ons-highlight">{role}</strong> donor cases for{" "}
+              <span className="ons-highlight">{questionnaireName}</span>?
             </h1>
             <div className="ons-btn-group ons-u-mt-m">
               <Button

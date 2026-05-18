@@ -1,9 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import {
-  ComboBox,
-  LoadingPanel,
-} from "blaise-design-system-react-components";
+import { ComboBox, LoadingPanel } from "blaise-design-system-react-components";
 import { type FocusEvent, type ReactElement, useEffect, useMemo, useRef, useState } from "react";
 
 import axiosConfig from "../../../api/axiosConfig";

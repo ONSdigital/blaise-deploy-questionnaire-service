@@ -14,7 +14,7 @@ export function AskToStartDate({ questionnaireName }: SelectFilePageProps): Reac
         <div className="ons-grid__col ons-col-8@m">
           <h1 className="ons-u-mb-l">
             Would you like to set a Telephone Operations start date for questionnaire{" "}
-            <em className="ons-highlight">{questionnaireName}</em>?
+            <span className="ons-highlight">{questionnaireName}</span>?
           </h1>
 
           <p>

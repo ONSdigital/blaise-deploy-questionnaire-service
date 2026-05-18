@@ -14,8 +14,9 @@ function FailedStateWarning({ questionnaireName }: Props): ReactElement {
       <div className="ons-u-mb-m">
         <Panel status="error">
           <h1>
-            Unable to delete questionnaire <em className="ons-highlight">{questionnaireName}</em>{" "}
-            because it is in a failed state.
+            Unable to delete questionnaire{" "}
+            <span className="ons-highlight">{questionnaireName}</span> because it is in a failed
+            state.
           </h1>
           <p>
             Please report this issue to{" "}

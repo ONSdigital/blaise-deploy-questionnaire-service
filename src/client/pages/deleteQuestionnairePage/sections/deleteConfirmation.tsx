@@ -60,7 +60,7 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
     <>
       <h1 className="ons-u-mb-l">
         Are you sure you want to delete questionnaire{" "}
-        <em className="ons-highlight">{questionnaire.name}</em>?
+        <span className="ons-highlight">{questionnaire.name}</span>?
       </h1>
 
       {modes.includes("CATI") && questionnaire.status?.toLowerCase() === "active" && active && (

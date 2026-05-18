@@ -25,8 +25,16 @@ vi.mock("blaise-design-system-react-components", () => ({
     constructor(public groups: unknown[]) {}
   },
   Panel: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  SummaryGroupTable: ({ groupedSummary }: { groupedSummary: { groups: Array<{ preamble: React.ReactNode }> } }) => (
-    <div>{groupedSummary.groups.map((group, index) => <div key={index}>{group.preamble}</div>)}</div>
+  SummaryGroupTable: ({
+    groupedSummary,
+  }: {
+    groupedSummary: { groups: Array<{ preamble: React.ReactNode }> };
+  }) => (
+    <div>
+      {groupedSummary.groups.map((group, index) => (
+        <div key={index}>{group.preamble}</div>
+      ))}
+    </div>
   ),
 }));
 

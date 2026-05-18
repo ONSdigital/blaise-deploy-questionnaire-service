@@ -8,7 +8,7 @@ function QuestionnaireExists({ questionnaireName }: SelectFilePageProps): ReactE
   return (
     <>
       <h1 className="ons-u-mb-l">
-        Questionnaire <em className="ons-highlight">{questionnaireName}</em> already exists.
+        Questionnaire <span className="ons-highlight">{questionnaireName}</span> already exists.
         <br />
         Do you want to overwrite it?
       </h1>

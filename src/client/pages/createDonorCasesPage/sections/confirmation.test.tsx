@@ -38,7 +38,7 @@ describe("Confirmation rendering", () => {
   });
 
   it("displays correct prompt to create donor cases", () => {
-    // Text is split across <em> tags, so we need a function matcher
+    // Text is split across inline tags, so we need a function matcher
     expect(
       screen.getByText(
         (content, element) => {
@@ -55,6 +55,8 @@ describe("Confirmation rendering", () => {
         { selector: "h1" },
       ),
     ).toBeInTheDocument();
+
+    expect(screen.getByText("IPS Manager", { selector: "strong" })).toBeInTheDocument();
   });
 
   it("displays a button continue to create donor cases", () => {
@@ -126,9 +128,10 @@ describe("Confirmation behavior", () => {
         { headers: { "Content-Type": "application/json" } },
       );
 
-      const callArgs = mockOnSuccess.mock.calls[0];
-
-      expect(callArgs[1]).toBe(500);
+      expect(mockOnSuccess).toHaveBeenCalledWith(
+        "Error creating IPS donor cases: No users found with role 'IPS Manager'",
+        500,
+      );
     });
   });
 
@@ -149,7 +152,7 @@ describe("Confirmation behavior", () => {
     });
 
     await waitFor(() => {
-      expect(mockOnSuccess).toHaveBeenCalledWith('"Unknown error"', 500);
+      expect(mockOnSuccess).toHaveBeenCalledWith("Unknown error", 500);
     });
   });
 
@@ -176,7 +179,7 @@ describe("Confirmation behavior", () => {
     });
 
     await waitFor(() => {
-      expect(mockOnSuccess).toHaveBeenCalledWith('"Cloud function failed"', 500);
+      expect(mockOnSuccess).toHaveBeenCalledWith("Cloud function failed", 500);
     });
   });
 

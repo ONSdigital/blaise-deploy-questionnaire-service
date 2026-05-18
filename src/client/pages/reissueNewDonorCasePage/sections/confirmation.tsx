@@ -63,8 +63,8 @@ function Confirmation({ questionnaireName, user, onSuccess }: Props): ReactEleme
         {
           <>
             <h1 className="ons-u-mb-l">
-              Reissue <em className="ons-highlight">{user}</em> a new donor case for{" "}
-              <em className="ons-highlight">{questionnaireName}</em>?
+              Reissue <span className="ons-highlight">{user}</span> a new donor case for{" "}
+              <span className="ons-highlight">{questionnaireName}</span>?
             </h1>
             <div className="ons-btn-group ons-u-mt-m">
               <Button

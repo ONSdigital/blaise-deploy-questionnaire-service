@@ -105,11 +105,11 @@ exports[`DeleteConfirmation > when CATI mode is present > should display the CAT
       >
         Are you sure you want to delete questionnaire
          
-        <em
+        <span
           class="ons-highlight"
         >
           LMS2201_AA1
-        </em>
+        </span>
         ?
       </h1>
       <div
@@ -208,11 +208,11 @@ exports[`DeleteConfirmation > when CATI mode is present > should display the CAT
     >
       Are you sure you want to delete questionnaire
        
-      <em
+      <span
         class="ons-highlight"
       >
         LMS2201_AA1
-      </em>
+      </span>
       ?
     </h1>
     <div
@@ -951,7 +951,7 @@ exports[`DeleteConfirmation > when CAWI mode is include > should display CAWI wa
       >
         Are you sure you want to delete questionnaire
          
-        <em
+        <span
           class="ons-highlight"
         />
         ?
@@ -1046,7 +1046,7 @@ exports[`DeleteConfirmation > when CAWI mode is include > should display CAWI wa
     >
       Are you sure you want to delete questionnaire
        
-      <em
+      <span
         class="ons-highlight"
       />
       ?
@@ -1198,11 +1198,11 @@ exports[`DeleteConfirmation > when Delete button is pressed > should display an 
       >
         Are you sure you want to delete questionnaire
          
-        <em
+        <span
           class="ons-highlight"
         >
           LMS2210_CC1
-        </em>
+        </span>
         ?
       </h1>
       <div
@@ -1295,11 +1295,11 @@ exports[`DeleteConfirmation > when Delete button is pressed > should display an 
     >
       Are you sure you want to delete questionnaire
        
-      <em
+      <span
         class="ons-highlight"
       >
         LMS2210_CC1
-      </em>
+      </span>
       ?
     </h1>
     <div

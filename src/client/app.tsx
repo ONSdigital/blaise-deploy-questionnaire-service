@@ -47,9 +47,7 @@ const ReinstallQuestionnaires = lazy(
 const ReissueNewDonorCasePage = lazy(
   () => import("./pages/reissueNewDonorCasePage/reissueNewDonorCasePage"),
 );
-const DeployPage = lazy(
-  () => import("./pages/deployQuestionnairePage/deployQuestionnairePage"),
-);
+const DeployPage = lazy(() => import("./pages/deployQuestionnairePage/deployQuestionnairePage"));
 
 type AppRoutesProps = {
   errored: boolean;

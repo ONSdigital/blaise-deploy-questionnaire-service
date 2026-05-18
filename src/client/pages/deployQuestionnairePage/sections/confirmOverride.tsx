@@ -10,7 +10,7 @@ function ConfirmOverride({ questionnaireName }: SelectFilePageProps): ReactEleme
     <>
       <h1 className="ons-u-mb-l">
         Are you sure you want to overwrite questionnaire{" "}
-        <em className="ons-highlight">{questionnaireName}</em>?
+        <span className="ons-highlight">{questionnaireName}</span>?
       </h1>
 
       <Panel status={"warn"}>All questionnaire data will be deleted</Panel>

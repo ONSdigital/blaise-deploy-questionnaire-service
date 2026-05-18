@@ -14,7 +14,7 @@ export function AskTmReleaseDate({ questionnaireName }: SelectFilePageProps): Re
         <div className="ons-grid__col ons-col-8@m">
           <h1 className="ons-u-mb-l">
             Would you like to set a Totalmobile release date for questionnaire{" "}
-            <em className="ons-highlight">{questionnaireName}</em>?
+            <span className="ons-highlight">{questionnaireName}</span>?
           </h1>
 
           <p>
