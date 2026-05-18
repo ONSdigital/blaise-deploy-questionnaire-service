@@ -345,4 +345,37 @@ describe("uploadQuestionnaire", () => {
     await expect(resultPromise).resolves.toBe(false);
     expect(resolved).toBe(true);
   });
+
+  it("uses CATI-only validation when the questionnaire only supports CATI mode", async () => {
+    const setQuestionnaireSettings = vi.fn();
+    const setInvalidSettings = vi.fn();
+    const setErrored = vi.fn();
+
+    vi.mocked(deactivateQuestionnaire).mockResolvedValue(true as never);
+    vi.mocked(getQuestionnaireSettings).mockResolvedValue([
+      {
+        questionnaireName: "OPN2004A",
+        type: "StrictInterviewing",
+        saveSessionOnTimeout: true,
+        saveSessionOnQuit: true,
+        useLiveRouting: false,
+        applyRecordLocking: false,
+        applyRecordLocking: true,
+      },
+    ] as never);
+    vi.mocked(getQuestionnaireModes).mockResolvedValue(["CATI"]);
+
+    const result = await checkQuestionnaireSettings(
+      "OPN2004A",
+      setQuestionnaireSettings,
+      setInvalidSettings,
+      setErrored,
+    );
+
+    expect(result).toBe(true);
+    expect(setErrored).not.toHaveBeenCalled();
+    expect(setQuestionnaireSettings).toHaveBeenCalledTimes(1);
+    expect(setInvalidSettings).toHaveBeenCalledWith({});
+    expect(deactivateQuestionnaire).not.toHaveBeenCalled();
+  });
 });

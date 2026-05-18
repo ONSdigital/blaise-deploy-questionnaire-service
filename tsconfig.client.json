@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "isolatedModules": true,
+    "declaration": false,
+    "declarationMap": false,
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ESNext",

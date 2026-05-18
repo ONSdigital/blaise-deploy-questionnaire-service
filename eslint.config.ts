@@ -134,6 +134,7 @@ export default tseslint.config(
           order: [
             "name",
             "version",
+            "private",
             "license",
             "engines",
             "type",

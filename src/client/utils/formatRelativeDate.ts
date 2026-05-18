@@ -29,6 +29,4 @@ export function formatRelativeDate(dateValue: Date | string): string {
       );
     }
   }
-
-  return relativeTimeFormatter.format(Math.round(differenceInMilliseconds / 1000), "second");
 }

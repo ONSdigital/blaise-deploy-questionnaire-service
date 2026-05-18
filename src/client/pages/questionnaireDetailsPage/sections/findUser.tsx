@@ -6,8 +6,6 @@ import { type FocusEvent, type ReactElement, useEffect, useMemo, useRef, useStat
 import axiosConfig from "../../../api/axiosConfig";
 import { clientLogger } from "../../../utils/logger";
 
-import "./findUser.css";
-
 interface Props {
   label: string;
   roles: string[];
@@ -75,6 +73,15 @@ function FindUser({ label = "Search user", roles, onItemSelected, onError }: Pro
     return users.includes(user);
   }
 
+  function clearPendingBlurTimeout(): void {
+    if (blurTimeoutRef.current === null) {
+      return;
+    }
+
+    window.clearTimeout(blurTimeoutRef.current);
+    blurTimeoutRef.current = null;
+  }
+
   function onChange(_event: React.ChangeEvent<HTMLInputElement>, value: string): void {
     setSearch(value);
 
@@ -88,10 +95,7 @@ function FindUser({ label = "Search user", roles, onItemSelected, onError }: Pro
   }
 
   function onSelect(option: { label: string; value: string } | null): void {
-    if (blurTimeoutRef.current !== null) {
-      window.clearTimeout(blurTimeoutRef.current);
-      blurTimeoutRef.current = null;
-    }
+    clearPendingBlurTimeout();
 
     if (option === null) {
       reportSelection("");
@@ -118,10 +122,7 @@ function FindUser({ label = "Search user", roles, onItemSelected, onError }: Pro
   }
 
   function onFocus(): void {
-    if (blurTimeoutRef.current !== null) {
-      window.clearTimeout(blurTimeoutRef.current);
-      blurTimeoutRef.current = null;
-    }
+    clearPendingBlurTimeout();
   }
 
   async function callGetUsersByRoleCloudFunction(userRole: string): Promise<string[]> {

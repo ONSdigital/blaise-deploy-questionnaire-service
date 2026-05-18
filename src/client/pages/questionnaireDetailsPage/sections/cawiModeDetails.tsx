@@ -95,11 +95,9 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
 
     const anchor = downloadAnchorRef.current;
 
-    if (anchor) {
-      anchor.href = url;
-      anchor.download = filename;
-      anchor.click();
-    }
+    anchor!.href = url;
+    anchor!.download = filename;
+    anchor!.click();
 
     URL.revokeObjectURL(url);
   };

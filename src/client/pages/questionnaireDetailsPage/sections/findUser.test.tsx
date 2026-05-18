@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
@@ -18,6 +18,7 @@ describe("FindUser happy path", () => {
 
   afterEach(() => {
     mock.reset();
+    vi.useRealTimers();
   });
 
   it("renders input and label", async () => {
@@ -223,6 +224,61 @@ describe("FindUser happy path", () => {
     expect(input).toHaveValue("Jill");
     expect(onItemSelected).toHaveBeenCalledWith("Jill");
     expect(onError).not.toHaveBeenCalled();
+  });
+
+  it("reports an exact match after the blur timeout runs", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
+    const onItemSelected = vi.fn();
+    const onError = vi.fn();
+
+    render(
+      <FindUser
+        label="Enter username"
+        roles={roles}
+        onItemSelected={onItemSelected}
+        onError={onError}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter username");
+
+    fireEvent.change(input, { target: { value: "Jill" } });
+    vi.useFakeTimers();
+    fireEvent.blur(input);
+
+    await act(async () => {
+      vi.advanceTimersByTime(100);
+    });
+
+    expect(onItemSelected).toHaveBeenCalledTimes(1);
+    expect(onItemSelected).toHaveBeenCalledWith("Jill");
+    expect(onError).not.toHaveBeenCalled();
+    expect(input).toHaveValue("Jill");
+  });
+
+  it("cancels the blur timeout when the input regains focus", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
+    const clearTimeoutSpy = vi.spyOn(window, "clearTimeout");
+
+    render(
+      <FindUser
+        label="Enter username"
+        roles={roles}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+    const input = screen.getByPlaceholderText("Enter username");
+
+    fireEvent.change(input, { target: { value: "NotAUser" } });
+    fireEvent.blur(input);
+    fireEvent.focus(input);
+
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+    expect(input).toHaveValue("NotAUser");
   });
 
   it("shows the design-system no results option if the filter matches no users", async () => {

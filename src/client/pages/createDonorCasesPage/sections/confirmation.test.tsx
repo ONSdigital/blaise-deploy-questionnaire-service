@@ -105,6 +105,54 @@ describe("Confirmation behavior", () => {
     });
   });
 
+  it("uses the cloud function message when the success payload is an object", async () => {
+    mockedAxios.post.mockResolvedValueOnce({
+      data: { message: "Created donor cases", status: 200 },
+      status: 200,
+    } as never);
+
+    render(
+      <Confirmation
+        questionnaireName={ipsQuestionnaire.name}
+        role="IPS Manager"
+        onSuccess={mockOnSuccess}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+    });
+
+    await waitFor(() => {
+      expect(mockOnSuccess).toHaveBeenCalledWith("Created donor cases", 200);
+    });
+  });
+
+  it("falls back to a generic success message for unexpected success payloads", async () => {
+    mockedAxios.post.mockResolvedValueOnce({
+      data: { status: "ok" },
+      status: 200,
+    } as never);
+
+    render(
+      <Confirmation
+        questionnaireName={ipsQuestionnaire.name}
+        role="IPS Manager"
+        onSuccess={mockOnSuccess}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+    });
+
+    await waitFor(() => {
+      expect(mockOnSuccess).toHaveBeenCalledWith("Success", 200);
+    });
+  });
+
   it("calls onSuccess with error status when the API call fails", async () => {
     mockedAxios.post.mockRejectedValue(cloudFunctionAxiosError);
 
@@ -180,6 +228,31 @@ describe("Confirmation behavior", () => {
 
     await waitFor(() => {
       expect(mockOnSuccess).toHaveBeenCalledWith("Cloud function failed", 500);
+    });
+  });
+
+  it("passes through a plain string API error body when provided", async () => {
+    mockedAxios.post.mockRejectedValueOnce({
+      response: {
+        data: "Plain string error",
+      },
+    });
+
+    render(
+      <Confirmation
+        questionnaireName={ipsQuestionnaire.name}
+        role="IPS Manager"
+        onSuccess={mockOnSuccess}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+    });
+
+    await waitFor(() => {
+      expect(mockOnSuccess).toHaveBeenCalledWith("Plain string error", 500);
     });
   });
 

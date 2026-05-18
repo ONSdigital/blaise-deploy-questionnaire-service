@@ -230,4 +230,42 @@ describe("CAWI mode details", () => {
       await screen.findByText(/Error occurred while generating Unique Access Codes/i),
     ).toBeInTheDocument();
   });
+
+  it("should skip CSV creation when generated UAC data is empty", async () => {
+    generateUacsAndCsvFileDataMock.mockResolvedValueOnce([]);
+    mock.onGet("/api/uacs/instrument/OPN2004A/count").reply(200, { count: 1 });
+    mock.onGet("/api/questionnaires/OPN2004A/modes").reply(200, ["CAWI"]);
+
+    const questionnaireWithDataRecords = {
+      ...opnQuestionnaire,
+      dataRecordCount: 1,
+    };
+
+    const { container } = render(
+      <CawiModeDetails
+        questionnaire={questionnaireWithDataRecords}
+        modes={["CAWI"]}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    const generateUacsButton = await screen.findByText(
+      /Generate and download Unique Access Codes/i,
+    );
+    const hiddenDownloadLink = container.querySelector('a[aria-hidden="true"]');
+
+    expect(hiddenDownloadLink).not.toBeNull();
+
+    const clickSpy = vi.spyOn(hiddenDownloadLink as HTMLAnchorElement, "click");
+
+    await userEvent.click(generateUacsButton);
+
+    await waitFor(() => {
+      expect(generateUacsAndCsvFileDataMock).toHaveBeenCalledWith("OPN2004A");
+      expect(createObjectUrlMock).not.toHaveBeenCalled();
+      expect(clickSpy).not.toHaveBeenCalled();
+      expect(hiddenDownloadLink).not.toHaveAttribute("href");
+      expect(hiddenDownloadLink).not.toHaveAttribute("download");
+    });
+  });
 });
