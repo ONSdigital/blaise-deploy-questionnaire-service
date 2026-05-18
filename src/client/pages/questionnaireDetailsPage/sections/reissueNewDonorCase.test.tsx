@@ -28,11 +28,11 @@ vi.mock("blaise-design-system-react-components", () => ({
   SummaryGroupTable: ({
     groupedSummary,
   }: {
-    groupedSummary: { groups: Array<{ preamble: React.ReactNode }> };
+    groupedSummary: { groups: Array<{ title?: string; preamble: React.ReactNode }> };
   }) => (
     <div>
-      {groupedSummary.groups.map((group, index) => (
-        <div key={index}>{group.preamble}</div>
+      {groupedSummary.groups.map((group) => (
+        <div key={group.title ?? String(group.preamble)}>{group.preamble}</div>
       ))}
     </div>
   ),

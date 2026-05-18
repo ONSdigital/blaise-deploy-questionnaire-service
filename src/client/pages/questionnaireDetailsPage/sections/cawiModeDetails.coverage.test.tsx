@@ -55,8 +55,8 @@ vi.mock("blaise-design-system-react-components", () => ({
     };
   }) => (
     <div>
-      {groupedSummary.groups.map((group, index) => (
-        <section key={index}>
+      {groupedSummary.groups.map((group) => (
+        <section key={group.title ?? Object.keys(group.records).join("|")}>
           {group.title ? <h2>{group.title}</h2> : null}
           {group.preamble}
           {Object.entries(group.records).map(([label, record]) => (

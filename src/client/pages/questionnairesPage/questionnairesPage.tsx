@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import { LoadingPanel, Panel, Table, TextInput } from "blaise-design-system-react-components";
 import dateFormatter from "dayjs";
-import { type ReactElement, useState } from "react";
+import { type ReactElement, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { getQuestionnaires } from "../../api/questionnaires";
@@ -122,6 +122,12 @@ const QuestionnairesPage = ({ setErrored }: Props): ReactElement => {
       }
     },
   });
+
+  useEffect(() => {
+    if (!isLoading && !error) {
+      setErrored(false);
+    }
+  }, [error, isLoading, setErrored]);
 
   const handleFilterChange = (value: string) => {
     setFilterText(value);

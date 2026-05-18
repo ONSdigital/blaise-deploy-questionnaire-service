@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { act } from "react";
-import { BrowserRouter, MemoryRouter } from "react-router-dom";
+import { BrowserRouter, MemoryRouter, useNavigate } from "react-router-dom";
 
 import App from "./app";
 import { questionnaireList } from "./features/step_definitions/helpers/api.mock";
@@ -36,6 +36,10 @@ vi.mock("./pages/auditPage/auditPage", () => ({
 
 vi.mock("./pages/reinstallQuestionnairesPage/reinstallQuestionnairesPage", () => ({
   default: () => <div>Reinstall questionnaires page</div>,
+}));
+
+vi.mock("./pages/questionnaireDetailsPage/questionnaireDetailsPage", () => ({
+  default: () => <div>Questionnaire details page</div>,
 }));
 
 vi.mock("./pages/reissueNewDonorCasePage/reissueNewDonorCasePage", () => ({
@@ -75,6 +79,40 @@ function renderAtRoute(initialEntry: string) {
   return render(
     <QueryClientProvider client={client}>
       <MemoryRouter initialEntries={[initialEntry]}>
+        <App />
+      </MemoryRouter>
+    </QueryClientProvider>,
+  );
+}
+
+function NavigationControls() {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => navigate("/questionnaire/OPN2007T")}
+      >
+        Go to details
+      </button>
+      <button
+        type="button"
+        onClick={() => navigate("/")}
+      >
+        Go home
+      </button>
+    </>
+  );
+}
+
+function renderWithNavigator(initialEntry: string) {
+  const client = createTestQueryClient();
+
+  return render(
+    <QueryClientProvider client={client}>
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <NavigationControls />
         <App />
       </MemoryRouter>
     </QueryClientProvider>,
@@ -287,5 +325,42 @@ describe("App routes and status lifecycle", () => {
     await waitFor(() => {
       expect(screen.getByText(/Enter your Blaise username and password/i)).toBeInTheDocument();
     });
+  });
+
+  it("clears the home error banner after returning when questionnaires load successfully", async () => {
+    mock.reset();
+    mock
+      .onGet("/api/questionnaires")
+      .replyOnce(500)
+      .onGet("/api/questionnaires")
+      .reply(200, questionnaireList);
+
+    renderWithNavigator("/");
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          /Sorry, there is a problem with this service. We are working to fix the problem. Please try again later./i,
+        ),
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Go to details" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Questionnaire details page")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Go home" }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/OPN2007T/i)).toBeInTheDocument();
+    });
+
+    expect(
+      screen.queryByText(
+        /Sorry, there is a problem with this service. We are working to fix the problem. Please try again later./i,
+      ),
+    ).not.toBeInTheDocument();
   });
 });
