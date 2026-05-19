@@ -140,7 +140,14 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   });
 
   server.get(/.*/, function (req: Request, res: Response) {
-    res.render("index.html");
+    const appConfigJson = JSON.stringify({
+      projectId: config.ProjectId,
+      urlDomain: config.UrlDomain,
+    }).replace(/</g, "\\u003c");
+
+    res.render("index.html", {
+      appConfigJson,
+    });
   });
 
   server.use(function (err: Error, req: Request, res: Response, _next: NextFunction) {

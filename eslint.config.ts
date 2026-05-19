@@ -21,6 +21,7 @@ export default tseslint.config(
     settings: {
       "import-x/resolver-next": [
         createTypeScriptImportResolver({
+          noWarnOnMultipleProjects: true,
           project: ["./tsconfig.client.json", "./tsconfig.server.json", "./tsconfig.tooling.json"],
         }),
       ],

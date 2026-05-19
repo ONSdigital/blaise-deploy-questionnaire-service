@@ -18,6 +18,26 @@ export interface Config extends AuthConfig {
   GetUsersByRoleCloudFunctionUrl: string;
 }
 
+type RequiredConfigEnv = {
+  BLAISE_API_URL: string | undefined;
+  PROJECT_ID: string | undefined;
+  URL_DOMAIN: string | undefined;
+  BUCKET_NAME: string | undefined;
+  SERVER_PARK: string | undefined;
+  BIMS_API_URL: string | undefined;
+  BIMS_CLIENT_ID: string | undefined;
+  BUS_API_URL: string | undefined;
+  BUS_CLIENT_ID: string | undefined;
+  SESSION_SECRET: string | undefined;
+  CREATE_DONOR_CASES_CLOUD_FUNCTION_URL: string | undefined;
+  REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL: string | undefined;
+  GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL: string | undefined;
+};
+
+type ResolvedRequiredConfigEnv = {
+  [TKey in keyof RequiredConfigEnv]: string;
+};
+
 export function getConfigFromEnv(): Config {
   const {
     PROJECT_ID,
@@ -36,62 +56,42 @@ export function getConfigFromEnv(): Config {
     GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL,
   } = process.env;
 
-  const requiredEnvErrors = [
-    requireResolvedEnv("BLAISE_API_URL", BLAISE_API_URL),
-    requireResolvedEnv("PROJECT_ID", PROJECT_ID),
-    requireResolvedEnv("URL_DOMAIN", URL_DOMAIN),
-    requireResolvedEnv("BUCKET_NAME", BUCKET_NAME),
-    requireResolvedEnv("SERVER_PARK", SERVER_PARK),
-    requireResolvedEnv("BIMS_API_URL", BIMS_API_URL),
-    requireResolvedEnv("BIMS_CLIENT_ID", BIMS_CLIENT_ID),
-    requireResolvedEnv("BUS_API_URL", BUS_API_URL),
-    requireResolvedEnv("BUS_CLIENT_ID", BUS_CLIENT_ID),
-    requireResolvedEnv("SESSION_SECRET", SESSION_SECRET),
-    requireResolvedEnv(
-      "CREATE_DONOR_CASES_CLOUD_FUNCTION_URL",
-      CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
-    ),
-    requireResolvedEnv(
-      "REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL",
-      REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
-    ),
-    requireResolvedEnv(
-      "GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL",
-      GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL,
-    ),
-  ].filter((errorMessage): errorMessage is string => errorMessage !== undefined);
+  const requiredEnv: RequiredConfigEnv = {
+    BLAISE_API_URL,
+    PROJECT_ID,
+    URL_DOMAIN,
+    BUCKET_NAME,
+    SERVER_PARK,
+    BIMS_API_URL,
+    BIMS_CLIENT_ID,
+    BUS_API_URL,
+    BUS_CLIENT_ID,
+    SESSION_SECRET,
+    CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
+    REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
+    GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL,
+  };
 
-  if (requiredEnvErrors.length > 0) {
-    throw new Error(`Missing required environment variables: ${requiredEnvErrors.join(", ")}`);
-  }
+  assertResolvedRequiredEnv(requiredEnv);
 
   return {
     Port: parsePort(PORT),
-    BlaiseApiUrl: fixUrl(getRequiredEnv("BLAISE_API_URL", BLAISE_API_URL)),
-    ProjectId: getRequiredEnv("PROJECT_ID", PROJECT_ID),
-    UrlDomain: getRequiredEnv("URL_DOMAIN", URL_DOMAIN),
-    BucketName: getRequiredEnv("BUCKET_NAME", BUCKET_NAME),
-    ServerPark: getRequiredEnv("SERVER_PARK", SERVER_PARK),
-    BimsApiUrl: getRequiredEnv("BIMS_API_URL", BIMS_API_URL),
-    BimsClientId: getRequiredEnv("BIMS_CLIENT_ID", BIMS_CLIENT_ID),
-    BusApiUrl: getRequiredEnv("BUS_API_URL", BUS_API_URL),
-    BusClientId: getRequiredEnv("BUS_CLIENT_ID", BUS_CLIENT_ID),
+    BlaiseApiUrl: fixUrl(requiredEnv.BLAISE_API_URL),
+    ProjectId: requiredEnv.PROJECT_ID,
+    UrlDomain: requiredEnv.URL_DOMAIN,
+    BucketName: requiredEnv.BUCKET_NAME,
+    ServerPark: requiredEnv.SERVER_PARK,
+    BimsApiUrl: requiredEnv.BIMS_API_URL,
+    BimsClientId: requiredEnv.BIMS_CLIENT_ID,
+    BusApiUrl: requiredEnv.BUS_API_URL,
+    BusClientId: requiredEnv.BUS_CLIENT_ID,
     SessionTimeout: DEFAULT_SESSION_TIMEOUT,
-    SessionSecret: getRequiredEnv("SESSION_SECRET", SESSION_SECRET),
-    TokenIssuer: getRequiredEnv("PROJECT_ID", PROJECT_ID),
+    SessionSecret: requiredEnv.SESSION_SECRET,
+    TokenIssuer: requiredEnv.PROJECT_ID,
     Roles: ALLOWED_ROLES,
-    CreateDonorCasesCloudFunctionUrl: getRequiredEnv(
-      "CREATE_DONOR_CASES_CLOUD_FUNCTION_URL",
-      CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
-    ),
-    ReissueNewDonorCaseCloudFunctionUrl: getRequiredEnv(
-      "REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL",
-      REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
-    ),
-    GetUsersByRoleCloudFunctionUrl: getRequiredEnv(
-      "GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL",
-      GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL,
-    ),
+    CreateDonorCasesCloudFunctionUrl: requiredEnv.CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
+    ReissueNewDonorCaseCloudFunctionUrl: requiredEnv.REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
+    GetUsersByRoleCloudFunctionUrl: requiredEnv.GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL,
   };
 }
 
@@ -103,22 +103,23 @@ function fixUrl(url: string): string {
   return `http://${url}`;
 }
 
-function requireResolvedEnv(name: string, value: string | undefined): string | undefined {
-  if (!value || value.trim() === "" || value === `_${name}`) {
-    return name;
+function assertResolvedRequiredEnv(
+  env: RequiredConfigEnv,
+): asserts env is ResolvedRequiredConfigEnv {
+  const requiredEnvErrors = Object.entries(env)
+    .filter((entry): entry is [string, string | undefined] => entry.length === 2)
+    .map(([name, value]) => {
+      if (value === undefined || value.trim() === "" || value === `_${name}`) {
+        return name;
+      }
+
+      return undefined;
+    })
+    .filter((errorMessage): errorMessage is string => errorMessage !== undefined);
+
+  if (requiredEnvErrors.length > 0) {
+    throw new Error(`Missing required environment variables: ${requiredEnvErrors.join(", ")}`);
   }
-
-  return undefined;
-}
-
-function getRequiredEnv(name: string, value: string | undefined): string {
-  const missingEnv = requireResolvedEnv(name, value);
-
-  if (missingEnv) {
-    throw new Error(`Missing required environment variable: ${missingEnv}`);
-  }
-
-  return value;
 }
 
 function parsePort(port: string | undefined): number {

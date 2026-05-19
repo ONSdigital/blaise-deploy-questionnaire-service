@@ -1,6 +1,7 @@
 /// <reference types="vitest/globals" />
 
 import fs from "fs";
+import path from "path";
 
 const { mockGetQuestionnaires } = vi.hoisted(() => ({
   mockGetQuestionnaires: vi.fn(),
@@ -204,6 +205,25 @@ describe("Cloud function routes build audit messages", () => {
 describe("Client route rendering and global error handler", () => {
   afterEach(() => {
     vi.restoreAllMocks();
+  });
+
+  it("renders runtime config as safely escaped json in the html", async () => {
+    const app = newServer({
+      ...config,
+      UrlDomain: 'surveys.test</script><script>alert("xss")</script>',
+    });
+
+    app.set("views", path.resolve(process.cwd()));
+
+    const response = await supertest(app).get("/runtime-config-check");
+
+    expect(response.statusCode).toEqual(200);
+    expect(response.text).toMatch(/<script\s+id="app-config"\s+type="application\/json"\s*>/);
+    expect(response.text).toContain('"projectId":"test-project-id"');
+    expect(response.text).toContain(
+      '"urlDomain":"surveys.test\\u003c/script>\\u003cscript>alert(\\"xss\\")\\u003c/script>"',
+    );
+    expect(response.text).not.toContain("window.appConfig");
   });
 
   it("returns the static 500 page when render fails and error page exists", async () => {

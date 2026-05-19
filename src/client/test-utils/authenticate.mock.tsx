@@ -18,7 +18,14 @@ type AuthenticateProps = {
   children: AuthenticateChildren;
 };
 
+type AuthManagerOptions = {
+  sessionKey: string;
+  cookieDomain?: string;
+};
+
 class MockAuthManager {
+  public constructor(_options?: AuthManagerOptions) {}
+
   public getToken = (): string | null => null;
 
   public setToken = (_token: string | null): void => undefined;
@@ -33,6 +40,10 @@ class MockAuthManager {
 }
 
 class MockAuthClientClass {
+  public constructor(options?: AuthManagerOptions) {
+    mockAuthenticateState.authClientOptions = options;
+  }
+
   public loggedIn = async (): Promise<boolean> => mockAuthenticateState.loggedIn;
 
   public logOut = (setLoggedIn: (v: boolean) => void): void => {
@@ -53,12 +64,14 @@ const defaultUser: User = {
 };
 
 const mockAuthenticateState = {
+  authClientOptions: undefined as AuthManagerOptions | undefined,
   loggedIn: true,
   logOutFunction: () => undefined,
   user: defaultUser,
 };
 
 function resetMockAuthenticate(): void {
+  mockAuthenticateState.authClientOptions = undefined;
   mockAuthenticateState.loggedIn = true;
   mockAuthenticateState.logOutFunction = () => undefined;
   mockAuthenticateState.user = defaultUser;
@@ -88,10 +101,14 @@ export function mockLoginReactClientModule() {
     AuthManager: MockAuthManager,
     AuthClient: MockAuthClientClass,
     LoginForm: () => null,
+    createSessionKey: (environmentKey: string) => `blaise-user-${environmentKey}`,
   };
 }
 
 export const MockAuthenticate = {
+  GetAuthClientOptions(): AuthManagerOptions | undefined {
+    return mockAuthenticateState.authClientOptions;
+  },
   OverrideReturnValues(user: Partial<User> | null, loggedIn: boolean): void {
     mockAuthenticateState.loggedIn = loggedIn;
     mockAuthenticateState.user = {

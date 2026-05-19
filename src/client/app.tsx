@@ -23,6 +23,7 @@ import {
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import QuestionnairesPage from "./pages/questionnairesPage/questionnairesPage";
+import { getSharedAuthOptions } from "./utils/auth";
 import { isProduction } from "./utils/env";
 
 const AuditPage = lazy(() => import("./pages/auditPage/auditPage"));
@@ -192,7 +193,8 @@ function App(): ReactElement {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const authClient = useMemo(() => new AuthClient(), []);
+  const authOptions = useMemo(() => getSharedAuthOptions(), []);
+  const authClient = useMemo(() => new AuthClient(authOptions), [authOptions]);
   const [authState, setAuthState] = useState<"checking" | "unauthenticated" | "authenticated">(
     "checking",
   );

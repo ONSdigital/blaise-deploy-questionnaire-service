@@ -188,6 +188,11 @@ describe("DQS homepage", () => {
       expect(getByText(/OPN2007T/i)).toBeInTheDocument();
       expect(queryByText(/Loading/i)).not.toBeInTheDocument();
     });
+
+    expect(MockAuthenticate.GetAuthClientOptions()).toEqual({
+      sessionKey: "blaise-user-test-project",
+      cookieDomain: "surveys.test",
+    });
   });
 });
 

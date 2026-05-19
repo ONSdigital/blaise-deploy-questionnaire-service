@@ -8,6 +8,9 @@ const globalWithActEnvironment = globalThis as typeof globalThis & {
 
 globalWithActEnvironment.IS_REACT_ACT_ENVIRONMENT = true;
 
+document.head.innerHTML +=
+  '<script id="app-config" type="application/json">{"projectId":"test-project","urlDomain":"surveys.test"}</script>';
+
 // Feature tests perform full page flows and can exceed the default 1s async timeout.
 configure({ asyncUtilTimeout: 5000 });
 

@@ -10,6 +10,7 @@ describe("Config setup", () => {
       ...originalEnv,
       BLAISE_API_URL: "mock-api",
       PROJECT_ID: "a-project-name",
+      URL_DOMAIN: "surveys.gcp.onsdigital.uk",
       BUCKET_NAME: "unique-bucket",
       SERVER_PARK: "gusty",
       BIMS_API_URL: "bims-mock-api",
@@ -19,9 +20,7 @@ describe("Config setup", () => {
       CREATE_DONOR_CASES_CLOUD_FUNCTION_URL: "https://mock/create",
       REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL: "https://mock/reissue",
       GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL: "https://mock/users-by-role",
-      SESSION_TIMEOUT: "12h",
       SESSION_SECRET: "mock-session-secret",
-      ROLES: "DST,BDSS",
       PORT: "5000",
     };
   });
@@ -37,11 +36,14 @@ describe("Config setup", () => {
 
     expect(config.BlaiseApiUrl).toBe("http://mock-api");
     expect(config.ProjectId).toBe("a-project-name");
+    expect(config.UrlDomain).toBe("surveys.gcp.onsdigital.uk");
     expect(config.BucketName).toBe("unique-bucket");
     expect(config.BimsApiUrl).toBe("bims-mock-api");
     expect(config.BimsClientId).toBe("mock-client-id");
     expect(config.BusApiUrl).toBe("bus-mock-api");
     expect(config.Port).toBe(5000);
+    expect(config.SessionSecret).toBe("mock-session-secret");
+    expect(config.TokenIssuer).toBe("a-project-name");
   });
 
   it("should keep protocol when BLAISE_API_URL already includes http(s)", () => {
@@ -84,9 +86,17 @@ describe("Config setup", () => {
     expect(() => getConfigFromEnv()).toThrow("Invalid PORT value: invalid-port");
   });
 
-  it("should continue to provide defaults for optional roles and session timeout", () => {
-    process.env.ROLES = undefined;
-    process.env.SESSION_TIMEOUT = undefined;
+  it("should default PORT to 5000 when it is not defined", () => {
+    process.env.PORT = undefined;
+
+    const config = getConfigFromEnv();
+
+    expect(config.Port).toBe(5000);
+  });
+
+  it("should hardcode roles and session timeout regardless of environment overrides", () => {
+    process.env.ROLES = "unexpected-role";
+    process.env.SESSION_TIMEOUT = "24h";
 
     const config = getConfigFromEnv();
 
