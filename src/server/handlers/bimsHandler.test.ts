@@ -88,6 +88,35 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
     mock.reset();
   });
 
+  it("should return a 400 status when the Telephone Operations start date payload is missing", async () => {
+    const response: Response = await request.post("/api/tostartdate/OPN2004A").send({});
+
+    expect(response.status).toEqual(400);
+    expect(response.body).toStrictEqual({ message: "Invalid tostartdate" });
+    expect(mock.history.get).toHaveLength(0);
+  });
+
+  it("should return a 400 status when the Telephone Operations start date is a non-empty invalid value", async () => {
+    const response: Response = await request
+      .post("/api/tostartdate/OPN2004A")
+      .send({ tostartdate: "not-a-date" });
+
+    expect(response.status).toEqual(400);
+    expect(response.body).toStrictEqual({ message: "Invalid tostartdate" });
+    expect(mock.history.get).toHaveLength(0);
+  });
+
+  it("should return a 400 status when the request body is not a JSON object", async () => {
+    const response: Response = await request
+      .post("/api/tostartdate/OPN2004A")
+      .set("Content-Type", "text/plain")
+      .send("not-json");
+
+    expect(response.status).toEqual(400);
+    expect(response.body).toStrictEqual({ message: "Invalid tostartdate" });
+    expect(mock.history.get).toHaveLength(0);
+  });
+
   it("should return 201 with an empty body when no existing Telephone Operations start date is found and none is provided", async () => {
     mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(404, {}, jsonHeaders);
 
@@ -322,6 +351,16 @@ describe("Sending Totalmobile release date to BIMS service", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
+  });
+
+  it("should return a 400 status when the Totalmobile release date payload is invalid", async () => {
+    const response: Response = await request
+      .post("/api/tmreleasedate/LMS2004A")
+      .send({ tmreleasedate: "not-a-date" });
+
+    expect(response.status).toEqual(400);
+    expect(response.body).toStrictEqual({ message: "Invalid tmreleasedate" });
+    expect(mock.history.get).toHaveLength(0);
   });
 
   it("should return a 500 status direct from the API", async () => {

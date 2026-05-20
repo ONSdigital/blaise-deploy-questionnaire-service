@@ -150,6 +150,14 @@ export function givenToStartDateFails(given: DefineStepFunction, mocker: MockAda
   given(
     /setting a Telephone Operations start date for '(.*)' fails/,
     (questionnaireName: string) => {
+      mocker
+        .onGet(`/upload/init?filename=${questionnaireName}.bpkg`)
+        .reply(200, "https://storage.googleapis.com/");
+      mocker.onPut("https://storage.googleapis.com/").reply(200);
+      mocker
+        .onGet(`/upload/verify?filename=${questionnaireName}.bpkg`)
+        .reply(200, { name: `${questionnaireName}.bpkg` });
+      mocker.onPost("/api/install").reply(201);
       mocker.onPost(`/api/tostartdate/${questionnaireName}`).reply(500);
     },
   );

@@ -228,6 +228,11 @@ describe("QuestionnaireDetailsPage Totalmobile release date details", () => {
       expect(screen.getByText("Create donor cases summary")).toBeInTheDocument();
     });
 
+    await waitFor(() => {
+      expect(screen.getByText("Create donor cases section")).toBeInTheDocument();
+      expect(screen.getByText("Reissue donor case section")).toBeInTheDocument();
+    });
+
     expect(sectionMocks.createDonorCasesSummary).toHaveBeenCalledWith({
       donorCasesResponseMessage: "Created",
       donorCasesStatusCode: 201,

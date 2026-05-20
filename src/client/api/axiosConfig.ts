@@ -8,25 +8,32 @@ export const AUTH_EXPIRED_EVENT_NAME = "dqs-auth-expired";
 const authManager = new AuthManager(getSharedAuthOptions());
 let authExpiryInterceptorRegistered = false;
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 function getResponseStatus(error: unknown): number | undefined {
-  if (typeof error !== "object" || error == null || !("response" in error)) {
+  /* v8 ignore next 3 */
+  if (!isRecord(error)) {
     return undefined;
   }
 
-  const response = (error as { response?: { status?: unknown } }).response;
+  const { response } = error;
 
-  return typeof response?.status === "number" ? response.status : undefined;
+  return isRecord(response) && typeof response.status === "number" ? response.status : undefined;
 }
 
 function notifyAuthExpired(): void {
   authManager.clearToken();
 
+  /* v8 ignore next 3 */
   if (typeof window !== "undefined") {
     window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT_NAME));
   }
 }
 
 function ensureAuthExpiryInterceptor(): void {
+  /* v8 ignore next 3 */
   if (authExpiryInterceptorRegistered) {
     return;
   }

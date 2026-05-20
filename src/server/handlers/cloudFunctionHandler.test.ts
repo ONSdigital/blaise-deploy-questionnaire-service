@@ -133,6 +133,26 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
       "AUDIT_LOG: rich failed to create donor cases for interviewer on OPN2004A",
     );
   });
+
+  it("rejects unauthenticated donor case requests before proxying the cloud function", async () => {
+    // Changed: cover the auth boundary so protected proxy routes cannot be exercised anonymously.
+    const validateTokenSpy = vi.spyOn(
+      (await import("blaise-login-react-server")).Auth.prototype,
+      "validateToken",
+    );
+
+    try {
+      validateTokenSpy.mockReturnValue(false);
+
+      const response = await request.post("/api/cloudFunction/createDonorCases");
+
+      expect(response.status).toEqual(401);
+      expect(response.body).toEqual({ message: "Unauthorized" });
+      expect(callCloudFunctionToCreateDonorCasesMock).not.toHaveBeenCalled();
+    } finally {
+      validateTokenSpy.mockRestore();
+    }
+  });
 });
 
 describe("Call Cloud Function to reissue new donor case and return responses", () => {
@@ -228,5 +248,71 @@ describe("CloudFunctionHandler without audit dependencies", () => {
 
     expect(response.status).toEqual(500);
     expect(response.body.message).toEqual(cloudFunctionAxiosError.response.data);
+  });
+
+  it("returns undefined message when error has a non-object response property", async () => {
+    callCloudFunctionToCreateDonorCasesMock.mockRejectedValue({ response: null });
+
+    const app = express();
+
+    app.use(express.json());
+    app.use((req, _res, next) => {
+      (req as RequestWithLog).log = {
+        info: vi.fn() as unknown as Logger["info"],
+        error: vi.fn() as unknown as Logger["error"],
+        warn: vi.fn() as unknown as Logger["warn"],
+      } as unknown as express.Request["log"];
+      next();
+    });
+    app.use(newCloudFunctionHandler("/api/cloud/no-audit", "https://example.com/cf"));
+
+    const response = await supertest(app).post("/api/cloud/no-audit").send({ a: 1 });
+
+    expect(response.status).toEqual(500);
+    expect(response.body.message).toBeUndefined();
+  });
+
+  it("returns undefined message when error response has a non-string data property", async () => {
+    callCloudFunctionToCreateDonorCasesMock.mockRejectedValue({ response: { data: 42 } });
+
+    const app = express();
+
+    app.use(express.json());
+    app.use((req, _res, next) => {
+      (req as RequestWithLog).log = {
+        info: vi.fn() as unknown as Logger["info"],
+        error: vi.fn() as unknown as Logger["error"],
+        warn: vi.fn() as unknown as Logger["warn"],
+      } as unknown as express.Request["log"];
+      next();
+    });
+    app.use(newCloudFunctionHandler("/api/cloud/no-audit", "https://example.com/cf"));
+
+    const response = await supertest(app).post("/api/cloud/no-audit").send({ a: 1 });
+
+    expect(response.status).toEqual(500);
+    expect(response.body.message).toBeUndefined();
+  });
+
+  it("returns undefined message when error has no response property", async () => {
+    callCloudFunctionToCreateDonorCasesMock.mockRejectedValue({ message: "plain error" });
+
+    const app = express();
+
+    app.use(express.json());
+    app.use((req, _res, next) => {
+      (req as RequestWithLog).log = {
+        info: vi.fn() as unknown as Logger["info"],
+        error: vi.fn() as unknown as Logger["error"],
+        warn: vi.fn() as unknown as Logger["warn"],
+      } as unknown as express.Request["log"];
+      next();
+    });
+    app.use(newCloudFunctionHandler("/api/cloud/no-audit", "https://example.com/cf"));
+
+    const response = await supertest(app).post("/api/cloud/no-audit").send({ a: 1 });
+
+    expect(response.status).toEqual(500);
+    expect(response.body.message).toBeUndefined();
   });
 });

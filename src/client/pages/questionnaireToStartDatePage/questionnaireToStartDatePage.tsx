@@ -6,13 +6,9 @@ import { type ReactElement } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { getToStartDate, setToStartDate } from "../../api/toStartDate";
+import { readNullableStateString, readStateString } from "../../utils/locationState";
 import { clientLogger } from "../../utils/logger";
 import { AskToStartDate } from "../shared/dateQuestions/askToStartDate";
-
-interface LocationState {
-  toStartDate: string | null;
-  questionnaireName?: string;
-}
 
 type ToStartDateFormValues = {
   askDate: string;
@@ -23,9 +19,10 @@ function QuestionnaireToStartDatePage(): ReactElement {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const routeParams = useParams();
-  const location = useLocation().state as LocationState | undefined;
-  const toStartDateFromState = location?.toStartDate;
-  const questionnaireNameFromState = location?.questionnaireName;
+  const location = useLocation();
+  // Changed: narrow router state explicitly so invalid navigation state falls back to fetching from the route parameter.
+  const toStartDateFromState = readNullableStateString(location.state, "toStartDate");
+  const questionnaireNameFromState = readStateString(location.state, "questionnaireName");
   const questionnaireName = routeParams.questionnaireName ?? questionnaireNameFromState ?? "";
 
   const {

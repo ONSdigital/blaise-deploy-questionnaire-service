@@ -4,27 +4,20 @@ import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom"
 
 import { getQuestionnaire } from "../../api/questionnaires";
 import { decodeRouteParam } from "../../utils/decodeRouteParam";
+import { readStateQuestionnaire, readStateString } from "../../utils/locationState";
 
 import { Confirmation } from "./sections/confirmation";
-
-import type { Questionnaire } from "blaise-api-node-client";
-
-interface Location {
-  questionnaire?: Questionnaire;
-  user?: string;
-  section?: string;
-  responseMessage?: string;
-  statusCode?: number;
-}
 
 function ReissueNewDonorCasePage(): ReactElement {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const routeParams = useParams();
-  const location = useLocation().state as Location | undefined;
+  const location = useLocation();
   const questionnaireName = routeParams.questionnaireName ?? "";
   const decodedRouteUser = decodeRouteParam(routeParams.user);
-  const user = decodedRouteUser ?? location?.user ?? "";
+  // Changed: narrow router state explicitly so invalid navigation state cannot leak into route parameters.
+  const questionnaireFromState = readStateQuestionnaire(location.state, "questionnaire");
+  const user = decodedRouteUser ?? readStateString(location.state, "user") ?? "";
 
   if (!questionnaireName || !user) {
     return (
@@ -37,7 +30,7 @@ function ReissueNewDonorCasePage(): ReactElement {
 
   const handleSuccess = (message: string, code: number): void => {
     void (async () => {
-      let questionnaire = location?.questionnaire ?? null;
+      let questionnaire = questionnaireFromState ?? null;
 
       if (!questionnaire) {
         try {

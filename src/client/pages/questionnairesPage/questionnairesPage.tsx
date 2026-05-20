@@ -32,7 +32,7 @@ function getQuestionnaireIcon(questionnaireName: string): IconProp {
   return faGear;
 }
 
-function questionnaireName(questionnaire: Questionnaire) {
+function QuestionnaireNameCell(questionnaire: Questionnaire) {
   if (isHiddenQuestionnaire(questionnaire.name)) {
     return (
       <>
@@ -45,11 +45,10 @@ function questionnaireName(questionnaire: Questionnaire) {
   return <>{questionnaire.name}</>;
 }
 
-function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
+function QuestionnaireTableRow({ questionnaire }: { questionnaire: Questionnaire }): ReactElement {
   return (
     <tr
       className="ons-table__row"
-      key={questionnaire.name}
       data-testid={"questionnaire-table-row"}
     >
       <td className="ons-table__cell ">
@@ -60,7 +59,7 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
           to={`/questionnaire/${questionnaire.name}`}
           state={{ questionnaire: questionnaire }}
         >
-          {questionnaireName(questionnaire)}
+          {QuestionnaireNameCell(questionnaire)}
         </Link>
       </td>
       <td className="ons-table__cell ">{questionnaire.fieldPeriod}</td>
@@ -75,21 +74,24 @@ function questionnaireTableRow(questionnaire: Questionnaire): ReactElement {
   );
 }
 
-function questionnaireTable(
+function QuestionnaireTable(
   filteredList: Questionnaire[],
   tableColumns: string[],
   message: string,
 ): ReactElement {
-  if (filteredList && filteredList.length > 0) {
+  if (filteredList.length > 0) {
     return (
       <Table
         columns={tableColumns}
         id={"questionnaire-table"}
         scrollableLabel={"Questionnaire list"}
       >
-        {filteredList.map((item: Questionnaire) => {
-          return questionnaireTableRow(item);
-        })}
+        {filteredList.map((item: Questionnaire) => (
+          <QuestionnaireTableRow
+            key={item.name}
+            questionnaire={item}
+          />
+        ))}
       </Table>
     );
   }
@@ -104,6 +106,26 @@ function questionnaireTable(
   );
 }
 
+function filterQuestionnaireList(questionnaireList: Questionnaire[], filterValue: string) {
+  if (questionnaireList.length === 0) {
+    return [];
+  }
+
+  const newFilteredList = questionnaireList.filter((questionnaire) => {
+    if (filterValue === "") {
+      return !isHiddenQuestionnaire(questionnaire.name);
+    }
+
+    return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase());
+  });
+
+  newFilteredList.sort(
+    (a: Questionnaire, b: Questionnaire) => Date.parse(b.installDate) - Date.parse(a.installDate),
+  );
+
+  return newFilteredList;
+}
+
 const QuestionnairesPage = ({ setErrored }: Props): ReactElement => {
   const [filterText, setFilterText] = useState<string>("");
 
@@ -113,45 +135,12 @@ const QuestionnairesPage = ({ setErrored }: Props): ReactElement => {
     error,
   } = useQuery({
     queryKey: ["questionnaires"],
-    queryFn: async () => {
-      try {
-        return await getQuestionnaires();
-      } catch {
-        setErrored(true);
-        throw new Error("Unable to load questionnaires");
-      }
-    },
+    queryFn: getQuestionnaires,
   });
 
   useEffect(() => {
-    if (!isLoading && !error) {
-      setErrored(false);
-    }
-  }, [error, isLoading, setErrored]);
-
-  const handleFilterChange = (value: string) => {
-    setFilterText(value);
-  };
-
-  const filterQuestionnaireList = (questionnaireList: Questionnaire[], filterValue: string) => {
-    if (questionnaireList.length === 0) {
-      return [];
-    }
-
-    const newFilteredList = questionnaireList.filter((questionnaire) => {
-      if (filterValue === "") {
-        return !isHiddenQuestionnaire(questionnaire.name);
-      }
-
-      return questionnaire.name.toUpperCase().includes(filterValue.toUpperCase());
-    });
-
-    newFilteredList.sort(
-      (a: Questionnaire, b: Questionnaire) => Date.parse(b.installDate) - Date.parse(a.installDate),
-    );
-
-    return newFilteredList;
-  };
+    setErrored(!!error);
+  }, [error, setErrored]);
 
   const filteredList = filterQuestionnaireList(questionnaires, filterText);
 
@@ -176,17 +165,15 @@ const QuestionnairesPage = ({ setErrored }: Props): ReactElement => {
           <TextInput
             id="filter-by-name"
             label="Filter by questionnaire name"
-            onChange={(e) => handleFilterChange(e.target.value)}
+            onChange={(e) => setFilterText(e.target.value)}
             value={filterText}
           />
         </div>
         <div className="ons-u-mt-s">
-          {questionnaires && (
-            <h3 aria-live="polite">
-              {filteredList.length} results of {questionnaires.length}
-            </h3>
-          )}
-          {questionnaireTable(
+          <h3 aria-live="polite">
+            {filteredList.length} results of {questionnaires.length}
+          </h3>
+          {QuestionnaireTable(
             filteredList,
             ["Questionnaire", "Field period", "Status", "Install date", "Cases"],
             message,

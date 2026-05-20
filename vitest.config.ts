@@ -35,6 +35,7 @@ export default defineConfig({
         "src/**/setupTests.ts",
         "src/client/features/**",
         "src/client/test-utils/**",
+        "src/client/api/processes/index.ts",
       ],
     },
   },

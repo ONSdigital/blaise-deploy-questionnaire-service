@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { type ReactElement, useMemo } from "react";
+import { type ReactElement } from "react";
 
 import { getQuestionnaireSettings } from "../../../api/questionnaires";
 import { clientLogger } from "../../../utils/logger";
 import {
-  GetStrictInterviewingSettings,
-  ValidateCatiModeOnlySettings,
-  ValidateSettings,
+  getStrictInterviewingSettings,
+  validateCatiOnlySettings,
+  validateQuestionnaireSettings,
 } from "../../../utils/questionnaireSettings";
 import { QuestionnaireSettings as QuestionnaireSettingsShared } from "../../shared/questionnaireSettings";
 
@@ -21,7 +21,7 @@ interface Props {
 }
 
 function QuestionnaireSettings({ questionnaire, modes }: Props): ReactElement {
-  const isCatiModeOnly = useMemo(() => modes.length === 1 && modes[0] === "CATI", [modes]);
+  const isCatiModeOnly = modes.length === 1 && modes[0] === "CATI";
 
   const { data: setting, error } = useQuery({
     queryKey: ["questionnaireSettings", questionnaire.name],
@@ -35,23 +35,31 @@ function QuestionnaireSettings({ questionnaire, modes }: Props): ReactElement {
 
       clientLogger.info("returned questionnaire settings: ", settingsList);
 
-      return GetStrictInterviewingSettings(settingsList);
+      const strictInterviewingSettings = getStrictInterviewingSettings(settingsList);
+
+      if (!strictInterviewingSettings) {
+        // Changed: surface missing StrictInterviewing settings as a real load failure instead of returning a fake object.
+        clientLogger.error("returned questionnaire strict interviewing settings were missing");
+        throw new Error("returned questionnaire strict interviewing settings were missing");
+      }
+
+      return strictInterviewingSettings;
     },
   });
 
   const errored = !!error;
 
-  const invalidSettings: Partial<QuestionnaireSettingsType> = useMemo(() => {
+  const invalidSettings: Partial<QuestionnaireSettingsType> = (() => {
     if (setting === undefined) {
       return {};
     }
 
     const [valid, invalid] = isCatiModeOnly
-      ? ValidateCatiModeOnlySettings(setting)
-      : ValidateSettings(setting);
+      ? validateCatiOnlySettings(setting)
+      : validateQuestionnaireSettings(setting);
 
     return valid ? {} : invalid;
-  }, [isCatiModeOnly, setting]);
+  })();
 
   return (
     <QuestionnaireSettingsShared

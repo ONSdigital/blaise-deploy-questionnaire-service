@@ -66,4 +66,24 @@ describe("axiosConfig", () => {
       },
     });
   });
+
+  it("clears the token and dispatches an auth-expired event when a 401 response is received and a token exists", async () => {
+    vi.resetModules();
+    getToken.mockReturnValue("test-token");
+    await import("./axiosConfig");
+
+    const { default: axios } = await import("axios");
+    const { default: MockAdapter } = await import("axios-mock-adapter");
+    const mock = new MockAdapter(axios);
+    const dispatchSpy = vi.spyOn(window, "dispatchEvent");
+
+    mock.onGet("/test").reply(401);
+
+    await expect(axios.get("/test")).rejects.toBeDefined();
+
+    expect(clearToken).toHaveBeenCalled();
+    expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: "dqs-auth-expired" }));
+
+    mock.restore();
+  });
 });

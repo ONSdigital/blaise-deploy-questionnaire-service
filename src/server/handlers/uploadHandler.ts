@@ -3,6 +3,7 @@ import path from "path";
 import { type Auth } from "blaise-login-react-server";
 import express, { type Request, type Response, type Router } from "express";
 
+import { getUsername } from "../helpers/getUsername.js";
 import { sanitise } from "../helpers/sanitise.js";
 
 import type AuditLogger from "../auditLogger.js";
@@ -45,9 +46,9 @@ export default function newUploadHandler(
 }
 
 class UploadHandler {
-  storageManager: StorageManager;
-  auth: Auth;
-  auditLogger: AuditLogger;
+  private readonly storageManager: StorageManager;
+  private readonly auth: Auth;
+  private readonly auditLogger: AuditLogger;
 
   constructor(storageManager: StorageManager, auth: Auth, auditLogger: AuditLogger) {
     this.storageManager = storageManager;
@@ -107,7 +108,7 @@ class UploadHandler {
 
   verifyUpload = async (req: Request, res: Response): Promise<Response> => {
     const { filename } = req.query;
-    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
+    const username = getUsername(req, this.auth);
 
     if (typeof filename !== "string" || filename.trim() === "") {
       return res.status(400).json("No filename provided");

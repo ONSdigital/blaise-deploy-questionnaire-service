@@ -22,6 +22,12 @@ const QuestionnaireSettingsMockList = [
     applyRecordLocking: false,
   },
 ];
+const QuestionnaireSettingsWithoutStrictInterviewingMockList = [
+  {
+    ...QuestionnaireSettingsMockList[0],
+    type: "FreeInterviewing",
+  },
+];
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
@@ -208,6 +214,36 @@ describe("Given the API returns an empty list for questionnaire mode or settings
       <QuestionnaireSettings
         questionnaire={opnQuestionnaire}
         modes={[]}
+      />,
+      { wrapper: createWrapper(BrowserRouter) },
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(viewQuestionnaireSettingsFailedMessage)).toBeDefined();
+    });
+  });
+});
+
+describe("Given the API returns settings without a StrictInterviewing entry", () => {
+  beforeEach(() => {
+    mock
+      .onGet(`/api/questionnaires/${opnQuestionnaire.name}/settings`)
+      .reply(200, QuestionnaireSettingsWithoutStrictInterviewingMockList);
+  });
+
+  afterEach(() => {
+    mock.reset();
+  });
+
+  it("renders an error message", async () => {
+    render(
+      <QuestionnaireSettings
+        questionnaire={opnQuestionnaire}
+        modes={["CATI"]}
       />,
       { wrapper: createWrapper(BrowserRouter) },
     );

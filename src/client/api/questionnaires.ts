@@ -7,18 +7,22 @@ import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelp
 
 import type { Questionnaire, QuestionnaireSettings } from "blaise-api-node-client";
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function getAxiosStatus(error: unknown): number | undefined {
+  if (!isRecord(error) || error.isAxiosError !== true) {
+    return undefined;
+  }
+
+  const { response } = error;
+
+  return isRecord(response) && typeof response.status === "number" ? response.status : undefined;
+}
+
 function isAxios404(error: unknown): boolean {
-  if (typeof error !== "object" || error === null) {
-    return false;
-  }
-
-  if (!("isAxiosError" in error) || !("response" in error)) {
-    return false;
-  }
-
-  const axiosError = error as { isAxiosError?: boolean; response?: { status?: number } };
-
-  return axiosError.isAxiosError === true && axiosError.response?.status === 404;
+  return getAxiosStatus(error) === 404;
 }
 
 export async function getQuestionnaire(

@@ -1,5 +1,5 @@
 import dateFormatter from "dayjs";
-import { type ReactElement, useMemo, useState } from "react";
+import { type ReactElement, useState } from "react";
 import "./yearCalendar.css";
 
 interface Props {
@@ -12,14 +12,11 @@ const WEEKDAY_LETTERS = ["M", "T", "W", "T", "F", "S", "S"];
 function YearCalendar({ modes, surveyDays }: Props): ReactElement {
   const isCatiQuestionnaire = modes.includes("CATI");
 
-  const validSurveyDays = (surveyDays || [])
+  const validSurveyDays = (surveyDays ?? [])
     .map((item) => dateFormatter(item))
     .filter((date) => date.isValid());
 
-  const highlightedSurveyDays = useMemo(
-    () => new Set(validSurveyDays.map((date) => date.format("YYYY-MM-DD"))),
-    [validSurveyDays],
-  );
+  const highlightedSurveyDays = new Set(validSurveyDays.map((date) => date.format("YYYY-MM-DD")));
 
   const initialYear =
     validSurveyDays.length > 0
@@ -29,11 +26,11 @@ function YearCalendar({ modes, surveyDays }: Props): ReactElement {
   const [year, setYear] = useState<number>(initialYear);
 
   function onPrevYear() {
-    setYear(year - 1);
+    setYear((currentYear) => currentYear - 1);
   }
 
   function onNextYear() {
-    setYear(year + 1);
+    setYear((currentYear) => currentYear + 1);
   }
 
   if (!isCatiQuestionnaire) {

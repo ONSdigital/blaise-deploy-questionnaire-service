@@ -20,31 +20,23 @@ import { createWrapper } from "../../test-utils/renderWithQueryClient";
 
 import DeployPage from "./deployQuestionnairePage";
 
+import type {
+  ExistenceCheckResult,
+  SettingsCheckResult,
+} from "../../api/processes/uploadQuestionnaire";
 import type { Questionnaire, QuestionnaireSettings } from "blaise-api-node-client";
 
-type ValidateSelectedQuestionnaireExists = (
-  file: File | undefined,
-  setQuestionnaireName: (status: string) => void,
-  setUploadStatus: (status: string) => void,
-  setFoundQuestionnaire: (object: Questionnaire | null) => void,
-) => Promise<boolean | null>;
+type ValidateSelectedQuestionnaireExists = (file: File) => Promise<ExistenceCheckResult>;
 
 type UploadAndInstallFile = (
   questionnaireName: string,
   toStartDate: string | undefined,
   tmReleaseDate: string | undefined,
-  file: File | undefined,
-  setUploading: (uploading: boolean) => void,
-  setUploadStatus: (status: string) => void,
+  file: File,
   onFileUploadProgress: (progressEvent: AxiosProgressEvent) => void,
-) => Promise<boolean>;
+) => Promise<{ success: true } | { success: false; message: string }>;
 
-type CheckQuestionnaireSettings = (
-  questionnaireName: string,
-  setQuestionnaireSettings: (questionnaireSettings: QuestionnaireSettings) => void,
-  setInvalidSettings: (invalidSettings: Partial<QuestionnaireSettings>) => void,
-  setErrored: (errored: boolean) => void,
-) => Promise<boolean>;
+type CheckQuestionnaireSettings = (questionnaireName: string) => Promise<SettingsCheckResult>;
 
 type ActivateQuestionnaire = (questionnaireName: string) => Promise<boolean>;
 type DeleteQuestionnaire = (questionnaireName: string) => Promise<boolean>;
@@ -415,30 +407,17 @@ function currentQuestionnaireName(): string {
 
 function mockQuestionnaireMissing(questionnaireName = currentQuestionnaireName()): void {
   processCoverageMocks.validateSelectedQuestionnaireExists.mockImplementation(
-    async (
-      _file: File | undefined,
-      setQuestionnaireName: (name: string) => void,
-    ): Promise<boolean | null> => {
-      setQuestionnaireName(questionnaireName);
-
-      return false;
-    },
+    async (): Promise<ExistenceCheckResult> => ({ outcome: "new", questionnaireName }),
   );
 }
 
 function mockQuestionnaireExists(foundQuestionnaire: { active: boolean; hasData: boolean }): void {
   processCoverageMocks.validateSelectedQuestionnaireExists.mockImplementation(
-    async (
-      _file: File | undefined,
-      setQuestionnaireName: (name: string) => void,
-      _setUploadStatus: (status: string) => void,
-      setFoundQuestionnaire: (questionnaire: Questionnaire | null) => void,
-    ): Promise<boolean | null> => {
-      setQuestionnaireName(currentQuestionnaireName());
-      setFoundQuestionnaire(foundQuestionnaire as Questionnaire);
-
-      return true;
-    },
+    async (): Promise<ExistenceCheckResult> => ({
+      outcome: "exists",
+      questionnaireName: currentQuestionnaireName(),
+      questionnaire: foundQuestionnaire as Questionnaire,
+    }),
   );
 }
 
@@ -727,8 +706,8 @@ describe("DeployPage coverage paths", () => {
     ruleCoverageMocks.shouldAskTmReleaseDate.mockImplementation(defaultShouldAskTmReleaseDate);
     questionnaireApiCoverageMocks.activateQuestionnaire.mockResolvedValue(true);
     questionnaireApiCoverageMocks.deleteQuestionnaire.mockResolvedValue(true);
-    processCoverageMocks.uploadAndInstallFile.mockResolvedValue(false);
-    processCoverageMocks.checkQuestionnaireSettings.mockResolvedValue(true);
+    processCoverageMocks.uploadAndInstallFile.mockResolvedValue({ success: false, message: "" });
+    processCoverageMocks.checkQuestionnaireSettings.mockResolvedValue({ outcome: "valid" });
 
     mockQuestionnaireMissing();
   });
@@ -821,13 +800,10 @@ describe("DeployPage coverage paths", () => {
         _questionnaireName: string,
         _toStartDate: string | undefined,
         _tmReleaseDate: string | undefined,
-        _file: File | undefined,
-        setUploading: (uploading: boolean) => void,
-        setUploadStatus: (status: string) => void,
+        _file: File,
         onFileUploadProgress: (progressEvent: AxiosProgressEvent) => void,
       ) =>
-        new Promise<boolean>((resolve) => {
-          setUploading(true);
+        new Promise<{ success: true } | { success: false; message: string }>((resolve) => {
           onFileUploadProgress({
             loaded: 5,
             total: 10,
@@ -840,9 +816,7 @@ describe("DeployPage coverage paths", () => {
             lengthComputable: false,
           } as AxiosProgressEvent);
           finishUpload = () => {
-            setUploadStatus("Upload failed");
-            setUploading(false);
-            resolve(false);
+            resolve({ success: false, message: "Upload failed" });
           };
         }),
     );
@@ -875,16 +849,10 @@ describe("DeployPage coverage paths", () => {
 
   it("shows the validation failure outcome when questionnaire existence cannot be checked", async () => {
     processCoverageMocks.validateSelectedQuestionnaireExists.mockImplementation(
-      async (
-        _file: File | undefined,
-        setQuestionnaireName: (name: string) => void,
-        setUploadStatus: (status: string) => void,
-      ): Promise<boolean | null> => {
-        setQuestionnaireName("IPS2409A");
-        setUploadStatus("Failed to validate if questionnaire already exists");
-
-        return null;
-      },
+      async (): Promise<ExistenceCheckResult> => ({
+        outcome: "error",
+        message: "Failed to validate if questionnaire already exists",
+      }),
     );
 
     renderCoverageDeployPage();
@@ -902,8 +870,12 @@ describe("DeployPage coverage paths", () => {
   it("shows invalid settings and uninstalls the questionnaire when cancel is clicked", async () => {
     ruleCoverageMocks.shouldAskToStartDate.mockReturnValue(false);
     ruleCoverageMocks.shouldAskTmReleaseDate.mockReturnValue(false);
-    processCoverageMocks.uploadAndInstallFile.mockResolvedValue(true);
-    processCoverageMocks.checkQuestionnaireSettings.mockResolvedValue(false);
+    processCoverageMocks.uploadAndInstallFile.mockResolvedValue({ success: true });
+    processCoverageMocks.checkQuestionnaireSettings.mockResolvedValue({
+      outcome: "invalid",
+      settings: {} as QuestionnaireSettings,
+      invalidSettings: {},
+    });
 
     renderCoverageDeployPage();
 
@@ -923,5 +895,21 @@ describe("DeployPage coverage paths", () => {
     });
 
     expect(questionnaireApiCoverageMocks.deleteQuestionnaire).toHaveBeenCalledWith("IPS2409A");
+  });
+
+  it("shows the invalid settings page when checking settings returns an error outcome", async () => {
+    ruleCoverageMocks.shouldAskToStartDate.mockReturnValue(false);
+    ruleCoverageMocks.shouldAskTmReleaseDate.mockReturnValue(false);
+    processCoverageMocks.uploadAndInstallFile.mockResolvedValue({ success: true });
+    processCoverageMocks.checkQuestionnaireSettings.mockResolvedValue({ outcome: "error" });
+
+    renderCoverageDeployPage();
+
+    await goToSummary();
+    await userEvent.click(screen.getByRole("button", { name: /Deploy questionnaire/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Invalid settings")).toBeInTheDocument();
+    });
   });
 });

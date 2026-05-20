@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type NextFunction, type Request, type Response } from "express";
 import supertest from "supertest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -14,6 +14,10 @@ type RequestWithLog = express.Request & {
   log: express.Request["log"];
 };
 
+const mockAuth = {
+  middleware: (_req: Request, _res: Response, next: NextFunction) => next(),
+} as unknown as Parameters<typeof newAuditHandler>[1];
+
 function createApp(auditLogger: MockAuditLogger) {
   const app = express();
 
@@ -25,7 +29,9 @@ function createApp(auditLogger: MockAuditLogger) {
     next();
   });
 
-  app.use(newAuditHandler(auditLogger as unknown as Parameters<typeof newAuditHandler>[0]));
+  app.use(
+    newAuditHandler(auditLogger as unknown as Parameters<typeof newAuditHandler>[0], mockAuth),
+  );
 
   return app;
 }

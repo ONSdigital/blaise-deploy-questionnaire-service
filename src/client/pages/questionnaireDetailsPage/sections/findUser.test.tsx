@@ -122,6 +122,70 @@ describe("FindUser happy path", () => {
     await waitFor(() => expect(onError).toHaveBeenCalledWith("Unable to get users"));
   });
 
+  it("handles an error where the response has no data property", async () => {
+    mockedAxios.post.mockRejectedValueOnce({ response: { status: 500 } });
+    const onError = vi.fn();
+
+    render(
+      <FindUser
+        label="Enter username"
+        roles={roles}
+        onError={onError}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(onError).toHaveBeenCalledWith("Unable to get users"));
+  });
+
+  it("handles an error where the response data has no message property", async () => {
+    mockedAxios.post.mockRejectedValueOnce({ response: { data: { status: 500 } } });
+    const onError = vi.fn();
+
+    render(
+      <FindUser
+        label="Enter username"
+        roles={roles}
+        onError={onError}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(onError).toHaveBeenCalledWith("Unable to get users"));
+  });
+
+  it("handles an error where the response data message is a string", async () => {
+    mockedAxios.post.mockRejectedValueOnce({ response: { data: { message: "server error" } } });
+    const onError = vi.fn();
+
+    render(
+      <FindUser
+        label="Enter username"
+        roles={roles}
+        onError={onError}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(onError).toHaveBeenCalledWith("Unable to get users"));
+  });
+
+  it("handles an error where the response data message is null", async () => {
+    mockedAxios.post.mockRejectedValueOnce({ response: { data: { message: null } } });
+    const onError = vi.fn();
+
+    render(
+      <FindUser
+        label="Enter username"
+        roles={roles}
+        onError={onError}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(onError).toHaveBeenCalledWith("Unable to get users"));
+  });
+
   it("clears input and calls onItemSelected with empty string on blur if input is not a user", async () => {
     mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
     const onItemSelected = vi.fn();

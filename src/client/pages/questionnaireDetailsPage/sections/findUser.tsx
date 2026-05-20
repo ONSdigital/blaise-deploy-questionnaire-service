@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ComboBox, LoadingPanel } from "blaise-design-system-react-components";
-import { type FocusEvent, type ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import { type FocusEvent, type ReactElement, useEffect, useRef, useState } from "react";
 
 import axiosConfig from "../../../api/axiosConfig";
 import { clientLogger } from "../../../utils/logger";
@@ -14,6 +14,26 @@ interface Props {
 }
 
 const MAX_VISIBLE_USERS = 10;
+
+function getUsersByRoleErrorMessage(error: unknown): string {
+  if (typeof error !== "object" || error === null || !("response" in error)) {
+    return JSON.stringify("Unknown error");
+  }
+
+  const response = error.response;
+
+  if (typeof response !== "object" || response === null || !("data" in response)) {
+    return JSON.stringify("Unknown error");
+  }
+
+  const data = response.data;
+
+  if (typeof data !== "object" || data === null || !("message" in data)) {
+    return JSON.stringify("Unknown error");
+  }
+
+  return JSON.stringify(data.message ?? "Unknown error");
+}
 
 function FindUser({ label = "Search user", roles, onItemSelected, onError }: Props): ReactElement {
   const [search, setSearch] = useState("");
@@ -39,9 +59,7 @@ function FindUser({ label = "Search user", roles, onItemSelected, onError }: Pro
 
   const searchDisabled = loading || users.length === 0;
 
-  const options = useMemo<Array<{ label: string; value: string }>>(() => {
-    return users.map((user) => ({ label: user, value: user }));
-  }, [users]);
+  const options = users.map((user) => ({ label: user, value: user }));
 
   useEffect(() => {
     return () => {
@@ -134,12 +152,8 @@ function FindUser({ label = "Search user", roles, onItemSelected, onError }: Pro
 
       return Array.isArray(res.data.message) ? res.data.message : [];
     } catch (error) {
-      const errorMessage = JSON.stringify(
-        (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
-          "Unknown error",
-      );
-
-      clientLogger.info(errorMessage);
+      // Changed: narrow unknown errors explicitly so failed lookups do not rely on unchecked assertions.
+      clientLogger.info(getUsersByRoleErrorMessage(error));
 
       return [];
     }

@@ -25,7 +25,7 @@ DQS interacts with the following services during questionnaire deployment and ma
 - [Yarn](https://yarnpkg.com/) 4+
 - [Google Cloud SDK (`gcloud` CLI)](https://cloud.google.com/sdk/)
 
-### Clone and install
+### Clone and install packages
 
 ```shell
 git clone https://github.com/ONSdigital/blaise-deploy-questionnaire-service.git
@@ -35,7 +35,7 @@ yarn install
 
 ### Authenticate with Google Cloud (keyless)
 
-Local access to BIMS and BUS uses service account impersonation.
+Use service account impersonation to auth with BIMS and BUS.
 
 ```shell
 gcloud auth login
@@ -55,12 +55,11 @@ Expected output includes `Listening on port [8080]`.
 
 ### Configure environment variables
 
-Create a `.env` file in the repository root. You can find IAP client IDs from:
+Create a `.env` file in the repository root. You can find IAP client IDs from an existing deployment:
 
-- GCP Console -> Security -> Identity-Aware Proxy -> service settings
-- Or an existing deployment at App Engine -> Versions -> `dqs-ui` -> View Config
+- App Engine -> Versions -> `dqs-ui` -> View Config
 
-Example `.env`:
+Example `.env` file:
 
 ```ini
 BIMS_API_URL=https://dev-sandbox123-bims.social-surveys.gcp.onsdigital.uk
@@ -74,6 +73,8 @@ GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL=https://europe-west2-ons-blaise-v2-dev-sand
 PROJECT_ID=ons-blaise-v2-dev-sandbox123
 REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL=https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/reissue-new-donor-case
 SERVER_PARK=gusty
+URL_DOMAIN=localhost
+SESSION_SECRET=blah
 ```
 
 ### Run the app

@@ -2,12 +2,12 @@ import express from "express";
 import supertest from "supertest";
 import { beforeEach, describe, expect, it } from "vitest";
 
-import HealthCheckHandler from "./healthCheckHandler.js";
+import newHealthCheckHandler from "./healthCheckHandler.js";
 
 function createApp() {
   const app = express();
 
-  app.use(HealthCheckHandler());
+  app.use(newHealthCheckHandler());
 
   return app;
 }

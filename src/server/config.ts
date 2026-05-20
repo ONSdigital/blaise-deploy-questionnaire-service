@@ -108,7 +108,6 @@ function assertResolvedRequiredEnv(
   env: RequiredConfigEnv,
 ): asserts env is ResolvedRequiredConfigEnv {
   const requiredEnvErrors = Object.entries(env)
-    .filter((entry): entry is [string, string | undefined] => entry.length === 2)
     .map(([name, value]) => {
       if (value === undefined || value.trim() === "" || value === `_${name}`) {
         return name;

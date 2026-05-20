@@ -1,6 +1,6 @@
 import type { QuestionnaireSettings } from "blaise-api-node-client";
 
-const ValidSettings: Partial<QuestionnaireSettings> = {
+const REQUIRED_SETTINGS: Partial<QuestionnaireSettings> = {
   saveSessionOnTimeout: true,
   saveSessionOnQuit: true,
   deleteSessionOnTimeout: true,
@@ -8,34 +8,32 @@ const ValidSettings: Partial<QuestionnaireSettings> = {
   applyRecordLocking: true,
 };
 
-const ValidCatiModeOnlySettings: Partial<QuestionnaireSettings> = {
+const REQUIRED_CATI_ONLY_SETTINGS: Partial<QuestionnaireSettings> = {
   saveSessionOnTimeout: true,
   saveSessionOnQuit: true,
   applyRecordLocking: true,
 };
 
-export function GetStrictInterviewingSettings(
+export function getStrictInterviewingSettings(
   questionnaireSettingsList: QuestionnaireSettings[],
-): QuestionnaireSettings {
+): QuestionnaireSettings | undefined {
   for (const questionnaireSettings of questionnaireSettingsList) {
     if (questionnaireSettings.type === "StrictInterviewing") {
       return questionnaireSettings;
     }
   }
-
-  return {} as QuestionnaireSettings;
 }
 
-export function ValidateSettings(
+export function validateQuestionnaireSettings(
   questionnaireSettings: QuestionnaireSettings,
 ): [boolean, Partial<QuestionnaireSettings>] {
-  return validateSettings(questionnaireSettings, ValidSettings);
+  return validateSettings(questionnaireSettings, REQUIRED_SETTINGS);
 }
 
-export function ValidateCatiModeOnlySettings(
+export function validateCatiOnlySettings(
   questionnaireSettings: QuestionnaireSettings,
 ): [boolean, Partial<QuestionnaireSettings>] {
-  return validateSettings(questionnaireSettings, ValidCatiModeOnlySettings);
+  return validateSettings(questionnaireSettings, REQUIRED_CATI_ONLY_SETTINGS);
 }
 
 function setInvalidSetting<K extends keyof QuestionnaireSettings>(

@@ -3,9 +3,13 @@ import dateFormatter from "dayjs";
 import express, { type Request, type Response, type Router } from "express";
 
 import { type BimsClient, type TmReleaseDate, type ToStartDate } from "../bimsClient.js";
+import { getUsername } from "../helpers/getUsername.js";
+import { isRecord } from "../helpers/isRecord.js";
 import { sanitise } from "../helpers/sanitise.js";
 
 import type AuditLogger from "../auditLogger.js";
+
+const SUPPORTED_DATE_PATTERN = /^[0-9]{4}-[0-9]{2}-[0-9]{2}(?:.{1}[0-9]{2}:[0-9]{2}:[0-9]{2})?/;
 
 export default function newBimsHandler(
   bimsClient: BimsClient,
@@ -44,9 +48,9 @@ export default function newBimsHandler(
 }
 
 class BimsHandler {
-  bimsClient: BimsClient;
-  auditLogger: AuditLogger;
-  auth: Auth;
+  private readonly bimsClient: BimsClient;
+  private readonly auditLogger: AuditLogger;
+  private readonly auth: Auth;
 
   constructor(bimsClient: BimsClient, auditLogger: AuditLogger, auth: Auth) {
     this.bimsClient = bimsClient;
@@ -57,13 +61,23 @@ class BimsHandler {
   setToStartDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const reqData = req.body;
-    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
+    const username = getUsername(req, this.auth);
+    const requestedToStartDate = readRequestedDate(req.body, "tostartdate");
+
+    if (requestedToStartDate === undefined) {
+      // Changed: reject malformed date payloads at the boundary so bad input never reaches BIMS.
+      req.log.warn(
+        { questionnaireName: safeQuestionnaireName },
+        "Rejected invalid Telephone Operations start date payload",
+      );
+
+      return res.status(400).json({ message: "Invalid tostartdate" });
+    }
 
     try {
       let toStartDate = await this.bimsClient.getToStartDate(questionnaireName);
 
-      if (!toStartDateExists(toStartDate) && reqData.tostartdate === "") {
+      if (!toStartDateExists(toStartDate) && requestedToStartDate === "") {
         req.log.info(
           `No previous Telephone Operations start date found and none specified for questionnaire ${safeQuestionnaireName}`,
         );
@@ -71,7 +85,7 @@ class BimsHandler {
         return res.status(201).json("");
       }
 
-      if (toStartDateExists(toStartDate) && reqData.tostartdate === "") {
+      if (toStartDateExists(toStartDate) && requestedToStartDate === "") {
         const previousDateStr = ` (previously ${dateFormatter(toStartDate.tostartdate).format("YYYY-MM-DD")})`;
 
         try {
@@ -95,7 +109,7 @@ class BimsHandler {
       toStartDate = await this.upsertToStartDate(
         questionnaireName,
         toStartDate,
-        reqData.tostartdate,
+        requestedToStartDate,
         username,
         req,
       );
@@ -109,7 +123,7 @@ class BimsHandler {
   deleteToStartDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
+    const username = getUsername(req, this.auth);
 
     try {
       const toStartDate = await this.bimsClient.getToStartDate(questionnaireName);
@@ -217,15 +231,23 @@ class BimsHandler {
   setTmReleaseDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
+    const username = getUsername(req, this.auth);
+    const requestedTmReleaseDate = readRequestedDate(req.body, "tmreleasedate");
+
+    if (requestedTmReleaseDate === undefined) {
+      // Changed: reject malformed date payloads at the boundary so bad input never reaches BIMS.
+      req.log.warn(
+        { questionnaireName: safeQuestionnaireName },
+        "Rejected invalid Totalmobile release date payload",
+      );
+
+      return res.status(400).json({ message: "Invalid tmreleasedate" });
+    }
 
     try {
       const previousTmReleaseDate = await this.bimsClient.getTmReleaseDate(questionnaireName);
-      const newTmReleaseDate = req.body.tmreleasedate;
-      const safeNewTmReleaseDate = sanitise(String(newTmReleaseDate));
-      const newTmReleaseDateIsEmpty = newTmReleaseDate === "";
 
-      if (!tmReleaseDateExists(previousTmReleaseDate) && newTmReleaseDateIsEmpty) {
+      if (!tmReleaseDateExists(previousTmReleaseDate) && requestedTmReleaseDate === "") {
         req.log.info(
           `No previous Totalmobile release date found and none specified for questionnaire ${safeQuestionnaireName}`,
         );
@@ -233,9 +255,7 @@ class BimsHandler {
         return res.status(201).json("");
       }
 
-      let responseBody: TmReleaseDate | "";
-
-      if (tmReleaseDateExists(previousTmReleaseDate) && newTmReleaseDateIsEmpty) {
+      if (tmReleaseDateExists(previousTmReleaseDate) && requestedTmReleaseDate === "") {
         const previousDateStr = ` (previously ${dateFormatter(previousTmReleaseDate.tmreleasedate).format("YYYY-MM-DD")})`;
 
         try {
@@ -244,7 +264,6 @@ class BimsHandler {
             req.log,
             `${username} deleted ${safeQuestionnaireName} Totalmobile release date${previousDateStr}`,
           );
-          responseBody = "";
         } catch (error: unknown) {
           this.auditLogger.error(
             req.log,
@@ -252,45 +271,19 @@ class BimsHandler {
           );
           throw error;
         }
-      } else if (tmReleaseDateExists(previousTmReleaseDate)) {
-        const previousDateStr = ` (previously ${dateFormatter(previousTmReleaseDate.tmreleasedate).format("YYYY-MM-DD")})`;
 
-        try {
-          responseBody = await this.bimsClient.updateTmReleaseDate(
-            questionnaireName,
-            newTmReleaseDate,
-          );
-          this.auditLogger.info(
-            req.log,
-            `${username} updated ${safeQuestionnaireName} Totalmobile release date to ${safeNewTmReleaseDate}${previousDateStr}`,
-          );
-        } catch (error: unknown) {
-          this.auditLogger.error(
-            req.log,
-            `${username} failed to update ${safeQuestionnaireName} Totalmobile release date to ${safeNewTmReleaseDate}${previousDateStr}`,
-          );
-          throw error;
-        }
-      } else {
-        try {
-          responseBody = await this.bimsClient.createTmReleaseDate(
-            questionnaireName,
-            newTmReleaseDate,
-          );
-          this.auditLogger.info(
-            req.log,
-            `${username} set ${safeQuestionnaireName} Totalmobile release date to ${safeNewTmReleaseDate}`,
-          );
-        } catch (error: unknown) {
-          this.auditLogger.error(
-            req.log,
-            `${username} failed to set ${safeQuestionnaireName} Totalmobile release date to ${safeNewTmReleaseDate}`,
-          );
-          throw error;
-        }
+        return res.status(201).json("");
       }
 
-      return res.status(201).json(responseBody);
+      const tmReleaseDate = await this.upsertTmReleaseDate(
+        questionnaireName,
+        previousTmReleaseDate,
+        requestedTmReleaseDate,
+        username,
+        req,
+      );
+
+      return res.status(201).json(tmReleaseDate);
     } catch (error: unknown) {
       req.log.error(
         {
@@ -304,10 +297,60 @@ class BimsHandler {
     }
   };
 
+  private async upsertTmReleaseDate(
+    questionnaireName: string,
+    previousTmReleaseDate: TmReleaseDate | undefined,
+    newTmReleaseDate: string,
+    username: string,
+    req: Request,
+  ): Promise<TmReleaseDate> {
+    const safeQuestionnaireName = sanitise(questionnaireName);
+    const safeNewTmReleaseDate = sanitise(newTmReleaseDate);
+
+    try {
+      let configuredTmReleaseDate: TmReleaseDate;
+
+      if (tmReleaseDateExists(previousTmReleaseDate)) {
+        const previousDateStr = ` (previously ${dateFormatter(previousTmReleaseDate.tmreleasedate).format("YYYY-MM-DD")})`;
+
+        configuredTmReleaseDate = await this.bimsClient.updateTmReleaseDate(
+          questionnaireName,
+          newTmReleaseDate,
+        );
+        this.auditLogger.info(
+          req.log,
+          `${username} updated ${safeQuestionnaireName} Totalmobile release date to ${safeNewTmReleaseDate}${previousDateStr}`,
+        );
+      } else {
+        configuredTmReleaseDate = await this.bimsClient.createTmReleaseDate(
+          questionnaireName,
+          newTmReleaseDate,
+        );
+        this.auditLogger.info(
+          req.log,
+          `${username} set ${safeQuestionnaireName} Totalmobile release date to ${safeNewTmReleaseDate}`,
+        );
+      }
+
+      return configuredTmReleaseDate;
+    } catch (error: unknown) {
+      const previousDateStr = tmReleaseDateExists(previousTmReleaseDate)
+        ? ` (previously ${dateFormatter(previousTmReleaseDate.tmreleasedate).format("YYYY-MM-DD")})`
+        : "";
+      const verb = tmReleaseDateExists(previousTmReleaseDate) ? "update" : "set";
+
+      this.auditLogger.error(
+        req.log,
+        `${username} failed to ${verb} ${safeQuestionnaireName} Totalmobile release date to ${safeNewTmReleaseDate}${previousDateStr}`,
+      );
+      throw error;
+    }
+  }
+
   deleteTmReleaseDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
+    const username = getUsername(req, this.auth);
 
     try {
       const tmReleaseDate = await this.bimsClient.getTmReleaseDate(questionnaireName);
@@ -318,7 +361,7 @@ class BimsHandler {
 
       await this.bimsClient.deleteTmReleaseDate(questionnaireName);
 
-      const previousDateStr = ` (previously ${dateFormatter(tmReleaseDate!.tmreleasedate).format("YYYY-MM-DD")})`;
+      const previousDateStr = ` (previously ${dateFormatter(tmReleaseDate.tmreleasedate).format("YYYY-MM-DD")})`;
 
       this.auditLogger.info(
         req.log,
@@ -365,9 +408,7 @@ function toStartDateExists(toStartDate: ToStartDate | undefined): toStartDate is
     return false;
   }
 
-  const regexp = new RegExp(/^[0-9]{4}-[0-9]{2}-[0-9]{2}(.{1}[0-9]{2}:[0-9]{2}:[0-9]{2})?/);
-
-  return regexp.test(toStartDate.tostartdate);
+  return isSupportedDateValue(toStartDate.tostartdate);
 }
 
 function tmReleaseDateExists(
@@ -377,9 +418,34 @@ function tmReleaseDateExists(
     return false;
   }
 
-  const regexp = new RegExp(/^[0-9]{4}-[0-9]{2}-[0-9]{2}(.{1}[0-9]{2}:[0-9]{2}:[0-9]{2})?/);
+  return isSupportedDateValue(tmReleaseDate.tmreleasedate);
+}
 
-  return regexp.test(tmReleaseDate.tmreleasedate);
+function readRequestedDate(
+  body: unknown,
+  fieldName: "tostartdate" | "tmreleasedate",
+): string | undefined {
+  if (!isRecord(body)) {
+    return undefined;
+  }
+
+  const value = body[fieldName];
+
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const trimmedValue = value.trim();
+
+  if (trimmedValue === "") {
+    return "";
+  }
+
+  return isSupportedDateValue(trimmedValue) ? trimmedValue : undefined;
+}
+
+function isSupportedDateValue(value: string): boolean {
+  return SUPPORTED_DATE_PATTERN.test(value);
 }
 
 function getSafeErrorMessage(error: unknown): string {

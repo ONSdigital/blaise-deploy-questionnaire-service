@@ -5,18 +5,24 @@ import { clientLogger } from "../utils/logger";
 import axiosConfig from "./axiosConfig";
 import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function getAxiosStatus(error: unknown): number | undefined {
+  if (!isRecord(error) || error.isAxiosError !== true) {
+    return undefined;
+  }
+
+  const { response } = error;
+
+  return isRecord(response) && typeof response.status === "number" ? response.status : undefined;
+}
+
 function isAxiosStatus(error: unknown, statuses: number[]): boolean {
-  if (typeof error !== "object" || error === null) {
-    return false;
-  }
+  const status = getAxiosStatus(error);
 
-  if (!("isAxiosError" in error) || !("response" in error)) {
-    return false;
-  }
-
-  const axiosError = error as { isAxiosError?: boolean; response?: { status?: number } };
-
-  return axiosError.isAxiosError === true && statuses.includes(axiosError.response?.status ?? -1);
+  return status !== undefined && statuses.includes(status);
 }
 
 interface DateClientOptions {
@@ -33,8 +39,8 @@ function defaultParseResponseData(fieldKey: string): (data: unknown) => string {
       return "";
     }
 
-    if (typeof data === "object" && fieldKey in (data as Record<string, unknown>)) {
-      const value = (data as Record<string, unknown>)[fieldKey];
+    if (isRecord(data)) {
+      const value = data[fieldKey];
 
       return typeof value === "string" ? value : "";
     }

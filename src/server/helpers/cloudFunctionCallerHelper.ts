@@ -2,8 +2,7 @@ import axios from "axios";
 import { GoogleAuth } from "google-auth-library";
 
 async function getIdTokenFromMetadataServer(targetAudience: string): Promise<string> {
-  const googleAuth = new GoogleAuth();
-  const client = await googleAuth.getIdTokenClient(targetAudience);
+  const client = await new GoogleAuth().getIdTokenClient(targetAudience);
 
   return client.idTokenProvider.fetchIdToken(targetAudience);
 }

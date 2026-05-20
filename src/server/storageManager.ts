@@ -12,13 +12,11 @@ type CheckedFile = {
 
 export default class StorageManager {
   bucket: Bucket;
-  storage: Storage;
   bucketName: string;
 
   constructor(config: Config) {
     this.bucketName = config.bucketName;
-    this.storage = new Storage({ projectId: config.projectId });
-    this.bucket = this.storage.bucket(config.bucketName);
+    this.bucket = new Storage({ projectId: config.projectId }).bucket(config.bucketName);
   }
 
   async getSignedUrl(filename: string): Promise<string> {

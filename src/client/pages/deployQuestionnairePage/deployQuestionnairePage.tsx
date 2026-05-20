@@ -37,6 +37,7 @@ enum Step {
   SetTmReleaseDate,
   Summary,
   InvalidSettings,
+  Complete,
 }
 
 type UploadFormValues = {
@@ -101,16 +102,7 @@ function DeployPage(): ReactElement {
   }
 
   function cancelButton(): string {
-    switch (activeStep) {
-      case Step.InvalidSettings:
-        return "Cancel";
-      default:
-        return "Cancel";
-    }
-  }
-
-  function stepLength(): number {
-    return Object.keys(Step).filter((key) => isNaN(+key)).length;
+    return "Cancel";
   }
 
   async function cancelButtonAction(): Promise<void> {
@@ -136,7 +128,7 @@ function DeployPage(): ReactElement {
     return Step.Summary;
   }
 
-  function _renderStepContent(step: Step) {
+  function renderStepContent(step: Step) {
     switch (step) {
       case Step.SelectFile:
         return (
@@ -226,47 +218,56 @@ function DeployPage(): ReactElement {
     return !file || !file.name.endsWith(".bpkg");
   }
 
-  async function _uploadAndInstallQuestionnaire(
+  async function handleUploadAndInstall(
     values: UploadFormValues,
     _actions: FormikHelpers<UploadFormValues>,
   ) {
-    const installed = await uploadAndInstallFile(
+    /* v8 ignore next */
+    if (!file) return;
+
+    setUploading(true);
+    const result = await uploadAndInstallFile(
       questionnaireName,
       values.toStartDate,
       values.tmReleaseDate,
       file,
-      setUploading,
-      setUploadStatus,
       onFileUploadProgress,
     );
 
-    if (!installed) {
-      setActiveStep(stepLength());
+    setUploading(false);
+
+    if (!result.success) {
+      setUploadStatus(result.message);
+      setActiveStep(Step.Complete);
 
       return;
     }
 
-    await _checkQuestionnaireSettings();
+    await handleCheckSettings();
   }
 
-  async function _checkQuestionnaireSettings() {
-    const valid = await checkQuestionnaireSettings(
-      questionnaireName,
-      setQuestionnaireSettings,
-      setInvalidSettings,
-      setErrored,
-    );
+  async function handleCheckSettings() {
+    const result = await checkQuestionnaireSettings(questionnaireName);
 
-    if (!valid) {
+    if (result.outcome === "error") {
+      setErrored(true);
       setActiveStep(Step.InvalidSettings);
 
       return;
     }
 
-    setActiveStep(stepLength());
+    if (result.outcome === "invalid") {
+      setQuestionnaireSettings(result.settings);
+      setInvalidSettings(result.invalidSettings);
+      setActiveStep(Step.InvalidSettings);
+
+      return;
+    }
+
+    setActiveStep(Step.Complete);
   }
 
-  async function _handleSubmit(values: UploadFormValues, actions: FormikHelpers<UploadFormValues>) {
+  async function handleSubmit(values: UploadFormValues, actions: FormikHelpers<UploadFormValues>) {
     let result;
 
     switch (activeStep) {
@@ -279,21 +280,18 @@ function DeployPage(): ReactElement {
 
         const selectedQuestionnaireName = file.name.replace(/\.[a-zA-Z]*$/, "");
 
-        result = await validateSelectedQuestionnaireExists(
-          file,
-          setQuestionnaireName,
-          setUploadStatus,
-          setFoundQuestionnaire,
-        );
-        if (result === null) {
+        result = await validateSelectedQuestionnaireExists(file);
+        if (result.outcome === "error") {
+          setUploadStatus(result.message);
           actions.setTouched({});
           actions.setSubmitting(false);
-          setActiveStep(stepLength());
+          setActiveStep(Step.Complete);
 
           return;
         }
 
-        if (result === false) {
+        if (result.outcome === "new") {
+          setQuestionnaireName(result.questionnaireName);
           setActiveStep(getFirstDateStep(selectedQuestionnaireName));
           actions.setTouched({});
           actions.setSubmitting(false);
@@ -301,6 +299,8 @@ function DeployPage(): ReactElement {
           return;
         }
 
+        setQuestionnaireName(result.questionnaireName);
+        setFoundQuestionnaire(result.questionnaire);
         break;
       }
 
@@ -347,7 +347,7 @@ function DeployPage(): ReactElement {
 
         break;
       case Step.Summary:
-        await _uploadAndInstallQuestionnaire(values, actions);
+        await handleUploadAndInstall(values, actions);
         break;
       case Step.InvalidSettings:
         await activateQuestionnaire(questionnaireName);
@@ -368,7 +368,7 @@ function DeployPage(): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        {activeStep >= stepLength() ? (
+        {activeStep === Step.Complete ? (
           <DeploymentOutcome
             questionnaireName={questionnaireName}
             status={uploadStatus}
@@ -384,11 +384,11 @@ function DeployPage(): ReactElement {
             validateOnBlur={false}
             validateOnChange={false}
             initialValues={initialValues}
-            onSubmit={_handleSubmit}
+            onSubmit={handleSubmit}
           >
             {({ isSubmitting, values }) => (
               <Form id={"formID"}>
-                {_renderStepContent(activeStep)}
+                {renderStepContent(activeStep)}
 
                 <div className="ons-btn-group ons-u-mt-m">
                   {activeStep !== Step.LiveWarning && (

@@ -53,104 +53,62 @@ describe("uploadQuestionnaire", () => {
     vi.clearAllMocks();
   });
 
-  it("returns null when no file selected", async () => {
-    const setQuestionnaireName = vi.fn();
-    const setUploadStatus = vi.fn();
-    const setFoundQuestionnaire = vi.fn();
+  it("returns error outcome when checking questionnaire existence throws", async () => {
+    vi.mocked(getQuestionnaire).mockRejectedValue(new Error("boom"));
 
-    const result = await validateSelectedQuestionnaireExists(
-      undefined,
-      setQuestionnaireName,
-      setUploadStatus,
-      setFoundQuestionnaire,
-    );
+    const result = await validateSelectedQuestionnaireExists({ name: "OPN2004A.bpkg" } as File);
 
-    expect(result).toBeNull();
+    expect(result.outcome).toBe("error");
+    if (result.outcome === "error") {
+      expect(result.message).toBe("Failed to validate if questionnaire already exists");
+    }
   });
 
-  it("returns false when uploadAndInstallFile has no file", async () => {
-    const result = await uploadAndInstallFile(
-      "OPN2004A",
-      undefined,
-      undefined,
-      undefined,
-      vi.fn(),
-      vi.fn(),
-      vi.fn(),
-    );
-
-    expect(result).toEqual(false);
-  });
-
-  it("returns true when the questionnaire already exists", async () => {
+  it("returns exists outcome when the questionnaire already exists", async () => {
     const questionnaire = { name: "OPN2004A" };
-    const setQuestionnaireName = vi.fn();
-    const setUploadStatus = vi.fn();
-    const setFoundQuestionnaire = vi.fn();
 
     vi.mocked(getQuestionnaire).mockResolvedValue(questionnaire as never);
 
-    const result = await validateSelectedQuestionnaireExists(
-      { name: "OPN2004A.bpkg" } as File,
-      setQuestionnaireName,
-      setUploadStatus,
-      setFoundQuestionnaire,
-    );
+    const result = await validateSelectedQuestionnaireExists({ name: "OPN2004A.bpkg" } as File);
 
-    expect(result).toBe(true);
-    expect(setQuestionnaireName).toHaveBeenCalledWith("OPN2004A");
-    expect(setFoundQuestionnaire).toHaveBeenCalledWith(questionnaire);
+    expect(result.outcome).toBe("exists");
+    if (result.outcome === "exists") {
+      expect(result.questionnaireName).toBe("OPN2004A");
+      expect(result.questionnaire).toBe(questionnaire);
+    }
   });
 
-  it("returns null when checking questionnaire existence throws", async () => {
-    const setQuestionnaireName = vi.fn();
-    const setUploadStatus = vi.fn();
-    const setFoundQuestionnaire = vi.fn();
+  it("returns new outcome when the questionnaire does not exist", async () => {
+    vi.mocked(getQuestionnaire).mockResolvedValue(undefined as never);
 
-    vi.mocked(getQuestionnaire).mockRejectedValue(new Error("boom"));
+    const result = await validateSelectedQuestionnaireExists({ name: "OPN2004A.bpkg" } as File);
 
-    const result = await validateSelectedQuestionnaireExists(
-      { name: "OPN2004A.bpkg" } as File,
-      setQuestionnaireName,
-      setUploadStatus,
-      setFoundQuestionnaire,
-    );
-
-    expect(result).toBeNull();
-    expect(setUploadStatus).toHaveBeenCalledWith(
-      "Failed to validate if questionnaire already exists",
-    );
-    expect(setFoundQuestionnaire).not.toHaveBeenCalled();
+    expect(result.outcome).toBe("new");
+    if (result.outcome === "new") {
+      expect(result.questionnaireName).toBe("OPN2004A");
+    }
   });
 
-  it("handles initialise upload failure for questionnaires that do not ask date questions", async () => {
+  it("returns failure when initialise upload fails", async () => {
     vi.mocked(initialiseUpload).mockRejectedValue(new Error("boom"));
-
-    const setUploading = vi.fn();
-    const setUploadStatus = vi.fn();
 
     const result = await uploadAndInstallFile(
       "IPS2004A",
       undefined,
       undefined,
       { name: "IPS2004A.bpkg" } as File,
-      setUploading,
-      setUploadStatus,
       vi.fn(),
     );
 
-    expect(result).toBe(false);
-    expect(setUploadStatus).toHaveBeenCalledWith("Failed to upload questionnaire");
-    expect(setUploading).toHaveBeenCalledWith(false);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.message).toBe("Failed to upload questionnaire");
+    }
   });
 
   it("surfaces the install verification message when upload succeeds but installation does not", async () => {
     const questionnaireName = `${tmReleaseDateSurveyTlas[0] || "LMS"}2004A`;
-    const setUploading = vi.fn();
-    const setUploadStatus = vi.fn();
 
-    vi.mocked(setToStartDate).mockResolvedValue(true);
-    vi.mocked(setTmReleaseDate).mockResolvedValue(true);
     vi.mocked(initialiseUpload).mockResolvedValue("https://storage.googleapis.com/upload");
     vi.mocked(uploadFile).mockResolvedValue(true);
     vi.mocked(verifyAndInstallQuestionnaire).mockResolvedValue([false, "Install failed"]);
@@ -160,15 +118,16 @@ describe("uploadQuestionnaire", () => {
       "2022-12-31",
       "2022-12-31",
       { name: `${questionnaireName}.bpkg` } as File,
-      setUploading,
-      setUploadStatus,
       vi.fn(),
     );
 
-    expect(result).toBe(false);
-    expect(setUploadStatus).toHaveBeenCalledWith("Install failed");
-    expect(setUploading).toHaveBeenCalledWith(true);
-    expect(setUploading).toHaveBeenLastCalledWith(false);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.message).toBe("Install failed");
+    }
+
+    expect(setToStartDate).not.toHaveBeenCalled();
+    expect(setTmReleaseDate).not.toHaveBeenCalled();
   });
 
   it("handles Totalmobile release date failure", async () => {
@@ -177,9 +136,9 @@ describe("uploadQuestionnaire", () => {
 
     vi.mocked(setToStartDate).mockResolvedValue(true);
     vi.mocked(setTmReleaseDate).mockResolvedValue(false);
-
-    const setUploading = vi.fn();
-    const setUploadStatus = vi.fn();
+    vi.mocked(initialiseUpload).mockResolvedValue("https://storage.googleapis.com/upload");
+    vi.mocked(uploadFile).mockResolvedValue(true);
+    vi.mocked(verifyAndInstallQuestionnaire).mockResolvedValue([true, "ok"]);
 
     const file = { name: `${questionnaireName}.bpkg` } as unknown as File;
 
@@ -188,59 +147,117 @@ describe("uploadQuestionnaire", () => {
       "2022-12-31",
       "2022-12-31",
       file,
-      setUploading,
-      setUploadStatus,
       vi.fn(),
     );
 
-    expect(result).toEqual(false);
-    expect(setUploadStatus).toHaveBeenCalledWith("Failed to store Totalmobile release date");
-    expect(setUploading).toHaveBeenCalledWith(false);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.message).toBe("Failed to store Totalmobile release date");
+    }
   });
 
-  it("returns false when questionnaire settings or modes are empty", async () => {
-    const setQuestionnaireSettings = vi.fn();
-    const setInvalidSettings = vi.fn();
-    const setErrored = vi.fn();
+  it("stores only the start date for questionnaires that do not require a Totalmobile release date", async () => {
+    const questionnaireName = "OPN2004A"; // OPN: shouldAskToStartDate=true, shouldAskTmReleaseDate=false
 
+    vi.mocked(setToStartDate).mockResolvedValue(true);
+    vi.mocked(initialiseUpload).mockResolvedValue("https://storage.googleapis.com/upload");
+    vi.mocked(uploadFile).mockResolvedValue(true);
+    vi.mocked(verifyAndInstallQuestionnaire).mockResolvedValue([true, "ok"]);
+
+    const result = await uploadAndInstallFile(
+      questionnaireName,
+      "2022-12-31",
+      undefined,
+      { name: `${questionnaireName}.bpkg` } as File,
+      vi.fn(),
+    );
+
+    expect(result.success).toBe(true);
+    expect(setToStartDate).toHaveBeenCalledWith(questionnaireName, "2022-12-31");
+    expect(setTmReleaseDate).not.toHaveBeenCalled();
+  });
+
+  it("stores deployment dates only after installation succeeds", async () => {
+    const questionnaireName = `${tmReleaseDateSurveyTlas[0] || "LMS"}2004A`;
+
+    vi.mocked(setToStartDate).mockResolvedValue(true);
+    vi.mocked(setTmReleaseDate).mockResolvedValue(true);
+    vi.mocked(initialiseUpload).mockResolvedValue("https://storage.googleapis.com/upload");
+    vi.mocked(uploadFile).mockResolvedValue(true);
+    vi.mocked(verifyAndInstallQuestionnaire).mockResolvedValue([true, "ok"]);
+
+    const result = await uploadAndInstallFile(
+      questionnaireName,
+      "2022-12-31",
+      "2022-12-31",
+      { name: `${questionnaireName}.bpkg` } as File,
+      vi.fn(),
+    );
+
+    expect(result.success).toBe(true);
+    expect(vi.mocked(verifyAndInstallQuestionnaire).mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(setToStartDate).mock.invocationCallOrder[0]!,
+    );
+    expect(vi.mocked(setToStartDate).mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(setTmReleaseDate).mock.invocationCallOrder[0]!,
+    );
+  });
+
+  it("succeeds without storing any dates for questionnaires that do not ask for deployment dates", async () => {
+    vi.mocked(initialiseUpload).mockResolvedValue("https://storage.googleapis.com/upload");
+    vi.mocked(uploadFile).mockResolvedValue(true);
+    vi.mocked(verifyAndInstallQuestionnaire).mockResolvedValue([true, "ok"]);
+
+    const result = await uploadAndInstallFile(
+      "IPS2004A",
+      undefined,
+      undefined,
+      { name: "IPS2004A.bpkg" } as File,
+      vi.fn(),
+    );
+
+    expect(result.success).toBe(true);
+    expect(setToStartDate).not.toHaveBeenCalled();
+    expect(setTmReleaseDate).not.toHaveBeenCalled();
+  });
+
+  it("returns error outcome when questionnaire settings or modes are empty", async () => {
     vi.mocked(getQuestionnaireSettings).mockResolvedValue([]);
     vi.mocked(getQuestionnaireModes).mockResolvedValue(["CATI"]);
 
-    const result = await checkQuestionnaireSettings(
-      "OPN2004A",
-      setQuestionnaireSettings,
-      setInvalidSettings,
-      setErrored,
-    );
+    const result = await checkQuestionnaireSettings("OPN2004A");
 
-    expect(result).toBe(false);
-    expect(setErrored).toHaveBeenCalledWith(true);
-    expect(setQuestionnaireSettings).not.toHaveBeenCalled();
+    expect(result.outcome).toBe("error");
   });
 
-  it("returns false when loading questionnaire settings throws", async () => {
-    const setQuestionnaireSettings = vi.fn();
-    const setInvalidSettings = vi.fn();
-    const setErrored = vi.fn();
+  it("returns error outcome when strict interviewing settings are missing", async () => {
+    vi.mocked(getQuestionnaireSettings).mockResolvedValue([
+      {
+        questionnaireName: "OPN2004A",
+        type: "FreeInterviewing",
+        saveSessionOnTimeout: true,
+        saveSessionOnQuit: true,
+        deleteSessionOnTimeout: true,
+        deleteSessionOnQuit: true,
+        applyRecordLocking: true,
+      },
+    ] as never);
+    vi.mocked(getQuestionnaireModes).mockResolvedValue(["CATI"]);
 
+    const result = await checkQuestionnaireSettings("OPN2004A");
+
+    expect(result.outcome).toBe("error");
+  });
+
+  it("returns error outcome when loading questionnaire settings throws", async () => {
     vi.mocked(getQuestionnaireSettings).mockRejectedValue(new Error("boom"));
 
-    const result = await checkQuestionnaireSettings(
-      "OPN2004A",
-      setQuestionnaireSettings,
-      setInvalidSettings,
-      setErrored,
-    );
+    const result = await checkQuestionnaireSettings("OPN2004A");
 
-    expect(result).toBe(false);
-    expect(setErrored).toHaveBeenCalledWith(true);
+    expect(result.outcome).toBe("error");
   });
 
   it("deactivates the questionnaire when settings validation fails", async () => {
-    const setQuestionnaireSettings = vi.fn();
-    const setInvalidSettings = vi.fn();
-    const setErrored = vi.fn();
-
     vi.mocked(getQuestionnaireSettings).mockResolvedValue([
       {
         questionnaireName: "OPN2004A",
@@ -258,21 +275,13 @@ describe("uploadQuestionnaire", () => {
     ] as never);
     vi.mocked(getQuestionnaireModes).mockResolvedValue(["MIXED"]);
 
-    const result = await checkQuestionnaireSettings(
-      "OPN2004A",
-      setQuestionnaireSettings,
-      setInvalidSettings,
-      setErrored,
-    );
+    const result = await checkQuestionnaireSettings("OPN2004A");
 
-    expect(result).toBe(false);
+    expect(result.outcome).toBe("invalid");
     expect(deactivateQuestionnaire).toHaveBeenCalledWith("OPN2004A");
   });
 
   it("waits for deactivation to finish before returning invalid settings", async () => {
-    const setQuestionnaireSettings = vi.fn();
-    const setInvalidSettings = vi.fn();
-    const setErrored = vi.fn();
     let resolveSettings:
       | ((value: Awaited<ReturnType<typeof getQuestionnaireSettings>>) => void)
       | undefined;
@@ -301,12 +310,7 @@ describe("uploadQuestionnaire", () => {
     );
 
     let resolved = false;
-    const resultPromise = checkQuestionnaireSettings(
-      "OPN2004A",
-      setQuestionnaireSettings,
-      setInvalidSettings,
-      setErrored,
-    ).then((result) => {
+    const resultPromise = checkQuestionnaireSettings("OPN2004A").then((result) => {
       resolved = true;
 
       return result;
@@ -342,15 +346,13 @@ describe("uploadQuestionnaire", () => {
 
     resolveDeactivate?.(true);
 
-    await expect(resultPromise).resolves.toBe(false);
+    const result = await resultPromise;
+
+    expect(result.outcome).toBe("invalid");
     expect(resolved).toBe(true);
   });
 
   it("uses CATI-only validation when the questionnaire only supports CATI mode", async () => {
-    const setQuestionnaireSettings = vi.fn();
-    const setInvalidSettings = vi.fn();
-    const setErrored = vi.fn();
-
     vi.mocked(deactivateQuestionnaire).mockResolvedValue(true as never);
     vi.mocked(getQuestionnaireSettings).mockResolvedValue([
       {
@@ -364,17 +366,9 @@ describe("uploadQuestionnaire", () => {
     ] as never);
     vi.mocked(getQuestionnaireModes).mockResolvedValue(["CATI"]);
 
-    const result = await checkQuestionnaireSettings(
-      "OPN2004A",
-      setQuestionnaireSettings,
-      setInvalidSettings,
-      setErrored,
-    );
+    const result = await checkQuestionnaireSettings("OPN2004A");
 
-    expect(result).toBe(true);
-    expect(setErrored).not.toHaveBeenCalled();
-    expect(setQuestionnaireSettings).toHaveBeenCalledTimes(1);
-    expect(setInvalidSettings).toHaveBeenCalledWith({});
+    expect(result.outcome).toBe("valid");
     expect(deactivateQuestionnaire).not.toHaveBeenCalled();
   });
 });

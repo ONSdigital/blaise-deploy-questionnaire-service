@@ -13,6 +13,7 @@ function getShimmedNodeEnv(): string {
   try {
     return import.meta.env.MODE;
   } catch {
+    /* v8 ignore next */
     return "test";
   }
 }

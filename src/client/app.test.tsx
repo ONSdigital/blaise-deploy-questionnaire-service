@@ -332,6 +332,20 @@ describe("App routes and status lifecycle", () => {
     });
   });
 
+  it("signs the user out when the auth-expired event is dispatched", async () => {
+    renderAtRoute("/");
+
+    await screen.findByRole("button", { name: /sign out/i });
+
+    act(() => {
+      window.dispatchEvent(new Event("dqs-auth-expired"));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Enter your Blaise username and password/i)).toBeInTheDocument();
+    });
+  });
+
   it("clears the home error banner after returning when questionnaires load successfully", async () => {
     mock.reset();
     mock

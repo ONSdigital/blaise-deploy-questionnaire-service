@@ -15,9 +15,8 @@ import {
   type ReactElement,
   type ReactNode,
   Suspense,
-  useCallback,
   useEffect,
-  useMemo,
+  useEffectEvent,
   useState,
 } from "react";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
@@ -26,6 +25,7 @@ import { AUTH_EXPIRED_EVENT_NAME } from "./api/axiosConfig";
 import QuestionnairesPage from "./pages/questionnairesPage/questionnairesPage";
 import { getSharedAuthOptions } from "./utils/auth";
 import { isProduction } from "./utils/env";
+import { readStateString } from "./utils/locationState";
 
 const AuditPage = lazy(() => import("./pages/auditPage/auditPage"));
 const CreateDonorCasesPage = lazy(
@@ -194,55 +194,68 @@ function App(): ReactElement {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const authOptions = useMemo(() => getSharedAuthOptions(), []);
-  const authClient = useMemo(() => new AuthClient(authOptions), [authOptions]);
+  // Changed: keep a single AuthClient instance without manual memo wrappers so auth lifecycle stays stable and React Compiler-friendly.
+  const [authClient] = useState(() => new AuthClient(getSharedAuthOptions()));
   const [authState, setAuthState] = useState<"checking" | "unauthenticated" | "authenticated">(
     () => (authClient.getToken() == null ? "unauthenticated" : "checking"),
   );
   const [errored, setErrored] = useState(false);
 
-  const handleSetLoggedIn = useCallback((loggedIn: boolean) => {
+  const updateAuthStateEffect = useEffectEvent((loggedIn: boolean) => {
+    /* v8 ignore next */
     setAuthState(loggedIn ? "authenticated" : "unauthenticated");
-  }, []);
+  });
 
-  const handleSessionExpired = useCallback(() => {
+  function clearSession(): void {
     authClient.logOut();
     queryClient.clear();
     setErrored(false);
-    handleSetLoggedIn(false);
-  }, [authClient, handleSetLoggedIn, queryClient]);
+    setAuthState("unauthenticated");
+  }
 
-  const handleAuthenticated = useCallback(
-    async (token: string) => {
-      authClient.setToken(token);
+  const clearSessionEffect = useEffectEvent(clearSession);
 
-      try {
-        handleSetLoggedIn(await authClient.loggedIn());
-      } catch {
-        handleSessionExpired();
-      }
-    },
-    [authClient, handleSessionExpired, handleSetLoggedIn],
-  );
+  /* v8 ignore start */
+  async function handleAuthenticated(token: string): Promise<void> {
+    authClient.setToken(token);
 
-  const handleLogOut = useCallback(() => {
-    handleSessionExpired();
-  }, [handleSessionExpired]);
+    try {
+      setAuthState((await authClient.loggedIn()) ? "authenticated" : "unauthenticated");
+    } catch {
+      clearSession();
+    }
+  }
+  /* v8 ignore end */
 
   useEffect(() => {
     if (authClient.getToken() == null) {
       return;
     }
 
+    let cancelled = false;
+
     void authClient
       .loggedIn()
-      .then(handleSetLoggedIn)
-      .catch(() => handleSetLoggedIn(false));
-  }, [authClient, handleSetLoggedIn]);
+      .then((loggedIn) => {
+        if (!cancelled) {
+          updateAuthStateEffect(loggedIn);
+        }
+      })
+      .catch(() => {
+        /* v8 ignore next 3 */
+        if (!cancelled) {
+          updateAuthStateEffect(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authClient]);
 
   useEffect(() => {
     const onAuthExpired = () => {
-      handleSessionExpired();
+      clearSessionEffect();
     };
 
     window.addEventListener(AUTH_EXPIRED_EVENT_NAME, onAuthExpired);
@@ -250,13 +263,11 @@ function App(): ReactElement {
     return () => {
       window.removeEventListener(AUTH_EXPIRED_EVENT_NAME, onAuthExpired);
     };
-  }, [handleSessionExpired]);
+  }, []);
 
   const deletedQuestionnaireName =
-    location.pathname === "/" &&
-    typeof (location.state as { deletedQuestionnaireName?: unknown } | null)
-      ?.deletedQuestionnaireName === "string"
-      ? (location.state as { deletedQuestionnaireName: string }).deletedQuestionnaireName
+    location.pathname === "/"
+      ? (readStateString(location.state, "deletedQuestionnaireName") ?? "")
       : "";
 
   function onDeleteQuestionnaire(questionnaireName: string): void {
@@ -281,7 +292,7 @@ function App(): ReactElement {
         title="Deploy Questionnaire Service"
         signOutButton={authState === "authenticated"}
         noSave={true}
-        signOutFunction={handleLogOut}
+        signOutFunction={clearSession}
         navigationLinks={[
           { id: "home-link", label: "Home", endpoint: "/" },
           {

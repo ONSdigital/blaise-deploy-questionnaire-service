@@ -2,25 +2,18 @@ import { type ReactElement } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { decodeRouteParam } from "../../utils/decodeRouteParam";
+import { readStateQuestionnaire, readStateString } from "../../utils/locationState";
 
 import { Confirmation } from "./sections/confirmation";
-
-import type { Questionnaire } from "blaise-api-node-client";
-
-interface Location {
-  questionnaire?: Questionnaire;
-  role?: string;
-  section?: string;
-  responseMessage?: string;
-  statusCode?: number;
-}
 
 function CreateDonorCasesPage(): ReactElement {
   const navigate = useNavigate();
   const routeParams = useParams();
-  const location = useLocation().state as Location | undefined;
+  const location = useLocation();
   const questionnaireName = routeParams.questionnaireName ?? "";
-  const role = decodeRouteParam(routeParams.role) ?? location?.role ?? "";
+  // Changed: narrow router state explicitly so invalid navigation state cannot leak into route parameters.
+  const questionnaire = readStateQuestionnaire(location.state, "questionnaire");
+  const role = decodeRouteParam(routeParams.role) ?? readStateString(location.state, "role") ?? "";
 
   if (!questionnaireName || !role) {
     return (
@@ -35,7 +28,7 @@ function CreateDonorCasesPage(): ReactElement {
     navigate(`/questionnaire/${questionnaireName}`, {
       state: {
         section: "createDonorCases",
-        questionnaire: location?.questionnaire ?? null,
+        questionnaire: questionnaire ?? null,
         responseMessage: message,
         statusCode: code,
         role,

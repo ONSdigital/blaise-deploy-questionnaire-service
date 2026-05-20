@@ -12,6 +12,23 @@ interface Props {
   onSuccess: (message: string, statusCode: number) => void;
 }
 
+function getApiSuccessMessage(data: unknown): string {
+  if (typeof data === "string") {
+    return data;
+  }
+
+  if (
+    typeof data === "object" &&
+    data !== null &&
+    "message" in data &&
+    typeof (data as { message?: unknown }).message === "string"
+  ) {
+    return (data as { message: string }).message;
+  }
+
+  return "Success";
+}
+
 function getApiErrorMessage(error: unknown): string {
   if (
     typeof error === "object" &&
@@ -40,7 +57,7 @@ function Confirmation({ questionnaireName, user, onSuccess }: Props): ReactEleme
           axiosConfig(),
         );
 
-        return { data: res.data, status: res.status };
+        return { data: getApiSuccessMessage(res.data), status: res.status };
       } catch (error: unknown) {
         return { data: getApiErrorMessage(error), status: 500 };
       }

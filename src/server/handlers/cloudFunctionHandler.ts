@@ -22,6 +22,13 @@ export default function newCloudFunctionHandler(
   const router = express.Router();
   const handler = new CloudFunctionHandler(cloudFunctionUrl, auth, auditLogger, buildAuditMessages);
 
+  // Changed: protect cloud-function proxies whenever auth is supplied so they match the rest of the API surface.
+  if (auth != null) {
+    router.post(routePath, auth.middleware, handler.callCloudFunction);
+
+    return router;
+  }
+
   router.post(routePath, handler.callCloudFunction);
 
   return router;
@@ -64,12 +71,25 @@ class CloudFunctionHandler {
         this.auditLogger.error(req.log, this.buildAuditMessages(req, username).errorMessage);
       }
 
-      const axiosError = error as { response?: { data?: string } };
-
       return res.status(500).json({
-        message: axiosError.response?.data,
+        message: getCloudFunctionErrorMessage(error),
         status: 500,
       });
     }
   };
+}
+
+function getCloudFunctionErrorMessage(error: unknown): string | undefined {
+  // Changed: narrow unknown errors explicitly so failed proxy calls do not rely on unchecked assertions.
+  if (typeof error !== "object" || error === null || !("response" in error)) {
+    return undefined;
+  }
+
+  const response = error.response;
+
+  if (typeof response !== "object" || response === null || !("data" in response)) {
+    return undefined;
+  }
+
+  return typeof response.data === "string" ? response.data : undefined;
 }

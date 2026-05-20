@@ -102,6 +102,54 @@ describe("Confirmation behavior", () => {
     });
   });
 
+  it("uses the cloud function message when the success payload is an object", async () => {
+    mockedAxios.post.mockResolvedValueOnce({
+      data: {
+        message: "Reissued donor case successfully",
+        status: 200,
+      },
+      status: 200,
+    } as never);
+
+    render(
+      <Confirmation
+        questionnaireName={ipsQuestionnaire.name}
+        user="testuser"
+        onSuccess={mockOnSuccess}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+    });
+
+    await waitFor(() => {
+      expect(mockOnSuccess).toHaveBeenCalledWith("Reissued donor case successfully", 200);
+    });
+  });
+
+  it("uses the Success fallback when the success payload has no message property", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: {}, status: 200 } as never);
+
+    render(
+      <Confirmation
+        questionnaireName={ipsQuestionnaire.name}
+        user="testuser"
+        onSuccess={mockOnSuccess}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+    });
+
+    await waitFor(() => {
+      expect(mockOnSuccess).toHaveBeenCalledWith("Success", 200);
+    });
+  });
+
   it("calls onSuccess with error status when the API call fails", async () => {
     mockedAxios.post.mockRejectedValue(cloudFunctionAxiosError);
 

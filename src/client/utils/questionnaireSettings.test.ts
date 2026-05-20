@@ -1,12 +1,12 @@
 import {
-  GetStrictInterviewingSettings,
-  ValidateCatiModeOnlySettings,
-  ValidateSettings,
+  getStrictInterviewingSettings,
+  validateCatiOnlySettings,
+  validateQuestionnaireSettings,
 } from "./questionnaireSettings";
 
 import type { QuestionnaireSettings } from "blaise-api-node-client";
 
-describe("Function GetStrictInterviewingSettings()", () => {
+describe("Function getStrictInterviewingSettings()", () => {
   const questionnaireSettingTestList: QuestionnaireSettings[] = [
     {
       type: "FreeInterviewing",
@@ -29,7 +29,7 @@ describe("Function GetStrictInterviewingSettings()", () => {
   ];
 
   it("Should return the questionnaire settings for the StrictInterviewing type", async () => {
-    const strictInterviewingSettings = GetStrictInterviewingSettings(questionnaireSettingTestList);
+    const strictInterviewingSettings = getStrictInterviewingSettings(questionnaireSettingTestList);
 
     expect(strictInterviewingSettings).toEqual({
       type: "StrictInterviewing",
@@ -42,12 +42,12 @@ describe("Function GetStrictInterviewingSettings()", () => {
     });
   });
 
-  it("returns an empty object when strict interviewing settings are missing", () => {
-    expect(GetStrictInterviewingSettings([questionnaireSettingTestList[0]])).toEqual({});
+  it("returns undefined when strict interviewing settings are missing", () => {
+    expect(getStrictInterviewingSettings([questionnaireSettingTestList[0]])).toBeUndefined();
   });
 });
 
-describe("Function ValidateCatiModeOnlySettings()", () => {
+describe("Function validateCatiOnlySettings()", () => {
   describe("when the settings are valid", () => {
     const questionnaireSettings = {
       type: "StrictInterviewing",
@@ -60,7 +60,7 @@ describe("Function ValidateCatiModeOnlySettings()", () => {
     };
 
     it("returns true", () => {
-      const [valid, invalidSettings] = ValidateCatiModeOnlySettings(questionnaireSettings);
+      const [valid, invalidSettings] = validateCatiOnlySettings(questionnaireSettings);
 
       expect(valid).toBeTruthy();
       expect(invalidSettings).toEqual({});
@@ -79,7 +79,7 @@ describe("Function ValidateCatiModeOnlySettings()", () => {
     };
 
     it("returns true", () => {
-      const [valid, invalidSettings] = ValidateCatiModeOnlySettings(questionnaireSettings);
+      const [valid, invalidSettings] = validateCatiOnlySettings(questionnaireSettings);
 
       expect(valid).toBeFalsy();
       expect(invalidSettings.saveSessionOnTimeout).toBeTruthy();
@@ -92,7 +92,7 @@ describe("Function ValidateCatiModeOnlySettings()", () => {
   });
 });
 
-describe("Function ValidateSettings()", () => {
+describe("Function validateQuestionnaireSettings()", () => {
   describe("when the settings are valid", () => {
     const questionnaireSettings = {
       type: "StrictInterviewing",
@@ -105,7 +105,7 @@ describe("Function ValidateSettings()", () => {
     };
 
     it("returns true", () => {
-      const [valid, invalidSettings] = ValidateSettings(questionnaireSettings);
+      const [valid, invalidSettings] = validateQuestionnaireSettings(questionnaireSettings);
 
       expect(valid).toBeTruthy();
       expect(invalidSettings).toEqual({});
@@ -124,7 +124,7 @@ describe("Function ValidateSettings()", () => {
     };
 
     it("returns true", () => {
-      const [valid, invalidSettings] = ValidateSettings(questionnaireSettings);
+      const [valid, invalidSettings] = validateQuestionnaireSettings(questionnaireSettings);
 
       expect(valid).toBeFalsy();
       expect(invalidSettings.deleteSessionOnTimeout).toBeTruthy();
@@ -152,8 +152,8 @@ describe("Mode-based settings validation", () => {
     const isCatiModeOnly = modes.length === 1 && modes[0] === "CATI";
 
     return isCatiModeOnly
-      ? ValidateCatiModeOnlySettings(questionnaireSettings)
-      : ValidateSettings(questionnaireSettings);
+      ? validateCatiOnlySettings(questionnaireSettings)
+      : validateQuestionnaireSettings(questionnaireSettings);
   }
 
   describe("when the mode is CATI", () => {

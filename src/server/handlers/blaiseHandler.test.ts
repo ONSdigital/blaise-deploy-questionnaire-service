@@ -178,6 +178,16 @@ describe("BlaiseAPI Get specific questionnaire information from API", () => {
     expect(response.body).toEqual("");
   });
 
+  it("should return a 500 status when a record error object does not have isAxiosError set", async () => {
+    mockGetQuestionnaire.mockImplementation(() => {
+      return Promise.reject({ response: { status: 404 } });
+    });
+
+    const response: Response = await request.get("/api/questionnaires/OPN2004A");
+
+    expect(response.status).toEqual(500);
+  });
+
   it("should return a 200 status and a questionnaire response body when the API returns a questionnaire", async () => {
     mockGetQuestionnaire.mockImplementation(() => {
       return Promise.resolve(questionnaireMockObject);
@@ -241,6 +251,19 @@ describe("BlaiseAPI Post to API to install a specific questionnaire", () => {
     ];
 
     expect(payload.questionnaireFile).toEqual("");
+  });
+
+  it("should return a 201 status when the request body is not a JSON object", async () => {
+    mockInstallQuestionnaire.mockImplementation(() => {
+      return Promise.resolve(true);
+    });
+
+    const response: Response = await request
+      .post("/api/install")
+      .set("Content-Type", "text/plain")
+      .send("not-json");
+
+    expect(response.status).toEqual(201);
   });
 });
 

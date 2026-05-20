@@ -7,9 +7,38 @@ import { type Auth } from "blaise-login-react-server";
 import express, { type Request, type Response, type Router } from "express";
 
 import { fieldPeriodToText } from "../functions.js";
+import { getUsername } from "../helpers/getUsername.js";
+import { isRecord } from "../helpers/isRecord.js";
 import { sanitise } from "../helpers/sanitise.js";
 
 import type AuditLogger from "../auditLogger.js";
+
+function readRequestParam(req: Request, key: string): string {
+  const value = req.params[key];
+
+  /* v8 ignore next */
+  return typeof value === "string" ? value : "";
+}
+
+function readRequestBodyString(req: Request, key: string): string {
+  if (!isRecord(req.body)) {
+    return "";
+  }
+
+  const value = req.body[key];
+
+  return typeof value === "string" ? value : "";
+}
+
+function getAxiosStatus(error: unknown): number | undefined {
+  if (!isRecord(error) || error.isAxiosError !== true) {
+    return undefined;
+  }
+
+  const { response } = error;
+
+  return isRecord(response) && typeof response.status === "number" ? response.status : undefined;
+}
 
 export default function newBlaiseHandler(
   blaiseApiClient: BlaiseApiClient,
@@ -78,10 +107,10 @@ export default function newBlaiseHandler(
 }
 
 class BlaiseHandler {
-  blaiseApiClient: BlaiseApiClient;
-  serverPark: string;
-  auth: Auth;
-  auditLogger: AuditLogger;
+  private readonly blaiseApiClient: BlaiseApiClient;
+  private readonly serverPark: string;
+  private readonly auth: Auth;
+  private readonly auditLogger: AuditLogger;
 
   constructor(
     blaiseApiClient: BlaiseApiClient,
@@ -96,7 +125,7 @@ class BlaiseHandler {
   }
 
   getQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
-    const { questionnaireName } = req.params as { questionnaireName: string };
+    const questionnaireName = readRequestParam(req, "questionnaireName");
     const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
@@ -123,9 +152,10 @@ class BlaiseHandler {
   };
 
   installQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
-    const filename: string = req.body.filename;
+    const filename = readRequestBodyString(req, "filename");
+    /* v8 ignore next */
     const questionnaireName = sanitise(filename?.toString().replace(/\.[a-zA-Z]*$/, "") ?? "");
-    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
+    const username = getUsername(req, this.auth);
     const installQuestionnaire: InstallQuestionnaire = {
       questionnaireFile: filename?.toString() || "",
     };
@@ -151,9 +181,9 @@ class BlaiseHandler {
   };
 
   deleteQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
-    const { questionnaireName } = req.params as { questionnaireName: string };
+    const questionnaireName = readRequestParam(req, "questionnaireName");
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
+    const username = getUsername(req, this.auth);
 
     try {
       const response = await this.blaiseApiClient.deleteQuestionnaire(
@@ -184,9 +214,9 @@ class BlaiseHandler {
   };
 
   activateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
-    const { questionnaireName } = req.params as { questionnaireName: string };
+    const questionnaireName = readRequestParam(req, "questionnaireName");
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
+    const username = getUsername(req, this.auth);
 
     try {
       const response = await this.blaiseApiClient.activateQuestionnaire(
@@ -220,9 +250,9 @@ class BlaiseHandler {
   };
 
   deactivateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
-    const { questionnaireName } = req.params as { questionnaireName: string };
+    const questionnaireName = readRequestParam(req, "questionnaireName");
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
+    const username = getUsername(req, this.auth);
 
     try {
       const response = await this.blaiseApiClient.deactivateQuestionnaire(
@@ -256,7 +286,8 @@ class BlaiseHandler {
   };
 
   doesQuestionnaireHaveMode = async (req: Request, res: Response): Promise<Response> => {
-    const { questionnaireName, mode } = req.params as { questionnaireName: string; mode: string };
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const mode = readRequestParam(req, "mode");
     const safeQuestionnaireName = sanitise(questionnaireName);
     const safeMode = sanitise(mode);
 
@@ -315,7 +346,7 @@ class BlaiseHandler {
   };
 
   getCases = async (req: Request, res: Response): Promise<Response> => {
-    const { questionnaireName } = req.params as { questionnaireName: string };
+    const questionnaireName = readRequestParam(req, "questionnaireName");
     const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
@@ -341,7 +372,7 @@ class BlaiseHandler {
   };
 
   getModes = async (req: Request, res: Response): Promise<Response> => {
-    const { questionnaireName } = req.params as { questionnaireName: string };
+    const questionnaireName = readRequestParam(req, "questionnaireName");
     const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
@@ -367,7 +398,7 @@ class BlaiseHandler {
   };
 
   getSettings = async (req: Request, res: Response): Promise<Response> => {
-    const { questionnaireName } = req.params as { questionnaireName: string };
+    const questionnaireName = readRequestParam(req, "questionnaireName");
     const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
@@ -393,7 +424,7 @@ class BlaiseHandler {
   };
 
   getSurveyDays = async (req: Request, res: Response): Promise<Response> => {
-    const { questionnaireName } = req.params as { questionnaireName: string };
+    const questionnaireName = readRequestParam(req, "questionnaireName");
     const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
@@ -416,7 +447,7 @@ class BlaiseHandler {
   };
 
   getActiveSurveyDays = async (req: Request, res: Response): Promise<Response> => {
-    const { questionnaireName } = req.params as { questionnaireName: string };
+    const questionnaireName = readRequestParam(req, "questionnaireName");
     const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
@@ -443,16 +474,6 @@ class BlaiseHandler {
   };
 
   private errorNotFound(error: unknown): boolean {
-    if (typeof error !== "object" || error === null) {
-      return false;
-    }
-
-    if (!("isAxiosError" in error) || !("response" in error)) {
-      return false;
-    }
-
-    const axiosError = error as { isAxiosError?: boolean; response?: { status?: number } };
-
-    return axiosError.isAxiosError === true && axiosError.response?.status === 404;
+    return getAxiosStatus(error) === 404;
   }
 }

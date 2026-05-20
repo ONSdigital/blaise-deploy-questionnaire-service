@@ -1,17 +1,18 @@
+import { type Auth } from "blaise-login-react-server";
 import express, { type Request, type Response, type Router } from "express";
 
 import type AuditLogger from "../auditLogger.js";
 
-export default function newAuditHandler(auditLogger: AuditLogger): Router {
+export default function newAuditHandler(auditLogger: AuditLogger, auth: Auth): Router {
   const router = express.Router();
 
   const auditHandler = new AuditHandler(auditLogger);
 
-  return router.get("/api/audit", auditHandler.getAuditInfo);
+  return router.get("/api/audit", auth.middleware, auditHandler.getAuditInfo);
 }
 
 class AuditHandler {
-  auditLogger: AuditLogger;
+  private readonly auditLogger: AuditLogger;
 
   constructor(auditLogger: AuditLogger) {
     this.auditLogger = auditLogger;

@@ -6,13 +6,9 @@ import { type ReactElement } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { getTmReleaseDate, setTmReleaseDate } from "../../api/tmReleaseDate";
+import { readNullableStateString, readStateString } from "../../utils/locationState";
 import { clientLogger } from "../../utils/logger";
 import { AskTmReleaseDate } from "../shared/dateQuestions/askTmReleaseDate";
-
-interface LocationState {
-  tmReleaseDate: string | null;
-  questionnaireName?: string;
-}
 
 type TmReleaseDateFormValues = {
   askDate: string;
@@ -23,9 +19,10 @@ function QuestionnaireTmReleaseDatePage(): ReactElement {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const routeParams = useParams();
-  const location = useLocation().state as LocationState | undefined;
-  const tmReleaseDateFromState = location?.tmReleaseDate;
-  const questionnaireNameFromState = location?.questionnaireName;
+  const location = useLocation();
+  // Changed: narrow router state explicitly so invalid navigation state falls back to fetching from the route parameter.
+  const tmReleaseDateFromState = readNullableStateString(location.state, "tmReleaseDate");
+  const questionnaireNameFromState = readStateString(location.state, "questionnaireName");
   const questionnaireName = routeParams.questionnaireName ?? questionnaireNameFromState ?? "";
 
   const {

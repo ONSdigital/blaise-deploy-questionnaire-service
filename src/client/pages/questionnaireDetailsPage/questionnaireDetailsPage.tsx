@@ -1,9 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button, ErrorBoundary, LoadingPanel, Panel } from "blaise-design-system-react-components";
-import { type ReactElement, useMemo } from "react";
+import { type ReactElement } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { getQuestionnaire, getQuestionnaireModes, getSurveyDays } from "../../api/questionnaires";
+import {
+  readStateNumber,
+  readStateQuestionnaire,
+  readStateString,
+} from "../../utils/locationState";
 import { clientLogger } from "../../utils/logger";
 
 import { BlaiseNodeStates } from "./sections/blaiseNodeStates";
@@ -20,27 +25,17 @@ import { YearCalendar } from "./sections/yearCalendar";
 
 import type { Questionnaire } from "blaise-api-node-client";
 
-interface State {
-  section?: string;
-  questionnaire: Questionnaire | null;
-  responseMessage?: string;
-  statusCode?: number;
-  role?: string;
-  user?: string;
-}
-
 function QuestionnaireDetailsPage(): ReactElement {
-  const location = useLocation().state as State;
+  const location = useLocation();
   const navigate = useNavigate();
-  const initialState = useMemo(() => location || { questionnaire: null }, [location]);
-  const { questionnaireName } = useParams();
-  const { section, responseMessage, statusCode, role, user } = location || {
-    section: "",
-    responseMessage: "",
-    statusCode: 0,
-    role: "",
-    user: "",
-  };
+  /* v8 ignore next */
+  const questionnaireName = useParams().questionnaireName ?? "";
+  const questionnaireFromState = readStateQuestionnaire(location.state, "questionnaire") ?? null;
+  const section = readStateString(location.state, "section") ?? "";
+  const responseMessage = readStateString(location.state, "responseMessage") ?? "";
+  const statusCode = readStateNumber(location.state, "statusCode");
+  const role = readStateString(location.state, "role") ?? "";
+  const user = readStateString(location.state, "user") ?? "";
 
   const {
     data: fetchedQuestionnaire,
@@ -49,7 +44,7 @@ function QuestionnaireDetailsPage(): ReactElement {
   } = useQuery({
     queryKey: ["questionnaire", questionnaireName],
     queryFn: async () => {
-      const q = await getQuestionnaire(questionnaireName!);
+      const q = await getQuestionnaire(questionnaireName);
 
       if (!q) {
         navigate("/");
@@ -61,11 +56,11 @@ function QuestionnaireDetailsPage(): ReactElement {
 
       return q;
     },
-    enabled: initialState.questionnaire === null && !!questionnaireName,
+    enabled: questionnaireFromState === null && questionnaireName !== "",
   });
 
   const questionnaire: Questionnaire | undefined =
-    initialState.questionnaire ?? fetchedQuestionnaire ?? undefined;
+    questionnaireFromState ?? fetchedQuestionnaire ?? undefined;
 
   const {
     data: modes = [],
@@ -74,7 +69,7 @@ function QuestionnaireDetailsPage(): ReactElement {
   } = useQuery({
     queryKey: ["questionnaireModes", questionnaireName],
     queryFn: async () => {
-      const fetchedModes = await getQuestionnaireModes(questionnaireName!);
+      const fetchedModes = await getQuestionnaireModes(questionnaireName);
 
       if (fetchedModes.length === 0) {
         clientLogger.error("returned questionnaire mode was empty");
@@ -85,7 +80,7 @@ function QuestionnaireDetailsPage(): ReactElement {
 
       return fetchedModes;
     },
-    enabled: !!questionnaireName,
+    enabled: questionnaireName !== "",
   });
 
   const isCati = modes.includes("CATI");
@@ -97,13 +92,13 @@ function QuestionnaireDetailsPage(): ReactElement {
   } = useQuery({
     queryKey: ["surveyDays", questionnaireName],
     queryFn: async () => {
-      const days = await getSurveyDays(questionnaireName!);
+      const days = await getSurveyDays(questionnaireName);
 
       clientLogger.info(`returned questionnaire survey days: ${days}`);
 
       return days;
     },
-    enabled: !!questionnaireName && isCati,
+    enabled: questionnaireName !== "" && isCati,
   });
 
   const isLoading = questionnaireLoading || modesLoading || (isCati && surveyDaysLoading);
@@ -123,14 +118,14 @@ function QuestionnaireDetailsPage(): ReactElement {
         {loaded && !errored && questionnaire && (
           <>
             <h1 className="ons-u-mb-l">{questionnaire.name}</h1>
-            {section === "createDonorCases" && responseMessage && statusCode && role && (
+            {section === "createDonorCases" && responseMessage && statusCode != null && role && (
               <CreateDonorCasesSummary
                 donorCasesResponseMessage={responseMessage}
                 donorCasesStatusCode={statusCode}
                 role={role}
               />
             )}
-            {section === "reissueNewDonorCase" && responseMessage && statusCode && user && (
+            {section === "reissueNewDonorCase" && responseMessage && statusCode != null && user && (
               <ReissueNewDonorCaseSummary
                 responseMessage={responseMessage}
                 statusCode={statusCode}

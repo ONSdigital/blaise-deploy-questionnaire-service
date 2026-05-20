@@ -7,9 +7,16 @@ class MockAuth {
     return true;
   }
 
-  public middleware(_req: Request, _res: Response, next: NextFunction): void {
+  public middleware = (_req: Request, res: Response, next: NextFunction): void => {
+    // Changed: mirror real auth middleware so tests can assert protected routes reject invalid sessions.
+    if (!this.validateToken()) {
+      res.status(401).json({ message: "Unauthorized" });
+
+      return;
+    }
+
     next();
-  }
+  };
 
   public getUser(): { name: string } {
     return { name: "rich" };
