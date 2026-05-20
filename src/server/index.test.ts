@@ -31,7 +31,7 @@ const { mockInfo, mockError, mockListen, captureErrorHandler } = vi.hoisted(() =
 
 vi.mock("./config.js", () => ({
   getConfigFromEnv: () => ({
-    Port: 5000,
+    port: 5000,
   }),
 }));
 

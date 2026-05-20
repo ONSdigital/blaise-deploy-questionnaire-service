@@ -96,13 +96,13 @@ describe("setToStartDate", () => {
 
       test("Given a pre-deployed questionnaire that already has a Telephone Operations start date stored against it", () => {
         mock
-          .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+          .onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
           .reply(200, { tostartdate: "2021-07-29T00:00:00+00:00" }, jsonHeaders);
         mock
-          .onPatch(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+          .onPatch(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
           .reply(200, { tostartdate: "2020-06-05T00:00:00+00:00" }, jsonHeaders);
         mock
-          .onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+          .onPost(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
           .reply(201, { tostartdate: "2020-06-05T00:00:00+00:00" }, jsonHeaders);
       });
 
@@ -125,11 +125,11 @@ describe("setToStartDate", () => {
 
       test("Given a pre-deployed questionnaire that already has a Telephone Operations start date stored against it", () => {
         mock
-          .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+          .onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
           .reply(200, { tostartdate: "2021-07-29T00:00:00+00:00" }, jsonHeaders);
-        mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(204, [], jsonHeaders);
+        mock.onDelete(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(204, [], jsonHeaders);
         mock
-          .onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+          .onPost(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
           .reply(201, { tostartdate: "" }, jsonHeaders);
       });
 

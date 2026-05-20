@@ -1,6 +1,6 @@
 import express, { type Request, type Response, type Router } from "express";
 
-export default function newHealthCheckHandler(): Router {
+export default function HealthCheckHandler(): Router {
   const router = express.Router();
 
   router.get("/dqs-ui/:version/health", healthCheck);

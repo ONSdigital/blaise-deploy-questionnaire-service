@@ -197,7 +197,7 @@ function App(): ReactElement {
   const authOptions = useMemo(() => getSharedAuthOptions(), []);
   const authClient = useMemo(() => new AuthClient(authOptions), [authOptions]);
   const [authState, setAuthState] = useState<"checking" | "unauthenticated" | "authenticated">(
-    "checking",
+    () => (authClient.getToken() == null ? "unauthenticated" : "checking"),
   );
   const [errored, setErrored] = useState(false);
 
@@ -231,12 +231,13 @@ function App(): ReactElement {
 
   useEffect(() => {
     if (authClient.getToken() == null) {
-      handleSetLoggedIn(false);
-
       return;
     }
 
-    void authClient.loggedIn().then(handleSetLoggedIn).catch(() => handleSetLoggedIn(false));
+    void authClient
+      .loggedIn()
+      .then(handleSetLoggedIn)
+      .catch(() => handleSetLoggedIn(false));
   }, [authClient, handleSetLoggedIn]);
 
   useEffect(() => {
@@ -311,9 +312,7 @@ function App(): ReactElement {
             className="ons-page__main ons-u-mt-l"
           >
             <Panel status="info">Enter your Blaise username and password</Panel>
-            <LoginForm
-              onAuthenticated={handleAuthenticated}
-            />
+            <LoginForm onAuthenticated={handleAuthenticated} />
           </main>
         )}
         {authState === "authenticated" && (

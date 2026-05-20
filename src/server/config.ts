@@ -4,19 +4,19 @@ const DEFAULT_SESSION_TIMEOUT = "12h";
 const ALLOWED_ROLES = ["DST", "BDSS", "Researcher", "IPS Researcher", "IPS Support"];
 
 export interface Config extends AuthConfig {
-  Port: number;
-  BlaiseApiUrl: string;
-  ProjectId: string;
-  UrlDomain: string;
-  BucketName: string;
-  ServerPark: string;
-  BimsApiUrl: string;
-  BimsClientId: string;
-  BusApiUrl: string;
-  BusClientId: string;
-  CreateDonorCasesCloudFunctionUrl: string;
-  ReissueNewDonorCaseCloudFunctionUrl: string;
-  GetUsersByRoleCloudFunctionUrl: string;
+  port: number;
+  blaiseApiUrl: string;
+  projectId: string;
+  urlDomain: string;
+  bucketName: string;
+  serverPark: string;
+  bimsApiUrl: string;
+  bimsClientId: string;
+  busApiUrl: string;
+  busClientId: string;
+  createDonorCasesCloudFunctionUrl: string;
+  reissueNewDonorCaseCloudFunctionUrl: string;
+  getUsersByRoleCloudFunctionUrl: string;
 }
 
 type RequiredConfigEnv = {
@@ -76,23 +76,23 @@ export function getConfigFromEnv(): Config {
   assertResolvedRequiredEnv(requiredEnv);
 
   return {
-    Port: parsePort(PORT),
-    BlaiseApiUrl: fixUrl(requiredEnv.BLAISE_API_URL),
-    ProjectId: requiredEnv.PROJECT_ID,
-    UrlDomain: requiredEnv.URL_DOMAIN,
-    BucketName: requiredEnv.BUCKET_NAME,
-    ServerPark: requiredEnv.SERVER_PARK,
-    BimsApiUrl: requiredEnv.BIMS_API_URL,
-    BimsClientId: requiredEnv.BIMS_CLIENT_ID,
-    BusApiUrl: requiredEnv.BUS_API_URL,
-    BusClientId: requiredEnv.BUS_CLIENT_ID,
+    port: parsePort(PORT),
+    blaiseApiUrl: fixUrl(requiredEnv.BLAISE_API_URL),
+    projectId: requiredEnv.PROJECT_ID,
+    urlDomain: requiredEnv.URL_DOMAIN,
+    bucketName: requiredEnv.BUCKET_NAME,
+    serverPark: requiredEnv.SERVER_PARK,
+    bimsApiUrl: requiredEnv.BIMS_API_URL,
+    bimsClientId: requiredEnv.BIMS_CLIENT_ID,
+    busApiUrl: requiredEnv.BUS_API_URL,
+    busClientId: requiredEnv.BUS_CLIENT_ID,
     SessionTimeout: DEFAULT_SESSION_TIMEOUT,
     SessionSecret: requiredEnv.SESSION_SECRET,
     TokenIssuer: requiredEnv.PROJECT_ID,
     Roles: ALLOWED_ROLES,
-    CreateDonorCasesCloudFunctionUrl: requiredEnv.CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
-    ReissueNewDonorCaseCloudFunctionUrl: requiredEnv.REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
-    GetUsersByRoleCloudFunctionUrl: requiredEnv.GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL,
+    createDonorCasesCloudFunctionUrl: requiredEnv.CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
+    reissueNewDonorCaseCloudFunctionUrl: requiredEnv.REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
+    getUsersByRoleCloudFunctionUrl: requiredEnv.GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL,
   };
 }
 

@@ -8,14 +8,14 @@ vi.mock("google-auth-library");
 vi.mock("axios");
 vi.mock("../config", () => ({
   getConfigFromEnv: () => ({
-    CreateDonorCasesCloudFunctionUrl: "https://example.com/create-donor-cases",
-    ReissueNewDonorCaseCloudFunctionUrl: "https://example.com/reissue-new-donor-case",
+    createDonorCasesCloudFunctionUrl: "https://example.com/create-donor-cases",
+    reissueNewDonorCaseCloudFunctionUrl: "https://example.com/reissue-new-donor-case",
   }),
 }));
 
 const mockConfig = {
-  CreateDonorCasesCloudFunctionUrl: "https://example.com/create-donor-cases",
-  ReissueNewDonorCaseCloudFunctionUrl: "https://example.com/reissue-new-donor-case",
+  createDonorCasesCloudFunctionUrl: "https://example.com/create-donor-cases",
+  reissueNewDonorCaseCloudFunctionUrl: "https://example.com/reissue-new-donor-case",
 };
 const ipsQuestionnaireName = "IPS1337a";
 const mockedAxiosPost = vi.mocked(axios.post);
@@ -45,7 +45,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
   });
 
   it("should return message and status when donor cases are created successfully", async () => {
-    const dummyUrl = mockConfig.CreateDonorCasesCloudFunctionUrl;
+    const dummyUrl = mockConfig.createDonorCasesCloudFunctionUrl;
 
     const payload = {
       questionnaire_name: ipsQuestionnaireName,
@@ -81,7 +81,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
   });
 
   it("should return response data and status from cloud function when it returns a non-200 response", async () => {
-    const dummyUrl = mockConfig.CreateDonorCasesCloudFunctionUrl;
+    const dummyUrl = mockConfig.createDonorCasesCloudFunctionUrl;
 
     const payload = {
       questionnaire_name: ipsQuestionnaireName,

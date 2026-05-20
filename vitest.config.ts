@@ -9,7 +9,7 @@ export default defineConfig({
           globals: true,
           clearMocks: true,
           environment: "happy-dom",
-          setupFiles: ["./src/client/setupTests.ts"],
+          setupFiles: ["./src/client/setupEnv.ts", "./src/client/setupTests.ts"],
           include: ["src/client/**/*.test.{ts,tsx}"],
         },
       },

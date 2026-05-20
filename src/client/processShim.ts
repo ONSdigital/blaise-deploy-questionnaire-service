@@ -1,4 +1,4 @@
-export type ShimmedProcess = {
+type ShimmedProcess = {
   env?: {
     NODE_ENV?: string;
   };
@@ -28,15 +28,17 @@ function getProcessShim(): Required<ShimmedProcess> {
   };
 }
 
-export function ensureProcessShim(target: ProcessTarget): void {
-  const currentProcess = target.process;
+export function ensureProcessShim(target: object): void {
+  const processTarget = target as ProcessTarget;
+  const currentProcess = processTarget.process;
 
   if (!currentProcess || typeof currentProcess !== "object") {
-    Object.defineProperty(target, "process", {
+    Object.defineProperty(processTarget, "process", {
       configurable: true,
       writable: true,
       value: getProcessShim(),
     });
+
     return;
   }
 

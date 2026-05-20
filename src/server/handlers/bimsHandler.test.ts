@@ -89,7 +89,7 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
   });
 
   it("should return 201 with an empty body when no existing Telephone Operations start date is found and none is provided", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(404, {}, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(404, {}, jsonHeaders);
 
     const response: Response = await request
       .post("/api/tostartdate/OPN2004A")
@@ -101,9 +101,9 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
 
   it("should delete an existing Telephone Operations start date when an empty Telephone Operations start date is provided", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
-    mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(204, {}, jsonHeaders);
+    mock.onDelete(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(204, {}, jsonHeaders);
 
     const response: Response = await request
       .post("/api/tostartdate/OPN2004A")
@@ -118,9 +118,9 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
 
   it("should return 500 when deleting an existing Telephone Operations start date fails", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
-    mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
+    mock.onDelete(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
 
     const response: Response = await request
       .post("/api/tostartdate/OPN2004A")
@@ -131,10 +131,10 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
 
   it("should update an existing Telephone Operations start date when a new value is provided", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
     mock
-      .onPatch(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .onPatch(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-12-31" }, jsonHeaders);
 
     const response: Response = await request
@@ -151,9 +151,9 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
 
   it("should audit-log a failure when updating an existing Telephone Operations start date fails", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-01-01" }, jsonHeaders);
-    mock.onPatch(`${config.BimsApiUrl}/tostartdate/OPN2004A`).networkError();
+    mock.onPatch(`${config.bimsApiUrl}/tostartdate/OPN2004A`).networkError();
 
     const response: Response = await request
       .post("/api/tostartdate/OPN2004A")
@@ -166,8 +166,8 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
   });
 
   it("should return a 201 status when a Telephone Operations start date is provided", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
-    mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(201, {}, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
+    mock.onPost(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(201, {}, jsonHeaders);
 
     const response: Response = await request
       .post("/api/tostartdate/OPN2004A")
@@ -182,8 +182,8 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
   });
 
   it("should return a 500 status direct from the API", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
-    mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
+    mock.onPost(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
 
     const response: Response = await request
       .post("/api/tostartdate/OPN2004A")
@@ -193,8 +193,8 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
   });
 
   it("should return a 500 status when there is a network error from the API request", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
-    mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).networkError();
+    mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
+    mock.onPost(`${config.bimsApiUrl}/tostartdate/OPN2004A`).networkError();
 
     const response: Response = await request
       .post("/api/tostartdate/OPN2004A")
@@ -204,8 +204,8 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
   });
 
   it("should audit-log a failure when setting a new Telephone Operations start date fails without a previous value", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
-    mock.onPost(`${config.BimsApiUrl}/tostartdate/OPN2004A`).networkError();
+    mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(200, {}, jsonHeaders);
+    mock.onPost(`${config.bimsApiUrl}/tostartdate/OPN2004A`).networkError();
 
     const response: Response = await request
       .post("/api/tostartdate/OPN2004A")
@@ -225,7 +225,7 @@ describe("Getting Telephone Operations start date from BIMS service", () => {
   });
 
   it("should return a 404 status when BIMS returns no content for the Telephone Operations start date", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(204, undefined, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(204, undefined, jsonHeaders);
 
     const response: Response = await request.get("/api/tostartdate/OPN2004A");
 
@@ -234,7 +234,7 @@ describe("Getting Telephone Operations start date from BIMS service", () => {
 
   it("should return a 200 status with a Telephone Operations start date response body when a Telephone Operations start date is provided", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-12-31" }, jsonHeaders);
 
     const response: Response = await request.get("/api/tostartdate/OPN2004A");
@@ -244,7 +244,7 @@ describe("Getting Telephone Operations start date from BIMS service", () => {
   });
 
   it("should return a 500 status direct from the API", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
 
     const response: Response = await request.get("/api/tostartdate/OPN2004A");
 
@@ -252,7 +252,7 @@ describe("Getting Telephone Operations start date from BIMS service", () => {
   });
 
   it("should return a 500 status when there is a network error from the API request", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).networkError();
+    mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).networkError();
 
     const response: Response = await request.get("/api/tostartdate/OPN2004A");
 
@@ -268,9 +268,9 @@ describe("Deleting Telephone Operations start date from BIMS service", () => {
 
   it("should return a 204 status when the Telephone Operations start date has been deleted", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-12-31" }, jsonHeaders);
-    mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(204, {}, jsonHeaders);
+    mock.onDelete(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(204, {}, jsonHeaders);
 
     const response: Response = await request.delete("/api/tostartdate/OPN2004A");
 
@@ -281,7 +281,7 @@ describe("Deleting Telephone Operations start date from BIMS service", () => {
   });
 
   it("should return a 204 status when the Telephone Operations start date does not exist", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(404, {}, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(404, {}, jsonHeaders);
 
     const response: Response = await request.delete("/api/tostartdate/OPN2004A");
 
@@ -290,9 +290,9 @@ describe("Deleting Telephone Operations start date from BIMS service", () => {
 
   it("should return a 500 status direct from the API", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-12-31" }, jsonHeaders);
-    mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
+    mock.onDelete(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(500, {}, jsonHeaders);
 
     const response: Response = await request.delete("/api/tostartdate/OPN2004A");
 
@@ -301,9 +301,9 @@ describe("Deleting Telephone Operations start date from BIMS service", () => {
 
   it("should return a 500 status when there is a network error from the API request", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tostartdate/OPN2004A`)
+      .onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`)
       .reply(200, { tostartdate: "2022-12-31" }, jsonHeaders);
-    mock.onDelete(`${config.BimsApiUrl}/tostartdate/OPN2004A`).networkError();
+    mock.onDelete(`${config.bimsApiUrl}/tostartdate/OPN2004A`).networkError();
 
     const response: Response = await request.delete("/api/tostartdate/OPN2004A");
 
@@ -325,8 +325,8 @@ describe("Sending Totalmobile release date to BIMS service", () => {
   });
 
   it("should return a 500 status direct from the API", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
-    mock.onPost(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(500, {}, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
+    mock.onPost(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(500, {}, jsonHeaders);
 
     const response: Response = await request
       .post("/api/tmreleasedate/LMS2004A")
@@ -336,8 +336,8 @@ describe("Sending Totalmobile release date to BIMS service", () => {
   });
 
   it("should return a 500 status when there is a network error from the API request", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
-    mock.onPost(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
+    mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
+    mock.onPost(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
 
     const response: Response = await request
       .post("/api/tmreleasedate/LMS2004A")
@@ -347,9 +347,9 @@ describe("Sending Totalmobile release date to BIMS service", () => {
   });
 
   it("should sanitise object-like errors when setting a Totalmobile release date fails", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
     mock
-      .onPost(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .onPost(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(() => Promise.reject({ message: "bad\nmessage" }) as never);
 
     const response: Response = await request
@@ -368,12 +368,12 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
   describe("when there is no existing Totalmobile release date", () => {
     beforeEach(() => {
-      mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
+      mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(200, {}, jsonHeaders);
     });
 
     describe("specifying a new Totalmobile release date", () => {
       beforeEach(() => {
-        mock.onPost(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(201, {}, jsonHeaders);
+        mock.onPost(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(201, {}, jsonHeaders);
       });
 
       it("should return a 201 status", async () => {
@@ -413,7 +413,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
   describe("when there is an existing Totalmobile release date", () => {
     beforeEach(() => {
-      mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(
+      mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(
         200,
         {
           tmreleasedate: "2022-06-27T16:29:00+00:00",
@@ -424,7 +424,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
     describe("specifying a new Totalmobile release date", () => {
       beforeEach(() => {
-        mock.onPatch(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(201, {}, jsonHeaders);
+        mock.onPatch(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(201, {}, jsonHeaders);
       });
 
       it("should return a 201 status", async () => {
@@ -450,14 +450,14 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
       it("should audit-log a failure when updating an existing Totalmobile release date fails", async () => {
         mock.resetHandlers();
-        mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(
+        mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(
           200,
           {
             tmreleasedate: "2022-06-27T16:29:00+00:00",
           },
           jsonHeaders,
         );
-        mock.onPatch(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
+        mock.onPatch(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
 
         const response: Response = await request
           .post("/api/tmreleasedate/LMS2004A")
@@ -472,7 +472,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
     describe("deleting a Totalmobile release date", () => {
       beforeEach(() => {
-        mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
+        mock.onDelete(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
       });
 
       it("should return a 204 status", async () => {
@@ -498,14 +498,14 @@ describe("Sending Totalmobile release date to BIMS service", () => {
 
       it("should audit-log a failure when deleting an existing Totalmobile release date fails", async () => {
         mock.resetHandlers();
-        mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(
+        mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(
           200,
           {
             tmreleasedate: "2022-06-27T16:29:00+00:00",
           },
           jsonHeaders,
         );
-        mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
+        mock.onDelete(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
 
         const response: Response = await request
           .post("/api/tmreleasedate/LMS2004A")
@@ -528,7 +528,7 @@ describe("Getting Totalmobile release date from BIMS service", () => {
 
   it("should return a 200 status with a Totalmobile release date response body when a Totalmobile release date is provided", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
 
     const response: Response = await request.get("/api/tmreleasedate/LMS2004A");
@@ -538,7 +538,7 @@ describe("Getting Totalmobile release date from BIMS service", () => {
   });
 
   it("should return a 404 status when BIMS returns no content for the Totalmobile release date", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, undefined, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, undefined, jsonHeaders);
 
     const response: Response = await request.get("/api/tmreleasedate/LMS2004A");
 
@@ -546,7 +546,7 @@ describe("Getting Totalmobile release date from BIMS service", () => {
   });
 
   it("should return a 500 status direct from the API", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(500, {}, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(500, {}, jsonHeaders);
 
     const response: Response = await request.get("/api/tmreleasedate/LMS2004A");
 
@@ -554,7 +554,7 @@ describe("Getting Totalmobile release date from BIMS service", () => {
   });
 
   it("should return a 500 status when there is a network error from the API request", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
+    mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
 
     const response: Response = await request.get("/api/tmreleasedate/LMS2004A");
 
@@ -570,9 +570,9 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
 
   it("should return a 204 status when the Totalmobile release date has been deleted", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
-    mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
+    mock.onDelete(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
 
     const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");
 
@@ -581,9 +581,9 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
 
   it("should log a message the Totalmobile release date has been deleted", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
-    mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
+    mock.onDelete(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, {}, jsonHeaders);
 
     await request.delete("/api/tmreleasedate/LMS2004A");
 
@@ -593,7 +593,7 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
   });
 
   it("should return a 204 status when the Totalmobile release date does not exist", async () => {
-    mock.onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(404, {}, jsonHeaders);
+    mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(404, {}, jsonHeaders);
 
     const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");
 
@@ -602,9 +602,9 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
 
   it("should return a 500 status direct from the API", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
-    mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).reply(500, {}, jsonHeaders);
+    mock.onDelete(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(500, {}, jsonHeaders);
 
     const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");
 
@@ -613,9 +613,9 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
 
   it("should return a 500 status when there is a network error from the API request", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
-    mock.onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
+    mock.onDelete(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).networkError();
 
     const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");
 
@@ -624,10 +624,10 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
 
   it("should sanitise non-error values when deleting a Totalmobile release date fails", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
     mock
-      .onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .onDelete(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(() => Promise.reject("bad\nmessage") as never);
 
     const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");
@@ -644,10 +644,10 @@ describe("Deleting Totalmobile release date to BIMS service", () => {
 
   it("should fall back to stringifying object-like errors with non-string messages", async () => {
     mock
-      .onGet(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(200, { tmreleasedate: "2022-12-31" }, jsonHeaders);
     mock
-      .onDelete(`${config.BimsApiUrl}/tmreleasedate/LMS2004A`)
+      .onDelete(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`)
       .reply(() => Promise.reject({ message: { detail: "bad" } }) as never);
 
     const response: Response = await request.delete("/api/tmreleasedate/LMS2004A");

@@ -7,8 +7,8 @@ const httpLogger = createLogger();
 const app = newServer(config, httpLogger);
 
 app
-  .listen(config.Port, () => {
-    httpLogger.logger.info(`App is listening on port ${config.Port}`);
+  .listen(config.port, () => {
+    httpLogger.logger.info(`App is listening on port ${config.port}`);
   })
   .on("error", (err: Error) => {
     httpLogger.logger.error(err, "Failed to start server");

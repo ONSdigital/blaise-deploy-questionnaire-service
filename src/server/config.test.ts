@@ -34,14 +34,14 @@ describe("Config setup", () => {
   it("should return the correct environment variables", () => {
     const config = getConfigFromEnv();
 
-    expect(config.BlaiseApiUrl).toBe("http://mock-api");
-    expect(config.ProjectId).toBe("a-project-name");
-    expect(config.UrlDomain).toBe("surveys.gcp.onsdigital.uk");
-    expect(config.BucketName).toBe("unique-bucket");
-    expect(config.BimsApiUrl).toBe("bims-mock-api");
-    expect(config.BimsClientId).toBe("mock-client-id");
-    expect(config.BusApiUrl).toBe("bus-mock-api");
-    expect(config.Port).toBe(5000);
+    expect(config.blaiseApiUrl).toBe("http://mock-api");
+    expect(config.projectId).toBe("a-project-name");
+    expect(config.urlDomain).toBe("surveys.gcp.onsdigital.uk");
+    expect(config.bucketName).toBe("unique-bucket");
+    expect(config.bimsApiUrl).toBe("bims-mock-api");
+    expect(config.bimsClientId).toBe("mock-client-id");
+    expect(config.busApiUrl).toBe("bus-mock-api");
+    expect(config.port).toBe(5000);
     expect(config.SessionSecret).toBe("mock-session-secret");
     expect(config.TokenIssuer).toBe("a-project-name");
   });
@@ -51,7 +51,7 @@ describe("Config setup", () => {
 
     const config = getConfigFromEnv();
 
-    expect(config.BlaiseApiUrl).toBe("https://already-qualified-url");
+    expect(config.blaiseApiUrl).toBe("https://already-qualified-url");
   });
 
   it("should use http for localhost BLAISE_API_URL", () => {
@@ -59,7 +59,7 @@ describe("Config setup", () => {
 
     const config = getConfigFromEnv();
 
-    expect(config.BlaiseApiUrl).toBe("http://localhost:8080");
+    expect(config.blaiseApiUrl).toBe("http://localhost:8080");
   });
 
   it("should use http for 127.0.0.1 BLAISE_API_URL", () => {
@@ -67,7 +67,7 @@ describe("Config setup", () => {
 
     const config = getConfigFromEnv();
 
-    expect(config.BlaiseApiUrl).toBe("http://127.0.0.1:8080");
+    expect(config.blaiseApiUrl).toBe("http://127.0.0.1:8080");
   });
 
   it("should throw an error if required variables are not defined", () => {
@@ -91,7 +91,7 @@ describe("Config setup", () => {
 
     const config = getConfigFromEnv();
 
-    expect(config.Port).toBe(5000);
+    expect(config.port).toBe(5000);
   });
 
   it("should hardcode roles and session timeout regardless of environment overrides", () => {

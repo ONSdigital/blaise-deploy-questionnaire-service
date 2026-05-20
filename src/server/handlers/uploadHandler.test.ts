@@ -12,9 +12,9 @@ type RequestWithLog = express.Request & {
 
 type MockStorageManager = {
   bucketName: string;
-  GetSignedUrl: ReturnType<typeof vi.fn>;
-  GetBucketItems: ReturnType<typeof vi.fn>;
-  CheckFile: ReturnType<typeof vi.fn>;
+  getSignedUrl: ReturnType<typeof vi.fn>;
+  getBucketItems: ReturnType<typeof vi.fn>;
+  checkFile: ReturnType<typeof vi.fn>;
 };
 
 function createApp(storageManager: MockStorageManager) {
@@ -55,9 +55,9 @@ describe("UploadHandler", () => {
   function newStorage(): MockStorageManager {
     return {
       bucketName: "test-bucket",
-      GetSignedUrl: vi.fn(),
-      GetBucketItems: vi.fn(),
-      CheckFile: vi.fn(),
+      getSignedUrl: vi.fn(),
+      getBucketItems: vi.fn(),
+      checkFile: vi.fn(),
     };
   }
 
@@ -78,7 +78,7 @@ describe("UploadHandler", () => {
   it("returns 500 when signed URL host is not allowed", async () => {
     const storage = newStorage();
 
-    storage.GetSignedUrl.mockResolvedValue("https://example.com/upload");
+    storage.getSignedUrl.mockResolvedValue("https://example.com/upload");
 
     const response = await supertest(createApp(storage)).get("/upload/init?filename=good.bpkg");
 
@@ -88,7 +88,7 @@ describe("UploadHandler", () => {
   it("returns 500 when signed URL is malformed", async () => {
     const storage = newStorage();
 
-    storage.GetSignedUrl.mockResolvedValue("not-a-valid-url");
+    storage.getSignedUrl.mockResolvedValue("not-a-valid-url");
 
     const response = await supertest(createApp(storage)).get("/upload/init?filename=good.bpkg");
 
@@ -98,7 +98,7 @@ describe("UploadHandler", () => {
   it("returns 500 when signed URL generation throws", async () => {
     const storage = newStorage();
 
-    storage.GetSignedUrl.mockRejectedValue(new Error("signing failed"));
+    storage.getSignedUrl.mockRejectedValue(new Error("signing failed"));
 
     const response = await supertest(createApp(storage)).get("/upload/init?filename=good.bpkg");
 
@@ -108,7 +108,7 @@ describe("UploadHandler", () => {
   it("returns 200 when upload init succeeds", async () => {
     const storage = newStorage();
 
-    storage.GetSignedUrl.mockResolvedValue("https://storage.googleapis.com/upload");
+    storage.getSignedUrl.mockResolvedValue("https://storage.googleapis.com/upload");
 
     const response = await supertest(createApp(storage)).get("/upload/init?filename=good.bpkg");
 
@@ -119,7 +119,7 @@ describe("UploadHandler", () => {
   it("returns 200 for bucket file listing", async () => {
     const storage = newStorage();
 
-    storage.GetBucketItems.mockResolvedValue(["a.bpkg"]);
+    storage.getBucketItems.mockResolvedValue(["a.bpkg"]);
 
     const response = await supertest(createApp(storage)).get("/bucket/files");
 
@@ -130,7 +130,7 @@ describe("UploadHandler", () => {
   it("returns 500 when bucket file listing fails", async () => {
     const storage = newStorage();
 
-    storage.GetBucketItems.mockRejectedValue(new Error("fail"));
+    storage.getBucketItems.mockRejectedValue(new Error("fail"));
 
     const response = await supertest(createApp(storage)).get("/bucket/files");
 
@@ -154,7 +154,7 @@ describe("UploadHandler", () => {
   it("returns 404 when file is not found", async () => {
     const storage = newStorage();
 
-    storage.CheckFile.mockResolvedValue({ found: false });
+    storage.checkFile.mockResolvedValue({ found: false });
 
     const response = await supertest(createApp(storage)).get("/upload/verify?filename=good.bpkg");
 
@@ -164,7 +164,7 @@ describe("UploadHandler", () => {
   it("returns 200 when file is found", async () => {
     const storage = newStorage();
 
-    storage.CheckFile.mockResolvedValue({ found: true, name: "good.bpkg", updated: "today" });
+    storage.checkFile.mockResolvedValue({ found: true, name: "good.bpkg", updated: "today" });
 
     const response = await supertest(createApp(storage)).get("/upload/verify?filename=good.bpkg");
 
@@ -175,7 +175,7 @@ describe("UploadHandler", () => {
   it("returns 500 when verify throws unexpectedly", async () => {
     const storage = newStorage();
 
-    storage.CheckFile.mockRejectedValue(new Error("boom"));
+    storage.checkFile.mockRejectedValue(new Error("boom"));
 
     const response = await supertest(createApp(storage)).get("/upload/verify?filename=good.bpkg");
 

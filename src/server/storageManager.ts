@@ -4,7 +4,7 @@ import { type Config } from "./config.js";
 
 const SIGNED_URL_EXPIRY_MS = 15 * 60 * 1000; // 15 minutes
 
-type file = {
+type CheckedFile = {
   name?: string;
   updated?: string;
   found: boolean;
@@ -16,12 +16,12 @@ export default class StorageManager {
   bucketName: string;
 
   constructor(config: Config) {
-    this.bucketName = config.BucketName;
-    this.storage = new Storage({ projectId: config.ProjectId });
-    this.bucket = this.storage.bucket(config.BucketName);
+    this.bucketName = config.bucketName;
+    this.storage = new Storage({ projectId: config.projectId });
+    this.bucket = this.storage.bucket(config.bucketName);
   }
 
-  async GetSignedUrl(filename: string): Promise<string> {
+  async getSignedUrl(filename: string): Promise<string> {
     const options: GetSignedUrlConfig = {
       version: "v4",
       action: "write",
@@ -38,7 +38,7 @@ export default class StorageManager {
     }
   }
 
-  async GetBucketItems(): Promise<string[]> {
+  async getBucketItems(): Promise<string[]> {
     const fileList: string[] = [];
     let files: File[];
 
@@ -57,7 +57,7 @@ export default class StorageManager {
     return fileList;
   }
 
-  async CheckFile(fileName: string): Promise<file> {
+  async checkFile(fileName: string): Promise<CheckedFile> {
     try {
       const [metadata] = await this.bucket.file(fileName).getMetadata();
 

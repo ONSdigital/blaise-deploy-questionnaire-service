@@ -69,7 +69,7 @@ class UploadHandler {
     }
 
     try {
-      const url = await this.storageManager.GetSignedUrl(filename);
+      const url = await this.storageManager.getSignedUrl(filename);
 
       if (!isAllowedSignedUrlHost(url)) {
         req.log.error({ url }, "Signed URL returned unexpected host");
@@ -93,7 +93,7 @@ class UploadHandler {
   listFiles = async (req: Request, res: Response): Promise<Response> => {
     req.log.info("/bucket/files endpoint called");
     try {
-      const bucketItems = await this.storageManager.GetBucketItems();
+      const bucketItems = await this.storageManager.getBucketItems();
 
       req.log.info(`Obtained list of files in bucket ${this.storageManager.bucketName}`);
 
@@ -120,7 +120,7 @@ class UploadHandler {
     }
 
     try {
-      const file = await this.storageManager.CheckFile(filename);
+      const file = await this.storageManager.checkFile(filename);
 
       if (!file.found) {
         req.log.warn(

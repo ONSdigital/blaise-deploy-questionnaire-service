@@ -20,7 +20,7 @@ import newBusHandler from "./handlers/busHandler.js";
 import { type BusClientLike } from "./handlers/busHandler.js";
 import newClientLogHandler from "./handlers/clientLogHandler.js";
 import newCloudFunctionHandler from "./handlers/cloudFunctionHandler.js";
-import newHealthCheckHandler from "./handlers/healthCheckHandler.js";
+import HealthCheckHandler from "./handlers/healthCheckHandler.js";
 import newUploadHandler from "./handlers/uploadHandler.js";
 import createLogger from "./pinoLogger.js";
 import StorageManager from "./storageManager.js";
@@ -33,28 +33,28 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export function newServer(config: Config, logger: HttpLogger = createLogger()): Express {
-  const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
+  const blaiseApiClient = new BlaiseApiClient(config.blaiseApiUrl);
   const auth = new Auth(config);
 
-  const bimsClient = new BimsClient(config.BimsApiUrl, config.BimsClientId);
+  const bimsClient = new BimsClient(config.bimsApiUrl, config.bimsClientId);
   const BusClientConstructor = BusClient as unknown as new (
     url: string,
     clientId: string,
   ) => BusClientLike;
-  const busApiClient = new BusClientConstructor(config.BusApiUrl, config.BusClientId);
+  const busApiClient = new BusClientConstructor(config.busApiUrl, config.busClientId);
   const storageManager = new StorageManager(config);
-  const auditLogger = new AuditLogger(config.ProjectId);
+  const auditLogger = new AuditLogger(config.projectId);
 
   const loginHandler = newLoginHandler(auth, blaiseApiClient);
   const bimsHandler = newBimsHandler(bimsClient, auth, auditLogger);
-  const blaiseHandler = newBlaiseHandler(blaiseApiClient, config.ServerPark, auth, auditLogger);
+  const blaiseHandler = newBlaiseHandler(blaiseApiClient, config.serverPark, auth, auditLogger);
   const busHandler = newBusHandler(busApiClient, auth);
   const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
   const auditHandler = newAuditHandler(auditLogger);
   const clientLogHandler = newClientLogHandler(auth);
   const createDonorCasesHandler = newCloudFunctionHandler(
     "/api/cloudFunction/createDonorCases",
-    config.CreateDonorCasesCloudFunctionUrl,
+    config.createDonorCasesCloudFunctionUrl,
     auth,
     auditLogger,
     (req: Request, username: string) => {
@@ -70,7 +70,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   );
   const reissueNewDonorCaseHandler = newCloudFunctionHandler(
     "/api/cloudFunction/reissueNewDonorCase",
-    config.ReissueNewDonorCaseCloudFunctionUrl,
+    config.reissueNewDonorCaseCloudFunctionUrl,
     auth,
     auditLogger,
     (req: Request, username: string) => {
@@ -86,14 +86,14 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
   );
   const getUsersByRoleHandler = newCloudFunctionHandler(
     "/api/cloudFunction/getUsersByRole",
-    config.GetUsersByRoleCloudFunctionUrl,
+    config.getUsersByRoleCloudFunctionUrl,
   );
 
   const server = express();
 
   server.use(logger);
 
-  server.use("/", newHealthCheckHandler());
+  server.use("/", HealthCheckHandler());
 
   server.use("/", loginHandler);
   server.use(express.json());
@@ -141,8 +141,8 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
 
   server.get(/.*/, function (req: Request, res: Response) {
     const appConfigJson = JSON.stringify({
-      projectId: config.ProjectId,
-      urlDomain: config.UrlDomain,
+      projectId: config.projectId,
+      urlDomain: config.urlDomain,
     }).replace(/</g, "\\u003c");
 
     res.render("index.html", {

@@ -33,21 +33,21 @@ vi.mock("@google-cloud/storage", () => ({
 }));
 
 const mockConfig: Config = {
-  BucketName: "test-bucket",
-  ProjectId: "test-project",
-  BlaiseApiUrl: "http://blaise",
-  ServerPark: "gusty",
-  BimsApiUrl: "http://bims",
-  BimsClientId: "bims-client",
-  BusApiUrl: "http://bus",
-  BusClientId: "bus-client",
-  CreateDonorCasesCloudFunctionUrl: "http://create",
-  ReissueNewDonorCaseCloudFunctionUrl: "http://reissue",
-  GetUsersByRoleCloudFunctionUrl: "http://users",
+  bucketName: "test-bucket",
+  projectId: "test-project",
+  blaiseApiUrl: "http://blaise",
+  serverPark: "gusty",
+  bimsApiUrl: "http://bims",
+  bimsClientId: "bims-client",
+  busApiUrl: "http://bus",
+  busClientId: "bus-client",
+  createDonorCasesCloudFunctionUrl: "http://create",
+  reissueNewDonorCaseCloudFunctionUrl: "http://reissue",
+  getUsersByRoleCloudFunctionUrl: "http://users",
   SessionTimeout: "12h",
   SessionSecret: "secret",
   Roles: ["DST"],
-  Port: 5000,
+  port: 5000,
 } as unknown as Config;
 
 describe("StorageManager", () => {
@@ -68,11 +68,11 @@ describe("StorageManager", () => {
     });
   });
 
-  describe("GetSignedUrl", () => {
+  describe("getSignedUrl", () => {
     it("returns the signed URL on success", async () => {
       mockGetSignedUrl.mockResolvedValueOnce(["https://signed-url"]);
 
-      const url = await storageManager.GetSignedUrl("file.bpkg");
+      const url = await storageManager.getSignedUrl("file.bpkg");
 
       expect(url).toBe("https://signed-url");
     });
@@ -80,7 +80,7 @@ describe("StorageManager", () => {
     it("calls getSignedUrl with correct options", async () => {
       mockGetSignedUrl.mockResolvedValueOnce(["https://signed-url"]);
 
-      await storageManager.GetSignedUrl("file.bpkg");
+      await storageManager.getSignedUrl("file.bpkg");
 
       expect(mockFile).toHaveBeenCalledWith("file.bpkg");
       const [options] = mockGetSignedUrl.mock.calls[0] as [GetSignedUrlConfig];
@@ -96,17 +96,17 @@ describe("StorageManager", () => {
 
       mockGetSignedUrl.mockRejectedValueOnce(cause);
 
-      await expect(storageManager.GetSignedUrl("file.bpkg")).rejects.toThrow("getSignedUrl Failed");
+      await expect(storageManager.getSignedUrl("file.bpkg")).rejects.toThrow("getSignedUrl Failed");
     });
   });
 
-  describe("GetBucketItems", () => {
+  describe("getBucketItems", () => {
     it("returns only .bpkg file names", async () => {
       mockGetFiles.mockResolvedValueOnce([
         [{ name: "survey.bpkg" }, { name: "readme.txt" }, { name: "data.bpkg" }],
       ]);
 
-      const items = await storageManager.GetBucketItems();
+      const items = await storageManager.getBucketItems();
 
       expect(items).toEqual(["survey.bpkg", "data.bpkg"]);
     });
@@ -114,7 +114,7 @@ describe("StorageManager", () => {
     it("returns empty array when bucket is empty", async () => {
       mockGetFiles.mockResolvedValueOnce([[]]);
 
-      const items = await storageManager.GetBucketItems();
+      const items = await storageManager.getBucketItems();
 
       expect(items).toEqual([]);
     });
@@ -122,7 +122,7 @@ describe("StorageManager", () => {
     it("returns empty array when no .bpkg files exist", async () => {
       mockGetFiles.mockResolvedValueOnce([[{ name: "notes.txt" }]]);
 
-      const items = await storageManager.GetBucketItems();
+      const items = await storageManager.getBucketItems();
 
       expect(items).toEqual([]);
     });
@@ -132,17 +132,17 @@ describe("StorageManager", () => {
 
       mockGetFiles.mockRejectedValueOnce(cause);
 
-      await expect(storageManager.GetBucketItems()).rejects.toThrow("getBucketItems Failed");
+      await expect(storageManager.getBucketItems()).rejects.toThrow("getBucketItems Failed");
     });
   });
 
-  describe("CheckFile", () => {
+  describe("checkFile", () => {
     it("returns file metadata when file exists", async () => {
       mockGetMetadata.mockResolvedValueOnce([
         { name: "survey.bpkg", updated: "2024-01-01T00:00:00Z" },
       ]);
 
-      const result = await storageManager.CheckFile("survey.bpkg");
+      const result = await storageManager.checkFile("survey.bpkg");
 
       expect(result).toEqual({ name: "survey.bpkg", updated: "2024-01-01T00:00:00Z", found: true });
     });
@@ -150,7 +150,7 @@ describe("StorageManager", () => {
     it("returns found: false when file does not exist (404)", async () => {
       mockGetMetadata.mockRejectedValueOnce({ code: 404 });
 
-      const result = await storageManager.CheckFile("missing.bpkg");
+      const result = await storageManager.checkFile("missing.bpkg");
 
       expect(result).toEqual({ found: false });
     });
@@ -158,25 +158,25 @@ describe("StorageManager", () => {
     it("throws a wrapped error for non-404 errors", async () => {
       mockGetMetadata.mockRejectedValueOnce(new Error("permission denied"));
 
-      await expect(storageManager.CheckFile("survey.bpkg")).rejects.toThrow("checkFile Failed");
+      await expect(storageManager.checkFile("survey.bpkg")).rejects.toThrow("checkFile Failed");
     });
 
     it("throws a wrapped error when error is not an object", async () => {
       mockGetMetadata.mockRejectedValueOnce("string error");
 
-      await expect(storageManager.CheckFile("survey.bpkg")).rejects.toThrow("checkFile Failed");
+      await expect(storageManager.checkFile("survey.bpkg")).rejects.toThrow("checkFile Failed");
     });
 
     it("throws a wrapped error when error object has no code property", async () => {
       mockGetMetadata.mockRejectedValueOnce({ message: "unknown" });
 
-      await expect(storageManager.CheckFile("survey.bpkg")).rejects.toThrow("checkFile Failed");
+      await expect(storageManager.checkFile("survey.bpkg")).rejects.toThrow("checkFile Failed");
     });
 
     it("throws a wrapped error when error code is not 404", async () => {
       mockGetMetadata.mockRejectedValueOnce({ code: 500 });
 
-      await expect(storageManager.CheckFile("survey.bpkg")).rejects.toThrow("checkFile Failed");
+      await expect(storageManager.checkFile("survey.bpkg")).rejects.toThrow("checkFile Failed");
     });
   });
 });

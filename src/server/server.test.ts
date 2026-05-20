@@ -231,7 +231,7 @@ describe("Client route rendering and global error handler", () => {
   it("renders runtime config as safely escaped json in the html", async () => {
     const app = newServer({
       ...config,
-      UrlDomain: 'surveys.test</script><script>alert("xss")</script>',
+      urlDomain: 'surveys.test</script><script>alert("xss")</script>',
     });
 
     app.set("views", path.resolve(process.cwd()));
