@@ -5,13 +5,29 @@ import { sendClientLog } from "./clientLog";
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 
+function setAuthCookie(): void {
+  document.cookie = "blaise-user-test-project=test-token; path=/";
+}
+
+function clearAuthCookie(): void {
+  document.cookie = "blaise-user-test-project=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+}
+
 describe("sendClientLog", () => {
   afterEach(() => {
     mock.reset();
     vi.unstubAllGlobals();
+    clearAuthCookie();
+  });
+
+  it("skips sending logs when no auth token exists", async () => {
+    await sendClientLog("info", "hello");
+
+    expect(mock.history.post.length).toEqual(0);
   });
 
   it("posts a payload to /api/client-log", async () => {
+    setAuthCookie();
     mock.onPost("/api/client-log").reply(204);
 
     await sendClientLog("info", "hello", { a: 1 });
@@ -26,6 +42,7 @@ describe("sendClientLog", () => {
   });
 
   it("handles empty args and stringification edge cases", async () => {
+    setAuthCookie();
     mock.onPost("/api/client-log").reply(204);
 
     await sendClientLog("info");
@@ -50,6 +67,7 @@ describe("sendClientLog", () => {
   });
 
   it("falls back for circular values and captures stack information from later error args", async () => {
+    setAuthCookie();
     mock.onPost("/api/client-log").reply(204);
 
     const circular: { self?: unknown } = {};
@@ -68,6 +86,7 @@ describe("sendClientLog", () => {
   });
 
   it("falls back to a generic error message and omits browser-only fields when globals are unavailable", async () => {
+    setAuthCookie();
     mock.onPost("/api/client-log").reply(204);
 
     vi.stubGlobal("window", undefined);

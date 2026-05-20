@@ -1,6 +1,8 @@
 import { waitFor } from "@testing-library/react";
 import React from "react";
 
+import { ensureProcessShim } from "./processShim";
+
 const mocks = vi.hoisted(() => {
   const render = vi.fn();
   const createRoot = vi.fn(() => ({ render }));
@@ -85,42 +87,6 @@ describe("client bootstrap", () => {
     expect(mocks.createRoot).not.toHaveBeenCalled();
   }, 15000);
 
-  it("shims process when it is missing", async () => {
-    document.body.innerHTML = '<div id="root"></div>';
-
-    vi.doMock("./app", () => ({
-      default: () => <div>Loaded app</div>,
-    }));
-
-    Reflect.deleteProperty(globalThis, "process");
-
-    await import("./index");
-
-    await waitFor(() => {
-      expect(mocks.render).toHaveBeenCalledTimes(1);
-    });
-
-    expect("process" in globalThis).toBe(true);
-    expect(
-      (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env?.NODE_ENV,
-    ).toBeDefined();
-
-    const nextTickCallback = vi.fn();
-
-    await new Promise<void>((resolve) => {
-      (
-        globalThis as {
-          process?: { nextTick?: (callback: () => void) => void };
-        }
-      ).process?.nextTick?.(() => {
-        nextTickCallback();
-        resolve();
-      });
-    });
-
-    expect(nextTickCallback).toHaveBeenCalledTimes(1);
-  }, 15000);
-
   it("shows a bootstrap error when loading the app fails", async () => {
     document.body.innerHTML = '<div id="root"></div>';
 
@@ -138,4 +104,48 @@ describe("client bootstrap", () => {
 
     expect(rootElement?.textContent).toContain("App failed to load");
   }, 15000);
+
+  it("shims a missing process on a target object", async () => {
+    const target: {
+      process?: { env?: { NODE_ENV?: string }; nextTick?: (callback: () => void) => void };
+    } = {};
+
+    ensureProcessShim(target);
+
+    expect(target.process?.env?.NODE_ENV).toBeDefined();
+
+    const nextTickCallback = vi.fn();
+
+    await new Promise<void>((resolve) => {
+      target.process?.nextTick?.(() => {
+        nextTickCallback();
+        resolve();
+      });
+    });
+
+    expect(nextTickCallback).toHaveBeenCalledTimes(1);
+  });
+
+  it("shims an unusable process on a target object", async () => {
+    const target: {
+      process?: { env?: { NODE_ENV?: string }; nextTick?: (callback: () => void) => void };
+    } = {
+      process: undefined,
+    };
+
+    ensureProcessShim(target);
+
+    expect(target.process?.env?.NODE_ENV).toBeDefined();
+
+    const nextTickCallback = vi.fn();
+
+    await new Promise<void>((resolve) => {
+      target.process?.nextTick?.(() => {
+        nextTickCallback();
+        resolve();
+      });
+    });
+
+    expect(nextTickCallback).toHaveBeenCalledTimes(1);
+  });
 });

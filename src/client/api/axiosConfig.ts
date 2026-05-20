@@ -1,9 +1,57 @@
-import { type AxiosRequestConfig } from "axios";
+import axios, { type AxiosRequestConfig } from "axios";
 import { AuthManager } from "blaise-login-react-client";
 
 import { getSharedAuthOptions } from "../utils/auth";
 
+export const AUTH_EXPIRED_EVENT_NAME = "dqs-auth-expired";
+
 const authManager = new AuthManager(getSharedAuthOptions());
+let authExpiryInterceptorRegistered = false;
+
+function getResponseStatus(error: unknown): number | undefined {
+  if (typeof error !== "object" || error == null || !("response" in error)) {
+    return undefined;
+  }
+
+  const response = (error as { response?: { status?: unknown } }).response;
+
+  return typeof response?.status === "number" ? response.status : undefined;
+}
+
+function notifyAuthExpired(): void {
+  authManager.clearToken();
+
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT_NAME));
+  }
+}
+
+function ensureAuthExpiryInterceptor(): void {
+  if (authExpiryInterceptorRegistered) {
+    return;
+  }
+
+  axios.interceptors.response.use(
+    (response) => response,
+    async (error: unknown) => {
+      const status = getResponseStatus(error);
+
+      if ((status === 401 || status === 403) && authManager.getToken() != null) {
+        notifyAuthExpired();
+      }
+
+      throw error;
+    },
+  );
+
+  authExpiryInterceptorRegistered = true;
+}
+
+ensureAuthExpiryInterceptor();
+
+export function hasAuthToken(): boolean {
+  return authManager.getToken() != null;
+}
 
 export default function axiosConfig(): AxiosRequestConfig {
   return {

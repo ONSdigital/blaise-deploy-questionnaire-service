@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import axiosConfig from "../api/axiosConfig";
+import axiosConfig, { hasAuthToken } from "../api/axiosConfig";
 
 export type ClientLogLevel = "log" | "info" | "warn" | "error" | "debug";
 
@@ -32,6 +32,10 @@ function safeStringify(value: unknown): string {
 }
 
 export async function sendClientLog(level: ClientLogLevel, ...args: unknown[]): Promise<void> {
+  if (!hasAuthToken()) {
+    return;
+  }
+
   const message = args.length > 0 ? safeStringify(args[0]) : "";
   const payload: ClientLogPayload = {
     level,

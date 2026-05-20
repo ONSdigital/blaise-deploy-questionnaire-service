@@ -22,6 +22,7 @@ import {
 } from "react";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
+import { AUTH_EXPIRED_EVENT_NAME } from "./api/axiosConfig";
 import QuestionnairesPage from "./pages/questionnairesPage/questionnairesPage";
 import { getSharedAuthOptions } from "./utils/auth";
 import { isProduction } from "./utils/env";
@@ -198,10 +199,18 @@ function App(): ReactElement {
   const [authState, setAuthState] = useState<"checking" | "unauthenticated" | "authenticated">(
     "checking",
   );
+  const [errored, setErrored] = useState(false);
 
   const handleSetLoggedIn = useCallback((loggedIn: boolean) => {
     setAuthState(loggedIn ? "authenticated" : "unauthenticated");
   }, []);
+
+  const handleSessionExpired = useCallback(() => {
+    authClient.logOut();
+    queryClient.clear();
+    setErrored(false);
+    handleSetLoggedIn(false);
+  }, [authClient, handleSetLoggedIn, queryClient]);
 
   const handleAuthenticated = useCallback(
     async (token: string) => {
@@ -210,23 +219,38 @@ function App(): ReactElement {
       try {
         handleSetLoggedIn(await authClient.loggedIn());
       } catch {
-        authClient.clearToken();
-        handleSetLoggedIn(false);
+        handleSessionExpired();
       }
     },
-    [authClient, handleSetLoggedIn],
+    [authClient, handleSessionExpired, handleSetLoggedIn],
   );
 
   const handleLogOut = useCallback(() => {
-    authClient.logOut();
-    handleSetLoggedIn(false);
-  }, [authClient, handleSetLoggedIn]);
+    handleSessionExpired();
+  }, [handleSessionExpired]);
 
   useEffect(() => {
+    if (authClient.getToken() == null) {
+      handleSetLoggedIn(false);
+
+      return;
+    }
+
     void authClient.loggedIn().then(handleSetLoggedIn).catch(() => handleSetLoggedIn(false));
   }, [authClient, handleSetLoggedIn]);
 
-  const [errored, setErrored] = useState(false);
+  useEffect(() => {
+    const onAuthExpired = () => {
+      handleSessionExpired();
+    };
+
+    window.addEventListener(AUTH_EXPIRED_EVENT_NAME, onAuthExpired);
+
+    return () => {
+      window.removeEventListener(AUTH_EXPIRED_EVENT_NAME, onAuthExpired);
+    };
+  }, [handleSessionExpired]);
+
   const deletedQuestionnaireName =
     location.pathname === "/" &&
     typeof (location.state as { deletedQuestionnaireName?: unknown } | null)

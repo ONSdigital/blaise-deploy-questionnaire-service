@@ -23,7 +23,7 @@ function createApp(busClient: BusClientLike) {
   });
 
   const auth = {
-    Middleware: (_req: express.Request, _res: express.Response, next: express.NextFunction) =>
+    middleware: (_req: express.Request, _res: express.Response, next: express.NextFunction) =>
       next(),
   } as unknown as Parameters<typeof newBusHandler>[1];
 

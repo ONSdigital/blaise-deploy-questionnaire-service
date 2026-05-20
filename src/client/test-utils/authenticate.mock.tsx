@@ -23,18 +23,25 @@ type AuthManagerOptions = {
   cookieDomain?: string;
 };
 
+const mockToken = "example-token";
+
 class MockAuthManager {
   public constructor(_options?: AuthManagerOptions) {}
 
-  public getToken = (): string | null => null;
+  public getToken = (): string | null => (mockAuthenticateState.loggedIn ? mockToken : null);
 
-  public setToken = (_token: string | null): void => undefined;
+  public setToken = (token: string | null): void => {
+    mockAuthenticateState.loggedIn = token != null;
+  };
 
-  public clearToken = (): void => undefined;
+  public clearToken = (): void => {
+    mockAuthenticateState.loggedIn = false;
+  };
 
   public loggedIn = async (): Promise<boolean> => true;
 
-  public authHeader = (): Record<string, string> => ({});
+  public authHeader = (): Record<string, string> =>
+    mockAuthenticateState.loggedIn ? { authorization: mockToken } : {};
 
   public cookieSettings = (): Record<string, string> => ({ path: "/" });
 }
@@ -46,17 +53,22 @@ class MockAuthClientClass {
 
   public loggedIn = async (): Promise<boolean> => mockAuthenticateState.loggedIn;
 
-  public setToken = (_token: string | null): void => undefined;
+  public setToken = (token: string | null): void => {
+    mockAuthenticateState.loggedIn = token != null;
+  };
 
-  public clearToken = (): void => undefined;
+  public clearToken = (): void => {
+    mockAuthenticateState.loggedIn = false;
+  };
 
   public logOut = (): void => {
     mockAuthenticateState.loggedIn = false;
   };
 
-  public authHeader = (): Record<string, string> => ({});
+  public authHeader = (): Record<string, string> =>
+    mockAuthenticateState.loggedIn ? { authorization: mockToken } : {};
 
-  public getToken = (): string | null => null;
+  public getToken = (): string | null => (mockAuthenticateState.loggedIn ? mockToken : null);
 }
 
 const defaultUser: User = {

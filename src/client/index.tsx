@@ -3,39 +3,17 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
+import { ensureProcessShim } from "./processShim";
 import { clientLogger } from "./utils/logger";
 import { queryClient } from "./utils/queryClient";
 
 const rootElement = document.getElementById("root");
 
-function getShimmedNodeEnv(): string {
-  try {
-    return import.meta.env.MODE;
-  } catch {
-    return "test";
-  }
-}
-
 if (!rootElement) {
   throw new Error("Root element not found");
 }
 
-if (!("process" in globalThis)) {
-  const shimmedProcess = {
-    env: {
-      NODE_ENV: getShimmedNodeEnv(),
-    },
-    nextTick: (callback: (...args: unknown[]) => void, ...args: unknown[]) => {
-      queueMicrotask(() => callback(...args));
-    },
-  };
-
-  Object.defineProperty(globalThis, "process", {
-    configurable: true,
-    writable: true,
-    value: shimmedProcess,
-  });
-}
+ensureProcessShim(globalThis);
 
 const appRootElement = rootElement;
 

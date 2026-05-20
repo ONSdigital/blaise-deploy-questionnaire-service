@@ -1,6 +1,8 @@
-const { authHeader, authManagerOptions } = vi.hoisted(() => ({
+const { authHeader, authManagerOptions, clearToken, getToken } = vi.hoisted(() => ({
   authHeader: vi.fn(),
   authManagerOptions: vi.fn(),
+  clearToken: vi.fn(),
+  getToken: vi.fn(),
 }));
 
 vi.mock("blaise-login-react-client", () => ({
@@ -10,6 +12,8 @@ vi.mock("blaise-login-react-client", () => ({
     }
 
     authHeader = authHeader;
+    clearToken = clearToken;
+    getToken = getToken;
   },
   createSessionKey: (environmentKey: string) => `blaise-user-${environmentKey}`,
 }));
@@ -17,6 +21,20 @@ vi.mock("blaise-login-react-client", () => ({
 describe("axiosConfig", () => {
   afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  it("reports whether an auth token exists", async () => {
+    vi.resetModules();
+    getToken.mockReturnValue("test-token");
+    const { hasAuthToken } = await import("./axiosConfig");
+
+    expect(hasAuthToken()).toBe(true);
+
+    vi.resetModules();
+    getToken.mockReturnValue(null);
+    const { hasAuthToken: hasNoAuthToken } = await import("./axiosConfig");
+
+    expect(hasNoAuthToken()).toBe(false);
   });
 
   it("returns JSON headers merged with auth headers", async () => {
