@@ -1,5 +1,4 @@
-import { StyledFormField } from "blaise-design-system-react-components";
-import { useFormikContext } from "formik";
+import { Field, useFormikContext } from "formik";
 import { type ReactElement } from "react";
 
 interface DateFormProps {
@@ -13,50 +12,63 @@ type DateFormValues = {
   [key: string]: string | undefined;
 };
 
+export function createValidateRadio(
+  values: DateFormValues,
+  dateFieldName: string,
+  fullDateLabel: string,
+) {
+  return (value: string): string | undefined => {
+    if (!value) {
+      return "Select an option";
+    }
+
+    if (values.askDate === "yes" && !values[dateFieldName]) {
+      return `Enter a ${fullDateLabel}`;
+    }
+
+    return undefined;
+  };
+}
+
 export function SetDate({
   dateFieldName,
   fullDateLabel,
   shortDateLabel,
 }: DateFormProps): ReactElement {
   const { values } = useFormikContext<DateFormValues>();
+  const validateRadio = createValidateRadio(values, dateFieldName, fullDateLabel);
 
-  function validateRadio(value: string) {
-    let error;
-
-    if (!value) {
-      error = "Select an option";
-    } else if (values.askDate === "yes" && !values[dateFieldName]) {
-      error = `Enter a ${fullDateLabel}`;
-    }
-
-    return error;
-  }
-
-  const field = {
-    name: "askDate",
-    type: "radio",
-    autoFocus: true,
-    validate: validateRadio,
-    radioOptions: [
-      {
-        id: "no",
-        label: `No ${shortDateLabel}`,
-        value: "no",
-      },
-      {
-        id: "yes",
-        label: `Yes, let me specify a ${shortDateLabel}`,
-        value: "yes",
-        specifyOption: {
-          type: "date",
-          id: "set-date",
-          name: dateFieldName,
-          description: "Please specify date",
-        },
-      },
-    ],
-    props: {},
-  };
-
-  return <StyledFormField {...field} />;
+  return (
+    <div>
+      <div>
+        <Field
+          type="radio"
+          id="no"
+          name="askDate"
+          value="no"
+          validate={validateRadio}
+        />
+        <label htmlFor="no">No {shortDateLabel}</label>
+      </div>
+      <div>
+        <Field
+          type="radio"
+          id="yes"
+          name="askDate"
+          value="yes"
+        />
+        <label htmlFor="yes">Yes, let me specify a {shortDateLabel}</label>
+        {values.askDate === "yes" && (
+          <div>
+            <label htmlFor="set-date">Please specify date</label>
+            <Field
+              type="date"
+              id="set-date"
+              name={dateFieldName}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

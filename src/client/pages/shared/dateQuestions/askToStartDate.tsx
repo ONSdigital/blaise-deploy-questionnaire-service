@@ -1,4 +1,3 @@
-import { StyledFormErrorSummary } from "blaise-design-system-react-components";
 import { type ReactElement } from "react";
 
 import { SetDate } from "./setDate";
@@ -22,8 +21,6 @@ export function AskToStartDate({ questionnaireName }: SelectFilePageProps): Reac
             Telephone Operators for interviewing. If it is not set, TOBI will use survey days to
             determine when to make it available.
           </p>
-
-          <StyledFormErrorSummary />
 
           <SetDate
             dateFieldName="toStartDate"

@@ -1,4 +1,4 @@
-import { Panel, StyledFormErrorSummary, Upload } from "blaise-design-system-react-components";
+import { Panel, Upload } from "blaise-design-system-react-components";
 import { type FormikContextType, useFormikContext } from "formik";
 import { type ReactElement, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -79,10 +79,6 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
             to the next page when there is an update.
           </p>
         </Panel>
-      </div>
-
-      <div className="ons-u-mb-m">
-        <StyledFormErrorSummary />
       </div>
 
       <div className="ons-grid ons-u-mt-m">

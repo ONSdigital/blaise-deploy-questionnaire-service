@@ -1,4 +1,3 @@
-import { StyledFormErrorSummary } from "blaise-design-system-react-components";
 import { type ReactElement } from "react";
 
 import { SetDate } from "./setDate";
@@ -21,8 +20,6 @@ export function AskTmReleaseDate({ questionnaireName }: SelectFilePageProps): Re
             This determines when selected cases are sent to Totalmobile for field allocation. If you
             do not select a date, no cases will be sent to Totalmobile.
           </p>
-
-          <StyledFormErrorSummary />
 
           <SetDate
             dateFieldName="tmReleaseDate"

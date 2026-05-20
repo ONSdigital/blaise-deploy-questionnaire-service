@@ -377,7 +377,7 @@ exports[`DeleteConfirmation > when CATI mode is present > should display the loa
           class="ons-panel__body "
         >
           <div
-            class="ons-panel__body ons-u-pt-xs ons-u-pb-xs"
+            class="ons-u-pt-xs ons-u-pb-xs"
             style="display: flex; align-items: center;"
           >
             <div
@@ -640,7 +640,7 @@ exports[`DeleteConfirmation > when CATI mode is present > should display the loa
         class="ons-panel__body "
       >
         <div
-          class="ons-panel__body ons-u-pt-xs ons-u-pb-xs"
+          class="ons-u-pt-xs ons-u-pb-xs"
           style="display: flex; align-items: center;"
         >
           <div

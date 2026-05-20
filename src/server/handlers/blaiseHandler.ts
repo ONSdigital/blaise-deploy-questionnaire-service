@@ -1,8 +1,4 @@
-import {
-  type BlaiseApiClient,
-  type InstallQuestionnaire,
-  type Questionnaire,
-} from "blaise-api-node-client";
+import { type BlaiseApiClient, type InstallQuestionnaire } from "blaise-api-node-client";
 import { type Auth } from "blaise-login-react-server";
 import express, { type Request, type Response, type Router } from "express";
 
@@ -316,20 +312,23 @@ class BlaiseHandler {
 
   getQuestionnaires = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const questionnaires: Questionnaire[] = await this.blaiseApiClient.getQuestionnaires(
-        this.serverPark,
-      );
+      const rawQuestionnaires = await this.blaiseApiClient.getQuestionnaires(this.serverPark);
 
-      questionnaires.forEach((questionnaire: Questionnaire) => {
-        if (questionnaire.status === "Erroneous") {
+      const questionnaires = rawQuestionnaires.map((questionnaire) => {
+        const isErroneous = questionnaire.status === "Erroneous";
+
+        if (isErroneous) {
           req.log.warn(
             { questionnaireName: questionnaire.name },
             "Questionnaire returned erroneous status from Blaise",
           );
-          questionnaire.status = "Failed";
         }
 
-        questionnaire.fieldPeriod = fieldPeriodToText(questionnaire.name);
+        return {
+          ...questionnaire,
+          status: isErroneous ? "Failed" : questionnaire.status,
+          fieldPeriod: fieldPeriodToText(questionnaire.name),
+        };
       });
 
       req.log.info(
@@ -451,7 +450,7 @@ class BlaiseHandler {
     const safeQuestionnaireName = sanitise(questionnaireName);
 
     try {
-      const surveyDays: string[] = await this.blaiseApiClient.getSurveyDays(
+      const surveyDays: readonly string[] = await this.blaiseApiClient.getSurveyDays(
         this.serverPark,
         questionnaireName,
       );

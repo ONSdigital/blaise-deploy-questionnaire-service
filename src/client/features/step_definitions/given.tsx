@@ -117,7 +117,7 @@ export function givenQuestionnaireHasCases(
 
     for (const questionnaire of questionnaireList) {
       if (questionnaire.name === questionnaireName) {
-        questionnaire.dataRecordCount = caseCount;
+        Object.assign(questionnaire, { dataRecordCount: caseCount });
         mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(200, questionnaire);
         mocker.onGet(`/api/uacs/instrument/${questionnaireName}/count`).reply(200, {
           count: Math.max(caseCount, 0),
@@ -140,7 +140,7 @@ export function givenQuestionnaireIsInFailedState(
   given(/'(.*)' is in a failed state/, (questionnaireName: string) => {
     for (const questionnaire of questionnaireList) {
       if (questionnaire.name === questionnaireName) {
-        questionnaire.status = "Failed";
+        Object.assign(questionnaire, { status: "Failed" });
       }
     }
   });
@@ -247,8 +247,7 @@ export function givenQuestionnaireIsLive(
   given(/'(.*)' is live/, (questionnaireName: string) => {
     for (const questionnaire of questionnaireList) {
       if (questionnaire.name === questionnaireName) {
-        questionnaire.hasData = true;
-        questionnaire.active = true;
+        Object.assign(questionnaire, { hasData: true, active: true });
 
         mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(200, questionnaire);
       }
@@ -264,7 +263,7 @@ export function givenQuestionnaireIsActive(
   given(/'(.*)' is active/, (questionnaireName: string) => {
     for (const questionnaire of questionnaireList) {
       if (questionnaire.name === questionnaireName) {
-        questionnaire.status = "active";
+        Object.assign(questionnaire, { status: "active" });
 
         mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(200, questionnaire);
       }
@@ -280,7 +279,7 @@ export function givenQuestionnaireIsInactive(
   given(/'(.*)' is inactive/, (questionnaireName: string) => {
     for (const questionnaire of questionnaireList) {
       if (questionnaire.name === questionnaireName) {
-        questionnaire.status = "inactive";
+        Object.assign(questionnaire, { status: "inactive" });
 
         mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(200, questionnaire);
       }

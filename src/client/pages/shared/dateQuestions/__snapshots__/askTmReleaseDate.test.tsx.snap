@@ -26,96 +26,35 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
           <p>
             This determines when selected cases are sent to Totalmobile for field allocation. If you do not select a date, no cases will be sent to Totalmobile.
           </p>
-          <div
-            class="ons-field ons-u-mb-m"
-            id="radio-_r_2_"
-          >
-            <fieldset
-              class="ons-fieldset"
-            >
-              <legend
-                class="ons-fieldset__legend ons-u-fs-r--b"
+          <div>
+            <div>
+              <input
+                id="no"
+                name="askDate"
+                type="radio"
+                value="no"
               />
-              <div
-                class="ons-grid"
+              <label
+                for="no"
               >
-                <div
-                  class="ons-grid__col ons-col-8@m ons-col-6@l"
-                >
-                  <div
-                    class="ons-input-items"
-                  >
-                    <div
-                      class="ons-radios__items"
-                    >
-                      <span
-                        class="ons-radios__item"
-                      >
-                        <span
-                          class="ons-radio"
-                        >
-                          <input
-                            class="ons-radio__input"
-                            id="no"
-                            name="askDate"
-                            props="[object Object]"
-                            type="radio"
-                            value="no"
-                          />
-                          <label
-                            class="ons-radio__label "
-                            for="no"
-                          >
-                            No release date
-                          </label>
-                        </span>
-                      </span>
-                      <br />
-                      <span
-                        class="ons-radios__item"
-                      >
-                        <span
-                          class="ons-radio"
-                        >
-                          <input
-                            class="ons-radio__input"
-                            id="yes"
-                            name="askDate"
-                            props="[object Object]"
-                            type="radio"
-                            value="yes"
-                          />
-                          <label
-                            class="ons-radio__label "
-                            for="yes"
-                          >
-                            Yes, let me specify a release date
-                          </label>
-                          <span
-                            class="ons-radio__other ons-radio__other--open"
-                            id="yes-other-wrap"
-                          >
-                            <label
-                              class="ons-label ons-u-fs-s--b"
-                              for="set-date"
-                            >
-                              Please specify date
-                            </label>
-                            <input
-                              class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                              id="set-date"
-                              name="tmReleaseDate"
-                              type="date"
-                            />
-                          </span>
-                        </span>
-                      </span>
-                      <br />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
+                No 
+                release date
+              </label>
+            </div>
+            <div>
+              <input
+                id="yes"
+                name="askDate"
+                type="radio"
+                value="yes"
+              />
+              <label
+                for="yes"
+              >
+                Yes, let me specify a 
+                release date
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -143,96 +82,35 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
         <p>
           This determines when selected cases are sent to Totalmobile for field allocation. If you do not select a date, no cases will be sent to Totalmobile.
         </p>
-        <div
-          class="ons-field ons-u-mb-m"
-          id="radio-_r_2_"
-        >
-          <fieldset
-            class="ons-fieldset"
-          >
-            <legend
-              class="ons-fieldset__legend ons-u-fs-r--b"
+        <div>
+          <div>
+            <input
+              id="no"
+              name="askDate"
+              type="radio"
+              value="no"
             />
-            <div
-              class="ons-grid"
+            <label
+              for="no"
             >
-              <div
-                class="ons-grid__col ons-col-8@m ons-col-6@l"
-              >
-                <div
-                  class="ons-input-items"
-                >
-                  <div
-                    class="ons-radios__items"
-                  >
-                    <span
-                      class="ons-radios__item"
-                    >
-                      <span
-                        class="ons-radio"
-                      >
-                        <input
-                          class="ons-radio__input"
-                          id="no"
-                          name="askDate"
-                          props="[object Object]"
-                          type="radio"
-                          value="no"
-                        />
-                        <label
-                          class="ons-radio__label "
-                          for="no"
-                        >
-                          No release date
-                        </label>
-                      </span>
-                    </span>
-                    <br />
-                    <span
-                      class="ons-radios__item"
-                    >
-                      <span
-                        class="ons-radio"
-                      >
-                        <input
-                          class="ons-radio__input"
-                          id="yes"
-                          name="askDate"
-                          props="[object Object]"
-                          type="radio"
-                          value="yes"
-                        />
-                        <label
-                          class="ons-radio__label "
-                          for="yes"
-                        >
-                          Yes, let me specify a release date
-                        </label>
-                        <span
-                          class="ons-radio__other ons-radio__other--open"
-                          id="yes-other-wrap"
-                        >
-                          <label
-                            class="ons-label ons-u-fs-s--b"
-                            for="set-date"
-                          >
-                            Please specify date
-                          </label>
-                          <input
-                            class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                            id="set-date"
-                            name="tmReleaseDate"
-                            type="date"
-                          />
-                        </span>
-                      </span>
-                    </span>
-                    <br />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </fieldset>
+              No 
+              release date
+            </label>
+          </div>
+          <div>
+            <input
+              id="yes"
+              name="askDate"
+              type="radio"
+              value="yes"
+            />
+            <label
+              for="yes"
+            >
+              Yes, let me specify a 
+              release date
+            </label>
+          </div>
         </div>
       </div>
     </div>
