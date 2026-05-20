@@ -41,7 +41,7 @@ function clamp(value: string, maxLen: number): string {
 export default function newClientLogHandler(auth: Auth): Router {
   const router = express.Router();
 
-  router.post("/api/client-log", auth.Middleware, (req: Request, res: Response) => {
+  router.post("/api/client-log", auth.middleware, (req: Request, res: Response) => {
     const body: Partial<ClientLogPayload> = req.body || {};
 
     if (typeof body.level !== "string") {

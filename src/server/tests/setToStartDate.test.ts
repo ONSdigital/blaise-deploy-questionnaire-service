@@ -57,9 +57,9 @@ vi.mock("blaise-api-node-client", () => ({
 import { getConfigFromEnv } from "../config.js";
 import { newServer } from "../server.js";
 
-Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
-Auth.prototype.GetUser = vi.fn().mockReturnValue({ name: "rich" });
-Auth.prototype.GetToken = vi.fn().mockReturnValue("example-token");
+Auth.prototype.validateToken = vi.fn().mockReturnValue(true);
+Auth.prototype.getUser = vi.fn().mockReturnValue({ name: "rich" });
+Auth.prototype.getToken = vi.fn().mockReturnValue("example-token");
 
 vi.mock("blaise-iap-node-provider", () => ({
   IapProvider: class MockIapProvider {

@@ -5,6 +5,7 @@ const ALLOWED_ROLES = ["DST", "BDSS", "Researcher", "IPS Researcher", "IPS Suppo
 
 export interface Config extends AuthConfig {
   Port: number;
+  BlaiseApiUrl: string;
   ProjectId: string;
   UrlDomain: string;
   BucketName: string;

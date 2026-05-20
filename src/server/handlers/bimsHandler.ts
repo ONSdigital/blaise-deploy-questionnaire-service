@@ -16,27 +16,27 @@ export default function newBimsHandler(
 
   const bimsHandler = new BimsHandler(bimsClient, auditLogger, auth);
 
-  router.post("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.setToStartDate);
+  router.post("/api/tostartdate/:questionnaireName", auth.middleware, bimsHandler.setToStartDate);
   router.delete(
     "/api/tostartdate/:questionnaireName",
-    auth.Middleware,
+    auth.middleware,
     bimsHandler.deleteToStartDate,
   );
-  router.get("/api/tostartdate/:questionnaireName", auth.Middleware, bimsHandler.getToStartDate);
+  router.get("/api/tostartdate/:questionnaireName", auth.middleware, bimsHandler.getToStartDate);
 
   router.post(
     "/api/tmreleasedate/:questionnaireName",
-    auth.Middleware,
+    auth.middleware,
     bimsHandler.setTmReleaseDate,
   );
   router.delete(
     "/api/tmreleasedate/:questionnaireName",
-    auth.Middleware,
+    auth.middleware,
     bimsHandler.deleteTmReleaseDate,
   );
   router.get(
     "/api/tmreleasedate/:questionnaireName",
-    auth.Middleware,
+    auth.middleware,
     bimsHandler.getTmReleaseDate,
   );
 
@@ -58,7 +58,7 @@ class BimsHandler {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
     const reqData = req.body;
-    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
+    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
 
     try {
       let toStartDate = await this.bimsClient.getToStartDate(questionnaireName);
@@ -109,7 +109,7 @@ class BimsHandler {
   deleteToStartDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
+    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
 
     try {
       const toStartDate = await this.bimsClient.getToStartDate(questionnaireName);
@@ -217,7 +217,7 @@ class BimsHandler {
   setTmReleaseDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
+    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
 
     try {
       const previousTmReleaseDate = await this.bimsClient.getTmReleaseDate(questionnaireName);
@@ -307,7 +307,7 @@ class BimsHandler {
   deleteTmReleaseDate = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
+    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
 
     try {
       const tmReleaseDate = await this.bimsClient.getTmReleaseDate(questionnaireName);

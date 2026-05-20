@@ -14,13 +14,13 @@ export default function newBusHandler(busApiClient: BusClientLike, auth: Auth): 
 
   const busHandler = new BusHandler(busApiClient);
 
-  router.post("/api/uacs/instrument/:instrumentName", auth.Middleware, busHandler.generateUacs);
+  router.post("/api/uacs/instrument/:instrumentName", auth.middleware, busHandler.generateUacs);
   router.get(
     "/api/uacs/instrument/:instrumentName/bycaseid",
-    auth.Middleware,
+    auth.middleware,
     busHandler.getUacsByCaseId,
   );
-  router.get("/api/uacs/instrument/:instrumentName/count", auth.Middleware, busHandler.getUacCount);
+  router.get("/api/uacs/instrument/:instrumentName/count", auth.middleware, busHandler.getUacCount);
 
   return router;
 }

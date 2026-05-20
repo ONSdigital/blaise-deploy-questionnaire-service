@@ -3,19 +3,19 @@ import express, { type NextFunction, type Request, type Response } from "express
 class MockAuth {
   constructor(_config?: unknown) {}
 
-  public ValidateToken(): boolean {
+  public validateToken(): boolean {
     return true;
   }
 
-  public Middleware(_req: Request, _res: Response, next: NextFunction): void {
+  public middleware(_req: Request, _res: Response, next: NextFunction): void {
     next();
   }
 
-  public GetUser(): { name: string } {
+  public getUser(): { name: string } {
     return { name: "rich" };
   }
 
-  public GetToken(): string {
+  public getToken(): string {
     return "example-token";
   }
 }

@@ -37,9 +37,9 @@ export default function newUploadHandler(
 
   const uploadHandler = new UploadHandler(storageManager, auth, auditLogger);
 
-  router.get("/upload/init", auth.Middleware, uploadHandler.initialiseUpload);
-  router.get("/bucket/files", auth.Middleware, uploadHandler.listFiles);
-  router.get("/upload/verify", auth.Middleware, uploadHandler.verifyUpload);
+  router.get("/upload/init", auth.middleware, uploadHandler.initialiseUpload);
+  router.get("/bucket/files", auth.middleware, uploadHandler.listFiles);
+  router.get("/upload/verify", auth.middleware, uploadHandler.verifyUpload);
 
   return router;
 }
@@ -107,7 +107,7 @@ class UploadHandler {
 
   verifyUpload = async (req: Request, res: Response): Promise<Response> => {
     const { filename } = req.query;
-    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
+    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
 
     if (typeof filename !== "string" || filename.trim() === "") {
       return res.status(400).json("No filename provided");

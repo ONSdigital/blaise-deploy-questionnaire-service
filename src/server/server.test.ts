@@ -2,6 +2,7 @@
 
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const { mockGetQuestionnaires } = vi.hoisted(() => ({
   mockGetQuestionnaires: vi.fn(),
@@ -70,7 +71,7 @@ import { getConfigFromEnv } from "./config.js";
 import { callCloudFunction } from "./helpers/cloudFunctionCallerHelper.js";
 import { newServer } from "./server.js";
 
-Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
+Auth.prototype.validateToken = vi.fn().mockReturnValue(true);
 
 const config = getConfigFromEnv();
 const request = supertest(newServer(config));
@@ -205,6 +206,26 @@ describe("Cloud function routes build audit messages", () => {
 describe("Client route rendering and global error handler", () => {
   afterEach(() => {
     vi.restoreAllMocks();
+  });
+
+  it("falls back to the built client folder when cwd is not the repo root", () => {
+    const serverDir = path.dirname(fileURLToPath(import.meta.url));
+    const expectedBuildRoot = path.resolve(serverDir, "../../build");
+    const expectedClientBuildFolder = path.resolve(expectedBuildRoot, "client");
+    const expectedErrorPage = path.resolve(serverDir, "views/500.html");
+
+    vi.spyOn(process, "cwd").mockReturnValue("/definitely/not/the/repo");
+    vi.spyOn(fs, "existsSync").mockImplementation((candidate) => {
+      const resolvedCandidate = String(candidate);
+
+      return [expectedBuildRoot, expectedClientBuildFolder, expectedErrorPage].includes(
+        resolvedCandidate,
+      );
+    });
+
+    const app = newServer(config);
+
+    expect(app.get("views")).toEqual(expectedClientBuildFolder);
   });
 
   it("renders runtime config as safely escaped json in the html", async () => {

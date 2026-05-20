@@ -59,11 +59,11 @@ vi.mock("blaise-api-node-client", () => ({
   },
 }));
 
-Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
-Auth.prototype.GetUser = vi
+Auth.prototype.validateToken = vi.fn().mockReturnValue(true);
+Auth.prototype.getUser = vi
   .fn()
   .mockImplementation((token) => (token === "example-token" ? { name: "rich" } : {}));
-Auth.prototype.GetToken = vi.fn().mockReturnValue("example-token");
+Auth.prototype.getToken = vi.fn().mockReturnValue("example-token");
 
 vi.mock("blaise-iap-node-provider");
 

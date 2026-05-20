@@ -203,12 +203,27 @@ function App(): ReactElement {
     setAuthState(loggedIn ? "authenticated" : "unauthenticated");
   }, []);
 
+  const handleAuthenticated = useCallback(
+    async (token: string) => {
+      authClient.setToken(token);
+
+      try {
+        handleSetLoggedIn(await authClient.loggedIn());
+      } catch {
+        authClient.clearToken();
+        handleSetLoggedIn(false);
+      }
+    },
+    [authClient, handleSetLoggedIn],
+  );
+
   const handleLogOut = useCallback(() => {
-    authClient.logOut(handleSetLoggedIn);
+    authClient.logOut();
+    handleSetLoggedIn(false);
   }, [authClient, handleSetLoggedIn]);
 
   useEffect(() => {
-    void authClient.loggedIn().then(handleSetLoggedIn);
+    void authClient.loggedIn().then(handleSetLoggedIn).catch(() => handleSetLoggedIn(false));
   }, [authClient, handleSetLoggedIn]);
 
   const [errored, setErrored] = useState(false);
@@ -273,8 +288,7 @@ function App(): ReactElement {
           >
             <Panel status="info">Enter your Blaise username and password</Panel>
             <LoginForm
-              authManager={authClient}
-              setLoggedIn={handleSetLoggedIn}
+              onAuthenticated={handleAuthenticated}
             />
           </main>
         )}

@@ -46,9 +46,12 @@ class MockAuthClientClass {
 
   public loggedIn = async (): Promise<boolean> => mockAuthenticateState.loggedIn;
 
-  public logOut = (setLoggedIn: (v: boolean) => void): void => {
+  public setToken = (_token: string | null): void => undefined;
+
+  public clearToken = (): void => undefined;
+
+  public logOut = (): void => {
     mockAuthenticateState.loggedIn = false;
-    setLoggedIn(false);
   };
 
   public authHeader = (): Record<string, string> => ({});

@@ -21,56 +21,56 @@ export default function newBlaiseHandler(
 
   const blaiseHandler = new BlaiseHandler(blaiseApiClient, serverPark, auth, auditLogger);
 
-  router.get("/api/questionnaires", auth.Middleware, blaiseHandler.getQuestionnaires);
+  router.get("/api/questionnaires", auth.middleware, blaiseHandler.getQuestionnaires);
   router.get(
     "/api/questionnaires/:questionnaireName",
-    auth.Middleware,
+    auth.middleware,
     blaiseHandler.getQuestionnaire,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/modes",
-    auth.Middleware,
+    auth.middleware,
     blaiseHandler.getModes,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/modes/:mode",
-    auth.Middleware,
+    auth.middleware,
     blaiseHandler.doesQuestionnaireHaveMode,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/settings",
-    auth.Middleware,
+    auth.middleware,
     blaiseHandler.getSettings,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/surveydays",
-    auth.Middleware,
+    auth.middleware,
     blaiseHandler.getSurveyDays,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/active",
-    auth.Middleware,
+    auth.middleware,
     blaiseHandler.getActiveSurveyDays,
   );
   router.get(
     "/api/questionnaires/:questionnaireName/cases/ids",
-    auth.Middleware,
+    auth.middleware,
     blaiseHandler.getCases,
   );
-  router.post("/api/install", auth.Middleware, blaiseHandler.installQuestionnaire);
+  router.post("/api/install", auth.middleware, blaiseHandler.installQuestionnaire);
   router.patch(
     "/api/questionnaires/:questionnaireName/activate",
-    auth.Middleware,
+    auth.middleware,
     blaiseHandler.activateQuestionnaire,
   );
   router.patch(
     "/api/questionnaires/:questionnaireName/deactivate",
-    auth.Middleware,
+    auth.middleware,
     blaiseHandler.deactivateQuestionnaire,
   );
   router.delete(
     "/api/questionnaires/:questionnaireName",
-    auth.Middleware,
+    auth.middleware,
     blaiseHandler.deleteQuestionnaire,
   );
 
@@ -125,7 +125,7 @@ class BlaiseHandler {
   installQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const filename: string = req.body.filename;
     const questionnaireName = sanitise(filename?.toString().replace(/\.[a-zA-Z]*$/, "") ?? "");
-    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
+    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
     const installQuestionnaire: InstallQuestionnaire = {
       questionnaireFile: filename?.toString() || "",
     };
@@ -153,7 +153,7 @@ class BlaiseHandler {
   deleteQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
+    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
 
     try {
       const response = await this.blaiseApiClient.deleteQuestionnaire(
@@ -186,7 +186,7 @@ class BlaiseHandler {
   activateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
+    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
 
     try {
       const response = await this.blaiseApiClient.activateQuestionnaire(
@@ -222,7 +222,7 @@ class BlaiseHandler {
   deactivateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const { questionnaireName } = req.params as { questionnaireName: string };
     const safeQuestionnaireName = sanitise(questionnaireName);
-    const username = sanitise(this.auth.GetUser(this.auth.GetToken(req)).name);
+    const username = sanitise(this.auth.getUser(this.auth.getToken(req))?.name ?? "Unknown User");
 
     try {
       const response = await this.blaiseApiClient.deactivateQuestionnaire(

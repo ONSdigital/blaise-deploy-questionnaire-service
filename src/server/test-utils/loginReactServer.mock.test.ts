@@ -9,13 +9,13 @@ describe("mockLoginReactServerModule", () => {
     const module = mockLoginReactServerModule();
     const auth = new module.Auth({});
 
-    expect(auth.ValidateToken()).toBe(true);
-    expect(auth.GetToken()).toBe("example-token");
-    expect(auth.GetUser()).toEqual({ name: "rich" });
+    expect(auth.validateToken()).toBe(true);
+    expect(auth.getToken()).toBe("example-token");
+    expect(auth.getUser()).toEqual({ name: "rich" });
 
     const next = vi.fn();
 
-    auth.Middleware({} as Request, {} as Response, next);
+    auth.middleware({} as Request, {} as Response, next);
     expect(next).toHaveBeenCalledTimes(1);
   });
 

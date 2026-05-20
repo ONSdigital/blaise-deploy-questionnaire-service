@@ -100,14 +100,14 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
 
   const buildRootCandidates = [
     path.resolve(process.cwd(), "build"),
-    path.resolve(__dirname, "../../../build"),
+    path.resolve(__dirname, "../../build"),
   ];
   const buildRoot = firstExistingPath(buildRootCandidates) ?? buildRootCandidates[0];
   const clientBuildCandidates = [path.resolve(buildRoot, "client"), buildRoot];
   const clientBuildFolder = firstExistingPath(clientBuildCandidates) ?? clientBuildCandidates[0];
 
   const errorPageCandidates = [
-    path.resolve(__dirname, "../../../src/server/views/500.html"),
+    path.resolve(__dirname, "../../src/server/views/500.html"),
     path.resolve(buildRoot, "500.html"),
     path.resolve(buildRoot, "views/500.html"),
   ];

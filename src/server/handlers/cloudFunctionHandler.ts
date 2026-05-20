@@ -46,7 +46,7 @@ class CloudFunctionHandler {
   }
 
   callCloudFunction = async (req: Request, res: Response): Promise<Response> => {
-    const username = this.auth?.GetUser(this.auth.GetToken(req)).name;
+    const username = this.auth?.getUser(this.auth.getToken(req))?.name;
 
     req.log.info(`${this.cloudFunctionUrl} URL to invoke for Cloud Function.`);
     try {

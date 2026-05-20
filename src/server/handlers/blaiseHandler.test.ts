@@ -51,7 +51,7 @@ vi.mock("blaise-login-react-server", async () => {
   return mockLoginReactServerModule();
 });
 
-Auth.prototype.ValidateToken = vi.fn().mockReturnValue(true);
+Auth.prototype.validateToken = vi.fn().mockReturnValue(true);
 
 const {
   mockGetQuestionnaire,
