@@ -1,4 +1,5 @@
-import { Field, useFormikContext } from "formik";
+import { StyledFormField } from "blaise-design-system-react-components";
+import { useFormikContext } from "formik";
 import { type ReactElement } from "react";
 
 interface DateFormProps {
@@ -39,36 +40,29 @@ export function SetDate({
   const validateRadio = createValidateRadio(values, dateFieldName, fullDateLabel);
 
   return (
-    <div>
-      <div>
-        <Field
-          type="radio"
-          id="no"
-          name="askDate"
-          value="no"
-          validate={validateRadio}
-        />
-        <label htmlFor="no">No {shortDateLabel}</label>
-      </div>
-      <div>
-        <Field
-          type="radio"
-          id="yes"
-          name="askDate"
-          value="yes"
-        />
-        <label htmlFor="yes">Yes, let me specify a {shortDateLabel}</label>
-        {values.askDate === "yes" && (
-          <div>
-            <label htmlFor="set-date">Please specify date</label>
-            <Field
-              type="date"
-              id="set-date"
-              name={dateFieldName}
-            />
-          </div>
-        )}
-      </div>
-    </div>
+    <StyledFormField
+      name="askDate"
+      type="radio"
+      autoFocus
+      validate={validateRadio}
+      radioOptions={[
+        {
+          id: "no",
+          label: `No ${shortDateLabel}`,
+          value: "no",
+        },
+        {
+          id: "yes",
+          label: `Yes, let me specify a ${shortDateLabel}`,
+          value: "yes",
+          specifyOption: {
+            type: "date",
+            id: "set-date",
+            name: dateFieldName,
+            description: "Please specify date",
+          },
+        },
+      ]}
+    />
   );
 }
