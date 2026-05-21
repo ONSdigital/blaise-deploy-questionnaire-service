@@ -47,12 +47,18 @@ function normaliseLevel(level: ClientLogLevel): NormalisedClientLogLevel {
   }
 }
 
+function sanitise(value: string): string {
+  return value.replace(/[\r\n]/g, " ");
+}
+
 function clamp(value: string, maxLen: number): string {
-  if (value.length <= maxLen) {
-    return value;
+  const sanitised = sanitise(value);
+
+  if (sanitised.length <= maxLen) {
+    return sanitised;
   }
 
-  return value.slice(0, maxLen);
+  return sanitised.slice(0, maxLen);
 }
 
 function writeClientLog(

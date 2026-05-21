@@ -194,7 +194,6 @@ function App(): ReactElement {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // Changed: keep a single AuthClient instance without manual memo wrappers so auth lifecycle stays stable and React Compiler-friendly.
   const [authClient] = useState(() => new AuthClient(getSharedAuthOptions()));
   const [authState, setAuthState] = useState<"checking" | "unauthenticated" | "authenticated">(
     () => (authClient.getToken() == null ? "unauthenticated" : "checking"),
@@ -202,7 +201,6 @@ function App(): ReactElement {
   const [errored, setErrored] = useState(false);
 
   const updateAuthStateEffect = useEffectEvent((loggedIn: boolean) => {
-    /* v8 ignore next */
     setAuthState(loggedIn ? "authenticated" : "unauthenticated");
   });
 
@@ -215,7 +213,6 @@ function App(): ReactElement {
 
   const clearSessionEffect = useEffectEvent(clearSession);
 
-  /* v8 ignore start */
   async function handleAuthenticated(token: string): Promise<void> {
     authClient.setToken(token);
 
@@ -225,7 +222,6 @@ function App(): ReactElement {
       clearSession();
     }
   }
-  /* v8 ignore end */
 
   useEffect(() => {
     if (authClient.getToken() == null) {
@@ -242,7 +238,6 @@ function App(): ReactElement {
         }
       })
       .catch(() => {
-        /* v8 ignore next 3 */
         if (!cancelled) {
           updateAuthStateEffect(false);
         }

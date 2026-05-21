@@ -6,7 +6,7 @@ import axiosConfig from "./axiosConfig";
 import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
+  return value !== null && typeof value === "object";
 }
 
 interface DateClientOptions {
