@@ -89,7 +89,7 @@ describe("Client log forwarding", () => {
     expect(logInfo).toHaveBeenCalled();
     const lastCall = logInfo.mock.calls[logInfo.mock.calls.length - 1];
 
-    expect(lastCall[1]).toEqual("CLIENT_LOG: hello from browser");
+    expect(lastCall[1]).toEqual("CLIENT_LOG");
     expect(lastCall[0]).toHaveProperty("clientLog");
   });
 

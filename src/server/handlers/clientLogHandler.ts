@@ -92,7 +92,7 @@ function writeClientLog(
   clientLog: ClientLogPayload,
 ): void {
   const safeClientLog = sanitiseLogValue(clientLog) as ClientLogPayload;
-  const message = `CLIENT_LOG: ${safeClientLog.message}`;
+  const message = "CLIENT_LOG";
 
   switch (level) {
     case "info":
