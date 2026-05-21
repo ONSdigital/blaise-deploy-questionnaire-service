@@ -47,8 +47,33 @@ function normaliseLevel(level: ClientLogLevel): NormalisedClientLogLevel {
   }
 }
 
+// eslint-disable-next-line no-control-regex
+const CONTROL_CHARS_RE = /[\x00-\x1F\x7F\u2028\u2029]/g;
+
 function sanitise(value: string): string {
-  return value.replace(/[\r\n]/g, " ");
+  return value.replace(CONTROL_CHARS_RE, " ").replace(/\s+/g, " ").trim();
+}
+
+function sanitiseLogValue(value: unknown): unknown {
+  if (typeof value === "string") {
+    return sanitise(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => sanitiseLogValue(item));
+  }
+
+  if (isRecord(value)) {
+    const out: Record<string, unknown> = {};
+
+    for (const [key, item] of Object.entries(value)) {
+      out[key] = sanitiseLogValue(item);
+    }
+
+    return out;
+  }
+
+  return value;
 }
 
 function clamp(value: string, maxLen: number): string {
@@ -66,23 +91,24 @@ function writeClientLog(
   level: NormalisedClientLogLevel,
   clientLog: ClientLogPayload,
 ): void {
-  const message = `CLIENT_LOG: ${clientLog.message}`;
+  const safeClientLog = sanitiseLogValue(clientLog) as ClientLogPayload;
+  const message = `CLIENT_LOG: ${safeClientLog.message}`;
 
   switch (level) {
     case "info":
-      req.log.info({ clientLog }, message);
+      req.log.info({ clientLog: safeClientLog }, message);
 
       return;
     case "warn":
-      req.log.warn({ clientLog }, message);
+      req.log.warn({ clientLog: safeClientLog }, message);
 
       return;
     case "error":
-      req.log.error({ clientLog }, message);
+      req.log.error({ clientLog: safeClientLog }, message);
 
       return;
     case "debug":
-      req.log.debug({ clientLog }, message);
+      req.log.debug({ clientLog: safeClientLog }, message);
 
       return;
   }
@@ -119,7 +145,9 @@ export default function newClientLogHandler(auth: Auth): Router {
       userAgent:
         typeof body.userAgent === "string"
           ? clamp(body.userAgent, 500)
-          : req.header("user-agent") || undefined,
+          : typeof req.header("user-agent") === "string"
+            ? clamp(req.header("user-agent") as string, 500)
+            : undefined,
       timestamp: typeof body.timestamp === "string" ? clamp(body.timestamp, 100) : undefined,
       stack: typeof body.stack === "string" ? clamp(body.stack, 8000) : undefined,
     };
