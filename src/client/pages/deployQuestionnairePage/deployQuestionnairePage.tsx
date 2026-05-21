@@ -302,7 +302,7 @@ function DeployPage(): ReactElement {
       }
 
       case Step.QuestionnaireExists:
-        if (foundQuestionnaire?.active && foundQuestionnaire?.hasData) {
+        if (foundQuestionnaire?.status === "Active" && foundQuestionnaire?.hasData) {
           setActiveStep(Step.LiveWarning);
           actions.setTouched({});
           actions.setSubmitting(false);

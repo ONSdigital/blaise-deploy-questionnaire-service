@@ -8,8 +8,6 @@ import { BlaiseNodeStates } from "./blaiseNodeStates";
 import type { Questionnaire } from "blaise-api-node-client";
 
 const questionnaireWithNodeInfo: Questionnaire = {
-  active: false,
-  activeToday: false,
   dataRecordCount: 0,
   fieldPeriod: "April 2020",
   hasData: false,

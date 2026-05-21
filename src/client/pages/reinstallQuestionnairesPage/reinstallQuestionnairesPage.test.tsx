@@ -22,7 +22,6 @@ const questionnaireList: Questionnaire[] = [
     status: "Active",
     dataRecordCount: 0,
     hasData: false,
-    active: false,
     fieldPeriod: "January 2021",
   },
 ];

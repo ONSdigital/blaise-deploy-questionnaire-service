@@ -411,12 +411,12 @@ function mockQuestionnaireMissing(questionnaireName = currentQuestionnaireName()
   );
 }
 
-function mockQuestionnaireExists(foundQuestionnaire: { active: boolean; hasData: boolean }): void {
+function mockQuestionnaireExists(foundQuestionnaire: { status?: string; hasData: boolean }): void {
   processCoverageMocks.validateSelectedQuestionnaireExists.mockImplementation(
     async (): Promise<ExistenceCheckResult> => ({
       outcome: "exists",
       questionnaireName: currentQuestionnaireName(),
-      questionnaire: foundQuestionnaire as Questionnaire,
+      questionnaire: foundQuestionnaire as unknown as Questionnaire,
     }),
   );
 }
@@ -762,7 +762,7 @@ describe("DeployPage coverage paths", () => {
   });
 
   it("shows the live warning and returns to the questionnaire table when accepted", async () => {
-    mockQuestionnaireExists({ active: true, hasData: true });
+    mockQuestionnaireExists({ status: "Active", hasData: true });
     const { invalidateQueriesSpy } = renderCoverageDeployPage();
 
     await pickMockFile();
