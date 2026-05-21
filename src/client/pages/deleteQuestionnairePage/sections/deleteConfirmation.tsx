@@ -71,7 +71,7 @@ function DeleteConfirmation({ questionnaire, modes, onDelete, onCancel }: Props)
 
       {modes.includes("CAWI") && questionnaire.status?.toLowerCase() === "active" && (
         <div className="ons-u-mb-m">
-          <Panel status="error">Questionnaire is active for web collection</Panel>
+          <Panel status="warn">Questionnaire is active for web collection</Panel>
         </div>
       )}
 

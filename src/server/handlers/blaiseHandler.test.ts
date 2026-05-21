@@ -167,15 +167,15 @@ describe("BlaiseAPI Get specific questionnaire information from API", () => {
     vi.resetModules();
   });
 
-  it("should return a 404 status with the data as false when API returns can't find the questionnaire", async () => {
+  it("should return a 200 status with null when the API can't find the questionnaire", async () => {
     mockGetQuestionnaire.mockImplementation(() => {
       return Promise.reject({ response: { status: 404 }, isAxiosError: true });
     });
 
     const response: Response = await request.get("/api/questionnaires/OPN2004A");
 
-    expect(response.status).toEqual(404);
-    expect(response.body).toEqual("");
+    expect(response.status).toEqual(200);
+    expect(response.body).toBeNull();
   });
 
   it("should return a 500 status when a record error object does not have isAxiosError set", async () => {

@@ -72,16 +72,8 @@ describe("Function getTmReleaseDate(questionnaireName: string) ", () => {
     expect(tmReleaseDate).toEqual("");
   });
 
-  it("should return an empty string if a 404 is returned from the server", async () => {
-    mock.onGet("/api/tmreleasedate/LMS2004A").reply(404);
-
-    const tmReleaseDate = await getTmReleaseDate("LMS2004A");
-
-    expect(tmReleaseDate).toEqual("");
-  });
-
-  it("should return an empty string if a 204 is returned from the server", async () => {
-    mock.onGet("/api/tmreleasedate/LMS2004A").reply(204);
+  it("should return an empty string if the server returns no date", async () => {
+    mock.onGet("/api/tmreleasedate/LMS2004A").reply(200, null);
 
     const tmReleaseDate = await getTmReleaseDate("LMS2004A");
 

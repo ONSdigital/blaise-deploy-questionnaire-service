@@ -64,8 +64,8 @@ describe("Function getToStartDate(questionnaireName: string) ", () => {
     expect(toStartDate).toEqual("");
   });
 
-  it("should return an empty string if a 404 is returned from the server", async () => {
-    mock.onGet("/api/tostartdate/OPN2004A").reply(404);
+  it("should return an empty string if the server returns no date", async () => {
+    mock.onGet("/api/tostartdate/OPN2004A").reply(200, null);
 
     const toStartDate = await getToStartDate("OPN2004A");
 

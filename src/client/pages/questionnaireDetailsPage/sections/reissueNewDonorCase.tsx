@@ -79,11 +79,9 @@ function ReissueNewDonorCase({ questionnaire }: Props): ReactElement {
               roles={roles}
             />
             {errorMessage && (
-              <div className="ons-field ons-input--text">
-                <Panel status="error">
-                  <p>{errorMessage}</p>
-                </Panel>
-              </div>
+              <Panel status="error">
+                <p>{errorMessage}</p>
+              </Panel>
             )}
             <div className="ons-u-mt-m ons-u-mb-s">
               <Button

@@ -71,7 +71,7 @@ describe("Feature: deploy_questionnaire", () => {
     Given("no questionnaires are installed", () => {
       mocker
         .onGet(/api\/questionnaires\//)
-        .reply(() => new Promise((resolve) => setTimeout(() => resolve([404, undefined]), 500)));
+        .reply(() => new Promise((resolve) => setTimeout(() => resolve([200, null]), 500)));
       mocker.onGet("/api/questionnaires").reply(200, []);
     });
     whenLoadHomepage(When);

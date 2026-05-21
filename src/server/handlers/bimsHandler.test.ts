@@ -253,12 +253,13 @@ describe("Getting Telephone Operations start date from BIMS service", () => {
     mock.reset();
   });
 
-  it("should return a 404 status when BIMS returns no content for the Telephone Operations start date", async () => {
+  it("should return a 200 status with null when BIMS returns no content for the Telephone Operations start date", async () => {
     mock.onGet(`${config.bimsApiUrl}/tostartdate/OPN2004A`).reply(204, undefined, jsonHeaders);
 
     const response: Response = await request.get("/api/tostartdate/OPN2004A");
 
-    expect(response.status).toEqual(404);
+    expect(response.status).toEqual(200);
+    expect(response.body).toBeNull();
   });
 
   it("should return a 200 status with a Telephone Operations start date response body when a Telephone Operations start date is provided", async () => {
@@ -576,12 +577,13 @@ describe("Getting Totalmobile release date from BIMS service", () => {
     expect(response.body).toStrictEqual({ tmreleasedate: "2022-12-31" });
   });
 
-  it("should return a 404 status when BIMS returns no content for the Totalmobile release date", async () => {
+  it("should return a 200 status with null when BIMS returns no content for the Totalmobile release date", async () => {
     mock.onGet(`${config.bimsApiUrl}/tmreleasedate/LMS2004A`).reply(204, undefined, jsonHeaders);
 
     const response: Response = await request.get("/api/tmreleasedate/LMS2004A");
 
-    expect(response.status).toEqual(404);
+    expect(response.status).toEqual(200);
+    expect(response.body).toBeNull();
   });
 
   it("should return a 500 status direct from the API", async () => {

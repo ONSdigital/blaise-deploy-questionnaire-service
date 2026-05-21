@@ -153,6 +153,36 @@ describe("Confirmation behavior", () => {
     });
   });
 
+  it("calls onSuccess with error status when the API returns a business error in the body", async () => {
+    mockedAxios.post.mockResolvedValueOnce({
+      data: {
+        message: "Error creating IPS donor cases: No users found with role 'IPS Manager'",
+        status: 422,
+      },
+      status: 200,
+    } as never);
+
+    render(
+      <Confirmation
+        questionnaireName={ipsQuestionnaire.name}
+        role="IPS Manager"
+        onSuccess={mockOnSuccess}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+    });
+
+    await waitFor(() => {
+      expect(mockOnSuccess).toHaveBeenCalledWith(
+        "Error creating IPS donor cases: No users found with role 'IPS Manager'",
+        422,
+      );
+    });
+  });
+
   it("calls onSuccess with error status when the API call fails", async () => {
     mockedAxios.post.mockRejectedValue(cloudFunctionAxiosError);
 

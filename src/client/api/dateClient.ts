@@ -9,27 +9,10 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-function getAxiosStatus(error: unknown): number | undefined {
-  if (!isRecord(error) || error.isAxiosError !== true) {
-    return undefined;
-  }
-
-  const { response } = error;
-
-  return isRecord(response) && typeof response.status === "number" ? response.status : undefined;
-}
-
-function isAxiosStatus(error: unknown, statuses: number[]): boolean {
-  const status = getAxiosStatus(error);
-
-  return status !== undefined && statuses.includes(status);
-}
-
 interface DateClientOptions {
   apiPath: string;
   fieldKey: string;
   logLabel?: string;
-  notFoundStatuses?: number[];
   parseResponseData?: (data: unknown) => string;
 }
 
@@ -60,7 +43,6 @@ export function createDateClient(options: DateClientOptions): DateClient {
     apiPath,
     fieldKey,
     logLabel = fieldKey,
-    notFoundStatuses = [404],
     parseResponseData = defaultParseResponseData(fieldKey),
   } = options;
 
@@ -101,14 +83,6 @@ export function createDateClient(options: DateClientOptions): DateClient {
 
       return value;
     } catch (error: unknown) {
-      if (isAxiosStatus(error, notFoundStatuses)) {
-        clientLogger.info(
-          `${formatFunctionCall(functionName, questionnaireName)} returned no value`,
-        );
-
-        return "";
-      }
-
       logFunctionError(functionName, error, questionnaireName);
       throw error;
     }

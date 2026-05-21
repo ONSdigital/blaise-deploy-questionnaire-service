@@ -4,7 +4,6 @@ const toStartDateClient = createDateClient({
   apiPath: "tostartdate",
   fieldKey: "tostartdate",
   logLabel: "ToStartDate",
-  notFoundStatuses: [404],
 });
 
 export const setToStartDate = toStartDateClient.set;

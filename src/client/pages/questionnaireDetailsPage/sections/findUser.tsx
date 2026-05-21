@@ -152,7 +152,6 @@ function FindUser({ label = "Search user", roles, onItemSelected, onError }: Pro
 
       return Array.isArray(res.data.message) ? res.data.message : [];
     } catch (error) {
-      // Changed: narrow unknown errors explicitly so failed lookups do not rely on unchecked assertions.
       clientLogger.info(getUsersByRoleErrorMessage(error));
 
       return [];
@@ -168,7 +167,6 @@ function FindUser({ label = "Search user", roles, onItemSelected, onError }: Pro
       <br />
       <ComboBox
         className="find-user"
-        inputClassName="ons-input-type__input"
         value={search}
         disabled={searchDisabled}
         options={options}

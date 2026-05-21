@@ -960,13 +960,19 @@ exports[`DeleteConfirmation > when CAWI mode is include > should display CAWI wa
         class="ons-u-mb-m"
       >
         <div
-          class="ons-panel ons-panel--error ons-panel--no-title ons-u-mt-m"
+          class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
           id="panel-_r_0_"
         >
           <span
+            aria-hidden="true"
+            class="ons-panel__icon"
+          >
+            !
+          </span>
+          <span
             class="ons-panel__assistive-text ons-u-vh"
           >
-            Error:
+            Warning:
              
           </span>
           <div
@@ -1055,13 +1061,19 @@ exports[`DeleteConfirmation > when CAWI mode is include > should display CAWI wa
       class="ons-u-mb-m"
     >
       <div
-        class="ons-panel ons-panel--error ons-panel--no-title ons-u-mt-m"
+        class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
         id="panel-_r_0_"
       >
         <span
+          aria-hidden="true"
+          class="ons-panel__icon"
+        >
+          !
+        </span>
+        <span
           class="ons-panel__assistive-text ons-u-vh"
         >
-          Error:
+          Warning:
            
         </span>
         <div

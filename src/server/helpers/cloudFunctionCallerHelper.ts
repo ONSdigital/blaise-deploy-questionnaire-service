@@ -18,6 +18,7 @@ export async function callCloudFunction(
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+    validateStatus: () => true,
   });
 
   return {

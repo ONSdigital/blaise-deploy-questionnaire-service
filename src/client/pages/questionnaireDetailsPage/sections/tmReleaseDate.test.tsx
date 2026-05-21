@@ -36,7 +36,7 @@ describe("Totalmobile details", () => {
   });
 
   it("should display the add release date option for an LMS questionnaire with no Totalmobile release date", async () => {
-    mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(404, { tmreleasedate: "" });
+    mock.onGet("/api/tmreleasedate/LMS2101_AA1").reply(200, null);
     render(<TmReleaseDate questionnaireName={"LMS2101_AA1"} />, {
       wrapper: createWrapper(BrowserRouter),
     });

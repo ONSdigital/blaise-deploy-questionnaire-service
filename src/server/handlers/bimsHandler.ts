@@ -166,7 +166,7 @@ class BimsHandler {
       const toStartDate = await this.bimsClient.getToStartDate(questionnaireName);
 
       if (!toStartDate) {
-        return res.status(404).json();
+        return res.status(200).json(null);
       }
 
       return res.status(200).json(toStartDate);
@@ -393,7 +393,7 @@ class BimsHandler {
       const tmReleaseDate = await this.bimsClient.getTmReleaseDate(questionnaireName);
 
       if (!tmReleaseDate) {
-        return res.status(404).json();
+        return res.status(200).json(null);
       }
 
       return res.status(200).json(tmReleaseDate);

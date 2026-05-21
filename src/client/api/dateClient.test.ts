@@ -82,13 +82,6 @@ describe("createDateClient", () => {
     expect(clientLogger.info).toHaveBeenCalledWith("getToStartDate(OPN2004A) returned no value");
   });
 
-  it("returns an empty string for configured not found responses", async () => {
-    vi.mocked(axios.get).mockRejectedValue({ isAxiosError: true, response: { status: 404 } });
-
-    await expect(client.get("OPN2004A")).resolves.toBe("");
-    expect(clientLogger.info).toHaveBeenCalledWith("getToStartDate(OPN2004A) returned no value");
-  });
-
   it("rethrows primitive get errors", async () => {
     vi.mocked(axios.get).mockRejectedValue("explode");
 

@@ -134,6 +134,32 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
     );
   });
 
+  it("should return HTTP 200 with the upstream status in the body when creating donor cases returns a non-2xx response", async () => {
+    const upstreamErrorResponse = { message: "Upstream error", status: 422 };
+
+    callCloudFunctionToCreateDonorCasesMock.mockResolvedValue(upstreamErrorResponse);
+
+    const response = await request.post("/api/cloudFunction/createDonorCases");
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual(upstreamErrorResponse);
+  });
+
+  it("should audit-log creating donor cases as failure when the cloud function returns a non-2xx response", async () => {
+    const upstreamErrorResponse = { message: "Upstream error", status: 422 };
+
+    callCloudFunctionToCreateDonorCasesMock.mockResolvedValue(upstreamErrorResponse);
+
+    await request.post("/api/cloudFunction/createDonorCases").send(createDonorCasesPayload);
+
+    expect(logError).toHaveBeenCalledWith(
+      "AUDIT_LOG: rich failed to create donor cases for interviewer on OPN2004A",
+    );
+    expect(logInfo).not.toHaveBeenCalledWith(
+      "AUDIT_LOG: rich created donor cases for interviewer on OPN2004A",
+    );
+  });
+
   it("rejects unauthenticated donor case requests before proxying the cloud function", async () => {
     // Changed: cover the auth boundary so protected proxy routes cannot be exercised anonymously.
     const validateTokenSpy = vi.spyOn(
@@ -201,6 +227,34 @@ describe("Call Cloud Function to reissue new donor case and return responses", (
 
     expect(logError).toHaveBeenCalledWith(
       "AUDIT_LOG: rich failed to reissue donor case for alex on OPN2004A",
+    );
+  });
+
+  it("should return HTTP 200 with the upstream status in the body when reissuing a donor case returns a non-2xx response", async () => {
+    const upstreamErrorResponse = { message: "User has no existing donor cases.", status: 422 };
+
+    callCloudFunctionToCreateDonorCasesMock.mockResolvedValue(upstreamErrorResponse);
+
+    const response = await request
+      .post("/api/cloudFunction/reissueNewDonorCase")
+      .send(reissueDonorCasePayload);
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual(upstreamErrorResponse);
+  });
+
+  it("should audit-log reissuing new donor case as failure when the cloud function returns a non-2xx response", async () => {
+    const upstreamErrorResponse = { message: "User has no existing donor cases.", status: 422 };
+
+    callCloudFunctionToCreateDonorCasesMock.mockResolvedValue(upstreamErrorResponse);
+
+    await request.post("/api/cloudFunction/reissueNewDonorCase").send(reissueDonorCasePayload);
+
+    expect(logError).toHaveBeenCalledWith(
+      "AUDIT_LOG: rich failed to reissue donor case for alex on OPN2004A",
+    );
+    expect(logInfo).not.toHaveBeenCalledWith(
+      "AUDIT_LOG: rich reissued donor case for alex on OPN2004A",
     );
   });
 });

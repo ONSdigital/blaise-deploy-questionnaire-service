@@ -29,6 +29,19 @@ function getApiSuccessMessage(data: unknown): string {
   return "Success";
 }
 
+function getApiBodyStatus(data: unknown): number | undefined {
+  if (
+    typeof data === "object" &&
+    data !== null &&
+    "status" in data &&
+    typeof (data as { status?: unknown }).status === "number"
+  ) {
+    return (data as { status: number }).status;
+  }
+
+  return undefined;
+}
+
 function getApiErrorMessage(error: unknown): string {
   if (
     typeof error === "object" &&
@@ -57,7 +70,10 @@ function Confirmation({ questionnaireName, user, onSuccess }: Props): ReactEleme
           axiosConfig(),
         );
 
-        return { data: getApiSuccessMessage(res.data), status: res.status };
+        return {
+          data: getApiSuccessMessage(res.data),
+          status: getApiBodyStatus(res.data) ?? res.status,
+        };
       } catch (error: unknown) {
         return { data: getApiErrorMessage(error), status: 500 };
       }

@@ -138,7 +138,7 @@ class BlaiseHandler {
       return res.status(200).json(questionnaire);
     } catch (error: unknown) {
       if (this.errorNotFound(error)) {
-        return res.status(404).json();
+        return res.status(200).json(null);
       }
 
       req.log.error({ error }, "Get questionnaire endpoint failed");

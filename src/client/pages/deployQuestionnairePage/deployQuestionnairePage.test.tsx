@@ -538,7 +538,7 @@ describe("Upload Page", () => {
   });
 
   it("should disable continue on Telephone Operations start date step until an option is selected", async () => {
-    mock.onGet("/api/questionnaires/OPN2004A").reply(404);
+    mock.onGet("/api/questionnaires/OPN2004A").reply(200, null);
 
     render(<DeployPage />, { wrapper: createWrapper(BrowserRouter) });
 
@@ -563,7 +563,7 @@ describe("Upload Page", () => {
   });
 
   it("should disable continue on Totalmobile release date step until an option is selected", async () => {
-    mock.onGet("/api/questionnaires/LMS2207T").reply(404);
+    mock.onGet("/api/questionnaires/LMS2207T").reply(200, null);
 
     render(<DeployPage />, { wrapper: createWrapper(BrowserRouter) });
 
@@ -597,7 +597,7 @@ describe("Upload Page", () => {
   });
 
   it("should ask both date questions for DST questionnaires", async () => {
-    mock.onGet("/api/questionnaires/DST2207T").reply(404);
+    mock.onGet("/api/questionnaires/DST2207T").reply(200, null);
 
     render(<DeployPage />, { wrapper: createWrapper(BrowserRouter) });
 
@@ -624,7 +624,7 @@ describe("Upload Page", () => {
   });
 
   it("should ask only Telephone Operations start date for OPN questionnaires", async () => {
-    mock.onGet("/api/questionnaires/OPN2207T").reply(404);
+    mock.onGet("/api/questionnaires/OPN2207T").reply(200, null);
 
     render(<DeployPage />, { wrapper: createWrapper(BrowserRouter) });
 
@@ -661,7 +661,7 @@ describe("Given the file fails to upload", () => {
       .reply(200, "https://storage.googleapis.com/upload");
     mock.onGet("/upload/verify?filename=OPN2004A.bpkg").reply(200, { name: "OPN2004A.bpkg" });
     mock.onGet("/api/questionnaires").reply(200, questionnaireList);
-    mock.onGet("/api/questionnaires/OPN2004A").reply(404);
+    mock.onGet("/api/questionnaires/OPN2004A").reply(200, null);
     mock.onPost("/api/tostartdate/OPN2004A").reply(201);
   });
 

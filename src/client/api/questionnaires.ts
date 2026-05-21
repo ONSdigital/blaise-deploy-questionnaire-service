@@ -1,29 +1,9 @@
 import axios from "axios";
 
-import { clientLogger } from "../utils/logger";
-
 import axiosConfig from "./axiosConfig";
-import { formatFunctionCall, logFunctionCall, logFunctionError } from "./logHelpers";
+import { logFunctionCall, logFunctionError } from "./logHelpers";
 
 import type { Questionnaire, QuestionnaireSettings } from "blaise-api-node-client";
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
-
-function getAxiosStatus(error: unknown): number | undefined {
-  if (!isRecord(error) || error.isAxiosError !== true) {
-    return undefined;
-  }
-
-  const { response } = error;
-
-  return isRecord(response) && typeof response.status === "number" ? response.status : undefined;
-}
-
-function isAxios404(error: unknown): boolean {
-  return getAxiosStatus(error) === 404;
-}
 
 export async function getQuestionnaire(
   questionnaireName: string,
@@ -34,16 +14,8 @@ export async function getQuestionnaire(
   try {
     const response = await axios.get(url, axiosConfig());
 
-    return response.data;
+    return response.data ?? undefined;
   } catch (error: unknown) {
-    if (isAxios404(error)) {
-      clientLogger.info(
-        `${formatFunctionCall("getQuestionnaire", questionnaireName)} returned 404`,
-      );
-
-      return undefined;
-    }
-
     logFunctionError("getQuestionnaire", error, questionnaireName);
     throw error;
   }

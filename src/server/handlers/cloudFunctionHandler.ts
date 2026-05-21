@@ -58,12 +58,17 @@ class CloudFunctionHandler {
     req.log.info(`${this.cloudFunctionUrl} URL to invoke for Cloud Function.`);
     try {
       const cloudFunctionResponse = await callCloudFunction(this.cloudFunctionUrl, req.body);
+      const isSuccess = cloudFunctionResponse.status >= 200 && cloudFunctionResponse.status < 300;
 
       if (this.auditLogger != null && this.buildAuditMessages != null && username != null) {
-        this.auditLogger.info(req.log, this.buildAuditMessages(req, username).successMessage);
+        if (isSuccess) {
+          this.auditLogger.info(req.log, this.buildAuditMessages(req, username).successMessage);
+        } else {
+          this.auditLogger.error(req.log, this.buildAuditMessages(req, username).errorMessage);
+        }
       }
 
-      return res.status(cloudFunctionResponse.status).json(cloudFunctionResponse);
+      return res.status(200).json(cloudFunctionResponse);
     } catch (error: unknown) {
       req.log.error(error, "Cloud function call failed");
 

@@ -2894,7 +2894,7 @@ __metadata:
 
 "blaise-api-node-client@git+https://github.com/ONSdigital/blaise-api-node-client#BLAIS5-5177, blaise-api-node-client@git+https://github.com/ONSdigital/blaise-api-node-client.git#BLAIS5-5177":
   version: 1.0.0
-  resolution: "blaise-api-node-client@https://github.com/ONSdigital/blaise-api-node-client.git#commit=cb39b4181cf49e4152a4febb3bfecf2394703f04"
+  resolution: "blaise-api-node-client@https://github.com/ONSdigital/blaise-api-node-client.git#commit=ccb986d2b2b0857ffb2ccaa89984649da474a270"
   dependencies:
     axios: "npm:^1.16.1"
     blaise-iap-node-provider: "git+https://github.com/ONSdigital/blaise-iap-node-provider.git#BLAIS5-5177"
@@ -2915,7 +2915,7 @@ __metadata:
 
 "blaise-iap-node-provider@git+https://github.com/ONSdigital/blaise-iap-node-provider#BLAIS5-5177, blaise-iap-node-provider@git+https://github.com/ONSdigital/blaise-iap-node-provider.git#BLAIS5-5177":
   version: 1.0.0
-  resolution: "blaise-iap-node-provider@https://github.com/ONSdigital/blaise-iap-node-provider.git#commit=0f41dd2986ee543c79b46b500426d1f60a54cbbe"
+  resolution: "blaise-iap-node-provider@https://github.com/ONSdigital/blaise-iap-node-provider.git#commit=e58a98ca4a4ac383e942ab698db6c4f1e9678d41"
   dependencies:
     google-auth-library: "npm:^10.6.2"
   checksum: 10c0/704f488d394a7f6a92f5455a8b47c3a70da201db6ac066c183ffa2707cc2469cd15096f685405ab91f8e2d9ad641370fd47cdd91fdf734847c9e054939a7d232
@@ -2924,7 +2924,7 @@ __metadata:
 
 "blaise-login-react-client@git+https://github.com/ONSdigital/blaise-login-react.git#head=BLAIS5-5177&workspace=blaise-login-react-client":
   version: 1.0.0
-  resolution: "blaise-login-react-client@https://github.com/ONSdigital/blaise-login-react.git#workspace=blaise-login-react-client&commit=4eca950023f53797a55bc2b4d6e5757e77ca7f0d"
+  resolution: "blaise-login-react-client@https://github.com/ONSdigital/blaise-login-react.git#workspace=blaise-login-react-client&commit=de21085c9c120183191c4b00b03a1dbb2f15a05b"
   dependencies:
     blaise-design-system-react-components: "git+https://github.com/ONSdigital/blaise-design-system-react-components.git#BLAIS5-5177"
     universal-cookie: "npm:^8.1.2"
@@ -2932,13 +2932,13 @@ __metadata:
     formik: ">=2.4.0"
     react: ^19.0.0
     react-dom: ^19.0.0
-  checksum: 10c0/2f7826ba893de941b7532e76b763945c73fd86d0e9b51e5ee4f49cc4ca88458ba0fdcc92f596b8331171d2a0430a6b608dceb90b7ea25ce21b401ae25f09adaa
+  checksum: 10c0/16f685924c4299052bca7b5b7c7227907e9d08acb1ca559988210d1208c240feb2716c3e8674c283c9cb12ccd70870bf1ea793f5ee265bc74613365dacdf81fb
   languageName: node
   linkType: hard
 
 "blaise-login-react-server@git+https://github.com/ONSdigital/blaise-login-react.git#head=BLAIS5-5177&workspace=blaise-login-react-server":
   version: 1.0.0
-  resolution: "blaise-login-react-server@https://github.com/ONSdigital/blaise-login-react.git#workspace=blaise-login-react-server&commit=4eca950023f53797a55bc2b4d6e5757e77ca7f0d"
+  resolution: "blaise-login-react-server@https://github.com/ONSdigital/blaise-login-react.git#workspace=blaise-login-react-server&commit=de21085c9c120183191c4b00b03a1dbb2f15a05b"
   dependencies:
     blaise-api-node-client: "git+https://github.com/ONSdigital/blaise-api-node-client.git#BLAIS5-5177"
     express: "npm:^5.2.1"
@@ -2949,7 +2949,7 @@ __metadata:
 
 "blaise-uac-service-node-client@git+https://github.com/ONSdigital/blaise-uac-service-node-client#BLAIS5-5177":
   version: 1.0.0
-  resolution: "blaise-uac-service-node-client@https://github.com/ONSdigital/blaise-uac-service-node-client.git#commit=3043015b71549d0c85da0fdb8e61296dfc70e494"
+  resolution: "blaise-uac-service-node-client@https://github.com/ONSdigital/blaise-uac-service-node-client.git#commit=e82ee0e1b6a75f9932a3387c2ae02e656934209a"
   dependencies:
     google-auth-library: "npm:^10.6.2"
   checksum: 10c0/f0af02fcd3cc13d48ecbf1ef54f26caddc50abd271be6c6eca37d07f1b694f175a6a1db419eae9128719174099b37fb1a46477f9dfdd401890034f92246fc5ad

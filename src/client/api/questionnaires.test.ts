@@ -36,8 +36,8 @@ describe("Function getQuestionnaire(questionnaireName: string) ", () => {
     expect(questionnaire).toEqual(opnQuestionnaire);
   });
 
-  it("should return undefined if a 404 is returned from the server", async () => {
-    mock.onGet("/api/questionnaires/OPN2004A").reply(404, {});
+  it("should return undefined when the server returns no questionnaire", async () => {
+    mock.onGet("/api/questionnaires/OPN2004A").reply(200, null);
 
     const questionnaire = await getQuestionnaire("OPN2004A");
 

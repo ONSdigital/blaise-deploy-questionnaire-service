@@ -77,7 +77,26 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
         "Content-Type": "application/json",
         Authorization: `Bearer ${dummyToken}`,
       },
+      validateStatus: expect.any(Function),
     });
+  });
+
+  it("should pass a validateStatus function that always returns true regardless of status code", async () => {
+    const dummyUrl = mockConfig.createDonorCasesCloudFunctionUrl;
+
+    mockedAxiosPost.mockResolvedValue({ data: "ok", status: 200 });
+
+    await callCloudFunction(dummyUrl, {});
+
+    const [, , options] = mockedAxiosPost.mock.calls[0] as [
+      string,
+      unknown,
+      { validateStatus: (status: number) => boolean },
+    ];
+
+    expect(options.validateStatus(200)).toBe(true);
+    expect(options.validateStatus(422)).toBe(true);
+    expect(options.validateStatus(500)).toBe(true);
   });
 
   it("should return response data and status from cloud function when it returns a non-200 response", async () => {
@@ -112,6 +131,7 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
         "Content-Type": "application/json",
         Authorization: `Bearer ${dummyToken}`,
       },
+      validateStatus: expect.any(Function),
     });
   });
 });

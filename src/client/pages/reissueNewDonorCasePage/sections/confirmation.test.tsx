@@ -150,6 +150,30 @@ describe("Confirmation behavior", () => {
     });
   });
 
+  it("calls onSuccess with error status when the API returns a business error in the body", async () => {
+    mockedAxios.post.mockResolvedValueOnce({
+      data: { message: "User has no existing donor cases.", status: 500 },
+      status: 200,
+    } as never);
+
+    render(
+      <Confirmation
+        questionnaireName={ipsQuestionnaire.name}
+        user="testuser"
+        onSuccess={mockOnSuccess}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
+    });
+
+    await waitFor(() => {
+      expect(mockOnSuccess).toHaveBeenCalledWith("User has no existing donor cases.", 500);
+    });
+  });
+
   it("calls onSuccess with error status when the API call fails", async () => {
     mockedAxios.post.mockRejectedValue(cloudFunctionAxiosError);
 

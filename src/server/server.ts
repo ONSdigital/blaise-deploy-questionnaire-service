@@ -125,7 +125,7 @@ function firstExistingPath(candidates: string[]): string | undefined {
 
 function createServerDependencies(config: Config): ServerDependencies {
   return {
-    blaiseApiClient: new BlaiseApiClient(config.blaiseApiUrl),
+    blaiseApiClient: new BlaiseApiClient(config.blaiseApiUrl, { timeoutInMs: 5 * 60 * 1_000 }),
     auth: new Auth(config),
     bimsClient: new BimsClient(config.bimsApiUrl, config.bimsClientId),
     busApiClient: createBusApiClient(config),

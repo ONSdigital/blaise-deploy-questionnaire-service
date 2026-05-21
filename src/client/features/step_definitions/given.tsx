@@ -61,7 +61,7 @@ export function givenNoQuestionnairesInstalled(
 ): void {
   given("no questionnaires are installed", () => {
     mocker.onGet("/api/questionnaires").reply(200, []);
-    mocker.onGet(/^\/api\/questionnaires\/[^/]+$/).replyOnce(404);
+    mocker.onGet(/^\/api\/questionnaires\/[^/]+$/).replyOnce(200, null);
     mocker.onPost("/api/client-log").reply(200);
   });
 }
@@ -202,7 +202,7 @@ export function givenQuestionnaireHasNoToStartDate(
   mocker: MockAdapter,
 ): void {
   given(/'(.*)' has no Telephone Operations start date/, async (questionnaireName: string) => {
-    mocker.onGet(`/api/tostartdate/${questionnaireName}`).reply(404);
+    mocker.onGet(`/api/tostartdate/${questionnaireName}`).reply(200, null);
   });
 }
 
@@ -211,13 +211,13 @@ export function givenQuestionnaireHasNoTmReleaseDate(
   mocker: MockAdapter,
 ): void {
   given(/'(.*)' has no Totalmobile release date/, async (questionnaireName: string) => {
-    mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(404);
+    mocker.onGet(`/api/tmreleasedate/${questionnaireName}`).reply(200, null);
   });
 }
 
 export function givenAllInstallsFail(given: DefineStepFunction, mocker: MockAdapter): void {
   given(/All Questionnaire installs will fail for '(.*)'/, (questionnaireName: string) => {
-    mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(404);
+    mocker.onGet(`/api/questionnaires/${questionnaireName}`).reply(200, null);
     mocker
       .onGet(`/upload/init?filename=${questionnaireName}.bpkg`)
       .reply(200, "https://storage.googleapis.com/");
