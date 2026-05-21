@@ -22,7 +22,6 @@ export default function newCloudFunctionHandler(
   const router = express.Router();
   const handler = new CloudFunctionHandler(cloudFunctionUrl, auth, auditLogger, buildAuditMessages);
 
-  // Changed: protect cloud-function proxies whenever auth is supplied so they match the rest of the API surface.
   if (auth != null) {
     router.post(routePath, auth.middleware, handler.callCloudFunction);
 
@@ -85,7 +84,6 @@ class CloudFunctionHandler {
 }
 
 function getCloudFunctionErrorMessage(error: unknown): string | undefined {
-  // Changed: narrow unknown errors explicitly so failed proxy calls do not rely on unchecked assertions.
   if (typeof error !== "object" || error === null || !("response" in error)) {
     return undefined;
   }

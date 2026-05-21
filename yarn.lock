@@ -2894,11 +2894,11 @@ __metadata:
 
 "blaise-api-node-client@git+https://github.com/ONSdigital/blaise-api-node-client#BLAIS5-5177, blaise-api-node-client@git+https://github.com/ONSdigital/blaise-api-node-client.git#BLAIS5-5177":
   version: 1.0.0
-  resolution: "blaise-api-node-client@https://github.com/ONSdigital/blaise-api-node-client.git#commit=ccb986d2b2b0857ffb2ccaa89984649da474a270"
+  resolution: "blaise-api-node-client@https://github.com/ONSdigital/blaise-api-node-client.git#commit=122a3bd521998ec55a26665c44309632d55579c5"
   dependencies:
     axios: "npm:^1.16.1"
     blaise-iap-node-provider: "git+https://github.com/ONSdigital/blaise-iap-node-provider.git#BLAIS5-5177"
-  checksum: 10c0/071b51641e6ff98c7d7e1ee8dc0a5a18eae9bd22dec75c0fd3b27ea9106c9ae6433431a1569444ec27de23712368e121766a55e328a31ba8162c6f18fa536a2c
+  checksum: 10c0/8cae6ab27654727075f7ba64b25d25ff5f531769ff6c472452afc3abb42435538de7814d96345485aebe056671da6c87fff7ae9a0cd0006ab3fbc3dd9b6d4e19
   languageName: node
   linkType: hard
 
@@ -2924,7 +2924,7 @@ __metadata:
 
 "blaise-login-react-client@git+https://github.com/ONSdigital/blaise-login-react.git#head=BLAIS5-5177&workspace=blaise-login-react-client":
   version: 1.0.0
-  resolution: "blaise-login-react-client@https://github.com/ONSdigital/blaise-login-react.git#workspace=blaise-login-react-client&commit=de21085c9c120183191c4b00b03a1dbb2f15a05b"
+  resolution: "blaise-login-react-client@https://github.com/ONSdigital/blaise-login-react.git#workspace=blaise-login-react-client&commit=1f096183efe7f896136bdfd19701fc660388e563"
   dependencies:
     blaise-design-system-react-components: "git+https://github.com/ONSdigital/blaise-design-system-react-components.git#BLAIS5-5177"
     universal-cookie: "npm:^8.1.2"
@@ -2932,27 +2932,28 @@ __metadata:
     formik: ">=2.4.0"
     react: ^19.0.0
     react-dom: ^19.0.0
-  checksum: 10c0/16f685924c4299052bca7b5b7c7227907e9d08acb1ca559988210d1208c240feb2716c3e8674c283c9cb12ccd70870bf1ea793f5ee265bc74613365dacdf81fb
+  checksum: 10c0/e80fd76795f6870ea154cdce77302ac17d6b95c12a1d23f0004746e685742b16a0ab689b3276fcc6e623772bbd075d6dcc32ce385aacd5adc030296b7872dc4a
   languageName: node
   linkType: hard
 
 "blaise-login-react-server@git+https://github.com/ONSdigital/blaise-login-react.git#head=BLAIS5-5177&workspace=blaise-login-react-server":
   version: 1.0.0
-  resolution: "blaise-login-react-server@https://github.com/ONSdigital/blaise-login-react.git#workspace=blaise-login-react-server&commit=de21085c9c120183191c4b00b03a1dbb2f15a05b"
+  resolution: "blaise-login-react-server@https://github.com/ONSdigital/blaise-login-react.git#workspace=blaise-login-react-server&commit=1f096183efe7f896136bdfd19701fc660388e563"
   dependencies:
     blaise-api-node-client: "git+https://github.com/ONSdigital/blaise-api-node-client.git#BLAIS5-5177"
     express: "npm:^5.2.1"
+    express-rate-limit: "npm:^8.5.2"
     jsonwebtoken: "npm:^9.0.3"
-  checksum: 10c0/96f171f222dbd32c9f844bc96f31ec5fea2b2ce9b134aba6799df37a19a0a725f324ccd8bb2af431e12bc7057f113a9197c30656411d1688b37f734939fe5985
+  checksum: 10c0/04cc9a45b1585c579d0a36586a8c3b6a1a9e25ea58ad779617047df464ef05bca4eb43ed780ca85aee993c4cd62e45a8e6b4e7aff710d483ecb7bb13ae729f4d
   languageName: node
   linkType: hard
 
 "blaise-uac-service-node-client@git+https://github.com/ONSdigital/blaise-uac-service-node-client#BLAIS5-5177":
   version: 1.0.0
-  resolution: "blaise-uac-service-node-client@https://github.com/ONSdigital/blaise-uac-service-node-client.git#commit=e82ee0e1b6a75f9932a3387c2ae02e656934209a"
+  resolution: "blaise-uac-service-node-client@https://github.com/ONSdigital/blaise-uac-service-node-client.git#commit=e05559cb8d437b47b5dd5bcd31cf066732bb4030"
   dependencies:
     google-auth-library: "npm:^10.6.2"
-  checksum: 10c0/f0af02fcd3cc13d48ecbf1ef54f26caddc50abd271be6c6eca37d07f1b694f175a6a1db419eae9128719174099b37fb1a46477f9dfdd401890034f92246fc5ad
+  checksum: 10c0/d7f72040838cde0452773793d99f393d5e7d5b3650c9143be38e19f225ec241f86a1eb05781dc7bad1dac17fda808b764bc617ecac4a39c01edf07c6f5e93b40
   languageName: node
   linkType: hard
 
@@ -4211,6 +4212,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"express-rate-limit@npm:^8.5.2":
+  version: 8.5.2
+  resolution: "express-rate-limit@npm:8.5.2"
+  dependencies:
+    ip-address: "npm:^10.2.0"
+  peerDependencies:
+    express: ">= 4.11"
+  checksum: 10c0/c98c49b93e94627940cf5e7c2578718b94d77163357161c3343d148e46257136c988933a96d6e1e728a010683133a58f68cad46928b063cf8d99521c8772578d
+  languageName: node
+  linkType: hard
+
 "express@npm:^5.2.1":
   version: 5.2.1
   resolution: "express@npm:5.2.1"
@@ -4935,6 +4947,13 @@ __metadata:
   version: 6.0.0
   resolution: "ini@npm:6.0.0"
   checksum: 10c0/9a7f55f306e2b25b41ae67c8b526e8f4673f057b70852b9025816ef4f15f07bf1ba35ed68ea4471ff7b31718f7ef1bc50d709f8d03cb012e10a3135eb99c7206
+  languageName: node
+  linkType: hard
+
+"ip-address@npm:^10.2.0":
+  version: 10.2.0
+  resolution: "ip-address@npm:10.2.0"
+  checksum: 10c0/5a00aada6e922c9c69dfc800ed5d0fa3348675ebdeed0e1575f503f27ca385b5f534363c9af7ad1daf64c1f1409388cdd3cc2e9b9b0fe1c924a431378d55075a
   languageName: node
   linkType: hard
 
@@ -6445,11 +6464,11 @@ __metadata:
   linkType: hard
 
 "semver@npm:^7.3.5, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.7.1, semver@npm:^7.7.2, semver@npm:^7.7.3, semver@npm:^7.7.4":
-  version: 7.8.0
-  resolution: "semver@npm:7.8.0"
+  version: 7.8.1
+  resolution: "semver@npm:7.8.1"
   bin:
     semver: bin/semver.js
-  checksum: 10c0/8f096ca9b80ffd47b308d03f9ce8c873e27e2983f36023c559cdc92c51e8433fc23ebbfe57ec9623fc155636a6961ee989501099841ae4bb1babc8d2b3f048cd
+  checksum: 10c0/92d6871d6347e1f99d0ba396a70f2545ccf2a032cda3d378fa0699edf7506b5c6d266aed55c8b88e72bd91a30d2351e4f39db479375374430fcdc4b58f4e3c1a
   languageName: node
   linkType: hard
 

@@ -33,10 +33,7 @@ class BusHandler {
   }
 
   generateUacs = async (req: Request, res: Response): Promise<Response> => {
-    /* v8 ignore next 3 */
-    const instrumentName = Array.isArray(req.params["instrumentName"])
-      ? (req.params["instrumentName"][0] ?? "")
-      : (req.params["instrumentName"] ?? "");
+    const instrumentName = req.params["instrumentName"] as string;
     const safeInstrumentName = sanitise(instrumentName);
     const uacs = await this.busApiClient.generateUacsForQuestionnaire(instrumentName);
 
@@ -52,10 +49,7 @@ class BusHandler {
   };
 
   getUacsByCaseId = async (req: Request, res: Response): Promise<Response> => {
-    /* v8 ignore next 3 */
-    const instrumentName = Array.isArray(req.params["instrumentName"])
-      ? (req.params["instrumentName"][0] ?? "")
-      : (req.params["instrumentName"] ?? "");
+    const instrumentName = req.params["instrumentName"] as string;
     const safeInstrumentName = sanitise(instrumentName);
     const uacs = await this.busApiClient.getUacsByCaseId(instrumentName);
 
@@ -71,10 +65,7 @@ class BusHandler {
   };
 
   getUacCount = async (req: Request, res: Response): Promise<Response> => {
-    /* v8 ignore next 3 */
-    const instrumentName = Array.isArray(req.params["instrumentName"])
-      ? (req.params["instrumentName"][0] ?? "")
-      : (req.params["instrumentName"] ?? "");
+    const instrumentName = req.params["instrumentName"] as string;
     const safeInstrumentName = sanitise(instrumentName);
     const uacCount = await this.busApiClient.getUacCount(instrumentName);
 

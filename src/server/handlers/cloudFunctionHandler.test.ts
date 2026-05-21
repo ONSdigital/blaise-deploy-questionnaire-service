@@ -161,7 +161,6 @@ describe("Call Cloud Function to create donor cases and return responses", () =>
   });
 
   it("rejects unauthenticated donor case requests before proxying the cloud function", async () => {
-    // Changed: cover the auth boundary so protected proxy routes cannot be exercised anonymously.
     const validateTokenSpy = vi.spyOn(
       (await import("blaise-login-react-server")).Auth.prototype,
       "validateToken",

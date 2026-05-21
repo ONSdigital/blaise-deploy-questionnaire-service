@@ -7,7 +7,6 @@ function isLocationStateRecord(value: unknown): value is LocationStateRecord {
 }
 
 function isQuestionnaire(value: unknown): value is Questionnaire {
-  // Changed: validate router state explicitly before treating it as application data.
   return (
     isLocationStateRecord(value) &&
     typeof value.name === "string" &&

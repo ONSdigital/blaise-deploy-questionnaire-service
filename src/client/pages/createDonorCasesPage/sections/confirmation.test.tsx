@@ -38,7 +38,6 @@ describe("Confirmation rendering", () => {
   });
 
   it("displays correct prompt to create donor cases", () => {
-    // Text is split across inline tags, so we need a function matcher
     expect(
       screen.getByText(
         (content, element) => {

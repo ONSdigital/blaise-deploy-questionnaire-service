@@ -15,7 +15,6 @@ function ReissueNewDonorCasePage(): ReactElement {
   const location = useLocation();
   const questionnaireName = routeParams.questionnaireName ?? "";
   const decodedRouteUser = decodeRouteParam(routeParams.user);
-  // Changed: narrow router state explicitly so invalid navigation state cannot leak into route parameters.
   const questionnaireFromState = readStateQuestionnaire(location.state, "questionnaire");
   const user = decodedRouteUser ?? readStateString(location.state, "user") ?? "";
 

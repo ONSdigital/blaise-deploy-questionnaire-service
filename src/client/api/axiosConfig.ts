@@ -6,14 +6,12 @@ import { getSharedAuthOptions } from "../utils/auth";
 export const AUTH_EXPIRED_EVENT_NAME = "dqs-auth-expired";
 
 const authManager = new AuthManager(getSharedAuthOptions());
-let authExpiryInterceptorRegistered = false;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
 function getResponseStatus(error: unknown): number | undefined {
-  /* v8 ignore next 3 */
   if (!isRecord(error)) {
     return undefined;
   }
@@ -25,19 +23,10 @@ function getResponseStatus(error: unknown): number | undefined {
 
 function notifyAuthExpired(): void {
   authManager.clearToken();
-
-  /* v8 ignore next 3 */
-  if (typeof window !== "undefined") {
-    window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT_NAME));
-  }
+  window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT_NAME));
 }
 
 function ensureAuthExpiryInterceptor(): void {
-  /* v8 ignore next 3 */
-  if (authExpiryInterceptorRegistered) {
-    return;
-  }
-
   axios.interceptors.response.use(
     (response) => response,
     async (error: unknown) => {
@@ -50,8 +39,6 @@ function ensureAuthExpiryInterceptor(): void {
       throw error;
     },
   );
-
-  authExpiryInterceptorRegistered = true;
 }
 
 ensureAuthExpiryInterceptor();

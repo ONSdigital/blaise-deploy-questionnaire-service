@@ -86,7 +86,6 @@ export async function uploadAndInstallFile(
     return { success: false, message };
   }
 
-  // Changed: persist deployment dates only after upload and install succeed so failed deployments cannot leave orphaned metadata behind.
   return storeDeploymentDates(questionnaireName, toStartDate, tmReleaseDate);
 }
 
@@ -156,7 +155,6 @@ export async function checkQuestionnaireSettings(
   const questionnaireSettings = getStrictInterviewingSettings(questionnaireSettingsList);
 
   if (!questionnaireSettings) {
-    // Changed: fail fast when StrictInterviewing settings are absent instead of fabricating an invalid object.
     return { outcome: "error" };
   }
 

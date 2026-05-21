@@ -28,8 +28,7 @@ import type { Questionnaire } from "blaise-api-node-client";
 function QuestionnaireDetailsPage(): ReactElement {
   const location = useLocation();
   const navigate = useNavigate();
-  /* v8 ignore next */
-  const questionnaireName = useParams().questionnaireName ?? "";
+  const questionnaireName = useParams().questionnaireName as string;
   const questionnaireFromState = readStateQuestionnaire(location.state, "questionnaire") ?? null;
   const section = readStateString(location.state, "section") ?? "";
   const responseMessage = readStateString(location.state, "responseMessage") ?? "";

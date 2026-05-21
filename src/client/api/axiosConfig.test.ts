@@ -86,4 +86,26 @@ describe("axiosConfig", () => {
 
     mock.restore();
   });
+
+  it("rethrows without dispatching when the error is not an object", async () => {
+    vi.resetModules();
+    getToken.mockReturnValue("test-token");
+    await import("./axiosConfig");
+
+    const { default: axios } = await import("axios");
+    const dispatchSpy = vi.spyOn(window, "dispatchEvent");
+
+    // Throwing a non-object from a request interceptor causes the rejection
+    // to flow through the response error interceptors with a non-object value.
+    const reqId = axios.interceptors.request.use(() => {
+      throw "non-object-error";
+    });
+
+    await expect(axios.get("/test")).rejects.toBe("non-object-error");
+
+    expect(clearToken).not.toHaveBeenCalled();
+    expect(dispatchSpy).not.toHaveBeenCalled();
+
+    axios.interceptors.request.eject(reqId);
+  });
 });

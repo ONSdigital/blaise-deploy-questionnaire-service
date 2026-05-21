@@ -10,10 +10,7 @@ import { sanitise } from "../helpers/sanitise.js";
 import type AuditLogger from "../auditLogger.js";
 
 function readRequestParam(req: Request, key: string): string {
-  const value = req.params[key];
-
-  /* v8 ignore next */
-  return typeof value === "string" ? value : "";
+  return req.params[key] as string;
 }
 
 function readRequestBodyString(req: Request, key: string): string {
@@ -149,11 +146,10 @@ class BlaiseHandler {
 
   installQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
     const filename = readRequestBodyString(req, "filename");
-    /* v8 ignore next */
-    const questionnaireName = sanitise(filename?.toString().replace(/\.[a-zA-Z]*$/, "") ?? "");
+    const questionnaireName = sanitise(filename.replace(/\.[a-zA-Z]*$/, ""));
     const username = getUsername(req, this.auth);
     const installQuestionnaire: InstallQuestionnaire = {
-      questionnaireFile: filename?.toString() || "",
+      questionnaireFile: filename,
     };
 
     try {

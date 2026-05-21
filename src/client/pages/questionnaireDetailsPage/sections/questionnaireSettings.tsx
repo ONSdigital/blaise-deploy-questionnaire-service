@@ -38,7 +38,6 @@ function QuestionnaireSettings({ questionnaire, modes }: Props): ReactElement {
       const strictInterviewingSettings = getStrictInterviewingSettings(settingsList);
 
       if (!strictInterviewingSettings) {
-        // Changed: surface missing StrictInterviewing settings as a real load failure instead of returning a fake object.
         clientLogger.error("returned questionnaire strict interviewing settings were missing");
         throw new Error("returned questionnaire strict interviewing settings were missing");
       }

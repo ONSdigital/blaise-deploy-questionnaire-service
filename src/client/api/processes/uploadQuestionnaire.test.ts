@@ -157,7 +157,7 @@ describe("uploadQuestionnaire", () => {
   });
 
   it("stores only the start date for questionnaires that do not require a Totalmobile release date", async () => {
-    const questionnaireName = "OPN2004A"; // OPN: shouldAskToStartDate=true, shouldAskTmReleaseDate=false
+    const questionnaireName = "OPN2004A";
 
     vi.mocked(setToStartDate).mockResolvedValue(true);
     vi.mocked(initialiseUpload).mockResolvedValue("https://storage.googleapis.com/upload");

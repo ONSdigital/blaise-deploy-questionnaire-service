@@ -150,7 +150,6 @@ describe("Questionnaire List displays valid user questionnaires", () => {
       await flushPromises();
     });
 
-    // Wait for questionnaires to load before filtering
     await waitFor(() => {
       expect(screen.getByText(/IPS2409A/i)).toBeVisible();
     });
@@ -242,7 +241,6 @@ describe("Questionnaire List displays hidden questionnaires that match when usin
       await flushPromises();
     });
 
-    // Wait for questionnaires to load before filtering
     await waitFor(() => {
       expect(screen.getByText(/IPS2409A/i)).toBeVisible();
     });
@@ -265,7 +263,6 @@ describe("Questionnaire List displays hidden questionnaires that match when usin
       await flushPromises();
     });
 
-    // Wait for questionnaires to load before filtering
     await waitFor(() => {
       expect(screen.getByText(/IPS2409A/i)).toBeVisible();
     });
@@ -288,7 +285,6 @@ describe("Questionnaire List displays hidden questionnaires that match when usin
       await flushPromises();
     });
 
-    // Wait for questionnaires to load before filtering
     await waitFor(() => {
       expect(screen.getByText(/IPS2409A/i)).toBeVisible();
     });

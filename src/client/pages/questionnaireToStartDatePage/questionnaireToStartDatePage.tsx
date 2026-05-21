@@ -20,7 +20,6 @@ function QuestionnaireToStartDatePage(): ReactElement {
   const queryClient = useQueryClient();
   const routeParams = useParams();
   const location = useLocation();
-  // Changed: narrow router state explicitly so invalid navigation state falls back to fetching from the route parameter.
   const toStartDateFromState = readNullableStateString(location.state, "toStartDate");
   const questionnaireNameFromState = readStateString(location.state, "questionnaireName");
   const questionnaireName = routeParams.questionnaireName ?? questionnaireNameFromState ?? "";

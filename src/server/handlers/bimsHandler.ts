@@ -65,7 +65,6 @@ class BimsHandler {
     const requestedToStartDate = readRequestedDate(req.body, "tostartdate");
 
     if (requestedToStartDate === undefined) {
-      // Changed: reject malformed date payloads at the boundary so bad input never reaches BIMS.
       req.log.warn(
         { questionnaireName: safeQuestionnaireName },
         "Rejected invalid Telephone Operations start date payload",
@@ -235,7 +234,6 @@ class BimsHandler {
     const requestedTmReleaseDate = readRequestedDate(req.body, "tmreleasedate");
 
     if (requestedTmReleaseDate === undefined) {
-      // Changed: reject malformed date payloads at the boundary so bad input never reaches BIMS.
       req.log.warn(
         { questionnaireName: safeQuestionnaireName },
         "Rejected invalid Totalmobile release date payload",

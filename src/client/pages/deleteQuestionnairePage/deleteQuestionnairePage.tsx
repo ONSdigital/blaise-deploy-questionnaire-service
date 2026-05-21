@@ -19,7 +19,6 @@ interface Props {
 function DeleteQuestionnairePage({ onDelete, onCancel }: Props): ReactElement {
   const location = useLocation();
   const routeParams = useParams();
-  // Changed: narrow router state explicitly so invalid navigation state falls back to the safe route parameter path.
   const questionnaireFromState = readStateQuestionnaire(location.state, "questionnaire");
   const modesFromState = readStateStringArray(location.state, "modes");
   const questionnaireName = routeParams.questionnaireName ?? questionnaireFromState?.name ?? "";

@@ -228,24 +228,14 @@ function App(): ReactElement {
       return;
     }
 
-    let cancelled = false;
-
     void authClient
       .loggedIn()
       .then((loggedIn) => {
-        if (!cancelled) {
-          updateAuthStateEffect(loggedIn);
-        }
+        updateAuthStateEffect(loggedIn);
       })
       .catch(() => {
-        if (!cancelled) {
-          updateAuthStateEffect(false);
-        }
+        updateAuthStateEffect(false);
       });
-
-    return () => {
-      cancelled = true;
-    };
   }, [authClient]);
 
   useEffect(() => {

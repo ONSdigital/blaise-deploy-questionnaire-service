@@ -51,7 +51,17 @@ class MockAuthClientClass {
     mockAuthenticateState.authClientOptions = options;
   }
 
-  public loggedIn = async (): Promise<boolean> => mockAuthenticateState.loggedIn;
+  public loggedIn = async (): Promise<boolean> => {
+    if (mockAuthenticateState.loggedInRejects) {
+      throw new Error("loggedIn rejected");
+    }
+
+    if (mockAuthenticateState.loggedInOverride !== null) {
+      return mockAuthenticateState.loggedInOverride;
+    }
+
+    return mockAuthenticateState.loggedIn;
+  };
 
   public setToken = (token: string | null): void => {
     mockAuthenticateState.loggedIn = token != null;
@@ -81,6 +91,8 @@ const defaultUser: User = {
 const mockAuthenticateState = {
   authClientOptions: undefined as AuthManagerOptions | undefined,
   loggedIn: true,
+  loggedInRejects: false,
+  loggedInOverride: null as boolean | null,
   logOutFunction: () => undefined,
   user: defaultUser,
 };
@@ -88,6 +100,8 @@ const mockAuthenticateState = {
 function resetMockAuthenticate(): void {
   mockAuthenticateState.authClientOptions = undefined;
   mockAuthenticateState.loggedIn = true;
+  mockAuthenticateState.loggedInRejects = false;
+  mockAuthenticateState.loggedInOverride = null;
   mockAuthenticateState.logOutFunction = () => undefined;
   mockAuthenticateState.user = defaultUser;
 }
@@ -110,12 +124,27 @@ function renderMockAuthenticate(props: unknown): React.ReactNode {
   return <>{propsObj.children}</>;
 }
 
+type LoginFormProps = {
+  onAuthenticated: (token: string) => void;
+};
+
+function MockLoginForm({ onAuthenticated }: LoginFormProps): React.ReactNode {
+  return (
+    <button
+      type="button"
+      onClick={() => onAuthenticated("mock-token")}
+    >
+      Sign in
+    </button>
+  );
+}
+
 export function mockLoginReactClientModule() {
   return {
     Authenticate: renderMockAuthenticate,
     AuthManager: MockAuthManager,
     AuthClient: MockAuthClientClass,
-    LoginForm: () => null,
+    LoginForm: MockLoginForm,
     createSessionKey: (environmentKey: string) => `blaise-user-${environmentKey}`,
   };
 }
@@ -130,6 +159,12 @@ export const MockAuthenticate = {
       ...defaultUser,
       ...(user ?? {}),
     };
+  },
+  SetLoggedInRejects(rejects: boolean): void {
+    mockAuthenticateState.loggedInRejects = rejects;
+  },
+  SetLoggedInOverride(result: boolean | null): void {
+    mockAuthenticateState.loggedInOverride = result;
   },
   prototype: {
     render: renderMockAuthenticate,

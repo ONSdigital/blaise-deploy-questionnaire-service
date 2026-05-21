@@ -222,15 +222,12 @@ function DeployPage(): ReactElement {
     values: UploadFormValues,
     _actions: FormikHelpers<UploadFormValues>,
   ) {
-    /* v8 ignore next */
-    if (!file) return;
-
     setUploading(true);
     const result = await uploadAndInstallFile(
       questionnaireName,
       values.toStartDate,
       values.tmReleaseDate,
-      file,
+      file!,
       onFileUploadProgress,
     );
 

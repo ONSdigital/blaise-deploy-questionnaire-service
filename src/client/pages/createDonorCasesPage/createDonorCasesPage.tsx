@@ -11,7 +11,6 @@ function CreateDonorCasesPage(): ReactElement {
   const routeParams = useParams();
   const location = useLocation();
   const questionnaireName = routeParams.questionnaireName ?? "";
-  // Changed: narrow router state explicitly so invalid navigation state cannot leak into route parameters.
   const questionnaire = readStateQuestionnaire(location.state, "questionnaire");
   const role = decodeRouteParam(routeParams.role) ?? readStateString(location.state, "role") ?? "";
 

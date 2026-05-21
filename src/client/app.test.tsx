@@ -346,6 +346,76 @@ describe("App routes and status lifecycle", () => {
     });
   });
 
+  it("calls handleAuthenticated and transitions to authenticated when login form is submitted", async () => {
+    MockAuthenticate.OverrideReturnValues(null, false);
+    renderAtRoute("/");
+
+    const signInButton = await screen.findByRole("button", { name: /sign in/i });
+
+    await act(async () => {
+      fireEvent.click(signInButton);
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Deploy Questionnaire Service/i)).toBeInTheDocument();
+    });
+  });
+
+  it("stays unauthenticated when handleAuthenticated loggedIn check returns false", async () => {
+    MockAuthenticate.OverrideReturnValues(null, false);
+    MockAuthenticate.SetLoggedInOverride(false);
+    renderAtRoute("/");
+
+    const signInButton = await screen.findByRole("button", { name: /sign in/i });
+
+    await act(async () => {
+      fireEvent.click(signInButton);
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Enter your Blaise username and password/i)).toBeInTheDocument();
+    });
+
+    MockAuthenticate.SetLoggedInOverride(null);
+  });
+
+  it("clears the session when handleAuthenticated loggedIn check throws", async () => {
+    MockAuthenticate.OverrideReturnValues(null, false);
+    MockAuthenticate.SetLoggedInRejects(true);
+    renderAtRoute("/");
+
+    const signInButton = await screen.findByRole("button", { name: /sign in/i });
+
+    await act(async () => {
+      fireEvent.click(signInButton);
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Enter your Blaise username and password/i)).toBeInTheDocument();
+    });
+
+    MockAuthenticate.SetLoggedInRejects(false);
+  });
+
+  it("updates auth state to unauthenticated when the background loggedIn check rejects", async () => {
+    MockAuthenticate.OverrideReturnValues(null, true);
+    MockAuthenticate.SetLoggedInRejects(true);
+    renderAtRoute("/");
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Enter your Blaise username and password/i)).toBeInTheDocument();
+    });
+
+    MockAuthenticate.SetLoggedInRejects(false);
+  });
+
   it("clears the home error banner after returning when questionnaires load successfully", async () => {
     mock.reset();
     mock
