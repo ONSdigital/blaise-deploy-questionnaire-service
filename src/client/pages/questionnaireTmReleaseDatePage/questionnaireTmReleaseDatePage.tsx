@@ -83,7 +83,7 @@ function QuestionnaireTmReleaseDatePage(): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        <LoadingPanel message={"Getting Totalmobile release date"} />
+        <LoadingPanel message={"Getting Totalmobile release date..."} />
       </main>
     );
   }

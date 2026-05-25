@@ -83,7 +83,7 @@ function QuestionnaireToStartDatePage(): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        <LoadingPanel message={"Getting Telephone Operations start date"} />
+        <LoadingPanel message={"Getting Telephone Operations start date..."} />
       </main>
     );
   }

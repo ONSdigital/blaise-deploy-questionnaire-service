@@ -92,7 +92,7 @@ export function QuestionnaireSettings({
   }
 
   if (!questionnaireSettings) {
-    return <LoadingPanel message={"Getting questionnaire settings"} />;
+    return <LoadingPanel message={"Getting questionnaire settings..."} />;
   }
 
   return formatSettings(questionnaireSettings, invalidSettings);

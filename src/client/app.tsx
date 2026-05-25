@@ -278,15 +278,19 @@ function App(): ReactElement {
         signOutButton={authState === "authenticated"}
         noSave={true}
         signOutFunction={clearSession}
-        navigationLinks={[
-          { id: "home-link", label: "Home", endpoint: "/" },
-          {
-            id: "deploy-questionnaire-link",
-            label: "Deploy questionnaire",
-            endpoint: "/deploy",
-          },
-          { id: "audit-logs-link", label: "View deployment history", endpoint: "/audit" },
-        ]}
+        navigationLinks={
+          authState === "authenticated"
+            ? [
+                { id: "home-link", label: "Home", endpoint: "/" },
+                {
+                  id: "deploy-questionnaire-link",
+                  label: "Deploy questionnaire",
+                  endpoint: "/deploy",
+                },
+                { id: "audit-logs-link", label: "View deployment history", endpoint: "/audit" },
+              ]
+            : []
+        }
         currentLocation={location.pathname}
         createNavLink={createNavLink}
       />

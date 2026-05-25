@@ -110,7 +110,7 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
   }
 
   if (modesLoading) {
-    return <LoadingPanel message="Getting CAWI mode details" />;
+    return <LoadingPanel message="Getting CAWI mode details..." />;
   }
 
   if (modesError) {

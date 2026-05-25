@@ -159,7 +159,7 @@ function FindUser({ label = "Search user", roles, onItemSelected, onError }: Pro
   }
 
   if (loading) {
-    return <LoadingPanel message="Getting users" />;
+    return <LoadingPanel message="Getting users..." />;
   }
 
   return (

@@ -82,7 +82,7 @@ vi.spyOn(axios, "create").mockReturnValue(axios);
 const config = getConfigFromEnv();
 const request = supertest(newServer(config, httpLogger));
 
-describe("Sending Telephone Operations start date to BIMS service", () => {
+describe("Sending Telephone Operations start date to BIMS", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
@@ -247,7 +247,7 @@ describe("Sending Telephone Operations start date to BIMS service", () => {
   });
 });
 
-describe("Getting Telephone Operations start date from BIMS service", () => {
+describe("Getting Telephone Operations start date from BIMS", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
@@ -290,7 +290,7 @@ describe("Getting Telephone Operations start date from BIMS service", () => {
   });
 });
 
-describe("Deleting Telephone Operations start date from BIMS service", () => {
+describe("Deleting Telephone Operations start date from BIMS", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
@@ -348,7 +348,7 @@ describe("Deleting Telephone Operations start date from BIMS service", () => {
   });
 });
 
-describe("Sending Totalmobile release date to BIMS service", () => {
+describe("Sending Totalmobile release date to BIMS", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
@@ -560,7 +560,7 @@ describe("Sending Totalmobile release date to BIMS service", () => {
   });
 });
 
-describe("Getting Totalmobile release date from BIMS service", () => {
+describe("Getting Totalmobile release date from BIMS", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();
@@ -603,7 +603,7 @@ describe("Getting Totalmobile release date from BIMS service", () => {
   });
 });
 
-describe("Deleting Totalmobile release date to BIMS service", () => {
+describe("Deleting Totalmobile release date to BIMS", () => {
   afterEach(() => {
     vi.clearAllMocks();
     mock.reset();

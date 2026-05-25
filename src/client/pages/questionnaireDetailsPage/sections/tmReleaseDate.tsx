@@ -57,7 +57,7 @@ function TmReleaseDate({ questionnaireName }: Props): ReactElement {
         className="ons-u-mb-m"
         aria-busy="true"
       >
-        <LoadingPanel message={"Getting Totalmobile release date"} />
+        <LoadingPanel message={"Getting Totalmobile release date..."} />
       </div>
     );
   }

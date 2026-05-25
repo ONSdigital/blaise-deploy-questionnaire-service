@@ -35,7 +35,7 @@
     "@fortawesome/react-fontawesome": "^3.3.1",
     "@google-cloud/logging": "^11.2.1",
     "@google-cloud/storage": "^7.19.0",
-    "@tanstack/react-query": "^5.100.11",
+    "@tanstack/react-query": "^5.100.14",
     "axios": "^1.16.1",
     "blaise-api-node-client": "git+https://github.com/ONSdigital/blaise-api-node-client#BLAIS5-5177",
     "blaise-design-system-react-components": "git+https://github.com/ONSdigital/blaise-design-system-react-components#BLAIS5-5177",
@@ -57,7 +57,7 @@
     "react-router-dom": "^7.15.1"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "^5.8.3",
+    "@eslint-react/eslint-plugin": "^5.8.5",
     "@eslint/js": "^10.0.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -83,13 +83,13 @@
     "happy-dom": "^20.9.0",
     "jiti": "^2.7.0",
     "jsonc-eslint-parser": "^3.1.0",
-    "knip": "^6.14.1",
+    "knip": "^6.14.2",
     "pino-pretty": "^13.1.3",
     "prettier": "^3.8.3",
     "supertest": "^7.2.2",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.4",
+    "typescript-eslint": "^8.60.0",
     "vite": "^8.0.14",
     "vitest": "^4.1.7"
   },

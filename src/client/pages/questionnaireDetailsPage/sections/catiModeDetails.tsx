@@ -42,7 +42,7 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
         className="ons-u-mb-m"
         aria-busy="true"
       >
-        <LoadingPanel message={"Getting Telephone Operations start date"} />
+        <LoadingPanel message={"Getting Telephone Operations start date..."} />
       </div>
     );
   }
