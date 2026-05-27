@@ -1,144 +1,137 @@
-import crypto from "crypto";
-import { AuthConfig } from "blaise-login-react/blaise-login-react-server";
+import { type AuthConfig } from "blaise-login-react-server";
+
+const DEFAULT_SESSION_TIMEOUT = "12h";
+const ALLOWED_ROLES = ["DST", "BDSS", "Researcher", "IPS Researcher", "IPS Support"];
 
 export interface Config extends AuthConfig {
-    Port: number;
-    BlaiseApiUrl: string;
-    ProjectId: string;
-    BucketName: string;
-    ServerPark: string;
-    BimsApiUrl: string;
-    BimsClientId: string;
-    BusApiUrl: string;
-    BusClientId: string;
-    CreateDonorCasesCloudFunctionUrl: string;
-    ReissueNewDonorCaseCloudFunctionUrl: string;
-    GetUsersByRoleCloudFunctionUrl: string;
+  port: number;
+  blaiseApiUrl: string;
+  projectId: string;
+  urlDomain: string;
+  bucketName: string;
+  serverPark: string;
+  bimsApiUrl: string;
+  bimsClientId: string;
+  busApiUrl: string;
+  busClientId: string;
+  createDonorCasesCloudFunctionUrl: string;
+  reissueNewDonorCaseCloudFunctionUrl: string;
+  getUsersByRoleCloudFunctionUrl: string;
 }
+
+type RequiredConfigEnv = {
+  BLAISE_API_URL: string | undefined;
+  PROJECT_ID: string | undefined;
+  URL_DOMAIN: string | undefined;
+  BUCKET_NAME: string | undefined;
+  SERVER_PARK: string | undefined;
+  BIMS_API_URL: string | undefined;
+  BIMS_CLIENT_ID: string | undefined;
+  BUS_API_URL: string | undefined;
+  BUS_CLIENT_ID: string | undefined;
+  SESSION_SECRET: string | undefined;
+  CREATE_DONOR_CASES_CLOUD_FUNCTION_URL: string | undefined;
+  REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL: string | undefined;
+  GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL: string | undefined;
+};
+
+type ResolvedRequiredConfigEnv = {
+  [TKey in keyof RequiredConfigEnv]: string;
+};
 
 export function getConfigFromEnv(): Config {
-    let {
-        PROJECT_ID,
-        BUCKET_NAME,
-        BLAISE_API_URL,
-        SERVER_PARK,
-        BIMS_API_URL,
-        BIMS_CLIENT_ID,
-        BUS_API_URL,
-        BUS_CLIENT_ID,
-        SESSION_TIMEOUT,
-        CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
-        REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
-        GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL
-    } = process.env;
+  const {
+    PROJECT_ID,
+    URL_DOMAIN,
+    BUCKET_NAME,
+    BLAISE_API_URL,
+    SERVER_PARK,
+    BIMS_API_URL,
+    BIMS_CLIENT_ID,
+    BUS_API_URL,
+    BUS_CLIENT_ID,
+    PORT,
+    SESSION_SECRET,
+    CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
+    REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
+    GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL,
+  } = process.env;
 
-    const {
-        PORT,
-        SESSION_SECRET,
-        ROLES
-    } = process.env;
+  const requiredEnv: RequiredConfigEnv = {
+    BLAISE_API_URL,
+    PROJECT_ID,
+    URL_DOMAIN,
+    BUCKET_NAME,
+    SERVER_PARK,
+    BIMS_API_URL,
+    BIMS_CLIENT_ID,
+    BUS_API_URL,
+    BUS_CLIENT_ID,
+    SESSION_SECRET,
+    CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
+    REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
+    GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL,
+  };
 
-    if (BLAISE_API_URL === undefined) {
-        console.error("BLAISE_API_URL environment variable has not been set");
-        BLAISE_API_URL = "ENV_VAR_NOT_SET";
-    }
+  assertResolvedRequiredEnv(requiredEnv);
 
-    if (PROJECT_ID === undefined) {
-        console.error("PROJECT_ID environment variable has not been set");
-        PROJECT_ID = "ENV_VAR_NOT_SET";
-    }
-
-    if (BUCKET_NAME === undefined) {
-        console.error("BUCKET_NAME environment variable has not been set");
-        BUCKET_NAME = "ENV_VAR_NOT_SET";
-    }
-
-    if (SERVER_PARK === undefined) {
-        console.error("SERVER_PARK environment variable has not been set");
-        SERVER_PARK = "ENV_VAR_NOT_SET";
-    }
-
-    if (BIMS_API_URL === undefined) {
-        console.error("SERVER_PARK environment variable has not been set");
-        BIMS_API_URL = "ENV_VAR_NOT_SET";
-    }
-
-    if (BIMS_CLIENT_ID === undefined) {
-        console.error("SERVER_PARK environment variable has not been set");
-        BIMS_CLIENT_ID = "ENV_VAR_NOT_SET";
-    }
-
-    if (BUS_API_URL === undefined) {
-        console.error("BUS_API_URL environment variable has not been set");
-        BUS_API_URL = "ENV_VAR_NOT_SET";
-    }
-
-    if (BUS_CLIENT_ID === undefined) {
-        console.error("BUS_CLIENT_ID environment variable has not been set");
-        BUS_CLIENT_ID = "ENV_VAR_NOT_SET";
-    }
-
-    if (SESSION_TIMEOUT === undefined || SESSION_TIMEOUT === "_SESSION_TIMEOUT") {
-        console.error("SESSION_TIMEOUT environment variable has not been set");
-        SESSION_TIMEOUT = "12h";
-    }
-
-    if (CREATE_DONOR_CASES_CLOUD_FUNCTION_URL === undefined) {
-        console.error("CREATE_DONOR_CASES_CLOUD_FUNCTION_URL environment variable has not been set");
-        CREATE_DONOR_CASES_CLOUD_FUNCTION_URL = "ENV_VAR_NOT_SET";
-    }
-
-    if (REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL === undefined) {
-        console.error("REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL environment variable has not been set");
-        REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL = "ENV_VAR_NOT_SET";
-    }
-
-    if (GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL === undefined) {
-        console.error("GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL environment variable has not been set");
-        GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL = "ENV_VAR_NOT_SET";
-    }
-
-    let port = 5000;
-    if (PORT !== undefined) {
-        port = +PORT;
-    }
-
-    return {
-        Port: port,
-        BlaiseApiUrl: fixURL(BLAISE_API_URL),
-        ProjectId: PROJECT_ID,
-        BucketName: BUCKET_NAME,
-        ServerPark: SERVER_PARK,
-        BimsApiUrl: BIMS_API_URL,
-        BimsClientId: BIMS_CLIENT_ID,
-        BusApiUrl: BUS_API_URL,
-        BusClientId: BUS_CLIENT_ID,
-        SessionTimeout: SESSION_TIMEOUT,
-        SessionSecret: sessionSecret(SESSION_SECRET),
-        Roles: loadRoles(ROLES),
-        CreateDonorCasesCloudFunctionUrl: CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
-        ReissueNewDonorCaseCloudFunctionUrl: REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
-        GetUsersByRoleCloudFunctionUrl: GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL
-    };
+  return {
+    port: parsePort(PORT),
+    blaiseApiUrl: fixUrl(requiredEnv.BLAISE_API_URL),
+    projectId: requiredEnv.PROJECT_ID,
+    urlDomain: requiredEnv.URL_DOMAIN,
+    bucketName: requiredEnv.BUCKET_NAME,
+    serverPark: requiredEnv.SERVER_PARK,
+    bimsApiUrl: requiredEnv.BIMS_API_URL,
+    bimsClientId: requiredEnv.BIMS_CLIENT_ID,
+    busApiUrl: requiredEnv.BUS_API_URL,
+    busClientId: requiredEnv.BUS_CLIENT_ID,
+    SessionTimeout: DEFAULT_SESSION_TIMEOUT,
+    SessionSecret: requiredEnv.SESSION_SECRET,
+    TokenIssuer: requiredEnv.PROJECT_ID,
+    Roles: ALLOWED_ROLES,
+    createDonorCasesCloudFunctionUrl: requiredEnv.CREATE_DONOR_CASES_CLOUD_FUNCTION_URL,
+    reissueNewDonorCaseCloudFunctionUrl: requiredEnv.REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL,
+    getUsersByRoleCloudFunctionUrl: requiredEnv.GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL,
+  };
 }
 
-function fixURL(url: string): string {
-    if (url.startsWith("http")) {
-        return url;
-    }
-    return `http://${url}`;
+function fixUrl(url: string): string {
+  if (url.startsWith("http")) {
+    return url;
+  }
+
+  return `http://${url}`;
 }
 
-function loadRoles(roles: string | undefined): string[] {
-    if (!roles || roles === "" || roles === "_ROLES") {
-        return ["DST", "BDSS", "Researcher", "IPS Researcher", "IPS Support"];
-    }
-    return roles.split(",");
+function assertResolvedRequiredEnv(
+  env: RequiredConfigEnv,
+): asserts env is ResolvedRequiredConfigEnv {
+  const requiredEnvErrors = Object.entries(env)
+    .map(([name, value]) => {
+      if (value === undefined || value.trim() === "" || value === `_${name}`) {
+        return name;
+      }
+
+      return undefined;
+    })
+    .filter((errorMessage): errorMessage is string => errorMessage !== undefined);
+
+  if (requiredEnvErrors.length > 0) {
+    throw new Error(`Missing required environment variables: ${requiredEnvErrors.join(", ")}`);
+  }
 }
 
-function sessionSecret(secret: string | undefined): string {
-    if (!secret || secret === "" || secret === "_SESSION_SECRET") {
-        return crypto.randomBytes(20).toString("hex");
-    }
-    return secret;
+function parsePort(port: string | undefined): number {
+  if (port === undefined) {
+    return 5000;
+  }
+
+  const parsed = Number(port);
+
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    throw new Error(`Invalid PORT value: ${port}`);
+  }
+
+  return parsed;
 }

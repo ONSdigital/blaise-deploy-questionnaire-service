@@ -1,64 +1,84 @@
-import express, { Request, Response, Router } from "express";
-import { Auth } from "blaise-login-react/blaise-login-react-server";
-import BusApiClient from "bus-api-node-client";
+import { type Auth } from "blaise-login-react-server";
+import express, { type Request, type Response, type Router } from "express";
 
-export default function NewBusHandler(busApiClient: BusApiClient, auth: Auth): Router {
-    const router = express.Router();
+import { sanitise } from "../helpers/sanitise.js";
 
-    const busHandler = new BusHandler(busApiClient);
-    router.post("/api/uacs/instrument/:instrumentName", auth.Middleware, busHandler.GenerateUacs);
-    router.get("/api/uacs/instrument/:instrumentName/bycaseid", auth.Middleware, busHandler.GetUacsByCaseId);
-    router.get("/api/uacs/instrument/:instrumentName/count", auth.Middleware, busHandler.GetUacCount);
-    return router;
+export interface BusClientLike {
+  generateUacsForQuestionnaire(instrumentName: string): Promise<unknown>;
+  getUacsByCaseId(instrumentName: string): Promise<unknown>;
+  getUacCount(instrumentName: string): Promise<{ count: number }>;
 }
 
-export class BusHandler {
-    busApiClient: BusApiClient;
+export default function newBusHandler(busApiClient: BusClientLike, auth: Auth): Router {
+  const router = express.Router();
 
-    constructor(busApiClient: BusApiClient) {
-        this.busApiClient = busApiClient;
+  const busHandler = new BusHandler(busApiClient);
 
-        this.GenerateUacs = this.GenerateUacs.bind(this);
-        this.GetUacsByCaseId = this.GetUacsByCaseId.bind(this);
-        this.GetUacCount = this.GetUacCount.bind(this);
+  router.post("/api/uacs/instrument/:instrumentName", auth.middleware, busHandler.generateUacs);
+  router.get(
+    "/api/uacs/instrument/:instrumentName/bycaseid",
+    auth.middleware,
+    busHandler.getUacsByCaseId,
+  );
+  router.get("/api/uacs/instrument/:instrumentName/count", auth.middleware, busHandler.getUacCount);
+
+  return router;
+}
+
+class BusHandler {
+  private readonly busApiClient: BusClientLike;
+
+  constructor(busApiClient: BusClientLike) {
+    this.busApiClient = busApiClient;
+  }
+
+  generateUacs = async (req: Request, res: Response): Promise<Response> => {
+    const instrumentName = req.params["instrumentName"] as string;
+    const safeInstrumentName = sanitise(instrumentName);
+    const uacs = await this.busApiClient.generateUacsForQuestionnaire(instrumentName);
+
+    if (typeof uacs !== "object") {
+      req.log.error(`Generate Uacs for ${safeInstrumentName} response is not an object`);
+
+      return res.status(500).json();
     }
 
-    async GenerateUacs(req: Request, res: Response): Promise<Response> {
-        const { instrumentName } = req.params;
-        const uacCodes = await this.busApiClient.generateUacCodesForInstrument(instrumentName);
+    req.log.info(`Generate Uacs for ${safeInstrumentName} response successful`);
 
-        if (typeof uacCodes !== "object") {
-            req.log.error(`Generate UAC codes for ${instrumentName} response is not an object`);
-            return res.status(500).json();
-        }
+    return res.status(200).json(uacs);
+  };
 
-        req.log.info(`Generate UAC codes for ${instrumentName} response successful`);
-        return res.status(200).json(uacCodes);
+  getUacsByCaseId = async (req: Request, res: Response): Promise<Response> => {
+    const instrumentName = req.params["instrumentName"] as string;
+    const safeInstrumentName = sanitise(instrumentName);
+    const uacs = await this.busApiClient.getUacsByCaseId(instrumentName);
+
+    if (typeof uacs !== "object") {
+      req.log.error(`Get Uacs by case ID for ${safeInstrumentName} response is not an object`);
+
+      return res.status(500).json();
     }
 
-    async GetUacsByCaseId(req: Request, res: Response): Promise<Response> {
-        const { instrumentName } = req.params;
-        const uacCodes = await this.busApiClient.getUacCodesByCaseId(instrumentName);
+    req.log.info(`Get Uacs by case ID for ${safeInstrumentName} response successful`);
 
-        if (typeof uacCodes !== "object") {
-            req.log.error(`Get UAC codes by caseID for ${instrumentName} response is not an object`);
-            return res.status(500).json();
-        }
+    return res.status(200).json(uacs);
+  };
 
-        req.log.info(`Get UAC codes by case ID for ${instrumentName} response successful`);
-        return res.status(200).json(uacCodes);
+  getUacCount = async (req: Request, res: Response): Promise<Response> => {
+    const instrumentName = req.params["instrumentName"] as string;
+    const safeInstrumentName = sanitise(instrumentName);
+    const uacCount = await this.busApiClient.getUacCount(instrumentName);
+
+    if (typeof uacCount.count !== "number") {
+      req.log.error(`Get Uac for ${safeInstrumentName} response is not a number`);
+
+      return res.status(500).json();
     }
 
-    async GetUacCount(req: Request, res: Response): Promise<Response> {
-        const { instrumentName } = req.params;
-        const uacCount = await this.busApiClient.getUacCodeCount(instrumentName);
+    req.log.info(
+      `Get Uac count for ${safeInstrumentName} response successful, count: ${uacCount.count}`,
+    );
 
-        if (typeof uacCount.count !== "number") {
-            req.log.error(`Get UAC code for ${instrumentName} response is not a number`);
-            return res.status(500).json();
-        }
-
-        req.log.info(`Get UAC code count for ${instrumentName} response successful, count: ${uacCount.count}`);
-        return res.status(200).json(uacCount);
-    }
+    return res.status(200).json(uacCount);
+  };
 }

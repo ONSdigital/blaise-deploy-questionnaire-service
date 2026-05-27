@@ -1,129 +1,112 @@
-# Blaise Deploy Questionnaire Service (DQS)
+# Blaise Deploy Questionnaire Service (DQS) 🚀
 
-This service provides a web user interface for deploying questionnaires to Blaise.
+Deploy Questionnaire Service (DQS) provides a web UI for deploying questionnaires to the Blaise platform.
 
-The deployment process involves uploading a questionnaire package to a Google Cloud Storage (GCS) bucket, which then triggers a request to the [Blaise REST API](https://github.com/ONSdigital/blaise-api-rest) to install it.
+The app is a React frontend served by an Express backend. During deployment, uploaded questionnaire packages are streamed to Google Cloud Storage (GCS), then installed via the [Blaise REST API](https://github.com/ONSdigital/blaise-api-rest).
 
-This project is a React application served by a Node.js Express backend. The backend handles file uploads from the client, streaming them to a GCS bucket using the [@google-cloud/storage](https://www.npmjs.com/package/@google-cloud/storage) package.
+![](.github/architecture-diagram.jpg)
 
-![](.github/DQS_Architecture_Diagram.jpg)
+## Integrations
 
-### Questionnaire deployment process
+DQS interacts with the following services during questionnaire deployment and management:
 
-This service interacts with several other services:
+- [Blaise Instrument Metadata Service (BIMS)](https://github.com/ONSdigital/blaise-instrument-metadata-service): Stores questionnaire metadata, including Telephone Operations start date and Totalmobile release date.
+- [Telephone Operations Blaise Interface (TOBI)](https://github.com/ONSdigital/telephone-operations-blaise-interface): Uses Telephone Operations start dates configured via DQS/BIMS.
+- [Blaise Totalmobile Services (BTS)](https://github.com/ONSdigital/blaise-totalmobile-services): Uses Totalmobile release dates configured via DQS/BIMS.
+- [Blaise UAC Service (BUS)](https://github.com/ONSdigital/blaise-uac-service): Generates and manages Unique Access Codes (UACs).
 
--   **[Blaise Instrument Metadata Service (BIMS)](https://github.com/ONSdigital/blaise-instrument-metadata-service)**: Stores instrument (questionnaire) metadata, such as the Telephone Operations start date used by the [Telephone Operations Blaise Interface (TOBI)](https://github.com/ONSdigital/telephone-operations-blaise-interface) and The Totalmobile release date used by [Blaise Totalmobile Services (BTS)](https://github.com/ONSdigital/blaise-totalmobile-services).
--   **[Blaise UAC Service (BUS)](https://github.com/ONSdigital/blaise-uac-service)**: Manages the generation of Unique Access Codes (UACs) for questionnaires.
+![](.github/upload-process-diagram.jpg)
 
-![](.github/DQS_upload_process_Diagram.jpg)
+## Local Development
 
-### Local Development Setup
+### Prerequisites
 
-Prerequisites:
+- [Node.js](https://nodejs.org/) 24+ (see `engines` in [package.json](package.json))
+- [Yarn](https://yarnpkg.com/) 4+
+- [Google Cloud SDK (`gcloud` CLI)](https://cloud.google.com/sdk/)
 
-- [Node.js](https://nodejs.org/)
-- [Yarn](https://yarnpkg.com/)
-- [Cloud SDK](https://cloud.google.com/sdk/)
-
-Clone the repository:
+### Clone and install packages
 
 ```shell
 git clone https://github.com/ONSdigital/blaise-deploy-questionnaire-service.git
+cd blaise-deploy-questionnaire-service
+yarn install
 ```
 
-Authenticate with GCP:
+### Authenticate with Google Cloud (keyless)
+
+Use service account impersonation to auth with BIMS and BUS.
 
 ```shell
 gcloud auth login
+gcloud config set project ons-blaise-v2-dev
+gcloud auth application-default login --impersonate-service-account=ons-blaise-v2-dev@appspot.gserviceaccount.com
 ```
 
-Set your GCP project:
+### Start an IAP tunnel to Blaise REST API
 
-```shell
-gcloud config set project ons-blaise-v2-dev-<sandbox-suffix>
-```
-
-Open a tunnel to our Blaise RESTful API in your GCP project:
+Run this in a separate terminal and keep it running:
 
 ```shell
 gcloud compute start-iap-tunnel restapi-1 80 --local-host-port=localhost:8080 --zone europe-west2-a
 ```
 
-You should see `Listening on port [8080]` in the terminal output, leave this terminal running.
+Expected output includes `Listening on port [8080]`.
 
-Create an .env file in the project root with the following variables:
+### Configure environment variables
 
-| Variable | Description | Example |
-| - | - | - |
-| BLAISE_API_URL | Local address you have the [Blaise Rest API](https://github.com/ONSdigital/blaise-api-rest) running on | localhost:8080 |
-| PROJECT_ID | GCP project ID | ons-blaise-dev-sandbox123 |
-| BUCKET_NAME | Bucket questionnaire will be uploaded to | ons-blaise-dev-sandbox123-dqs |
-| SERVER_PARK | Blaise server park questionnaires are deployed in | gusty |
-| BIMS_API_URL | Address for [BIMS](https://github.com/ONSdigital/blaise-instrument-metadata-service) | https://dev-sandbox123-bims.social-surveys.gcp.onsdigital.uk |
-| BIMS_CLIENT_ID | IAP client ID for [BIMS](https://github.com/ONSdigital/blaise-instrument-metadata-service) | blah.apps.googleusercontent.com |
-| BUS_API_URL | Address for [BUS](https://github.com/ONSdigital/blaise-uac-service) | https://dev-sandbox123-bus.social-surveys.gcp.onsdigital.uk |
-| BUS_CLIENT_ID | IAP client ID for [BUS](https://github.com/ONSdigital/blaise-uac-service)| blah.apps.googleusercontent.com |
-| CREATE_DONOR_CASES_CLOUD_FUNCTION_URL | Address to trigger create donor cases cloud function | https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/create-donor-cases |
-| REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL | Address to trigger reissue new donor case cloud function | https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/reissue-new-donor-case |
-| GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL | Address to trigger get users by role cloud function | https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/get-users-by-role |
+Create a `.env` file in the repository root. You can find IAP client IDs from an existing deployment:
 
-To find the IAP client IDs, navigate to the GCP console, search for `IAP`, click the three dots to the right of the service and select `Settings`.
+- App Engine -> Versions -> `dqs-ui` -> View Config
 
-Environment variables for DQS that has already been deployed to an environment can also be found by going to the GCP console, searching for `App Engine`, clicking `Versions`, selecting `dqs-ui`, then clicking `View` under `Config`.
+Example `.env` file:
 
-Example .env file:
-
-```ini 
-BLAISE_API_URL=localhost:8080
-PROJECT_ID=ons-blaise-v2-dev-sandbox123
-BUCKET_NAME=ons-blaise-v2-dev-sandbox123-dqs
-SERVER_PARK=gusty
+```ini
 BIMS_API_URL=https://dev-sandbox123-bims.social-surveys.gcp.onsdigital.uk
 BIMS_CLIENT_ID=blah.apps.googleusercontent.com
+BLAISE_API_URL=localhost:8080
+BUCKET_NAME=ons-blaise-v2-dev-sandbox123-dqs
 BUS_API_URL=https://dev-sandbox123-bus.social-surveys.gcp.onsdigital.uk
 BUS_CLIENT_ID=blah.apps.googleusercontent.com
 CREATE_DONOR_CASES_CLOUD_FUNCTION_URL=https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/create-donor-cases
-REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL=https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/reissue-new-donor-case
 GET_USERS_BY_ROLE_CLOUD_FUNCTION_URL=https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/get-users-by-role
+PROJECT_ID=ons-blaise-v2-dev-sandbox123
+REISSUE_NEW_DONOR_CASE_CLOUD_FUNCTION_URL=https://europe-west2-ons-blaise-v2-dev-sandbox123.cloudfunctions.net/reissue-new-donor-case
+SERVER_PARK=gusty
+URL_DOMAIN=localhost
+SESSION_SECRET=blah
 ```
 
-In a new terminal, install the JavaScript dependencies:
+### Run the app
+
+Standard mode:
 
 ```shell
-yarn
-```
-
-Create service account JSON key.
-
-```shell
-
-gcloud iam service-accounts keys create keys.json --iam-account ons-blaise-v2-dev-<sandbox>@appspot.gserviceaccount.com
-```
-
-Set temporary environment variable for service account key.
-
-```shell
-export GOOGLE_APPLICATION_CREDENTIALS=keys.json
-```
-
-Run Node.js server and React.js client via the following package.json script:
-
-```shell script
 yarn dev
 ```
 
-The UI should now be accessible via:
+For WSL/mounted paths (polling mode):
 
-http://localhost:3000/
-
-Tests can be run via the following package.json script:
-
-```shell script
-yarn test
+```shell
+yarn dev-wsl
 ```
 
-Test snapshots can be updated via:
+UI is available at http://localhost:3000/.
 
-```shell script
-yarn test -u
+If local processes become stale, stop known ports and watchers:
+
+```shell
+yarn kill
 ```
+
+## Common Scripts
+
+- `yarn dev`: Run frontend + backend in watch mode
+- `yarn dev-wsl`: Run with polling watcher support for WSL/mounted paths
+- `yarn build`: Build client and server
+- `yarn typecheck`: Run TypeScript checks for frontend and server projects
+- `yarn lint`: Run typecheck, ESLint, Prettier checks, and knip
+- `yarn lint-fix`: Auto-fix lint/prettier issues and run knip fix
+- `yarn test`: Run Vitest suite with coverage
+- `yarn test-watch`: Run Vitest in watch mode
+- `yarn spellcheck`: Run cspell over code/config/docs files
