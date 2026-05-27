@@ -95,8 +95,8 @@ describe("axiosConfig", () => {
     const { default: axios } = await import("axios");
     const dispatchSpy = vi.spyOn(window, "dispatchEvent");
 
-    // Throwing a non-object from a request interceptor causes the rejection
-    // to flow through the response error interceptors with a non-object value.
+    // If a request interceptor throws a non-object (e.g. a string), Axios passes it
+    // through the response error interceptors unchanged.
     const reqId = axios.interceptors.request.use(() => {
       throw "non-object-error";
     });
