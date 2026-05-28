@@ -77,9 +77,13 @@ function NotFound(): ReactElement {
       id="main-content"
       className="ons-page__main ons-u-mt-l"
     >
-      <h1>Page not found</h1>
-      <p>The page you're looking for doesn't exist.</p>
-      <Link to="/">Return home</Link>
+      <div className="ons-grid">
+        <div className="ons-grid__col ons-col-8@m">
+          <h1>Page not found</h1>
+          <p>The page you're looking for doesn't exist.</p>
+          <Link to="/">Return home</Link>
+        </div>
+      </div>
     </main>
   );
 }

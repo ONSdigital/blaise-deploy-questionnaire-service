@@ -52,7 +52,11 @@ function DeleteQuestionnairePage({ onDelete, onCancel }: Props): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        <LoadingPanel />
+        <div className="ons-grid">
+          <div className="ons-grid__col ons-col-8@m">
+            <LoadingPanel />
+          </div>
+        </div>
       </main>
     );
   }
@@ -63,7 +67,11 @@ function DeleteQuestionnairePage({ onDelete, onCancel }: Props): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        <Panel status="error">Failed to get delete questionnaire confirmation details</Panel>
+        <div className="ons-grid">
+          <div className="ons-grid__col ons-col-8@m">
+            <Panel status="error">Failed to get delete questionnaire confirmation details</Panel>
+          </div>
+        </div>
       </main>
     );
   }
@@ -90,16 +98,20 @@ function DeleteQuestionnairePage({ onDelete, onCancel }: Props): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        {selectedQuestionnaire.status === "Failed" ? (
-          <FailedStateWarning questionnaireName={selectedQuestionnaire.name} />
-        ) : (
-          <DeleteConfirmation
-            questionnaire={selectedQuestionnaire}
-            modes={modes}
-            onDelete={onDelete}
-            onCancel={() => onCancel(questionnaireName)}
-          />
-        )}
+        <div className="ons-grid">
+          <div className="ons-grid__col ons-col-8@m">
+            {selectedQuestionnaire.status === "Failed" ? (
+              <FailedStateWarning questionnaireName={selectedQuestionnaire.name} />
+            ) : (
+              <DeleteConfirmation
+                questionnaire={selectedQuestionnaire}
+                modes={modes}
+                onDelete={onDelete}
+                onCancel={() => onCancel(questionnaireName)}
+              />
+            )}
+          </div>
+        </div>
       </main>
     </>
   );

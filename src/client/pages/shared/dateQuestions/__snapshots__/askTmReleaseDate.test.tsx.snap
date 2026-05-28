@@ -5,230 +5,214 @@ exports[`Ask to set Totalmobile release date page > should match the Snapshot 1`
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <div
-        class="ons-grid"
+      <h1
+        class="ons-u-mb-l"
       >
-        <div
-          class="ons-grid__col ons-col-8@m"
+        Would you like to set a Totalmobile release date for questionnaire
+         
+        <span
+          class="ons-highlight"
         >
-          <h1
-            class="ons-u-mb-l"
-          >
-            Would you like to set a Totalmobile release date for questionnaire
-             
-            <span
-              class="ons-highlight"
-            >
-              LMS2207T
-            </span>
-            ?
-          </h1>
-          <p>
-            This determines when selected cases are sent to Totalmobile for field allocation. If you do not select a date, no cases will be sent to Totalmobile.
-          </p>
+          LMS2207T
+        </span>
+        ?
+      </h1>
+      <p>
+        This determines when selected cases are sent to Totalmobile for field allocation. If you do not select a date, no cases will be sent to Totalmobile.
+      </p>
+      <div
+        class="ons-field ons-u-mb-m"
+        id="radio-_r_1_"
+      >
+        <fieldset
+          class="ons-fieldset"
+        >
+          <legend
+            class="ons-fieldset__legend ons-u-fs-r--b"
+          />
           <div
-            class="ons-field ons-u-mb-m"
-            id="radio-_r_1_"
+            class="ons-grid"
           >
-            <fieldset
-              class="ons-fieldset"
-            >
-              <legend
-                class="ons-fieldset__legend ons-u-fs-r--b"
-              />
-              <div
-                class="ons-grid"
-              >
-                <div
-                  class="ons-grid__col ons-col-8@m ons-col-6@l"
-                >
-                  <div
-                    class="ons-input-items"
-                  >
-                    <div
-                      class="ons-radios__items"
-                    >
-                      <div
-                        class="ons-radios__item"
-                      >
-                        <span
-                          class="ons-radio"
-                        >
-                          <input
-                            class="ons-radio__input"
-                            id="no"
-                            name="askDate"
-                            type="radio"
-                            value="no"
-                          />
-                          <label
-                            class="ons-radio__label "
-                            for="no"
-                          >
-                            No release date
-                          </label>
-                        </span>
-                      </div>
-                      <div
-                        class="ons-radios__item"
-                      >
-                        <span
-                          class="ons-radio"
-                        >
-                          <input
-                            class="ons-radio__input"
-                            id="yes"
-                            name="askDate"
-                            type="radio"
-                            value="yes"
-                          />
-                          <label
-                            class="ons-radio__label "
-                            for="yes"
-                          >
-                            Yes, let me specify a release date
-                          </label>
-                          <span
-                            aria-hidden="true"
-                            class="ons-radio__other "
-                            id="yes-other-wrap"
-                          >
-                            <label
-                              class="ons-label ons-u-fs-s--b"
-                              for="set-date"
-                            >
-                              Please specify date
-                            </label>
-                            <input
-                              class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                              id="set-date"
-                              name="tmReleaseDate"
-                              type="date"
-                            />
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <div
-      class="ons-grid"
-    >
-      <div
-        class="ons-grid__col ons-col-8@m"
-      >
-        <h1
-          class="ons-u-mb-l"
-        >
-          Would you like to set a Totalmobile release date for questionnaire
-           
-          <span
-            class="ons-highlight"
-          >
-            LMS2207T
-          </span>
-          ?
-        </h1>
-        <p>
-          This determines when selected cases are sent to Totalmobile for field allocation. If you do not select a date, no cases will be sent to Totalmobile.
-        </p>
-        <div
-          class="ons-field ons-u-mb-m"
-          id="radio-_r_1_"
-        >
-          <fieldset
-            class="ons-fieldset"
-          >
-            <legend
-              class="ons-fieldset__legend ons-u-fs-r--b"
-            />
             <div
-              class="ons-grid"
+              class="ons-grid__col ons-col-8@m ons-col-6@l"
             >
               <div
-                class="ons-grid__col ons-col-8@m ons-col-6@l"
+                class="ons-input-items"
               >
                 <div
-                  class="ons-input-items"
+                  class="ons-radios__items"
                 >
                   <div
-                    class="ons-radios__items"
+                    class="ons-radios__item"
                   >
-                    <div
-                      class="ons-radios__item"
+                    <span
+                      class="ons-radio"
                     >
-                      <span
-                        class="ons-radio"
+                      <input
+                        class="ons-radio__input"
+                        id="no"
+                        name="askDate"
+                        type="radio"
+                        value="no"
+                      />
+                      <label
+                        class="ons-radio__label "
+                        for="no"
                       >
-                        <input
-                          class="ons-radio__input"
-                          id="no"
-                          name="askDate"
-                          type="radio"
-                          value="no"
-                        />
-                        <label
-                          class="ons-radio__label "
-                          for="no"
-                        >
-                          No release date
-                        </label>
-                      </span>
-                    </div>
-                    <div
-                      class="ons-radios__item"
+                        No release date
+                      </label>
+                    </span>
+                  </div>
+                  <div
+                    class="ons-radios__item"
+                  >
+                    <span
+                      class="ons-radio"
                     >
-                      <span
-                        class="ons-radio"
+                      <input
+                        class="ons-radio__input"
+                        id="yes"
+                        name="askDate"
+                        type="radio"
+                        value="yes"
+                      />
+                      <label
+                        class="ons-radio__label "
+                        for="yes"
                       >
-                        <input
-                          class="ons-radio__input"
-                          id="yes"
-                          name="askDate"
-                          type="radio"
-                          value="yes"
-                        />
+                        Yes, let me specify a release date
+                      </label>
+                      <span
+                        aria-hidden="true"
+                        class="ons-radio__other "
+                        id="yes-other-wrap"
+                      >
                         <label
-                          class="ons-radio__label "
-                          for="yes"
+                          class="ons-label ons-u-fs-s--b"
+                          for="set-date"
                         >
-                          Yes, let me specify a release date
+                          Please specify date
                         </label>
-                        <span
-                          aria-hidden="true"
-                          class="ons-radio__other "
-                          id="yes-other-wrap"
-                        >
-                          <label
-                            class="ons-label ons-u-fs-s--b"
-                            for="set-date"
-                          >
-                            Please specify date
-                          </label>
-                          <input
-                            class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
-                            id="set-date"
-                            name="tmReleaseDate"
-                            type="date"
-                          />
-                        </span>
+                        <input
+                          class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
+                          id="set-date"
+                          name="tmReleaseDate"
+                          type="date"
+                        />
                       </span>
-                    </div>
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
-          </fieldset>
-        </div>
+          </div>
+        </fieldset>
       </div>
+    </div>
+  </body>,
+  "container": <div>
+    <h1
+      class="ons-u-mb-l"
+    >
+      Would you like to set a Totalmobile release date for questionnaire
+       
+      <span
+        class="ons-highlight"
+      >
+        LMS2207T
+      </span>
+      ?
+    </h1>
+    <p>
+      This determines when selected cases are sent to Totalmobile for field allocation. If you do not select a date, no cases will be sent to Totalmobile.
+    </p>
+    <div
+      class="ons-field ons-u-mb-m"
+      id="radio-_r_1_"
+    >
+      <fieldset
+        class="ons-fieldset"
+      >
+        <legend
+          class="ons-fieldset__legend ons-u-fs-r--b"
+        />
+        <div
+          class="ons-grid"
+        >
+          <div
+            class="ons-grid__col ons-col-8@m ons-col-6@l"
+          >
+            <div
+              class="ons-input-items"
+            >
+              <div
+                class="ons-radios__items"
+              >
+                <div
+                  class="ons-radios__item"
+                >
+                  <span
+                    class="ons-radio"
+                  >
+                    <input
+                      class="ons-radio__input"
+                      id="no"
+                      name="askDate"
+                      type="radio"
+                      value="no"
+                    />
+                    <label
+                      class="ons-radio__label "
+                      for="no"
+                    >
+                      No release date
+                    </label>
+                  </span>
+                </div>
+                <div
+                  class="ons-radios__item"
+                >
+                  <span
+                    class="ons-radio"
+                  >
+                    <input
+                      class="ons-radio__input"
+                      id="yes"
+                      name="askDate"
+                      type="radio"
+                      value="yes"
+                    />
+                    <label
+                      class="ons-radio__label "
+                      for="yes"
+                    >
+                      Yes, let me specify a release date
+                    </label>
+                    <span
+                      aria-hidden="true"
+                      class="ons-radio__other "
+                      id="yes-other-wrap"
+                    >
+                      <label
+                        class="ons-label ons-u-fs-s--b"
+                        for="set-date"
+                      >
+                        Please specify date
+                      </label>
+                      <input
+                        class="ons-input ons-input--text ons-input-type__input ons-input--w-auto"
+                        id="set-date"
+                        name="tmReleaseDate"
+                        type="date"
+                      />
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
     </div>
   </div>,
   "debug": [Function],

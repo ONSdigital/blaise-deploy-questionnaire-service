@@ -1,4 +1,4 @@
-import { Panel, Upload } from "blaise-design-system-react-components";
+import { Upload } from "blaise-design-system-react-components";
 import { type FormikContextType, useFormikContext } from "formik";
 import { type ReactElement, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -67,19 +67,6 @@ function SelectFile(props: SelectFilePageProps): ReactElement {
         Upload and deploy a questionnaire package. You can also{" "}
         <Link to={"/reinstall"}>reinstall a previously uploaded questionnaire</Link>.
       </p>
-
-      <div className="ons-u-mb-m">
-        <Panel>
-          <p>
-            After you select a questionnaire package and choose Continue,{" "}
-            <b>deployment can take a few minutes</b>.
-            <br />
-            <br />
-            Please <b>do not leave this page</b> while deployment is in progress. You will be taken
-            to the next page when there is an update.
-          </p>
-        </Panel>
-      </div>
 
       <div className="ons-grid ons-u-mt-m">
         <div className="ons-grid__col ons-col-8@m ons-col-6@l">

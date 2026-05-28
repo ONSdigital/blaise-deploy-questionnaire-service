@@ -23,14 +23,13 @@ function CreateDonorCases({ questionnaire }: Props): ReactElement {
       title: "Donor cases",
       preamble: (
         <Panel>
-          To create initial donor cases for interviewers, click <b>Create cases</b>.
-          <br />
-          <br />
-          If you add new interviewers who do not yet have donor cases, click <b>
-            Create cases
-          </b>{" "}
-          again. Only interviewers without an existing donor case will receive one.
-          <br />
+          <p>
+            To create initial donor cases for interviewers, click <b>Create cases</b>.
+          </p>
+          <p>
+            If you add new interviewers who do not yet have donor cases, click <b>Create cases</b>{" "}
+            again. Only interviewers without an existing donor case will receive one.
+          </p>
         </Panel>
       ),
       records: Object.fromEntries(

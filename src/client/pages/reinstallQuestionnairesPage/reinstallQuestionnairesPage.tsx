@@ -71,71 +71,75 @@ function ReinstallQuestionnaires(): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        {outcome ? (
-          <DeploymentOutcome
-            questionnaireName={outcome.questionnaireName}
-            status={outcome.status}
-            onRetry={() => setOutcome(null)}
-            retryLabel="Return to reinstall questionnaire"
-            onViewQuestionnaires={() => {
-              void queryClient.invalidateQueries({ queryKey: ["questionnaires"] });
-              navigate("/");
-            }}
-          />
-        ) : (
-          <>
-            <h1 className="ons-u-mb-l">Reinstall questionnaire</h1>
-            <p>
-              Reinstall a previously uploaded questionnaire. This will deploy the last uploaded
-              version of the questionnaire.
-            </p>
-            {isLoading ? (
-              <LoadingPanel />
+        <div className="ons-grid">
+          <div className="ons-grid__col ons-col-8@m">
+            {outcome ? (
+              <DeploymentOutcome
+                questionnaireName={outcome.questionnaireName}
+                status={outcome.status}
+                onRetry={() => setOutcome(null)}
+                retryLabel="Return to reinstall questionnaire"
+                onViewQuestionnaires={() => {
+                  void queryClient.invalidateQueries({ queryKey: ["questionnaires"] });
+                  navigate("/");
+                }}
+              />
             ) : (
-              <div>
-                <ErrorBoundary errorMessageText={"Failed to get questionnaires."}>
-                  <form>
-                    {error ? (
-                      <Panel spacious={true}>{(error as Error).message}</Panel>
-                    ) : (
-                      <>
-                        <Select
-                          id="reinstall-questionnaire-select"
-                          label="Select a questionnaire to reinstall"
-                          value={questionnaireToInstall}
-                          onChange={(event) => setQuestionnaireToInstall(event.target.value)}
-                          options={questionnaireList
-                            .slice()
-                            .sort((a, b) => a.localeCompare(b))
-                            .map((item) => ({
-                              label: item,
-                              value: item,
-                            }))}
-                        />
-                        <div className="ons-btn-group ons-u-mt-m">
-                          <Button
-                            label={"Continue"}
-                            primary={true}
-                            disabled={questionnaireToInstall === ""}
-                            loading={installing}
-                            id="confirm-install"
-                            onClick={() => installQuestionnaire()}
-                          />
-                          <Button
-                            id={"cancel-reinstall"}
-                            onClick={() => navigate("/")}
-                            primary={false}
-                            label={"Cancel"}
-                          />
-                        </div>
-                      </>
-                    )}
-                  </form>
-                </ErrorBoundary>
-              </div>
+              <>
+                <h1 className="ons-u-mb-l">Reinstall questionnaire</h1>
+                <p>
+                  Reinstall a previously uploaded questionnaire. This will deploy the last uploaded
+                  version of the questionnaire.
+                </p>
+                {isLoading ? (
+                  <LoadingPanel />
+                ) : (
+                  <div>
+                    <ErrorBoundary errorMessageText={"Failed to get questionnaires."}>
+                      <form>
+                        {error ? (
+                          <Panel spacious={true}>{(error as Error).message}</Panel>
+                        ) : (
+                          <>
+                            <Select
+                              id="reinstall-questionnaire-select"
+                              label="Select a questionnaire to reinstall"
+                              value={questionnaireToInstall}
+                              onChange={(event) => setQuestionnaireToInstall(event.target.value)}
+                              options={questionnaireList
+                                .slice()
+                                .sort((a, b) => a.localeCompare(b))
+                                .map((item) => ({
+                                  label: item,
+                                  value: item,
+                                }))}
+                            />
+                            <div className="ons-btn-group ons-u-mt-m">
+                              <Button
+                                label={"Continue"}
+                                primary={true}
+                                disabled={questionnaireToInstall === ""}
+                                loading={installing}
+                                id="confirm-install"
+                                onClick={() => installQuestionnaire()}
+                              />
+                              <Button
+                                id={"cancel-reinstall"}
+                                onClick={() => navigate("/")}
+                                primary={false}
+                                label={"Cancel"}
+                              />
+                            </div>
+                          </>
+                        )}
+                      </form>
+                    </ErrorBoundary>
+                  </div>
+                )}
+              </>
             )}
-          </>
-        )}
+          </div>
+        </div>
       </main>
     </>
   );

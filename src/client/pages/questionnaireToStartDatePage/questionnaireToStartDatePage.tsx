@@ -83,7 +83,11 @@ function QuestionnaireToStartDatePage(): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        <LoadingPanel message={"Getting Telephone Operations start date..."} />
+        <div className="ons-grid">
+          <div className="ons-grid__col ons-col-8@m">
+            <LoadingPanel message={"Getting Telephone Operations start date..."} />
+          </div>
+        </div>
       </main>
     );
   }
@@ -94,7 +98,11 @@ function QuestionnaireToStartDatePage(): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        <Panel status="error">Failed to get Telephone Operations start date</Panel>
+        <div className="ons-grid">
+          <div className="ons-grid__col ons-col-8@m">
+            <Panel status="error">Failed to get Telephone Operations start date</Panel>
+          </div>
+        </div>
       </main>
     );
   }
@@ -112,37 +120,41 @@ function QuestionnaireToStartDatePage(): ReactElement {
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        <Formik
-          validateOnBlur={false}
-          validateOnChange={false}
-          enableReinitialize={true}
-          initialValues={initialValues}
-          onSubmit={handleSubmit}
-        >
-          {({ isSubmitting }) => (
-            <Form id={"formID"}>
-              <AskToStartDate questionnaireName={questionnaireName} />
+        <div className="ons-grid">
+          <div className="ons-grid__col ons-col-8@m">
+            <Formik
+              validateOnBlur={false}
+              validateOnChange={false}
+              enableReinitialize={true}
+              initialValues={initialValues}
+              onSubmit={handleSubmit}
+            >
+              {({ isSubmitting }) => (
+                <Form id={"formID"}>
+                  <AskToStartDate questionnaireName={questionnaireName} />
 
-              <div className="ons-btn-group ons-u-mt-m">
-                <Button
-                  id={"continue-deploy-button"}
-                  submit={true}
-                  loading={isSubmitting}
-                  primary={true}
-                  label={"Continue"}
-                />
-                {!isSubmitting && (
-                  <Button
-                    id={"cancel-deploy-button"}
-                    onClick={navigateBackToQuestionnaire}
-                    primary={false}
-                    label={"Cancel"}
-                  />
-                )}
-              </div>
-            </Form>
-          )}
-        </Formik>
+                  <div className="ons-btn-group ons-u-mt-m">
+                    <Button
+                      id={"continue-deploy-button"}
+                      submit={true}
+                      loading={isSubmitting}
+                      primary={true}
+                      label={"Continue"}
+                    />
+                    {!isSubmitting && (
+                      <Button
+                        id={"cancel-deploy-button"}
+                        onClick={navigateBackToQuestionnaire}
+                        primary={false}
+                        label={"Cancel"}
+                      />
+                    )}
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </div>
       </main>
     </>
   );

@@ -164,7 +164,6 @@ function FindUser({ label = "Search user", roles, onItemSelected, onError }: Pro
 
   return (
     <>
-      <br />
       <ComboBox
         className="find-user"
         value={search}

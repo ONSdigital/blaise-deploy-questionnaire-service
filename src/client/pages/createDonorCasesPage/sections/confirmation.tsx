@@ -89,7 +89,18 @@ function Confirmation({ questionnaireName, role, onSuccess }: Props): ReactEleme
   });
 
   if (loading) {
-    return <LoadingPanel />;
+    return (
+      <main
+        id="main-content"
+        className="ons-page__main ons-u-mt-l"
+      >
+        <div className="ons-grid">
+          <div className="ons-grid__col ons-col-8@m">
+            <LoadingPanel />
+          </div>
+        </div>
+      </main>
+    );
   }
 
   return (
@@ -98,8 +109,8 @@ function Confirmation({ questionnaireName, role, onSuccess }: Props): ReactEleme
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        {
-          <>
+        <div className="ons-grid">
+          <div className="ons-grid__col ons-col-8@m">
             <h1 className="ons-u-mb-l">
               Create <strong className="ons-highlight">{role}</strong> donor cases for{" "}
               <span className="ons-highlight">{questionnaireName}</span>?
@@ -116,8 +127,8 @@ function Confirmation({ questionnaireName, role, onSuccess }: Props): ReactEleme
                 primary={false}
               />
             </div>
-          </>
-        }
+          </div>
+        </div>
       </main>
     </>
   );

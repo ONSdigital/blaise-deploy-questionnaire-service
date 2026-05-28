@@ -16,7 +16,7 @@ describe("QuestionnaireExists", () => {
       screen.getByText(
         (_, element) =>
           (element?.textContent ?? "").includes(
-            "Questionnaire OPN2004A already exists.Do you want to overwrite it?",
+            "Questionnaire OPN2004A already exists. Do you want to overwrite it?",
           ),
         { selector: "h1" },
       ),

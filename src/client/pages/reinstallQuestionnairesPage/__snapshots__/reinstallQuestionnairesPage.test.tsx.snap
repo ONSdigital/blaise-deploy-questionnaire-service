@@ -9,89 +9,97 @@ exports[`Reinstall questionnaires list > view Blaise Status page matches Snapsho
         class="ons-page__main ons-u-mt-l"
         id="main-content"
       >
-        <h1
-          class="ons-u-mb-l"
+        <div
+          class="ons-grid"
         >
-          Reinstall questionnaire
-        </h1>
-        <p>
-          Reinstall a previously uploaded questionnaire. This will deploy the last uploaded version of the questionnaire.
-        </p>
-        <div>
-          <form>
-            <div
-              class="ons-field"
+          <div
+            class="ons-grid__col ons-col-8@m"
+          >
+            <h1
+              class="ons-u-mb-l"
             >
-              <label
-                class="ons-label"
-                for="reinstall-questionnaire-select"
-              >
-                Select a questionnaire to reinstall
-              </label>
-              <select
-                class="ons-input ons-input--select"
-                data-testid="reinstall-questionnaire-select-input"
-                id="reinstall-questionnaire-select"
-                name="select"
-              >
-                <option
-                  disabled=""
-                  value=""
+              Reinstall questionnaire
+            </h1>
+            <p>
+              Reinstall a previously uploaded questionnaire. This will deploy the last uploaded version of the questionnaire.
+            </p>
+            <div>
+              <form>
+                <div
+                  class="ons-field"
                 >
-                  Select an option
-                </option>
-                <option
-                  data-testid="reinstall-questionnaire-select-option-LMS2101_BK2.bpkg"
-                  value="LMS2101_BK2.bpkg"
-                >
-                  LMS2101_BK2.bpkg
-                </option>
-                <option
-                  data-testid="reinstall-questionnaire-select-option-OPN2004A.bpkg"
-                  value="OPN2004A.bpkg"
-                >
-                  OPN2004A.bpkg
-                </option>
-              </select>
-            </div>
-            <div
-              class="ons-btn-group ons-u-mt-m"
-            >
-              <button
-                class="ons-btn ons-btn--disabled"
-                data-testid="confirm-install-button"
-                disabled=""
-                id="confirm-install"
-                type="button"
-              >
-                <span
-                  class="ons-btn__inner"
-                >
-                  <span
-                    class="ons-btn__text"
+                  <label
+                    class="ons-label"
+                    for="reinstall-questionnaire-select"
                   >
-                    Continue
-                  </span>
-                </span>
-              </button>
-              <button
-                class="ons-btn ons-btn--secondary"
-                data-testid="cancel-reinstall-button"
-                id="cancel-reinstall"
-                type="button"
-              >
-                <span
-                  class="ons-btn__inner"
-                >
-                  <span
-                    class="ons-btn__text"
+                    Select a questionnaire to reinstall
+                  </label>
+                  <select
+                    class="ons-input ons-input--select"
+                    data-testid="reinstall-questionnaire-select-input"
+                    id="reinstall-questionnaire-select"
+                    name="select"
                   >
-                    Cancel
-                  </span>
-                </span>
-              </button>
+                    <option
+                      disabled=""
+                      value=""
+                    >
+                      Select an option
+                    </option>
+                    <option
+                      data-testid="reinstall-questionnaire-select-option-LMS2101_BK2.bpkg"
+                      value="LMS2101_BK2.bpkg"
+                    >
+                      LMS2101_BK2.bpkg
+                    </option>
+                    <option
+                      data-testid="reinstall-questionnaire-select-option-OPN2004A.bpkg"
+                      value="OPN2004A.bpkg"
+                    >
+                      OPN2004A.bpkg
+                    </option>
+                  </select>
+                </div>
+                <div
+                  class="ons-btn-group ons-u-mt-m"
+                >
+                  <button
+                    class="ons-btn ons-btn--disabled"
+                    data-testid="confirm-install-button"
+                    disabled=""
+                    id="confirm-install"
+                    type="button"
+                  >
+                    <span
+                      class="ons-btn__inner"
+                    >
+                      <span
+                        class="ons-btn__text"
+                      >
+                        Continue
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="ons-btn ons-btn--secondary"
+                    data-testid="cancel-reinstall-button"
+                    id="cancel-reinstall"
+                    type="button"
+                  >
+                    <span
+                      class="ons-btn__inner"
+                    >
+                      <span
+                        class="ons-btn__text"
+                      >
+                        Cancel
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </main>
     </div>
@@ -101,89 +109,97 @@ exports[`Reinstall questionnaires list > view Blaise Status page matches Snapsho
       class="ons-page__main ons-u-mt-l"
       id="main-content"
     >
-      <h1
-        class="ons-u-mb-l"
+      <div
+        class="ons-grid"
       >
-        Reinstall questionnaire
-      </h1>
-      <p>
-        Reinstall a previously uploaded questionnaire. This will deploy the last uploaded version of the questionnaire.
-      </p>
-      <div>
-        <form>
-          <div
-            class="ons-field"
+        <div
+          class="ons-grid__col ons-col-8@m"
+        >
+          <h1
+            class="ons-u-mb-l"
           >
-            <label
-              class="ons-label"
-              for="reinstall-questionnaire-select"
-            >
-              Select a questionnaire to reinstall
-            </label>
-            <select
-              class="ons-input ons-input--select"
-              data-testid="reinstall-questionnaire-select-input"
-              id="reinstall-questionnaire-select"
-              name="select"
-            >
-              <option
-                disabled=""
-                value=""
+            Reinstall questionnaire
+          </h1>
+          <p>
+            Reinstall a previously uploaded questionnaire. This will deploy the last uploaded version of the questionnaire.
+          </p>
+          <div>
+            <form>
+              <div
+                class="ons-field"
               >
-                Select an option
-              </option>
-              <option
-                data-testid="reinstall-questionnaire-select-option-LMS2101_BK2.bpkg"
-                value="LMS2101_BK2.bpkg"
-              >
-                LMS2101_BK2.bpkg
-              </option>
-              <option
-                data-testid="reinstall-questionnaire-select-option-OPN2004A.bpkg"
-                value="OPN2004A.bpkg"
-              >
-                OPN2004A.bpkg
-              </option>
-            </select>
-          </div>
-          <div
-            class="ons-btn-group ons-u-mt-m"
-          >
-            <button
-              class="ons-btn ons-btn--disabled"
-              data-testid="confirm-install-button"
-              disabled=""
-              id="confirm-install"
-              type="button"
-            >
-              <span
-                class="ons-btn__inner"
-              >
-                <span
-                  class="ons-btn__text"
+                <label
+                  class="ons-label"
+                  for="reinstall-questionnaire-select"
                 >
-                  Continue
-                </span>
-              </span>
-            </button>
-            <button
-              class="ons-btn ons-btn--secondary"
-              data-testid="cancel-reinstall-button"
-              id="cancel-reinstall"
-              type="button"
-            >
-              <span
-                class="ons-btn__inner"
-              >
-                <span
-                  class="ons-btn__text"
+                  Select a questionnaire to reinstall
+                </label>
+                <select
+                  class="ons-input ons-input--select"
+                  data-testid="reinstall-questionnaire-select-input"
+                  id="reinstall-questionnaire-select"
+                  name="select"
                 >
-                  Cancel
-                </span>
-              </span>
-            </button>
+                  <option
+                    disabled=""
+                    value=""
+                  >
+                    Select an option
+                  </option>
+                  <option
+                    data-testid="reinstall-questionnaire-select-option-LMS2101_BK2.bpkg"
+                    value="LMS2101_BK2.bpkg"
+                  >
+                    LMS2101_BK2.bpkg
+                  </option>
+                  <option
+                    data-testid="reinstall-questionnaire-select-option-OPN2004A.bpkg"
+                    value="OPN2004A.bpkg"
+                  >
+                    OPN2004A.bpkg
+                  </option>
+                </select>
+              </div>
+              <div
+                class="ons-btn-group ons-u-mt-m"
+              >
+                <button
+                  class="ons-btn ons-btn--disabled"
+                  data-testid="confirm-install-button"
+                  disabled=""
+                  id="confirm-install"
+                  type="button"
+                >
+                  <span
+                    class="ons-btn__inner"
+                  >
+                    <span
+                      class="ons-btn__text"
+                    >
+                      Continue
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="ons-btn ons-btn--secondary"
+                  data-testid="cancel-reinstall-button"
+                  id="cancel-reinstall"
+                  type="button"
+                >
+                  <span
+                    class="ons-btn__inner"
+                  >
+                    <span
+                      class="ons-btn__text"
+                    >
+                      Cancel
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </main>
   </div>,

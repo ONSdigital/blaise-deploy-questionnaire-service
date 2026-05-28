@@ -359,77 +359,98 @@ function DeployPage(): ReactElement {
     actions.setSubmitting(false);
   }
 
+  const isFullWidthStep =
+    activeStep === Step.Summary ||
+    activeStep === Step.InvalidSettings ||
+    (activeStep === Step.SetTmReleaseDate && !shouldAskTmReleaseDate(questionnaireName));
+
+  const content = (
+    <>
+      {activeStep === Step.Complete ? (
+        <DeploymentOutcome
+          questionnaireName={questionnaireName}
+          status={uploadStatus}
+          onRetry={resetDeployFlow}
+          retryLabel="Return to deploy questionnaire"
+          onViewQuestionnaires={() => {
+            void queryClient.invalidateQueries({ queryKey: ["questionnaires"] });
+            navigate("/");
+          }}
+        />
+      ) : (
+        <Formik<UploadFormValues>
+          validateOnBlur={false}
+          validateOnChange={false}
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, values }) => (
+            <Form id={"formID"}>
+              {renderStepContent(activeStep)}
+
+              {activeStep === Step.Summary && (
+                <div className="ons-u-mb-m">
+                  <Panel status="warn">
+                    <p>Deployment may take a few minutes. Do not navigate away from this page.</p>
+                  </Panel>
+                </div>
+              )}
+
+              <div className="ons-btn-group ons-u-mt-m">
+                {activeStep !== Step.LiveWarning && (
+                  <>
+                    <Button
+                      id={"continue-deploy-button"}
+                      submit={true}
+                      loading={isSubmitting}
+                      disabled={isSubmitting || isContinueDisabled(values)}
+                      primary={true}
+                      label={submitButton()}
+                    />
+                    {!uploading && !isSubmitting && (
+                      <Button
+                        id={"cancel-deploy-button"}
+                        onClick={cancelButtonAction}
+                        primary={false}
+                        label={cancelButton()}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            </Form>
+          )}
+        </Formik>
+      )}
+
+      {uploading && (
+        <>
+          <p className="ons-u-mt-m">Uploading: {uploadPercentage}%</p>
+          <progress
+            id="file"
+            value={uploadPercentage}
+            max="100"
+            role="progressbar"
+            aria-valuenow={uploadPercentage}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
+            {uploadPercentage}%
+          </progress>
+        </>
+      )}
+    </>
+  );
+
   return (
     <>
       <main
         id="main-content"
         className="ons-page__main ons-u-mt-l"
       >
-        {activeStep === Step.Complete ? (
-          <DeploymentOutcome
-            questionnaireName={questionnaireName}
-            status={uploadStatus}
-            onRetry={resetDeployFlow}
-            retryLabel="Return to deploy questionnaire"
-            onViewQuestionnaires={() => {
-              void queryClient.invalidateQueries({ queryKey: ["questionnaires"] });
-              navigate("/");
-            }}
-          />
-        ) : (
-          <Formik<UploadFormValues>
-            validateOnBlur={false}
-            validateOnChange={false}
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-          >
-            {({ isSubmitting, values }) => (
-              <Form id={"formID"}>
-                {renderStepContent(activeStep)}
-
-                <div className="ons-btn-group ons-u-mt-m">
-                  {activeStep !== Step.LiveWarning && (
-                    <>
-                      <Button
-                        id={"continue-deploy-button"}
-                        submit={true}
-                        loading={isSubmitting}
-                        disabled={isSubmitting || isContinueDisabled(values)}
-                        primary={true}
-                        label={submitButton()}
-                      />
-                      {!uploading && !isSubmitting && (
-                        <Button
-                          id={"cancel-deploy-button"}
-                          onClick={cancelButtonAction}
-                          primary={false}
-                          label={cancelButton()}
-                        />
-                      )}
-                    </>
-                  )}
-                </div>
-              </Form>
-            )}
-          </Formik>
-        )}
-
-        {uploading && (
-          <>
-            <p className="ons-u-mt-m">Uploading: {uploadPercentage}%</p>
-            <progress
-              id="file"
-              value={uploadPercentage}
-              max="100"
-              role="progressbar"
-              aria-valuenow={uploadPercentage}
-              aria-valuemin={0}
-              aria-valuemax={100}
-            >
-              {uploadPercentage}%
-            </progress>
-          </>
-        )}
+        <div className={isFullWidthStep ? undefined : "ons-grid"}>
+          <div className={isFullWidthStep ? undefined : "ons-grid__col ons-col-8@m"}>{content}</div>
+        </div>
       </main>
     </>
   );
