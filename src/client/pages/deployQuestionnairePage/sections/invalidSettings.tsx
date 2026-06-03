@@ -1,0 +1,45 @@
+import { Panel } from "blaise-design-system-react-components";
+import { type ReactElement } from "react";
+
+import { QuestionnaireSettings } from "../../shared/questionnaireSettings";
+
+import type { QuestionnaireSettings as QuestionnaireSettingsType } from "blaise-api-node-client";
+
+interface SelectFilePageProps {
+  questionnaireName: string;
+  questionnaireSettings: QuestionnaireSettingsType | undefined;
+  invalidSettings: Partial<QuestionnaireSettingsType>;
+  errored: boolean;
+}
+
+function InvalidSettings({
+  questionnaireName,
+  questionnaireSettings,
+  invalidSettings,
+  errored,
+}: SelectFilePageProps): ReactElement {
+  return (
+    <>
+      <h1 className="ons-u-mb-l">
+        Questionnaire settings for <span className="ons-highlight">{questionnaireName}</span> do not
+        match recommendations
+      </h1>
+      <div className="ons-u-mb-m">
+        <Panel status={"error"}>
+          <p>This questionnaire does not match the recommended settings.</p>
+          <p>
+            If this is expected, select <b>Deploy anyway</b>. If it is not expected, select{" "}
+            <b>Cancel</b> and start again.
+          </p>
+        </Panel>
+      </div>
+      <QuestionnaireSettings
+        questionnaireSettings={questionnaireSettings}
+        invalidSettings={invalidSettings}
+        errored={errored}
+      />
+    </>
+  );
+}
+
+export { InvalidSettings };

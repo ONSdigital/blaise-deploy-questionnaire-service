@@ -1,235 +1,474 @@
-import express, { Request, Response, Router } from "express";
-import { Auth } from "blaise-login-react/blaise-login-react-server";
-import BlaiseApiClient, { InstallQuestionnaire, Questionnaire } from "blaise-api-node-client";
-import { fieldPeriodToText } from "../functions";
-import AuditLogger from "../auditLogging/logger";
+import { type BlaiseApiClient, type InstallQuestionnaire } from "blaise-api-node-client";
+import { type Auth } from "blaise-login-react-server";
+import express, { type Request, type Response, type Router } from "express";
 
-export default function NewBlaiseHandler(blaiseApiClient: BlaiseApiClient, serverPark: string, auth: Auth, auditLogger: AuditLogger): Router {
-    const router = express.Router();
+import { fieldPeriodToText } from "../functions.js";
+import { getUsername } from "../helpers/getUsername.js";
+import { isRecord } from "../helpers/isRecord.js";
+import { sanitise } from "../helpers/sanitise.js";
 
-    const blaiseHandler = new BlaiseHandler(blaiseApiClient, serverPark, auditLogger);
+import type AuditLogger from "../auditLogger.js";
 
-    router.get("/api/health/diagnosis", auth.Middleware, blaiseHandler.GetHealth);
-    router.get("/api/questionnaires", auth.Middleware, blaiseHandler.GetQuestionnaires);
-    router.get("/api/questionnaires/:questionnaireName", auth.Middleware, blaiseHandler.GetQuestionnaire);
-    router.get("/api/questionnaires/:questionnaireName/modes", auth.Middleware, blaiseHandler.GetModes);
-    router.get("/api/questionnaires/:questionnaireName/modes/:mode", auth.Middleware, blaiseHandler.DoesQuestionnaireHaveMode);
-    router.get("/api/questionnaires/:questionnaireName/settings", auth.Middleware, blaiseHandler.GetSettings);
-    router.get("/api/questionnaires/:questionnaireName/surveydays", auth.Middleware, blaiseHandler.GetSurveyDays);
-    router.get("/api/questionnaires/:questionnaireName/cases/ids", auth.Middleware, blaiseHandler.GetCases);
-    router.post("/api/install", auth.Middleware, blaiseHandler.InstallQuestionnaire);
-    router.patch("/api/questionnaires/:questionnaireName/activate", auth.Middleware, blaiseHandler.ActivateQuestionnaire);
-    router.patch("/api/questionnaires/:questionnaireName/deactivate", auth.Middleware, blaiseHandler.DeactivateQuestionnaire);
-    router.delete("/api/questionnaires/:questionnaireName", auth.Middleware, blaiseHandler.DeleteQuestionnaire);
-
-    return router;
+function readRequestParam(req: Request, key: string): string {
+  return req.params[key] as string;
 }
 
-export class BlaiseHandler {
-    blaiseApiClient: BlaiseApiClient;
-    serverPark: string;
-    auditLogger: AuditLogger;
+function readRequestBodyString(req: Request, key: string): string {
+  if (!isRecord(req.body)) {
+    return "";
+  }
 
-    constructor(blaiseApiClient: BlaiseApiClient, serverPark: string, auditLogger: AuditLogger) {
-        this.blaiseApiClient = blaiseApiClient;
-        this.serverPark = serverPark;
-        this.auditLogger = auditLogger;
+  const value = req.body[key];
 
-        this.GetHealth = this.GetHealth.bind(this);
-        this.GetQuestionnaire = this.GetQuestionnaire.bind(this);
-        this.InstallQuestionnaire = this.InstallQuestionnaire.bind(this);
-        this.DeleteQuestionnaire = this.DeleteQuestionnaire.bind(this);
-        this.ActivateQuestionnaire = this.ActivateQuestionnaire.bind(this);
-        this.DeactivateQuestionnaire = this.DeactivateQuestionnaire.bind(this);
-        this.DoesQuestionnaireHaveMode = this.DoesQuestionnaireHaveMode.bind(this);
-        this.GetQuestionnaires = this.GetQuestionnaires.bind(this);
-        this.GetCases = this.GetCases.bind(this);
-        this.GetModes = this.GetModes.bind(this);
-        this.GetSettings = this.GetSettings.bind(this);
-        this.GetSurveyDays = this.GetSurveyDays.bind(this);
+  return typeof value === "string" ? value : "";
+}
+
+function getAxiosStatus(error: unknown): number | undefined {
+  if (!isRecord(error) || error.isAxiosError !== true) {
+    return undefined;
+  }
+
+  const { response } = error;
+
+  return isRecord(response) && typeof response.status === "number" ? response.status : undefined;
+}
+
+export default function newBlaiseHandler(
+  blaiseApiClient: BlaiseApiClient,
+  serverPark: string,
+  auth: Auth,
+  auditLogger: AuditLogger,
+): Router {
+  const router = express.Router();
+
+  const blaiseHandler = new BlaiseHandler(blaiseApiClient, serverPark, auth, auditLogger);
+
+  router.get("/api/questionnaires", auth.middleware, blaiseHandler.getQuestionnaires);
+  router.get(
+    "/api/questionnaires/:questionnaireName",
+    auth.middleware,
+    blaiseHandler.getQuestionnaire,
+  );
+  router.get(
+    "/api/questionnaires/:questionnaireName/modes",
+    auth.middleware,
+    blaiseHandler.getModes,
+  );
+  router.get(
+    "/api/questionnaires/:questionnaireName/modes/:mode",
+    auth.middleware,
+    blaiseHandler.doesQuestionnaireHaveMode,
+  );
+  router.get(
+    "/api/questionnaires/:questionnaireName/settings",
+    auth.middleware,
+    blaiseHandler.getSettings,
+  );
+  router.get(
+    "/api/questionnaires/:questionnaireName/surveydays",
+    auth.middleware,
+    blaiseHandler.getSurveyDays,
+  );
+  router.get(
+    "/api/questionnaires/:questionnaireName/active",
+    auth.middleware,
+    blaiseHandler.getActiveSurveyDays,
+  );
+  router.get(
+    "/api/questionnaires/:questionnaireName/cases/ids",
+    auth.middleware,
+    blaiseHandler.getCases,
+  );
+  router.post("/api/install", auth.middleware, blaiseHandler.installQuestionnaire);
+  router.patch(
+    "/api/questionnaires/:questionnaireName/activate",
+    auth.middleware,
+    blaiseHandler.activateQuestionnaire,
+  );
+  router.patch(
+    "/api/questionnaires/:questionnaireName/deactivate",
+    auth.middleware,
+    blaiseHandler.deactivateQuestionnaire,
+  );
+  router.delete(
+    "/api/questionnaires/:questionnaireName",
+    auth.middleware,
+    blaiseHandler.deleteQuestionnaire,
+  );
+
+  return router;
+}
+
+class BlaiseHandler {
+  private readonly blaiseApiClient: BlaiseApiClient;
+  private readonly serverPark: string;
+  private readonly auth: Auth;
+  private readonly auditLogger: AuditLogger;
+
+  constructor(
+    blaiseApiClient: BlaiseApiClient,
+    serverPark: string,
+    auth: Auth,
+    auditLogger: AuditLogger,
+  ) {
+    this.blaiseApiClient = blaiseApiClient;
+    this.serverPark = serverPark;
+    this.auth = auth;
+    this.auditLogger = auditLogger;
+  }
+
+  getQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const safeQuestionnaireName = sanitise(questionnaireName);
+
+    try {
+      const questionnaire = await this.blaiseApiClient.getQuestionnaire(
+        this.serverPark,
+        questionnaireName,
+      );
+
+      req.log.info(
+        { questionnaireName: safeQuestionnaireName },
+        "Get questionnaire endpoint succeeded",
+      );
+
+      return res.status(200).json(questionnaire);
+    } catch (error: unknown) {
+      if (this.errorNotFound(error)) {
+        return res.status(200).json(null);
+      }
+
+      req.log.error({ error }, "Get questionnaire endpoint failed");
+
+      return res.status(500).json();
     }
+  };
 
-    async GetHealth(req: Request, res: Response): Promise<Response> {
-        try {
-            const diagnostics = await this.blaiseApiClient.getDiagnostics();
-            req.log.info({ diagnostics }, "Successfully called health check endpoint");
-            return res.status(200).json(diagnostics);
-        } catch (error: any) {
-            req.log.error(error, "health check endpoint failed");
-            return res.status(500).json();
+  installQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
+    const filename = readRequestBodyString(req, "filename");
+    const questionnaireName = sanitise(filename.replace(/\.[a-zA-Z]*$/, ""));
+    const username = getUsername(req, this.auth);
+    const installQuestionnaire: InstallQuestionnaire = {
+      questionnaireFile: filename,
+    };
+
+    try {
+      const response = await this.blaiseApiClient.installQuestionnaire(
+        this.serverPark,
+        installQuestionnaire,
+      );
+
+      this.auditLogger.info(req.log, `${username} deployed questionnaire ${questionnaireName}`);
+
+      return res.status(201).json(response);
+    } catch (error: unknown) {
+      req.log.error({ error }, "Install questionnaire endpoint failed");
+      this.auditLogger.error(
+        req.log,
+        `${username} failed to install questionnaire ${questionnaireName}`,
+      );
+
+      return res.status(500).json();
+    }
+  };
+
+  deleteQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const safeQuestionnaireName = sanitise(questionnaireName);
+    const username = getUsername(req, this.auth);
+
+    try {
+      const response = await this.blaiseApiClient.deleteQuestionnaire(
+        this.serverPark,
+        questionnaireName,
+      );
+
+      this.auditLogger.info(req.log, `${username} deleted questionnaire ${safeQuestionnaireName}`);
+
+      return res.status(204).json(response);
+    } catch (error: unknown) {
+      if (this.errorNotFound(error)) {
+        this.auditLogger.error(
+          req.log,
+          `${username} attempted to uninstall questionnaire ${safeQuestionnaireName} but it doesn't exist by`,
+        );
+
+        return res.status(404).json();
+      }
+
+      this.auditLogger.error(
+        req.log,
+        `${username} failed to uninstall questionnaire ${safeQuestionnaireName}`,
+      );
+
+      return res.status(500).json();
+    }
+  };
+
+  activateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const safeQuestionnaireName = sanitise(questionnaireName);
+    const username = getUsername(req, this.auth);
+
+    try {
+      const response = await this.blaiseApiClient.activateQuestionnaire(
+        this.serverPark,
+        questionnaireName,
+      );
+
+      this.auditLogger.info(
+        req.log,
+        `${username} activated questionnaire ${safeQuestionnaireName}`,
+      );
+
+      return res.status(204).json(response);
+    } catch (error: unknown) {
+      if (this.errorNotFound(error)) {
+        this.auditLogger.error(
+          req.log,
+          `${username} attempted to activate questionnaire ${safeQuestionnaireName} but it doesn't exist`,
+        );
+
+        return res.status(404).json();
+      }
+
+      this.auditLogger.error(
+        req.log,
+        `${username} failed to activate questionnaire ${safeQuestionnaireName}`,
+      );
+
+      return res.status(500).json();
+    }
+  };
+
+  deactivateQuestionnaire = async (req: Request, res: Response): Promise<Response> => {
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const safeQuestionnaireName = sanitise(questionnaireName);
+    const username = getUsername(req, this.auth);
+
+    try {
+      const response = await this.blaiseApiClient.deactivateQuestionnaire(
+        this.serverPark,
+        questionnaireName,
+      );
+
+      this.auditLogger.info(
+        req.log,
+        `${username} deactivated questionnaire ${safeQuestionnaireName}`,
+      );
+
+      return res.status(204).json(response);
+    } catch (error: unknown) {
+      if (this.errorNotFound(error)) {
+        this.auditLogger.error(
+          req.log,
+          `${username} attempted to deactivate questionnaire ${safeQuestionnaireName} but it doesn't exist`,
+        );
+
+        return res.status(404).json();
+      }
+
+      this.auditLogger.error(
+        req.log,
+        `${username} failed to deactivate questionnaire ${safeQuestionnaireName}`,
+      );
+
+      return res.status(500).json();
+    }
+  };
+
+  doesQuestionnaireHaveMode = async (req: Request, res: Response): Promise<Response> => {
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const mode = readRequestParam(req, "mode");
+    const safeQuestionnaireName = sanitise(questionnaireName);
+    const safeMode = sanitise(mode);
+
+    try {
+      const response = await this.blaiseApiClient.doesQuestionnaireHaveMode(
+        this.serverPark,
+        questionnaireName,
+        mode,
+      );
+
+      req.log.info(
+        { questionnaireName: safeQuestionnaireName, mode: safeMode, hasMode: response },
+        "Does questionnaire have mode endpoint succeeded",
+      );
+
+      return res.status(200).json(response);
+    } catch (error: unknown) {
+      req.log.error(
+        { error },
+        `Does questionnaire have mode endpoint failed for ${safeQuestionnaireName}`,
+      );
+
+      return res.status(500).json();
+    }
+  };
+
+  getQuestionnaires = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const rawQuestionnaires = await this.blaiseApiClient.getQuestionnaires(this.serverPark);
+
+      const questionnaires = rawQuestionnaires.map((questionnaire) => {
+        const isErroneous = questionnaire.status === "Erroneous";
+
+        if (isErroneous) {
+          req.log.warn(
+            { questionnaireName: questionnaire.name },
+            "Questionnaire returned erroneous status from Blaise",
+          );
         }
-    }
 
-    async GetQuestionnaire(req: Request, res: Response): Promise<Response> {
-        const { questionnaireName } = req.params;
-
-        try {
-            const questionnaire = await this.blaiseApiClient.getQuestionnaire(this.serverPark, questionnaireName);
-            req.log.info({ questionnaire }, `Get questionnaire ${questionnaireName} endpoint`);
-            return res.status(200).json(questionnaire);
-        } catch (error: any) {
-            if (this.errorNotFound(error)) {
-                return res.status(404).json();
-            }
-            console.log(error);
-            req.log.error(error, "Get questionnaire endpoint failed");
-            return res.status(500).json();
-        }
-    }
-
-    async InstallQuestionnaire(req: Request, res: Response): Promise<Response> {
-        const filename: string = req.body.filename;
-        const questionnaireName = filename?.toString().replace(/\.[a-zA-Z]*$/, "");
-        const installQuestionnaire: InstallQuestionnaire = {
-            questionnaireFile: filename?.toString() || ""
+        return {
+          ...questionnaire,
+          status: isErroneous ? "Failed" : questionnaire.status,
+          fieldPeriod: fieldPeriodToText(questionnaire.name),
         };
-        try {
-            const response = await this.blaiseApiClient.installQuestionnaire(this.serverPark, installQuestionnaire);
-            this.auditLogger.info(req.log, `Successfully installed questionnaire ${questionnaireName}`);
-            return res.status(201).json(response);
-        } catch (error: any) {
-            req.log.error(error, "Install questionnaire endpoint failed");
-            this.auditLogger.error(req.log, `Failed to install questionnaire ${questionnaireName}`);
-            return res.status(500).json();
-        }
+      });
+
+      req.log.info(
+        { questionnairesCount: questionnaires.length },
+        "Get questionnaires endpoint succeeded",
+      );
+
+      return res.status(200).json(questionnaires);
+    } catch (error: unknown) {
+      req.log.error({ error }, "Get questionnaires endpoint failed.");
+
+      return res.status(500).json();
     }
+  };
 
-    async DeleteQuestionnaire(req: Request, res: Response): Promise<Response> {
-        const { questionnaireName } = req.params;
+  getCases = async (req: Request, res: Response): Promise<Response> => {
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
-        try {
-            const response = await this.blaiseApiClient.deleteQuestionnaire(this.serverPark, questionnaireName);
-            this.auditLogger.info(req.log, `Successfully uninstalled questionnaire ${questionnaireName}`);
-            return res.status(204).json(response);
-        } catch (error: any) {
-            if (this.errorNotFound(error)) {
-                this.auditLogger.error(req.log, `Attempted to uninstall questionnaire ${questionnaireName} that doesn't exist`);
-                return res.status(404).json();
-            }
-            this.auditLogger.error(req.log, `Failed to uninstall questionnaire ${questionnaireName}`);
-            return res.status(500).json();
-        }
+    try {
+      const caseIds = await this.blaiseApiClient.getQuestionnaireCaseIds(
+        this.serverPark,
+        questionnaireName,
+      );
+
+      req.log.info(
+        { questionnaireName: safeQuestionnaireName, caseCount: caseIds.length },
+        "Get questionnaire case IDs endpoint succeeded",
+      );
+
+      return res.status(200).json(caseIds);
+    } catch (error: unknown) {
+      req.log.error(
+        { error },
+        `Get questionnaire case IDs endpoint failed for ${safeQuestionnaireName}`,
+      );
+
+      return res.status(500).json();
     }
+  };
 
-    async ActivateQuestionnaire(req: Request, res: Response): Promise<Response> {
-        const { questionnaireName } = req.params;
+  getModes = async (req: Request, res: Response): Promise<Response> => {
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
-        try {
-            const response = await this.blaiseApiClient.activateQuestionnaire(this.serverPark, questionnaireName);
-            this.auditLogger.info(req.log, `Successfully activated questionnaire ${questionnaireName}`);
-            return res.status(204).json(response);
-        } catch (error: any) {
-            if (this.errorNotFound(error)) {
-                this.auditLogger.error(req.log, `Attempted to activate questionnaire ${questionnaireName} that doesn't exist`);
-                return res.status(404).json();
-            }
-            this.auditLogger.error(req.log, `Failed to activate questionnaire ${questionnaireName}`);
-            return res.status(500).json();
-        }
+    try {
+      const modes = await this.blaiseApiClient.getQuestionnaireModes(
+        this.serverPark,
+        questionnaireName,
+      );
+
+      req.log.info(
+        { questionnaireName: safeQuestionnaireName, modesCount: modes.length },
+        "Get questionnaire modes endpoint succeeded",
+      );
+
+      return res.status(200).json(modes);
+    } catch (error: unknown) {
+      req.log.error(
+        { error },
+        `Get questionnaire modes endpoint failed for ${safeQuestionnaireName}`,
+      );
+
+      return res.status(500).json(null);
     }
+  };
 
-    async DeactivateQuestionnaire(req: Request, res: Response): Promise<Response> {
-        const { questionnaireName } = req.params;
+  getSettings = async (req: Request, res: Response): Promise<Response> => {
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
-        try {
-            const response = await this.blaiseApiClient.deactivateQuestionnaire(this.serverPark, questionnaireName);
-            this.auditLogger.info(req.log, `Successfully deactivated questionnaire ${questionnaireName}`);
-            return res.status(204).json(response);
-        } catch (error: any) {
-            if (this.errorNotFound(error)) {
-                this.auditLogger.error(req.log, `Attempted to deactivate questionnaire ${questionnaireName} that doesn't exist`);
-                return res.status(404).json();
-            }
-            this.auditLogger.error(req.log, `Failed to deactivate questionnaire ${questionnaireName}`);
-            return res.status(500).json();
-        }
+    try {
+      const questionnaireSettings = await this.blaiseApiClient.getQuestionnaireSettings(
+        this.serverPark,
+        questionnaireName,
+      );
+
+      req.log.info(
+        { questionnaireName: safeQuestionnaireName, settingsCount: questionnaireSettings.length },
+        "Get questionnaire settings endpoint succeeded",
+      );
+
+      return res.status(200).json(questionnaireSettings);
+    } catch (error: unknown) {
+      req.log.error(
+        { error },
+        `Get questionnaire settings endpoint failed for ${safeQuestionnaireName}`,
+      );
+
+      return res.status(500).json();
     }
+  };
 
-    async DoesQuestionnaireHaveMode(req: Request, res: Response): Promise<Response> {
-        const { questionnaireName, mode } = req.params;
+  getSurveyDays = async (req: Request, res: Response): Promise<Response> => {
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
-        try {
-            const response = await this.blaiseApiClient.doesQuestionnaireHaveMode(this.serverPark, questionnaireName, mode);
-            req.log.info({ response }, `Successfully called does questionnaire have mode endpoint for ${questionnaireName}`);
-            return res.status(200).json(response);
-        } catch (error: any) {
-            req.log.error(error, `does questionnaire have mode failed for ${questionnaireName}`);
-            return res.status(500).json();
-        }
+    try {
+      const surveyDays = await this.blaiseApiClient.getSurveyDays(
+        this.serverPark,
+        questionnaireName,
+      );
+
+      req.log.info(
+        { questionnaireName: safeQuestionnaireName, surveyDaysCount: surveyDays.length },
+        "Get survey days endpoint succeeded",
+      );
+
+      return res.status(200).json(surveyDays);
+    } catch (error: unknown) {
+      req.log.error({ error }, `Get survey days endpoint failed for ${safeQuestionnaireName}`);
+
+      return res.status(500).json(null);
     }
+  };
 
-    async GetQuestionnaires(req: Request, res: Response): Promise<Response> {
-        try {
-            const questionnaires: Questionnaire[] = await this.blaiseApiClient.getQuestionnaires(this.serverPark);
-            questionnaires.forEach(function (questionnaire: Questionnaire) {
-                if (questionnaire.status === "Erroneous") {
-                    req.log.info(`Questionnaire ${questionnaire.name} returned erroneous.`);
-                    questionnaire.status = "Failed";
-                }
-                questionnaire.fieldPeriod = fieldPeriodToText(questionnaire.name);
-            });
+  getActiveSurveyDays = async (req: Request, res: Response): Promise<Response> => {
+    const questionnaireName = readRequestParam(req, "questionnaireName");
+    const safeQuestionnaireName = sanitise(questionnaireName);
 
-            req.log.info({ questionnaires }, `${questionnaires.length} questionnaire/s currently installed.`);
-            return res.status(200).json(questionnaires);
-        } catch (error: any) {
-            req.log.error(error, "Get questionnaires endpoint failed.");
-            return res.status(500).json();
-        }
+    try {
+      const surveyDays: readonly string[] = await this.blaiseApiClient.getSurveyDays(
+        this.serverPark,
+        questionnaireName,
+      );
+      const hasActiveSurveyDays = Array.isArray(surveyDays) && surveyDays.length > 0;
+
+      req.log.info(
+        { questionnaireName: safeQuestionnaireName, hasActiveSurveyDays },
+        "Get active survey days endpoint succeeded",
+      );
+
+      return res.status(200).json(hasActiveSurveyDays);
+    } catch (error: unknown) {
+      req.log.error(
+        { error },
+        `Get active survey days endpoint failed for ${safeQuestionnaireName}`,
+      );
+
+      return res.status(500).json();
     }
+  };
 
-    async GetCases(req: Request, res: Response): Promise<Response> {
-        const { questionnaireName } = req.params;
-
-        try {
-            const caseIds = await this.blaiseApiClient.getQuestionnaireCaseIds(this.serverPark, questionnaireName);
-            req.log.info({ caseIds }, `Successfully called get cases IDs for questionnaire ${questionnaireName}`);
-            return res.status(200).json(caseIds);
-        } catch (error: any) {
-            req.log.error(error, `Get cases IDs for questionnaire ${questionnaireName}`);
-            return res.status(500).json();
-        }
-    }
-
-    async GetModes(req: Request, res: Response): Promise<Response> {
-        const { questionnaireName } = req.params;
-
-        try {
-            const modes = await this.blaiseApiClient.getQuestionnaireModes(this.serverPark, questionnaireName);
-            req.log.info({ modes }, `Successfully called get questionnaire modes for ${questionnaireName}`);
-            return res.status(200).json(modes);
-        } catch (error: any) {
-            req.log.error(error, `Get questionnaire modes for ${questionnaireName}`);
-            return res.status(500).json(null);
-        }
-    }
-
-    async GetSettings(req: Request, res: Response): Promise<Response> {
-        const { questionnaireName } = req.params;
-
-        try {
-            const questionnaireSettings = await this.blaiseApiClient.getQuestionnaireSettings(this.serverPark, questionnaireName);
-            req.log.info({ questionnaireSettings }, `Successfully called get questionnaire settings for ${questionnaireName}`);
-            return res.status(200).json(questionnaireSettings);
-        } catch (error: any) {
-            req.log.error(error, `Get questionnaire settings for ${questionnaireName}`);
-            return res.status(500).json();
-        }
-    }
-
-    async GetSurveyDays(req: Request, res: Response): Promise<Response> {
-        const { questionnaireName } = req.params;
-
-        try {
-            const surveyDays = await this.blaiseApiClient.getSurveyDays(this.serverPark, questionnaireName);
-            req.log.info({ surveyDays }, `Successfully called get survey days for ${questionnaireName}`);
-            return res.status(200).json(surveyDays);
-        } catch (error: any) {
-            req.log.error(error, `Get survey days for ${questionnaireName}`);
-            return res.status(500).json(null);
-        }
-    }
-
-    errorNotFound(error: any): boolean {
-        return (error?.isAxiosError && error.response.status === 404);
-    }
+  private errorNotFound(error: unknown): boolean {
+    return getAxiosStatus(error) === 404;
+  }
 }

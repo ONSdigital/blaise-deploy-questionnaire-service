@@ -1,88 +1,259 @@
-import express, { NextFunction, Request, Response, Express } from "express";
+import fs from "fs";
 import path from "path";
-import ejs from "ejs";
+import { fileURLToPath } from "url";
+
+import { BlaiseApiClient } from "blaise-api-node-client";
+import { Auth, newLoginHandler } from "blaise-login-react-server";
+import { BusClient } from "blaise-uac-service-node-client";
 import dotenv from "dotenv";
-import { Config } from "./config";
-import { newLoginHandler, Auth } from "blaise-login-react/blaise-login-react-server";
-import BlaiseApiClient from "blaise-api-node-client";
-import newBimsHandler from "./handlers/bimsHandler";
-import { BimsApi } from "./bimsApi/bimsApi";
-import newBlaiseHandler from "./handlers/blaiseHandler";
-import newBusHandler from "./handlers/busHandler";
-import BusApiClient from "bus-api-node-client";
-import HealthCheckHandler from "./handlers/healthCheckHandler";
-import StorageManager from "./storage/storage";
-import newUploadHandler from "./handlers/uploadHandler";
-import createLogger from "./pino";
-import { HttpLogger } from "pino-http";
-import AuditLogger from "./auditLogging/logger";
-import newAuditHandler from "./handlers/auditHandler";
-import newClientLogHandler from "./handlers/clientLogHandler";
-import createDonorCasesCloudFunctionHandler from "./handlers/cloudFunctionHandler";
-import { reissueNewDonorCaseCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
-import { getUsersByRoleCloudFunctionHandler } from "./handlers/cloudFunctionHandler";
+import ejs from "ejs";
+import express, {
+  type Express,
+  type NextFunction,
+  type Request,
+  type Response,
+  type Router,
+} from "express";
+import { type HttpLogger } from "pino-http";
+
+import AuditLogger from "./auditLogger.js";
+import { BimsClient } from "./bimsClient.js";
+import { type Config } from "./config.js";
+import newAuditHandler from "./handlers/auditHandler.js";
+import newBimsHandler from "./handlers/bimsHandler.js";
+import newBlaiseHandler from "./handlers/blaiseHandler.js";
+import newBusHandler from "./handlers/busHandler.js";
+import { type BusClientLike } from "./handlers/busHandler.js";
+import newClientLogHandler from "./handlers/clientLogHandler.js";
+import newCloudFunctionHandler from "./handlers/cloudFunctionHandler.js";
+import newHealthCheckHandler from "./handlers/healthCheckHandler.js";
+import newUploadHandler from "./handlers/uploadHandler.js";
+import createLogger from "./pinoLogger.js";
+import StorageManager from "./storageManager.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 if (process.env.NODE_ENV !== "production") {
-    dotenv.config();
+  dotenv.config();
+}
+
+interface ServerDependencies {
+  blaiseApiClient: BlaiseApiClient;
+  auth: Auth;
+  bimsClient: BimsClient;
+  busApiClient: BusClientLike;
+  storageManager: StorageManager;
+  auditLogger: AuditLogger;
+}
+
+interface ServerHandlers {
+  loginHandler: Router;
+  bimsHandler: Router;
+  blaiseHandler: Router;
+  busHandler: Router;
+  uploadHandler: Router;
+  auditHandler: Router;
+  clientLogHandler: Router;
+  createDonorCasesHandler: Router;
+  reissueNewDonorCaseHandler: Router;
+  getUsersByRoleHandler: Router;
+}
+
+interface ClientBuildPaths {
+  buildRoot: string;
+  clientBuildFolder: string;
 }
 
 export function newServer(config: Config, logger: HttpLogger = createLogger()): Express {
-    const blaiseApiClient = new BlaiseApiClient(config.BlaiseApiUrl);
-    const auth = new Auth(config);
+  const dependencies = createServerDependencies(config);
+  const handlers = createServerHandlers(config, dependencies);
 
-    const bimsAPI = new BimsApi(config.BimsApiUrl, config.BimsClientId);
-    const busApiClient = new BusApiClient(config.BusApiUrl, config.BusClientId);
-    const storageManager = new StorageManager(config);
-    const auditLogger = new AuditLogger(config.ProjectId);
+  const server = express();
 
-    const loginHandler = newLoginHandler(auth, blaiseApiClient);
-    const bimsHandler = newBimsHandler(bimsAPI, auth, auditLogger);
-    const blaiseHandler = newBlaiseHandler(blaiseApiClient, config.ServerPark, auth, auditLogger);
-    const busHandler = newBusHandler(busApiClient, auth);
-    const uploadHandler = newUploadHandler(storageManager, auth, auditLogger);
-    const auditHandler = newAuditHandler(auditLogger);
-    const clientLogHandler = newClientLogHandler(auth);
-    const createDonorCasesHandler = createDonorCasesCloudFunctionHandler(config.CreateDonorCasesCloudFunctionUrl);
-    const reissueNewDonorCaseHandler = reissueNewDonorCaseCloudFunctionHandler(config.ReissueNewDonorCaseCloudFunctionUrl);
-    const getUsersByRoleHandler = getUsersByRoleCloudFunctionHandler(config.GetUsersByRoleCloudFunctionUrl);
+  server.use(logger);
 
-    const server = express();
+  server.use("/", newHealthCheckHandler());
 
-    // const logger: HttpLogger = createLogger();
-    server.use(logger);
+  server.use("/", handlers.loginHandler);
+  server.use(express.json({ limit: "100kb" }));
 
-    server.use("/", loginHandler);
-    server.use(express.json());
+  const { buildRoot, clientBuildFolder } = resolveClientBuildPaths();
+  const errorPageContent = loadErrorPageContent(buildRoot);
 
-    // where ever the react built package is
-    const buildFolder = "../build";
+  configureClientRendering(server, clientBuildFolder);
+  registerRouteHandlers(server, [
+    handlers.uploadHandler,
+    handlers.blaiseHandler,
+    handlers.bimsHandler,
+    handlers.busHandler,
+    handlers.auditHandler,
+    handlers.clientLogHandler,
+    handlers.createDonorCasesHandler,
+    handlers.reissueNewDonorCaseHandler,
+    handlers.getUsersByRoleHandler,
+  ]);
 
-    // treat the index.html as a template and substitute the values at runtime
-    server.set("views", path.join(__dirname, buildFolder));
-    server.engine("html", ejs.renderFile);
-    server.use(
-        "/static",
-        express.static(path.join(__dirname, `${buildFolder}/static`))
-    );
+  server.use("/api", function (_req: Request, res: Response) {
+    res.status(404).json({ message: "Not found" });
+  });
 
-    server.use("/", uploadHandler);
-    server.use("/", blaiseHandler);
-    server.use("/", bimsHandler);
-    server.use("/", busHandler);
-    server.use("/", auditHandler);
-    server.use("/", clientLogHandler);
-    server.use("/", createDonorCasesHandler);
-    server.use("/", reissueNewDonorCaseHandler);
-    server.use("/", getUsersByRoleHandler);
-    server.use("/", HealthCheckHandler());
-
-    server.get("*", function (req: Request, res: Response) {
-        res.render("index.html");
+  server.get(/.*/, function (req: Request, res: Response) {
+    res.render("index.html", {
+      appConfigJson: getRuntimeConfigJson(config),
     });
+  });
 
-    server.use(function (err: Error, req: Request, res: Response, _next: NextFunction) {
-        req.log.error(err, err.message);
-        res.render("../src/views/500.html", {});
-    });
-    return server;
+  server.use(function (err: Error, req: Request, res: Response, _next: NextFunction) {
+    req.log.error(err, err.message);
+
+    if (errorPageContent != null) {
+      res.status(500).type("text/html").send(errorPageContent);
+
+      return;
+    }
+
+    res.status(500).type("text/plain").send("Sorry, there is a problem with the service.");
+  });
+
+  return server;
+}
+
+function firstExistingPath(candidates: string[]): string | undefined {
+  return candidates.find((candidate) => fs.existsSync(candidate));
+}
+
+function createServerDependencies(config: Config): ServerDependencies {
+  return {
+    blaiseApiClient: new BlaiseApiClient(config.blaiseApiUrl, { timeoutInMs: 5 * 60 * 1_000 }),
+    auth: new Auth(config),
+    bimsClient: new BimsClient(config.bimsApiUrl, config.bimsClientId),
+    busApiClient: createBusApiClient(config),
+    storageManager: new StorageManager(config),
+    auditLogger: new AuditLogger(config.projectId),
+  };
+}
+
+function createServerHandlers(config: Config, dependencies: ServerDependencies): ServerHandlers {
+  const { blaiseApiClient, auth, bimsClient, busApiClient, storageManager, auditLogger } =
+    dependencies;
+
+  return {
+    loginHandler: newLoginHandler(auth, blaiseApiClient),
+    bimsHandler: newBimsHandler(bimsClient, auth, auditLogger),
+    blaiseHandler: newBlaiseHandler(blaiseApiClient, config.serverPark, auth, auditLogger),
+    busHandler: newBusHandler(busApiClient, auth),
+    uploadHandler: newUploadHandler(storageManager, auth, auditLogger),
+    auditHandler: newAuditHandler(auditLogger, auth),
+    clientLogHandler: newClientLogHandler(auth),
+    ...createCloudFunctionHandlers(config, auth, auditLogger),
+  };
+}
+
+function createBusApiClient(config: Config): BusClientLike {
+  const BusClientConstructor = BusClient as unknown as new (
+    url: string,
+    clientId: string,
+  ) => BusClientLike;
+
+  return new BusClientConstructor(config.busApiUrl, config.busClientId);
+}
+
+function createCloudFunctionHandlers(
+  config: Config,
+  auth: Auth,
+  auditLogger: AuditLogger,
+): Pick<
+  ServerHandlers,
+  "createDonorCasesHandler" | "reissueNewDonorCaseHandler" | "getUsersByRoleHandler"
+> {
+  return {
+    createDonorCasesHandler: newCloudFunctionHandler(
+      "/api/cloudFunction/createDonorCases",
+      config.createDonorCasesCloudFunctionUrl,
+      auth,
+      auditLogger,
+      (req: Request, username: string) => {
+        const questionnaireName = readBodyStringValue(req.body, "questionnaire_name") ?? "unknown";
+        const role = readBodyStringValue(req.body, "role") ?? "unknown";
+
+        return {
+          successMessage: `${username} created donor cases for ${role} on ${questionnaireName}`,
+          errorMessage: `${username} failed to create donor cases for ${role} on ${questionnaireName}`,
+        };
+      },
+    ),
+    reissueNewDonorCaseHandler: newCloudFunctionHandler(
+      "/api/cloudFunction/reissueNewDonorCase",
+      config.reissueNewDonorCaseCloudFunctionUrl,
+      auth,
+      auditLogger,
+      (req: Request, username: string) => {
+        const questionnaireName = readBodyStringValue(req.body, "questionnaire_name") ?? "unknown";
+        const requestUser = readBodyStringValue(req.body, "user") ?? "unknown";
+
+        return {
+          successMessage: `${username} reissued donor case for ${requestUser} on ${questionnaireName}`,
+          errorMessage: `${username} failed to reissue donor case for ${requestUser} on ${questionnaireName}`,
+        };
+      },
+    ),
+    getUsersByRoleHandler: newCloudFunctionHandler(
+      "/api/cloudFunction/getUsersByRole",
+      config.getUsersByRoleCloudFunctionUrl,
+    ),
+  };
+}
+
+function resolveClientBuildPaths(): ClientBuildPaths {
+  const buildRootCandidates = [
+    path.resolve(process.cwd(), "build"),
+    path.resolve(__dirname, "../../build"),
+  ];
+  const buildRoot = firstExistingPath(buildRootCandidates) ?? buildRootCandidates[0];
+  const clientBuildCandidates = [path.resolve(buildRoot, "client"), buildRoot];
+  const clientBuildFolder = firstExistingPath(clientBuildCandidates) ?? clientBuildCandidates[0];
+
+  return { buildRoot, clientBuildFolder };
+}
+
+function loadErrorPageContent(buildRoot: string): string | undefined {
+  const errorPageCandidates = [
+    path.resolve(__dirname, "../../src/server/views/500.html"),
+    path.resolve(buildRoot, "500.html"),
+    path.resolve(buildRoot, "views/500.html"),
+  ];
+  const errorPagePath = firstExistingPath(errorPageCandidates);
+
+  return errorPagePath ? fs.readFileSync(errorPagePath, "utf-8") : undefined;
+}
+
+function configureClientRendering(server: Express, clientBuildFolder: string): void {
+  server.set("views", clientBuildFolder);
+  server.engine("html", ejs.renderFile);
+  server.use("/assets", express.static(path.join(clientBuildFolder, "assets")));
+  server.use("/static", express.static(path.join(clientBuildFolder, "static")));
+}
+
+function registerRouteHandlers(server: Express, handlers: Router[]): void {
+  handlers.forEach((handler) => {
+    server.use("/", handler);
+  });
+}
+
+function getRuntimeConfigJson(config: Config): string {
+  return JSON.stringify({
+    projectId: config.projectId,
+    urlDomain: config.urlDomain,
+  }).replace(/</g, "\\u003c");
+}
+
+function readBodyStringValue(body: unknown, key: string): string | undefined {
+  if (typeof body !== "object" || body === null) {
+    return undefined;
+  }
+
+  const value = (body as Record<string, unknown>)[key];
+
+  return typeof value === "string" ? value : undefined;
 }

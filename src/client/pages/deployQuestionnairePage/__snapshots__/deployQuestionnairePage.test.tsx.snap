@@ -1,0 +1,272 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Upload Page > select file page matches Snapshot 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <main
+        class="ons-page__main ons-u-mt-l"
+        id="main-content"
+      >
+        <div
+          class="ons-grid"
+        >
+          <div
+            class="ons-grid__col ons-col-8@m"
+          >
+            <form
+              action="#"
+              id="formID"
+            >
+              <h1
+                class="ons-u-mb-l"
+              >
+                Deploy questionnaire
+              </h1>
+              <p>
+                Upload and deploy a questionnaire package. You can also
+                 
+                <a
+                  data-discover="true"
+                  href="/reinstall"
+                >
+                  reinstall a previously uploaded questionnaire
+                </a>
+                .
+              </p>
+              <div
+                class="ons-grid ons-u-mt-m"
+              >
+                <div
+                  class="ons-grid__col ons-col-8@m ons-col-6@l"
+                >
+                  <div
+                    class="ons-field"
+                  >
+                    <label
+                      class="ons-label ons-label--with-description"
+                      for="survey-selector"
+                    >
+                      Select questionnaire package
+                    </label>
+                    <span
+                      class="ons-label__description ons-input--with-description"
+                      id="survey-selector-hint"
+                    >
+                      Accepted file type: bpkg
+                    </span>
+                    <input
+                      accept=".bpkg"
+                      aria-describedby="survey-selector-hint"
+                      class="ons-input ons-input--text ons-input-type__input ons-input--upload"
+                      data-testid="survey-selector-input"
+                      id="survey-selector"
+                      name="Select survey package"
+                      type="file"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ons-btn-group ons-u-mt-m"
+              >
+                <button
+                  class="ons-btn ons-btn--disabled"
+                  data-testid="continue-deploy-button-button"
+                  disabled=""
+                  id="continue-deploy-button"
+                  type="submit"
+                >
+                  <span
+                    class="ons-btn__inner"
+                  >
+                    <span
+                      class="ons-btn__text"
+                    >
+                      Continue
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="ons-btn ons-btn--secondary"
+                  data-testid="cancel-deploy-button-button"
+                  id="cancel-deploy-button"
+                  type="button"
+                >
+                  <span
+                    class="ons-btn__inner"
+                  >
+                    <span
+                      class="ons-btn__text"
+                    >
+                      Cancel
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>,
+  "container": <div>
+    <main
+      class="ons-page__main ons-u-mt-l"
+      id="main-content"
+    >
+      <div
+        class="ons-grid"
+      >
+        <div
+          class="ons-grid__col ons-col-8@m"
+        >
+          <form
+            action="#"
+            id="formID"
+          >
+            <h1
+              class="ons-u-mb-l"
+            >
+              Deploy questionnaire
+            </h1>
+            <p>
+              Upload and deploy a questionnaire package. You can also
+               
+              <a
+                data-discover="true"
+                href="/reinstall"
+              >
+                reinstall a previously uploaded questionnaire
+              </a>
+              .
+            </p>
+            <div
+              class="ons-grid ons-u-mt-m"
+            >
+              <div
+                class="ons-grid__col ons-col-8@m ons-col-6@l"
+              >
+                <div
+                  class="ons-field"
+                >
+                  <label
+                    class="ons-label ons-label--with-description"
+                    for="survey-selector"
+                  >
+                    Select questionnaire package
+                  </label>
+                  <span
+                    class="ons-label__description ons-input--with-description"
+                    id="survey-selector-hint"
+                  >
+                    Accepted file type: bpkg
+                  </span>
+                  <input
+                    accept=".bpkg"
+                    aria-describedby="survey-selector-hint"
+                    class="ons-input ons-input--text ons-input-type__input ons-input--upload"
+                    data-testid="survey-selector-input"
+                    id="survey-selector"
+                    name="Select survey package"
+                    type="file"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="ons-btn-group ons-u-mt-m"
+            >
+              <button
+                class="ons-btn ons-btn--disabled"
+                data-testid="continue-deploy-button-button"
+                disabled=""
+                id="continue-deploy-button"
+                type="submit"
+              >
+                <span
+                  class="ons-btn__inner"
+                >
+                  <span
+                    class="ons-btn__text"
+                  >
+                    Continue
+                  </span>
+                </span>
+              </button>
+              <button
+                class="ons-btn ons-btn--secondary"
+                data-testid="cancel-deploy-button-button"
+                id="cancel-deploy-button"
+                type="button"
+              >
+                <span
+                  class="ons-btn__inner"
+                >
+                  <span
+                    class="ons-btn__text"
+                  >
+                    Cancel
+                  </span>
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

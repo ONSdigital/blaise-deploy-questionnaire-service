@@ -1,0 +1,1452 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DeleteConfirmation > when CATI mode is present > should display an error when the CATI active check fails 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="ons-panel ons-panel--error ons-panel--no-title ons-u-mt-m"
+        id="panel-_r_j_"
+      >
+        <span
+          class="ons-panel__assistive-text ons-u-vh"
+        >
+          Error:
+           
+        </span>
+        <div
+          class="ons-panel__body "
+        >
+          Failed to get delete questionnaire warning details
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="ons-panel ons-panel--error ons-panel--no-title ons-u-mt-m"
+      id="panel-_r_j_"
+    >
+      <span
+        class="ons-panel__assistive-text ons-u-vh"
+      >
+        Error:
+         
+      </span>
+      <div
+        class="ons-panel__body "
+      >
+        Failed to get delete questionnaire warning details
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`DeleteConfirmation > when CATI mode is present > should display the CATI warning for an active CATI questionnaire 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <h1
+        class="ons-u-mb-l"
+      >
+        Are you sure you want to delete questionnaire
+         
+        <span
+          class="ons-highlight"
+        >
+          LMS2201_AA1
+        </span>
+        ?
+      </h1>
+      <div
+        class="ons-u-mb-m"
+      >
+        <div
+          class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+          id="panel-_r_8_"
+        >
+          <span
+            aria-hidden="true"
+            class="ons-panel__icon"
+          >
+            !
+          </span>
+          <span
+            class="ons-panel__assistive-text ons-u-vh"
+          >
+            Warning:
+             
+          </span>
+          <div
+            class="ons-panel__body "
+          >
+            Questionnaire has active survey days
+          </div>
+        </div>
+      </div>
+      <div
+        class="ons-u-mb-m"
+      >
+        <div
+          class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+          id="panel-_r_9_"
+        >
+          <span
+            aria-hidden="true"
+            class="ons-panel__icon"
+          >
+            !
+          </span>
+          <span
+            class="ons-panel__assistive-text ons-u-vh"
+          >
+            Warning:
+             
+          </span>
+          <div
+            class="ons-panel__body "
+          >
+            All questionnaire data will be deleted
+          </div>
+        </div>
+      </div>
+      <div
+        class="ons-btn-group ons-u-mt-m"
+      >
+        <button
+          class="ons-btn"
+          data-testid="confirm-delete-button"
+          id="confirm-delete"
+          type="button"
+        >
+          <span
+            class="ons-btn__inner"
+          >
+            <span
+              class="ons-btn__text"
+            >
+              Delete
+            </span>
+          </span>
+        </button>
+        <button
+          class="ons-btn ons-btn--secondary"
+          data-testid="cancel-delete-button"
+          id="cancel-delete"
+          type="button"
+        >
+          <span
+            class="ons-btn__inner"
+          >
+            <span
+              class="ons-btn__text"
+            >
+              Cancel
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <h1
+      class="ons-u-mb-l"
+    >
+      Are you sure you want to delete questionnaire
+       
+      <span
+        class="ons-highlight"
+      >
+        LMS2201_AA1
+      </span>
+      ?
+    </h1>
+    <div
+      class="ons-u-mb-m"
+    >
+      <div
+        class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+        id="panel-_r_8_"
+      >
+        <span
+          aria-hidden="true"
+          class="ons-panel__icon"
+        >
+          !
+        </span>
+        <span
+          class="ons-panel__assistive-text ons-u-vh"
+        >
+          Warning:
+           
+        </span>
+        <div
+          class="ons-panel__body "
+        >
+          Questionnaire has active survey days
+        </div>
+      </div>
+    </div>
+    <div
+      class="ons-u-mb-m"
+    >
+      <div
+        class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+        id="panel-_r_9_"
+      >
+        <span
+          aria-hidden="true"
+          class="ons-panel__icon"
+        >
+          !
+        </span>
+        <span
+          class="ons-panel__assistive-text ons-u-vh"
+        >
+          Warning:
+           
+        </span>
+        <div
+          class="ons-panel__body "
+        >
+          All questionnaire data will be deleted
+        </div>
+      </div>
+    </div>
+    <div
+      class="ons-btn-group ons-u-mt-m"
+    >
+      <button
+        class="ons-btn"
+        data-testid="confirm-delete-button"
+        id="confirm-delete"
+        type="button"
+      >
+        <span
+          class="ons-btn__inner"
+        >
+          <span
+            class="ons-btn__text"
+          >
+            Delete
+          </span>
+        </span>
+      </button>
+      <button
+        class="ons-btn ons-btn--secondary"
+        data-testid="cancel-delete-button"
+        id="cancel-delete"
+        type="button"
+      >
+        <span
+          class="ons-btn__inner"
+        >
+          <span
+            class="ons-btn__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`DeleteConfirmation > when CATI mode is present > should display the loading page while waiting for the CATI status 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m"
+        id="panel-_r_4_"
+      >
+        <span
+          class="ons-panel__assistive-text ons-u-vh"
+        >
+          Important information:
+           
+        </span>
+        <div
+          class="ons-panel__body "
+        >
+          <div
+            class="ons-u-pt-xs ons-u-pb-xs"
+            style="display: flex; align-items: center;"
+          >
+            <div
+              style="display: flex; margin-right: 1rem;"
+            >
+              <svg
+                aria-hidden="true"
+                fill="#064868"
+                focusable="false"
+                preserveAspectRatio="xMidYMid"
+                style="width: 30px; height: 30px;"
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  fill="none"
+                  height="100"
+                  width="100"
+                  x="0"
+                  y="0"
+                />
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(0 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(30 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.08333333333333333s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(60 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.16666666666666666s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(90 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.25s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(120 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.3333333333333333s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(150 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.41666666666666663s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(180 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.5s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(210 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.5833333333333333s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(240 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.6666666666666666s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(270 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.75s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(300 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.8333333333333333s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+                <rect
+                  height="20"
+                  rx="5"
+                  ry="5"
+                  transform="rotate(330 50 50) translate(0 -30)"
+                  width="7"
+                  x="46.5"
+                  y="40"
+                >
+                  <animate
+                    attributeName="opacity"
+                    begin="0.9166666666666666s"
+                    dur="1s"
+                    from="1"
+                    repeatCount="indefinite"
+                    to="0"
+                  />
+                </rect>
+              </svg>
+            </div>
+            <span>
+              Loading...
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m"
+      id="panel-_r_4_"
+    >
+      <span
+        class="ons-panel__assistive-text ons-u-vh"
+      >
+        Important information:
+         
+      </span>
+      <div
+        class="ons-panel__body "
+      >
+        <div
+          class="ons-u-pt-xs ons-u-pb-xs"
+          style="display: flex; align-items: center;"
+        >
+          <div
+            style="display: flex; margin-right: 1rem;"
+          >
+            <svg
+              aria-hidden="true"
+              fill="#064868"
+              focusable="false"
+              preserveAspectRatio="xMidYMid"
+              style="width: 30px; height: 30px;"
+              viewBox="0 0 100 100"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                fill="none"
+                height="100"
+                width="100"
+                x="0"
+                y="0"
+              />
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(0 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(30 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.08333333333333333s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(60 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.16666666666666666s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(90 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.25s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(120 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.3333333333333333s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(150 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.41666666666666663s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(180 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.5s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(210 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.5833333333333333s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(240 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.6666666666666666s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(270 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.75s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(300 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.8333333333333333s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+              <rect
+                height="20"
+                rx="5"
+                ry="5"
+                transform="rotate(330 50 50) translate(0 -30)"
+                width="7"
+                x="46.5"
+                y="40"
+              >
+                <animate
+                  attributeName="opacity"
+                  begin="0.9166666666666666s"
+                  dur="1s"
+                  from="1"
+                  repeatCount="indefinite"
+                  to="0"
+                />
+              </rect>
+            </svg>
+          </div>
+          <span>
+            Loading...
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`DeleteConfirmation > when CAWI mode is include > should display CAWI warning for an active CAWI questionnaire 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <h1
+        class="ons-u-mb-l"
+      >
+        Are you sure you want to delete questionnaire
+         
+        <span
+          class="ons-highlight"
+        />
+        ?
+      </h1>
+      <div
+        class="ons-u-mb-m"
+      >
+        <div
+          class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+          id="panel-_r_0_"
+        >
+          <span
+            aria-hidden="true"
+            class="ons-panel__icon"
+          >
+            !
+          </span>
+          <span
+            class="ons-panel__assistive-text ons-u-vh"
+          >
+            Warning:
+             
+          </span>
+          <div
+            class="ons-panel__body "
+          >
+            Questionnaire is active for web collection
+          </div>
+        </div>
+      </div>
+      <div
+        class="ons-u-mb-m"
+      >
+        <div
+          class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+          id="panel-_r_1_"
+        >
+          <span
+            aria-hidden="true"
+            class="ons-panel__icon"
+          >
+            !
+          </span>
+          <span
+            class="ons-panel__assistive-text ons-u-vh"
+          >
+            Warning:
+             
+          </span>
+          <div
+            class="ons-panel__body "
+          >
+            All questionnaire data will be deleted
+          </div>
+        </div>
+      </div>
+      <div
+        class="ons-btn-group ons-u-mt-m"
+      >
+        <button
+          class="ons-btn"
+          data-testid="confirm-delete-button"
+          id="confirm-delete"
+          type="button"
+        >
+          <span
+            class="ons-btn__inner"
+          >
+            <span
+              class="ons-btn__text"
+            >
+              Delete
+            </span>
+          </span>
+        </button>
+        <button
+          class="ons-btn ons-btn--secondary"
+          data-testid="cancel-delete-button"
+          id="cancel-delete"
+          type="button"
+        >
+          <span
+            class="ons-btn__inner"
+          >
+            <span
+              class="ons-btn__text"
+            >
+              Cancel
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <h1
+      class="ons-u-mb-l"
+    >
+      Are you sure you want to delete questionnaire
+       
+      <span
+        class="ons-highlight"
+      />
+      ?
+    </h1>
+    <div
+      class="ons-u-mb-m"
+    >
+      <div
+        class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+        id="panel-_r_0_"
+      >
+        <span
+          aria-hidden="true"
+          class="ons-panel__icon"
+        >
+          !
+        </span>
+        <span
+          class="ons-panel__assistive-text ons-u-vh"
+        >
+          Warning:
+           
+        </span>
+        <div
+          class="ons-panel__body "
+        >
+          Questionnaire is active for web collection
+        </div>
+      </div>
+    </div>
+    <div
+      class="ons-u-mb-m"
+    >
+      <div
+        class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+        id="panel-_r_1_"
+      >
+        <span
+          aria-hidden="true"
+          class="ons-panel__icon"
+        >
+          !
+        </span>
+        <span
+          class="ons-panel__assistive-text ons-u-vh"
+        >
+          Warning:
+           
+        </span>
+        <div
+          class="ons-panel__body "
+        >
+          All questionnaire data will be deleted
+        </div>
+      </div>
+    </div>
+    <div
+      class="ons-btn-group ons-u-mt-m"
+    >
+      <button
+        class="ons-btn"
+        data-testid="confirm-delete-button"
+        id="confirm-delete"
+        type="button"
+      >
+        <span
+          class="ons-btn__inner"
+        >
+          <span
+            class="ons-btn__text"
+          >
+            Delete
+          </span>
+        </span>
+      </button>
+      <button
+        class="ons-btn ons-btn--secondary"
+        data-testid="cancel-delete-button"
+        id="cancel-delete"
+        type="button"
+      >
+        <span
+          class="ons-btn__inner"
+        >
+          <span
+            class="ons-btn__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`DeleteConfirmation > when Delete button is pressed > should display an error if deleting Telephone Operations start date fails 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <h1
+        class="ons-u-mb-l"
+      >
+        Are you sure you want to delete questionnaire
+         
+        <span
+          class="ons-highlight"
+        >
+          LMS2210_CC1
+        </span>
+        ?
+      </h1>
+      <div
+        class="ons-u-mb-m"
+      >
+        <div
+          class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+          id="panel-_r_n_"
+        >
+          <span
+            aria-hidden="true"
+            class="ons-panel__icon"
+          >
+            !
+          </span>
+          <span
+            class="ons-panel__assistive-text ons-u-vh"
+          >
+            Warning:
+             
+          </span>
+          <div
+            class="ons-panel__body "
+          >
+            All questionnaire data will be deleted
+          </div>
+        </div>
+      </div>
+      <div
+        class="ons-u-mb-m"
+      >
+        <div
+          class="ons-panel ons-panel--error ons-panel--no-title ons-u-mt-m"
+          id="panel-_r_o_"
+        >
+          <span
+            class="ons-panel__assistive-text ons-u-vh"
+          >
+            Error:
+             
+          </span>
+          <div
+            class="ons-panel__body "
+          >
+            Failed to delete Telephone Operations start date
+          </div>
+        </div>
+      </div>
+      <div
+        class="ons-btn-group ons-u-mt-m"
+      >
+        <button
+          class="ons-btn"
+          data-testid="confirm-delete-button"
+          id="confirm-delete"
+          type="button"
+        >
+          <span
+            class="ons-btn__inner"
+          >
+            <span
+              class="ons-btn__text"
+            >
+              Delete
+            </span>
+          </span>
+        </button>
+        <button
+          class="ons-btn ons-btn--secondary"
+          data-testid="cancel-delete-button"
+          id="cancel-delete"
+          type="button"
+        >
+          <span
+            class="ons-btn__inner"
+          >
+            <span
+              class="ons-btn__text"
+            >
+              Cancel
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <h1
+      class="ons-u-mb-l"
+    >
+      Are you sure you want to delete questionnaire
+       
+      <span
+        class="ons-highlight"
+      >
+        LMS2210_CC1
+      </span>
+      ?
+    </h1>
+    <div
+      class="ons-u-mb-m"
+    >
+      <div
+        class="ons-panel ons-panel--warn ons-panel--no-title ons-u-mt-m"
+        id="panel-_r_n_"
+      >
+        <span
+          aria-hidden="true"
+          class="ons-panel__icon"
+        >
+          !
+        </span>
+        <span
+          class="ons-panel__assistive-text ons-u-vh"
+        >
+          Warning:
+           
+        </span>
+        <div
+          class="ons-panel__body "
+        >
+          All questionnaire data will be deleted
+        </div>
+      </div>
+    </div>
+    <div
+      class="ons-u-mb-m"
+    >
+      <div
+        class="ons-panel ons-panel--error ons-panel--no-title ons-u-mt-m"
+        id="panel-_r_o_"
+      >
+        <span
+          class="ons-panel__assistive-text ons-u-vh"
+        >
+          Error:
+           
+        </span>
+        <div
+          class="ons-panel__body "
+        >
+          Failed to delete Telephone Operations start date
+        </div>
+      </div>
+    </div>
+    <div
+      class="ons-btn-group ons-u-mt-m"
+    >
+      <button
+        class="ons-btn"
+        data-testid="confirm-delete-button"
+        id="confirm-delete"
+        type="button"
+      >
+        <span
+          class="ons-btn__inner"
+        >
+          <span
+            class="ons-btn__text"
+          >
+            Delete
+          </span>
+        </span>
+      </button>
+      <button
+        class="ons-btn ons-btn--secondary"
+        data-testid="cancel-delete-button"
+        id="cancel-delete"
+        type="button"
+      >
+        <span
+          class="ons-btn__inner"
+        >
+          <span
+            class="ons-btn__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
