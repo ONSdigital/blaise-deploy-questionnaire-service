@@ -1,36 +1,46 @@
-function isNumber(n: any) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+
+function isNumber(n: string): boolean {
+  const parsedValue = parseFloat(n);
+
+  return !isNaN(parsedValue) && Number.isFinite(parsedValue);
 }
 
-function fieldPeriodFromQuestionnare(questionnaireName: string): string {
-    const monthNumberString: string = questionnaireName.substring(5, 7);
-    let monthNumberInt = -1;
-    let month: string;
+function fieldPeriodFromQuestionnaire(questionnaireName: string): string {
+  const monthNumberString: string = questionnaireName.substring(5, 7);
 
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
+  if (!isNumber(monthNumberString)) {
+    throw new Error("Month was not an integer");
+  }
 
-    if (isNumber(monthNumberString)) {
-        monthNumberInt = parseInt(monthNumberString) - 1;
-    } else {
-        throw new Error("Month was not a integer");
-    }
+  const monthNumberInt = parseInt(monthNumberString) - 1;
 
-    if (monthNumberInt >= 0 && monthNumberInt < 12) {
-        month = monthNames[monthNumberInt];
-    } else {
-        throw new Error("Month was dot between 1 and 12");
-    }
+  if (monthNumberInt < 0 || monthNumberInt >= 12) {
+    throw new Error("Month was not between 1 and 12");
+  }
 
-    return month + " 20" + questionnaireName.substring(3, 5);
+  const month = MONTH_NAMES[monthNumberInt];
+
+  return month + " 20" + questionnaireName.substring(3, 5);
 }
 
 export function fieldPeriodToText(questionnaireName: string): string {
-    try {
-        return fieldPeriodFromQuestionnare(questionnaireName);
-    } catch (error: unknown) {
-        console.error("Error getting field period");
-        return "Field period unknown";
-    }
+  try {
+    return fieldPeriodFromQuestionnaire(questionnaireName);
+  } catch {
+    return "Unknown";
+  }
 }

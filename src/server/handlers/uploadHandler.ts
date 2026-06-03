@@ -1,80 +1,148 @@
-import { Auth } from "blaise-login-react/blaise-login-react-server";
-import express, { Router, Request, Response } from "express";
-import AuditLogger from "../auditLogging/logger";
-import StorageManager from "../storage/storage";
+import path from "path";
 
-export default function newUploadHandler(storageManager: StorageManager, auth: Auth, auditLogger: AuditLogger): Router {
-    const router = express.Router();
+import { type Auth } from "blaise-login-react-server";
+import express, { type Request, type Response, type Router } from "express";
 
-    const uploadHandler = new UploadHandler(storageManager, auditLogger);
+import { getUsername } from "../helpers/getUsername.js";
+import { sanitise } from "../helpers/sanitise.js";
 
-    router.get("/upload/init", auth.Middleware, uploadHandler.InitialiseUpload);
-    router.get("/bucket/files", auth.Middleware, uploadHandler.ListFiles);
-    router.get("/upload/verify", auth.Middleware, uploadHandler.VerifyUpload);
-    return router;
+import type AuditLogger from "../auditLogger.js";
+import type StorageManager from "../storageManager.js";
+
+const ALLOWED_SIGNED_URL_HOSTS = ["storage.googleapis.com"];
+
+function isSafeFilename(filename: string): boolean {
+  const basename = path.basename(filename);
+
+  return basename === filename && !filename.includes("/") && !filename.includes("\\");
 }
 
-export class UploadHandler {
-    storageManager: StorageManager;
-    auditLogger: AuditLogger;
+function isAllowedSignedUrlHost(url: string): boolean {
+  try {
+    const { hostname } = new URL(url);
 
-    constructor(storageManager: StorageManager, auditLogger: AuditLogger) {
-        this.storageManager = storageManager;
-        this.auditLogger = auditLogger;
+    return ALLOWED_SIGNED_URL_HOSTS.some(
+      (allowed) => hostname === allowed || hostname.endsWith(`.${allowed}`),
+    );
+  } catch {
+    return false;
+  }
+}
 
-        this.InitialiseUpload = this.InitialiseUpload.bind(this);
-        this.ListFiles = this.ListFiles.bind(this);
-        this.VerifyUpload = this.VerifyUpload.bind(this);
+export default function newUploadHandler(
+  storageManager: StorageManager,
+  auth: Auth,
+  auditLogger: AuditLogger,
+): Router {
+  const router = express.Router();
+
+  const uploadHandler = new UploadHandler(storageManager, auth, auditLogger);
+
+  router.get("/upload/init", auth.middleware, uploadHandler.initialiseUpload);
+  router.get("/bucket/files", auth.middleware, uploadHandler.listFiles);
+  router.get("/upload/verify", auth.middleware, uploadHandler.verifyUpload);
+
+  return router;
+}
+
+class UploadHandler {
+  private readonly storageManager: StorageManager;
+  private readonly auth: Auth;
+  private readonly auditLogger: AuditLogger;
+
+  constructor(storageManager: StorageManager, auth: Auth, auditLogger: AuditLogger) {
+    this.storageManager = storageManager;
+    this.auth = auth;
+    this.auditLogger = auditLogger;
+  }
+
+  initialiseUpload = async (req: Request, res: Response): Promise<Response> => {
+    const { filename } = req.query;
+
+    if (typeof filename !== "string" || filename.trim() === "") {
+      return res.status(400).json("No filename provided");
     }
 
-    async InitialiseUpload(req: Request, res: Response): Promise<Response> {
-        const { filename } = req.query;
-        if (typeof filename !== "string") {
-            return res.status(500).json("No filename provided");
-        }
+    if (!isSafeFilename(filename)) {
+      req.log.warn({ filename }, "Rejected unsafe filename in upload init");
 
-        try {
-            const url = await this.storageManager.GetSignedUrl(filename);
-            req.log.info({ url }, `Signed url for ${filename} created in Bucket ${this.storageManager.bucketName}`);
-            return res.status(200).json(url);
-        } catch (error: any) {
-            req.log.error(error, "Failed to obtain Signed Url");
-            return res.status(500).json("Failed to obtain Signed Url");
-        }
+      return res.status(400).json("Invalid filename");
     }
 
-    async ListFiles(req: Request, res: Response): Promise<Response> {
-        req.log.info("//bucket/files endpoint called");
-        try {
-            const bucketItems = await this.storageManager.GetBucketItems();
-            req.log.info(`Obtained list of files in Bucket ${this.storageManager.bucketName}`);
-            return res.status(200).json(bucketItems);
-        } catch (error: any) {
-            req.log.error(error, "Failed to obtain list of files in bucket");
-            return res.status(500).json("Failed to list of files in bucket");
-        }
+    try {
+      const url = await this.storageManager.getSignedUrl(filename);
+
+      if (!isAllowedSignedUrlHost(url)) {
+        req.log.error({ url }, "Signed URL returned unexpected host");
+
+        return res.status(500).json("Failed to obtain signed URL");
+      }
+
+      req.log.info(
+        { url },
+        `Signed url for ${filename} created in bucket ${this.storageManager.bucketName}`,
+      );
+
+      return res.status(200).json(url);
+    } catch (error: unknown) {
+      req.log.error(error, "Failed to obtain signed URL");
+
+      return res.status(500).json("Failed to obtain signed URL");
+    }
+  };
+
+  listFiles = async (req: Request, res: Response): Promise<Response> => {
+    req.log.info("/bucket/files endpoint called");
+    try {
+      const bucketItems = await this.storageManager.getBucketItems();
+
+      req.log.info(`Obtained list of files in bucket ${this.storageManager.bucketName}`);
+
+      return res.status(200).json(bucketItems);
+    } catch (error: unknown) {
+      req.log.error(error, "Failed to obtain list of files in bucket");
+
+      return res.status(500).json("Failed to list files in bucket");
+    }
+  };
+
+  verifyUpload = async (req: Request, res: Response): Promise<Response> => {
+    const { filename } = req.query;
+    const username = getUsername(req, this.auth);
+
+    if (typeof filename !== "string" || filename.trim() === "") {
+      return res.status(400).json("No filename provided");
     }
 
-    async VerifyUpload(req: Request, res: Response): Promise<Response> {
-        const { filename } = req.query;
-        if (typeof filename !== "string") {
-            return res.status(500).json("No filename provided");
-        }
+    if (!isSafeFilename(filename)) {
+      req.log.warn({ filename }, "Rejected unsafe filename in upload verify");
 
-        try {
-            const file = await this.storageManager.CheckFile(filename);
-            if (!file.found) {
-                req.log.warn(`File ${filename} not found in Bucket ${this.storageManager.bucketName}`);
-                this.auditLogger.error(req.log, `Failed to install questionnaire ${filename}, file upload failed`);
-                return res.status(404).json("Not found");
-            }
-            req.log.info(`File ${filename} found in Bucket ${this.storageManager.bucketName}`);
-            this.auditLogger.info(req.log, `Successfully uploaded questionnaire file ${filename}`);
-            return res.status(200).json(file);
-        } catch (error: any) {
-            req.log.error(error, "Failed calling checkFile");
-            this.auditLogger.error(req.log, `Failed to install questionnaire ${filename}, unable to verify if file had been uploaded`);
-            return res.status(500).json(error);
-        }
+      return res.status(400).json("Invalid filename");
     }
+
+    try {
+      const file = await this.storageManager.checkFile(filename);
+
+      if (!file.found) {
+        req.log.warn(
+          `File ${sanitise(filename)} not found in Bucket ${this.storageManager.bucketName}`,
+        );
+        this.auditLogger.error(req.log, `${username} failed to upload ${sanitise(filename)}`);
+
+        return res.status(404).json("Not found");
+      }
+
+      req.log.info(`File ${sanitise(filename)} found in Bucket ${this.storageManager.bucketName}`);
+
+      return res.status(200).json(file);
+    } catch (error: unknown) {
+      req.log.error(error, "Failed calling checkFile");
+      this.auditLogger.error(
+        req.log,
+        `${username} failed to verify ${sanitise(filename)} uploaded`,
+      );
+
+      return res.status(500).json("Failed to verify upload");
+    }
+  };
 }
