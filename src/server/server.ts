@@ -5,7 +5,6 @@ import { fileURLToPath } from "url";
 import { BlaiseApiClient } from "blaise-api-node-client";
 import { Auth, newLoginHandler } from "blaise-login-react-server";
 import { BusClient } from "blaise-uac-service-node-client";
-import dotenv from "dotenv";
 import ejs from "ejs";
 import express, {
   type Express,
@@ -33,10 +32,6 @@ import StorageManager from "./storageManager.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-if (process.env.NODE_ENV !== "production") {
-  dotenv.config();
-}
 
 interface ServerDependencies {
   blaiseApiClient: BlaiseApiClient;

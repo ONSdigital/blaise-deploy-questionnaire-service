@@ -270,24 +270,3 @@ describe("Client route rendering and global error handler", () => {
     expect(response.text).toEqual("Sorry, there is a problem with the service.");
   });
 });
-
-describe("Server module bootstrap", () => {
-  it("does not call dotenv.config when NODE_ENV is production", async () => {
-    const originalNodeEnv = process.env.NODE_ENV;
-    const dotenvConfig = vi.fn();
-
-    vi.resetModules();
-    process.env.NODE_ENV = "production";
-    vi.doMock("dotenv", () => ({
-      default: { config: dotenvConfig },
-      config: dotenvConfig,
-    }));
-
-    await import("./server.js");
-
-    expect(dotenvConfig).not.toHaveBeenCalled();
-
-    vi.doUnmock("dotenv");
-    process.env.NODE_ENV = originalNodeEnv;
-  });
-});

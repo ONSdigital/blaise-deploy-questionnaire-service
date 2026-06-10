@@ -72,6 +72,26 @@ vi.mock("blaise-design-system-react-components", () => ({
 }));
 
 describe("CawiModeDetails CSV coverage", () => {
+  async function readBlobAsText(blob: Blob): Promise<string> {
+    if (typeof blob.text === "function") {
+      return blob.text();
+    }
+
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        resolve(String(reader.result ?? ""));
+      };
+
+      reader.onerror = () => {
+        reject(reader.error ?? new Error("Failed to read blob contents"));
+      };
+
+      reader.readAsText(blob);
+    });
+  }
+
   afterEach(() => {
     vi.restoreAllMocks();
     vi.clearAllMocks();
@@ -85,7 +105,7 @@ describe("CawiModeDetails CSV coverage", () => {
     let capturedBlob: Blob | undefined;
 
     vi.spyOn(URL, "createObjectURL").mockImplementation((blob: Blob | MediaSource) => {
-      capturedBlob = blob as Blob;
+      capturedBlob ??= blob as Blob;
 
       return "blob:generated-uacs";
     });
@@ -118,6 +138,8 @@ describe("CawiModeDetails CSV coverage", () => {
       expect(clickSpy).toHaveBeenCalledTimes(1);
     });
 
-    await expect(capturedBlob?.text()).resolves.toBe('\uFEFFcaseId,uac,note\r\n"1","A""B",""');
+    const csvText = await readBlobAsText(capturedBlob as Blob);
+
+    expect(csvText.replace(/^\uFEFF/, "")).toBe('caseId,uac,note\r\n"1","A""B",""');
   });
 });

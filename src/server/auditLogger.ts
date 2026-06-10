@@ -1,5 +1,6 @@
 import { Logging } from "@google-cloud/logging";
-import { type Logger } from "pino";
+
+import type { Request } from "express";
 
 interface AuditLog {
   id: string;
@@ -9,6 +10,30 @@ interface AuditLog {
 }
 
 const AUDIT_LOG_LOOKBACK_DAYS = 7;
+const AUDIT_LOG_MESSAGE_PREFIX = "AUDIT_LOG:";
+const AUDIT_LOG_PAYLOAD_FIELD = "auditMessage";
+
+function sanitiseAuditMessage(message: string): string {
+  return message.replace(/[\r\n]+/g, " ").trim();
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function readStringField(payload: unknown, key: string): string | undefined {
+  if (!isRecord(payload)) {
+    return undefined;
+  }
+
+  const value = payload[key];
+
+  return typeof value === "string" ? value : undefined;
+}
+
+function stripAuditPrefix(message: string): string {
+  return message.replace(/^AUDIT_LOG:\s*/, "");
+}
 
 export default class AuditLogger {
   private readonly projectId: string;
@@ -21,12 +46,18 @@ export default class AuditLogger {
     this.logName = `projects/${this.projectId}/logs/stdout`;
   }
 
-  info(logger: Logger, message: string): void {
-    logger.info(`AUDIT_LOG: ${message}`);
+  info(logger: Request["log"], message: string): void {
+    logger.info(
+      { [AUDIT_LOG_PAYLOAD_FIELD]: sanitiseAuditMessage(message) },
+      AUDIT_LOG_MESSAGE_PREFIX,
+    );
   }
 
-  error(logger: Logger, message: string): void {
-    logger.error(`AUDIT_LOG: ${message}`);
+  error(logger: Request["log"], message: string): void {
+    logger.error(
+      { [AUDIT_LOG_PAYLOAD_FIELD]: sanitiseAuditMessage(message) },
+      AUDIT_LOG_MESSAGE_PREFIX,
+    );
   }
 
   async getLogs(): Promise<AuditLog[]> {
@@ -53,8 +84,20 @@ export default class AuditLogger {
         severity = entry.metadata.severity.toString();
       }
 
-      if (entry.data?.message != null && typeof entry.data.message === "string") {
-        message = entry.data.message.replace(/^AUDIT_LOG: /, "");
+      const nestedPayload = isRecord(entry.data) ? entry.data.info : undefined;
+      const auditMessage =
+        readStringField(entry.data, "auditMessage") ??
+        readStringField(nestedPayload, "auditMessage");
+      const prefixedMessage =
+        readStringField(entry.data, "message") ??
+        readStringField(entry.data, "msg") ??
+        readStringField(nestedPayload, "message") ??
+        readStringField(nestedPayload, "msg");
+
+      if (auditMessage != null) {
+        message = auditMessage;
+      } else if (prefixedMessage != null) {
+        message = stripAuditPrefix(prefixedMessage);
       }
 
       auditLogs.push({
@@ -78,6 +121,6 @@ function buildAuditLogFilter(referenceDate: Date): string {
     'resource.type="gae_app" AND ' +
     'resource.labels.module_id="dqs-ui" AND ' +
     `timestamp >= "${earliestTimestamp}" AND ` +
-    'jsonPayload.message:"AUDIT_LOG:"'
+    `jsonPayload.message:"${AUDIT_LOG_MESSAGE_PREFIX}"`
   );
 }
