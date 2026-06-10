@@ -17,7 +17,11 @@ function makeEntry(overrides: {
   timestamp?: unknown;
   severity?: unknown;
   dataMessage?: unknown;
+  dataMsg?: unknown;
   auditMessage?: unknown;
+  infoAuditMessage?: unknown;
+  infoMessage?: unknown;
+  infoMsg?: unknown;
 }) {
   return {
     metadata: {
@@ -26,8 +30,22 @@ function makeEntry(overrides: {
       severity: overrides.severity ?? null,
     },
     data:
-      overrides.dataMessage !== undefined || overrides.auditMessage !== undefined
-        ? { message: overrides.dataMessage, auditMessage: overrides.auditMessage }
+      overrides.dataMessage !== undefined ||
+      overrides.dataMsg !== undefined ||
+      overrides.auditMessage !== undefined ||
+      overrides.infoAuditMessage !== undefined ||
+      overrides.infoMessage !== undefined ||
+      overrides.infoMsg !== undefined
+        ? {
+            message: overrides.dataMessage,
+            msg: overrides.dataMsg,
+            auditMessage: overrides.auditMessage,
+            info: {
+              auditMessage: overrides.infoAuditMessage,
+              message: overrides.infoMessage,
+              msg: overrides.infoMsg,
+            },
+          }
         : undefined,
   };
 }
@@ -220,6 +238,39 @@ describe("AuditLogger", () => {
       const [entry] = await auditLogger.getLogs();
 
       expect(entry.message).toBe("deployed OPN2101");
+    });
+
+    it("reads auditMessage from nested info payload", async () => {
+      mockGetEntries.mockResolvedValueOnce([
+        [
+          makeEntry({
+            insertId: "id1",
+            timestamp: "t",
+            severity: "INFO",
+            dataMessage: "AUDIT_LOG:",
+            infoAuditMessage: "rich deleted questionnaire OPN2026A",
+          }),
+        ],
+      ]);
+      const [entry] = await auditLogger.getLogs();
+
+      expect(entry.message).toBe("rich deleted questionnaire OPN2026A");
+    });
+
+    it("falls back to msg key when message key is absent", async () => {
+      mockGetEntries.mockResolvedValueOnce([
+        [
+          makeEntry({
+            insertId: "id1",
+            timestamp: "t",
+            severity: "INFO",
+            dataMsg: "AUDIT_LOG: updated sample assignment",
+          }),
+        ],
+      ]);
+      const [entry] = await auditLogger.getLogs();
+
+      expect(entry.message).toBe("updated sample assignment");
     });
 
     it("passes the correct filter and maxResults to getEntries", async () => {

@@ -17,6 +17,24 @@ function sanitiseAuditMessage(message: string): string {
   return message.replace(/[\r\n]+/g, " ").trim();
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function readStringField(payload: unknown, key: string): string | undefined {
+  if (!isRecord(payload)) {
+    return undefined;
+  }
+
+  const value = payload[key];
+
+  return typeof value === "string" ? value : undefined;
+}
+
+function stripAuditPrefix(message: string): string {
+  return message.replace(/^AUDIT_LOG:\s*/, "");
+}
+
 export default class AuditLogger {
   private readonly projectId: string;
   private readonly logger: Logging;
@@ -66,10 +84,20 @@ export default class AuditLogger {
         severity = entry.metadata.severity.toString();
       }
 
-      if (entry.data?.auditMessage != null && typeof entry.data.auditMessage === "string") {
-        message = entry.data.auditMessage;
-      } else if (entry.data?.message != null && typeof entry.data.message === "string") {
-        message = entry.data.message.replace(/^AUDIT_LOG:\s*/, "");
+      const nestedPayload = isRecord(entry.data) ? entry.data.info : undefined;
+      const auditMessage =
+        readStringField(entry.data, "auditMessage") ??
+        readStringField(nestedPayload, "auditMessage");
+      const prefixedMessage =
+        readStringField(entry.data, "message") ??
+        readStringField(entry.data, "msg") ??
+        readStringField(nestedPayload, "message") ??
+        readStringField(nestedPayload, "msg");
+
+      if (auditMessage != null) {
+        message = auditMessage;
+      } else if (prefixedMessage != null) {
+        message = stripAuditPrefix(prefixedMessage);
       }
 
       auditLogs.push({
