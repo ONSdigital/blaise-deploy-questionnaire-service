@@ -1,6 +1,12 @@
+import dotenv from "dotenv";
+
 import { getConfigFromEnv } from "./config.js";
 import createLogger from "./pinoLogger.js";
 import { newServer } from "./server.js";
+
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
 
 const config = getConfigFromEnv();
 const httpLogger = createLogger();

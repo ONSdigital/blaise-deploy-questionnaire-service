@@ -3,7 +3,6 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
-import { ensureProcessShim } from "./processShim";
 import { clientLogger } from "./utils/logger";
 import { queryClient } from "./utils/queryClient";
 
@@ -12,8 +11,6 @@ const rootElement = document.getElementById("root");
 if (!rootElement) {
   throw new Error("Root element not found");
 }
-
-ensureProcessShim(globalThis);
 
 const appRootElement = rootElement;
 
