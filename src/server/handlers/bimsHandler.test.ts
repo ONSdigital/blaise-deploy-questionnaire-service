@@ -141,7 +141,11 @@ describe("Sending Telephone Operations start date to BIMS", () => {
     expect(response.status).toEqual(201);
     expect(mock.history.delete.length).toBe(1);
     expect(logInfo).toHaveBeenCalledWith(
-      "AUDIT_LOG: rich deleted OPN2004A Telephone Operations start date (previously 2022-01-01)",
+      {
+        auditMessage:
+          "rich deleted OPN2004A Telephone Operations start date (previously 2022-01-01)",
+      },
+      "AUDIT_LOG:",
     );
   });
 
@@ -174,7 +178,11 @@ describe("Sending Telephone Operations start date to BIMS", () => {
     expect(response.body).toStrictEqual({ tostartdate: "2022-12-31" });
     expect(mock.history.patch[0].data).toEqual('{"tostartdate":"2022-12-31"}');
     expect(logInfo).toHaveBeenCalledWith(
-      "AUDIT_LOG: rich updated OPN2004A Telephone Operations start date to 2022-12-31 (previously 2022-01-01)",
+      {
+        auditMessage:
+          "rich updated OPN2004A Telephone Operations start date to 2022-12-31 (previously 2022-01-01)",
+      },
+      "AUDIT_LOG:",
     );
   });
 
@@ -190,7 +198,11 @@ describe("Sending Telephone Operations start date to BIMS", () => {
 
     expect(response.status).toEqual(500);
     expect(logError).toHaveBeenCalledWith(
-      "AUDIT_LOG: rich failed to set OPN2004A Telephone Operations start date to 2022-12-31 (previously 2022-01-01)",
+      {
+        auditMessage:
+          "rich failed to set OPN2004A Telephone Operations start date to 2022-12-31 (previously 2022-01-01)",
+      },
+      "AUDIT_LOG:",
     );
   });
 
@@ -206,7 +218,8 @@ describe("Sending Telephone Operations start date to BIMS", () => {
     expect(response.status).toEqual(201);
     expect(response.body).toStrictEqual({});
     expect(logInfo).toHaveBeenCalledWith(
-      "AUDIT_LOG: rich set OPN2004A Telephone Operations start date to 2022-12-31",
+      { auditMessage: "rich set OPN2004A Telephone Operations start date to 2022-12-31" },
+      "AUDIT_LOG:",
     );
   });
 
@@ -242,7 +255,8 @@ describe("Sending Telephone Operations start date to BIMS", () => {
 
     expect(response.status).toEqual(500);
     expect(logError).toHaveBeenCalledWith(
-      "AUDIT_LOG: rich failed to set OPN2004A Telephone Operations start date to 2022-12-31",
+      { auditMessage: "rich failed to set OPN2004A Telephone Operations start date to 2022-12-31" },
+      "AUDIT_LOG:",
     );
   });
 });
@@ -306,7 +320,11 @@ describe("Deleting Telephone Operations start date from BIMS", () => {
 
     expect(response.status).toEqual(204);
     expect(logInfo).toHaveBeenCalledWith(
-      "AUDIT_LOG: rich deleted OPN2004A Telephone Operations start date (previously 2022-12-31)",
+      {
+        auditMessage:
+          "rich deleted OPN2004A Telephone Operations start date (previously 2022-12-31)",
+      },
+      "AUDIT_LOG:",
     );
   });
 
@@ -434,7 +452,8 @@ describe("Sending Totalmobile release date to BIMS", () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "2022-12-31" });
 
         expect(logInfo).toHaveBeenCalledWith(
-          "AUDIT_LOG: rich set LMS2004A Totalmobile release date to 2022-12-31",
+          { auditMessage: "rich set LMS2004A Totalmobile release date to 2022-12-31" },
+          "AUDIT_LOG:",
         );
       });
     });
@@ -484,7 +503,11 @@ describe("Sending Totalmobile release date to BIMS", () => {
       it("should log a message when a Totalmobile release date is provided", async () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "2022-12-31" });
         expect(logInfo).toHaveBeenCalledWith(
-          "AUDIT_LOG: rich updated LMS2004A Totalmobile release date to 2022-12-31 (previously 2022-06-27)",
+          {
+            auditMessage:
+              "rich updated LMS2004A Totalmobile release date to 2022-12-31 (previously 2022-06-27)",
+          },
+          "AUDIT_LOG:",
         );
       });
 
@@ -505,7 +528,11 @@ describe("Sending Totalmobile release date to BIMS", () => {
 
         expect(response.status).toEqual(500);
         expect(logError).toHaveBeenCalledWith(
-          "AUDIT_LOG: rich failed to update LMS2004A Totalmobile release date to 2022-12-31 (previously 2022-06-27)",
+          {
+            auditMessage:
+              "rich failed to update LMS2004A Totalmobile release date to 2022-12-31 (previously 2022-06-27)",
+          },
+          "AUDIT_LOG:",
         );
       });
     });
@@ -532,7 +559,10 @@ describe("Sending Totalmobile release date to BIMS", () => {
       it("should log a message when a Totalmobile release date is not provided", async () => {
         await request.post("/api/tmreleasedate/LMS2004A").send({ tmreleasedate: "" });
         expect(logInfo).toHaveBeenCalledWith(
-          "AUDIT_LOG: rich deleted LMS2004A Totalmobile release date (previously 2022-06-27)",
+          {
+            auditMessage: "rich deleted LMS2004A Totalmobile release date (previously 2022-06-27)",
+          },
+          "AUDIT_LOG:",
         );
       });
 
@@ -553,7 +583,11 @@ describe("Sending Totalmobile release date to BIMS", () => {
 
         expect(response.status).toEqual(500);
         expect(logError).toHaveBeenCalledWith(
-          "AUDIT_LOG: rich failed to delete LMS2004A Totalmobile release date (previously 2022-06-27)",
+          {
+            auditMessage:
+              "rich failed to delete LMS2004A Totalmobile release date (previously 2022-06-27)",
+          },
+          "AUDIT_LOG:",
         );
       });
     });
@@ -629,7 +663,8 @@ describe("Deleting Totalmobile release date to BIMS", () => {
     await request.delete("/api/tmreleasedate/LMS2004A");
 
     expect(logInfo).toHaveBeenCalledWith(
-      "AUDIT_LOG: rich deleted LMS2004A Totalmobile release date (previously 2022-12-31)",
+      { auditMessage: "rich deleted LMS2004A Totalmobile release date (previously 2022-12-31)" },
+      "AUDIT_LOG:",
     );
   });
 

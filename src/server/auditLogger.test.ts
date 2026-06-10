@@ -1,4 +1,3 @@
-import { type Logger } from "pino";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import AuditLogger from "./auditLogger.js";
@@ -18,6 +17,11 @@ function makeEntry(overrides: {
   timestamp?: unknown;
   severity?: unknown;
   dataMessage?: unknown;
+  dataMsg?: unknown;
+  auditMessage?: unknown;
+  infoAuditMessage?: unknown;
+  infoMessage?: unknown;
+  infoMsg?: unknown;
 }) {
   return {
     metadata: {
@@ -25,7 +29,24 @@ function makeEntry(overrides: {
       timestamp: overrides.timestamp ?? null,
       severity: overrides.severity ?? null,
     },
-    data: overrides.dataMessage !== undefined ? { message: overrides.dataMessage } : undefined,
+    data:
+      overrides.dataMessage !== undefined ||
+      overrides.dataMsg !== undefined ||
+      overrides.auditMessage !== undefined ||
+      overrides.infoAuditMessage !== undefined ||
+      overrides.infoMessage !== undefined ||
+      overrides.infoMsg !== undefined
+        ? {
+            message: overrides.dataMessage,
+            msg: overrides.dataMsg,
+            auditMessage: overrides.auditMessage,
+            info: {
+              auditMessage: overrides.infoAuditMessage,
+              message: overrides.infoMessage,
+              msg: overrides.infoMsg,
+            },
+          }
+        : undefined,
   };
 }
 
@@ -46,20 +67,36 @@ describe("AuditLogger", () => {
   });
 
   describe("info", () => {
-    it("calls logger.info with AUDIT_LOG prefix", () => {
-      const logger = { info: vi.fn() } as unknown as Logger;
+    it("calls logger.info with structured AUDIT_LOG payload", () => {
+      const logger = { info: vi.fn() };
 
-      auditLogger.info(logger, "something happened");
-      expect(logger.info).toHaveBeenCalledWith("AUDIT_LOG: something happened");
+      auditLogger.info(logger as never, "something happened");
+
+      expect(logger.info).toHaveBeenCalledWith(
+        { auditMessage: "something happened" },
+        "AUDIT_LOG:",
+      );
     });
   });
 
   describe("error", () => {
-    it("calls logger.error with AUDIT_LOG prefix", () => {
-      const logger = { error: vi.fn() } as unknown as Logger;
+    it("calls logger.error with structured AUDIT_LOG payload", () => {
+      const logger = { error: vi.fn() };
 
-      auditLogger.error(logger, "something failed");
-      expect(logger.error).toHaveBeenCalledWith("AUDIT_LOG: something failed");
+      auditLogger.error(logger as never, "something failed");
+
+      expect(logger.error).toHaveBeenCalledWith({ auditMessage: "something failed" }, "AUDIT_LOG:");
+    });
+
+    it("sanitises newline characters in audit messages", () => {
+      const logger = { error: vi.fn() };
+
+      auditLogger.error(logger as never, "line one\nline two\r\nline three");
+
+      expect(logger.error).toHaveBeenCalledWith(
+        { auditMessage: "line one line two line three" },
+        "AUDIT_LOG:",
+      );
     });
   });
 
@@ -71,14 +108,15 @@ describe("AuditLogger", () => {
       expect(result).toEqual([]);
     });
 
-    it("maps a fully-populated entry correctly", async () => {
+    it("maps a fully-populated auditMessage entry correctly", async () => {
       mockGetEntries.mockResolvedValueOnce([
         [
           makeEntry({
             insertId: "abc123",
             timestamp: new Date("2024-06-01T12:00:00Z"),
             severity: "ERROR",
-            dataMessage: "AUDIT_LOG: user deleted a survey",
+            dataMessage: "AUDIT_LOG:",
+            auditMessage: "user deleted a survey",
           }),
         ],
       ]);
@@ -154,23 +192,39 @@ describe("AuditLogger", () => {
 
     it("uses empty string for message when data.message is null", async () => {
       mockGetEntries.mockResolvedValueOnce([
-        [makeEntry({ insertId: "id1", timestamp: "t", severity: "INFO", dataMessage: null })],
+        [
+          makeEntry({
+            insertId: "id1",
+            timestamp: "t",
+            severity: "INFO",
+            dataMessage: null,
+            auditMessage: null,
+          }),
+        ],
       ]);
       const [entry] = await auditLogger.getLogs();
 
       expect(entry.message).toBe("");
     });
 
-    it("uses empty string for message when data.message is not a string", async () => {
+    it("uses empty string for message when data fields are not strings", async () => {
       mockGetEntries.mockResolvedValueOnce([
-        [makeEntry({ insertId: "id1", timestamp: "t", severity: "INFO", dataMessage: 42 })],
+        [
+          makeEntry({
+            insertId: "id1",
+            timestamp: "t",
+            severity: "INFO",
+            dataMessage: 42,
+            auditMessage: 42,
+          }),
+        ],
       ]);
       const [entry] = await auditLogger.getLogs();
 
       expect(entry.message).toBe("");
     });
 
-    it("strips the AUDIT_LOG prefix from the message", async () => {
+    it("strips the AUDIT_LOG prefix when reading legacy message field", async () => {
       mockGetEntries.mockResolvedValueOnce([
         [
           makeEntry({
@@ -184,6 +238,39 @@ describe("AuditLogger", () => {
       const [entry] = await auditLogger.getLogs();
 
       expect(entry.message).toBe("deployed OPN2101");
+    });
+
+    it("reads auditMessage from nested info payload", async () => {
+      mockGetEntries.mockResolvedValueOnce([
+        [
+          makeEntry({
+            insertId: "id1",
+            timestamp: "t",
+            severity: "INFO",
+            dataMessage: "AUDIT_LOG:",
+            infoAuditMessage: "rich deleted questionnaire OPN2026A",
+          }),
+        ],
+      ]);
+      const [entry] = await auditLogger.getLogs();
+
+      expect(entry.message).toBe("rich deleted questionnaire OPN2026A");
+    });
+
+    it("falls back to msg key when message key is absent", async () => {
+      mockGetEntries.mockResolvedValueOnce([
+        [
+          makeEntry({
+            insertId: "id1",
+            timestamp: "t",
+            severity: "INFO",
+            dataMsg: "AUDIT_LOG: updated sample assignment",
+          }),
+        ],
+      ]);
+      const [entry] = await auditLogger.getLogs();
+
+      expect(entry.message).toBe("updated sample assignment");
     });
 
     it("passes the correct filter and maxResults to getEntries", async () => {

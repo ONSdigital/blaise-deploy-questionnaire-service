@@ -1,8 +1,6 @@
 import { waitFor } from "@testing-library/react";
 import React from "react";
 
-import { ensureProcessShim } from "./processShim";
-
 const mocks = vi.hoisted(() => {
   const render = vi.fn();
   const createRoot = vi.fn(() => ({ render }));
@@ -39,8 +37,6 @@ vi.mock("./utils/logger", () => ({
 }));
 
 describe("client bootstrap", () => {
-  const originalProcess = Object.getOwnPropertyDescriptor(globalThis, "process");
-
   beforeEach(() => {
     document.body.innerHTML = "";
     mocks.createRoot.mockClear();
@@ -50,18 +46,6 @@ describe("client bootstrap", () => {
     mocks.createRoot.mockReturnValue({ render: mocks.render });
     vi.resetModules();
     vi.doUnmock("./app");
-
-    if (originalProcess) {
-      Object.defineProperty(globalThis, "process", originalProcess);
-    }
-  });
-
-  afterAll(() => {
-    if (originalProcess) {
-      Object.defineProperty(globalThis, "process", originalProcess);
-    } else {
-      Reflect.deleteProperty(globalThis, "process");
-    }
   });
 
   it("mounts the app successfully", async () => {
@@ -104,48 +88,4 @@ describe("client bootstrap", () => {
 
     expect(rootElement?.textContent).toContain("App failed to load");
   }, 15000);
-
-  it("shims a missing process on a target object", async () => {
-    const target: {
-      process?: { env?: { NODE_ENV?: string }; nextTick?: (callback: () => void) => void };
-    } = {};
-
-    ensureProcessShim(target);
-
-    expect(target.process?.env?.NODE_ENV).toBeDefined();
-
-    const nextTickCallback = vi.fn();
-
-    await new Promise<void>((resolve) => {
-      target.process?.nextTick?.(() => {
-        nextTickCallback();
-        resolve();
-      });
-    });
-
-    expect(nextTickCallback).toHaveBeenCalledTimes(1);
-  });
-
-  it("shims an unusable process on a target object", async () => {
-    const target: {
-      process?: { env?: { NODE_ENV?: string }; nextTick?: (callback: () => void) => void };
-    } = {
-      process: undefined,
-    };
-
-    ensureProcessShim(target);
-
-    expect(target.process?.env?.NODE_ENV).toBeDefined();
-
-    const nextTickCallback = vi.fn();
-
-    await new Promise<void>((resolve) => {
-      target.process?.nextTick?.(() => {
-        nextTickCallback();
-        resolve();
-      });
-    });
-
-    expect(nextTickCallback).toHaveBeenCalledTimes(1);
-  });
 });
