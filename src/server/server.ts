@@ -35,6 +35,25 @@ import StorageManager from "./storageManager.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const DEFAULT_API_RATE_LIMIT = 3000;
+const DEFAULT_PAGE_RATE_LIMIT = 300;
+
+function parseRateLimit(envName: string, fallback: number): number {
+  const value = process.env[envName];
+
+  if (value == null || value.trim() === "") {
+    return fallback;
+  }
+
+  const parsed = Number.parseInt(value, 10);
+
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return fallback;
+  }
+
+  return parsed;
+}
+
 function normaliseForwardedForValue(forwardedForValue: string): string | null {
   const trimmedValue = forwardedForValue.trim().replace(/^"|"$/g, "");
 
@@ -90,7 +109,7 @@ export function keyGeneratorFromForwardedHeader(req: Request): string {
 
 const apiRateLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,
-  limit: 300,
+  limit: parseRateLimit("DQS_API_RATE_LIMIT", DEFAULT_API_RATE_LIMIT),
   standardHeaders: "draft-8",
   legacyHeaders: false,
   keyGenerator: keyGeneratorFromForwardedHeader,
@@ -99,7 +118,7 @@ const apiRateLimiter = rateLimit({
 
 const pageRateLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,
-  limit: 300,
+  limit: parseRateLimit("DQS_PAGE_RATE_LIMIT", DEFAULT_PAGE_RATE_LIMIT),
   standardHeaders: "draft-8",
   legacyHeaders: false,
   keyGenerator: keyGeneratorFromForwardedHeader,
