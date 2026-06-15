@@ -13,6 +13,8 @@ import express, {
   type Response,
   type Router,
 } from "express";
+import rateLimit, { ipKeyGenerator } from "express-rate-limit";
+import helmet from "helmet";
 import { type HttpLogger } from "pino-http";
 
 import AuditLogger from "./auditLogger.js";
@@ -32,6 +34,77 @@ import StorageManager from "./storageManager.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+function normaliseForwardedForValue(forwardedForValue: string): string | null {
+  const trimmedValue = forwardedForValue.trim().replace(/^"|"$/g, "");
+
+  if (!trimmedValue || trimmedValue.toLowerCase() === "unknown") {
+    return null;
+  }
+
+  if (trimmedValue.startsWith("[")) {
+    const closingBracketIndex = trimmedValue.indexOf("]");
+
+    return closingBracketIndex > 1 ? trimmedValue.slice(1, closingBracketIndex) : null;
+  }
+
+  const parts = trimmedValue.split(":");
+
+  if (parts.length === 2 && trimmedValue.includes(".")) {
+    return parts[0];
+  }
+
+  return trimmedValue;
+}
+
+function forwardedHeaderForValue(forwardedHeaderValue: string): string | null {
+  for (const entry of forwardedHeaderValue.split(",")) {
+    for (const parameter of entry.split(";")) {
+      const [parameterName, parameterValue] = parameter.split("=");
+
+      if (parameterName?.trim().toLowerCase() !== "for" || !parameterValue) {
+        continue;
+      }
+
+      const normalisedValue = normaliseForwardedForValue(parameterValue);
+
+      if (normalisedValue) {
+        return normalisedValue;
+      }
+    }
+  }
+
+  return null;
+}
+
+export function keyGeneratorFromForwardedHeader(req: Request): string {
+  const forwardedHeaderValue = req.headers.forwarded;
+  const combinedHeaderValue = Array.isArray(forwardedHeaderValue)
+    ? forwardedHeaderValue.join(",")
+    : forwardedHeaderValue;
+
+  const forwardedFor = combinedHeaderValue ? forwardedHeaderForValue(combinedHeaderValue) : null;
+
+  return ipKeyGenerator(forwardedFor ?? req.ip ?? req.socket.remoteAddress ?? "unknown");
+}
+
+const apiRateLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  limit: 300,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  keyGenerator: keyGeneratorFromForwardedHeader,
+  message: { error: "Too many requests, please try again later" },
+});
+
+const pageRateLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  limit: 300,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  keyGenerator: keyGeneratorFromForwardedHeader,
+  message: { error: "Too many requests, please try again later" },
+});
 
 interface ServerDependencies {
   blaiseApiClient: BlaiseApiClient;
@@ -66,12 +139,27 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
 
   const server = express();
 
+  server.set("trust proxy", 1);
+  server.disable("x-powered-by");
+  server.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+          "img-src": ["'self'", "data:", "https://cdn.ons.gov.uk"],
+        },
+      },
+      crossOriginEmbedderPolicy: false,
+    }),
+  );
+
   server.use(logger);
 
   server.use("/", newHealthCheckHandler());
 
   server.use("/", handlers.loginHandler);
   server.use(express.json({ limit: "100kb" }));
+  server.use("/api", apiRateLimiter);
 
   const { buildRoot, clientBuildFolder } = resolveClientBuildPaths();
   const errorPageContent = loadErrorPageContent(buildRoot);
@@ -93,7 +181,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
     res.status(404).json({ message: "Not found" });
   });
 
-  server.get(/.*/, function (req: Request, res: Response) {
+  server.get(/.*/, pageRateLimiter, function (req: Request, res: Response) {
     res.render("index.html", {
       appConfigJson: getRuntimeConfigJson(config),
     });
