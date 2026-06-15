@@ -107,14 +107,41 @@ export function keyGeneratorFromForwardedHeader(req: Request): string {
   return ipKeyGenerator(forwardedFor ?? req.ip ?? req.socket.remoteAddress ?? "unknown");
 }
 
-const apiRateLimiter = rateLimit({
-  windowMs: 5 * 60 * 1000,
-  limit: parseRateLimit("DQS_API_RATE_LIMIT", DEFAULT_API_RATE_LIMIT),
-  standardHeaders: "draft-8",
-  legacyHeaders: false,
-  keyGenerator: keyGeneratorFromForwardedHeader,
-  message: { error: "Too many requests, please try again later" },
-});
+function userRateLimitKey(auth: Auth, req: Request): string | null {
+  try {
+    const token = auth.getToken(req);
+    const userName = auth.getUser(token)?.name;
+
+    if (typeof userName !== "string") {
+      return null;
+    }
+
+    const normalisedUserName = userName.trim().toLowerCase();
+
+    if (normalisedUserName === "") {
+      return null;
+    }
+
+    return `user:${encodeURIComponent(normalisedUserName)}`;
+  } catch {
+    return null;
+  }
+}
+
+export function keyGeneratorFromAuthenticatedUser(auth: Auth, req: Request): string {
+  return userRateLimitKey(auth, req) ?? keyGeneratorFromForwardedHeader(req);
+}
+
+function createApiRateLimiter(auth: Auth) {
+  return rateLimit({
+    windowMs: 5 * 60 * 1000,
+    limit: parseRateLimit("DQS_API_RATE_LIMIT", DEFAULT_API_RATE_LIMIT),
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    keyGenerator: (req: Request) => keyGeneratorFromAuthenticatedUser(auth, req),
+    message: { error: "Too many requests, please try again later" },
+  });
+}
 
 const pageRateLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,
@@ -155,6 +182,7 @@ interface ClientBuildPaths {
 export function newServer(config: Config, logger: HttpLogger = createLogger()): Express {
   const dependencies = createServerDependencies(config);
   const handlers = createServerHandlers(config, dependencies);
+  const apiRateLimiter = createApiRateLimiter(dependencies.auth);
 
   const server = express();
 

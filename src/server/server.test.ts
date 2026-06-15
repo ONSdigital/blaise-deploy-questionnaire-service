@@ -67,7 +67,11 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { getConfigFromEnv } from "./config.js";
 import { callCloudFunction } from "./helpers/cloudFunctionCallerHelper.js";
-import { keyGeneratorFromForwardedHeader, newServer } from "./server.js";
+import {
+  keyGeneratorFromAuthenticatedUser,
+  keyGeneratorFromForwardedHeader,
+  newServer,
+} from "./server.js";
 
 Auth.prototype.validateToken = vi.fn().mockReturnValue(true);
 
@@ -376,6 +380,60 @@ describe("Rate limiter key generator", () => {
     };
 
     expect(keyGeneratorFromForwardedHeader(request as KeyGeneratorRequest)).toBe("unknown");
+  });
+});
+
+describe("Rate limiter authenticated key generator", () => {
+  type KeyGeneratorRequest = Parameters<typeof keyGeneratorFromForwardedHeader>[0];
+
+  it("uses the authenticated username when available", () => {
+    const auth = {
+      getToken: vi.fn().mockReturnValue("token"),
+      getUser: vi.fn().mockReturnValue({ name: "Rich User" }),
+    } as unknown as Auth;
+    const request = {
+      headers: { forwarded: "for=198.51.100.50;proto=https" },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromAuthenticatedUser(auth, request as KeyGeneratorRequest)).toBe(
+      "user:rich%20user",
+    );
+  });
+
+  it("falls back to forwarded/IP identity when username is unavailable", () => {
+    const auth = {
+      getToken: vi.fn().mockReturnValue("token"),
+      getUser: vi.fn().mockReturnValue({}),
+    } as unknown as Auth;
+    const request = {
+      headers: { forwarded: "for=198.51.100.50;proto=https" },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromAuthenticatedUser(auth, request as KeyGeneratorRequest)).toBe(
+      "198.51.100.50",
+    );
+  });
+
+  it("falls back to forwarded/IP identity when auth access throws", () => {
+    const auth = {
+      getToken: vi.fn().mockImplementation(() => {
+        throw new Error("token error");
+      }),
+      getUser: vi.fn(),
+    } as unknown as Auth;
+    const request = {
+      headers: { forwarded: "for=198.51.100.50;proto=https" },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromAuthenticatedUser(auth, request as KeyGeneratorRequest)).toBe(
+      "198.51.100.50",
+    );
   });
 });
 
