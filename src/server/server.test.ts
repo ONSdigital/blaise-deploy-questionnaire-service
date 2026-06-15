@@ -67,7 +67,11 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { getConfigFromEnv } from "./config.js";
 import { callCloudFunction } from "./helpers/cloudFunctionCallerHelper.js";
-import { newServer } from "./server.js";
+import {
+  keyGeneratorFromAuthenticatedUser,
+  keyGeneratorFromForwardedHeader,
+  newServer,
+} from "./server.js";
 
 Auth.prototype.validateToken = vi.fn().mockReturnValue(true);
 
@@ -268,5 +272,180 @@ describe("Client route rendering and global error handler", () => {
 
     expect(response.statusCode).toEqual(500);
     expect(response.text).toEqual("Sorry, there is a problem with the service.");
+  });
+});
+
+describe("Rate limiter key generator", () => {
+  type KeyGeneratorRequest = Parameters<typeof keyGeneratorFromForwardedHeader>[0];
+
+  it("prefers the first Forwarded for value", () => {
+    const request = {
+      headers: {
+        forwarded: 'for="198.51.100.27:5151";proto=https, for="203.0.113.9";proto=http',
+      },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromForwardedHeader(request as KeyGeneratorRequest)).toBe("198.51.100.27");
+  });
+
+  it("uses express ip when Forwarded is unavailable", () => {
+    const request = {
+      headers: {},
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromForwardedHeader(request as KeyGeneratorRequest)).toBe("10.0.0.2");
+  });
+
+  it("falls back to socket remoteAddress when request ip is undefined", () => {
+    const request = {
+      headers: {},
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromForwardedHeader(request as KeyGeneratorRequest)).toBe("127.0.0.1");
+  });
+
+  it("supports IPv6 values from the Forwarded header", () => {
+    const request = {
+      headers: { forwarded: 'for="[2001:db8:cafe::17]:4711";proto=https' },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromForwardedHeader(request as KeyGeneratorRequest)).toBe(
+      "2001:db8:cafe::/56",
+    );
+  });
+
+  it("falls back to request ip when Forwarded for value is unknown", () => {
+    const request = {
+      headers: { forwarded: "for=unknown;proto=https" },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromForwardedHeader(request as KeyGeneratorRequest)).toBe("10.0.0.2");
+  });
+
+  it("falls back to request ip when Forwarded does not contain a usable for parameter", () => {
+    const request = {
+      headers: { forwarded: "proto=https;by=203.0.113.10" },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromForwardedHeader(request as KeyGeneratorRequest)).toBe("10.0.0.2");
+  });
+
+  it("returns plain forwarded hosts without splitting", () => {
+    const request = {
+      headers: { forwarded: "for=client-proxy" },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromForwardedHeader(request as KeyGeneratorRequest)).toBe("client-proxy");
+  });
+
+  it("ignores invalid bracketed forwarded values", () => {
+    const request = {
+      headers: { forwarded: 'for="[broken"' },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromForwardedHeader(request as KeyGeneratorRequest)).toBe("10.0.0.2");
+  });
+
+  it("handles an array of Forwarded header values", () => {
+    const request = {
+      headers: { forwarded: ["for=198.51.100.50;proto=https", "for=203.0.113.9"] },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromForwardedHeader(request as unknown as KeyGeneratorRequest)).toBe(
+      "198.51.100.50",
+    );
+  });
+
+  it("uses unknown when no header, request ip or socket address are available", () => {
+    const request = {
+      headers: {},
+      socket: {},
+    };
+
+    expect(keyGeneratorFromForwardedHeader(request as KeyGeneratorRequest)).toBe("unknown");
+  });
+});
+
+describe("Rate limiter authenticated key generator", () => {
+  type KeyGeneratorRequest = Parameters<typeof keyGeneratorFromForwardedHeader>[0];
+
+  it("uses the authenticated username when available", () => {
+    const auth = {
+      getToken: vi.fn().mockReturnValue("token"),
+      getUser: vi.fn().mockReturnValue({ name: "Rich User" }),
+    } as unknown as Auth;
+    const request = {
+      headers: { forwarded: "for=198.51.100.50;proto=https" },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromAuthenticatedUser(auth, request as KeyGeneratorRequest)).toBe(
+      "user:rich%20user",
+    );
+  });
+
+  it("falls back to forwarded/IP identity when username is unavailable", () => {
+    const auth = {
+      getToken: vi.fn().mockReturnValue("token"),
+      getUser: vi.fn().mockReturnValue({}),
+    } as unknown as Auth;
+    const request = {
+      headers: { forwarded: "for=198.51.100.50;proto=https" },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromAuthenticatedUser(auth, request as KeyGeneratorRequest)).toBe(
+      "198.51.100.50",
+    );
+  });
+
+  it("falls back to forwarded/IP identity when auth access throws", () => {
+    const auth = {
+      getToken: vi.fn().mockImplementation(() => {
+        throw new Error("token error");
+      }),
+      getUser: vi.fn(),
+    } as unknown as Auth;
+    const request = {
+      headers: { forwarded: "for=198.51.100.50;proto=https" },
+      ip: "10.0.0.2",
+      socket: { remoteAddress: "127.0.0.1" },
+    };
+
+    expect(keyGeneratorFromAuthenticatedUser(auth, request as KeyGeneratorRequest)).toBe(
+      "198.51.100.50",
+    );
+  });
+});
+
+describe("Server hardening headers", () => {
+  it("applies baseline HTTP hardening headers", async () => {
+    const response = await request.get("/dqs-ui/version/health");
+
+    expect(response.statusCode).toEqual(200);
+    expect(response.headers["x-powered-by"]).toBeUndefined();
+    expect(response.headers["x-content-type-options"]).toBe("nosniff");
+    expect(response.headers["content-security-policy"]).toContain(
+      "connect-src 'self' https://storage.googleapis.com",
+    );
   });
 });
