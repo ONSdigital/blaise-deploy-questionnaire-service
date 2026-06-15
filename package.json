@@ -47,7 +47,6 @@
     "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
     "express": "^5.2.1",
-    "express-rate-limit": "^8.5.2",
     "formik": "^2.4.9",
     "google-auth-library": "^10.7.0",
     "helmet": "^8.2.0",

@@ -3630,7 +3630,6 @@ __metadata:
     eslint-plugin-import-x: "npm:^4.16.2"
     eslint-plugin-jsonc: "npm:^3.2.0"
     express: "npm:^5.2.1"
-    express-rate-limit: "npm:^8.5.2"
     formik: "npm:^2.4.9"
     globals: "npm:^17.6.0"
     google-auth-library: "npm:^10.7.0"
