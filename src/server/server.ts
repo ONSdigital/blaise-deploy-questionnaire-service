@@ -74,6 +74,7 @@ export function newServer(config: Config, logger: HttpLogger = createLogger()): 
       contentSecurityPolicy: {
         directives: {
           ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+          "connect-src": ["'self'", "https://storage.googleapis.com"],
           "img-src": ["'self'", "data:", "https://cdn.ons.gov.uk"],
         },
       },

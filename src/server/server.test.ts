@@ -278,5 +278,8 @@ describe("Server hardening headers", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.headers["x-powered-by"]).toBeUndefined();
     expect(response.headers["x-content-type-options"]).toBe("nosniff");
+    expect(response.headers["content-security-policy"]).toContain(
+      "connect-src 'self' https://storage.googleapis.com",
+    );
   });
 });
