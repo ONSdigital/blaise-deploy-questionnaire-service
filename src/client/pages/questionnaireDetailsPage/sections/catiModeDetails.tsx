@@ -83,9 +83,6 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
   ) : (
     "No start date specified, using survey days"
   );
-  const startDateCsvValue = toStartDate
-    ? dateFormatter(toStartDateValue).format("DD/MM/YYYY")
-    : "No start date specified, using survey days";
 
   const groupedSummary = new GroupedSummary([
     {
@@ -98,7 +95,7 @@ function CatiModeDetails({ questionnaireName, modes }: Props): ReactElement {
               <div className="ons-u-mt-m ons-u-mb-s">{startDateAction}</div>
             </>
           ),
-          csv: startDateCsvValue,
+          csv: toStartDate ? dateFormatter(toStartDateValue).format("DD/MM/YYYY") : undefined,
         },
       },
     },
