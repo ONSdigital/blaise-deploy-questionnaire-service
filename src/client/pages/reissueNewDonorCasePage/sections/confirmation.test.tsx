@@ -253,8 +253,7 @@ describe("Confirmation behavior", () => {
 
   it("shows the loading panel while the request is pending", async () => {
     let resolveRequest:
-      | ((value: typeof mockSuccessResponseForReissueNewDonorCase) => void)
-      | undefined;
+      ((value: typeof mockSuccessResponseForReissueNewDonorCase) => void) | undefined;
 
     mockedAxios.post.mockImplementationOnce(
       () =>
