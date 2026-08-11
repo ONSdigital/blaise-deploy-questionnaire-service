@@ -33,6 +33,16 @@ function getAxiosStatus(error: unknown): number | undefined {
   return isRecord(response) && typeof response.status === "number" ? response.status : undefined;
 }
 
+function getErrorStatusCode(error: unknown): number {
+  const status = getAxiosStatus(error);
+
+  if (status === undefined || status < 400 || status > 599) {
+    return 500;
+  }
+
+  return status;
+}
+
 export default function newBlaiseHandler(
   blaiseApiClient: BlaiseApiClient,
   serverPark: string,
@@ -140,7 +150,7 @@ class BlaiseHandler {
 
       req.log.error({ error }, "Get questionnaire endpoint failed");
 
-      return res.status(500).json();
+      return res.status(getErrorStatusCode(error)).json();
     }
   };
 
@@ -168,7 +178,7 @@ class BlaiseHandler {
         `${username} failed to install questionnaire ${questionnaireName}`,
       );
 
-      return res.status(500).json();
+      return res.status(getErrorStatusCode(error)).json();
     }
   };
 
@@ -201,7 +211,7 @@ class BlaiseHandler {
         `${username} failed to uninstall questionnaire ${safeQuestionnaireName}`,
       );
 
-      return res.status(500).json();
+      return res.status(getErrorStatusCode(error)).json();
     }
   };
 
@@ -237,7 +247,7 @@ class BlaiseHandler {
         `${username} failed to activate questionnaire ${safeQuestionnaireName}`,
       );
 
-      return res.status(500).json();
+      return res.status(getErrorStatusCode(error)).json();
     }
   };
 
@@ -273,7 +283,7 @@ class BlaiseHandler {
         `${username} failed to deactivate questionnaire ${safeQuestionnaireName}`,
       );
 
-      return res.status(500).json();
+      return res.status(getErrorStatusCode(error)).json();
     }
   };
 
@@ -302,7 +312,7 @@ class BlaiseHandler {
         `Does questionnaire have mode endpoint failed for ${safeQuestionnaireName}`,
       );
 
-      return res.status(500).json();
+      return res.status(getErrorStatusCode(error)).json();
     }
   };
 
@@ -336,7 +346,7 @@ class BlaiseHandler {
     } catch (error: unknown) {
       req.log.error({ error }, "Get questionnaires endpoint failed.");
 
-      return res.status(500).json();
+      return res.status(getErrorStatusCode(error)).json();
     }
   };
 
@@ -362,7 +372,7 @@ class BlaiseHandler {
         `Get questionnaire case IDs endpoint failed for ${safeQuestionnaireName}`,
       );
 
-      return res.status(500).json();
+      return res.status(getErrorStatusCode(error)).json();
     }
   };
 
@@ -388,7 +398,7 @@ class BlaiseHandler {
         `Get questionnaire modes endpoint failed for ${safeQuestionnaireName}`,
       );
 
-      return res.status(500).json(null);
+      return res.status(getErrorStatusCode(error)).json(null);
     }
   };
 
@@ -414,7 +424,7 @@ class BlaiseHandler {
         `Get questionnaire settings endpoint failed for ${safeQuestionnaireName}`,
       );
 
-      return res.status(500).json();
+      return res.status(getErrorStatusCode(error)).json();
     }
   };
 
@@ -437,7 +447,7 @@ class BlaiseHandler {
     } catch (error: unknown) {
       req.log.error({ error }, `Get survey days endpoint failed for ${safeQuestionnaireName}`);
 
-      return res.status(500).json(null);
+      return res.status(getErrorStatusCode(error)).json(null);
     }
   };
 
@@ -464,7 +474,7 @@ class BlaiseHandler {
         `Get active survey days endpoint failed for ${safeQuestionnaireName}`,
       );
 
-      return res.status(500).json();
+      return res.status(getErrorStatusCode(error)).json();
     }
   };
 
