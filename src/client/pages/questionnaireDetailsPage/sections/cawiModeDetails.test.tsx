@@ -14,7 +14,11 @@ const { generateUacsAndCsvFileDataMock } = vi.hoisted(() => ({
   generateUacsAndCsvFileDataMock: vi.fn().mockResolvedValue([{ caseId: "1", uac: "2" }]),
 }));
 
-const createObjectUrlMock = vi.fn(() => "blob:generated-uacs");
+const createObjectUrlMock = vi.fn((object: Blob | MediaSource) => {
+  void object;
+
+  return "blob:generated-uacs";
+});
 const revokeObjectUrlMock = vi.fn();
 
 vi.mock("../../../api/processes", () => ({
@@ -251,9 +255,13 @@ describe("CAWI mode details", () => {
 
     const firstCreateObjectUrlCall = createObjectUrlMock.mock.calls[0]?.[0];
 
-    expect(firstCreateObjectUrlCall).toBeDefined();
+    expect(firstCreateObjectUrlCall).toBeInstanceOf(Blob);
 
-    const csvText = await readBlobAsText(firstCreateObjectUrlCall as Blob);
+    if (!(firstCreateObjectUrlCall instanceof Blob)) {
+      throw new Error("Expected createObjectURL to be called with a Blob");
+    }
+
+    const csvText = await readBlobAsText(firstCreateObjectUrlCall);
 
     expect(csvText.replace(/^\uFEFF/, "")).toBe('caseId,uac\r\n"1","2"');
   });
