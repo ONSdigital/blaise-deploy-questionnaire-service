@@ -255,9 +255,7 @@ describe("CAWI mode details", () => {
 
     const csvText = await readBlobAsText(firstCreateObjectUrlCall as Blob);
 
-    expect(csvText.replace(/^\uFEFF/, "")).toBe(
-      'caseId,uac\r\n"1","2"',
-    );
+    expect(csvText.replace(/^\uFEFF/, "")).toBe('caseId,uac\r\n"1","2"');
   });
 
   it("should show a generation error when creating UACs fails", async () => {
