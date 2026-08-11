@@ -103,6 +103,7 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
   };
 
   const cawiMode = fetchedModes.includes("CAWI");
+  const hasDeployedCases = (questionnaire.dataRecordCount ?? 0) > 0;
   const showGenerateUacsButton = (questionnaire.dataRecordCount ?? 0) > 0 || uacCount > 0;
 
   if (!isCawiQuestionnaire) {
@@ -157,6 +158,7 @@ const CawiModeDetails = ({ questionnaire, modes }: Props): ReactElement => {
                       label={"Generate and download Unique Access Codes"}
                       primary={false}
                       small={true}
+                      disabled={!hasDeployedCases}
                       loading={uacsGenerating}
                       onClick={handleDownloadClick}
                     />

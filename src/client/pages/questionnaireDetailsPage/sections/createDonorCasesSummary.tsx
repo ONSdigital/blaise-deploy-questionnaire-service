@@ -12,8 +12,8 @@ export function CreateDonorCasesSummary({
   donorCasesStatusCode,
   role,
 }: Props): ReactElement {
-  const normalizedResponseMessage = donorCasesResponseMessage.replace(/^"(.*)"$/s, "$1");
-  const isMissingUsersForRoleError = /no users found with role/i.test(normalizedResponseMessage);
+  const normalisedResponseMessage = donorCasesResponseMessage.replace(/^"(.*)"$/s, "$1");
+  const isMissingUsersForRoleError = /no users found with role/i.test(normalisedResponseMessage);
 
   return (
     <div className="ons-u-mb-m">
@@ -27,7 +27,7 @@ export function CreateDonorCasesSummary({
       ) : (
         <Panel status="error">
           <h1>Error creating donor cases for {role}</h1>
-          <p>{normalizedResponseMessage}</p>
+          <p>{normalisedResponseMessage}</p>
           {isMissingUsersForRoleError ? (
             <p>Add a user to this role and try creating donor cases again.</p>
           ) : (

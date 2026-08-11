@@ -46,8 +46,20 @@ describe("generateUacsAndCsvFileData(instrumentName: string)", () => {
 
     expect(Object.keys(mergedCases).length).toEqual(2);
     expect(mergedCases).toEqual([
-      { Uac1: "0008", Uac2: "4545", Uac3: "9373", Uac: "000845459373", serial_number: "0008" },
-      { Uac1: "0009", Uac2: "3454", Uac3: "4521", Uac: "000934544521", serial_number: "0009" },
+      {
+        UAC1: "0008",
+        UAC2: "4545",
+        UAC3: "9373",
+        UAC: "000845459373",
+        serial_number: "0008",
+      },
+      {
+        UAC1: "0009",
+        UAC2: "3454",
+        UAC3: "4521",
+        UAC: "000934544521",
+        serial_number: "0009",
+      },
     ]);
   });
 
@@ -112,9 +124,9 @@ describe("mapCasesToUacs(caseIDs: string[], uacs: InstrumentUacDetails)", () => 
     expect(mergedCases[0]).toEqual(
       expect.objectContaining({
         serial_number: "0008",
-        Uac1: "0008",
-        Uac2: "4545",
-        Uac3: "9373",
+        UAC1: "0008",
+        UAC2: "4545",
+        UAC3: "9373",
       }),
     );
   });
@@ -150,10 +162,10 @@ describe("mapCasesToUacs(caseIDs: string[], uacs: InstrumentUacDetails)", () => 
     expect(mergedCases[0]).toEqual(
       expect.objectContaining({
         serial_number: "0008",
-        Uac1: "0008",
-        Uac2: "4545",
-        Uac3: "9373",
-        Uac4: "2313",
+        UAC1: "0008",
+        UAC2: "4545",
+        UAC3: "9373",
+        UAC4: "2313",
       }),
     );
   });

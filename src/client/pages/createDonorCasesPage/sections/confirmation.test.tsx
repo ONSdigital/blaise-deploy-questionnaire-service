@@ -63,7 +63,7 @@ describe("Confirmation rendering", () => {
   });
 });
 
-describe("Confirmation behavior", () => {
+describe("Confirmation behaviour", () => {
   let mockOnSuccess = vi.fn<(message: string, statusCode: number) => void>();
 
   beforeEach(() => {
