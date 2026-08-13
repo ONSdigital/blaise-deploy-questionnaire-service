@@ -20,14 +20,14 @@ export function mapCasesToUacs(caseIDs: string[], uacs: InstrumentUacDetails): D
 
     const uacInfo: { [key: string]: string | null | undefined } = {
       serial_number: caseID,
-      Uac1: foundCase.uac_chunks.uac1,
-      Uac2: foundCase.uac_chunks.uac2,
-      Uac3: foundCase.uac_chunks.uac3,
-      Uac: foundCase.full_uac,
+      UAC1: foundCase.uac_chunks.uac1,
+      UAC2: foundCase.uac_chunks.uac2,
+      UAC3: foundCase.uac_chunks.uac3,
+      UAC: foundCase.full_uac,
     };
 
     if (foundCase.uac_chunks.uac4) {
-      uacInfo.Uac4 = foundCase.uac_chunks.uac4;
+      uacInfo.UAC4 = foundCase.uac_chunks.uac4;
     }
 
     array.push(uacInfo);

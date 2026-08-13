@@ -14,7 +14,11 @@ const { generateUacsAndCsvFileDataMock } = vi.hoisted(() => ({
   generateUacsAndCsvFileDataMock: vi.fn().mockResolvedValue([{ caseId: "1", uac: "2" }]),
 }));
 
-const createObjectUrlMock = vi.fn(() => "blob:generated-uacs");
+const createObjectUrlMock = vi.fn((object: Blob | MediaSource) => {
+  void object;
+
+  return "blob:generated-uacs";
+});
 const revokeObjectUrlMock = vi.fn();
 
 vi.mock("../../../api/processes", () => ({
@@ -29,6 +33,26 @@ vi.mock("../../../utils/logger", () => ({
 }));
 
 const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
+
+async function readBlobAsText(blob: Blob): Promise<string> {
+  if (typeof blob.text === "function") {
+    return blob.text();
+  }
+
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      resolve(String(reader.result ?? ""));
+    };
+
+    reader.onerror = () => {
+      reject(reader.error ?? new Error("Failed to read blob contents"));
+    };
+
+    reader.readAsText(blob);
+  });
+}
 
 describe("CAWI mode details", () => {
   beforeEach(() => {
@@ -114,6 +138,25 @@ describe("CAWI mode details", () => {
     expect(await screen.findByText("CAWI mode details")).toBeInTheDocument();
     expect(screen.queryByText(/Generate and download Unique Access Codes/i)).toBeNull();
     expect(screen.getByText("0")).toBeInTheDocument();
+  });
+
+  it("should disable the generate button when deployed case count is zero", async () => {
+    mock.onGet("/api/uacs/instrument/OPN2004A/count").reply(200, { count: 1 });
+    mock.onGet("/api/questionnaires/OPN2004A/modes").reply(200, ["CAWI"]);
+
+    render(
+      <CawiModeDetails
+        questionnaire={{ ...opnQuestionnaire, dataRecordCount: 0 }}
+        modes={["CAWI"]}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    const generateUacsButton = await screen.findByRole("button", {
+      name: /Generate and download Unique Access Codes/i,
+    });
+
+    expect(generateUacsButton).toBeDisabled();
   });
 
   it("should treat a missing record count as zero when deciding whether to show the generate button", async () => {
@@ -209,6 +252,18 @@ describe("CAWI mode details", () => {
       expect(hiddenDownloadLink).toHaveAttribute("download", "OPN2004A-uac.csv");
       expect(clickSpy).toHaveBeenCalledTimes(1);
     });
+
+    const firstCreateObjectUrlCall = createObjectUrlMock.mock.calls[0]?.[0];
+
+    expect(firstCreateObjectUrlCall).toBeInstanceOf(Blob);
+
+    if (!(firstCreateObjectUrlCall instanceof Blob)) {
+      throw new Error("Expected createObjectURL to be called with a Blob");
+    }
+
+    const csvText = await readBlobAsText(firstCreateObjectUrlCall);
+
+    expect(csvText.replace(/^\uFEFF/, "")).toBe('caseId,uac\r\n"1","2"');
   });
 
   it("should show a generation error when creating UACs fails", async () => {

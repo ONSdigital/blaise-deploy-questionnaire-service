@@ -283,11 +283,9 @@ describe("uploadQuestionnaire", () => {
 
   it("waits for deactivation to finish before returning invalid settings", async () => {
     let resolveSettings:
-      | ((value: Awaited<ReturnType<typeof getQuestionnaireSettings>>) => void)
-      | undefined;
+      ((value: Awaited<ReturnType<typeof getQuestionnaireSettings>>) => void) | undefined;
     let resolveModes:
-      | ((value: Awaited<ReturnType<typeof getQuestionnaireModes>>) => void)
-      | undefined;
+      ((value: Awaited<ReturnType<typeof getQuestionnaireModes>>) => void) | undefined;
     let resolveDeactivate: ((value: boolean) => void) | undefined;
 
     vi.mocked(getQuestionnaireSettings).mockImplementation(
