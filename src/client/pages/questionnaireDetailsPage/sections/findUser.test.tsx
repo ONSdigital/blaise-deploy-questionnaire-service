@@ -12,6 +12,64 @@ const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
 vi.mock("axios");
 const mockedAxios = vi.mocked(axios);
 
+vi.mock("blaise-design-system-react-components", () => ({
+  ComboBox: (props: {
+    value: string;
+    placeholder: string;
+    options: Array<{ label: string; value: string }>;
+    disabled?: boolean;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void;
+    onSelect: (option: { label: string; value: string } | null) => void;
+    onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+    onFocus: () => void;
+  }) => {
+    const valueLower = props.value.toLowerCase();
+    const filteredOptions = props.options.filter((option) =>
+      option.label.toLowerCase().includes(valueLower),
+    );
+
+    return (
+      <div>
+        <input
+          aria-label={props.placeholder}
+          placeholder={props.placeholder}
+          value={props.value}
+          disabled={props.disabled}
+          onChange={(event) => props.onChange(event, event.target.value)}
+          onBlur={props.onBlur}
+          onFocus={props.onFocus}
+        />
+        <button
+          type="button"
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={() => props.onSelect(null)}
+        >
+          Clear selection
+        </button>
+        {props.value !== "" && (
+          <ul>
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((option) => (
+                <li
+                  key={option.value}
+                  role="option"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => props.onSelect(option)}
+                >
+                  {option.label}
+                </li>
+              ))
+            ) : (
+              <li role="option">No results found</li>
+            )}
+          </ul>
+        )}
+      </div>
+    );
+  },
+  LoadingPanel: ({ message }: { message?: string }) => <div>{message ?? "Loading"}</div>,
+}));
+
 describe("FindUser happy path", () => {
   const roles = ["Role1"];
   const users = ["Jill", "Jimmy", "Timmy", "Erin"];
@@ -343,6 +401,37 @@ describe("FindUser happy path", () => {
 
     expect(clearTimeoutSpy).toHaveBeenCalled();
     expect(input).toHaveValue("NotAUser");
+  });
+
+  it("clears a pending blur timeout before handling a null selection", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: { message: users } });
+    const onItemSelected = vi.fn();
+    const clearTimeoutSpy = vi.spyOn(window, "clearTimeout");
+
+    render(
+      <FindUser
+        label="Enter username"
+        roles={roles}
+        onItemSelected={onItemSelected}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(screen.getByPlaceholderText("Enter username")).not.toBeDisabled());
+
+    const input = screen.getByPlaceholderText("Enter username");
+
+    vi.useFakeTimers();
+    fireEvent.blur(input);
+    fireEvent.click(screen.getByRole("button", { name: "Clear selection" }));
+
+    act(() => {
+      vi.runOnlyPendingTimers();
+    });
+
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+    expect(onItemSelected).toHaveBeenCalledWith("");
+    expect(onItemSelected).toHaveBeenCalledTimes(1);
   });
 
   it("shows the design-system no results option if the filter matches no users", async () => {

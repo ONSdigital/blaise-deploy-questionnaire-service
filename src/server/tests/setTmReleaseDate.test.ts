@@ -60,10 +60,13 @@ Auth.prototype.validateToken = vi.fn().mockReturnValue(true);
 
 vi.mock("blaise-iap-node-provider");
 
-const mock = new MockAdapter(axios, { onNoMatch: "throwException" });
+const axiosInstance = axios.create();
+const mock = new MockAdapter(axiosInstance as ConstructorParameters<typeof MockAdapter>[0], {
+  onNoMatch: "throwException",
+});
 const jsonHeaders = { "content-type": "application/json" };
 
-vi.spyOn(axios, "create").mockReturnValue(axios);
+vi.spyOn(axios, "create").mockReturnValue(axiosInstance);
 
 const config = getConfigFromEnv();
 const request = supertest(newServer(config));

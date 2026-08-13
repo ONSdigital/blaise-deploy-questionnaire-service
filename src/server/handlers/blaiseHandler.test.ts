@@ -159,6 +159,16 @@ describe("BlaiseAPI Get all questionnaires from API", () => {
 
     expect(response.status).toEqual(500);
   });
+
+  it("should return a 503 status when the API is unavailable", async () => {
+    mockGetQuestionnaires.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.get("/api/questionnaires");
+
+    expect(response.status).toEqual(503);
+  });
 });
 
 describe("BlaiseAPI Get specific questionnaire information from API", () => {
@@ -208,6 +218,16 @@ describe("BlaiseAPI Get specific questionnaire information from API", () => {
 
     expect(response.status).toEqual(500);
   });
+
+  it("should return a 503 status when questionnaire lookup API is unavailable", async () => {
+    mockGetQuestionnaire.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.get("/api/questionnaires/OPN2101A");
+
+    expect(response.status).toEqual(503);
+  });
 });
 
 describe("BlaiseAPI Post to API to install a specific questionnaire", () => {
@@ -234,6 +254,16 @@ describe("BlaiseAPI Post to API to install a specific questionnaire", () => {
     const response: Response = await request.post("/api/install").send({ filename: "OPN2101A" });
 
     expect(response.status).toEqual(500);
+  });
+
+  it("should return a 503 status when install API is unavailable", async () => {
+    mockInstallQuestionnaire.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.post("/api/install").send({ filename: "OPN2101A" });
+
+    expect(response.status).toEqual(503);
   });
 
   it("should send an empty questionnaire filename when payload filename is missing", async () => {
@@ -303,6 +333,16 @@ describe("BlaiseAPI Delete a specific questionnaire", () => {
     expect(response.status).toEqual(500);
   });
 
+  it("should return a 503 status when delete API is unavailable", async () => {
+    mockDeleteQuestionnaire.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.delete("/api/questionnaires/OPN2101A");
+
+    expect(response.status).toEqual(503);
+  });
+
   it("should return a 500 status when error shape is not axios-like", async () => {
     mockDeleteQuestionnaire.mockImplementation(() => {
       return Promise.reject({ isAxiosError: true });
@@ -339,6 +379,16 @@ describe("BlaiseAPI get case IDs", () => {
     const response: Response = await request.get("/api/questionnaires/OPN2101A/cases/ids");
 
     expect(response.status).toEqual(500);
+  });
+
+  it("should return a 503 status when case ID API is unavailable", async () => {
+    mockGetQuestionnaireCaseIds.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.get("/api/questionnaires/OPN2101A/cases/ids");
+
+    expect(response.status).toEqual(503);
   });
 });
 
@@ -377,6 +427,16 @@ describe("BlaiseAPI Activate a specific questionnaire", () => {
 
     expect(response.status).toEqual(500);
   });
+
+  it("should return a 503 status when activate API is unavailable", async () => {
+    mockActivateQuestionnaire.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.patch("/api/questionnaires/OPN2101A/activate");
+
+    expect(response.status).toEqual(503);
+  });
 });
 
 describe("BlaiseAPI Deactivate a specific questionnaire", () => {
@@ -414,6 +474,16 @@ describe("BlaiseAPI Deactivate a specific questionnaire", () => {
 
     expect(response.status).toEqual(500);
   });
+
+  it("should return a 503 status when deactivate API is unavailable", async () => {
+    mockDeactivateQuestionnaire.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.patch("/api/questionnaires/OPN2101A/deactivate");
+
+    expect(response.status).toEqual(503);
+  });
 });
 
 describe("BlaiseAPI does questionnaire have a specific mode API", () => {
@@ -441,6 +511,16 @@ describe("BlaiseAPI does questionnaire have a specific mode API", () => {
     const response: Response = await request.get("/api/questionnaires/OPN2101A/modes/CAWI");
 
     expect(response.status).toEqual(500);
+  });
+
+  it("should return a 503 status when mode lookup API is unavailable", async () => {
+    mockDoesQuestionnaireHaveMode.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.get("/api/questionnaires/OPN2101A/modes/CAWI");
+
+    expect(response.status).toEqual(503);
   });
 });
 
@@ -482,6 +562,16 @@ describe("BlaiseAPI get questionnaire modes", () => {
 
     expect(response.status).toEqual(500);
   });
+
+  it("should return a 503 status when questionnaire modes API is unavailable", async () => {
+    mockGetQuestionnaireModes.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.get("/api/questionnaires/OPN2101A/modes");
+
+    expect(response.status).toEqual(503);
+  });
 });
 
 describe("BlaiseAPI get questionnaire settings", () => {
@@ -520,6 +610,16 @@ describe("BlaiseAPI get questionnaire settings", () => {
     const response: Response = await request.get("/api/questionnaires/OPN2101A/settings");
 
     expect(response.status).toEqual(500);
+  });
+
+  it("should return a 503 status when questionnaire settings API is unavailable", async () => {
+    mockGetQuestionnaireSettings.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.get("/api/questionnaires/OPN2101A/settings");
+
+    expect(response.status).toEqual(503);
   });
 });
 
@@ -561,6 +661,16 @@ describe("BlaiseAPI get survey days", () => {
 
     expect(response.status).toEqual(500);
   });
+
+  it("should return a 503 status when survey days API is unavailable", async () => {
+    mockGetSurveyDays.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.get("/api/questionnaires/OPN2101A/surveydays");
+
+    expect(response.status).toEqual(503);
+  });
 });
 
 describe("BlaiseAPI get active survey-day status", () => {
@@ -599,5 +709,15 @@ describe("BlaiseAPI get active survey-day status", () => {
     const response: Response = await request.get("/api/questionnaires/OPN2101A/active");
 
     expect(response.status).toEqual(500);
+  });
+
+  it("should return 503 when active survey-day lookup API is unavailable", async () => {
+    mockGetSurveyDays.mockImplementation(() => {
+      return Promise.reject({ response: { status: 503 }, isAxiosError: true });
+    });
+
+    const response: Response = await request.get("/api/questionnaires/OPN2101A/active");
+
+    expect(response.status).toEqual(503);
   });
 });

@@ -242,7 +242,7 @@ describe("BimsClient", () => {
       );
     });
 
-    it("normalizes URLs without leading slash", async () => {
+    it("normalises URLs without leading slash", async () => {
       const noAuthClient = new BimsClient("https://bims.example", "client-id");
 
       (noAuthClient as unknown as { authProvider: IapProvider | null }).authProvider = null;

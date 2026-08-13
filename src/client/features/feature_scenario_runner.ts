@@ -135,9 +135,9 @@ function formatStepArgs(args: unknown[]): string {
       return JSON.stringify(arg);
     }
 
-    const serialized = JSON.stringify(arg);
+    const serialised = JSON.stringify(arg);
 
-    return serialized ?? String(arg);
+    return serialised ?? String(arg);
   });
 
   return ` (${formattedArgs.join(", ")})`;

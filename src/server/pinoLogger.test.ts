@@ -125,7 +125,7 @@ describe("createLogger", () => {
   });
 
   describe("serializers.req (production)", () => {
-    async function getReqSerializer() {
+    async function getReqSerialiser() {
       process.env.NODE_ENV = "production";
       const { default: createLogger } = await import("./pinoLogger.js");
 
@@ -141,8 +141,8 @@ describe("createLogger", () => {
       return config.serializers.req;
     }
 
-    it("serializes method, url, and user from req", async () => {
-      const req = await getReqSerializer();
+    it("serialises method, url, and user from req", async () => {
+      const req = await getReqSerialiser();
       const result = req({ method: "GET", url: "/test", raw: { user: "alice" } });
 
       expect(result).toEqual({ method: "GET", url: "/test", user: "alice" });
