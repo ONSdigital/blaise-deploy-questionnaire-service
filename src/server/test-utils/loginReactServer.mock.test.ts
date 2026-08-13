@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import { mockLoginReactServerModule } from "./loginReactServer.mock.js";
 
 describe("mockLoginReactServerModule", () => {
-  it("returns Auth mock with expected behavior", () => {
+  it("returns Auth mock with expected behaviour", () => {
     const module = mockLoginReactServerModule();
     const auth = new module.Auth({});
 
