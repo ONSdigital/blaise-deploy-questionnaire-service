@@ -17,7 +17,7 @@ describe("deploymentDateQuestionRules", () => {
   });
 
   it("exports the Totalmobile release date TLAs", () => {
-    expect(tmReleaseDateSurveyTlas).toEqual(["DST", "LMS"]);
+    expect(tmReleaseDateSurveyTlas).toEqual(["DST", "LMS", "LCF"]);
   });
 
   it.each(["DST2101A", "LMS2101A"])(
