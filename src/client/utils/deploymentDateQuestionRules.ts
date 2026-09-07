@@ -1,6 +1,6 @@
 const toStartDateSurveyTlas = ["DST", "LMS", "OPN"];
 
-export const tmReleaseDateSurveyTlas = ["DST", "LMS"];
+export const tmReleaseDateSurveyTlas = ["DST", "LMS", "LCF"];
 
 export function shouldAskToStartDate(questionnaireName: string): boolean {
   return toStartDateSurveyTlas.some((tla) => questionnaireName.startsWith(tla));
