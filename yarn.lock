@@ -3054,9 +3054,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"blaise-login-react-client@git+https://github.com/ONSdigital/blaise-login-react.git#tag=v2.0.0&workspace=blaise-login-react-client":
+"blaise-login-react-client@git+https://github.com/ONSdigital/blaise-login-react.git#branch=BLAIS5-4526&workspace=blaise-login-react-client":
   version: 1.0.0
-  resolution: "blaise-login-react-client@https://github.com/ONSdigital/blaise-login-react.git#workspace=blaise-login-react-client&commit=7d088def4851639f5e6368651084a3e4e0c3dbca"
+  resolution: "blaise-login-react-client@https://github.com/ONSdigital/blaise-login-react.git#branch=BLAIS5-4526&workspace=blaise-login-react-client&commit=7d088def4851639f5e6368651084a3e4e0c3dbca"
   dependencies:
     blaise-design-system-react-components: "git+https://github.com/ONSdigital/blaise-design-system-react-components.git#v2.0.0"
     universal-cookie: "npm:^8.1.2"
@@ -3068,9 +3068,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"blaise-login-react-server@git+https://github.com/ONSdigital/blaise-login-react.git#tag=v2.0.0&workspace=blaise-login-react-server":
+"blaise-login-react-server@git+https://github.com/ONSdigital/blaise-login-react.git#branch=BLAIS5-4526&workspace=blaise-login-react-server":
   version: 1.0.0
-  resolution: "blaise-login-react-server@https://github.com/ONSdigital/blaise-login-react.git#workspace=blaise-login-react-server&commit=7d088def4851639f5e6368651084a3e4e0c3dbca"
+  resolution: "blaise-login-react-server@https://github.com/ONSdigital/blaise-login-react.git#branch=BLAIS5-4526&workspace=blaise-login-react-server&commit=7d088def4851639f5e6368651084a3e4e0c3dbca"
   dependencies:
     blaise-api-node-client: "git+https://github.com/ONSdigital/blaise-api-node-client.git#v3.0.0"
     express: "npm:^5.2.1"
@@ -3637,8 +3637,8 @@ __metadata:
     blaise-api-node-client: "git+https://github.com/ONSdigital/blaise-api-node-client#v3.0.0"
     blaise-design-system-react-components: "git+https://github.com/ONSdigital/blaise-design-system-react-components#v2.0.0"
     blaise-iap-node-provider: "git+https://github.com/ONSdigital/blaise-iap-node-provider#v3.0.0"
-    blaise-login-react-client: "git+https://github.com/ONSdigital/blaise-login-react.git#tag=v2.0.0&workspace=blaise-login-react-client"
-    blaise-login-react-server: "git+https://github.com/ONSdigital/blaise-login-react.git#tag=v2.0.0&workspace=blaise-login-react-server"
+    blaise-login-react-client: "git+https://github.com/ONSdigital/blaise-login-react.git#branch=BLAIS5-4526&workspace=blaise-login-react-client"
+    blaise-login-react-server: "git+https://github.com/ONSdigital/blaise-login-react.git#branch=BLAIS5-4526&workspace=blaise-login-react-server"
     blaise-uac-service-node-client: "git+https://github.com/ONSdigital/blaise-uac-service-node-client#v4.1.0"
     concurrently: "npm:^10.0.4"
     cspell: "npm:^10.0.1"
