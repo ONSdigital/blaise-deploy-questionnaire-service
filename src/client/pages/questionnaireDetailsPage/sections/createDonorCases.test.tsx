@@ -6,6 +6,7 @@ import { MemoryRouter } from "react-router-dom";
 import {
   ipsPilotQuestionnaire,
   ipsQuestionnaire,
+  questionnaireWithName,
 } from "../../../features/step_definitions/helpers/api.mock";
 import { MockAuthenticate } from "../../../test-utils/authenticate.mock";
 
@@ -50,5 +51,30 @@ describe("IPS questionnaires", () => {
 
     expect(screen.getByText("IPS Pilot Interviewer")).toBeInTheDocument();
     expect(screen.getAllByText("Create cases")).toHaveLength(3);
+  });
+
+  it.each(["IPS1234B_pilot", "IPS1234_pilot"])(
+    "should identify %s as an IPS Pilot Questionnaire",
+    (questionnaireName) => {
+      render(
+        <MemoryRouter initialEntries={["/questionnaire/"]}>
+          <CreateDonorCases questionnaire={questionnaireWithName(questionnaireName)} />
+        </MemoryRouter>,
+      );
+
+      expect(screen.getByText("IPS Pilot Interviewer")).toBeInTheDocument();
+      expect(screen.getAllByText("Create cases")).toHaveLength(3);
+    },
+  );
+
+  it("should not identify an IPS questionnaire without the pilot suffix as an IPS Pilot Questionnaire", () => {
+    render(
+      <MemoryRouter initialEntries={["/questionnaire/"]}>
+        <CreateDonorCases questionnaire={questionnaireWithName("IPS1234A")} />
+      </MemoryRouter>,
+    );
+
+    expect(screen.queryByText("IPS Pilot Interviewer")).not.toBeInTheDocument();
+    expect(screen.getAllByText("Create cases")).toHaveLength(4);
   });
 });
